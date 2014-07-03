@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 28, 2014 7:31:34 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.irri.iric.portal.genotype.views.Snp2lines" table="SNP_2LINES">
+        <composite-id name="id" class="org.irri.iric.portal.genotype.views.Snp2linesId">
+            <key-property name="var1" type="string">
+                <column name="VAR1" length="128" />
+            </key-property>
+            <key-property name="var2" type="string">
+                <column name="VAR2" length="128" />
+            </key-property>
+            <key-property name="chr" type="java.lang.Short">
+                <column name="CHR" precision="4" scale="0" />
+            </key-property>
+            <key-property name="pos" type="java.lang.Long">
+                <column name="POS" precision="10" scale="0" />
+            </key-property>
+            <key-property name="refnuc" type="string">
+                <column name="REFNUC" length="1" />
+            </key-property>
+            <key-property name="var1nuc" type="string">
+                <column name="VAR1NUC" length="1" />
+            </key-property>
+            <key-property name="var2nuc" type="string">
+                <column name="VAR2NUC" length="1" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

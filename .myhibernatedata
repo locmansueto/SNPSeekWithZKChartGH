@@ -1,0 +1,17 @@
+#MyEclipse Hibernate Properties
+#Fri Jun 27 13:44:52 SGT 2014
+genVersionTag=false
+sessionFactoryName=org.irri.iric.hibernate.HibernateSessionFactory
+genAnnotations=false
+configFile=/zkspring2/src/hibernate.cfg.xml
+reStrategyClass=
+sessionFactoryId=
+profile=
+detectM2M=false
+genBasicCompId=false
+keyGenerator=
+createConfigFile=true
+basePersistenceClass=
+detectO2O=false
+useJavaTypes=true
+reSettingsFile=
