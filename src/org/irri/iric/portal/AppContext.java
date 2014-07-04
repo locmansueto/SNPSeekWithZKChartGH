@@ -1,5 +1,8 @@
 package org.irri.iric.portal;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
@@ -41,7 +44,7 @@ public class AppContext {
     
     /**
      * Utility to check if object is null (if autowired worked!)
-     * 	if not, use  SpringUtil.getBean(name); 
+     * 	if null, use  SpringUtil.getBean(name); 
      *  		then AppContext.getApplicationContext().getBean(name);
      *  		then  new as last resort !
      * 
@@ -55,18 +58,50 @@ public class AppContext {
     	if (obj==null) {
     		log.debug(name + "==null using SpringUtil");
     		System.out.println(name + "==null using SpringUtil");
-    		obj = (GenotypeFacade)SpringUtil.getBean(name);
+    		obj = SpringUtil.getBean(name);
     	}
     	if (obj==null) {
     		log.debug(name + "==null using static");
     		System.out.println(name + "==null using getApplicationContext");
-    		obj = (GenotypeFacade)AppContext.getApplicationContext().getBean(name);
+    		obj = AppContext.getApplicationContext().getBean(name);
     	}   	
     	if (obj==null) {
     		System.out.println(name + "==null using new!");
     		log.debug(name + "==null using new!");
-    		obj= new GenotypeFacadeImpl();
-    		
+    		Class<?> c;
+			try {
+				c = Class.forName(name);
+	    		Constructor<?> cons;
+				try {
+					cons = c.getConstructor();
+					try {
+						obj = cons.newInstance();
+					} catch (InstantiationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+					
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
     	return obj;
     }

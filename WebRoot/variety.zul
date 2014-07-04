@@ -1,0 +1,54 @@
+<?page title="Variety Search" contentType="text/html;charset=UTF-8"?>
+<zk>
+
+
+
+<zk xmlns:h="native">
+
+<zscript>
+        import org.zkoss.zkplus.spring.SpringUtil;      
+
+		import org.irri.iric.portal.genotype.service.GenotypeFacade;
+		import org.irri.iric.portal.genotype.service.GenotypeFacadeImpl;
+	
+		import org.irri.iric.portal.genotype.views.Snp2lines;
+		import org.irri.iric.portal.genotype.views.Snp2linesHome;
+		import org.springframework.beans.factory.annotation.Autowired;
+
+        
+        //  org.irri.iric.portal.genotype.service.GenotypeFacade fac  = new  org.irri.iric.portal.genotype.service.GenotypeFacadeImpl();       
+       
+       	org.irri.iric.portal.genotype.service.GenotypeFacade genotype = SpringUtil.getBean("GenotypeFacade");
+        java.util.List genenames = genotype.getGenenames();   
+        java.util.List varnames = genotype.getVarnames();
+
+        java.util.List chr = genotype.getChromosomes();
+        
+        java.util.List listSNPs = new java.util.ArrayList(); // fac.getSNPinVarieties(100);
+
+        String msg =varnames.size()/2 + " varieties and " + genenames.size()/2 + " genes for selection";
+                
+                
+</zscript>
+
+<h:head>
+
+<h:link rel="icon" type="image/ico" href="http://localhost:8080/zkspringcore/favicon.ico" />
+</h:head>
+      
+
+<h:center>
+<h:h1>
+International Rice Informatics Consortium (IRIC)
+</h:h1>
+<h:h2>
+Variety Database
+</h:h2>
+</h:center>
+
+
+
+<window title="Variety Search" border="normal">
+New Content Here!
+</window>
+</zk>

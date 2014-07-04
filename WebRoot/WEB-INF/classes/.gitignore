@@ -1,0 +1,8 @@
+/org
+/META-INF
+/dev-dao-context.xml
+/dev_crud_maker-dao-context.xml
+/dev_crud_maker-dao.properties
+/dev_crud_maker-security-context.xml
+/dev_crud_maker-service-context.xml
+/dev_crud_maker-web-context.xml

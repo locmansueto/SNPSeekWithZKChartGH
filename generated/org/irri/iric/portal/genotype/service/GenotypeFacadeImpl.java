@@ -413,6 +413,47 @@ public class GenotypeFacadeImpl implements GenotypeFacade {
 	}
 	
 	
+	/*
+	 * 	
+	 * Subset of SNPs
+
+Not correlating (cc>.9) and closely located
+(dist<100000 bps) at the same time
+
+Major allele frequency <.95
+
+Covers >=70% of varieties
+
+Subset of ~100K SNPs often desirable for many analysis and visualizations.
+These are the criteria to use for filtering.
+
+SNP and other type of variants
+
+Given two (or from 3 to 10) varieties and genome
+region/gene find all SNPs between the varieties
+
+Given genome region /gene find all SNPs for
+
+–
+
+–
+
+Given a SNP ( or from 2 to 10 SNPs) find alleles for all
+varieties
+
+Visualize all SNPs for all varieties
+
+Visualize all the results in Jbrowse or other genome
+browser together with gene structures
+
+Distinguish synonymous and non-synonymous SNPs
+
+all varieties
+
+within a subpopulation group
+
+	 */
+	 
 	
 	
 }

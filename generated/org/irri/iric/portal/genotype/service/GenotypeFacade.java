@@ -11,6 +11,8 @@ import org.zkoss.zul.Selectbox;
 
 public interface GenotypeFacade {
 	
+	
+	
 	public enum snpQueryMode { SNPQUERY_VARIETIES,  SNPQUERY_REFERENCE, SNPQUERY_ALLREFPOS } ;
 
 	public java.util.List<String> getVarnames();
@@ -26,5 +28,6 @@ public interface GenotypeFacade {
 	public List<Snp2lines> getSNPinVarieties(int n);	
 	
 	public Gene getGeneFromName(String name);
+	
 	
 }
