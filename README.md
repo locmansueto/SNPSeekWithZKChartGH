@@ -174,14 +174,20 @@ and the backend classes for the genotype module
 
 
 
-* Practice Java coding and naming conventions
 
-Classes starts with upper case
-Class properties are all lowe-case
+The above proposed design will have this UML diagram
+![proposed.png](https://bitbucket.org/repo/4AyE6E/images/2896047808-proposed.png)
+
+### Remember Java best coding practices and naming conventions ###
+
+- Classes starts with upper case
+
+-  Class properties are all lowe-case
 Class methods starts with lower case but may contain Upper cases in the middle to be readable, and in this format
-     <action><Object/Subject>
-Use the Eclipse context menu Source> to implement property getters/setters, override superclass methos, implement interface methods, add comments, etc.
-Know the uses of Object.hash, Object.equals and Object.toString
+     `<action><Object/Subject>`
+- Use the Eclipse context menu Source> to implement property getters/setters, override superclass methos, implement interface methods, add comments, etc.
+- Know the uses of Object.hash, Object.equals and Object.toString
+- more ...
 
 
 ### Documentation ###
