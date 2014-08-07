@@ -1,6 +1,4 @@
 <?page title="Variety Search" contentType="text/html;charset=UTF-8"?>
-<zk>
-
 
 
 <zk xmlns:h="native">
@@ -8,47 +6,204 @@
 <zscript>
         import org.zkoss.zkplus.spring.SpringUtil;      
 
-		import org.irri.iric.portal.genotype.service.GenotypeFacade;
-		import org.irri.iric.portal.genotype.service.GenotypeFacadeImpl;
+		import org.irri.iric.portal.variety.service.VarietyFacade;
 	
-		import org.irri.iric.portal.genotype.views.Snp2lines;
-		import org.irri.iric.portal.genotype.views.Snp2linesHome;
 		import org.springframework.beans.factory.annotation.Autowired;
 
-        
-        //  org.irri.iric.portal.genotype.service.GenotypeFacade fac  = new  org.irri.iric.portal.genotype.service.GenotypeFacadeImpl();       
        
-       	org.irri.iric.portal.genotype.service.GenotypeFacade genotype = SpringUtil.getBean("GenotypeFacade");
-        java.util.List genenames = genotype.getGenenames();   
-        java.util.List varnames = genotype.getVarnames();
-
-        java.util.List chr = genotype.getChromosomes();
+       	VarietyFacade variety = (VarietyFacade)SpringUtil.getBean("VarietyFacade");
+ 
+ 
+        java.util.List varnames = variety.getVarietyNames();
+        java.util.List irisIds = variety.getIrisIds();
+        java.util.List countries = variety.getCountries();
+        java.util.List subpopulation = variety.getSubpopulations();
         
-        java.util.List listSNPs = new java.util.ArrayList(); // fac.getSNPinVarieties(100);
 
-        String msg =varnames.size()/2 + " varieties and " + genenames.size()/2 + " genes for selection";
+        String msg =varnames.size()/2 + " varieties, " + irisIds.size()/2 + " IRIS IDs, "  + countries.size()/2 + " countries, " + subpopulation.size()/2 + 
+         " subpopulations for selection";
                 
                 
 </zscript>
 
-<h:head>
-
-<h:link rel="icon" type="image/ico" href="http://localhost:8080/zkspringcore/favicon.ico" />
-</h:head>
       
 
-<h:center>
-<h:h1>
-International Rice Informatics Consortium (IRIC)
-</h:h1>
-<h:h2>
-Variety Database
-</h:h2>
-</h:center>
+<window title="Variety Search" border="none" apply="org.irri.iric.portal.variety.zkui.VarietyQueryController">
+<grid width="800px">
+
+<rows>
+
+    <row spans="2">
+	<textbox id="msgbox" readonly="true" value="${msg}" width="750px"/>
+	</row>
+   
+<row>
+<label value="Variety name"/>
+
+			    <combobox id="comboVarname" autodrop="true" buttonVisible="false" width="150px"/>
+			    <zscript><![CDATA[			
+			        comboVarname.setModel(new SimpleListModel(varnames));
+			    ]]></zscript>
+</row>
+<row>
+<label value="IRIS Id"/>
+
+			    <combobox id="comboIrisId" autodrop="true" buttonVisible="false" width="150px"/>
+			    <zscript><![CDATA[			
+			        comboIrisId.setModel(new SimpleListModel(irisIds));
+			    ]]></zscript>
+</row>
+<row>
+<label value="Country"/>
+			    <combobox id="comboCountry" autodrop="true" buttonVisible="false" width="150px"/>
+			    <zscript><![CDATA[		
+			        comboCountry.setModel( new SimpleListModel(countries));
+			    ]]></zscript>
+</row>
+<row>
+<label value="Subpopulation"/>
+
+			    <combobox id="comboSubpopulation" autodrop="true" buttonVisible="false" width="150px"/>
+			    <zscript><![CDATA[
+			        comboSubpopulation.setModel( new SimpleListModel(subpopulation));
+			    ]]></zscript>
+</row>
+
+
+<row>
+(If Variety name or IRIS Id is specified, the other filters are ignored)
+    		    <button id="searchButton" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
+			    	   width="100px" height="50px"
+			    	   xmlns:w="http://www.zkoss.org/2005/zk/client"			    	   			    	   
+			    	   w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();"
+			    	   />	
+</row>
+<!-- 
+<row spans="2" height="10px">
+<label value="Display settings"/>
+</row>
+<row height="10px">
+<label value="Phylogenetic tree scaling"/>
+<listbox id="selectTreescaling" mold="select" rows="1">
+    <listitem label="x1"/>    
+    <listitem label="x5" selected="true" />    
+    <listitem label="x10"/>    
+    <listitem label="x50"/>    
+    <listitem label="x100"/>    
+</listbox>	
+	
+</row>
+-->
+
+</rows>
+
+</grid>
+ 
+			    	   
+    <vbox width="100%"/>
+    
+
+	<separator bar="true"/>
+                                           
+
+   <tabbox id="tabboxDisplay" width="100%" >  
+        <tabs>  
+            <tab label="Table"/>  
+            <tab label="Phylotree"/>  
+             <tab label="Geography"/>  
+        </tabs>  
+        <tabpanels>  
+            <tabpanel>
+              
+ <listbox id="varietyresult" fixedLayout="true" mold="paging" pageSize="20" visible="false">
+		<listhead>
+			<listheader  sort="auto"></listheader>
+			<listheader  sort="auto"></listheader>
+			<listheader  sort="auto"></listheader>
+		</listhead>		
+	</listbox>
+            </tabpanel>
+
+            <tabpanel>  
+
+<vbox> 
+ <label value="The tree is constructed using distance based on the number of mismatches from a random sample of ___ SNP positions between varieties, and  Neighbor-Joining for clustering." style="font-family: arial;font-size:12px" />
+<iframe id="iframePhylotree" style="height:1200px;width:1500px"/>
+</vbox>
+		
+            </tabpanel>
+        
+<tabpanel>        
+     <div apply="org.irri.iric.portal.variety.zkui.GoogleMapsController">
+    <script type="text/javascript"
+        content="zk.googleAPIkey='ABQIAAAAmGxmYR57XDAbAumS9tV5fxQXyylOlR69a1vFTcUcpV6DXdesOBSMEHfkewcSzwEwBT7UzVx8ep8vjA'" />
+     
+    <gmaps version="3.9" id="gmaps" width="1000px" height="800px" showSmallCtrl="true" >
+        <ginfo id="info" open="true"
+            content="Hello, &lt;a href=&quot;http://www.zkoss.org\&quot;&gt;ZK&lt;/a&gt;."/>
+        <gmarker id="marker" lat="14.167774" lng="121.254547"
+            content="Hello, &lt;a href=&quot;http://www.zkoss.org&quot;&gt;ZK&lt;/a&gt; on top of Gmarker."/>
+    </gmaps>
+	</div>
+</tabpanel>
+
+        
+         </tabpanels>
+    </tabbox>
+
+	
+				<zscript><![CDATA[
+			        varietyresult.pagingChild.mold =  "os";
+			        varietyresult.pagingPosition = "both";
+
+			        import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
+			       // ListModel snpListModel= new SimpleListModel(listSNPs);
+			        VarietyListItemRenderer rend =  new VarietyListItemRenderer();
+			        varietyresult.setItemRenderer(rend );
+			        varietyresult.setModel(new SimpleListModel(new java.util.ArrayList()));
+			    ]]></zscript>
+			    
+		<grid id="gridGermplasm" visible="false">
+	        	<columns>
+                <column label="PASSPORT DATA"/>
+                <column label="PHENOTYPES" />
+            </columns>
+		<rows>
+		<row>
+		<grid>
+		<rows>
+		<row> Variety name<textbox id="textboxGermAccession" readonly="true"/></row>
+		<row> IRIS ID<textbox id="textboxIRISId" readonly="true"/></row>
+		<row> NSFT ID<textbox id="textboxGermNsftvId" readonly="true"/></row>
+		<row> Subpopulation<textbox id="textboxGermSubpopulation" readonly="true"/></row>
+		<row> Country<textbox id="textboxGermCountry" readonly="true"/></row>
+		<row> Latitude <textbox id="textboxGermLatitude" readonly="true"/></row>
+		<row> Longitude<textbox id="textboxGermLongitude" readonly="true"/></row>
+		</rows>
+		</grid>
+		
+		<listbox id="listboxGermPhenotypes">
+			<listhead>
+			<listheader>PHENOTYPE</listheader>
+			<listheader>VALUE</listheader>
+			<listheader>UNIT</listheader>
+			</listhead>		
+		</listbox>
+		
+					<zscript><![CDATA[
+			        listboxGermPhenotypes.setItemRenderer(new org.irri.iric.portal.variety.zkui.PhenotypesListRenderer() );
+			        listboxGermPhenotypes.setModel(new SimpleListModel(new java.util.ArrayList()));
+			    ]]></zscript>
+			    
+		</row>
+		
+		</rows>
+		</grid>	    
+		
+		<!-- iframe id="iframePhylotree" style="height:1000px" widths="100%"/ -->
+		
 
 
 
-<window title="Variety Search" border="normal">
-New Content Here!
 </window>
 </zk>

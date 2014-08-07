@@ -1,15 +1,13 @@
 package org.irri.iric.portal.variety.domain;
 
 import java.io.Serializable;
-
 import java.lang.StringBuilder;
+import java.math.BigDecimal;
 
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-
 import javax.xml.bind.annotation.*;
-
 import javax.persistence.*;
 
 /**
@@ -23,7 +21,11 @@ import javax.persistence.*;
 		@NamedQuery(name = "findDist3kByNam1Containing", query = "select myDist3k from Dist3k myDist3k where myDist3k.nam1 like ?1"),
 		@NamedQuery(name = "findDist3kByNam2", query = "select myDist3k from Dist3k myDist3k where myDist3k.nam2 = ?1"),
 		@NamedQuery(name = "findDist3kByNam2Containing", query = "select myDist3k from Dist3k myDist3k where myDist3k.nam2 like ?1"),
-		@NamedQuery(name = "findDist3kByPrimaryKey", query = "select myDist3k from Dist3k myDist3k where myDist3k.nam1 = ?1 and myDist3k.nam2 = ?2") })
+		@NamedQuery(name = "findDist3kByPrimaryKey", query = "select myDist3k from Dist3k myDist3k where myDist3k.nam1 = ?1 and myDist3k.nam2 = ?2"),
+
+})
+
+
 @Table(schema = "NICKA", name = "DIST_3K")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "dev_crud_maker/org/irri/iric/portal/variety/domain", name = "Dist3k")
@@ -52,7 +54,10 @@ public class Dist3k implements Serializable {
 	@Column(name = "DIST")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
-	Integer dist;
+	//Integer dist;
+	//BigDecimal dist;
+	Double dist;
+
 
 	/**
 	 */
@@ -80,13 +85,16 @@ public class Dist3k implements Serializable {
 
 	/**
 	 */
-	public void setDist(Integer dist) {
+	//public void setDist(Integer dist) {
+	public void setDist(Double dist) {
 		this.dist = dist;
 	}
 
 	/**
 	 */
-	public Integer getDist() {
+	//public Integer getDist() {
+	//public BigDecimal getDist() {
+	public Double getDist() {
 		return this.dist;
 	}
 

@@ -21,9 +21,28 @@ import org.zkoss.zkplus.spring.SpringUtil;
 public class AppContext {
 
 	private static final Log log = LogFactory.getLog(AppContext.class);
+	private static final java.util.Random  rand = new   java.util.Random();
+	public static String tempdir = "../webapps/iric-portal/tmp/";
 
     private static ApplicationContext ctx;
+    
+    private static long startTime;
 
+    public static String createTempFilename() {
+    	
+    	return  Long.toString(  rand.nextLong() ).replace("-","");
+    }
+    
+    public static void startTimer() {
+    	startTime =  System.currentTimeMillis( );	
+    }
+    public static void resetTimer(String report) {
+    	long endTime  =  System.currentTimeMillis( );	
+    	System.out.println(endTime- startTime + " ms " + report);
+    	startTime=endTime;
+    }
+    
+    
     /**
      * Injected from the class "ApplicationContextProvider" which is automatically
      * loaded during Spring-Initialization.
@@ -56,15 +75,15 @@ public class AppContext {
     {
     	
     	if (obj==null) {
-    		log.debug(name + "==null using SpringUtil");
-    		System.out.println(name + "==null using SpringUtil");
-    		obj = SpringUtil.getBean(name);
-    	}
-    	if (obj==null) {
     		log.debug(name + "==null using static");
     		System.out.println(name + "==null using getApplicationContext");
     		obj = AppContext.getApplicationContext().getBean(name);
     	}   	
+    	if (obj==null) {
+    		log.debug(name + "==null using SpringUtil");
+    		System.out.println(name + "==null using SpringUtil");
+    		obj = SpringUtil.getBean(name);
+    	}
     	if (obj==null) {
     		System.out.println(name + "==null using new!");
     		log.debug(name + "==null using new!");
@@ -103,6 +122,10 @@ public class AppContext {
 				e.printStackTrace();
 			}
     	}
+    	
+    	
+    	if(obj==null) throw new RuntimeException(name + "==null");
+    	
     	return obj;
     }
     

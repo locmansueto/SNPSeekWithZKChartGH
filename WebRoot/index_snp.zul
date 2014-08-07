@@ -96,11 +96,7 @@ Available for dowload: <h:a target="_blank" href="http://pollux:8080/qc3k/">Fast
     
     <grid width="800px">
     <rows>
-    <row>
-    <panel>
-    
-    </panel>
-    </row>
+
     <row>
 	<textbox id="msgbox" readonly="true" value="${msg}" width="750px"/></row>
     

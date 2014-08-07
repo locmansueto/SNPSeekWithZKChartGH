@@ -14,6 +14,9 @@ import org.springframework.dao.DataAccessException;
  */
 public interface List3kDAO extends JpaDao<List3k> {
 
+	
+	public Set getGermplasmByExample(List3k germplasm);
+	
 	/**
 	 * JPQL Query - findList3kByIrisUniqueIdContaining
 	 *
@@ -625,5 +628,7 @@ public interface List3kDAO extends JpaDao<List3k> {
 	 *
 	 */
 	public Set<List3k> findList3kByCountryOfOriginOfSource(String countryOfOriginOfSource_1, int startResult, int maxRows) throws DataAccessException;
+
+	public Set findAllList3kByExample(List3k germplasm);
 
 }

@@ -5,19 +5,16 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.irri.iric.portal.genotype.domain.Variety3k;
-
 import org.skyway.spring.util.dao.AbstractJpaDao;
-
 import org.springframework.dao.DataAccessException;
-
 import org.springframework.stereotype.Repository;
-
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -40,6 +37,7 @@ public class Variety3kDAOImpl extends AbstractJpaDao<Variety3k> implements
 	 *
 	 */
 	@PersistenceContext(unitName = "Production")
+	//@Resource(name =  "Production")
 	private EntityManager entityManager;
 
 	/**

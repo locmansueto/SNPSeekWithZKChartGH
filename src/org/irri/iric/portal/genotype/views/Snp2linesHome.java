@@ -4,6 +4,7 @@ package org.irri.iric.portal.genotype.views;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +16,7 @@ import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
-import org.hibernate.ejb.EntityManagerImpl;
+//import org.hibernate.ejb.EntityManagerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -38,33 +39,16 @@ public class Snp2linesHome implements ISnp2linesHome {
 	//@Autowired
 	//@PersistenceContext(unitName = "Production")
 	
-	@PersistenceContext
+	//@PersistenceContext
+	//@Resource(name =  "Production")
+	@PersistenceContext(unitName = "Production")
 	private EntityManager entityManager;
 	
 	
-	//private  SessionFactory sessionFactory= getSessionFactory();
 
 	protected Session getSession() {
 		
-		//return sessionFactory;
-		
-		// to use the jpa entity manager instead of hibernate session
 		return entityManager.unwrap(Session.class);
-		 
-		
-		//HibernateEntityManager hem = entityManager.unwrap(HibernateEntityManager.class);
-		//Session session = hem.getSession();
-		//return session.getSessionFactory();
-		
-		/*
-		try {
-			return (SessionFactory) new InitialContext()
-					.lookup("SessionFactory");
-		} catch (Exception e) {
-			log.error("Could not locate SessionFactory in JNDI", e);
-			throw new IllegalStateException(
-					"Could not locate SessionFactory in JNDI");
-		}*/
 	}
 	
 
@@ -175,8 +159,8 @@ public class Snp2linesHome implements ISnp2linesHome {
 	
 	@Override
 	public List executeSQL(String sql, String entity) {
-		System.out.println("executing :" + sql);
-		log.info("executing :" + sql);
+		//System.out.println("executing :" + sql);
+		//log.info("executing :" + sql);
 		return getSession().createSQLQuery(sql).addEntity(Snp2linesId.class).list();
 	}
 	

@@ -28,7 +28,7 @@ import javax.persistence.*;
 		@NamedQuery(name = "findList3kByBgiShipment2Containing", query = "select myList3k from List3k myList3k where myList3k.bgiShipment2 like ?1"),
 		@NamedQuery(name = "findList3kByBoxPositionCode", query = "select myList3k from List3k myList3k where myList3k.boxPositionCode = ?1"),
 		@NamedQuery(name = "findList3kByBoxPositionCodeContaining", query = "select myList3k from List3k myList3k where myList3k.boxPositionCode like ?1"),
-		@NamedQuery(name = "findList3kByCountryOfOriginOfSource", query = "select myList3k from List3k myList3k where myList3k.countryOfOriginOfSource = ?1"),
+		@NamedQuery(name = "findList3kByCountryOfOriginOfSource", query = "select myList3k from List3k myList3k where upper( myList3k.countryOfOriginOfSource) = upper(?1)"),
 		@NamedQuery(name = "findList3kByCountryOfOriginOfSourceContaining", query = "select myList3k from List3k myList3k where myList3k.countryOfOriginOfSource like ?1"),
 		@NamedQuery(name = "findList3kByDesignationDnaSample", query = "select myList3k from List3k myList3k where myList3k.designationDnaSample = ?1"),
 		@NamedQuery(name = "findList3kByDesignationDnaSampleContaining", query = "select myList3k from List3k myList3k where myList3k.designationDnaSample like ?1"),
@@ -43,7 +43,7 @@ import javax.persistence.*;
 		@NamedQuery(name = "findList3kByGidForDna", query = "select myList3k from List3k myList3k where myList3k.gidForDna = ?1"),
 		@NamedQuery(name = "findList3kByInternalRpocessingSet", query = "select myList3k from List3k myList3k where myList3k.internalRpocessingSet = ?1"),
 		@NamedQuery(name = "findList3kByInternalRpocessingSetContaining", query = "select myList3k from List3k myList3k where myList3k.internalRpocessingSet like ?1"),
-		@NamedQuery(name = "findList3kByIrisUniqueId", query = "select myList3k from List3k myList3k where myList3k.irisUniqueId = ?1"),
+		@NamedQuery(name = "findList3kByIrisUniqueId", query = "select myList3k from List3k myList3k where upper(myList3k.irisUniqueId) = upper(?1)"),
 		@NamedQuery(name = "findList3kByIrisUniqueIdContaining", query = "select myList3k from List3k myList3k where myList3k.irisUniqueId like ?1"),
 		@NamedQuery(name = "findList3kByIsClustered", query = "select myList3k from List3k myList3k where myList3k.isClustered = ?1"),
 		@NamedQuery(name = "findList3kByIsDataAvailable", query = "select myList3k from List3k myList3k where myList3k.isDataAvailable = ?1"),
@@ -64,9 +64,9 @@ import javax.persistence.*;
 		@NamedQuery(name = "findList3kBySortCode", query = "select myList3k from List3k myList3k where myList3k.sortCode = ?1"),
 		@NamedQuery(name = "findList3kByTenkSelect200", query = "select myList3k from List3k myList3k where myList3k.tenkSelect200 = ?1"),
 		@NamedQuery(name = "findList3kByTenkSelect200Containing", query = "select myList3k from List3k myList3k where myList3k.tenkSelect200 like ?1"),
-		@NamedQuery(name = "findList3kByVarietygroupOfSource", query = "select myList3k from List3k myList3k where myList3k.varietygroupOfSource = ?1"),
+		@NamedQuery(name = "findList3kByVarietygroupOfSource", query = "select myList3k from List3k myList3k where upper(myList3k.varietygroupOfSource) = upper(?1)"),
 		@NamedQuery(name = "findList3kByVarietygroupOfSourceContaining", query = "select myList3k from List3k myList3k where myList3k.varietygroupOfSource like ?1"),
-		@NamedQuery(name = "findList3kByVarnameOfGenStockSrc", query = "select myList3k from List3k myList3k where myList3k.varnameOfGenStockSrc = ?1"),
+		@NamedQuery(name = "findList3kByVarnameOfGenStockSrc", query = "select myList3k from List3k myList3k where upper(myList3k.varnameOfGenStockSrc) = upper(?1)"),
 		@NamedQuery(name = "findList3kByVarnameOfGenStockSrcContaining", query = "select myList3k from List3k myList3k where myList3k.varnameOfGenStockSrc like ?1") })
 @Table(schema = "NICKA", name = "LIST_3K")
 @XmlAccessorType(XmlAccessType.FIELD)

@@ -5,19 +5,16 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.irri.iric.portal.variety.domain.Genotyp700;
-
 import org.skyway.spring.util.dao.AbstractJpaDao;
-
 import org.springframework.dao.DataAccessException;
-
 import org.springframework.stereotype.Repository;
-
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -40,6 +37,7 @@ public class Genotyp700DAOImpl extends AbstractJpaDao<Genotyp700> implements
 	 *
 	 */
 	@PersistenceContext(unitName = "Development")
+	//@Resource(name =  "Development")
 	private EntityManager entityManager;
 
 	/**

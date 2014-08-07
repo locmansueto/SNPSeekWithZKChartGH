@@ -4,5 +4,6 @@
 
 
 
-	
+		<!-- bean id="ViewDist3kId" class="org.irri.iric.portal.variety.views.ViewDist3kId" / -->
+		
 </beans>

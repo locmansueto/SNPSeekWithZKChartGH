@@ -5,19 +5,21 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
 
+//import org.irri.iric.portal.variety.domain.Germplasm;
 import org.irri.iric.portal.variety.domain.List3k;
-
 import org.skyway.spring.util.dao.AbstractJpaDao;
-
 import org.springframework.dao.DataAccessException;
-
 import org.springframework.stereotype.Repository;
-
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -39,6 +41,7 @@ public class List3kDAOImpl extends AbstractJpaDao<List3k> implements List3kDAO {
 	 *
 	 */
 	@PersistenceContext(unitName = "Development")
+	//@Resource(name =  "Development")
 	private EntityManager entityManager;
 
 	/**
@@ -1059,6 +1062,46 @@ public class List3kDAOImpl extends AbstractJpaDao<List3k> implements List3kDAO {
 	public Set<List3k> findAllList3ks(int startResult, int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findAllList3ks", startResult, maxRows);
 		return new LinkedHashSet<List3k>(query.getResultList());
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<List3k> findAllList3kByExample(List3k germplasm) throws DataAccessException {
+		//Query query = createNamedQuery("findAllList3ks", startResult, maxRows);
+		//return new LinkedHashSet<List3k>(query.getResultList());
+		
+		  CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		  CriteriaQuery q = cb.createQuery(List3k.class);
+		  Root<List3k> c = q.from(List3k.class);
+		  q.select(c);
+
+			  if(germplasm.getCountryOfOriginOfSource()!=null && germplasm.getVarietygroupOfSource()!=null)	
+			  {
+				  Expression<String> country = cb.literal(germplasm.getCountryOfOriginOfSource() );
+				  Expression<String> subpop = cb.parameter(String.class);
+				  q.where(  cb.and( cb.equal( cb.upper( c.<String>get("countryOfOriginOfSource")  ), germplasm.getCountryOfOriginOfSource().toUpperCase() ),
+						  			cb.equal( cb.upper( c.<String>get("varietygroupOfSource")), cb.literal(germplasm.getVarietygroupOfSource().toUpperCase() ) ) ));
+			  }
+			  else if (germplasm.getCountryOfOriginOfSource()!=null)
+			  {
+					q.where(   cb.equal( cb.upper( c.<String>get("countryOfOriginOfSource")),  cb.literal(germplasm.getCountryOfOriginOfSource().toUpperCase() )) );
+			  }
+			  else if (germplasm.getVarietygroupOfSource()!=null)
+					q.where(   cb.equal( cb.upper( c.<String>get("varietygroupOfSource")),  cb.literal(germplasm.getVarietygroupOfSource().toUpperCase() )  )  );
+		 
+			  Query testQuery = entityManager.createQuery(q);
+			 
+			  return new java.util.LinkedHashSet<List3k>( testQuery.getResultList() );
+	
+	}
+	
+	
+
+	@Override
+	public Set getGermplasmByExample(List3k germplasm) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**

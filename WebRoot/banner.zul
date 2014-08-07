@@ -1,0 +1,90 @@
+<?page title="banner" contentType="text/html;charset=UTF-8"?>
+<zk >
+<div style="background-color:green">
+<hbox>
+<image src="/images/iric/iric_logo.png" />
+<vbox>
+<label value="International Rice Informatics Consortium" width="100%" 
+	style="color:white;background-color:green;font-weight:bold;font-family:arial;font-size:30px" />
+	
+	<menubar id="menubar" width="100%" >
+		<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Home" href="index.zul"/>
+		<menu label="Query" src="/images/Centigrade-Widget-Icons/Briefcase-16x16.png">
+			<menupopup>
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="SNP" href="_snp.zul"/>
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Variety" href="_variety.zul"/>
+			</menupopup>
+		</menu>			
+		<menu label="Viewers" src="/images/Centigrade-Widget-Icons/Briefcase-16x16.png">
+			<menupopup>
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="JBrowse" href="_jbrowse.zul"/>
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Geography" href="_variety.zul"/>
+			</menupopup>
+		</menu>			
+		<menu label="Help" src="/images/Centigrade-Widget-Icons/Briefcase-16x16.png" >
+			<menupopup>
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Quick Help" href="_snp.zul"/>
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Reference" href="_variety.zul"/>
+			</menupopup>
+		</menu>
+	</menubar>
+	
+	<!-- menubar id="menubar" width="100%" >
+		<menu label="Genotype" src="/images/Centigrade-Widget-Icons/Briefcase-16x16.png">
+			<menupopup>
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="New"
+					onClick="alert(self.label)" />
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseOpen-16x16.png" label="Open"
+					onClick="alert(self.label)" />
+				<menuitem src="/images/Centigrade-Widget-Icons/DisketteBlack-16x16.png" label="Save"
+					onClick="alert(self.label)" />
+				<menuseparator />
+				<menuitem label="Exit" src="/images/Centigrade-Widget-Icons/DoorOpen-16x16.png" onClick="alert(self.label)" />
+			</menupopup>
+		</menu>
+		<menu label="Help" src="/images/Centigrade-Widget-Icons/QuestionmarkButton-16x16.png">
+			<menupopup>
+				<menuitem label="Index" onClick="alert(self.label)" />
+				<menu label="About">
+					<menupopup>
+						<menuitem label="About ZK"
+							onClick="alert(self.label)" />
+						<menuitem label="About Potix"
+							onClick="alert(self.label)" />
+					</menupopup>
+				</menu>
+			</menupopup>
+		</menu>
+		<menu src="/images/Centigrade-Widget-Icons/Spyglass-16x16.png">
+			<menupopup>
+				<menuitem label="Index" onClick="alert(self.label)" />
+			</menupopup>
+		</menu>
+	</menubar -->
+	
+	<!--  navbar mold="bs-pills">
+	<navitem label="Home" selected="true" />
+	<navitem label="Profile" />
+	<navitem label="Messages" />
+	</navbar -->
+
+</vbox>
+	</hbox>
+	
+	<!--  checkbox label="Vertical orient" id="vo">
+		<attribute name="onCheck">
+			menubar.orient= self.checked ? "vertical" : "horizontal";
+			sm.visible = !self.checked;
+			menubar.width = self.checked ? "100px" : "200px";
+		</attribute>
+	</checkbox>
+	<checkbox label="Scrollable Menubar" id="sm">
+		<attribute name="onCheck">
+			menubar.scrollable = self.checked;
+			menubar.width = self.checked || vo.checked ? "150px" : "200px";  
+		</attribute>
+	</checkbox -->
+
+</div>
+</zk>
+			

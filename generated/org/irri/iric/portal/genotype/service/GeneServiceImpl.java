@@ -82,7 +82,7 @@ public class GeneServiceImpl implements GeneService {
 			System.out.println(">1 gene with name " + name);
 			return (Gene)ret.iterator().next();
 		} else if (ret.size()==0)
-			throw new RuntimeException("findGeneByUniquename.size==0");
+			throw new RuntimeException("findGeneByUniquename.size==0 " + name);
 		else
 			return (Gene)ret.iterator().next();
 			

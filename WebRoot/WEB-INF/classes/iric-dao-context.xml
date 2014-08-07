@@ -34,12 +34,12 @@
 	
 				<!-- Using Apache DBCP Data Sources -->
 				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="ProductionDS">
-					<property name="driverClassName" value="${Production.connection.driver_class}"/>
-					<property name="username" value="${Production.connection.username}"/>
-					<property name="password" value="${Production.connection.password}"/>
-					<property name="url" value="${Production.connection.url}"/>
-					<property name="maxIdle" value="${Production.minPoolSize}"/>
-					<property name="maxActive" value="${Production.maxPoolSize}"/>
+					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+					<property name="username" value="lmansueto"/>
+					<property name="password" value="lmansueto"/>
+					<property name="url" value="jdbc:oracle:thin:@172.29.4.231:1521:orcl"/>
+					<property name="maxIdle" value="1"/>
+					<property name="maxActive" value="10"/>
 				</bean>
 		
 	
@@ -52,11 +52,11 @@
 	
 				<!-- Configure a JPA vendor adapter -->
 				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" id="ProductionJPAVendorAdapter">
-					<!-- property name="showSql" value="${Production.show_sql}" / -->
+					<!-- property name="showSql" value="false" / -->
 					<property name="showSql" value="false"/>
-					<!-- property name="generateDdl" value="${Production.generateDdl}" / -->
+					<!-- property name="generateDdl" value="false" / -->
 					<property name="generateDdl" value="false"/>
-					<property name="databasePlatform" value="${Production.dialect}"/>
+					<property name="databasePlatform" value="org.hibernate.dialect.Oracle10gDialect"/>
 				</bean>
 				<!-- EntityManager Factory that brings together the persistence unit, datasource, and JPA Vendor -->
 				<bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="Production">

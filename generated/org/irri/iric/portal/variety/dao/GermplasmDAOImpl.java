@@ -9,15 +9,20 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
 
+
+//import javax.persistence.criteria.Criteria;
+//import org.hibernate.Session;
+//import org.hibernate.criterion.Example;
 import org.irri.iric.portal.variety.domain.Germplasm;
-
 import org.skyway.spring.util.dao.AbstractJpaDao;
-
 import org.springframework.dao.DataAccessException;
-
 import org.springframework.stereotype.Repository;
-
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -323,4 +328,46 @@ public class GermplasmDAOImpl extends AbstractJpaDao<Germplasm> implements
 	public boolean canBeMerged(Germplasm entity) {
 		return true;
 	}
+
+	@Override
+	public Set<Germplasm> findAllGermplasmByExample(Germplasm germplasm)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+			
+		  CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		  CriteriaQuery q = cb.createQuery(Germplasm.class);
+		  Root<Germplasm> c = q.from(Germplasm.class);
+		  q.select(c);
+
+
+			  if(germplasm.getCountry()!=null && germplasm.getSubpopulation()!=null)	
+			  {
+				  Expression<String> country = cb.literal(germplasm.getCountry() );
+				  Expression<String> subpop = cb.parameter(String.class);
+				  q.where(  cb.and( cb.equal( cb.upper( c.<String>get("country")  ), germplasm.getCountry().toUpperCase() ),
+						  			cb.equal( cb.upper( c.<String>get("subpopulation")), cb.literal(germplasm.getSubpopulation().toUpperCase() ) ) ));
+			  }
+			  else if (germplasm.getCountry()!=null)
+			  {
+					q.where(   cb.equal( cb.upper( c.<String>get("country")),  cb.literal(germplasm.getCountry().toUpperCase() )) );
+			  }
+			  else if (germplasm.getSubpopulation()!=null)
+					q.where(   cb.equal( cb.upper( c.<String>get("subpopulation")),  cb.literal(germplasm.getSubpopulation().toUpperCase() )  )  );
+		 
+			  Query testQuery = entityManager.createQuery(q);
+			 
+			  return new java.util.LinkedHashSet<Germplasm>( testQuery.getResultList() );
+			
+		 
+		/*
+		Session session = (Session) entityManager.unwrap(Session.class);	
+	
+		Criteria criteria = session.createCriteria(Germplasm.class).add( Example.create(germplasm));
+		
+		return new java.util.LinkedHashSet<Germplasm>(criteria.list());
+		*/
+	}
+	
+	
+	
 }

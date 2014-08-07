@@ -1,6 +1,7 @@
 package org.irri.iric.portal.genotype.zkui;
 
 
+import org.irri.iric.portal.genotype.service.GenotypeFacade;
 import org.irri.iric.portal.genotype.views.Snp2linesId;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Label;
@@ -13,7 +14,8 @@ import org.zkoss.zul.Listcell;
 
 public class SNPListItemRenderer implements ListitemRenderer {
 
-	private short querymode = 0;
+	//private short querymode = 0;
+	GenotypeFacade.snpQueryMode querymode;
 	private String var1;
 	private String var2;
 	private String varref;
@@ -38,7 +40,7 @@ public class SNPListItemRenderer implements ListitemRenderer {
 	        addListcell(listitem, item.getPos().toString());
 
 	        
-	        if(querymode==0) {
+	        if(querymode == GenotypeFacade.snpQueryMode.SNPQUERY_VARIETIES) {
 	        	// two varieties are alleles with each other
 	        	// all are interesting
 	        	String  nuc1 = item.getVar1nuc();
@@ -50,7 +52,7 @@ public class SNPListItemRenderer implements ListitemRenderer {
         		addListcell(listitem, nuc2) ;
 
 	        	
-	        } else if(querymode==1) {
+	        } else if(querymode== GenotypeFacade.snpQueryMode.SNPQUERY_REFERENCE) {
 	        	// variety is allele with reference
 	        	// interesting is allele with reference
 	        	String  nuc1 = item.getVar1nuc();
@@ -69,7 +71,7 @@ public class SNPListItemRenderer implements ListitemRenderer {
 	        		addListcell(listitem, nuc2, STYLE_INTERESTING) ;
 	        	
 	        	
-		    } else if(querymode==2) {
+		    } else if(querymode==GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS) {
 		    	// all allele positions,
 		    	// interesting is alleles
 		    	String  nuc1 = item.getVar1nuc();
@@ -117,7 +119,7 @@ public class SNPListItemRenderer implements ListitemRenderer {
 			this.varref = varref;
 		}
 
-		public void setQuerymode(short querymode) {
+		public void setQuerymode(GenotypeFacade.snpQueryMode querymode) {
 			this.querymode = querymode;
 		}
 

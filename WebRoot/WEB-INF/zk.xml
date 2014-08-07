@@ -42,4 +42,44 @@
 		<name>org.zkoss.zul.Window.defaultActionOnShow</name>
 		<value></value>
 	</preference>
+	
+	<preference>
+		<name>org.zkoss.zul.listbox.rod</name>
+		<value>true</value>
+	</preference>
+
+	<preference>
+		<name>org.zkoss.zul.grid.rod</name>
+		<value>true</value>
+	</preference>
+ 	 
+ 	 <library-property>
+    <name>org.zkoss.theme.preferred</name>
+    <value>flatly_green</value> 
+	</library-property>
+	
+	
+	<!-- library-property>
+	<name>org.zkoss.zul.Button.mold</name>
+	<value>bs</value>
+</library-property>
+<library-property>
+	<name>org.zkoss.zul.Menupopup.mold</name>
+	<value>bs</value>
+</library-property>
+<library-property>
+	<name>org.zkoss.zkmax.zul.Navbar.mold</name>
+	<value>bs</value>
+</library-property>
+<library-property>
+	<name>org.zkoss.zul.Paging.mold</name>
+	<value>bs</value>
+</library-property>
+<library-property>
+	<name>org.zkoss.zul.Panel.mold</name>
+	<value>bs</value>
+</library-property -->
+
+
+
 </zk>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_qb8akM37EdqwVrslYOdUDA" name="proposed">
+  <packagedElement xmi:type="uml:Package" xmi:id="_tTTUoAWSEeSmC8zZYKqkCg" name="genotype" clientDependency="_Y7ebtAWZEeSmC8zZYKqkCg">
+    <packagedElement xmi:type="uml:Class" xmi:id="_xpcOcAWSEeSmC8zZYKqkCg" name="GenotypeFacadeImpl" clientDependency="_OJMMkAWTEeSmC8zZYKqkCg">
+      <interfaceRealization xmi:id="_OJMMkAWTEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_2zbAAAWSEeSmC8zZYKqkCg" client="_xpcOcAWSEeSmC8zZYKqkCg" contract="_2zbAAAWSEeSmC8zZYKqkCg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_2zbAAAWSEeSmC8zZYKqkCg" name="GenotypeFacade"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_GgTvoAWTEeSmC8zZYKqkCg" name=""/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_SGqAWgWWEeSmC8zZYKqkCg" name="A_&lt;genotypeFacadeImpl>_&lt;geneService>" memberEnd="_SGqAWwWWEeSmC8zZYKqkCg _SGqAXgWWEeSmC8zZYKqkCg" navigableOwnedEnd="_SGqAXgWWEeSmC8zZYKqkCg">
+      <ownedEnd xmi:id="_SGqAWwWWEeSmC8zZYKqkCg" name="genotypeFacadeImpl" type="_xpcOcAWSEeSmC8zZYKqkCg" association="_SGqAWgWWEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_SGqAXAWWEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_SGqAXQWWEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_SGqAXgWWEeSmC8zZYKqkCg" name="geneService" type="_zZERoAWVEeSmC8zZYKqkCg" association="_SGqAWgWWEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_SGqAXwWWEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_SGqAYAWWEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_Tt9VWgWWEeSmC8zZYKqkCg" name="A_&lt;genotypeFacadeImpl>_&lt;sNP2LinesService>" memberEnd="_Tt9VWwWWEeSmC8zZYKqkCg _Tt9VXgWWEeSmC8zZYKqkCg" navigableOwnedEnd="_Tt9VXgWWEeSmC8zZYKqkCg">
+      <ownedEnd xmi:id="_Tt9VWwWWEeSmC8zZYKqkCg" name="genotypeFacadeImpl" type="_xpcOcAWSEeSmC8zZYKqkCg" association="_Tt9VWgWWEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Tt9VXAWWEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Tt9VXQWWEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_Tt9VXgWWEeSmC8zZYKqkCg" name="sNP2LinesService" type="_kP4E8AWVEeSmC8zZYKqkCg" association="_Tt9VWgWWEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Tt9VXwWWEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Tt9VYAWWEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_XRnpWgWWEeSmC8zZYKqkCg" name="A_&lt;genotypeFacadeImpl>_&lt;germplasmService>" memberEnd="_XRnpWwWWEeSmC8zZYKqkCg _XRnpXgWWEeSmC8zZYKqkCg" navigableOwnedEnd="_XRnpXgWWEeSmC8zZYKqkCg">
+      <ownedEnd xmi:id="_XRnpWwWWEeSmC8zZYKqkCg" name="genotypeFacadeImpl" type="_xpcOcAWSEeSmC8zZYKqkCg" association="_XRnpWgWWEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_XRnpXAWWEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XRnpXQWWEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_XRnpXgWWEeSmC8zZYKqkCg" name="germplasmService" type="_nMMFEAWVEeSmC8zZYKqkCg" association="_XRnpWgWWEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_XRnpXwWWEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XRnpYAWWEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_nQgH4AWWEeSmC8zZYKqkCg" name="zkui">
+      <packagedElement xmi:type="uml:Class" xmi:id="_p_004AWWEeSmC8zZYKqkCg" name="SNPQueryController"/>
+      <packagedElement xmi:type="uml:Association" xmi:id="_su3OAAWWEeSmC8zZYKqkCg" name="A_&lt;sNPQueryController>_&lt;genotypeFacade>" memberEnd="_su3OAQWWEeSmC8zZYKqkCg _su3OBAWWEeSmC8zZYKqkCg" navigableOwnedEnd="_su3OBAWWEeSmC8zZYKqkCg">
+        <ownedEnd xmi:id="_su3OAQWWEeSmC8zZYKqkCg" name="sNPQueryController" type="_p_004AWWEeSmC8zZYKqkCg" association="_su3OAAWWEeSmC8zZYKqkCg">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_su3OAgWWEeSmC8zZYKqkCg" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_su3OAwWWEeSmC8zZYKqkCg" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_su3OBAWWEeSmC8zZYKqkCg" name="genotypeFacade" type="_2zbAAAWSEeSmC8zZYKqkCg" association="_su3OAAWWEeSmC8zZYKqkCg">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_su3OBQWWEeSmC8zZYKqkCg" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_su3OBgWWEeSmC8zZYKqkCg" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_Hdo9ygWXEeSmC8zZYKqkCg" name="A_&lt;genotypeFacadeImpl>_&lt;germplasmService>" memberEnd="_Hdo9ywWXEeSmC8zZYKqkCg _Hdo9zgWXEeSmC8zZYKqkCg" navigableOwnedEnd="_Hdo9zgWXEeSmC8zZYKqkCg">
+      <ownedEnd xmi:id="_Hdo9ywWXEeSmC8zZYKqkCg" name="genotypeFacadeImpl" type="_xpcOcAWSEeSmC8zZYKqkCg" association="_Hdo9ygWXEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Hdo9zAWXEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Hdo9zQWXEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_Hdo9zgWXEeSmC8zZYKqkCg" name="germplasmService" type="_nMMFEAWVEeSmC8zZYKqkCg" association="_Hdo9ygWXEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Hdo9zwWXEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Hdo90AWXEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_I4FfUAWTEeSmC8zZYKqkCg" name="service" clientDependency="_cBETpAWZEeSmC8zZYKqkCg">
+    <packagedElement xmi:type="uml:Interface" xmi:id="_kP4E8AWVEeSmC8zZYKqkCg" name="SNP2LinesService"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_nMMFEAWVEeSmC8zZYKqkCg" name="GermplasmService"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_r4GakAWVEeSmC8zZYKqkCg" name="PhenotypeService"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_zZERoAWVEeSmC8zZYKqkCg" name="GeneService"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Bkc80AWXEeSmC8zZYKqkCg" name="GeneServiceImpl" clientDependency="_Tu5UAAWXEeSmC8zZYKqkCg">
+      <interfaceRealization xmi:id="_Tu5UAAWXEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_zZERoAWVEeSmC8zZYKqkCg" client="_Bkc80AWXEeSmC8zZYKqkCg" contract="_zZERoAWVEeSmC8zZYKqkCg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Jpd8IAWXEeSmC8zZYKqkCg" name="Snp2linesServiceImpl" clientDependency="_VhaagAWXEeSmC8zZYKqkCg">
+      <interfaceRealization xmi:id="_VhaagAWXEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_kP4E8AWVEeSmC8zZYKqkCg" client="_Jpd8IAWXEeSmC8zZYKqkCg" contract="_kP4E8AWVEeSmC8zZYKqkCg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_KmjPcAWXEeSmC8zZYKqkCg" name="GermplasmServiceImpl" clientDependency="_WnrfAAWXEeSmC8zZYKqkCg">
+      <interfaceRealization xmi:id="_WnrfAAWXEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_nMMFEAWVEeSmC8zZYKqkCg" client="_KmjPcAWXEeSmC8zZYKqkCg" contract="_nMMFEAWVEeSmC8zZYKqkCg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_LJztgAWXEeSmC8zZYKqkCg" name="PhenotypeServiceImpl" clientDependency="_XN6YkAWXEeSmC8zZYKqkCg">
+      <interfaceRealization xmi:id="_XN6YkAWXEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_r4GakAWVEeSmC8zZYKqkCg" client="_LJztgAWXEeSmC8zZYKqkCg" contract="_r4GakAWVEeSmC8zZYKqkCg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_ZbnJwgWYEeSmC8zZYKqkCg" name="A_&lt;geneServiceImpl>_&lt;geneDAO>" memberEnd="_ZbnJwwWYEeSmC8zZYKqkCg _ZbnJxgWYEeSmC8zZYKqkCg" navigableOwnedEnd="_ZbnJxgWYEeSmC8zZYKqkCg">
+      <ownedEnd xmi:id="_ZbnJwwWYEeSmC8zZYKqkCg" name="geneServiceImpl" type="_Bkc80AWXEeSmC8zZYKqkCg" association="_ZbnJwgWYEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ZbnJxAWYEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ZbnJxQWYEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_ZbnJxgWYEeSmC8zZYKqkCg" name="geneDAO" type="_hI73QAWXEeSmC8zZYKqkCg" association="_ZbnJwgWYEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ZbnJxwWYEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ZbnJyAWYEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_bYoQGgWYEeSmC8zZYKqkCg" name="A_&lt;snp2linesServiceImpl>_&lt;sNP2linesDAO>" memberEnd="_bYoQGwWYEeSmC8zZYKqkCg _bYoQHgWYEeSmC8zZYKqkCg" navigableOwnedEnd="_bYoQHgWYEeSmC8zZYKqkCg">
+      <ownedEnd xmi:id="_bYoQGwWYEeSmC8zZYKqkCg" name="snp2linesServiceImpl" type="_Jpd8IAWXEeSmC8zZYKqkCg" association="_bYoQGgWYEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bYoQHAWYEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bYoQHQWYEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_bYoQHgWYEeSmC8zZYKqkCg" name="sNP2linesDAO" type="_juCRQAWXEeSmC8zZYKqkCg" association="_bYoQGgWYEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bYoQHwWYEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bYoQIAWYEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_ceIfkAWYEeSmC8zZYKqkCg" name="A_&lt;germplasmServiceImpl>_&lt;germplasmDAO>" memberEnd="_ceIfkQWYEeSmC8zZYKqkCg _ceIflAWYEeSmC8zZYKqkCg" navigableOwnedEnd="_ceIflAWYEeSmC8zZYKqkCg">
+      <ownedEnd xmi:id="_ceIfkQWYEeSmC8zZYKqkCg" name="germplasmServiceImpl" type="_KmjPcAWXEeSmC8zZYKqkCg" association="_ceIfkAWYEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ceIfkgWYEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ceIfkwWYEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_ceIflAWYEeSmC8zZYKqkCg" name="germplasmDAO" type="_lQAaUAWXEeSmC8zZYKqkCg" association="_ceIfkAWYEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ceIflQWYEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ceIflgWYEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_dq9fGgWYEeSmC8zZYKqkCg" name="A_&lt;phenotypeServiceImpl>_&lt;phenotypeDAO>" memberEnd="_dq9fGwWYEeSmC8zZYKqkCg _dq9fHgWYEeSmC8zZYKqkCg" navigableOwnedEnd="_dq9fHgWYEeSmC8zZYKqkCg">
+      <ownedEnd xmi:id="_dq9fGwWYEeSmC8zZYKqkCg" name="phenotypeServiceImpl" type="_LJztgAWXEeSmC8zZYKqkCg" association="_dq9fGgWYEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_dq9fHAWYEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_dq9fHQWYEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_dq9fHgWYEeSmC8zZYKqkCg" name="phenotypeDAO" type="_mk7l4AWXEeSmC8zZYKqkCg" association="_dq9fGgWYEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_dq9fHwWYEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_dq9fIAWYEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_TsL7EAWTEeSmC8zZYKqkCg" name="dao" clientDependency="_WR4jRAWZEeSmC8zZYKqkCg">
+    <packagedElement xmi:type="uml:Class" xmi:id="_dE2WwAWXEeSmC8zZYKqkCg" name="GeneDAOImpl" clientDependency="_xY7T8AWXEeSmC8zZYKqkCg">
+      <interfaceRealization xmi:id="_xY7T8AWXEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_hI73QAWXEeSmC8zZYKqkCg" client="_dE2WwAWXEeSmC8zZYKqkCg" contract="_hI73QAWXEeSmC8zZYKqkCg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_hI73QAWXEeSmC8zZYKqkCg" name="GeneDAO"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_juCRQAWXEeSmC8zZYKqkCg" name="SNP2linesDAO"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_lQAaUAWXEeSmC8zZYKqkCg" name="GermplasmDAO"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_mk7l4AWXEeSmC8zZYKqkCg" name="PhenotypeDAO"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_pmfSYAWXEeSmC8zZYKqkCg" name="SNP2linesDAOImpl" clientDependency="_yZ5owAWXEeSmC8zZYKqkCg">
+      <interfaceRealization xmi:id="_yZ5owAWXEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_juCRQAWXEeSmC8zZYKqkCg" client="_pmfSYAWXEeSmC8zZYKqkCg" contract="_juCRQAWXEeSmC8zZYKqkCg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_rtjFgAWXEeSmC8zZYKqkCg" name="GermplasmDAOImpl" clientDependency="_zDexQAWXEeSmC8zZYKqkCg">
+      <interfaceRealization xmi:id="_zDexQAWXEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_lQAaUAWXEeSmC8zZYKqkCg" client="_rtjFgAWXEeSmC8zZYKqkCg" contract="_lQAaUAWXEeSmC8zZYKqkCg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_tgLgwAWXEeSmC8zZYKqkCg" name="PhenotypeDAOImpl" clientDependency="_zhxPwAWXEeSmC8zZYKqkCg">
+      <interfaceRealization xmi:id="_zhxPwAWXEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_mk7l4AWXEeSmC8zZYKqkCg" client="_tgLgwAWXEeSmC8zZYKqkCg" contract="_mk7l4AWXEeSmC8zZYKqkCg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_6t_l4AWXEeSmC8zZYKqkCg" name="chado" clientDependency="_URQvVAWZEeSmC8zZYKqkCg">
+      <packagedElement xmi:type="uml:Class" xmi:id="_AE8ccAWYEeSmC8zZYKqkCg" name="GeneDAOImpl" clientDependency="_P_RLIAWYEeSmC8zZYKqkCg">
+        <interfaceRealization xmi:id="_P_RLIAWYEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_hI73QAWXEeSmC8zZYKqkCg" client="_AE8ccAWYEeSmC8zZYKqkCg" contract="_hI73QAWXEeSmC8zZYKqkCg"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_DXhAcAWYEeSmC8zZYKqkCg" name="GermplasmDAOImpl" clientDependency="_SPIU8AWYEeSmC8zZYKqkCg">
+        <interfaceRealization xmi:id="_SPIU8AWYEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_lQAaUAWXEeSmC8zZYKqkCg" client="_DXhAcAWYEeSmC8zZYKqkCg" contract="_lQAaUAWXEeSmC8zZYKqkCg"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_Ka7_4AWYEeSmC8zZYKqkCg" name="PhenotypeDAOImpl" clientDependency="_VaxKgAWYEeSmC8zZYKqkCg">
+        <interfaceRealization xmi:id="_VaxKgAWYEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_mk7l4AWXEeSmC8zZYKqkCg" client="_Ka7_4AWYEeSmC8zZYKqkCg" contract="_mk7l4AWXEeSmC8zZYKqkCg"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_MO3boAWYEeSmC8zZYKqkCg" name="SNP2linesDAOImpl" clientDependency="_Rdrp4AWYEeSmC8zZYKqkCg">
+        <interfaceRealization xmi:id="_Rdrp4AWYEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_juCRQAWXEeSmC8zZYKqkCg" client="_MO3boAWYEeSmC8zZYKqkCg" contract="_juCRQAWXEeSmC8zZYKqkCg"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_8SfegAWXEeSmC8zZYKqkCg" name="chado"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_utmdgAWUEeSmC8zZYKqkCg" name="variety" clientDependency="_Z2i81AWZEeSmC8zZYKqkCg">
+    <packagedElement xmi:type="uml:Class" xmi:id="_H6u0UAWVEeSmC8zZYKqkCg" name="VarietyFacadeImpl" clientDependency="_NW9McAWVEeSmC8zZYKqkCg">
+      <interfaceRealization xmi:id="_NW9McAWVEeSmC8zZYKqkCg" name="InterfaceRealization1" supplier="_Knf8kAWVEeSmC8zZYKqkCg" client="_H6u0UAWVEeSmC8zZYKqkCg" contract="_Knf8kAWVEeSmC8zZYKqkCg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_Knf8kAWVEeSmC8zZYKqkCg" name="VarietyFacade"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_Y-RYagWWEeSmC8zZYKqkCg" name="A_&lt;varietyFacadeImpl>_&lt;germplasmService>" memberEnd="_Y-RYawWWEeSmC8zZYKqkCg _Y-RYbgWWEeSmC8zZYKqkCg" navigableOwnedEnd="_Y-RYbgWWEeSmC8zZYKqkCg">
+      <ownedEnd xmi:id="_Y-RYawWWEeSmC8zZYKqkCg" name="varietyFacadeImpl" type="_H6u0UAWVEeSmC8zZYKqkCg" association="_Y-RYagWWEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Y-RYbAWWEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Y-RYbQWWEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_Y-RYbgWWEeSmC8zZYKqkCg" name="germplasmService" type="_nMMFEAWVEeSmC8zZYKqkCg" association="_Y-RYagWWEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Y-RYbwWWEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Y-RYcAWWEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_aKTGqgWWEeSmC8zZYKqkCg" name="A_&lt;varietyFacadeImpl>_&lt;phenotypeService>" memberEnd="_aKTGqwWWEeSmC8zZYKqkCg _aKTGrgWWEeSmC8zZYKqkCg" navigableOwnedEnd="_aKTGrgWWEeSmC8zZYKqkCg">
+      <ownedEnd xmi:id="_aKTGqwWWEeSmC8zZYKqkCg" name="varietyFacadeImpl" type="_H6u0UAWVEeSmC8zZYKqkCg" association="_aKTGqgWWEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aKTGrAWWEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aKTGrQWWEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_aKTGrgWWEeSmC8zZYKqkCg" name="phenotypeService" type="_r4GakAWVEeSmC8zZYKqkCg" association="_aKTGqgWWEeSmC8zZYKqkCg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aKTGrwWWEeSmC8zZYKqkCg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aKTGsAWWEeSmC8zZYKqkCg" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_0LjpEAWWEeSmC8zZYKqkCg" name="zkui">
+      <packagedElement xmi:type="uml:Class" xmi:id="_1zQmsAWWEeSmC8zZYKqkCg" name="VarietyQueryController"/>
+      <packagedElement xmi:type="uml:Association" xmi:id="_4-tPAAWWEeSmC8zZYKqkCg" name="A_&lt;varietyQueryController>_&lt;varietyFacade>" memberEnd="_4-tPAQWWEeSmC8zZYKqkCg _4-tPBAWWEeSmC8zZYKqkCg" navigableOwnedEnd="_4-tPBAWWEeSmC8zZYKqkCg">
+        <ownedEnd xmi:id="_4-tPAQWWEeSmC8zZYKqkCg" name="varietyQueryController" type="_1zQmsAWWEeSmC8zZYKqkCg" association="_4-tPAAWWEeSmC8zZYKqkCg">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4-tPAgWWEeSmC8zZYKqkCg" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4-tPAwWWEeSmC8zZYKqkCg" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_4-tPBAWWEeSmC8zZYKqkCg" name="varietyFacade" type="_Knf8kAWVEeSmC8zZYKqkCg" association="_4-tPAAWWEeSmC8zZYKqkCg">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4-tPBQWWEeSmC8zZYKqkCg" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4-tPBgWWEeSmC8zZYKqkCg" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_j-FC8AWYEeSmC8zZYKqkCg" name="domain">
+    <packagedElement xmi:type="uml:Class" xmi:id="_lbZ8kAWYEeSmC8zZYKqkCg" name="Gene"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_mpfgUAWYEeSmC8zZYKqkCg" name="Snp2lines"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_oY4aUAWYEeSmC8zZYKqkCg" name="Germplasm"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_resUsAWYEeSmC8zZYKqkCg" name="Phenotype"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_vKIEoAWYEeSmC8zZYKqkCg" name="chado">
+      <packagedElement xmi:type="uml:Class" xmi:id="_wk5ZgAWYEeSmC8zZYKqkCg" name="Gene" clientDependency="_DrrdJAWZEeSmC8zZYKqkCg">
+        <generalization xmi:id="_16YQcAWYEeSmC8zZYKqkCg" general="_lbZ8kAWYEeSmC8zZYKqkCg"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_yPUT8AWYEeSmC8zZYKqkCg" name="Phenotype">
+        <generalization xmi:id="_4Dl_sAWYEeSmC8zZYKqkCg" general="_resUsAWYEeSmC8zZYKqkCg"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_zo1EkAWYEeSmC8zZYKqkCg" name="Germplasm">
+        <generalization xmi:id="_3Uv8sAWYEeSmC8zZYKqkCg" general="_oY4aUAWYEeSmC8zZYKqkCg"/>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_DrrdJAWZEeSmC8zZYKqkCg" name="Usage1" supplier="_AE8ccAWYEeSmC8zZYKqkCg" client="_wk5ZgAWYEeSmC8zZYKqkCg"/>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_URQvVAWZEeSmC8zZYKqkCg" name="Usage2" supplier="_vKIEoAWYEeSmC8zZYKqkCg" client="_6t_l4AWXEeSmC8zZYKqkCg"/>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_WR4jRAWZEeSmC8zZYKqkCg" name="Usage3" supplier="_j-FC8AWYEeSmC8zZYKqkCg" client="_TsL7EAWTEeSmC8zZYKqkCg"/>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_Y7ebtAWZEeSmC8zZYKqkCg" name="Usage4" supplier="_j-FC8AWYEeSmC8zZYKqkCg" client="_tTTUoAWSEeSmC8zZYKqkCg"/>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_Z2i81AWZEeSmC8zZYKqkCg" name="Usage5" supplier="_j-FC8AWYEeSmC8zZYKqkCg" client="_utmdgAWUEeSmC8zZYKqkCg"/>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_cBETpAWZEeSmC8zZYKqkCg" name="Usage6" supplier="_j-FC8AWYEeSmC8zZYKqkCg" client="_I4FfUAWTEeSmC8zZYKqkCg"/>
+</uml:Model>

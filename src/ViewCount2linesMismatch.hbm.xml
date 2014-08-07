@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 31, 2014 6:00:12 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.irri.iric.portal.genotype.views.ViewCount2linesMismatch" table="VIEW_COUNT_2LINES_MISMATCH">
+        <composite-id name="id" class="org.irri.iric.portal.genotype.views.ViewCount2linesMismatchId">
+            <key-property name="var1" type="string">
+                <column name="VAR1" length="128" />
+            </key-property>
+            <key-property name="var2" type="string">
+                <column name="VAR2" length="128" />
+            </key-property>
+            <key-property name="mismatch" type="big_decimal">
+                <column name="MISMATCH" precision="22" scale="0" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

@@ -8,8 +8,13 @@
       			<class>org.irri.iric.portal.genotype.domain.Gene</class>
       			<class>org.irri.iric.portal.genotype.domain.Variety3k</class>
       			
-      			<class>org.irri.iric.portal.genotype.views.Snp2lines</class>
+      			<!--  class>org.irri.iric.portal.genotype.views.Snp2lines</class -->
       			<class>org.irri.iric.portal.genotype.views.Snp2linesId</class>
+      			<class>org.irri.iric.portal.genotype.views.ViewSnpAllvarsId</class>
+      			<class>org.irri.iric.portal.genotype.views.ViewSnpAllvarsPosId</class>
+     			<class>org.irri.iric.portal.genotype.views.ViewCountVarrefMismatchId</class>
+     			<class>org.irri.iric.portal.genotype.views.ViewCount2linesMismatchId</class>
+
       			
    			<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		</persistence-unit>
@@ -17,17 +22,21 @@
 		<persistence-unit name="Development"  >
 			<description>generated-persistence-unit</description>
 					<provider>org.hibernate.ejb.HibernatePersistence</provider>
+					<class>org.irri.iric.portal.variety.views.ViewDist3kId</class>	
+	      			<class>org.irri.iric.portal.variety.domain.Germplasm</class>
+	      			<class>org.irri.iric.portal.variety.domain.Phenotypes</class>
+	      			     			<class>org.irri.iric.portal.variety.domain.Genotyping</class>
+	      			     			
+	      			      					
       			<class>org.irri.iric.portal.variety.domain.Var700</class>
-      			<class>org.irri.iric.portal.variety.domain.Phenotypes</class>
       			<class>org.irri.iric.portal.variety.domain.Snps</class>
       			<class>org.irri.iric.portal.variety.domain.Names700</class>
       			<class>org.irri.iric.portal.variety.domain.Snp700</class>
       			<class>org.irri.iric.portal.variety.domain.Genotyp700</class>
       			<class>org.irri.iric.portal.variety.domain.List3k</class>
-      			<class>org.irri.iric.portal.variety.domain.Genotyping</class>
-      			<class>org.irri.iric.portal.variety.domain.Germplasm</class>
+ 
       			<class>org.irri.iric.portal.variety.domain.PhenGc</class>
-      			<class>org.irri.iric.portal.variety.domain.Dist3k</class>
+      			
    			<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		</persistence-unit>
 

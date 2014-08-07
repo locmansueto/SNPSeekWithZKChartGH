@@ -1,9 +1,7 @@
 package org.irri.iric.portal.variety.domain;
 
 import java.io.Serializable;
-
 import java.lang.StringBuilder;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -14,7 +12,6 @@ import javax.persistence.NamedQuery;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.xml.bind.annotation.*;
-
 import javax.persistence.*;
 
 /**
@@ -23,7 +20,7 @@ import javax.persistence.*;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "findAllGermplasms", query = "select myGermplasm from Germplasm myGermplasm"),
-		@NamedQuery(name = "findGermplasmByAccession", query = "select myGermplasm from Germplasm myGermplasm where myGermplasm.accession = ?1"),
+		@NamedQuery(name = "findGermplasmByAccession", query = "select myGermplasm from Germplasm myGermplasm where upper(myGermplasm.accession) = upper(?1)"),
 		@NamedQuery(name = "findGermplasmByAccessionContaining", query = "select myGermplasm from Germplasm myGermplasm where myGermplasm.accession like ?1"),
 		@NamedQuery(name = "findGermplasmByCountry", query = "select myGermplasm from Germplasm myGermplasm where myGermplasm.country = ?1"),
 		@NamedQuery(name = "findGermplasmByCountryContaining", query = "select myGermplasm from Germplasm myGermplasm where myGermplasm.country like ?1"),
@@ -37,7 +34,7 @@ import javax.persistence.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "dev_crud_maker/org/irri/iric/portal/variety/domain", name = "Germplasm")
 @XmlRootElement(namespace = "dev_crud_maker/org/irri/iric/portal/variety/domain")
-public class Germplasm implements Serializable {
+public class Germplasm implements Serializable, Comparable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -91,7 +88,7 @@ public class Germplasm implements Serializable {
 	java.util.Set<org.irri.iric.portal.variety.domain.Genotyping> genotypings;
 	/**
 	 */
-	@OneToMany(mappedBy = "germplasm", cascade = { CascadeType.REMOVE }, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "germplasm", cascade = { CascadeType.REMOVE }, fetch = FetchType.EAGER)
 	@XmlElement(name = "", namespace = "")
 	java.util.Set<org.irri.iric.portal.variety.domain.Phenotypes> phenotypeses;
 
@@ -191,6 +188,7 @@ public class Germplasm implements Serializable {
 
 	/**
 	 */
+	@OneToMany(fetch=FetchType.EAGER)
 	@JsonIgnore
 	public Set<Phenotypes> getPhenotypeses() {
 		if (phenotypeses == null) {
@@ -261,4 +259,15 @@ public class Germplasm implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		
+		return  this.getAccession().compareToIgnoreCase( ((Germplasm)o).getAccession()) ;
+		
+	}
+	
+	
+	
 }

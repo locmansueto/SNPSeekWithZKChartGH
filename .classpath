@@ -19,12 +19,6 @@
 			<attribute name="owner.project.facets" value="jst.web.jstl"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="con" path="com.genuitec.runtime.library/com.genuitec.hibernate_4.1">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="WEB-INF/lib"/>
-			<attribute name="owner.project.facets" value="me.hibernate"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry exported="true" kind="con" path="com.genuitec.runtime.library/com.genuitec.spring_3.1">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="WEB-INF/lib"/>
@@ -100,11 +94,6 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="con" path="com.genuitec.runtime.library/com.genuitec.me4s/hibernate.core_3.5.5">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry exported="true" kind="con" path="com.genuitec.runtime.library/com.genuitec.me4s/derby_10.1.1.0">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="WEB-INF/lib"/>
@@ -115,5 +104,17 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="E:/jars/biojava3/biojava3-core-3.0.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="E:/jars/biojava3/biojava3-phylo-3.0.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/myforester.jar"/>
+	<classpathentry exported="true" kind="con" path="com.genuitec.runtime.library/com.genuitec.me4s/hibernate.core_3.5.5">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="E:/jars/zk/gmapsz.jar"/>
+	<classpathentry exported="true" kind="lib" path="E:/jars/zk/flatly_green.jar"/>
+	<classpathentry exported="true" kind="lib" path="E:/jars/zk/atlantic.jar"/>
+	<classpathentry exported="true" kind="lib" path="E:/jars/zk/zul-7.0.2.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

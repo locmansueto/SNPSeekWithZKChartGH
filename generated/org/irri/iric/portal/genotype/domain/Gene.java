@@ -28,7 +28,7 @@ import javax.persistence.*;
 		@NamedQuery(name = "findGeneByGeneField", query = "select myGene from Gene myGene where myGene.geneField = ?1"),
 		@NamedQuery(name = "findGeneByGeneFieldContaining", query = "select myGene from Gene myGene where myGene.geneField like ?1"),
 		@NamedQuery(name = "findGeneByPrimaryKey", query = "select myGene from Gene myGene where myGene.featureId = ?1"),
-		@NamedQuery(name = "findGeneByUniquename", query = "select myGene from Gene myGene where myGene.uniquename = ?1"),
+		@NamedQuery(name = "findGeneByUniquename", query = "select myGene from Gene myGene where upper(myGene.uniquename) = upper(?1)"),
 		@NamedQuery(name = "findGeneByUniquenameContaining", query = "select myGene from Gene myGene where myGene.uniquename like ?1") })
 @Table(schema = "LMANSUETO", name = "GENE")
 @XmlAccessorType(XmlAccessType.FIELD)

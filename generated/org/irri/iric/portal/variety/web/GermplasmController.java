@@ -77,6 +77,21 @@ public class GermplasmController {
 		return mav;
 	}
 
+	
+	/**
+	 * Show phylogenetic tree
+	 * 
+	 */
+	@RequestMapping("/phylotreeGermplasm")
+	public ModelAndView showPhylotreeGermplasm(@RequestParam Integer nsftvIdKey) {
+		ModelAndView mav = new ModelAndView();
+
+		mav.addObject("germplasm", germplasmDAO.findGermplasmByPrimaryKey(nsftvIdKey));
+		mav.setViewName("germplasm/phylotreeGermplasms.jsp");
+
+		return mav;
+	}
+	
 	/**
 	 * Show all Genotyping entities by Germplasm
 	 * 

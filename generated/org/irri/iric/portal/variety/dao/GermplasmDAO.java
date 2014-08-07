@@ -145,5 +145,7 @@ public interface GermplasmDAO extends JpaDao<Germplasm> {
 	 *
 	 */
 	public Set<Germplasm> findAllGermplasms(int startResult, int maxRows) throws DataAccessException;
+	
+	public Set<Germplasm> findAllGermplasmByExample(Germplasm germplasm) throws DataAccessException;
 
 }

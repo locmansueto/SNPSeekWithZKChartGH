@@ -1,9 +1,7 @@
 package org.irri.iric.portal.variety.domain;
 
 import java.io.Serializable;
-
 import java.lang.StringBuilder;
-
 import java.util.Set;
 
 import javax.persistence.Id;
@@ -13,7 +11,6 @@ import javax.persistence.NamedQuery;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.xml.bind.annotation.*;
-
 import javax.persistence.*;
 
 /**
@@ -30,7 +27,7 @@ import javax.persistence.*;
 @Table(schema = "NICKA", name = "PHENOTYPES")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "dev_crud_maker/org/irri/iric/portal/variety/domain", name = "Phenotypes")
-public class Phenotypes implements Serializable {
+public class Phenotypes implements Serializable , Comparable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -173,4 +170,13 @@ public class Phenotypes implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return this.trait.compareToIgnoreCase(  ((Phenotypes)o).trait  );
+		//return 0;
+	}
+	
+	
 }

@@ -1,31 +1,21 @@
-<?page id="main" title="ZK Spring Essentials"?>
-<?variable-resolver class="org.zkoss.spring.DelegatingVariableResolver" ?>
+<?link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" ?>
+<?link rel="icon" href="/favicon.ico" type="image/x-icon" ?>
+
+<?script type="text/javascript"><![CDATA[
+window.Boot_progressbox = function (){}
+]]>?>
+
+<?component name="newProduct" macroURI="includedMacro.zul"?>
 <zk>
-	<window id="win" title="Home Page" border="normal" width="500px">
-		<attribute name="onLoginOK">
-			principal.setValue(execution.getUserPrincipal().getName());
-		</attribute>
-		<grid>
-			<columns>
-				<column width="400px"/>
-				<column align="center"/>
-			</columns>
-			<rows>
-				<row>
-					Any one can list accounts. (Ajax login popup)<button label="Go!" href="listAccounts1.html"/>
-				</row>
-				<row>
-					Your principal object is ...:<label id="principal" value="${execution.userPrincipal.name}"/>
-				</row>
-				<row>
-					Secure page<button label="Go!" href="secure/index.jsp"/>
-				</row>
-				<row>
-					Extremely secure page<button label="Go!" href="secure/extreme/index.jsp"/>
-				</row>
-			</rows>
-		</grid>
-	</window>
-	<button label="Logout" href="/j_spring_security_logout"/>
-	*Any one can view this page
+	<hbox>
+	<newProduct title="GENOTYPE" img="/images/iric/variety_grains.png" desc="Genotypes"
+		details="Query for SNPs from the 3000 genome project" href="_snp.zul"/>
+	<newProduct title="VARIETY" img="/images/iric/variety_plants.png" desc="Varieties"
+		details="Query for Variety passport and phenotypes" href="_variety.zul"/>
+	<newProduct title="JBROWSE" img="/images/Centigrade-Widget-Icons/Globe-128x128.png" desc="JBrowse"
+		details="Rice Genome Browser" href="_jbrowse.zul"/>
+	<newProduct title="HELP" img="/images/Centigrade-Widget-Icons/ReadingGlass-128x128.png" desc="Help"
+		details="Help and Site Manual" href="_variety.zul"/>
+	</hbox>
+	
 </zk>
