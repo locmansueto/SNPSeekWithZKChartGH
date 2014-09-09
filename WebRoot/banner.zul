@@ -1,33 +1,42 @@
 <?page title="banner" contentType="text/html;charset=UTF-8"?>
 <zk >
-<div style="background-color:green">
-<hbox>
-<image src="/images/iric/iric_logo.png" />
-<vbox>
-<label value="International Rice Informatics Consortium" width="100%" 
-	style="color:white;background-color:green;font-weight:bold;font-family:arial;font-size:30px" />
+<div style="background-color:white">
+
+<hbox align="center" pack="center" height="100%" width="100%">
+
+<!--  image src="/images/iric/iric_logo.png" href="http://iric.irri.org" / -->
+
+<a target="_blank" href="http://iric.irri.org" image="/images/iric/iric_logo.png"/>
+
+
+<vbox align="stretch">
+<label value="Rice SNP-Seek Database" width="50%" 
+	style="color:green;background-color:white;font-weight:bold;font-family:arial;font-size:30px" />
 	
-	<menubar id="menubar" width="100%" >
-		<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Home" href="index.zul"/>
-		<menu label="Query" src="/images/Centigrade-Widget-Icons/Briefcase-16x16.png">
+	<menubar id="menubar" width="100%" orient="horizontal" autodrop="true">
+		<menuitem src="/images/iric/home4.png" label="Home" href="index.zul"/>
+		<menu label="Search" src="/images/iric/query.png">
 			<menupopup>
-				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="SNP" href="_snp.zul"/>
-				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Variety" href="_variety.zul"/>
+				<menuitem src="/images/iric/gene1.png" label="SNP and Genes" href="_snp.zul"/>
+				<menuitem src="/images/iric/var1.png" label="Variety" href="_variety.zul"/>
 			</menupopup>
 		</menu>			
-		<menu label="Viewers" src="/images/Centigrade-Widget-Icons/Briefcase-16x16.png">
+		<menu label="Browse" src="/images/iric/browse4.png">
 			<menupopup>
-				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="JBrowse" href="_jbrowse.zul"/>
-				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Geography" href="_variety.zul"/>
+				<menuitem src="/images/iric/genome1.png" label="Genome" href="_jbrowse.zul"/>
+				<menuitem src="/images/iric/tree1.png" label="Tree (static)" href="_phylotree.zul"/>
+				<!--  menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Tree (dynamic)" href="_phylotreedyn.zul"/ -->
+				
+				<!--  menuitem src="/images/iric/tree1.png" label="Tree (dynamic)" target="_blank" href="jsp/phylotreeGermplasms.jsp?scale=1&amp;varid=all"/ -->
+				<menuitem src="/images/iric/tree1.png" label="Phylogenetic Tree (dynamic)" href="_phylotreedyn.zul"/>
+				
+				
 			</menupopup>
 		</menu>			
-		<menu label="Help" src="/images/Centigrade-Widget-Icons/Briefcase-16x16.png" >
-			<menupopup>
-				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Quick Help" href="_snp.zul"/>
-				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Reference" href="_variety.zul"/>
-			</menupopup>
-		</menu>
+		<menuitem src="/images/iric/help.png" label="Help" href="_help.zul"/>
+	
 	</menubar>
+	
 	
 	<!-- menubar id="menubar" width="100%" >
 		<menu label="Genotype" src="/images/Centigrade-Widget-Icons/Briefcase-16x16.png">
@@ -62,14 +71,21 @@
 		</menu>
 	</menubar -->
 	
-	<!--  navbar mold="bs-pills">
-	<navitem label="Home" selected="true" />
-	<navitem label="Profile" />
-	<navitem label="Messages" />
+	<!-- navbar mold="bs-pills">
+	<navitem label="Home" selected="true" src="/images/iric/home.png"/>
+	<nav label="Search"  src="/images/iric/query.png">	
+		<navitem label="SNP and Genes" />
+		<navitem label="Variety" />
+	</nav>
+	<nav label="Browse"  src="/images/iric/viewer.png">
+		<navitem label="Genome" />
+		<navitem label="PhylogenyTree" />
+	</nav>
+	<navitem label="Help"  src="/images/iric/help.png" />
 	</navbar -->
-
-</vbox>
-	</hbox>
+	
+	</vbox>
+</hbox>
 	
 	<!--  checkbox label="Vertical orient" id="vo">
 		<attribute name="onCheck">

@@ -3,13 +3,14 @@ package org.irri.iric.portal.genotype.service;
 import java.util.List;
 import java.util.Set;
 
+import org.irri.iric.portal.dao.VarietyDAO;
 import org.irri.iric.portal.genotype.domain.Variety3k;
 
 /**
  * Spring service that handles CRUD requests for Variety3k entities
  * 
  */
-public interface Variety3kService {
+public interface Variety3kService extends VarietyDAO {
 
 	/**
 	 * Return a count of all Variety3k entity

@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage Variety3k entities.
  * 
  */
-@Repository("Variety3kDAO")
+@Repository("Variety3kDAOOld")
 @Transactional
 public class Variety3kDAOImpl extends AbstractJpaDao<Variety3k> implements
 		Variety3kDAO {

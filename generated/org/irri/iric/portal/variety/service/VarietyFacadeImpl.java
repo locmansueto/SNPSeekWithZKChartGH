@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.variety.dao.GermplasmDAO;
 import org.irri.iric.portal.variety.dao.List3kDAO;
 import org.irri.iric.portal.variety.dao.PhenotypesDAO;
@@ -20,7 +21,7 @@ import org.forester.evoinference.matrix.distance.BasicSymmetricalDistanceMatrix;
 import org.irri.iric.portal.variety.views.IViewDist3kHome;
 import org.irri.iric.portal.variety.views.ViewDist3kId;
 
-@Service("VarietyFacade")
+//@Service("VarietyFacadeLegacy")
 public class VarietyFacadeImpl implements VarietyFacade {
 
 	private static final Log log = LogFactory.getLog(VarietyFacadeImpl.class);
@@ -204,14 +205,14 @@ public class VarietyFacadeImpl implements VarietyFacade {
 	}
 
 
-
+/*
 	@Override
 	public Set getGermplasmByExample(List3k germplasm) {
 		// TODO Auto-generated method stub
 		return germdao.findAllList3kByExample(germplasm);
 		
 	}
-	
+	*/
 	
 	public Set getPhenotypesByGermplasmNsftid(Integer id) {
 		return phendao.findPhenotypesByNsftvId(id);
@@ -236,6 +237,7 @@ public class VarietyFacadeImpl implements VarietyFacade {
 		return this.mapVarname2IRISId;
 	}
 	
+	@Override
 	public String constructPhylotree(Set<String> germplasms, String scale) {
 		
 		dist3kdao = (IViewDist3kHome)AppContext.checkBean(dist3kdao, "IViewDist3kHome");
@@ -355,11 +357,35 @@ public class VarietyFacadeImpl implements VarietyFacade {
 
 
 	@Override
+	public Set getPassportByVarietyid(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public String constructPhylotree(Set<Integer> germplasms, String scale) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public Set getGermplasmByExample(Variety germplasm) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+/*
+	@Override
 	public Set getGermplasmByExample(Germplasm germplasm) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+	*/
 	
 	
 }

@@ -19,7 +19,7 @@ import org.forester.evoinference.matrix.distance.BasicSymmetricalDistanceMatrix;
 import org.irri.iric.portal.variety.views.IViewDist3kHome;
 import org.irri.iric.portal.variety.views.ViewDist3kId;
 
-@Service("VarietyFacadeGermplasm")
+//@Service("VarietyFacadeGermplasm")
 public class VarietyFacadeImplGermplasm  {
 
 	private static final Log log = LogFactory.getLog(VarietyFacadeImplGermplasm.class);

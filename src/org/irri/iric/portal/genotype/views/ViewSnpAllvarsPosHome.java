@@ -151,6 +151,21 @@ public class ViewSnpAllvarsPosHome implements IViewSnpAllvarsPosHome {
 		//log.info("executing :" + sql);
 		return getSession().createSQLQuery(sql).addEntity(ViewSnpAllvarsPosId.class).list();
 	}
+
+	@Override
+	public List getSNPs(String chromosome, Integer startPos, Integer endPos) {
+		// TODO Auto-generated method stub
+		
+		
+		String sql = "select CHR, POS, REFNUC from VIEW_SNP_ALLVARS_POS where ";
+		  sql += " chr=" + chromosome + " and pos between " +
+				startPos + " and " + endPos  + " order by POS";
+		  
+		  
+		return executeSQL(sql);
+	}
+	
+	
 	
 	
 }

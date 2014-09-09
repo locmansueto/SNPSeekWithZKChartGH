@@ -28,6 +28,7 @@ import org.irri.iric.portal.genotype.domain.Gene;
 
 import org.irri.iric.portal.genotype.domain.Variety3k;
 import org.irri.iric.portal.genotype.views.*;
+import org.irri.iric.portal.service.GeneService;
 import org.irri.iric.portal.utils.zkui.HibernateSearchObject;
 import org.irri.iric.portal.variety.views.IViewDist3kHome;
 import org.irri.iric.portal.variety.views.ViewDist3kId;
@@ -48,7 +49,7 @@ import org.forester.phylogeny.PhylogenyNode;
 import org.forester.phylogeny.iterators.PhylogenyNodeIterator;
 
 //@Secured("ROLE_IRRIUSER")
-@Service("GenotypeFacade")
+//@Service("GenotypeFacadeOrig")
 public class GenotypeFacadeImpl implements GenotypeFacade {
 
 	private static final Log log = LogFactory.getLog(GenotypeFacadeImpl.class);

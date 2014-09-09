@@ -55,9 +55,14 @@
  	 
  	 <library-property>
     <name>org.zkoss.theme.preferred</name>
-    <value>flatly_green</value> 
+    <value>greenblacktext</value> 
 	</library-property>
 	
+	<library-property>
+    <name>org.zkoss.zul.nativebar</name>
+    <value>true</value>
+	</library-property>
+
 	
 	<!-- library-property>
 	<name>org.zkoss.zul.Button.mold</name>

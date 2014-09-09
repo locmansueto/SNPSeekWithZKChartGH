@@ -158,4 +158,21 @@ public class ViewCountVarrefMismatchHome implements IViewCountVarrefMismatchHome
 		//log.info("executing :" + sql);
 		return getSession().createSQLQuery(sql).addEntity(ViewCountVarrefMismatchId.class).list();
 	}
+
+	@Override
+	public List countMismatches(String chr, Integer start, Integer end) {
+		// TODO Auto-generated method stub
+
+		String onlymismatchsql = " (REFNUC is not null or VAR1NUC is not null) and  REFNUC<>VAR1NUC and  ";
+		
+		String sql="select VARNAME, count(*) as mismatch from VIEW_SNP_ALLVARS where " +  onlymismatchsql 
+				+ " chr=" + chr 
+				+ " and pos between " + (start-1) + " and " + (end+1)
+				+ " group by VARNAME  order by mismatch desc, VARNAME";
+		
+		return executeSQL(sql);
+	}
+	
+	
+	
 }

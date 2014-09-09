@@ -1,7 +1,41 @@
 <?page title="Variety Search" contentType="text/html;charset=UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 
+<?component name="tipBox" macroURI="tipBox.zul"?>
 
 <zk xmlns:h="native">
+
+	<style>
+        .z-loading {
+            background-color:#808080;
+            border:1px outset #A0A0A0;
+            font-weight: bold;
+            padding:2px;
+        }
+        .z-loading-indicator {
+            color: gray;
+            border:0 none;
+        }
+        .z-loading-icon {
+            background-image: url(${c:encodeURL('~./zk/img/progress3.gif')}); 
+        }
+    </style>
+    
+<!--  style>
+.no-highlight tr.z-grid-odd td.z-row-inner,tr.z-grid-odd .z-cell,tr.z-grid-odd, .no-highlight tr.z-row-over > td.z-row-inner
+	      {
+	      background:white;
+	      }
+
+</style -->
+
+
+ <!--  style>
+.no-highlight
+    tr.overseld,td.overseld,tr.z-listitem-over,tr.z-listitem-over-seld
+  { background-image: none; background-color: none; }
+ </style -->
+
 
 <zscript>
         import org.zkoss.zkplus.spring.SpringUtil;      
@@ -20,15 +54,16 @@
         java.util.List subpopulation = variety.getSubpopulations();
         
 
-        String msg =varnames.size()/2 + " varieties, " + irisIds.size()/2 + " IRIS IDs, "  + countries.size()/2 + " countries, " + subpopulation.size()/2 + 
-         " subpopulations for selection";
-                
+        //String msg =varnames.size()/2 + " varieties, " + irisIds.size()/2 + " IRIS IDs, "  + countries.size()/2 + " countries, " + subpopulation.size()/2 +  " subpopulations for selection";
+        String msg ="Get Variety Information by Name or IRIS ID.  Search varieties by Country and/or Subpopulation";
+                  
                 
 </zscript>
 
       
 
 <window title="Variety Search" border="none" apply="org.irri.iric.portal.variety.zkui.VarietyQueryController">
+<hbox>
 <grid width="800px">
 
 <rows>
@@ -40,7 +75,10 @@
 <row>
 <label value="Variety name"/>
 
+				<hbox>
 			    <combobox id="comboVarname" autodrop="true" buttonVisible="false" width="150px"/>
+			    <label pre="true" value="(ex. loto)" style="font-size:10px"/>
+			    </hbox>
 			    <zscript><![CDATA[			
 			        comboVarname.setModel(new SimpleListModel(varnames));
 			    ]]></zscript>
@@ -48,7 +86,10 @@
 <row>
 <label value="IRIS Id"/>
 
+				<hbox>
 			    <combobox id="comboIrisId" autodrop="true" buttonVisible="false" width="150px"/>
+			    <label pre="true" value="(ex. iris 313-10000)" style="font-size:10px"/>
+			    </hbox>
 			    <zscript><![CDATA[			
 			        comboIrisId.setModel(new SimpleListModel(irisIds));
 			    ]]></zscript>
@@ -63,7 +104,10 @@
 <row>
 <label value="Subpopulation"/>
 
+				<hbox>
 			    <combobox id="comboSubpopulation" autodrop="true" buttonVisible="false" width="150px"/>
+			    <label pre="true" value="(ex. ind)" style="font-size:10px"/>
+			    </hbox>
 			    <zscript><![CDATA[
 			        comboSubpopulation.setModel( new SimpleListModel(subpopulation));
 			    ]]></zscript>
@@ -73,7 +117,7 @@
 <row>
 (If Variety name or IRIS Id is specified, the other filters are ignored)
     		    <button id="searchButton" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
-			    	   width="100px" height="50px"
+			    	   width="100px" height="50px"  autodisable="self"
 			    	   xmlns:w="http://www.zkoss.org/2005/zk/client"			    	   			    	   
 			    	   w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();"
 			    	   />	
@@ -99,41 +143,107 @@
 
 </grid>
  
-			    	   
-    <vbox width="100%"/>
-    
+ 	<tipBox height="250px" width="400px" desc="Variety Search" 
+		details1= "A. Select Variety Name or IRIS ID"
+		details2= "   Result: PASSPORT and PHENOTYPE data   "
+		details3= "B. Select Country and/or Subpopulation" 
+		details4= "   Result Table: List of varieties matched  "
+		details6= "   Result Tree: Phylogenetic tree of the "
+		details7= "                  varieties in the group"
 
+		/>
+</hbox>    	   
+    	
 	<separator bar="true"/>
+    
+                                           
+                                           
+ <grid id="gridGermplasm" visible="false"   >
+	        	<columns>
+                <column label="PASSPORT DATA"/>
+                <column label="PHENOTYPES" />
+            	</columns>
+		<rows>
+		<row>
+		
+		<cell align="left" valign="top">
+		   
+		<vbox pack="start">
+		<grid>
+		<rows>
+		<row> Variety name<textbox id="textboxGermAccession" readonly="true"/></row>
+		<row> IRIS ID<textbox id="textboxIRISId" readonly="true"/></row>
+		<row> Subpopulation<textbox id="textboxGermSubpopulation" readonly="true"/></row>
+		<row> Country<textbox id="textboxGermCountry" readonly="true"/></row>
+		</rows>
+		</grid>
+		<listbox id="listboxGermPassport">
+			<listhead>
+			<listheader>PASSPORT</listheader>
+			<listheader>FIELD</listheader>
+			<listheader>VALUE</listheader>		
+			</listhead>
+		</listbox>
+		<hbox height="100%"/>
+		</vbox>
+		</cell>
+		<cell align="left" valign="top">
+		<listbox id="listboxGermPhenotypes">
+			<listhead>
+			<listheader>PHENOTYPE</listheader>
+			<listheader>VALUE</listheader>
+			<listheader>FIELD</listheader>
+			</listhead>		
+		</listbox>
+		</cell>
+					<zscript><![CDATA[
+			        listboxGermPassport.setItemRenderer(new org.irri.iric.portal.variety.zkui.PassportListItemRenderer() );
+			        listboxGermPassport.setModel(new SimpleListModel(new java.util.ArrayList()));
+			    ]]></zscript>
+			    		
+					<zscript><![CDATA[
+			        listboxGermPhenotypes.setItemRenderer(new org.irri.iric.portal.variety.zkui.PhenotypesListRenderer() );
+			        listboxGermPhenotypes.setModel(new SimpleListModel(new java.util.ArrayList()));
+			    ]]></zscript>
+			    
+		</row>
+		</rows>
+
+		</grid>	                                              
                                            
 
    <tabbox id="tabboxDisplay" width="100%" >  
         <tabs>  
             <tab label="Table"/>  
-            <tab label="Phylotree"/>  
-             <tab label="Geography"/>  
+            <tab id="tabPhylo" label="Phylotree" visible="false"/>  
+             <!--  tab label="Geography"/ -->  
         </tabs>  
         <tabpanels>  
             <tabpanel>
-              
- <listbox id="varietyresult" fixedLayout="true" mold="paging" pageSize="20" visible="false">
+ <hbox>
+ <vbox width="10%"/>             
+ <listbox id="varietyresult" fixedLayout="true" mold="paging" pageSize="100" visible="false">
 		<listhead>
+			<listheader  sort="auto"></listheader>
 			<listheader  sort="auto"></listheader>
 			<listheader  sort="auto"></listheader>
 			<listheader  sort="auto"></listheader>
 		</listhead>		
 	</listbox>
+	 <vbox width="10%"/>       
+	</hbox>
             </tabpanel>
 
             <tabpanel>  
-
+<!--  div style="overflow:auto;position:relative" --> 
 <vbox> 
- <label value="The tree is constructed using distance based on the number of mismatches from a random sample of ___ SNP positions between varieties, and  Neighbor-Joining for clustering." style="font-family: arial;font-size:12px" />
+ <label value="The tree is constructed using  Neighbor-Joining method based on 200,000 random SNPs" style="font-family: arial;font-size:12px" />
 <iframe id="iframePhylotree" style="height:1200px;width:1500px"/>
 </vbox>
-		
+	
             </tabpanel>
         
-<tabpanel>        
+<!--  tabpanel>        
      <div apply="org.irri.iric.portal.variety.zkui.GoogleMapsController">
     <script type="text/javascript"
         content="zk.googleAPIkey='ABQIAAAAmGxmYR57XDAbAumS9tV5fxQXyylOlR69a1vFTcUcpV6DXdesOBSMEHfkewcSzwEwBT7UzVx8ep8vjA'" />
@@ -145,7 +255,7 @@
             content="Hello, &lt;a href=&quot;http://www.zkoss.org&quot;&gt;ZK&lt;/a&gt; on top of Gmarker."/>
     </gmaps>
 	</div>
-</tabpanel>
+</tabpanel -->
 
         
          </tabpanels>
@@ -163,42 +273,7 @@
 			        varietyresult.setModel(new SimpleListModel(new java.util.ArrayList()));
 			    ]]></zscript>
 			    
-		<grid id="gridGermplasm" visible="false">
-	        	<columns>
-                <column label="PASSPORT DATA"/>
-                <column label="PHENOTYPES" />
-            </columns>
-		<rows>
-		<row>
-		<grid>
-		<rows>
-		<row> Variety name<textbox id="textboxGermAccession" readonly="true"/></row>
-		<row> IRIS ID<textbox id="textboxIRISId" readonly="true"/></row>
-		<row> NSFT ID<textbox id="textboxGermNsftvId" readonly="true"/></row>
-		<row> Subpopulation<textbox id="textboxGermSubpopulation" readonly="true"/></row>
-		<row> Country<textbox id="textboxGermCountry" readonly="true"/></row>
-		<row> Latitude <textbox id="textboxGermLatitude" readonly="true"/></row>
-		<row> Longitude<textbox id="textboxGermLongitude" readonly="true"/></row>
-		</rows>
-		</grid>
 		
-		<listbox id="listboxGermPhenotypes">
-			<listhead>
-			<listheader>PHENOTYPE</listheader>
-			<listheader>VALUE</listheader>
-			<listheader>UNIT</listheader>
-			</listhead>		
-		</listbox>
-		
-					<zscript><![CDATA[
-			        listboxGermPhenotypes.setItemRenderer(new org.irri.iric.portal.variety.zkui.PhenotypesListRenderer() );
-			        listboxGermPhenotypes.setModel(new SimpleListModel(new java.util.ArrayList()));
-			    ]]></zscript>
-			    
-		</row>
-		
-		</rows>
-		</grid>	    
 		
 		<!-- iframe id="iframePhylotree" style="height:1000px" widths="100%"/ -->
 		
@@ -206,4 +281,7 @@
 
 
 </window>
+
+<!--  include src="/footer.zul"/ -->
+
 </zk>

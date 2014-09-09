@@ -10,6 +10,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.irri.iric.portal.domain.Variety;
 
 import javax.xml.bind.annotation.*;
 import javax.persistence.*;

@@ -6,7 +6,18 @@
 	<link rel="stylesheet" type="text/css" href="css/doublescroll.css">
 
     <script type="text/javascript" src="js/raphael-min.js" ></script>
-    <script type="text/javascript" src="js/jsphylosvg-min.js"></script>
+    <script type="text/javascript" src="js/jsphylosvg.js"></script>
+    <!--  script type="text/javascript" src="js/jsphylosvg-min.js"></script -->
+
+
+	<!--  yui -->
+  	<link type="text/css" rel="stylesheet" href="/js/yui/build/cssfonts/fonts-min.css" /> 
+	<script type="text/javascript" src="/js/yui/build/yui/yui.js"></script> 
+	<!-- unitip -->
+	<link rel="stylesheet" type="text/css" href="/js/unitip/css/unitip.css" > 
+	<script type="text/javascript" src="/js/unitip/js/unitip.js"></script> 	
+	
+
 
     <script type="text/javascript">
             
@@ -16,7 +27,7 @@
 
 		int nvars = 1000; 
 
-		if(request.getParameter("nsftvid")!=null) {
+		if(request.getParameter("varid")!=null) {
 			
 		
 				VarietyFacade variety = (VarietyFacade)request.getSession().getAttribute("VarietyFacade");
@@ -25,35 +36,39 @@
 				
 				if(variety==null) throw new RuntimeException("variety==null");
 				
-				if(request.getParameter("nsftvid")==null) throw new RuntimeException("request.getParameter(nsftvid)==null");
+				//if(request.getParameter("nsftvid")==null) throw new RuntimeException("request.getParameter(nsftvid)==null");
+				//System.out.println(request.getParameter("nsftvid"));
 				
-				System.out.println(request.getParameter("nsftvid"));
+				String varlist = (String)request.getParameter("varid");
 				
-				String varlist = (String)request.getParameter("nsftvid");
-				
-				nvars = varlist.split(",").length;
-				
+				if(!varlist.equals("all"))
+					nvars = varlist.split(",").length;
 				
 				//String newick =   variety.constructPhylotree( varlist.replace("-", "_").replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") );
 				newick =   variety.constructPhylotree( varlist, request.getParameter("scale") );
 				
 		} else if(request.getParameter("chr")!=null && request.getParameter("start")!=null && request.getParameter("end")!=null) {
 				
-				
+			 	
+					 
 				GenotypeFacade genotype = (GenotypeFacade)request.getSession().getAttribute("GenotypeFacade");
 				genotype =  (GenotypeFacade)AppContext.checkBean(genotype, "GenotypeFacade");
-						
-				newick =   genotype.constructPhylotree(request.getParameter("scale") , request.getParameter("chr") ,Integer.parseInt(request.getParameter("start")) ,
-														Integer.parseInt(request.getParameter("end")) );
+					
+				int topn=-1;
+				if(request.getParameter("topn")!=null)
+					topn = Integer.parseInt(request.getParameter("topn"));
+					
+				newick =   genotype.constructPhylotreeTopN(request.getParameter("scale") , request.getParameter("chr") ,Integer.parseInt(request.getParameter("start")) ,
+														Integer.parseInt(request.getParameter("end")), topn );
 				
 				nvars = 1000;
 			
 		}
 					
-				
+		System.out.println(newick);		
 		//newick=	"'" + newick.replace("'", "").replace("\"", "").replace("-","").replace("_","-") + "'" ; 
 		//newick=	"'" + newick.replace("'", "").replace("\"", "").replace("-","").replace("_","-") + "'" ; 
-		newick= "'" + newick.replace("\"", "")  + "'";
+		newick= "'" + newick.replace("\"", "").replace(":-",":")  + "'";
 		System.out.println(newick);
 		
 		int height=20*nvars;
@@ -62,8 +77,6 @@
 		
 		//newick=newick.replace("-","");
 		
-		
-			
 %>
 
     window.onload = function(){
@@ -75,7 +88,29 @@
                 <%= width  %> ,  <%= height %>
             );
     };
+
     </script>
+    
+<!--
+	window.onload = function(){
+		YUI().use('oop', 'json-stringify', 'io-base', 'event', 'event-delegate', function(Y){
+			function complete(id, o, args) {
+				var dataObject ={ newick:  <%= newick %> };
+				phylocanvas = new Smits.PhyloCanvas(
+					dataObject,
+					'svgCanvas', 
+					 <%= width  %> ,  <%= height %>
+				);
+				init(); //unitip
+			};
+			Y.on('io:complete', complete, Y);
+			var request = Y.io(uri);
+		});
+	};
+	</script>
+	
+ -->   
+    
     
     <!-- 
      <script type="text/javascript">

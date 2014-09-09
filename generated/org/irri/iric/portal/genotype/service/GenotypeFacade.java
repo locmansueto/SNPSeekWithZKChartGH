@@ -1,9 +1,23 @@
 package org.irri.iric.portal.genotype.service;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
-import org.irri.iric.portal.genotype.domain.Gene;
-import org.irri.iric.portal.genotype.views.Snp2lines;
+
+
+
+
+
+import java.util.Set;
+
+import org.irri.iric.portal.domain.Gene;
+import org.irri.iric.portal.domain.Snps2Vars;
+import org.irri.iric.portal.domain.SnpsAllvars;
+import org.irri.iric.portal.domain.SnpsAllvarsPos;
+import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
+//import org.irri.iric.portal.genotype.domain.Gene;
+//import org.irri.iric.portal.genotype.views.Snp2lines;
 import org.irri.iric.portal.genotype.views.ViewCountVarrefMismatchId;
 import org.irri.iric.portal.genotype.views.ViewSnpAllvars;
 import org.irri.iric.portal.genotype.views.ViewSnpAllvarsId;
@@ -11,9 +25,9 @@ import org.irri.iric.portal.genotype.views.ViewSnpAllvarsPos;
 import org.irri.iric.portal.genotype.views.ViewSnpAllvarsPosId;
 import org.irri.iric.portal.utils.zkui.HibernateSearchObject;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Intbox;
-import org.zkoss.zul.Selectbox;
+//import org.zkoss.zul.Combobox;
+//import org.zkoss.zul.Intbox;
+//import org.zkoss.zul.Selectbox;
 
 public interface GenotypeFacade {
 	
@@ -25,32 +39,33 @@ public interface GenotypeFacade {
 	public java.util.List<String> getGenenames();
 	public java.util.List<String> getChromosomes();
 	public Integer getFeatureLength(String feature);
-	public List<Snp2lines> getSNPinVarieties(
+	public List<Snps2Vars> getSNPinVarieties(
 			String var1, String var2, Integer startPos, Integer endPos, String chromosome, snpQueryMode querymode);
-	public List<Snp2lines> getSNPinVarieties(
+	public List<Snps2Vars> getSNPinVarieties(
 			String var1, String var2, String genename, Integer plusminusBp,  snpQueryMode querymode);
 	
 	
-	public List<Snp2lines> getSNPinVarieties(int n);	
+	public List<Snps2Vars> getSNPinVarieties(int n);	
 	
 	public Gene getGeneFromName(String name);
-	public List<ViewSnpAllvarsId> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome) ;
-	public List<ViewSnpAllvarsId> getSNPinAllVarieties(String genename, Integer plusminusBp);
+	public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome) ;
+	public List<SnpsAllvars> getSNPinAllVarieties(String genename, Integer plusminusBp);
 	//public List<ViewSnpAllvarsPos> getSnpsposlist() ;
-	public List<ViewSnpAllvarsPosId>  getSnpsposlist() ;
+	public List<SnpsAllvarsPos>  getSnpsposlist() ;
 	
-	public List getBySearchObject(HibernateSearchObject so, int start, int pageSize);
-	public List<ViewSnpAllvarsId> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows) ;
-	public List<ViewCountVarrefMismatchId> countSNPMismatchesInAlllVarieties(Integer startPos, Integer endPos, String chromosome, boolean update);
+	//public List getBySearchObject(HibernateSearchObject so, int start, int pageSize);
+	public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows) ;
+	public List<SnpsAllvarsRefMismatch> countSNPMismatchesInAlllVarieties(Integer startPos, Integer endPos, String chromosome, boolean update);
 
 	
-	public java.util.HashMap<Integer, String> getMapOrder2Variety();
-	public java.util.HashMap<String, Integer> getMapVariety2Order();
-	public java.util.HashMap<String, Integer> getMapVariety2Mismatch(); 
+	public HashMap<Integer, BigDecimal> getMapOrder2Variety();
+	public HashMap<BigDecimal, Integer> getMapVariety2Order();
+	public java.util.HashMap<BigDecimal, Integer> getMapVariety2Mismatch(); 
 	
-	public List<ViewCountVarrefMismatchId> getListSNPAllVarsMismatches();
-	public List<ViewCountVarrefMismatchId> getListSNPAllVarsMismatches(int firstRow, int numRows);
+	public List<SnpsAllvarsRefMismatch> getListSNPAllVarsMismatches();
+	public List<SnpsAllvarsRefMismatch> getListSNPAllVarsMismatches(int firstRow, int numRows);
 	
 	public String constructPhylotree(String scale, String chr, int start, int end);
+	public String constructPhylotreeTopN(String scale, String chr, int start, int end, int topN);
 
 }

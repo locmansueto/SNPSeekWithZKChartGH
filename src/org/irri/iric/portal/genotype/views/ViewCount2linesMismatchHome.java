@@ -2,6 +2,7 @@ package org.irri.iric.portal.genotype.views;
 
 // Generated Jul 31, 2014 6:00:12 PM by Hibernate Tools 3.4.0.CR1
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.naming.InitialContext;
@@ -14,6 +15,7 @@ import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
+import org.irri.iric.portal.domain.Snps2VarsCountmismatch;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -159,5 +161,26 @@ public class ViewCount2linesMismatchHome implements IViewCount2linesMismatchHome
 		//log.info("executing :" + sql);
 		return getSession().createSQLQuery(sql).addEntity(ViewCount2linesMismatchId.class).list();
 	}
+
+	@Override
+	public List<Snps2VarsCountmismatch> countMismatch(Integer chr,
+			BigDecimal start, BigDecimal end) {
+		// TODO Auto-generated method stub
+		
+		String sql = "select upper(var1) var1, upper(var2) var2, count(*) mismatch from snp_2lines where " 
+				+ " var1nuc<>var2nuc "
+				+ " and (var1nuc is not null or var2nuc is not null) "
+				+ " and chr=" + chr 
+				+ " and pos between " + (start.intValue()-1) + " and " + (end.intValue()+1) 
+				+ " and var1<=var2 "
+				+ " group by var1, var2 "
+				+ " order by var1, var2";
+				
+		
+		return executeSQL(sql);
+	}
+	
+	
+	
 	
 }

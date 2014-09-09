@@ -1,5 +1,11 @@
 <?page title="jbrowseiframe" contentType="text/html;charset=UTF-8"?>
 <zk>
+
+<zscript>
+		import org.irri.iric.portal.AppContext;
+		String jbrowsestart = AppContext.getHostname();
+</zscript>
+
       
-      <iframe id="iframe" src="http://pollux:8080/jbrowse-dev" width="100%" height="100%"/>
+      <iframe id="iframe" src="${jbrowsestart}:8080/jbrowse-dev?tracks=DNA,msu7gff,snp3k" width="100%" height="100%"/>
 </zk>

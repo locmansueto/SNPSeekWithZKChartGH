@@ -1,16 +1,15 @@
 package org.irri.iric.portal.variety.domain;
 
 import java.io.Serializable;
-
 import java.lang.StringBuilder;
 
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-
 import javax.xml.bind.annotation.*;
-
 import javax.persistence.*;
+
+import org.irri.iric.portal.domain.Variety;
 
 /**
  */
@@ -71,7 +70,7 @@ import javax.persistence.*;
 @Table(schema = "NICKA", name = "LIST_3K")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "dev_crud_maker/org/irri/iric/portal/variety/domain", name = "List3k")
-public class List3k implements Serializable {
+public class List3k implements Serializable, Variety {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -691,4 +690,49 @@ public class List3k implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public Integer getVarietyId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return this.getVarnameOfGenStockSrc();
+	}
+
+	@Override
+	public String getIrisId() {
+		// TODO Auto-generated method stub
+		return this.getIrisUniqueId();
+	}
+
+	@Override
+	public String getCountry() {
+		// TODO Auto-generated method stub
+		return this.getCountryOfOriginOfSource();
+	}
+
+	@Override
+	public String getSubpopulation() {
+		// TODO Auto-generated method stub
+		return this.getVarietygroupOfSource();
+	}
+
+	@Override
+	public void setCountry(String country) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSubpopulation(String subpopulation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	
 }

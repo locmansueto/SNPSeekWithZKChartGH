@@ -2,7 +2,9 @@ package org.irri.iric.portal.genotype.views;
 
 // Generated Jun 27, 2014 8:48:08 PM by Hibernate Tools 3.4.0.CR1
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.naming.InitialContext;
@@ -16,8 +18,11 @@ import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
+import org.irri.iric.portal.domain.Snps2Vars;
+import org.irri.iric.portal.genotype.service.GenotypeFacade.snpQueryMode;
 //import org.hibernate.ejb.EntityManagerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Repository("ISnp2linesHome")
+//@Repository("Snps2VarsDAOLegacy")
 @Transactional
 public class Snp2linesHome implements ISnp2linesHome {
 
@@ -163,6 +169,90 @@ public class Snp2linesHome implements ISnp2linesHome {
 		//log.info("executing :" + sql);
 		return getSession().createSQLQuery(sql).addEntity(Snp2linesId.class).list();
 	}
+
+
+	@Override
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenAll(Integer chr,
+			BigDecimal start, BigDecimal end, Integer var1, Integer var2)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		return findVSnp2varsByVarsChrPosBetweenAll(chr,
+				 start,  end,  var1,  var2,
+				 -1, -1);
+	}
+
+
+	@Override
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenAll(Integer chr,
+			BigDecimal start, BigDecimal end, Integer var1, Integer var2,
+			int startResult, int maxRows) throws DataAccessException {
+		// TODO Auto-generated method stub
+		String sql = "select VAR1, VAR2, CHR, POS, REFNUC, VAR1NUC, VAR2NUC from SNP_2LINES where ";
+		
+		if(var1!=null)
+		{
+			sql += " var1='" + var1 + "' ";
+			if(var2!=null)
+				sql += " and var2='" + var2 + "' ";
+		} else
+		{
+			if(var2!=null)
+				sql += " var2='" + var2 + "' ";				
+		}
+			 
+		  sql += " and chr=" + chr + " and pos between " +
+				(start.intValue()-1) + " and " + (end.intValue() + 1);
+		  sql += " and (REFNUC<>VAR1NUC or REFNUC<>VAR2NUC) ";
+		
+		 return new java.util.LinkedHashSet<Snps2Vars>(executeSQL(sql));
+	}
+
+
+	@Override
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenMismatch(Integer chr,
+			BigDecimal start, BigDecimal end, Integer var1, Integer var2)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		
+		return findVSnp2varsByVarsChrPosBetweenMismatch( chr,
+				 start,  end, var1,  var2,
+				 -1, -1);
+		
+	}
+
+
+	@Override
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenMismatch(Integer chr,
+			BigDecimal start, BigDecimal end, Integer var1, Integer var2,
+			int startResult, int maxRows) throws DataAccessException {
+		// TODO Auto-generated method stub
+		String sql = "select VAR1, VAR2, CHR, POS, REFNUC, VAR1NUC, VAR2NUC from SNP_2LINES where ";
+		
+		if(var1!=null)
+		{
+			sql += " var1='" + var1 + "' ";
+			if(var2!=null)
+				sql += " and var2='" + var2 + "' ";
+		} else
+		{
+			if(var2!=null)
+				sql += " var2='" + var2 + "' ";				
+		}
+			 
+		  sql += " and chr=" + chr + " and pos between " +
+				(start.intValue()-1) + " and " + (end.intValue() + 1);
+  		  sql += " and VAR1NUC<>VAR2NUC ";
+		
+		return new java.util.LinkedHashSet<Snps2Vars>(executeSQL(sql));
+	}
+	
+	
+	public List executeSQL(String sql) {
+		//System.out.println("executing :" + sql);
+		//log.info("executing :" + sql);
+		return getSession().createSQLQuery(sql).addEntity(ViewSnpAllvarsId.class).list();
+	}
+	
 	
 	
 }

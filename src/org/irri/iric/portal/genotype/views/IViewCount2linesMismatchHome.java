@@ -2,7 +2,9 @@ package org.irri.iric.portal.genotype.views;
 
 import java.util.List;
 
-public interface IViewCount2linesMismatchHome {
+import org.irri.iric.portal.dao.Snps2VarsCountMismatchDAO;
+
+public interface IViewCount2linesMismatchHome extends Snps2VarsCountMismatchDAO {
 
 	public abstract void persist(ViewCount2linesMismatch transientInstance);
 

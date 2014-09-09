@@ -184,7 +184,7 @@ public class ViewDist3kHome implements IViewDist3kHome {
 	
 	@Override
 	public List executeSQL(String sql) {
-		//System.out.println("executing :" + sql);
+		System.out.println("executing :" + sql);
 		//log.info("executing :" + sql);
 		return getSession().createSQLQuery(sql).addEntity(ViewDist3kId.class).list();
 	}

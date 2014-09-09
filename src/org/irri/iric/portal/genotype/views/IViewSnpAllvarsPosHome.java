@@ -2,7 +2,9 @@ package org.irri.iric.portal.genotype.views;
 
 import java.util.List;
 
-public interface IViewSnpAllvarsPosHome {
+import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
+
+public interface IViewSnpAllvarsPosHome extends SnpsAllvarsPosDAO {
 
 	public abstract void persist(ViewSnpAllvarsPos transientInstance);
 

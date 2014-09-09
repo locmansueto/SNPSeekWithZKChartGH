@@ -1,8 +1,9 @@
 package org.irri.iric.portal.genotype.zkui;
 
 
+import org.irri.iric.portal.domain.Snps2Vars;
 import org.irri.iric.portal.genotype.service.GenotypeFacade;
-import org.irri.iric.portal.genotype.views.Snp2linesId;
+//import org.irri.iric.portal.genotype.views.Snp2linesId;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -30,7 +31,8 @@ public class SNPListItemRenderer implements ListitemRenderer {
 	@Override
 	public void render(Listitem listitem, Object value, int index) throws Exception {
 		// TODO Auto-generated method stub
-		Snp2linesId  item = (Snp2linesId)value;
+		//Snp2linesId  item = (Snp2linesId)value;
+		Snps2Vars  item = (Snps2Vars)value;
 		
 	
 	        // keep value in listitem
@@ -48,8 +50,15 @@ public class SNPListItemRenderer implements ListitemRenderer {
 	        	String  nucref = item.getRefnuc();
 		        
         		addListcell(listitem, nucref) ;
-	        	addListcell(listitem, nuc1);
-        		addListcell(listitem, nuc2) ;
+        		
+        		if(nuc1.equals(nuc2)) {
+        			addListcell(listitem, nuc1);
+        			addListcell(listitem, nuc2) ;
+        		} else
+        		{
+        			addListcell(listitem, nuc1, STYLE_INTERESTING);
+        			addListcell(listitem, nuc2, STYLE_INTERESTING) ;
+        		}
 
 	        	
 	        } else if(querymode== GenotypeFacade.snpQueryMode.SNPQUERY_REFERENCE) {

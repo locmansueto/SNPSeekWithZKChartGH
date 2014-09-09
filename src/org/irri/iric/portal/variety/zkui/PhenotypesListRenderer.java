@@ -1,7 +1,7 @@
 package org.irri.iric.portal.variety.zkui;
 
+import org.irri.iric.portal.domain.Phenotype;
 import org.irri.iric.portal.variety.domain.Germplasm;
-import org.irri.iric.portal.variety.domain.Phenotypes;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -21,17 +21,19 @@ public class PhenotypesListRenderer implements ListitemRenderer {
 	@Override
 	public void render(Listitem listitem, Object value, int index) throws Exception {
 		// TODO Auto-generated method stub
-			Phenotypes  item = (Phenotypes)value;
+			Phenotype  item = (Phenotype)value;
 		
 	
 	        // keep value in listitem
 	        listitem.setValue(value);
 
 	        String val = "";
-	        if (item.getVal()!=null) val= item.getVal().toString();
-	        addListcell(listitem, item.getTrait().toUpperCase());
+	        if (item.getQualValue()!=null) val= item.getQualValue().toString();
+	        if (item.getQuanValue()!=null) val= item.getQuanValue().toString();
+	        
+	        addListcell(listitem, item.getDefinition());
 	        addListcell(listitem, val );
-	        addListcell(listitem, "");
+	        addListcell(listitem, item.getName());
 
 	        
 	       

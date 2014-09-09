@@ -6,16 +6,84 @@ window.Boot_progressbox = function (){}
 ]]>?>
 
 <?component name="newProduct" macroURI="includedMacro.zul"?>
-<zk>
-	<hbox>
-	<newProduct title="GENOTYPE" img="/images/iric/variety_grains.png" desc="Genotypes"
-		details="Query for SNPs from the 3000 genome project" href="_snp.zul"/>
-	<newProduct title="VARIETY" img="/images/iric/variety_plants.png" desc="Varieties"
-		details="Query for Variety passport and phenotypes" href="_variety.zul"/>
-	<newProduct title="JBROWSE" img="/images/Centigrade-Widget-Icons/Globe-128x128.png" desc="JBrowse"
-		details="Rice Genome Browser" href="_jbrowse.zul"/>
-	<newProduct title="HELP" img="/images/Centigrade-Widget-Icons/ReadingGlass-128x128.png" desc="Help"
-		details="Help and Site Manual" href="_variety.zul"/>
-	</hbox>
-	
+
+<zk  xmlns:h="native">
+<div align="center">
+
+<vbox align="center" pack="center" height="100%">
+
+ <panel height="100px"  border="none"/>
+ 
+<!--  h:p style="font-family:arial;font-size:13px" >
+This site provides Genotype, Phenotype, and Variety Information for rice. SNP information with the reference 
+<h:a target="_blank" href="http://rice.plantbiology.msu.edu/annotation_pseudo_current.shtml"> Os-Nipponbare-Reference-IRGSP-1.0 pseudomolecules</h:a>, <h:BR/> 
+are from the <h:a target="_blank" href="http://iric.irri.org/resources/3000-genomes-project">3000 Genome Project</h:a>. Phenotype data from IRRI Genetic Resource Center
+Information Management System (GRIMS) and Passport Data <h:BR/>from International Rice Information System (IRIS). We are a part  of an ongoing effort  to centralize information access <h:BR/>
+and computational tools to facilitate rice improvement via discovery of new gene-trait associations and accelerated breeding <h:BR/> 
+by the <h:a target="_blank"  href="http://iric.irri.org">International Rice Informatics Consortium</h:a>. 
+<h:BR/>
+<h:BR/ -->
+
+<hbox>
+<vbox width="200px"/>
+<h:p style="font-family:arial;font-size:13px" align="left" width="800px">
+This site provides Genotype, Phenotype, and Variety Information for rice (Oryza sativa L.). SNP genotyping data (called against 
+ <h:a target="_blank" href="http://rice.plantbiology.msu.edu/annotation_pseudo_current.shtml">Nipponbare reference Os-Nipponbare-Reference-IRGSP-1.0</h:a>) came from <h:a target="_blank" href="http://www.gigasciencejournal.com/content/3/1/7"> 3,000 Rice Genomes Project </h:a>. 
+Phenotype and passport data for the 3,000 rice varieties came from IRRI Genetic Resource Center Information Management System (GRIMS) and  the International Rice Information System (IRIS), respectively.
+We are a part of an ongoing effort by the International Rice Informatics Consortium (IRIC) to centralize information access to rice research data and provide computational tools to facilitate rice improvement via discovery of new gene-trait associations and accelerated breeding. 
+
+
+<!-- 
+Data available for dowload: <h:a target="_blank" href="http://pollux:8080/qc3k/">FastQC result</h:a> listed by variety and IRIS ID, 
+<h:a target="_blank"  href="http://172.29.4.93/cgi-bin/fqget.pl">Raw reads</h:a> search by IRIS ID (ex. 313-11683)
+
+ -->
+ 
+ </h:p>
+<vbox width="200px"/>
+</hbox>
+
+  
+ <panel height="20px"  border="none"/>
+
+
+         	<hbox>
+				<newProduct title="GENOTYPE" img="/images/iric/genotype5.png" desc="Genotypes"
+					details="Query for SNPs from the 3000 genome project" href="_snp.zul"/>
+				<panel width="20px"  border="none"/>
+
+				<newProduct title="VARIETY" img="/images/iric/variety5.png" desc="Varieties"
+					details="Query for Variety passport and phenotypes" href="_variety.zul"/>
+				<panel width="20px"  border="none"/>
+
+				<newProduct title="JBROWSE" img="/images/iric/jbrowse5.png" desc="JBrowse"
+					details="Rice Genome Browser" href="_jbrowse.zul"/>
+				<panel width="20px"  border="none"/>
+
+				<newProduct title="HELP" img="/images/iric/help5.png" desc="Help"
+					details="Help and documentation" href="_help.zul"/>
+			 </hbox>
+			 
+ 	        <!--  tablelayout columns="4">
+            <tablechildren>
+				<newProduct title="GENOTYPE" img="/images/iric/genotype3.png" desc="Genotypes"
+					details="Query for SNPs from the 3000 genome project" href="_snp.zul"/>
+			 </tablechildren>
+			 <tablechildren>
+				<newProduct title="VARIETY" img="/images/iric/variety3.png" desc="Varieties"
+					details="Query for Variety passport and phenotypes" href="_variety.zul"/>
+			 </tablechildren>
+			 <tablechildren>
+				<newProduct title="JBROWSE" img="/images/iric/jbrowse3.png" desc="JBrowse"
+					details="Rice Genome Browser" href="_jbrowse.zul"/>
+			 </tablechildren>
+			 <tablechildren>
+				<newProduct title="HELP" img="/images/iric/help3.png" desc="Help"
+					details="Help and Documentation" href="help.html"/>
+			 </tablechildren>
+            </tablelayout -->
+
+
+	</vbox>
+</div>	
 </zk>

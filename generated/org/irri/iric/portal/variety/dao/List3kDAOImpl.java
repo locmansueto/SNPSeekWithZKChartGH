@@ -15,6 +15,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 
+
+import org.irri.iric.portal.domain.Variety;
 //import org.irri.iric.portal.variety.domain.Germplasm;
 import org.irri.iric.portal.variety.domain.List3k;
 import org.skyway.spring.util.dao.AbstractJpaDao;
@@ -26,7 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage List3k entities.
  * 
  */
-@Repository("List3kDAO")
+//@Repository("List3kDAO")
+@Repository("VarietyDAOLegacy")
 @Transactional
 public class List3kDAOImpl extends AbstractJpaDao<List3k> implements List3kDAO {
 
@@ -1245,4 +1248,50 @@ public class List3kDAOImpl extends AbstractJpaDao<List3k> implements List3kDAO {
 	public boolean canBeMerged(List3k entity) {
 		return true;
 	}
+
+	@Override
+	public Set findAllVariety() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set findAllVarietyByCountry(String country) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set findAllVarietyBySubpopulation(String country) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set findAllVarietyByExample(Variety germplasm) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Variety findVarietyByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Variety findVarietykByIrisId(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Variety findVarietykById(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
+	
 }

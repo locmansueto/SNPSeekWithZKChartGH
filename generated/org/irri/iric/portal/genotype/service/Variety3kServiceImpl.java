@@ -3,14 +3,11 @@ package org.irri.iric.portal.genotype.service;
 import java.util.List;
 import java.util.Set;
 
+import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.genotype.dao.Variety3kDAO;
-
 import org.irri.iric.portal.genotype.domain.Variety3k;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -98,4 +95,49 @@ public class Variety3kServiceImpl implements Variety3kService {
 	public Variety3k findVariety3kByPrimaryKey(String varname) {
 		return variety3kDAO.findVariety3kByPrimaryKey(varname);
 	}
+
+	@Override
+	public Set findAllVariety() {
+		// TODO Auto-generated method stub
+		return 	variety3kDAO.findAllVariety3ks() ;
+	}
+
+	@Override
+	public Set findAllVarietyByCountry(String country) {
+		// TODO Auto-generated method stub
+		return null ;
+	}
+
+	@Override
+	public Set findAllVarietyBySubpopulation(String country) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set findAllVarietyByExample(Variety germplasm) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Variety findVarietyByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Variety findVarietykByIrisId(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Variety findVarietykById(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
 }

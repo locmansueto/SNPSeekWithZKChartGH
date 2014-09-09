@@ -3,8 +3,9 @@ package org.irri.iric.portal.genotype.views;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.irri.iric.portal.dao.Snps2VarsDAO;
 
-public interface ISnp2linesHome {
+public interface ISnp2linesHome extends Snps2VarsDAO {
 
 	public abstract void persist(Snp2lines transientInstance);
 

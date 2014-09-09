@@ -1,8 +1,9 @@
 package org.irri.iric.portal.variety.zkui;
 
 
-import org.irri.iric.portal.genotype.views.Snp2linesId;
-import org.irri.iric.portal.variety.domain.List3k;
+import org.irri.iric.portal.domain.Variety;
+//import org.irri.iric.portal.genotype.views.Snp2linesId;
+//import org.irri.iric.portal.variety.domain.List3k;
 //import org.irri.iric.portal.variety.domain.Germplasm;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Label;
@@ -26,15 +27,16 @@ public class VarietyListItemRenderer implements ListitemRenderer {
 	@Override
 	public void render(Listitem listitem, Object value, int index) throws Exception {
 		// TODO Auto-generated method stub
-			List3k  item = (List3k)value;
+			Variety  item = (Variety)value;
 		
 	
 	        // keep value in listitem
 	        listitem.setValue(value);
 
-	        addListcell(listitem, item.getVarnameOfGenStockSrc());
-	        addListcell(listitem, item.getVarietygroupOfSource());
-	        addListcell(listitem, item.getCountryOfOriginOfSource());
+	        addListcell(listitem, item.getName());
+	        addListcell(listitem, item.getIrisId());
+	        addListcell(listitem, item.getSubpopulation());
+	        addListcell(listitem, item.getCountry());
 
 	        
 	       

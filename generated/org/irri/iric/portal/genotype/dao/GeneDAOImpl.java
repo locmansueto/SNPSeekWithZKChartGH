@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage Gene entities.
  * 
  */
-@Repository("GeneDAO")
+@Repository("GeneDAOLegacy")
 @Transactional
 public class GeneDAOImpl extends AbstractJpaDao<Gene> implements GeneDAO {
 

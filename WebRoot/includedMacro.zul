@@ -1,4 +1,4 @@
-<groupbox id="gb" mold="3d" width="200px">
+<groupbox id="gb" width="230px" height="300px"  style="border-color:white"  > <!--  mold="3d" -->
 	<style>
 	    .desc { color:green;font-weight:bold;font-family:arial;font-size:20px; } 
 	    .pic { width:80px; height:80px; }
@@ -6,16 +6,14 @@
 	    
 	</style>
 	<!--  caption label="${empty arg.title ? 'No Title': arg.title}" / -->
-	<vbox align="center">
+	<vbox align="center" style="border-color:transparent"  >
+	    <!--  image class="pic" src="${arg.img}" href="${arg.href}" / -->
+	    <button image="${arg.img}" width="220px" height="220px" href="${arg.href}" style="border-color:white"/>
 	    <label class="desc" value="${empty arg.desc ? 
 	    		'This Product have no description.': arg.desc}" />
-	    <!--  image class="pic" src="${arg.img}" href="${arg.href}" / -->
-	    <button label="${empty arg.desc ? 
-	    		'This Product have no description.': arg.desc}"
-	    	   image="${arg.img}" width="125px" href="${arg.href}"/>
 	    
 	    <label class="details" value="${empty arg.details ? 
-	    		'This Product have no details.': arg.details}" />
-	    
+	    		'This Product have no details.': arg.details}" />	    
 	</vbox>
+	
 </groupbox>

@@ -2,7 +2,11 @@ package org.irri.iric.portal.genotype.views;
 
 // Generated Jul 10, 2014 12:01:30 PM by Hibernate Tools 3.4.0.CR1
 
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
@@ -14,6 +18,8 @@ import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
+import org.irri.iric.portal.domain.SnpsAllvars;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -185,5 +191,62 @@ public class ViewSnpAllvarsHome implements IViewSnpAllvarsHome {
 		//log.info("executing :" + sql);
 		return getSession().createSQLQuery(sql).addEntity(ViewSnpAllvarsId.class).list();
 	}
+
+	@Override
+	public Set<SnpsAllvars> findVSnpAllvarsByChrPosBetween(Integer chr,
+			BigDecimal start, BigDecimal end) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return findVSnpAllvarsByChrPosBetween( chr,
+				start, end,-1,-1);
+	}
+
+	@Override
+	public Set<SnpsAllvars> findVSnpAllvarsByChrPosBetween(Integer chr,
+			BigDecimal start, BigDecimal end, int startResult, int maxRows)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		
+		String sql = "select VARNAME, CHR, POS, REFNUC, VAR1NUC from VIEW_SNP_ALLVARS where " // + onlymismatchsql
+				+ " chr=" + chr + " and pos between " +
+				(start.intValue() -1) + " and " + (end.intValue() + 1) + " order by VARNAME, CHR, POS" ;	
+		
+		return new java.util.LinkedHashSet<SnpsAllvars>(executeSQL(sql));
+	}
+
+	@Override
+	public Set<SnpsAllvars> findVSnpAllvarsByVarsChrPosBetween(Integer chr,
+			BigDecimal start, BigDecimal end, Collection<Integer> vars)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		return findVSnpAllvarsByVarsChrPosBetween( chr,
+				 start,  end,  vars,-1,-1);
+	}
+
+	@Override
+	public Set<SnpsAllvars> findVSnpAllvarsByVarsChrPosBetween(Integer chr,
+			BigDecimal start, BigDecimal end, Collection<Integer> vars,
+			int startResult, int maxRows) throws DataAccessException {
+		// TODO Auto-generated method stub
+		
+		StringBuffer topVarieties= new StringBuffer();
+		Iterator<Integer> itVars = vars.iterator();
+		while(itVars.hasNext()) {
+			topVarieties.append(itVars);
+			if(itVars.hasNext())
+				topVarieties.append(",");
+		}
+		
+		String sql = "SELECT VARNAME, chr, pos, refnuc, var1nuc  FROM VIEW_SNP_ALLVARS  where " //+ onlymismatchsql 
+		+ " chr="
+		+ chr + " and pos between " + (start.intValue()-1) + " and " + (end.intValue()+1) + 
+		" and varname in ("  + topVarieties.toString().replace("\"","\\\"")
+		+  ") order by VARNAME, chr, pos" ;
+		
+		return new java.util.LinkedHashSet<SnpsAllvars>(executeSQL(sql));
+	}
+	
+	
+	
+	
 	
 }

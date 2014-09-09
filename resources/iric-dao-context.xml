@@ -33,16 +33,30 @@
 	
 	
 				<!-- Using Apache DBCP Data Sources -->
-				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="ProductionDS">
+				<!-- IRRI local -->
+				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="ProductionDS">
 					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 					<property name="username" value="lmansueto"/>
 					<property name="password" value="lmansueto"/>
 					<property name="url" value="jdbc:oracle:thin:@172.29.4.231:1521:orcl"/>
 					<property name="maxIdle" value="1"/>
 					<property name="maxActive" value="10"/>
+				</bean -->
+				
+						
+				<!-- AWS -->
+				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="ProductionDS">
+					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+					<property name="username" value="lmansueto"/>
+					<property name="password" value="lmansueto"/>
+					<property name="url" value="jdbc:oracle:thin:@202.123.56.231:1521:orcl"/>
+					<property name="maxIdle" value="1"/>
+					<property name="maxActive" value="10"/>
 				</bean>
-		
-	
+					
+
+						
+						
 	
 	<!-- ******************************************************************** -->
 	<!-- Setup each persistence unit -->

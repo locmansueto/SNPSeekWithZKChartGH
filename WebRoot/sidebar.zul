@@ -1,6 +1,29 @@
 <?page title="sidebar" contentType="text/html;charset=UTF-8"?>
+
 <zk>
-<window title="sidebar" border="normal">
-New Content Here!
-</window>
+
+	<menubar id="menubar" width="100%" orient="vertical" autodrop="true">
+		<menuitem src="/images/iric/home.png" label="Home" href="index.zul"/>
+		<menu label="Query" src="/images/iric/query.png">
+			<menupopup>
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="SNP" href="_snp.zul"/>
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Variety" href="_variety.zul"/>
+			</menupopup>
+		</menu>			
+		<menu label="Viewers" src="/images/iric/viewer.png">
+			<menupopup>
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="JBrowse" href="_jbrowse.zul"/>
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Geography" href="_variety.zul"/>
+			</menupopup>
+		</menu>			
+		<menu label="Help" src="/images/iric/help.png" >
+			<menupopup>
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Quick Help" href="_snp.zul"/>
+				<menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Reference" href="_variety.zul"/>
+			</menupopup>
+		</menu>
+	</menubar>
+	
+	
+	
 </zk>

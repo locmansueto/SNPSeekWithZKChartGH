@@ -23,6 +23,7 @@ public class AppContext {
 	private static final Log log = LogFactory.getLog(AppContext.class);
 	private static final java.util.Random  rand = new   java.util.Random();
 	public static String tempdir = "../webapps/iric-portal/tmp/";
+	private static final boolean isAWS = true;
 
     private static ApplicationContext ctx;
     
@@ -40,6 +41,20 @@ public class AppContext {
     	long endTime  =  System.currentTimeMillis( );	
     	System.out.println(endTime- startTime + " ms " + report);
     	startTime=endTime;
+    }
+    
+    
+    public static String getHostname() {
+    	if(isAWS)
+    		return "http://oryzasnp.org";
+    	else
+    		return "http://pollux";
+    	//return "http://localhost";
+    }
+    
+    
+    public static boolean isSNPAllvarsFetchMismatchOnly() {
+    	return true;
     }
     
     
@@ -84,6 +99,10 @@ public class AppContext {
     		System.out.println(name + "==null using SpringUtil");
     		obj = SpringUtil.getBean(name);
     	}
+    	
+    	if(obj==null) throw new RuntimeException(name + "==null");
+    	
+    	/*
     	if (obj==null) {
     		System.out.println(name + "==null using new!");
     		log.debug(name + "==null using new!");
@@ -125,6 +144,8 @@ public class AppContext {
     	
     	
     	if(obj==null) throw new RuntimeException(name + "==null");
+    	
+    	*/
     	
     	return obj;
     }

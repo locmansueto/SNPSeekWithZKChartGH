@@ -2,17 +2,16 @@ package org.irri.iric.portal.variety.dao;
 
 import java.util.Set;
 
+import org.irri.iric.portal.dao.VarietyDAO;
 import org.irri.iric.portal.variety.domain.List3k;
-
 import org.skyway.spring.util.dao.JpaDao;
-
 import org.springframework.dao.DataAccessException;
 
 /**
  * DAO to manage List3k entities.
  * 
  */
-public interface List3kDAO extends JpaDao<List3k> {
+public interface List3kDAO extends JpaDao<List3k> , VarietyDAO {
 
 	
 	public Set getGermplasmByExample(List3k germplasm);

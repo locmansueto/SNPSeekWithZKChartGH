@@ -3,11 +3,15 @@
         <north height="90px" border="none" >
             <include src="/banner.zul"/>
         </north>
-        <!-- west width="260px" border="none" collapsible="true"
+        <!--  west width="100px" border="none" collapsible="true"  title="Navigation" 
+                splittable="true">
+            <include src="/sidebar.zul"/>
+        </west -->
+        <!-- west width="100px" border="none" collapsible="true"  title="Navigation" 
                 splittable="true" minsize="300">
             <include src="/sidebar.zul"/>
         </west -->
-        <center id="mainContent" autoscroll="true" border="none"
+        <center id="mainContent" autoscroll="true" border="none" flex="true"
                 self="@insert(content)">
         </center>
         <south height="30px" border="none">

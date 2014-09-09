@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project adv-config="true">
   <add-on id="spring.mvc"/>
-  <add-on id="spring.persistence"/>
   <add-on id="spring.test"/>
-  <add-on id="cxf.support"/>
+  <add-on id="spring.persistence"/>
   <add-on id="spring.web"/>
+  <add-on id="cxf.support"/>
   <container path="com.genuitec.runtime.library/com.genuitec.hibernate_4.1">
     <disable type="custom_jars"/>
     <disable name="hibernate-core-4.1.4.Final-revised.jar" type="custom_jar"/>
@@ -12,6 +12,6 @@
   </container>
   <container path="com.genuitec.runtime.library/com.genuitec.me4s/hibernate.core_3.5.5">
     <disable name="hibernate-core-3.5.5.Final.jar" type="jar"/>
-    <custom-jar path="E:lib/jars/hibernate-core-3.5.0-Final-revised.jar"/>
+    <custom-jar path="lib/iric_portal/WebRoot/WEB-INF/lib/hibernate-core-3.5.0-Final-revised.jar"/>
   </container>
 </project>
