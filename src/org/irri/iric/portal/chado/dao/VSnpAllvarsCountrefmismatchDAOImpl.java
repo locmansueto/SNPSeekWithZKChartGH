@@ -1,5 +1,6 @@
 package org.irri.iric.portal.chado.dao;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -15,8 +16,8 @@ import org.hibernate.Session;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.domain.VSnpAllvarsCountrefmismatch;
 import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
-import org.irri.iric.portal.genotype.views.IViewCountVarrefMismatchHome;
-import org.irri.iric.portal.genotype.views.ViewCount2linesMismatchId;
+//import org.irri.iric.portal.genotype.views.IViewCountVarrefMismatchHome;
+//import org.irri.iric.portal.genotype.views.ViewCount2linesMismatchId;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -120,7 +121,7 @@ public class VSnpAllvarsCountrefmismatchDAOImpl extends AbstractJpaDao<VSnpAllva
 	 *
 	 */
 	@Transactional
-	public VSnpAllvarsCountrefmismatch findVSnpAllvarsCountrefmismatchByPrimaryKey(Integer var) throws DataAccessException {
+	public VSnpAllvarsCountrefmismatch findVSnpAllvarsCountrefmismatchByPrimaryKey(BigDecimal var) throws DataAccessException {
 
 		return findVSnpAllvarsCountrefmismatchByPrimaryKey(var, -1, -1);
 	}
@@ -131,7 +132,7 @@ public class VSnpAllvarsCountrefmismatchDAOImpl extends AbstractJpaDao<VSnpAllva
 	 */
 
 	@Transactional
-	public VSnpAllvarsCountrefmismatch findVSnpAllvarsCountrefmismatchByPrimaryKey(Integer var, int startResult, int maxRows) throws DataAccessException {
+	public VSnpAllvarsCountrefmismatch findVSnpAllvarsCountrefmismatchByPrimaryKey(BigDecimal var, int startResult, int maxRows) throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVSnpAllvarsCountrefmismatchByPrimaryKey", startResult, maxRows, var);
 			return (org.irri.iric.portal.chado.domain.VSnpAllvarsCountrefmismatch) query.getSingleResult();

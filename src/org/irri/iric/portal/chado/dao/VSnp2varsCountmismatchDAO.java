@@ -1,5 +1,6 @@
 package org.irri.iric.portal.chado.dao;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import org.irri.iric.portal.chado.domain.VSnp2varsCountmismatch;
@@ -66,12 +67,12 @@ public interface VSnp2varsCountmismatchDAO extends
 	 * JPQL Query - findVSnp2varsCountmismatchByPrimaryKey
 	 *
 	 */
-	public VSnp2varsCountmismatch findVSnp2varsCountmismatchByPrimaryKey(Integer var1_1, Integer var2_1) throws DataAccessException;
+	public VSnp2varsCountmismatch findVSnp2varsCountmismatchByPrimaryKey(BigDecimal var1_1, BigDecimal var2_1) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnp2varsCountmismatchByPrimaryKey
 	 *
 	 */
-	public VSnp2varsCountmismatch findVSnp2varsCountmismatchByPrimaryKey(Integer var1_1, Integer var2_1, int startResult, int maxRows) throws DataAccessException;
+	public VSnp2varsCountmismatch findVSnp2varsCountmismatchByPrimaryKey(BigDecimal var1_1, BigDecimal var2_1, int startResult, int maxRows) throws DataAccessException;
 
 }

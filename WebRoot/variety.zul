@@ -21,6 +21,11 @@
         }
     </style>
     
+   	<style>
+       	<!-- cut/hide the vertical borders in the grid rows -->
+		tr.z-row td.z-row-inner { border-right: 0px #CCC; }
+    </style>
+		
 <!--  style>
 .no-highlight tr.z-grid-odd td.z-row-inner,tr.z-grid-odd .z-cell,tr.z-grid-odd, .no-highlight tr.z-row-over > td.z-row-inner
 	      {
@@ -44,6 +49,8 @@
 	
 		import org.springframework.beans.factory.annotation.Autowired;
 
+		import org.irri.iric.portal.variety.zkui.CvListItemRenderer;
+
        
        	VarietyFacade variety = (VarietyFacade)SpringUtil.getBean("VarietyFacade");
  
@@ -57,19 +64,28 @@
         //String msg =varnames.size()/2 + " varieties, " + irisIds.size()/2 + " IRIS IDs, "  + countries.size()/2 + " countries, " + subpopulation.size()/2 +  " subpopulations for selection";
         String msg ="Get Variety Information by Name or IRIS ID.  Search varieties by Country and/or Subpopulation";
                   
+        java.util.List listPassport = new java.util.ArrayList();
+        listPassport.addAll( variety.getPassportDefinitions().keySet());
+        
+        java.util.List listPhenotype = new java.util.ArrayList();
+        listPhenotype.addAll( variety.getPhenotypeDefinitions().keySet());
+        
+        
+        
                 
 </zscript>
 
       
 
-<window title="Variety Search" border="none" apply="org.irri.iric.portal.variety.zkui.VarietyQueryController">
+<window id="winVariety" border="none" apply="org.irri.iric.portal.variety.zkui.VarietyQueryController">
+<vbox id="hboxQuery">
 <hbox>
-<grid width="800px">
+<grid id="gridQuery" width="600px" height="230px">
 
 <rows>
 
     <row spans="2">
-	<textbox id="msgbox" readonly="true" value="${msg}" width="750px"/>
+	<textbox id="msgbox" readonly="true" value="${msg}" width="590px"/>
 	</row>
    
 <row>
@@ -84,7 +100,7 @@
 			    ]]></zscript>
 </row>
 <row>
-<label value="IRIS Id"/>
+<label value="IRIS ID"/>
 
 				<hbox>
 			    <combobox id="comboIrisId" autodrop="true" buttonVisible="false" width="150px"/>
@@ -115,35 +131,33 @@
 
 
 <row>
-(If Variety name or IRIS Id is specified, the other filters are ignored)
+		<label id="lb1" pre="true" />
+        <zscript><![CDATA[
+            lb1.value="(If Variety name or IRIS Id is specified,\nthe other filters are ignored)";
+        ]]>
+        </zscript>
+    		    <hbox>
     		    <button id="searchButton" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
 			    	   width="100px" height="50px"  autodisable="self"
 			    	   xmlns:w="http://www.zkoss.org/2005/zk/client"			    	   			    	   
 			    	   w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();"
+			    	   />
+			    	   <vbox width="10px"/>	
+    		    <button id="resetButton" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;"
+			    	   width="75px" height="30px"  autodisable="self"
 			    	   />	
-</row>
-<!-- 
-<row spans="2" height="10px">
-<label value="Display settings"/>
-</row>
-<row height="10px">
-<label value="Phylogenetic tree scaling"/>
-<listbox id="selectTreescaling" mold="select" rows="1">
-    <listitem label="x1"/>    
-    <listitem label="x5" selected="true" />    
-    <listitem label="x10"/>    
-    <listitem label="x50"/>    
-    <listitem label="x100"/>    
-</listbox>	
-	
-</row>
--->
+				
+    		    <button id="showallButton" label="Show All"   style="font-size:14px;font-weight:bold;color:gray;"
+			    	   width="75px" height="30px"  autodisable="self" visible="false"
+			    	   />	
+			    	    <vbox width="10px"/>
+			    </hbox>
 
+
+</row>
 </rows>
-
 </grid>
- 
- 	<tipBox height="250px" width="400px" desc="Variety Search" 
+ 	<tipBox height="230px" width="400px" desc="Variety Search" 
 		details1= "A. Select Variety Name or IRIS ID"
 		details2= "   Result: PASSPORT and PHENOTYPE data   "
 		details3= "B. Select Country and/or Subpopulation" 
@@ -152,12 +166,48 @@
 		details7= "                  varieties in the group"
 
 		/>
-</hbox>    	   
+		
+</hbox>
+
+<vbox id="gridMoreConstraints" visible="false">
+<label value="Passport"/><label/>
+	<hbox>
+	<listbox id="listboxPassport"  mold="select"  rows="1" width="200"/>
+	<label pre="true" value = " = "/>
+	<listbox id="listboxPassportValue"  mold="select"  rows="1" width="200"/>
+	</hbox>
+<label value="Phenotype"/><label/>
+	<hbox>
+	<listbox id="listboxPhenotypes"  mold="select"  rows="1" width="200"/>
+	<listbox id="listboxQuanOperator" mold="select" width="40px" rows="1"/>
+	<listbox id="listboxPhenValue"  mold="select"  rows="1" width="200"/>
+	</hbox>
+</vbox>
+
+ <zscript><![CDATA[
+					//listboxPassport.setItemRenderer(new CvListItemRenderer() );
+					//listboxPhenotypes.setItemRenderer(new CvListItemRenderer() );
+			        listboxPassport.setModel( new SimpleListModel(listPassport));
+			        listboxPhenotypes.setModel( new SimpleListModel(listPhenotype));
+			        
+			        List listQuanOperator = new ArrayList();
+			        listQuanOperator.add(VarietyFacade.COMPARATOR_EQUALS); listQuanOperator.add(VarietyFacade.COMPARATOR_LESSTHAN);listQuanOperator.add(VarietyFacade.COMPARATOR_GREATERTHAN);
+			        listboxQuanOperator.setModel(new SimpleListModel(listQuanOperator));
+			        listboxQuanOperator.setSelectedIndex(0);
+			    ]]>
+</zscript>
+			    
+ 
+</vbox>    	   
+
+
+
+        
     	
 	<separator bar="true"/>
     
                                            
-                                           
+ <vbox>                
  <grid id="gridGermplasm" visible="false"   >
 	        	<columns>
                 <column label="PASSPORT DATA"/>
@@ -177,9 +227,10 @@
 		<row> Country<textbox id="textboxGermCountry" readonly="true"/></row>
 		</rows>
 		</grid>
+		<a target="_blank" href="/passport_dict.pdf" label="Passport data dictionary"/>
 		<listbox id="listboxGermPassport">
 			<listhead>
-			<listheader>PASSPORT</listheader>
+			<listheader>DEFINITION</listheader>
 			<listheader>FIELD</listheader>
 			<listheader>VALUE</listheader>		
 			</listhead>
@@ -188,11 +239,12 @@
 		</vbox>
 		</cell>
 		<cell align="left" valign="top">
+		<a target="_blank" href="/phenotype_dict.pdf" label="Phenotype data dictionary"/>
 		<listbox id="listboxGermPhenotypes">
 			<listhead>
-			<listheader>PHENOTYPE</listheader>
-			<listheader>VALUE</listheader>
+			<listheader>DEFINITION</listheader>
 			<listheader>FIELD</listheader>
+			<listheader>VALUE</listheader>
 			</listhead>		
 		</listbox>
 		</cell>
@@ -210,19 +262,19 @@
 		</rows>
 
 		</grid>	                                              
-                                           
+                                       
+   <splitter id="splitter" collapse="before"/>
 
    <tabbox id="tabboxDisplay" width="100%" >  
         <tabs>  
-            <tab label="Table"/>  
+            <tab id="tabTable" label="Table"/>  
             <tab id="tabPhylo" label="Phylotree" visible="false"/>  
              <!--  tab label="Geography"/ -->  
         </tabs>  
         <tabpanels>  
             <tabpanel>
  <hbox>
- <vbox width="10%"/>             
- <listbox id="varietyresult" fixedLayout="true" mold="paging" pageSize="100" visible="false">
+ <listbox id="varietyresult" fixedLayout="true" mold="paging" pageSize="100" visible="true">
 		<listhead>
 			<listheader  sort="auto"></listheader>
 			<listheader  sort="auto"></listheader>
@@ -230,17 +282,21 @@
 			<listheader  sort="auto"></listheader>
 		</listhead>		
 	</listbox>
-	 <vbox width="10%"/>       
-	</hbox>
+</hbox>
             </tabpanel>
 
             <tabpanel>  
 <!--  div style="overflow:auto;position:relative" --> 
 <vbox> 
- <label value="The tree is constructed using  Neighbor-Joining method based on 200,000 random SNPs" style="font-family: arial;font-size:12px" />
-<iframe id="iframePhylotree" style="height:1200px;width:1500px"/>
+<label value="The tree is constructed using  Neighbor-Joining method based on 200,000 random SNPs" style="font-family: arial;font-size:12px" />
+<hbox>
+<label value="Color by subpopulation "/><label value="IND " style="color:blue"/> <label value="AUS " style="color:orange"/> <label value="TEMP " style="color:pink"/> <label value="MAGIC " style="color:violet"/>
+<label value="TROP " style="color:green"/> <label value="ARO " style="color:silver"/> <label value="ADM " style="color:aqua"/> <label value="JAP " style="color:firebrick"/> <label value="NONE" style="color:black"/> 
+</hbox>
+<iframe id="iframePhylotree" style="height:1200px;width:1500px"  />
 </vbox>
 	
+							
             </tabpanel>
         
 <!--  tabpanel>        
@@ -260,7 +316,7 @@
         
          </tabpanels>
     </tabbox>
-
+</vbox>
 	
 				<zscript><![CDATA[
 			        varietyresult.pagingChild.mold =  "os";
@@ -278,10 +334,56 @@
 		<!-- iframe id="iframePhylotree" style="height:1000px" widths="100%"/ -->
 		
 
+       <zscript>         
+	        String varid=Executions.getCurrent().getParameter("irisid");
+	        if(varid==null || varid.isEmpty()) {
+	        	String varname=Executions.getCurrent().getParameter("name");
+	        	if(varname==null || varname.isEmpty()) {
+	        	} 
+	        	else
+	        	{
+			        comboVarname.setValue(varname.toUpperCase());
+		        	Events.postEvent("onClick", searchButton, null);        	
+	        	}
+	        }
+	        else {
+	        	if(varid.equals("all")) {
+	        	
+	        		iframePhylotree.setStyle("height:1500px;width:1500px");
+					iframePhylotree.setScrolling("yes");
+					String url = "treeBrowser1k.htm";
+					System.out.println( url );
+					iframePhylotree.setSrc( url );
+					iframePhylotree.setVisible(true);
+	        	
+	        	
+	        	/*
+	        		Events.postEvent("onClick", showallButton, null);
+	        		hboxQuery.setVisible(false);
+	        		Events.postEvent("onSelect", tabPhylo, null);
+	        		
+	        		*/ 
+	        		
+	        		tabPhylo.setSelected(true);
+	        		tabTable.setVisible(false);
+	        		varietyresult.setVisible(false);
+	        		hboxQuery.setVisible(false);
+	  			
 
+	        	}
+	        	else {
+		        	comboIrisId.setValue(varid);
+		        	Events.postEvent("onClick", searchButton, null);
+		        }
+	        }
+        </zscript>
 
 </window>
 
+
+
+        
+        
 <!--  include src="/footer.zul"/ -->
 
 </zk>

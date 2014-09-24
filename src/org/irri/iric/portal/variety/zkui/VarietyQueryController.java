@@ -1,48 +1,56 @@
 package org.irri.iric.portal.variety.zkui;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.chado.domain.VIricstockBasicprop;
+import org.irri.iric.portal.domain.CvTermUniqueValues;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.domain.VarietyImpl;
-//import org.irri.iric.portal.domain.VarietyImpl;
+import org.irri.iric.portal.domain.VarietyPlus;
 import org.irri.iric.portal.genotype.service.GenotypeFacade;
-import org.irri.iric.portal.genotype.zkui.SNPListItemRenderer;
-//import org.irri.iric.portal.variety.domain.Germplasm;
-//import org.irri.iric.portal.variety.domain.List3k;
 import org.irri.iric.portal.variety.service.VarietyFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.zkoss.gmaps.Gmaps;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.ForwardEvent;
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Div;
 import org.zkoss.zul.Grid;
+import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.SimpleListModel;
+import org.zkoss.zul.Splitter;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabbox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Vbox;
 
 @Controller
 public class VarietyQueryController extends SelectorComposer<Component> {
 
 	
     private static final long serialVersionUID = 1L;
-
-    //@Wire
-    //private Gmaps gmaps;
     
+    //private boolean isShowAll = false;
+
     
     @Wire
     private Combobox comboVarname;
@@ -59,9 +67,14 @@ public class VarietyQueryController extends SelectorComposer<Component> {
     @Wire
     private Textbox msgbox;
     
+    @Wire
+    private Button resetButton;
 
     @Wire
     private Button searchButton;
+    
+    @Wire
+    private Button showallButton;
     
     @Autowired
     @Qualifier("VarietyFacade")
@@ -75,6 +88,13 @@ public class VarietyQueryController extends SelectorComposer<Component> {
     @Wire
     private Tab tabPhylo;
     
+    @Wire
+    private Tab tabTable;
+    //@Wire
+    //private Grid gridQuery;
+    
+    @Wire
+    private Vbox hboxQuery;
     
     
     @Wire
@@ -86,11 +106,26 @@ public class VarietyQueryController extends SelectorComposer<Component> {
     private Textbox textboxGermSubpopulation;
     @Wire
     private Textbox textboxGermCountry;
-       @Wire
+    
+    @Wire
     private Listbox listboxGermPhenotypes;	
     @Wire
     private Textbox textboxIRISId;
     
+    @Wire 
+    private Splitter splitter;
+    
+    @Wire
+    private Listbox listboxPassport;
+    @Wire
+    private Listbox listboxPassportValue;
+    
+    @Wire
+    private Listbox listboxPhenotypes;
+    @Wire
+    private Listbox listboxPhenValue;
+    
+	
     
     @Wire
     private Listbox listboxGermPassport;
@@ -98,17 +133,33 @@ public class VarietyQueryController extends SelectorComposer<Component> {
     @Wire
     private Iframe iframePhylotree;
     
-    //@Wire
-    //private Listbox selectTreescaling;
-		
+
+    @Listen("onUser = #winVariety")
+    //public void onUser$info(Event event){
+    public void onUser(Event event){
+    	String eventParam  = event.getData().toString();
+        //ForwardEvent eventx = (ForwardEvent)event;
+        //String eventParam = eventx.getOrigin().getData().toString(); 
+        //System.out.println( eventParam ); 
+        
+        //Messagebox.show(eventParam);
+        
+        variety =  (VarietyFacade)AppContext.checkBean(variety , "VarietyFacade");
+        Variety varselected = variety.getGermplasmByIrisId(eventParam.replace("_"," ") );
+        if(varselected==null) throw new RuntimeException(eventParam.replace("_"," ") + " not found");
+        show_passport(varselected);
+      
+        //Event eventx = Events.getRealOrigin((ForwardEvent)event);
+        //System.out.println(eventx.getData());
+    }
     
+    /**
+     * When a row in variety result list is selected, show passport and phenotype data
+     */
     @Listen("onSelect = #varietyresult")
     public void selectVariety() {
     	
-    	
     	Listitem selItem =  varietyresult.getSelectedItem();
-    	
-    	
     	
     	Listcell lc = (Listcell)selItem.getChildren().get(0);
     	Label lb = (Label)lc.getChildren().get(0);
@@ -118,16 +169,13 @@ public class VarietyQueryController extends SelectorComposer<Component> {
     	Variety selVar = variety.getGermplasmByName(varname);
     	show_passport(selVar);
     	
-    	
-    	/*
-            Set<Car> selectedCars = ((ListModelList<Car>)carsModel).getSelection();
-            int size = selectedCars.size();
-             
-            showNotify(size > 0 ? size + " cars selected: " + selectedCars : "no car selected", win);
-    	 */
+
     }
     
     
+    /**
+     * Phylogenetic tree tab is clicked
+     */
     @Listen("onSelect = #tabPhylo")    
     public void onselectTabPhylo() {
 
@@ -137,318 +185,359 @@ public class VarietyQueryController extends SelectorComposer<Component> {
     	Clients.clearBusy();
     }
     
-
+    
+    @Listen("onClick = #resetButton")   
+    public void reset()
+    {
+    	comboVarname.setValue("");
+    	comboIrisId.setValue("");
+    	comboCountry.setValue("");
+    	comboSubpopulation.setValue("");
+    }
+    
+    
+    
+    @Listen("onClick = #showallButton")   
+    public void showAll()
+    {
+    	reset();
+    	tabTable.setSelected(true);
+    	variety =  (VarietyFacade)AppContext.checkBean(variety , "VarietyFacade");
+		
+		java.util.List<Variety> varsresult = new java.util.ArrayList<Variety>();
+		varsresult.addAll( variety.getGermplasm() );
+		
+		msgbox.setValue( "ALL RESULT: " + varsresult.size() + " rows" );
+		
+    	displayResults(varsresult,true);
+    }
+    
+    /**
+     * Search button is clicked
+     * 1. check if inputs are valid
+     * 2. if variety name or iris id are set, show passport and phenotype
+     *    else query using values for country and subpopulation
+     * 3. display result in table   
+     * 4. if result is more than 2, generate phylogenetic tree
+     */
 	@Listen("onClick = #searchButton")    
 	public void searchList3k()    {
 		
 		variety =  (VarietyFacade)AppContext.checkBean(variety , "VarietyFacade");
 		
+		tabTable.setSelected(true);
+		
 		java.util.List<Variety> varsresult = new java.util.ArrayList<Variety>();
 		
 		if(comboVarname.getValue()!=null &&  !comboVarname.getValue().isEmpty() && comboIrisId.getValue()!=null &&  !comboIrisId.getValue().isEmpty())
 		{
-			msgbox.setValue( "INVALID INPUT: Only one of either Variety name or IRIS ID can be specified" );
-			msgbox.setStyle( "font-color:red" );
+			//msgbox.setValue( "INVALID INPUT: Only one of either Variety name or IRIS ID can be specified" );
+			//msgbox.setStyle( "font-color:red" );
+			Messagebox.show( "INVALID INPUT: Only one of either Variety name or IRIS ID can be specified" );
 			return;
 		}
 		
 		if(comboVarname.getValue()!=null &&  !comboVarname.getValue().isEmpty() ) {
 			
+			Variety varQuery = variety.getGermplasmByName( comboVarname.getValue() ); 
+			if(varQuery==null) {
+				Messagebox.show( "VARIETY NOT FOUND: " +  comboVarname.getValue().toUpperCase());
+				return;
+			}
 			msgbox.setValue(comboVarname.getValue().toUpperCase() +  " PASSPORT DATA"); 
-			
-			show_passport( variety.getGermplasmByName( comboVarname.getValue() ) );
+			show_passport( varQuery );
 			tabboxDisplay.setVisible(false);
 			gridGermplasm.setVisible(true);
 
 		} else if (comboIrisId.getValue()!=null &&  !comboIrisId.getValue().isEmpty() ) 
 		{
+			Variety varQuery = variety.getGermplasmByIrisId( comboIrisId.getValue() );
+			if(varQuery==null) {
+				Messagebox.show( "VARIETY NOT FOUND: " + comboIrisId.getValue().toUpperCase() );
+				return;
+			}
+
 			msgbox.setValue(comboIrisId.getValue().toUpperCase() +  " PASSPORT DATA"); 
-			show_passport( variety.getGermplasmByIrisId( comboIrisId.getValue() ) );
+			show_passport( varQuery );
 			tabboxDisplay.setVisible(false);
 			gridGermplasm.setVisible(true);
 			
 		}
 		else {
 			
+			if( (comboCountry==null || comboCountry.getValue().isEmpty()) && (comboSubpopulation==null || comboSubpopulation.getValue().isEmpty())
+				&& (listboxPassport.getSelectedItem()==null || listboxPassport.getSelectedItem().getLabel().trim().isEmpty()) 
+				&& (listboxPhenotypes.getSelectedItem()==null || listboxPhenotypes.getSelectedItem().getLabel().trim().isEmpty())	
+			  )
+			{
+				//msgbox.setValue( "INVALID INPUT: Provide at least one constraint" );
+				//msgbox.setStyle( "font-color:red" );
+				Messagebox.show( "INVALID INPUT: Provide at least one constraint" );
+				return;				
+			}
+			
 			gridGermplasm.setVisible(false);
 			tabboxDisplay.setVisible(true);
 			varietyresult.setVisible(true);
+			
+			
+			
+			if( (comboCountry==null || comboCountry.getValue().isEmpty()) && (comboSubpopulation==null || comboSubpopulation.getValue().isEmpty()) ) {}
+			else {
+						
+				//Variety example = new Variety();
+				Variety example = new VarietyImpl();
+				
+				StringBuffer msg= new StringBuffer();
+				if(comboCountry==null) throw new RuntimeException("comboCountry==null");
+				if(comboCountry.getValue()==null) throw new RuntimeException("comboCountry.getValue()==null");
+				
+				if(comboCountry.getValue()!=null && !comboCountry.getValue().isEmpty() ) {
+					example.setCountry(  comboCountry.getValue());
+					msg.append(" COUNTRY=" + comboCountry.getValue().toUpperCase());
+				}
 		
-			
-			
-			//Variety example = new Variety();
-			Variety example = new VarietyImpl();
-			
-			StringBuffer msg= new StringBuffer();
-			if(comboCountry==null) throw new RuntimeException("comboCountry==null");
-			if(comboCountry.getValue()==null) throw new RuntimeException("comboCountry.getValue()==null");
-			
-			if(comboCountry.getValue()!=null && !comboCountry.getValue().isEmpty() ) {
-				example.setCountry(  comboCountry.getValue());
-				msg.append(" COUNTRY=" + comboCountry.getValue().toUpperCase());
-			}
-	
-			if(comboSubpopulation==null) throw new RuntimeException("comboSubpopulation==null");
-			if(comboSubpopulation.getValue()!=null && !comboSubpopulation.getValue().isEmpty() )	{	
-				example.setSubpopulation( comboSubpopulation.getValue());
-				if(msg.length()>0) msg.append(" AND ");
-					
-				msg.append(" SUBPOPULATION=" + comboSubpopulation.getValue().toUpperCase());
+				if(comboSubpopulation==null) throw new RuntimeException("comboSubpopulation==null");
+				if(comboSubpopulation.getValue()!=null && !comboSubpopulation.getValue().isEmpty() )	{	
+					example.setSubpopulation( comboSubpopulation.getValue());
+					if(msg.length()>0) msg.append(" AND ");
+						
+					msg.append(" SUBPOPULATION=" + comboSubpopulation.getValue().toUpperCase());
+				}
+				
+				msgbox.setValue("VARIETY WHERE " + msg.toString());
+						
+				if(variety==null) throw new RuntimeException("variety==null");
+				if(example==null) throw new RuntimeException("example==null");
+				if(varsresult==null) throw new RuntimeException("varsresult==null");
+				
+				
+				varsresult.addAll(  variety.getGermplasmByExample( example )  );
 			}
 			
-			msgbox.setValue("VARIETY WHERE " + msg.toString());
-					
-			if(variety==null) throw new RuntimeException("variety==null");
-			if(example==null) throw new RuntimeException("example==null");
-			if(varsresult==null) throw new RuntimeException("varsresult==null");
+			if(listboxPassport.getSelectedItem()!=null && !listboxPassport.getSelectedItem().getLabel().trim().isEmpty()) {
+				
+				List listVarsByPassport = variety.getVarietyByPassport(listboxPassport.getSelectedItem().getLabel().trim(), listboxPassportValue.getSelectedItem().getLabel().trim());
+				varsresult = intersectVarietyList(varsresult, listVarsByPassport);
+			}
 			
-			varsresult.addAll(  variety.getGermplasmByExample( example )  );
+
 			msgbox.setValue( msgbox.getValue() + " ... RESULT: " + varsresult.size() + " rows" );
 			msgbox.setStyle( "font-color:black" );
-		}
-		
-		
-		
-		
-
-		// update table header
-		Listheader lhr = (Listheader)varietyresult.getListhead().getFirstChild();    	
-		String[] headers = new String[]{"NAME","IRIS ID", "SUBPOPULATION", "COUNTRY"};
-		int i = 0;
-		while(lhr != null) {
-			lhr.setLabel(headers[i] );
-			lhr = (Listheader)lhr.getNextSibling();
-			i++;
-		}
-		
-		if(varsresult.size()>2)
-		{
 			
-			StringBuffer varids = new StringBuffer();
-			java.util.Iterator<Variety> itvars = varsresult.iterator();
-			while(itvars.hasNext()) {
-				varids.append(  itvars.next().getVarietyId()  );
-				if(itvars.hasNext()) varids.append(",");
-			}
-			show_phylotree(varids.toString()); 
-			//iframePhylotree.setVisible(true);
-			tabPhylo.setVisible(true);
-		} 
-		else
-			//iframePhylotree.setVisible(false);
-			tabPhylo.setVisible(false);
+			displayResults(varsresult, false);
+		}
 		
-		
-	//	gridGermplasm.setVisible(false);
-		varietyresult.setModel( new SimpleListModel(varsresult) );
 		
 		
 		//gmaps.setCenter( 14.167774, 121.254547);
 		//gmaps.setZoom(15);
 		
 	}
-	/*
-	private void searchGermplasm()    {
-		
-		variety =  (VarietyFacade)AppContext.checkBean(variety , "VarietyFacade");
-		
-		java.util.List<Germplasm> varsresult = new java.util.ArrayList<Germplasm>();
-		
-		if(comboVarname.getValue()!=null &&  !comboVarname.getValue().isEmpty() ) {
-			
-			msgbox.setValue(comboVarname.getValue().toUpperCase() +  " PASSPORT DATA"); 
-			
-			show_passport( variety.getGermplasmByName( comboVarname.getValue() ) );
-		//	gridGermplasm.setVisible(true);
-		}
-		else {
-			
-			gridGermplasm.setVisible(false);
-			iframePhylotree.setVisible(true);
-			varietyresult.setVisible(true);
-			
-			Germplasm example = new Germplasm();
-			
-			StringBuffer msg= new StringBuffer();
-			if(comboCountry==null) throw new RuntimeException("comboCountry==null");
-			if(comboCountry.getValue()==null) throw new RuntimeException("comboCountry.getValue()==null");
-			
-			if(comboCountry.getValue()!=null && !comboCountry.getValue().isEmpty() ) {
-				example.setCountry(  comboCountry.getValue());
-				msg.append(" COUNTRY=" + comboCountry.getValue().toUpperCase());
-			}
 	
-			if(comboSubpopulation==null) throw new RuntimeException("comboSubpopulation==null");
-			if(comboSubpopulation.getValue()!=null && !comboSubpopulation.getValue().isEmpty() )	{	
-				example.setSubpopulation(comboSubpopulation.getValue());
-				if(msg.length()>0) msg.append(" AND ");
-					
-				msg.append(" SUBPOPULATION=" + comboSubpopulation.getValue().toUpperCase());
-			}
-			
-			msgbox.setValue("VARIETY WHERE " + msg.toString());
-					
-			varsresult.addAll(  variety.getGermplasmByExample( example )  );
-			msgbox.setValue( msgbox.getValue() + " ... RESULT: " + varsresult.size() + " rows" );
-			msgbox.setStyle( "font-color:black" );
+	
+	
+	private List<Variety> intersectVarietyList(java.util.Collection<Variety> list1, Collection<Variety> list2) {
+		
+		List listNew = new ArrayList();
+		
+		if(list1.size()==0)
+			return (List)list2;
+		
+		
+		Set<BigDecimal> setList1Id=new HashSet();
+		Iterator<Variety> itVar = list1.iterator();
+		while(itVar.hasNext()) {
+			setList1Id.add( itVar.next().getVarietyId() );
 		}
 		
+		Iterator<Variety> it2Var = list2.iterator();
+		while(it2Var.hasNext()) {
+			Variety var2 = it2Var.next();
+			if(setList1Id.contains(  var2.getVarietyId() ))
+				listNew.add( var2 );
+		}
+		return listNew;
 		
+	}
+	
+	private void displayResults(List varsresult, boolean showAll) {
+		displayResults( varsresult, showAll, null); 	
+	}
+	
+	private void displayResults(List varsresult, boolean showAll, String extrafield) {
 		
+		boolean hasExtraField = (extrafield!=null && !extrafield.isEmpty());
 		
-
+		System.out.println("Displaying " +  varsresult.size() + " varieties");
+		
 		// update table header
-		Listheader lhr = (Listheader)varietyresult.getListhead().getFirstChild();    	
-		String[] headers = new String[]{"NAME","SUBPOPULATION", "COUNTRY"};
-		int i = 0;
-		while(lhr != null) {
-			lhr.setLabel(headers[i] );
-			lhr = (Listheader)lhr.getNextSibling();
-			i++;
-		}
-		
-		if(varsresult.size()>2)
-		{
-			
-			java.util.Map mapAccession2IRISId = variety.getAccession2IRISMap();
-					
-			
-			StringBuffer varnames = new StringBuffer();
-			java.util.Iterator<Germplasm> itvars = varsresult.iterator();
-			while(itvars.hasNext()) {
-				varnames.append(  mapAccession2IRISId.get(itvars.next().getAccession().toUpperCase() ));
-				if(itvars.hasNext()) varnames.append(",");
-			}
-			show_phylotree(varnames.toString()); 
-		} 
-		else
-			iframePhylotree.setVisible(false);
-		
-	//	gridGermplasm.setVisible(false);
-		varietyresult.setModel( new SimpleListModel(varsresult) );
-		
+				Listheader lhr = (Listheader)varietyresult.getListhead().getFirstChild();    	
+				String[] headers;
+				if(hasExtraField)
+					headers = new String[]{"NAME","IRIS ID", "SUBPOPULATION", "COUNTRY", extrafield};
+				else
+					headers = new String[]{"NAME","IRIS ID", "SUBPOPULATION", "COUNTRY"};
+				int i = 0;
+				while(lhr != null) {
+					lhr.setLabel(headers[i] );
+					lhr = (Listheader)lhr.getNextSibling();
+					i++;
+				}
+				
+				if(varsresult.size()>2)
+				{
+					if(showAll) {
+						show_phylotree_allvars();
+					}
+					else {
+						StringBuffer varids = new StringBuffer();
+						java.util.Iterator<Variety> itvars = varsresult.iterator();
+						while(itvars.hasNext()) {
+							varids.append(  itvars.next().getVarietyId()  );
+							if(itvars.hasNext()) varids.append(",");
+						}
+						show_phylotree(varids.toString()); 
+						//iframePhylotree.setVisible(true);
+					}
+					tabPhylo.setVisible(true);
+				} 
+				else
+					//iframePhylotree.setVisible(false);
+					tabPhylo.setVisible(false);
+				
+				
+				
+				varietyresult.setModel( new SimpleListModel(varsresult) );
+				
+				gridGermplasm.setVisible(false);
+				tabboxDisplay.setVisible(true);
+				
+			//	if(showAll)
+			//		tabPhylo.setSelected(true);
+				
 	}
-
-
-	private void show_passport(Germplasm germ) {
-		
-		iframePhylotree.setVisible(false);
-		varietyresult.setVisible(false);
-
-	    textboxGermAccession.setValue( germ.getAccession());
-	    
-	    textboxGermNsftvId.setValue( germ.getNsftvId().toString());
-	    textboxGermLatitude.setValue( germ.getLatitude().toString());
-		textboxGermLongitude.setValue( germ.getLongitude().toString());
-		textboxGermCountry.setValue( germ.getCountry());
-		textboxGermSubpopulation.setValue( germ.getSubpopulation());
-		
-		java.util.List listPhen ;
-		if(germ.getPhenotypeses()==null)
-			listPhen = new java.util.ArrayList( new java.util.TreeSet(  variety.getPhenotypesByGermplasmNsftid(germ.getNsftvId())));
-		else listPhen = new java.util.ArrayList( new java.util.TreeSet(  germ.getPhenotypeses() )); 
-		
-		listboxGermPhenotypes.setModel( new SimpleListModel(listPhen) );
-		
-		//germ.getGenotypings()
-		
-		gridGermplasm.setVisible(true);
-		
-	}
-	*/
 	
+	/**
+	 * Show passpot and phenotype data
+	 * @param variety2
+	 */
 	private void show_passport(Variety variety2) {
 		
-		//iframePhylotree.setVisible(false);
-		//varietyresult.setVisible(false);
 
 	    textboxGermAccession.setValue( variety2.getName());
 	    textboxIRISId.setValue( variety2.getIrisId());
-	    //textboxGermNsftvId.setValue("");
-	    //textboxGermLatitude.setValue("");
-		//textboxGermLongitude.setValue("");
 		textboxGermCountry.setValue( variety2.getCountry());
 		textboxGermSubpopulation.setValue( variety2.getSubpopulation());
 		
-
 		
 		java.util.List listPassport = new java.util.ArrayList();
 		listPassport.addAll( variety.getPassportByVarietyid( variety2.getVarietyId())  );
 		
 		listboxGermPassport.setModel(new SimpleListModel( listPassport ));
 		
-		/*
-		java.util.List listPhen ;
-		if(germ.getPhenotypeses()==null)
-			listPhen = new java.util.ArrayList( new java.util.TreeSet(  variety.getPhenotypesByGermplasmNsftid(germ.getNsftvId())));
-		else listPhen = new java.util.ArrayList( new java.util.TreeSet(  germ.getPhenotypeses() )); 
-		*/
-		
-		
-		//Variety varwithname = variety.getGermplasmByNameLike( variety2.getName() + "%" );
-		
-		
-		//if(varwithname==null) throw new RuntimeException("No variety " + variety2.getName() + "%   found");
-		
-		
 		listboxGermPhenotypes.setModel( new SimpleListModel(variety.getPhenotypesByGermplasm(  variety2 )) );
-		//listboxGermPhenotypes.setModel( new SimpleListModel( new java.util.ArrayList() ) );
-		//listboxGermPhenotypes.setModel( new SimpleListModel(variety.getPhenotypesByGermplasmName(variety2.getName())) );
-		
-		
-		
-		//germ.getGenotypings()
 		
 		gridGermplasm.setVisible(true);
+		splitter.setOpen(true);
 		
 	}
-	
+
+	/**
+	 * Compute phylogenetic tree using jsp/phylotreeGermplasms.jsp
+	 * @param varids	list of variety IDs
+	 */
 	private void show_phylotree(String varids) {
 		
-		//if(varnames.split(",").length<400) {
-		
-			//int height = varnames.split(",").length*25;
 			int nvars = varids.split(",").length;
 			int height = nvars*21;
 			int width = nvars*30;
 			
 			int treescale = 1;
-			/*
-			switch ( selectTreescaling.getSelectedIndex() ) {
-				case 0: treescale=1; break;
-				case 1: treescale=5; break;
-				case 2: treescale=10; break;
-				case 3: treescale=50; break;
-				case 4: treescale=100; break;
-			}
-			*/
-			/*
-		    <listitem label="x1"/>    
-		    <listitem label="x5" selected="true" />    
-		    <listitem label="x10"/>    
-		    <listitem label="x50"/>    
-		    <listitem label="x100"/>    
-		    */
 			
 			
 			iframePhylotree.setStyle("height:" + Integer.toString(height) + "px;width:1500px");
-			//iframePhylotree.setStyle("height:" + Integer.toString(height) + "px;width:" + Integer.toString(width) + "px");
 			iframePhylotree.setScrolling("yes");
 			
 			iframePhylotree.setVisible(true);
-			//varnames=varnames.replaceAll(" ", "%20");
-			//varnames=varnames.replaceAll(" ", "%20");
-			//String url = "jsp/phylotreeGermplasms.jsp?scale=" + treescale + "&nsftvid=" + varnames ;
 			String url = "jsp/phylotreeGermplasms.jsp?scale=" + treescale + "&varid=" + varids ;
 			System.out.println( url );
 			iframePhylotree.setSrc( url );
-		//} else
-		//	iframePhylotree.setSrc( "jsp/viewtree.html" );
 	
-			//newick 1000 varieties 
-			//'((((((((((((((((((YN_1353-3/IRIS_313-10423:0.008992031616003288,B_6144-MR-6-0-0/IRIS_313-7641:0.007737968383996711):0.009854480546063877,B_6149_F-MR-7/IRIS_313-10337:0.017490519453936124):0.018723526662330823,(BPI_76_NON_SENSITIVE_GREEN/IRIS_313-8903:0.03802562238754292,(ARIANA/IRIS_313-8069:0.023233182653257207,C_166-135/IRIS_313-11431:0.024426817346742794):0.008789377612457072):0.003305848337669174):0.004591143498297345,((IR_80310-12-B-1-3-B/IRIS_313-10394:0.0328936357838032,ARC_18061/IRIS_313-8935:0.08828636421619679):0.009817718232814153,(BINUHANGIN/IRIS_313-9503:0.007610943026148651,ORIONE/IRIS_313-8068:0.00819905697385135):0.022889781767185854):0.007033544001702653):0.002343477813581867,((EX_FOILAEIN_NAPUTO/IRIS_313-10113:0.025759896816114534,TV_30/IRIS_313-11507:0.023670103183885467):0.007554528344925798,KHAO_GRADOOK_CHAHNG/IRIS_313-9032:0.033850471655074196):0.005503553436418139):0.00259641109918053,(B_3913_B_16-20_ST_28/IRIS_313-11656:0.032994537753322964,PAH_DI_MI_RAHK/IRIS_313-11535:0.04519546224667703):0.015277885775819471):9.833924944990724E-4,(((SIGARDIS/IRIS_313-9867:0.02935989518350491,PING_SHAN_TA_TSWEN_KU/IRIS_313-9017:0.028440104816495088):0.004024147993177688,KAAKARAN/IRIS_313-9314:0.034095852006822316):0.001218994118949915,(RELLY/IRIS_313-8812:0.03786539988512267,(MENTIK_TJERE_BELUT/IRIS_313-8368:0.029285785122965927,CULALANSI/IRIS_313-11471:0.02679421487703407):0.0059896001148773345):0.0038047558810500853):0.0024109825055009257):5.803218117823616E-4,((((IRGA_659-1-2-2-2/IRIS_313-10403:0.023560861488062676,JUMA_62/IRIS_313-10279:0.024719138511937327):0.00630701267624372,ZACATEPEC_A_79/IRIS_313-11438:0.03192798732375628):0.0040772562879043345,(((((MILYANG_77/IRIS_313-10040:0.0295832409236058,MILYANG_30/IRIS_313-9925:0.0317667590763942):3.583723801523983E-4,IRI_339/IRIS_313-9922:0.0324766276198476):0.00310267910690544,J_6_IR_520_WC_693/IRIS_313-11538:0.040449820893094554):0.005398981238237569,HTA_22/IRIS_313-9602:0.03516226876176243):9.843021589404817E-4,BAMOA_A_75/IRIS_313-9953:0.03539757284105953):7.107124620956686E-4):0.0020321977848214417,(((((IRGA_411-1-6-1F-A/IRIS_313-10402:0.024934358795193862,((IRGA_370-42-1-1F-C-1/IRIS_313-10401:0.006688367052312679,(IRGA_318-11-9-2A/IRIS_313-10398:0.007966827111806954,IRGA_318-11-6-9-2B/IRIS_313-10397:0.009203172888193048):3.0663294768732037E-4):0.010872070556776576,BR_IRGA_409/IRIS_313-10161:0.019240429443223427):0.004535641204806141):0.005728167002128208,IRGA_370-38-1-1F-C4-2/IRIS_313-10400:0.028394957997871798):0.0024881427886265205,(CICA_9/IRIS_313-9966:0.012955864255210689,TIKAL_3/IRIS_313-9940:0.011904135744789312):0.01785341971137348):0.004297993835420701,SUWEON_311/IRIS_313-10000:0.043316381164579296):0.0017863211000878469,(((ECIA_24-107-1/IRIS_313-10293:0.011192602990961118,AMISTAD_82/IRIS_313-10247:0.01242739700903888):0.025278631983546174,MUKKALA_BAZAL/IRIS_313-8930:0.025286368016453824):0.0020503661847485755,SEQ_93/IRIS_313-7635:0.030122133815251424):0.005301559759287153):3.2282235678011886E-4):0.0025883648642430314):3.4959522854074304E-4,WAR_72-2-1-1/IRIS_313-10421:0.04260638964999929):9.430601927221012E-4,BKN_BR_1031-78-5-4/IRIS_313-11515:0.04594667125259039):0.0012572071557137299,(IR_57514-PMI_5-B-1-2/IRIS_313-10360:0.019522732539279015,PSBRC_68/IRIS_313-10235:0.024117267460720983):0.021732383908739394):0.0019928466319962157,((((((IRGA_346-111-2-1F/IRIS_313-10399:0.018529287817805367,B_4414_F-MR-6-3/IRIS_313-10332:0.021850712182194632):0.005869620210854406,NAZIRA_SAIL/IRIS_313-9696:0.027900379789145596):0.003430812803606683,BR_5230-46-4/IRIS_313-10341:0.027806687196393315):0.005576326966961897,((CHAMA_DWARF/IRIS_313-10046:0.021167871700284883,CHANDINA/IRIS_313-9917:0.02695212829971512):0.0051327540719018514,(SADA_RUPA/IRIS_313-9325:0.01894045368831148,UPRH_265/IRIS_313-11621:0.019599546311688518):0.008809745928098148):0.006121485533038106):0.0030931358148755376,(B_78-S81/IRIS_313-9574:0.041140052099548206,(((JATI_MANI/IRIS_313-11717:0.030290383362581594,ITA_245/IRIS_313-11713:0.029309616637418406):0.0019161974681435132,IR_3839-1/IRIS_313-11516:0.032263802531856484):0.0023652541841317036,K_15591-4/IRIS_313-11506:0.033724745815868304):0.0023749479004517918):0.002460770435124463):0.0033868537306494108,(ARC_18175/IRIS_313-8458:0.03399967307291125,AR_133/IRIS_313-11493:0.032500326927088756):0.010450958769350588):0.001964459791191043):0.0011940902674403868,(H_6/IRIS_313-9472:0.03649205581645884,BALASURIYA_A/IRIS_313-8699:0.043987944183541156):0.011989090627411297):3.158893062645648E-4,(((((WAR_87-7-A10-2-B-B-B-1/IRIS_313-10422:0.0361591005314392,(((((BHASAMANIK/IRIS_313-9360:0.023517988118406243,EX_WUKARI_WILD/IRIS_313-11657:0.027472011881593757):0.005981965179962778,SKK/IRIS_313-11500:0.029983034820037217):0.00480623904789128,(AGAI_1/IRIS_313-8922:0.03974744534503739,DISSIGBE/IRIS_313-11723:0.027082554654962614):0.007621260952108725):0.0016711216316690931,SADAJIRA_19-287/IRIS_313-8737:0.0402876283683309):0.003705282277587669,NCS_771_A/IRIS_313-11646:0.03970909272241234):0.0029630869685608047):0.0024286469697959276,(MEKENZIE_SMALL/IRIS_313-9935:0.04871225105210911,(CO_19/IRIS_313-8657:0.040437360104927614,ISWAR_KORA/IRIS_313-11432:0.06177263989507238):0.002872748947890899):0.005504907717704066):3.7799659569105894E-4,(((((((((((((FACAGRO_64/IRIS_313-10114:0.034669927787760305,((NS_252/IRIS_313-10030:0.01277310474159141,MAKALIOKA_STANDARD/IRIS_313-8595:0.01751689525840859):0.014001640855720155,(ROJOFOTSY/IRIS_313-9740:0.03206615660679319,TAI_6/IRIS_313-8739:0.031733843393206805):0.003175859144279843):0.005376322212239708):0.006702620031414034,KELIRENY/IRIS_313-10102:0.030933629968585962):5.880512127580777E-4,MAMORIAKA/IRIS_313-9732:0.03196007378724193):8.506976939771198E-4,KITRANA_1007/IRIS_313-10026:0.038967739806022875):0.004644659307893012,((GENIT/IRIS_313-9778:0.03510966562289426,MARHARORA/IRIS_313-11663:0.031060334377105744):0.018124726132527143,VARY_MALADY_MENA/IRIS_313-9388:0.045305273867472844):0.0025831922546069863):0.0038176306679543297,LOCAL/IRIS_313-11478:0.048071256050795666):0.00572600714627715,(BARIK_KUDI/IRIS_313-9384:0.02926741221416629,(PADI_ARA/IRIS_313-11497:0.017102377673769473,ZINYA_KOLAMBA/IRIS_313-11453:0.019397622326230525):0.008592587785833702):0.01088535027559785):0.004271522408123986,LARHA_MUGAD/IRIS_313-8568:0.04598346294343852):0.00432734193226445,((((((((WANGA_BARUGULU/IRIS_313-9611:0.029351076576202062,(DUDH_KADAR/IRIS_313-8796:0.022972093014322785,((NIBARI/IRIS_313-8731:0.02061365825523373,KOTODESHI/IRIS_313-11600:0.021996341744766272):0.0010515150611979107,BHATA_PYAGI/IRIS_313-11597:0.026418484938802087):9.604069856772174E-4):0.005152673423797938):3.8487020401266076E-4,(KUTTA/IRIS_313-8924:0.027524478839298337,NAPDAI/IRIS_313-11446:0.02436552116070166):0.0063807547959873435):9.1493611171541E-4,(BANIKAT/IRIS_313-8988:0.027951450860449614,PAUNDRI/IRIS_313-11738:0.029538549139550386):0.0029956888882845924):0.0018448465806824162,((LABRA/IRIS_313-9547:0.02908297459380132,NIRGUNI/IRIS_313-8757:0.029897025406198676):0.0018469839100906885,BOKDEL/IRIS_313-11606:0.03040801608990932):0.0011626924818175786):0.001614387504373772,BIR_BAHADUR/IRIS_313-11491:0.03209528046437623):5.604166774100007E-4,NCS_331/IRIS_313-11638:0.03669204426009001):0.0015432808844706924,((((NCS_237/IRIS_313-9492:0.027609727923630957,NCS_477/IRIS_313-11641:0.02543027207636904):0.002326726822411935,NCS_458/IRIS_313-11640:0.030843273177588056):0.003951133286487066,NCS_809_A/IRIS_313-11647:0.03946636671351294):0.0017587566830006324,((MAKRO/IRIS_313-9258:0.028130301788560394,NCS_599/IRIS_313-11642:0.024559698211439607):0.006882329803659314,SURMATIYA/IRIS_313-8303:0.02824267019634069):0.0029253058169993666):0.0019788529045918005):7.926380201047634E-4,NCS_102/IRIS_313-11445:0.03857991813223899):0.0020618430433596343):0.0011269593707920584,((((((LALKA_LAL_DHAN/IRIS_313-10010:0.027592800221310086,HOLDIGANTHI/IRIS_313-11607:0.030227199778689918):0.0033130727060758083,(498-2A_BR_8/IRIS_313-8450:0.035921035344941885,BIJULI_BATI/IRIS_313-11563:0.038428964655058115):0.0015294272939241843):8.62885741274686E-4,(SONAMUKHI/IRIS_313-9287:0.028982213146583714,MOONOR/IRIS_313-11566:0.029937786853416287):0.006188364258725314):0.0034061363043260146,RAJHUSAI_ACR_12/IRIS_313-8614:0.03276761369567399):0.0019007697171513729,((DA_11/IRIS_313-9606:0.030772827954106564,JUGRAY/IRIS_313-11599:0.028957172045893435):0.005686614883203056,(G_25/IRIS_313-9259:0.03981116036673912,PATALASAFED_SUNGHAWADO/IRIS_313-8920:0.036688839633260875):0.0024608851167969457):0.002153449032848625):7.351316431889595E-4,(MULLIKURUVA/IRIS_313-9557:0.04616349997656186,NCS_830/IRIS_313-11648:0.034846500023438136):0.003548540231811041):3.7024188834414076E-4):5.019738655065871E-4,(((RIZ_TYPE_SORGHO/IRIS_313-10035:0.048400030128854035,(MAKALIOKA/IRIS_313-9709:0.015650432351448442,BENGALY_MORIMO/IRIS_313-9551:0.01657956764855156):0.011504969871145965):0.0029400293992513926,WANGKOD/IRIS_313-9187:0.06988997060074861):0.00937801753842192,NCS_901_A/IRIS_313-11650:0.053704482461578065):0.0035142018623376564):0.0017415980470225512,((((((((((((RACE_PERUMAL/IRIS_313-9970:0.031503882882538914,(KALU_ILANKALAYAN/IRIS_313-8968:0.024283899533065676,HERATH_BANDA/IRIS_313-11741:0.02397610046693432):0.005626117117461089):3.174229760783166E-4,POKKALI/IRIS_313-8244:0.03185507702392168):7.251225362634867E-4,KOTTEYARAN/IRIS_313-8660:0.034278627463736513):0.0036479911944638475,PERUNEL/IRIS_313-8647:0.03626825880553615):6.280319038622258E-4,PARA_NELLU/IRIS_313-9351:0.04663415559613776):0.002065118139048215,TYPE_50/IRIS_313-8754:0.0335241006109518):0.0035393867489703747,((PUTTIGE/IRIS_313-8921:0.03376175950442146,KEERIPALA_CHILL_PADDY/IRIS_313-8559:0.03206824049557854):0.007485456237079507,((T_315/IRIS_313-8727:0.03928080364399812,(K_1074/IRIS_313-11505:0.027853321009687924,VAIKATHARYAN/IRIS_313-11461:0.027356678990312078):0.00785919635600188):0.0040992427117840765,((DUDRE/IRIS_313-8631:0.03661552624986833,NCS_766/IRIS_313-11645:0.03876447375013167):6.641305251233528E-4,(XITTO/IRIS_313-8622:0.038148524109178385,NCS_745/IRIS_313-11644:0.04584147589082161):0.003220869474876654):0.003758882288215917):5.5481262920492255E-5):0.003266692352592122):0.0020717057873164205,PULUTHI_KARAN_MIXED/IRIS_313-8306:0.047402129661902326):0.001882516454310531,(HD_10/IRIS_313-9795:0.05028392483891278,((((BADUIE/IRIS_313-9403:0.02934189998361204,DERAWA/IRIS_313-11671:0.026938100016387957):0.0034070370529568576,URAIBOOL/IRIS_313-8305:0.026507962947043148):0.0013812269459508534,ROPA/IRIS_313-8704:0.02866877305404914):2.720606389780833E-4,SELHI/IRIS_313-11460:0.033734189361021925):0.01310857516108721):0.0033251141609238546):6.118550945522422E-4,(((BADAL_1163/IRIS_313-9148:0.037653039336556844,LALDIGHA/IRIS_313-11487:0.03418696066344316):0.0116902673643454,KUSUM_KATIKI/IRIS_313-11565:0.042524732635654594):0.0026710581681019608,(ASHMBER/IRIS_313-8850:0.042237585925611006,BANGLA/IRIS_313-11561:0.042132414074388995):0.006067691831898039):0.003172791511893068):0.0010905528587835036,(((SOLOMON_RED_RICE/IRIS_313-9944:0.04063322690011989,(MODDAI_KARUPPAN/IRIS_313-9862:0.030770968647440694,PODIWEE/IRIS_313-9831:0.047769031352559305):0.006996773099880116):0.004064390286924947,RANGOON_SAMBA/IRIS_313-9832:0.039570609713075064):0.0017430699429423352,(GALWAKA_HANDERAN/IRIS_313-9256:0.04383744852030449,KURULUTUDU/IRIS_313-8925:0.03139255147969552):0.010555680057057662):0.0031057920508844638):5.888494095016676E-4,BARAMANJ/IRIS_313-11448:0.049260874864179974):4.2530409700718315E-4):0.0011728738651159147,((HOLDI_GIRA/IRIS_313-9617:0.04104126074068455,(BHOJON_KOLPO/IRIS_313-9067:0.04391611015177964,(NOLOS/IRIS_313-8733:0.04320830183548714,BAZAIL/IRIS_313-8717:0.039561698164512854):0.003983889848220366):0.0018662392593154498):9.310144438954581E-4,(PATNAI_31-675/IRIS_313-9049:0.041697786507343265,LATA_MONA/IRIS_313-8349:0.03955221349265674):0.007096485556104542):0.0044114743640166765):5.225289134279788E-4):4.06508118251904E-4,((((TAMASHIRO_HIKARI/IRIS_313-10077:0.03809664860206763,(((ASHI_BINNI/IRIS_313-9594:0.008784674165508512,IRRIBINI/IRIS_313-8437:0.008025325834491486):0.02448602643976866,(((GOKULGANJA/IRIS_313-9433:0.025856167294179784,DUDHSWAR_15-141/IRIS_313-9397:0.029013832705820218):0.00525678850129597,(KUSHIARA/IRIS_313-9174:0.020926987126828285,CHAKOL/IRIS_313-8854:0.015313012873171716):0.012683211498704034):0.0021379894884998906,((KALABAIL/IRIS_313-9391:0.0255811463828921,KALO_CHAKOL/IRIS_313-9218:0.029698853617107904):0.003969387634269201,JOTA_BITCHI_1/IRIS_313-8683:0.03383561236573081):2.9951051150010465E-4):0.002226473560231347):0.0026411115663047477,DA_7/IRIS_313-8703:0.041738888433695255):0.0029871013979323735):0.001419731236688505,(JHODI_BIRUN/IRIS_313-9262:0.041995627584155135,ARC_14060/IRIS_313-8844:0.03622437241584486):0.0033435500133114924):9.653976490130837E-4,(((BK_26/IRIS_313-9348:0.04590085420358017,(DHOLA_AMAN_LOWLAND_AMAN/IRIS_313-9156:0.03137437201929295,KHAO_LEUANG_RAI/IRIS_313-9121:0.03547562798070706):0.003599145796419824):0.004141343137062401,(((PURA_BINNI/IRIS_313-9271:0.03471038742625075,GOJOL_GORIA/IRIS_313-9139:0.03472961257374925):0.0022970360089589323,(ARC_14654/IRIS_313-8900:0.026788864248869695,BAIANG_6/IRIS_313-8846:0.02439113575113031):0.0049679639910410614):0.002355951019471958,(MUTA_GANJE/IRIS_313-9072:0.029043621131770666,PUILLIPINA_KATARI/IRIS_313-8509:0.029536378868229334):0.007751548980528047):0.0020999068629375993):0.0010632243318240767,((PATMADHAI_1/IRIS_313-8632:0.03773815297886623,NULI/IRIS_313-11558:0.037851847021133776):0.0030217909450198713,DHANE_BURWA/IRIS_313-8530:0.04357320905498012):0.0025075569181759304):0.002389099421299414):4.856655751923761E-4,((SITHAIYAN_KOTTAI_SAMBA/IRIS_313-9936:0.026673208867789337,KODIA_PHUL/IRIS_313-11449:0.04546679113221066):0.004874267399514309,KABERI/IRIS_313-11722:0.0313107326004857):0.011105357374026379):0.002563053115268601):0.0013858831984969889,((((((((((((UPR_1201-1-20-1/IRIS_313-10417:0.02608798663221335,((RP_9-4/IRIS_313-9566:0.028367437222074177,(DAA_MANSA/IRIS_313-8514:0.019992542553589527,CHATO/IRIS_313-11513:0.022797457446410475):5.825627779258227E-4):0.003448591905781484,(WP_65/IRIS_313-9227:0.016972959744989857,WP_36/IRIS_313-8732:0.019177040255010144):0.009108908094218517):0.001948263367786647):0.0023861182960111084,((3210/IRIS_313-10298:0.027814906131518453,(ICTA_CRISPO_38/IRIS_313-10274:0.015712545258230907,PR_106/IRIS_313-11480:0.016827454741769093):0.008735093868481553):0.0021868566975267872,CNA_4081/IRIS_313-8161:0.025223143302473213):0.007595209828988893):0.0010817157906903019,NCS_603_B/IRIS_313-11643:0.0516276201468097):0.0033956748154451225,((NCS_964_C/IRIS_313-9400:0.06394769326862126,SERIBU/IRIS_313-8987:0.03584230673137874):0.0033607671488834062,GIZA_178/IRIS_313-8212:0.0401992328511166):0.0016573329970548632):6.660037121115278E-4,ARC_11663/IRIS_313-8621:0.03447335175663848):0.003137273526973728,(SICAN/IRIS_313-10285:0.03961004469079947,RPW_9-4_SS_1/IRIS_313-9522:0.049439955309200534):0.0024611053792762717):0.0010405664300379672,((((((CT_9737-6-1-1-2-2P-M/IRIS_313-10352:0.043175698403814605,(CEA_3/IRIS_313-10260:0.00895256906434922,EPEAL_102/IRIS_313-10220:0.008147430935650781):0.020229301596185384):0.003954165937237696,IRGA_959-1-2-2F-4-1-4A-6-CA-6X/IRIS_313-10301:0.04428833406276231):0.003865833545188216,(INIAP_6/IRIS_313-10307:0.032393386704630905,ICTA_MOTAGUA/IRIS_313-10275:0.03491661329536909):0.002636666454811785):5.339982085730034E-4,IA_CUBA_17/IRIS_313-10271:0.038180376791426995):0.005276102133596389,(((CT_9506-18-7-1T-2/IRIS_313-10300:0.046494922621898443,(UQUIHUA/IRIS_313-10287:0.03235643572904723,FONAIAP_2/IRIS_313-10268:0.04142356427095277):0.009440077378101548):0.001627808035568782,CAMPECHE_A_79/IRIS_313-11437:0.03394719196443123):0.0038282216666867042,((ARAURE_1/IRIS_313-10289:0.034180371816130845,IR_5494_BPH_1/IRIS_313-8616:0.028839628183869162):0.006609310139295551,IR_2003-P7-7-4-2/IRIS_313-8392:0.04196568986070444):0.002135840833313298):0.001351026772653613):0.0010796235242172517,((((CAMPONI/IRIS_313-10325:0.041765119871717056,(SML_AWINI/IRIS_313-9841:0.0327029799794117,(E_LONG_MAH/IRIS_313-9600:0.03724271403510533,SML_ACORNI/IRIS_313-9464:0.041567285964894674):0.005512020020588294):0.01838738012828294):0.009122385924663953,RUSTIC/IRIS_313-10318:0.04917511407533605):0.004381408056982667,(CUYAMEL_3820/IRIS_313-10263:0.03969870292324731,TOC_5430/IRIS_313-10054:0.03384129707675269):0.009775779443017342):0.0016790052277557822,(INIAP_10/IRIS_313-10314:0.03397520494631319,ALTAMIRA_9/IRIS_313-10257:0.04165479505368681):0.004693026022244215):0.0024479692492202485):8.158854437413311E-4):0.0014150638417299046,(((((((IR_80340-23-B-12-6-B/IRIS_313-10396:0.02125553997958244,IR_69502-6-SRN-3-UBN-1-B/IRIS_313-10374:0.012684460020417558):0.02095813619683934,IR_77390-1-6-4-19-1-B/IRIS_313-10392:0.04994686380316067):0.006888961355332237,((((IR_65483-111-5-9-2-11/IRIS_313-10366:0.03723359367512293,IR_13429-109-2-2-1/IRIS_313-10167:0.026616406324877072):0.009012867190014835,(E_2024/IRIS_313-9482:0.03279159423438438,IR_4432-28-5/IRIS_313-11517:0.029718405765615616):0.002422132809985166):0.0030228521286372358,IRRI_146/IRIS_313-15902:0.03938464787136277):0.001359963661642847,E_2040/IRIS_313-8914:0.04292878633835716):0.004563851144667756):8.848330928481139E-4,((((IR_75870-5-8-5-B-1/IRIS_313-10385:0.03797893864290983,IR_73571-3B-11-3-K2/IRIS_313-15906:0.04105106135709017):0.0032170997008106055,(IR_21015-72-3-3-3-1/IRIS_313-10294:0.029005584582697957,C_662083/IRIS_313-10001:0.026044415417302045):0.009005400299189392):0.005128311323759401,(BW_295-5/IRIS_313-10002:0.020160849262892053,IR_2071-586-5-6-3/IRIS_313-9044:0.03512915073710794):0.010652938676240595):0.0023382172953015506,(B_6136_E_3-TB-0-1-5/IRIS_313-10334:0.006337494161086333,B_6136-3-TB-0-1-5/IRIS_313-10333:0.008492505838913667):0.033779907704698436):0.0020080380009018903):8.752459064386882E-4,IR_52718-B-B-6-B-B-1-1/IRIS_313-10357:0.042146052921686314):0.0012334335722456414,((IR_63295-AC_209-7/IRIS_313-10361:0.04532028222010956,(PSBRC_50/IRIS_313-10234:0.033870267995272665,IR_4630-22-2-5-1-3/IRIS_313-15898:0.02376973200472733):0.011569717779890437):0.0029753561510021983,((HP_3319-2WX-6-4-1-B/IRIS_313-10353:0.041567289864642386,A_69-1/IRIS_313-11510:0.037932710135357615):0.0015921174569395943,IR_45427-2B-2-2B-1-1/IRIS_313-15899:0.04408788254306041):0.003570268848997801):0.001172357443379359):0.001007180384911756,((((PSBRC_88/IRIS_313-10238:0.007187600475833766,PSBRC_86/IRIS_313-10237:0.008532399524166234):0.025570524209995303,IR_77298-14-1-2-10/IRIS_313-15901:0.0374894757900047):0.004708354363879223,PESAGRO_102/IRIS_313-9623:0.03476414563612077):0.005521560201996293,FEI_GAI_122/IRIS_313-8412:0.03867468979800372):0.0023608494002444903):9.133717509214624E-4):3.422382227042161E-4,((((IR_70027-8-2-2-3-2/IRIS_313-10375:0.02388058552127665,IR_53650-2B-10-1-2-1/IRIS_313-10359:0.030269414478723347):0.02232550339175845,(IR_67518-B-11-1-B/IRIS_313-10371:0.04228849193104858,IR_31142-14-1-1-3-1-1-2/IRIS_313-10355:0.03100150806895141):0.010039496608241556):0.008730924783686016,CR_60-10/IRIS_313-9023:0.04898657521631397):0.0013864580006935157,((((((CAUVERY/IRIS_313-10148:0.014553482864079821,NCS_349/IRIS_313-11639:0.017666517135920178):0.01954223790504965,(((EX_MARABA_GURUKU/IRIS_313-10047:0.014684619869914282,TSAI_YUAN_CHON/IRIS_313-9708:0.015785380130085718):0.00530562394935446,MR_136-1/IRIS_313-11433:0.022049376050645546):0.0113543388789853,((SSANGDUJO/IRIS_313-9976:0.025452120816981935,(I_KUNG_PAO/IRIS_313-9758:0.025093797928972848,SHAN_GU/IRIS_313-11579:0.024516202071027154):0.00663287918301806):0.0010339880177824168,(TAIPEI_WOO_CO/IRIS_313-9706:0.02435180243322331,(TAITUNG_WOO_LI/IRIS_313-9705:0.017150539792789268,CHIAYI_WU-KO/IRIS_313-11692:0.01619946020721073):0.006303197566776688):0.0039285119822175885):0.004915036121014696):0.004110574594950348):0.002180876116489573,RPA_5929_K_45/IRIS_313-9604:0.04598193638351043):0.0021651588236643766,LEAD/IRIS_313-9791:0.05758827867633562):0.0012001141347724072,BOHOTO_BALOOCHESTAN/IRIS_313-10016:0.04449582336522759):3.6181533283041745E-4,KN_1_B_361-1-8-6-9/IRIS_313-9924:0.03919435654216959):0.003210680671181492):5.536486753365524E-4):8.73820694968148E-4,(((((((((K_479-2-3/IRIS_313-10404:0.03204455569211356,(((YA_NONG_ZAO_4/IRIS_313-10171:0.026057314176236215,(LONG_GE_33/IRIS_313-11666:0.027007519193803686,JUAN_YE_LAI/IRIS_313-11622:0.025082480806196312):0.004297685823763785):0.001901264698629219,(HE_GU_TSAO/IRIS_313-10154:0.02591072808511095,E_ZI_96/IRIS_313-8859:0.02690927191488905):0.004507485301370782):0.001167415474108766,((((MIN_ZAO_6/IRIS_313-10170:0.01642132127993574,(YONG_JIN_ZAO_3/IRIS_313-9253:0.025666349025534434,PAI_CHUEH_CHIU_LIU/IRIS_313-9065:0.020823650974465563):8.286787200642645E-4):0.004317140181590526,(FU_ZAO_XIAN/IRIS_313-8940:0.018995497693709867,CHANG_LE_SAN_SHU_ZAO/IRIS_313-8433:0.01870450230629013):0.002297859818409473):0.003467483622819869,QING_ZAO_3/IRIS_313-11732:0.02738501637718013):0.003879469985034714,((HONG_YANG_ZAO_3/IRIS_313-11727:0.02238824716058551,RONG_DAO_4/IRIS_313-11668:0.02559175283941449):0.004646916774429639,JIN_HUA_258/IRIS_313-11665:0.027888083225570355):0.002843498764965285):0.0012551626508912391):0.0016704443078864248):0.0012154080290855684,E_4197/IRIS_313-11747:0.03561349822091443):0.001854950290789411,(((MEI_FENG_9/IRIS_313-10168:0.02205418524504031,KULA_KARUPPAN/IRIS_313-9968:0.02442581475495969):0.003129664841484206,LUO_AI_ZAO_3/IRIS_313-11667:0.0258803351585158):0.005327658596063213,(E_2070/IRIS_313-11746:0.026701689513188607,CUN_GU_NUO/IRIS_313-11664:0.026288310486811396):0.009122341403936779):0.0024977108420230903):0.002482882842006055,(MIN_KE_ZHAN/IRIS_313-10191:0.03669654200716671,ACC_1286/IRIS_313-11585:0.033263457992833284):0.003884936982212699):7.473102948237532E-4,((SI_CHAO_1/IRIS_313-11734:0.033430512606482755,QING_TAI_AI/IRIS_313-11731:0.031079487393517242):0.004091204312300867,(SHUANG_BAI_AI_2/IRIS_313-11733:0.031159989725428404,MEI_LIU_ZAO_5/IRIS_313-11729:0.035890010274571595):0.0013487956876991405):0.004835121345801246):1.3026296965526788E-5,(((((HUA_LI_ZAO/IRIS_313-10224:0.036279208859522495,GAO_JIAO_BAI/IRIS_313-10178:0.0376507911404775):0.0019856612779835386,DA_NUO_ZHAN/IRIS_313-10189:0.03469933872201646):0.0013616571653267137,((((((((BAI_HE/IRIS_313-10211:0.016070068428444488,BA_SHI_ZAO/IRIS_313-9730:0.01933993157155551):0.004877520302391924,PAI_YI_PING/IRIS_313-8645:0.02339247969760808):0.0029334869288788375,KORASISI/IRIS_313-9505:0.02627401307112116):0.0023207184997136032,ANADI_WHITE/IRIS_313-11624:0.027435531500286395):0.0033573289345075414,(LAI_YIP_ZIM/IRIS_313-8454:0.023772853001918177,SATHIYA/IRIS_313-11568:0.022727146998081822):0.005248296065492464):0.0018661608915729487,(AI_ZI_HUNG/IRIS_313-9723:0.03149329202574824,TSAO_SHENG_LI_1/IRIS_313-9469:0.028966707974251757):0.003477589108427049):0.0011323473937389986,SAN_CHIAO_TSWEN/IRIS_313-8380:0.034667496356261):8.522777644397565E-4,AN_FU_ZHAN/IRIS_313-11745:0.03480990973556024):0.0015610088502982919):0.0016283545845933215,(NCS_194/IRIS_313-9605:0.03000405688110104,(WI_BIR_SHUN/IRIS_313-9372:0.028543909629027243,CHIH_SHEN_LI/IRIS_313-9324:0.029016090370972757):0.0031409431188989534):0.0034723241263441844):0.001237638909847218,((((DENG_DENG_QI/IRIS_313-10190:0.033973947575836015,(SAN_SHIH_TSI/IRIS_313-10129:0.02841444408090931,UPRH_233/IRIS_313-8435:0.02765555591909069):0.0012710524241639834):0.004470754109584037,DALSUNG_41/IRIS_313-10103:0.047751745890415954):0.0017143281876927478,CHI_SHENG_TAO/IRIS_313-9204:0.03819192181230727):0.003702513686644055,XIA_ZHI_BAI/IRIS_313-9111:0.03967998631335594):7.941198181801268E-4):0.0027886516739207036):0.0017456036062528692,GENG_77-4/IRIS_313-11570:0.05466618291184405):6.452355698854165E-4,(NX_3533/IRIS_313-9570:0.04439197651624116,MERLE/IRIS_313-8215:0.04031802348375883):0.0034025165053099002):0.0016368647644798336,((((((((LIU_XU/IRIS_313-10239:0.03691973049723753,((TONG_GU_HONG/IRIS_313-10226:0.02738692699177028,JIANG_HUI_DAO/IRIS_313-11576:0.027643073008229723):0.006193834140293009,LU_MAO_ZHAN/IRIS_313-8889:0.030876165859706997):0.004040269502762477):0.0032719515520682665,((XI_GAN_JING_REN/IRIS_313-9184:0.029404613937535233,(JIN_JUN_DAO/IRIS_313-8405:0.025843311173715654,TAI_ZHOU_XIAN/IRIS_313-11580:0.023486688826284345):0.003985386062464763):0.007408342472923985,AI_JIAO_AO_FAN_ZI/IRIS_313-11744:0.03390665752707602):0.005968360947931727):9.758154168266545E-4,BA_BAI_GU/IRIS_313-10221:0.036057778333173356):0.0013030657576268085,((DA_GANG_ZHAN/IRIS_313-10177:0.03482822460877025,(O_SATIVA/IRIS_313-9882:0.03303346925323859,((NIAO_YAO/IRIS_313-8743:0.02882563435863742,CHING_LIU/IRIS_313-11694:0.033754365641362576):0.002015327790600402,CHING_CHUNG/IRIS_313-11693:0.031849672209399604):0.0040715307467614065):0.0038592753912297453):0.003318475670603744,YI_LI_ZHONG/IRIS_313-11735:0.04031152432939626):0.001622197914248189):0.001771449984028622,(GUI_HUA_ZAO/IRIS_313-10179:0.008704115532257492,RIZ_INDETERMINE/IRIS_313-10034:0.0072158844677425085):0.030117636930033886):0.0010629915285615015,((RTS_16/IRIS_313-9429:0.0405341604908835,(SOM_NGHE_AN/IRIS_313-8409:0.035415307399350594,CHAN_THANH_HOA/IRIS_313-11594:0.0330446926006494):0.0027108395091165055):0.0011486026905960095,VEN_THAP/IRIS_313-9317:0.03832389730940399):0.0018982389401884943):0.002689604987449276,((LANG_QIAN_CHE/IRIS_313-11577:0.03082656919865797,GAO_LIANG_ZAO/IRIS_313-11573:0.02734343080134203):0.009443465542443918,BAI_MI_TIE_QIU/IRIS_313-11572:0.03539153445755608):0.0062843696219257285):1.5685077182769186E-4,((QING_ER_XIAO_2/IRIS_313-11730:0.03877458792937474,GUANG_QING_334/IRIS_313-11726:0.03975541207062526):0.004985966310918858,(HSIN-TAO_YUAN_CHING_YU/IRIS_313-11695:0.04534035760631355,F_478/IRIS_313-11669:0.051149642393686454):0.0016865336890811398):0.001603749814109804):0.0022411177154500923):0.0024835550704001936):6.703356058930772E-4,(((((((((((((((((IR_73690-7-2-1-1-3-2-2-1/IRIS_313-10380:0.033760006195544895,(UPRH_197/IRIS_313-11620:0.03381897982095308,UPRH_33/IRIS_313-11617:0.03203102017904692):0.0039999938044551):0.00465733242358298,((BEGUM/IRIS_313-9641:0.03242818722930728,UPRH_166/IRIS_313-11619:0.036351812770692715):0.006458885419759072,UPRH_58/IRIS_313-11618:0.03935611458024093):0.0023970425764170255):0.0023662052401473995,(N_22/IRIS_313-10150:0.0336762731089388,LATIJHABAR/IRIS_313-11629:0.03757372689106119):0.005751607259852604):0.0027338800443778,((((((WIR_1391/IRIS_313-9963:0.024708405589839322,BINNAFUL/IRIS_313-11481:0.02357159441016068):0.00757484998384873,BOTESHSHORE/IRIS_313-11483:0.033550150016151276):0.003130766156417551,DAWN_CI_9534/IRIS_313-8073:0.027939233843582448):0.006608194506497326,(GORA_DHAN_2/IRIS_313-11712:0.02730499545984411,NCS_271_A/IRIS_313-11636:0.02882500454015589):0.01118555549350267):0.004223186268735372,(((SUGARKAND/IRIS_313-11604:0.039672645550657,BARI_SUTAR/IRIS_313-11454:0.039177354449343005):0.004320954119386821,(MALCHI/IRIS_313-11602:0.03754910748683754,(SALSI/IRIS_313-11462:0.012880383650953058,KOLAMBA/IRIS_313-11456:0.012359616349046941):0.020790892513162455):0.0012040458806131778):0.004121578039381467,((PANDRI_PAREWA/IRIS_313-11603:0.042525659786436625,(KANPURI/IRIS_313-11477:0.0355278146205806,CIPPI/IRIS_313-11455:0.0361721853794194):0.00523934021356337):0.005253192470921618,AMAKOYALI/IRIS_313-11595:0.03838680752907838):0.006538109460618534):0.0010699387312646308):0.0029330086289980836,(KURKARUPPAN/IRIS_313-9861:0.0466295982056328,(JAMBALI/IRIS_313-9449:0.04399181891791424,(KALIBAJARI/IRIS_313-11742:0.0334102094095866,((SIRHANTI/IRIS_313-11492:0.03148515400331495,KARAHANI/IRIS_313-11458:0.03439484599668505):0.0030502669163305594,COLOMBIA_XXI/IRIS_313-15908:0.04261973308366944):0.002977290590413413):0.007853181082085749):0.0034304017943672035):0.002200760902251915):0.005092311361872198):0.003132101687073464,(STRAW_23-400/IRIS_313-8822:0.024930660649614744,CHUNDI/IRIS_313-11737:0.030539339350385254):0.01911759069573904):0.0039111205227908286,KALIPINCH/IRIS_313-11476:0.05495190682095918):0.0019480164662720144,LOCAL_BHAT/IRIS_313-11452:0.06014772572122798):0.004817144923775857,KALU_T_139/IRIS_313-11489:0.05625323593559914):0.005689513703805627,(EJALI/IRIS_313-11484:0.04864141901526676,BONGEZA/IRIS_313-11482:0.04704858098473324):0.022390073698538134):0.004444196771129592,SOLAY_GHAT/IRIS_313-9695:0.05343800415660478):0.007815102679109924,(GODADANI/IRIS_313-11598:0.08542717437732363,KHAGRAI_DIGHA/IRIS_313-11486:0.06381282562267639):0.01729513169589008):0.003417307759058054,ARC_13252/IRIS_313-8382:0.06520764219211381):0.0024162130281070934,UPRH_31/IRIS_313-11616:0.06123343479904134):0.0010385759883083504,(105/IRIS_313-8783:0.05236623595263246,BHAINSA_MUNDARIYA/IRIS_313-11596:0.051553764047367535):0.006745057587131108):0.001777478818046234,NAN_TE_HAO/IRIS_313-9727:0.058548160601509434):0.007357066103828267,(ASU/IRIS_313-9572:0.04468533217130764,((ARC_10799/IRIS_313-9313:0.03260817039539943,ARC_18112/IRIS_313-8982:0.026331829604600572):0.004170787681153915,ARC_10754/IRIS_313-8986:0.032489212318846085):0.011534667828692363):0.008704018791305695):0.003929174859173169,(((((((((((((((((((((((((((((((((((((((((((((((IR_73688-57-2/IRIS_313-10379:0.00447782212525672,IR_68333-R-R-B-19/IRIS_313-10373:0.0035121778747432804):0.0013840323208722523,((CHEONJUDO/IRIS_313-10093:0.0037915330430327897,CHUGOKU_68_HEN/IRIS_313-10057:0.004068466956967211):8.012071520616824E-4,DECHANGBYEO/IRIS_313-11689:0.004568792847938316):7.122176791277491E-4):8.812401621898852E-4,((((TAICHUNG_65/IRIS_313-9701:0.0016270761856710353,RAI_MANULA/IRIS_313-11672:9.292381432896468E-5):0.002179667948717927,DAN_YAN_NUO/IRIS_313-8481:0.003785332051282073):0.0010762760955273496,((CI_1600/IRIS_313-9463:0.002924965455475908,(CHUNG_YI/IRIS_313-9233:2.1171118951601058E-4,NORIN_6/IRIS_313-8755:0.0014882888104839893):0.002265034544524092):5.781383560759274E-4,ZUIHOU/IRIS_313-11725:0.003889361643924072):5.159114044726511E-4):3.81437329810848E-4,KOTOBUKI_MOCHI/IRIS_313-9002:0.005057468920189152):9.254785878101139E-4):8.549956436631548E-5,(FUKUSHIMA_MOCHI_GLUT/IRIS_313-9884:0.006425689473684193,(JO_SANG_DAE_YA/IRIS_313-9698:0.005385051007231478,HOKUSETSU/IRIS_313-9228:0.005034948992768523):0.0010843105263158058):3.7317231063368583E-4):4.309488213722835E-4,(HAN_NUO/IRIS_313-10164:0.007146775910639309,YONG_AN_HUK/IRIS_313-9891:0.007203224089360691):9.476058661277167E-4):2.8987763103255267E-4,(RPC_12/IRIS_313-8162:0.007325780922088181,TIMICH_108/IRIS_313-8148:0.006894219077911819):0.0011609817439674468):5.878900580103085E-4,(CHALBYEO/IRIS_313-10092:0.006245914445178724,TAKAO_MOCHI/IRIS_313-9081:0.005784085554821277):4.443950982396923E-4):5.218595301391183E-4,SUWEON_295/IRIS_313-9996:0.008277403165173383):0.0010607600357757665,((SAKHA_103/IRIS_313-8218:0.0045208688080496705,SAKHA_102/IRIS_313-8217:0.00521913119195033):0.001574786830357073,JINBUBYEO/IRIS_313-15904:0.007280213169642925):0.0027621330306304846):8.217642794245287E-4,DACHEONGBYEO/IRIS_313-10059:0.009732943972528597):5.868879569280987E-4,(CHIANAN_8/IRIS_313-9703:0.009392087456803765,(NONG_KE/IRIS_313-9468:0.009548243474929715,36037-1/IRIS_313-11586:0.009731756525070284):0.0012179125431962326):0.002053720258403934):0.0010963045447793763,TAICHUNG_179/IRIS_313-9702:0.011925167470601482):9.023344743003472E-4,(MA_SHE_8/IRIS_313-11653:0.01058574257066501,FEI_ZHAO_12/IRIS_313-11651:0.01521425742933499):0.00233118313434223):9.660405256611713E-4,PL_3165/IRIS_313-11654:0.012877706041111287):8.329775343203574E-4,CN_1067/IRIS_313-11702:0.012284934224102494):0.0012144368290069405,((((GALSAEGSSAL_SHAREI/IRIS_313-10124:0.015744273245031807,(((MAEKJO/IRIS_313-10097:0.006881239813354293,HEUKSANJO/IRIS_313-9974:0.007158760186645708):7.144736307390396E-4,(JEUK_DO/IRIS_313-9887:0.0089477532497374,HWANGJO/IRIS_313-9379:0.007792246750262601):7.255263692609607E-4):8.144866510207543E-4,HUK_ZO/IRIS_313-9886:0.010210513348979244):0.0028694767549681914):0.001628006686695777,WA_BANG/IRIS_313-9890:0.014425118313304224):0.0024538706529395014,(((((((WIR_1951/IRIS_313-9964:0.006846103535353682,WIR_2091/IRIS_313-11536:0.0067138964646463175):0.001818352505112572,PRECOZ_2_F_A/IRIS_313-8128:0.008031647494887427):0.001949335567044141,((WIR_884/IRIS_313-9961:0.005426097250509158,KOPANCSI_KEREK/IRIS_313-9811:0.007813902749490842):9.493303112140649E-4,SZANISZLO_2/IRIS_313-9813:0.009055669688785935):0.00155378943295586):0.0037326839470600446,(((O_SATIVA/IRIS_313-9839:0.007623059674907328,CIGALON/IRIS_313-8165:0.007306940325092673):3.965359129036502E-4,CARRICO/IRIS_313-8111:0.007833464087096351):0.0010501522741089653,(ESCARLATE/IRIS_313-8113:0.006272421239837485,CAMPINO/IRIS_313-8109:0.0058275787601625145):0.0048860977258910355):0.0018095035529399556):0.00111167273324265,TEPUKE/IRIS_313-9838:0.01195238976675735):5.707475002751468E-4,SALOIO/IRIS_313-8138:0.01201768999972485):0.001980286116837505,((OEIRAS/IRIS_313-9759:0.00207142223910832,TOPAZIO/IRIS_313-8149:0.0032885777608916804):0.008958865138372504,(SANGHAI/IRIS_313-8140:0.008777895636405367,(RUBI/IRIS_313-8132:0.008619350208386639,(JUBILIENI/IRIS_313-8119:0.007585657631349645,91-382/IRIS_313-11661:0.006974342368650355):9.606497916133609E-4):0.0011221043635946358):0.0019417598616274945):0.0015992158362874956):9.866347181542476E-4):8.692963805045184E-4,(MURASAHITSUTSURI/IRIS_313-9769:0.01180823051608338,PLOVDIV_24/IRIS_313-8126:0.01238176948391662):0.0037380754456673563):3.5363636792573247E-4):0.0014077539750268187,((KALIN/IRIS_313-10089:0.013838429362082374,(LOMELLINO/IRIS_313-8033:0.012546448061487763,GIOVANNI_MARCHETTI/IRIS_313-8026:0.011163551938512236):0.00224157063791763):0.0029350478372440567,(((SAEDINENIE/IRIS_313-8135:0.008681471189346049,RODINA/IRIS_313-8129:0.007818528810653952):0.003280964285637485,PLOVDIV_22/IRIS_313-8125:0.011079035714362513):0.004137207120868588,CHIPKA/IRIS_313-8112:0.013160292879131412):0.0025490146627559426):9.616250134552389E-4):0.0012092540064961815,(((SANT_ANDREA/IRIS_313-10014:0.008473032818376884,HARRA/IRIS_313-8075:0.008826967181623116):0.004822263354702259,(JAPONES_BALILLA/IRIS_313-9790:0.014845494639484619,T_757/IRIS_313-8147:0.012874505360515383):0.001312736645297739):0.0012484225457603721,((((TEXAS_PATNA_49/IRIS_313-9539:0.0033694559716598484,M_7/IRIS_313-8665:0.003500544028340152):0.004274701975548207,(S_201/IRIS_313-8856:0.0021947550761421725,THAIPERLA/IRIS_313-8105:0.0023352449238578277):0.003950298024451793):0.005490098882412175,AUGUSTO/IRIS_313-8177:0.011829901117587827):0.00182753844109689,((CI_9498/IRIS_313-9410:0.008329640881400757,S_102/IRIS_313-8204:0.009270359118599244):0.0029699557223444523,SELN_244_A_6-20/IRIS_313-8141:0.011045044277655548):0.0031005865589031085):0.0022139212042396298):0.001198149598786124):4.119848150564349E-4,(BETIS/IRIS_313-10083:0.01104899057971823,CAPATAZ/IRIS_313-8084:0.011151009420281771):0.00672532741168607):0.0016306861982837654,VALTEJO/IRIS_313-8151:0.0189941452075943):6.552441165086371E-4,GIGANTE_VERCELLI/IRIS_313-8154:0.019525413222587433):0.0037169804581856387,104_UPLA/IRIS_313-8063:0.021063787195398836):0.001466135940628961,((FORTUNA_INIA/IRIS_313-9980:0.006415379002530897,IMPROVED_BLUE_ROSE/IRIS_313-9366:0.006704620997469103):0.010619137596348447,J_6_IR_438_WC_694/IRIS_313-11537:0.01648086240365155):0.00685959263398974):0.0023814526925410692,((((BULI_INIA/IRIS_313-10258:0.01550141631239474,CT_58/IRIS_313-8160:0.02054858368760526):0.0035096787858770323,(CT_36/IRIS_313-8159:0.002785611167002112,CT_23/IRIS_313-8158:0.002874388832997888):0.015325321214122972):0.005155291016560455,((GRAAL/IRIS_313-8213:0.007503570409406735,SAMBA/IRIS_313-8065:0.008696429590593264):0.007314502109146881,DORELLA/IRIS_313-8037:0.016755497890853115):0.0061190839834395485):0.0014367275588013332,(((((((((((H_305-84/IRIS_313-10242:0.00962873970363459,AUZGUSTA/IRIS_313-8171:0.011421260296365409):0.005958444943659498,(((ROXANI/IRIS_313-8216:0.009930532471805219,DELTA/IRIS_313-8167:0.011009467528194782):8.67208493989041E-4,SAFARI/IRIS_313-8136:0.011507791506010959):0.001116113179317548,GHIBLI/IRIS_313-8066:0.014163886820682453):0.001187180056340502):0.0032381042089421287,(((GITANO/IRIS_313-10119:0.01151683006590765,((SMERALDO/IRIS_313-8052:0.006314079202442686,RIBE_253/IRIS_313-8024:0.006295920797557314):0.0032456829134694092,(RONCOLO/IRIS_313-8048:0.0032579463377417277,RUBINO/IRIS_313-8031:0.0029720536622582726):0.0061393170865305935):0.001475669934092351):3.3386124912754625E-4,SETTANTUNO/IRIS_313-8142:0.013911138750872453):0.002836985847797003,(EAN_4_C_1/IRIS_313-9193:0.012776858226636465,OTA/IRIS_313-8124:0.013173141773363536):3.5738915220299636E-4):0.0029992004785578718):0.0013457650106847318,(((((((((SENIA/IRIS_313-10084:0.006127389038346006,CLOT/IRIS_313-8085:0.007402610961653995):0.0023004889437455702,MARENY/IRIS_313-8090:0.00807951105625443):0.0011361342786705697,SHSS_53/IRIS_313-8095:0.00885136572132943):0.0011808764255735711,SR_113/IRIS_313-8096:0.009897873574426428):0.0018376757584049877,S_102/2/IRIS_313-8134:0.013286699241595014):0.001954601850386451,(ARLESIENNE/IRIS_313-8168:0.014268966813742753,MUGA/IRIS_313-8123:0.014231033186257248):5.071168996135483E-4):5.83886799419397E-4,((LUXOR/IRIS_313-8195:0.009208498786559625,(FLIPPER/IRIS_313-8099:0.006740754124429411,LOTO/IRIS_313-8039:0.007429245875570589):0.004476501213440374):0.0027453090272112745,(CALENDAL/IRIS_313-8166:0.011588982028895125,KULON/IRIS_313-8155:0.009881017971104874):0.002100940972788727):0.001067226481830599):4.918421850616836E-4,(ROCCA/IRIS_313-9937:0.010053961193902176,ITALPATNA_48/IRIS_313-8025:0.009446038806097824):0.005907210549313318):7.558706755352879E-4,(GRITNA/IRIS_313-8029:0.010707181239925548,RIZZOTTO_51/1/IRIS_313-8023:0.011322818760074453):0.00344493010571471):0.0021917389566004255):5.672697102619105E-4,MOLO/IRIS_313-10111:0.01770883182172051):8.9134275342028E-4,(SLAVA/IRIS_313-8143:0.0024198071946171123,FAMILIA_181/IRIS_313-8115:0.002770192805382888):0.014347756367673471):5.517642203953037E-4,((RUBIDIO/IRIS_313-8053:0.006400697757069948,LORD/IRIS_313-8049:0.006819302242930053):0.004606730314927454,ANSEATICO/IRIS_313-8027:0.021528269685072543):0.008042826844057821):4.416756749771911E-4,(LUSITO_IRRADIADO_859-85-2/IRIS_313-8208:0.018746189890008737,(MESTRE/IRIS_313-8121:0.015935469931474225,FAISCA/IRIS_313-8114:0.017314530068525777):8.188101099912623E-4):0.0018407062219954647):8.459856611830803E-4,((SUPER/IRIS_313-8145:0.0145515936211652,HAREM/IRIS_313-8116:0.0141084063788348):0.0036600931381187713,SANDOCA/IRIS_313-8139:0.015484906861881231):0.00276050374921731):2.0706025489606195E-4,(OPALE/IRIS_313-8200:0.025281732542155783,(SAGRES/IRIS_313-8137:0.03026658043711361,(POLIZESTI_28/IRIS_313-8127:0.030153557910941316,PIEMONTE/IRIS_313-8032:0.022756442089058682):0.0016184195628863932):0.002443267457844213):0.004981262155687434):0.002247156580157125,((REA/IRIS_313-10062:0.017047455499354658,(MELAS/IRIS_313-8214:0.00801231380826341,(MEJANES_2/IRIS_313-8170:0.006336479492187418,MIARA/IRIS_313-8050:0.004673520507812582):0.0035876861917365933):0.00868504450064534):0.003675407165856291,GRALDO/IRIS_313-8041:0.020039592834143707):0.0018477659814883853):5.84843886663755E-4):0.0029771258294141382):5.400429611696682E-4,(167/IRIS_313-9774:0.02741781887112876,IBO_400/IRIS_313-8118:0.025072181128871242):0.0012824449977181995):0.0018947249533649902,(M_102/IRIS_313-8502:0.018983587919556025,(YRM_6-2/IRIS_313-8164:0.01011889457098226,ULLAL/IRIS_313-8097:0.009881105429017741):0.008811412080443976):0.007599589946098216):0.0013514017898243365,((HAN_NUO/IRIS_313-10228:0.023664356834155135,((((((DA_DAO_TOU/IRIS_313-9725:0.002710850903614531,KANU_DAM/IRIS_313-9249:0.002079149096385469):0.005712926597363053,WAN_GENG_BAI_DAO_TOU/IRIS_313-11582:0.008407073402636949):0.0033798284373754103,((GONG_SHE_9/IRIS_313-11652:0.00872051455566915,LUAN_DAO/IRIS_313-11578:0.008799485444330851):4.2955549845830835E-4,((YI_SUI_QI/IRIS_313-11584:0.006662998489425979,BAI_MANG_AI_ZHONG/IRIS_313-11571:0.005457001510574022):9.181875631951997E-4,HEI_TOU_HONG/IRIS_313-11574:0.0077818124368048):0.0017891945015416902):0.0022623590626245894):0.004957163044983024,(FU_LI_HONG/IRIS_313-8387:0.012220490343631164,HONG_PI_NUO/IRIS_313-11575:0.014609509656368836):0.002163930705016974):0.004932121485197748,XINTUAN_HEI_GU/IRIS_313-11522:0.021602566014802246):0.0025080052072109452,SI_WAN_14/IRIS_313-11655:0.021614807292789057):0.0014312681658448616):0.002254350484215762,(LOMPUG/IRIS_313-8883:0.01589539779417785,NEP_NGAU/IRIS_313-8735:0.017084602205822152):0.006599340922034234):0.007324226617754979):0.001960924650546661,GERDEH/IRIS_313-8256:0.033504746277285974):0.005049816428300686,((((HOKURIKU_52/IRIS_313-10056:0.02212579904036137,(((DAGPA_BARA/IRIS_313-9529:0.011177014639681737,(((KAMNAM/IRIS_313-8857:0.008678332737785783,JANA_NAM/IRIS_313-8815:0.010141667262214217):7.396400994768198E-4,DAGPA_MRAS/IRIS_313-8486:0.010255359900523179):0.0013200522222914192,SHANGYIPA/IRIS_313-11691:0.012294947777708582):0.001375485360318264):4.928528297534338E-4,((TSCHINANANGKA/IRIS_313-9048:0.008313050392670178,BALINGMI/IRIS_313-8637:0.0072069496073298225):0.0024890357196514007,MANDASHERPO/IRIS_313-8519:0.011025964280348598):0.0011751159202465647):0.008669187991728264,ARC_11430_B/IRIS_313-8999:0.020841202633271737):0.00309248220963863):0.001394912814547935,(ARC_11359/IRIS_313-9176:0.012739674046577323,CALROSE_76/IRIS_313-8669:0.012160325953422675):0.013958290310452065):2.1901876262951474E-4,IC_25690/IRIS_313-11494:0.026174535924870485):0.002844136670313252,((LEUANG_GLIANG/IRIS_313-9123:0.016636121048657106,E_WAWNG/IRIS_313-8884:0.019743878951342896):0.00599528588709018,(((BUE_GA_WA/IRIS_313-8599:0.019934553337858048,KHAU_TRA_BONG/IRIS_313-8578:0.019325446662141955):5.07009249818266E-4,KAO_SONG_HAI/IRIS_313-11623:0.019332990750181737):0.004506988455649013,YAHNG_LEU/IRIS_313-8565:0.022100511544350984):0.0018190891129098198):0.0022233755367179983):0.009684699942572927):0.0014177711758574952,(JOKJEBICHAL/IRIS_313-10096:0.02338833787377686,((((GAWICHAL/IRIS_313-10094:0.003215054754059856,(DANGO_MOCHI/IRIS_313-10079:0.003230027837643688,(YOSHINO_MOCHI/IRIS_313-10078:0.0033825333311652567,JEONBUKGUNGWEONNA/IRIS_313-10067:0.0032374666688347433):1.199721623563123E-4):9.624452459401438E-4):0.006271415271699289,SHINA_MOCHI/IRIS_313-10076:0.008882334728300712):8.143241478409309E-4,(((KYUUSHUU/IRIS_313-10082:0.009208102701796034,RIKUTO_NORIN_MOCHI_20/IRIS_313-8400:0.009081897298203967):0.0010358321980850672,((((HIRAKAWA_OKUTE/IRIS_313-10080:0.003973735012115646,OWARI_MOCHI/IRIS_313-10073:0.0034662649878843543):0.001459670149534165,(NONGLIMNA_1/IRIS_313-9995:0.004071624514358106,RIKUTO_TAUKI_MOCHI_27/IRIS_313-9789:0.0038183754856418936):9.67829850465835E-4):0.0019457437799598944,(SANGOKU/IRIS_313-10075:0.004152290139141658,JAERAERYUKDO/IRIS_313-10065:0.0041277098608583414):0.003403006220040107):0.0011143883431867841,CHIYODA_WASE/IRIS_313-10071:0.008310611656813219):8.116678019149295E-4):8.486780081938263E-4,(RIKU_AIKOKU/IRIS_313-10074:0.009921361613424901,KAHEI/IRIS_313-9800:0.0105786383865751):1.374157418061754E-4):0.0011560957740340701):0.005041731920487645,ARC_6044/IRIS_313-9201:0.01862840968107485):0.004910998063723138):0.010792996482534003):0.00532409908185668,(PDR_34-2-1-2/IRIS_313-10295:0.018000415747261383,KALAPATLE/IRIS_313-10025:0.018819584252738615):0.0226937836201621):0.0038964312715382378,((((((((((B_6144-MR-6-0-0/IRIS_313-10336:0.018636309619835825,((((((CAROLINO_BLANCO/IRIS_313-10327:0.009383487796671666,(CHIRGUA_1_I_22/IRIS_313-9267:0.00564394993853479,SD_120_SELN_CI_12320/IRIS_313-8745:0.006126050061465209):0.002821512203328337):0.0018435439956144758,(((MOROFIN/IRIS_313-8768:0.0034822185880828316,SAKAZELE_538/IRIS_313-11436:0.003657781411917168):2.995419330636621E-4,KEREN_FENHO/IRIS_313-8687:0.003715458066936337):0.0023100279547072326,NAKPUI/IRIS_313-11739:0.005387472045292768):0.004538018504385523):0.0013830371186152306,SUP_BLUE_ROSE/IRIS_313-8778:0.01041993163138477):0.0012870317952090355,(DELITUS/IRIS_313-8876:0.011602163693028184,MONMINEUPLEU/IRIS_313-11435:0.012727836306971817):0.0018920307047909641):0.0016657142119570045,GOGOWIERIE/IRIS_313-9851:0.015048973288042994):0.001428420484618821,(CENTURY_PATNA/IRIS_313-8072:0.014472907013143584,(GOLO/IRIS_313-11527:0.01118875540266939,MARANHAO_BRANCO/IRIS_313-11428:0.00973124459733061):0.0012520929868564158):0.004356657640381178):0.0029431435051641766):4.1317098899645616E-4,((TSIVIMBININA/IRIS_313-10051:0.01491461368622469,FORTUNA_BLANCO_SAN_MARCOS/IRIS_313-11434:0.015115386313775311):0.002122609819605903,((LOHAMBITRO/IRIS_313-9742:0.016417684531946607,((K_2_C_14/IRIS_313-8277:0.007696025481015787,(FOSSA_GBE/IRIS_313-11526:0.003935220444473449,KOUINONEPOU/IRIS_313-11524:0.003494779555526551):0.0030489745189842144):0.0020089905494764947,(MANYALOJOPOIHUN/IRIS_313-11658:0.004067891182466995,PATIE_ROUGE/IRIS_313-11540:0.003802108817533005):0.006691009450523502):0.004778565468053393):0.002126041162444626,((KORR/IRIS_313-9297:0.009761110593686572,WULE_DASIMA/IRIS_313-11660:0.008478889406313427):8.197775939545182E-4,(KOSAGI/IRIS_313-8769:0.008604628021452222,TOBOHUN/IRIS_313-11659:0.01010537197854778):0.0024602224060454817):0.004643490087555373):0.0015618433053940979):0.0023874866648121345):0.003154197525234794,MANONGAZATO/IRIS_313-10099:0.02062551271036091):0.0028737222449142855,REXARK_ROGUE/IRIS_313-8323:0.030997405684773216):9.160535482136186E-4,PADI_UDANG/IRIS_313-11499:0.024605665201786385):0.0018635471138753312,ANENOE/IRIS_313-11495:0.02549664453651529):0.00226211527017687,((((((((GOBYERNO/IRIS_313-9929:0.009145088653772468,ANGKARONG/IRIS_313-9050:0.009434911346227532):0.007173437462927368,(BURI_BURING/IRIS_313-11673:0.015922330813548723,MARIA_GAKIT/IRIS_313-11532:0.014817669186451277):0.0015890625370726334):0.001814162056322472,LIMBAYAN/IRIS_313-9558:0.019194587943677528):0.0010846611732060942,CARAWI/IRIS_313-11464:0.020170338826793907):0.0016873885682283961,(((((BIKYAT/IRIS_313-9897:0.018859823409229957,(MALAGKIT_PINELIPE/IRIS_313-11736:0.01473467237276492,DINORADO/IRIS_313-11465:0.01538532762723508):0.002290176590770042):0.0018239739357750664,((AGUYOD/IRIS_313-9423:0.012538864967295869,(KINANDANG_BUSIKSIK/IRIS_313-9389:0.0038827117346938323,MINATANDA/IRIS_313-8594:0.0036972882653061676):0.011166135032704128):0.0018329647921923372,MIUDO_ROXO/IRIS_313-11429:0.015587035207807664):0.0028954010642249332):8.802362016256879E-4,PULUTAN/IRIS_313-9375:0.01924695129837431):4.507822113069505E-4,((ONOY/IRIS_313-8572:0.008483121476969079,(BOCAO/IRIS_313-8431:0.008350992556236825,KINTOMAN_TOD_DOY/IRIS_313-11473:0.008509007443763174):7.818785230309204E-4):0.002915943983571604,(BLICCA/IRIS_313-8356:0.010919158973469017,WAGASAN_RED/IRIS_313-11511:0.010280841026530983):6.74056016428397E-4):0.01033445216369305):0.0017421907521923319,(INITLOG_DALAG/IRIS_313-9616:0.019170981648640287,NALA/IRIS_313-11441:0.016849018351359716):0.00211300456030767):0.001027001080209103):0.0032608156283372063,(PAMPANGON_H/IRIS_313-9568:0.01820455422005782,(PURAK_SIRIBA/IRIS_313-8381:0.016019878230967222,SAWAH/IRIS_313-8279:0.014330121769032776):0.003100445779942177):0.006650602828694047):8.710867960009806E-4,(((SIFARASI/IRIS_313-9691:0.01837757320359781,SAHULO_FACHE_SOYO/IRIS_313-9470:0.02073242679640219):0.003619712732207897,(((LASAT_PUTIH/IRIS_313-8955:0.007295898307498491,BANJANG/IRIS_313-8626:0.008244101692501508):0.008950784559316886,LEKATAN/IRIS_313-8894:0.017944215440683114):0.004356857781407071,PADI_SEPAH/IRIS_313-8865:0.01964064221859293):0.0031471622677921017):5.649532718159816E-4,(RIMBUN/IRIS_313-9239:0.021775274041810327,LAYANDABU/IRIS_313-9129:0.020584725958189675):0.003358796728184017):0.0012030159872021473):5.518267079848973E-4,(SIGAE/IRIS_313-8998:0.018101592912282298,SITORU/IRIS_313-8664:0.0188784070877177):0.006258690259788536):0.0031551194939222543):0.003217807068674656,YAH_YAW/IRIS_313-11611:0.0284069199706625):0.005399418761097331,(((((GUO_DI_HEI/IRIS_313-10196:0.01902927695040011,((((((((((BOTOHAVANA_MENA/IRIS_313-10041:0.005746672026796463,TEXAS_PATNA/IRIS_313-8803:0.007243327973203537):4.409064305418062E-4,VEGOLD/IRIS_313-9550:0.006889093569458195):0.0030702695559115967,SP_6_WC_836/IRIS_313-11539:0.0112247304440884):0.002685947184532146,(BLUEBONNET/IRIS_313-8960:0.003971345940115097,BLUE_BONNET/IRIS_313-8102:0.0039986540598849025):0.009313427815467857):2.831128508479115E-4,BLUE_BELLE/IRIS_313-9491:0.01229469964915209):0.001221767751011404,(((B_505_A_1-28-7-1-2/IRIS_313-9452:0.010120280893189521,BOND/IRIS_313-8339:0.009299719106810479):6.556672784581892E-4,SKY_BONNET/IRIS_313-8976:0.009184332721541809):0.0014992010992301522,TEBONNET/IRIS_313-8434:0.01122579890076985):0.0033639744364885936):0.001340219833224873,(LACASSINE/IRIS_313-8193:0.008019745291439064,(DELLMONT/IRIS_313-8180:0.004734554093255895,GOLFO/IRIS_313-8044:0.0035654459067441047):0.005915254708560932):0.0043443309480251276):0.001103503372469384,(DREW/IRIS_313-8183:0.012740209110946829,PLUS/IRIS_313-8046:0.011859790889053172):0.0025885669400306155):0.0023972912721199847,(CALIFORNIA_BELLE/IRIS_313-8923:0.016978295562947117,(JACINTO/IRIS_313-8186:0.011705243480281124,PELDE/IRIS_313-8076:0.014054756519718877):0.00314670443705288):0.0032011657591300173):0.0015742453109405035,((CP_231/IRIS_313-8658:0.019563283523227525,GOOLARAH/IRIS_313-8074:0.017936716476772474):0.0034719610120206223,(PRELUDE/IRIS_313-8627:0.019478685258204363,NIRA_PRIETO/IRIS_313-11439:0.01667131474179564):0.0037330389879793773):0.0011022244156219966):0.00279547158475614):0.002733652683731016,(SALVO/IRIS_313-8205:0.016996640800509163,32_UPLA/IRIS_313-8064:0.01428335919949084):0.011298371242050236):0.0051575397954590025,((80_UPLA/IRIS_313-8062:0.028828080792678124,75_UPLA/IRIS_313-8061:0.02695191920732188):0.0015275076013111493,(77_UPLA/IRIS_313-8060:0.020086420813627253,79_UPLA/IRIS_313-8057:0.022153579186372747):0.002194992398688851):0.002956235839306618):0.0016416677717477918,91_UPLA/IRIS_313-8058:0.029566045851299086):0.0024831100823741598,((((MAYBELLE/IRIS_313-9363:0.018018423739544803,(ALEXANDROS/IRIS_313-8209:0.015444885735846632,(GLADIO/IRIS_313-8185:0.015208843299634022,INIA_TACUARI/IRIS_313-15907:0.012231156700365977):0.0014851142641533685):0.002641576260455202):0.0019003541340560795,L_205/IRIS_313-8192:0.017249645865943915):0.0016698125099315411,REXMONT/IRIS_313-8202:0.017472062490068458):0.005552519830540555,A_201/IRIS_313-8173:0.023879667669459443):0.0068796061346668574):0.0024860961559270804):0.004099836549621108,(PANNITHI/IRIS_313-9949:0.041915280333313085,(((DEO_KITAN/IRIS_313-9928:0.019348239304120895,PIKTO_MAMAS/IRIS_313-8436:0.020631760695879107):0.001328439863272015,((INGSA_BELANAK/IRIS_313-9405:0.017369787805677144,BALU_PRIA/IRIS_313-11496:0.016760212194322856):0.002340617393949666,BEUREUM_MEULIT/IRIS_313-8314:0.018424382606050338):0.003061560136727983):0.0026831766690630313,(KETAN_DONGGO/IRIS_313-9301:0.022777359926697986,(PADI_HEDENG_REKET_HEDENG/IRIS_313-11498:0.016426204424668717,VANKALI/IRIS_313-11479:0.017833795575331282):0.005442640073302016):0.0014971358309369704):0.01431456341668691):0.001316491654231651):6.939931294267596E-4):0.003275230935401014,ESTRELA_A/IRIS_313-10061:0.04005705783662317):0.0033463823245273062,81_A_32/IRIS_313-9140:0.041590808853286795):0.0074676886416760145,FIDJI/IRIS_313-8172:0.04247214107094832):0.010832421934698522,571/IRIS_313-8872:0.07299693464388737):0.010415540985269409,((ARC_11626/IRIS_313-9392:0.05782889243685203,(SUKARADJA/IRIS_313-9242:0.07397919337156958,DARAWAL/IRIS_313-9101:0.06546080662843043):0.006056107563147971):0.015006933114476234,KAMJA/IRIS_313-8302:0.09277306688552374):0.004642375683780127):0.0075654958827695,(((((((((NS_1576/IRIS_313-10032:0.006498912825651437,IRAT_118/IRIS_313-9978:0.004581087174348563):0.023212055744809442,IET_14720/IRIS_313-15909:0.02182294425519055):0.011302168790650297,KALISAL/IRIS_313-11451:0.036545331209349705):0.002017606119691701,(((TIMMURAY/IRIS_313-8765:0.025771902675357488,(CHHOTI_MASHINO/IRIS_313-11743:0.026122134267032495,GUDURA/IRIS_313-11626:0.027997865732967506):0.0031730973246425105):6.423801077226456E-4,(JC_149/IRIS_313-8385:0.03226875999359038,(TAIPEI_167/IRIS_313-11698:0.025898047018274355,RATO_BASMATI/IRIS_313-11567:0.029861952981725642):0.003676240006409613):0.004440744892277359):6.836172431931684E-4,((SETO_JHINUWA/IRIS_313-11632:0.021914447198047703,POHHERLIMASION/IRIS_313-11630:0.024015552801952295):9.044350256671354E-4,JADO/IRIS_313-11627:0.02604056497433286):0.0070235702568068326):0.0044635657553082995):0.0012736342493766513,((TK_RED_35-799/IRIS_313-9682:0.016054110552763838,TK_DEEP_STRAW_34-786/IRIS_313-9170:0.01809588944723616):0.024133635384632902,HALIDA/IRIS_313-11564:0.039556364615367094):0.008617107938123349):0.003193043478675269,ARC_12536/IRIS_313-9053:0.046682073708824726):0.008875075942386807,(KOIYA_DIGHA/IRIS_313-9445:0.039578038258722026,KHAO_KUM_PAR/IRIS_313-11542:0.03594196174127798):0.03529289280761319):0.006904471709133858,CHOBO/IRIS_313-11625:0.04640138766586614):0.00798180555829163,ARC_7091/IRIS_313-8498:0.03359178819170836):0.01336279543209217):0.003270949157727094,FRAGANCE/IRIS_313-8184:0.059767967642919126):0.004606390513605601,PAOTSUPAGAIAHON/IRIS_313-8873:0.06355855007672222):0.00791749570037661,LEK/IRIS_313-8911:0.03663523712117419):0.00553960270789601,KOCHUM/IRIS_313-11690:0.07165034903803023):0.009710910036523569,C_1_6-5-2/IRIS_313-9818:0.05757321988564465):0.0016874148534151276,((NEWREX/IRIS_313-9648:0.08414417773698504,(SONAPATNAI/IRIS_313-9120:0.07330542056546231,KARISHNABELI/IRIS_313-11628:0.0596145794345377):0.03091082226301496):0.009765817705644695,MEDUSA/IRIS_313-8067:0.058409182294355294):0.007165333516994826):0.0037354511829774673,TIMA/IRIS_313-9506:0.08177493518109684):0.004279562972023395,(AUS_177/IRIS_313-9066:0.047505503246420624,CHAMPION/IRIS_313-11714:0.055514496753579376):0.006670668385111675):0.004610335400473976,((PICO_NEGRO/IRIS_313-10158:0.05038330496424332,CI_9445/IRIS_313-9767:0.056726695035756676):0.003658669946882534,PULUT_MERAH_2/IRIS_313-11591:0.07270133005311748):0.004324599163765462):0.0055532647019793605):5.744167660181997E-4):0.001106289181746665,(((CSR_90_IR-2/IRIS_313-10349:0.04940085556185092,TSIMATAHOPAOSA/IRIS_313-10050:0.05549914443814907):0.0013854154679002629,(CSR_89_IR-15/IRIS_313-10348:0.03159012882557333,NCS_840/IRIS_313-9516:0.03522987117442668):0.01227208453209974):0.001300595569310052,(((MOCHICA/IRIS_313-9825:0.05121809933080223,(CODE_NO_31323/IRIS_313-9190:0.05772157770450682,LEUANG_28-1-87/IRIS_313-9114:0.05308842229549319):0.006371900669197766):0.006142544858800909,PAMAH_S_18/IRIS_313-9451:0.0491774551411991):0.002261450290388064,(ARC_12576/IRIS_313-8967:0.04568948885095904,AVO/IRIS_313-8288:0.06451051114904097):0.014553549709611919):0.0026864356806899498):9.607794553958553E-4):5.039855344973749E-4):5.399185799465363E-4):5.680490184094584E-4,(((((((GARURA/IRIS_313-10007:0.036826552970112454,TAN_NONG/IRIS_313-11521:0.03978344702988754):0.0037300702141023472,(((ARC_15873/IRIS_313-9634:0.03203504079557438,ARC_14064/IRIS_313-8994:0.027484959204425626):0.004207485430092838,(ARC_11857/IRIS_313-9560:0.026721237116493504,ARC_18533/IRIS_313-11443:0.027328762883506497):0.005512514569907162):0.0023948413410681546,ARC_13530/IRIS_313-8401:0.03471265865893185):0.0034118047858976517):0.0016212529422475232,ARC_5840/IRIS_313-9424:0.037696559557752474):8.893941166810448E-4,(ARC_10594/IRIS_313-9609:0.04047774993023551,(ARC_12884/IRIS_313-8603:0.03401514532378408,ARC_18502/IRIS_313-11442:0.03165485467621593):0.0038922500697644857):0.0023527152583189583):0.0021533368909276147,((CHNNOR/IRIS_313-9484:0.03904671199105746,((((ARC_11524/IRIS_313-8946:0.03243869898917542,ARC_11867/IRIS_313-8315:0.03103130101082458):0.002923706027721039,ARC_11901/IRIS_313-8585:0.03471129397227896):0.0012215413776755328,HOE_PHAR_THAE/IRIS_313-11541:0.03342345862232447):0.0024052198878981093,TAUNGYA_SABA/IRIS_313-11549:0.03420228011210189):0.0020539130089425386):0.0012835361469047818,ARC_13778/IRIS_313-9347:0.03490490135309522):0.001567253929384883):1.6295618113036344E-4,(((((ARC_15088/IRIS_313-9593:0.0275022581859386,TUNAGANNAPNANG/IRIS_313-11447:0.0280577418140614):0.0045080212031135755,ARC_18597/IRIS_313-8453:0.03531197879688642):0.0031286935254326888,ARC_18092/IRIS_313-9427:0.03739880647456731):0.001644236705871431,ARC_15091/IRIS_313-8332:0.04263826329412857):6.701159540248513E-4,((YA_THAY_SAN/IRIS_313-8659:0.04040553820112809,(TAUNG_LWIN/IRIS_313-11548:0.03175911801278513,NGA_CHAN_HMWE/IRIS_313-11546:0.02763088198721487):0.004214461798871902):0.003988870556327694,ARC_10812/IRIS_313-8386:0.03316612944367231):0.0024123840459751543):0.0012118680376196323):0.001843897704885599,((ARC_15845/IRIS_313-9619:0.03397352749175595,ARC_15480/IRIS_313-11490:0.034236472508244055):0.0056532310133409515,ARC_18202/IRIS_313-8414:0.05174176898665904):0.0019748120119112795):0.0015602137312539144):6.779697354717641E-4,((PUTTU_NELLU/IRIS_313-9969:0.04781487973238833,(BONG_BOI/IRIS_313-9637:0.04000752401022986,(BAHN_DAENG/IRIS_313-11704:0.0325648113350302,KHAO_PAWM/IRIS_313-11681:0.032575188664969806):0.01040747598977014):0.015172620267611674):7.195867497112784E-4,((KHAO_PONG_AEV/IRIS_313-9198:0.04738199946080289,((((BUCAYAB/IRIS_313-8948:0.029710097553685564,SINERBESA/IRIS_313-8567:0.028549902446314435):0.0011476188578849293,BANGBANG/IRIS_313-11472:0.03142238114211507):0.003670272283268855,RAMINAD_GERMAN/IRIS_313-11485:0.03551472771673114):0.008666584893744885,((GENE/IRIS_313-8383:0.020485462734359944,(UGAGA/IRIS_313-11740:0.021969156234252593,KATSIYAM_TABAO/IRIS_313-11463:0.025410843765747405):0.0024195372656400545):0.011686359815521435,OYAK_PAKANG/IRIS_313-11512:0.03211114018447857):0.007962165106255113):4.8862553919711E-4):0.0013839578142816615,((KHAO_MON/IRIS_313-9182:0.03446634451479383,E_NAWN_KHAO/IRIS_313-11677:0.032343655485206166):0.011576867939735943,SOSSOKA/IRIS_313-11716:0.04806313206026405):0.007256276560718346):0.0014566632502887192):2.9917580161554244E-4):2.2117227822231775E-4,((((RR_272-17-829/IRIS_313-10412:0.034866653422476857,((PATISAIL/IRIS_313-8932:0.021728723138825436,MR_69/IRIS_313-11588:0.022781276861174565):0.009560994119777306,IR_07F287/IRIS_313-15900:0.02699900588022269):0.00616584657752315):0.007620323795061789,AGEPDAUJSECAN/IRIS_313-9685:0.053502176204938204):7.46862277011542E-4,((((((EX_EBOKOZURU/IRIS_313-10109:0.03174639323407996,JANDA_LAOR/IRIS_313-9251:0.03028360676592004):0.0028227373788525306,(SADOK/IRIS_313-9582:0.030701753080084406,NG_KARAN_DE/IRIS_313-8536:0.033638246919915585):0.0031147626211474747):0.0025127820314419158,((((UNGGUL/IRIS_313-9694:0.028250912836031664,KATUNG/IRIS_313-8811:0.028789087163968337):0.004379185798551505,(((RADEN_SAWO_1/IRIS_313-9273:0.026927579551371518,MANUS/IRIS_313-9102:0.03242242044862848):0.0016323309633848714,KETAN_KUNANG_KUNENG/IRIS_313-8831:0.026317669036615123):0.0012293957085224676,KUATEK/IRIS_313-9210:0.03038810429147754):0.0024976892014484924):0.0011118328565014012,PULUT_BARAYA/IRIS_313-8725:0.032857854643498594):0.0014692224570948646,RADEN_KARAMUNTING/IRIS_313-8956:0.03821890254290514):3.756164060580757E-4):0.0017314717510276793,BAJAR_KUNING_PAHIT/IRIS_313-9117:0.03931964153022231):0.0030875941914798822,(((((((((SERAUP_27/IRIS_313-9699:0.027497549190049236,BATU/IRIS_313-8312:0.02339245080995076):0.00514182679741762,RADIN_PAHANG/IRIS_313-8316:0.030178173202582384):0.001405711210307154,(KONTOL_86/IRIS_313-9070:0.02199941583325919,PA_RABICHINA/IRIS_313-11554:0.025160584166740812):0.009053038789692849):6.161149360576286E-4,(SERENDAH_SUNGAI_DUA_25/IRIS_313-8557:0.02920955164581631,LEONG_ORN_4135/IRIS_313-8468:0.028320448354183687):0.002453885063942371):0.0032360031036824505,((WUA_PAN_LAK/IRIS_313-11610:0.030311450135843136,KHAO_BAWNG/IRIS_313-11608:0.029628549864156865):0.0034725539938212247,NAHNG_KHAO_BOW/IRIS_313-11534:0.03427744600617878):0.001115403146317541):0.0014380901865501516,(((KOLITONDO/IRIS_313-8681:0.01966012660154217,AC_13_T_141/IRIS_313-8606:0.014009873398457828):0.012781331334021937,MACAPAGAL/IRIS_313-11467:0.03211866866597806):0.00521137287056366,((SIAM_ER_32/IRIS_313-8591:0.03706542531864116,TUBMAN/IRIS_313-11556:0.033674574681358836):0.0016502236331503804,KUNENG/IRIS_313-8492:0.03178977636684963):0.0018186271294363347):0.0022751910634498523):3.5874768474423383E-4,((GUMPANGAR/IRIS_313-9409:0.03336530782196621,KUTAI_PAYA/IRIS_313-8723:0.03235469217803379):0.0024742549618096098,DAJA/IRIS_313-8643:0.036100745038190385):0.0013796507527557636):8.468984274697939E-4,(TAPANG/IRIS_313-8781:0.04267787306728265,NACHIN_ER_12/IRIS_313-8407:0.033552126932717356):0.004278609385030205):0.0018559829822468107,(((BOW_SU_SO/IRIS_313-9697:0.043879825975610035,KHAO_NOK_4/IRIS_313-11706:0.04235017402438997):0.0032316445517076194,CHAW_GAM_PRUED/IRIS_313-8466:0.039818355448292375):5.53442296857734E-4,MAE_HAWM/IRIS_313-11609:0.03866405770314226):0.0011622982677531937):0.0011501611643550819):4.8740782033314785E-4,(((SIPULUT_HITAM_PENDEK/IRIS_313-9320:0.03679549436736185,KACIK_TARAM/IRIS_313-9208:0.03852450563263815):0.0030985692692394274,(((TUMBA/IRIS_313-9188:0.03226979547737043,SI_HAO_NDURIA/IRIS_313-8608:0.03212020452262957):0.0020013033788390776,NELI/IRIS_313-8713:0.03298869662116091):8.384369767353121E-4,SIMET_2/IRIS_313-8833:0.037459063023264697):0.002573930730760573):0.0012606257540776942,(((((PUTEH_KACA/IRIS_313-9310:0.03142954027794037,((SI_MERIA/IRIS_313-9098:0.02429691887754122,BIDAPIK/IRIS_313-9054:0.022463081122458782):0.003852511089753395,MELABOH/IRIS_313-8493:0.026182488910246608):0.004985459722059632):0.0013208062343926241,(IE_MATA_CICEM/IRIS_313-8978:0.028833037370241652,KEDOT/IRIS_313-8291:0.027406962629758346):0.005812943765607377):0.0020659830358662518,(SIDIK/IRIS_313-8767:0.029055000097448325,SARA/IRIS_313-8457:0.029904999902551674):0.0017315169641337505):0.002770208024993847,CANTIK_PAUN/IRIS_313-9097:0.03707260447500614):0.0019767049390970615,(TJERE_SUGI/IRIS_313-9005:0.03652608434268242,REMOL/IRIS_313-8744:0.035953915657317585):0.004908998185902945):0.0014635685818598016):0.0010790736554969283):0.0033789969644740557):0.0018402771488952611,(KETAN_SERANG/IRIS_313-9590:0.028902826098093862,GABAHSI_RASAKI_C_90/IRIS_313-9197:0.029167173901906134):0.01567319819290161):0.0015260383569449386):2.2072092175482708E-4,((((BR_4973-34-6-6/IRIS_313-10340:0.039455355318874535,((((MELEKE/IRIS_313-9989:0.025840842805227127,FAYA_MOSHI/IRIS_313-8909:0.029159157194772873):0.004790639835484226,ZO/IRIS_313-11528:0.03327936016451577):0.0010517550899552678,((DUD_KUNING/IRIS_313-9533:0.02176414263678684,KYUN_TAW_SEIN/IRIS_313-11543:0.02325585736321316):0.004876231413580354,YEBAWYIN/IRIS_313-8697:0.026548768586419642):0.008443244910044737):0.003789073855619777,TOURBE/IRIS_313-9926:0.042079676144380226):0.0015202696811254593):0.00447279360432546,(PALEPYU/IRIS_313-9285:0.03482353594328439,(MOE_GAUNG_PYU/IRIS_313-11545:0.008307024337359267,LINPAN_CHAW/IRIS_313-11544:0.008602975662640735):0.033626464056715606):0.0062645501456745425):0.0010185358922216031,(((MOVE_MOKOLE/IRIS_313-10048:0.05216041356683656,ADIALLO/IRIS_313-11523:0.03629958643316344):0.003726202883820064,(((SOM_DIGUIME/IRIS_313-9986:0.03529778670457978,PA_WOON/IRIS_313-11555:0.03442221329542022):0.0020477340198517204,(KONYAN/IRIS_313-11724:0.037519047539403536,MANARE_PHOM/IRIS_313-11615:0.03846095246059647):4.822659801482702E-4):0.0053718970585957945,(KARANTABA_1/IRIS_313-9461:0.030431764948493006,(SAGNADE/IRIS_313-8293:0.032511956999146066,FELEGBASEH/IRIS_313-11551:0.04001804300085393):0.0018282350515069976):0.0125443529414042):0.001971297116179951):6.14297056078998E-4,(((((BANTA_TIMA/IRIS_313-10045:0.02461572107092204,AUS_78-62/IRIS_313-9294:0.02172427892907796):0.0021779101794022013,MARAGBE/IRIS_313-8391:0.024737089820597795):0.005207363554706485,BAM_9/IRIS_313-8957:0.03229013644529352):0.00391494058231813,PA_FADAYA/IRIS_313-9402:0.038397559417681866):0.0019035891226910975,PA_KABAKIE/IRIS_313-9687:0.043754535877308896):0.0038435545064210005):0.0016618571741846503):6.556884893552152E-4,((((((((RD_15/IRIS_313-10151:0.02921549340127133,QUERO_ASSAN/IRIS_313-9898:0.02979450659872867):0.001827029149508325,(HAM_48/IRIS_313-9357:0.00868384262603441,JAO_LEUANG/IRIS_313-8679:0.007406157373965589):0.023387970850491685):0.002326123967143343,(((LEUANG_YAI_29-12-46/IRIS_313-9119:0.008196327727137964,LEUANG_YAI_29-12-2/IRIS_313-9115:0.008083672272862035):0.0017691418677657157,LEUANG_YAI_2_B_72/IRIS_313-9116:0.006380858132234284):0.01475572063601879,LEUANG_YAI_344/IRIS_313-9112:0.0341667793639812):0.009126376032856657):0.00272263286981958,SRAU_SENG/IRIS_313-8996:0.03961361713018041):0.0021517542347899267,(((((RD_19/IRIS_313-10147:0.03121455378377968,HNANWA/IRIS_313-8751:0.032095446216220326):0.0028022500797761736,((LUA_CHAN_HUONG/IRIS_313-9342:0.033174994322334256,((E_DAW_HAWM/IRIS_313-8980:0.007790538095638575,DAW_85/IRIS_313-11720:0.008669461904361424):4.989545479914784E-4,HAWM_TOONG/IRIS_313-8722:0.008181045452008524):0.02156250567766574):0.0018624998033723791,GASET_BOW/IRIS_313-11679:0.03388875019662763):0.0013261874202238145):6.467144010147835E-4,KHAO_KAI/IRIS_313-9281:0.03513750434898522):0.0013619521027983202,(KHAO_YAI_GUANG/IRIS_313-11708:0.031328796015568254,NIAW_KHIAW_NGOO/IRIS_313-11683:0.029841203984431748):0.0073591416472016825):7.500554585851217E-4,(((((NALUMOOLAI_KARUPAN/IRIS_313-9809:0.007606392972314338,PAHK_NOK_GAEW/IRIS_313-9415:0.008713607027685663):0.025177829896447467,HAWM_KRUA/IRIS_313-8674:0.031942170103552533):0.001935000711469053,(KHAO_THI_RATE/IRIS_313-8793:0.01938301508477005,JAO_KHAO/IRIS_313-11530:0.023766984915229952):0.009327499288530949):0.001019964294947176,PAWNG_AEW_1/IRIS_313-11508:0.035407535705052826):0.0025312595945467496,KHAO_BUN_MI/IRIS_313-11680:0.03458749040545325):5.477668070398731E-4):7.495665659913294E-4):0.0010856235740436993,((((((((((PIN_GAEW_56/IRIS_313-10134:0.026969642349511085,KHAO_PRAHJIN/IRIS_313-8702:0.023820357650488917):0.005061609121263216,OB_CHUEY/IRIS_313-11684:0.02896839087873678):0.001690335308336231,SA_GAE/IRIS_313-11687:0.03189216469166377):0.0012275654789543934,LEUANG_AWN/IRIS_313-8785:0.030652434521045605):0.001577416847288595,TONG_MAH/IRIS_313-9288:0.034549458152711404):6.58548266980986E-4,MAE_YEU/IRIS_313-9575:0.030708326733019008):9.098120398682177E-4,((LEUANG_LAI_MAE_PRAJAN/IRIS_313-9209:0.02822907060454566,KHAO_SAHKORN/IRIS_313-11707:0.03243092939545434):0.0024239938721157366,LEUANG_MAI/IRIS_313-11710:0.033346006127884256):0.0017992113976317886):0.001878675511399276,((LEUANG_TAWNG_SOOK/IRIS_313-9286:0.033298810505402975,LEUANG_DAM/IRIS_313-8895:0.029341189494597027):0.004791862361855831,BEUA_KAE/IRIS_313-11674:0.03799813763814418):0.0023173596448507203):9.752435451904845E-4,((((KHAO_CHUAN_CHOM_452/IRIS_313-9567:0.027605586942518884,KHAO_PLAH_LAI_NAK/IRIS_313-8870:0.027484413057481116):0.004415355135625987,(LEUANG_SAWED/IRIS_313-9406:0.028142295678447844,(LEUANG_CHAIYAPHUM/IRIS_313-9020:0.02390162771217577,PRADOO_DAENG/IRIS_313-11509:0.027058372287824227):0.0029277043215521596):0.0034633948643740115):0.002521637241433873,LEUANG_KHAJAWN/IRIS_313-11709:0.035452737758566125):0.004847999341689656,(KHAO_HAWM/IRIS_313-8985:0.037031652858147815,SIA_MOO/IRIS_313-11688:0.035848347141852185):0.0026510631583103374):0.00179990049777827):0.0012210098494839228,DOC_PHUNG_D_12/IRIS_313-9131:0.042410871254031694):7.602542450175806E-4):0.0013592917947537666,(LUO_SI_ZHAN/IRIS_313-11728:0.03617587049682742,DIAMBARANG/IRIS_313-11525:0.035984129503172584):0.001926314827942149):0.0010719119851240278,(((((((((KAMPAI_PEUN_MEUANG/IRIS_313-9669:0.030804173132623673,(MA_EUE/IRIS_313-11682:0.02785454632525547,(E_PLUAK/IRIS_313-11678:0.02310444936989837,E_MOOM/IRIS_313-11676:0.023205550630101626):0.004420453674744529):0.004485826867376329):0.0025759658675048535,(((MAE_MAI_LUD_NI/IRIS_313-9062:0.026344934374051346,(PLI_KHAO/IRIS_313-8586:0.022618351966346272,QUAHNG_LUANG/IRIS_313-11686:0.02416164803365373):0.002400065625948654):0.0030855784099852474,PAH_WEAN/IRIS_313-8474:0.02462192159001475):0.0015896851788368086,DAWK_PUD_KHAO/IRIS_313-11705:0.0299503148211632):0.0021425497574951457):0.0014306121876504312,GAEW_DAENG/IRIS_313-11721:0.03343450499984957):6.616646675664598E-4,(((LONG_KHI_KRAI/IRIS_313-9006:0.02395974173283018,DAWK_PUT/IRIS_313-11719:0.024390258267169816):0.004880074367554291,DAW_NOK_KAEN/IRIS_313-11700:0.027984925632445715):0.001173841675218933,NA_SOUAN/IRIS_313-8638:0.028961158324781064):0.003435190801183541):0.0015114806215641508,((GAM_PAI_30-12-15/IRIS_313-9302:0.009574760948819197,KAM_PAI/IRIS_313-9019:0.010025239051180803):0.022573208134009565,RAI_MAHK_MEUANG/IRIS_313-11711:0.03392679186599043):0.0020981971128108496):0.001562002644320614,ES_21/IRIS_313-8571:0.03906277274630439):0.002353317769284907,GAM_PERNG/IRIS_313-11635:0.03893258066821509):4.615610593762913E-4,PLAWNG_SAENG/IRIS_313-11685:0.03919135886249871):0.0016721790632499844,SHWE_SABA/IRIS_313-11547:0.04831549183518752):5.800489141097925E-4):0.0013806066233142506):2.2072092175482708E-4);'
-
+		
 			
+	}
+	
+	private void show_phylotree_allvars() {
+		
+		iframePhylotree.setStyle("height:1500px;width:1500px");
+		iframePhylotree.setScrolling("yes");
+		String url = "treeBrowser1k.htm";
+		System.out.println( url );
+		iframePhylotree.setSrc( url );
+		iframePhylotree.setVisible(true);
+
+	}
+	
+	
+	@Listen("onSelect = #listboxPassport")
+	public void setPassportConstraint() {
+		
+		variety = (VarietyFacade)AppContext.checkBean(variety, "VarietyFacade");
+	  
+		System.out.println("passport selected:" + listboxPassport.getSelectedItem().getLabel());
+		
+		List listValues = new java.util.ArrayList();
+		
+		if(!listboxPassport.getSelectedItem().getLabel().trim().isEmpty())
+		{
+			Iterator<CvTermUniqueValues> itValues = variety.getPassportUniqueValues( listboxPassport.getSelectedItem().getLabel() ).iterator();
+			while(itValues.hasNext()) {
+				CvTermUniqueValues value= itValues.next();
+				listValues.add(value.getValue());
+				
+				//System.out.println(value.getValue());
+			}
+		}
+		
+		listboxPassportValue.setModel(new SimpleListModel(listValues ));
+		if(listValues.size()>0)
+			listboxPassportValue.setSelectedIndex(0);
+	}
+	
+	
+	@Listen("onSelect = #listboxPhenotypes")
+	public void setPhenotypeConstraint() {
+		
+		variety = (VarietyFacade)AppContext.checkBean(variety, "VarietyFacade");
+	  
+		
+		List listValues = new java.util.ArrayList();
+		
+		System.out.println("phenotype selected:" + listboxPhenotypes.getSelectedItem().getLabel());
+		
+		if(!listboxPhenotypes.getSelectedItem().getLabel().trim().isEmpty())
+		{
+			Iterator<CvTermUniqueValues> itValues = variety.getPhenotypeUniqueValues( listboxPhenotypes.getSelectedItem().getLabel() ).iterator();
+			while(itValues.hasNext()) {
+				CvTermUniqueValues value= itValues.next();
+				
+				if(value==null){  
+					System.out.println("null value");
+					continue;
+				}
+				
+				System.out.println(value.toString());
+				
+				listValues.add(value.getValue());
+				
+				//System.out.println(value.getValue());
+			}
+		}
+		
+		listboxPhenValue.setModel(new SimpleListModel(listValues ));
+		if(listValues.size()>0)
+			listboxPhenValue.setSelectedIndex(0);
 	}
 	
 }

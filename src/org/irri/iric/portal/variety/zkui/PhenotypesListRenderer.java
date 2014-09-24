@@ -1,7 +1,6 @@
 package org.irri.iric.portal.variety.zkui;
 
 import org.irri.iric.portal.domain.Phenotype;
-import org.irri.iric.portal.variety.domain.Germplasm;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -32,8 +31,9 @@ public class PhenotypesListRenderer implements ListitemRenderer {
 	        if (item.getQuanValue()!=null) val= item.getQuanValue().toString();
 	        
 	        addListcell(listitem, item.getDefinition());
-	        addListcell(listitem, val );
 	        addListcell(listitem, item.getName());
+	        addListcell(listitem, val );
+	       
 
 	        
 	       

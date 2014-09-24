@@ -6,9 +6,9 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
-import org.irri.iric.portal.genotype.service.GenotypeFacade;
-import org.irri.iric.portal.genotype.service.GenotypeFacadeImpl;
-import org.irri.iric.portal.genotype.views.Snp2linesHome;
+//import org.irri.iric.portal.genotype.service.GenotypeFacade;
+//import org.irri.iric.portal.genotype.service.GenotypeFacadeImpl;
+//import org.irri.iric.portal.genotype.views.Snp2linesHome;
 import org.springframework.context.ApplicationContext;
 import org.zkoss.zkplus.spring.SpringUtil;
 
@@ -22,21 +22,57 @@ public class AppContext {
 
 	private static final Log log = LogFactory.getLog(AppContext.class);
 	private static final java.util.Random  rand = new   java.util.Random();
-	public static String tempdir = "../webapps/iric-portal/tmp/";
-	private static final boolean isAWS = true;
+	
+	/**
+	 * directory to write temporary files in server, should be cleaned by cronjob regularly
+	 */
+	//private static String tempdir = "../webapps/iric-portal/tmp/";
+	
+	/**
+	 * is Amazon Web Service compile?
+	 */
+	private static final boolean isAWS = false;
+	
+	private static final boolean isPollux = true;
+	
+	/**
+	 * using the Chado Schema?
+	 */
+	private static final boolean isChado = false;
+	
+	/**
+	 * is development
+	 */
+	private static final boolean isDev = true;
 
     private static ApplicationContext ctx;
     
+    /**
+     * used for timing processes
+     */
     private static long startTime;
 
+    /**
+     * get a temporary file name
+     * @return
+     */
     public static String createTempFilename() {
     	
     	return  Long.toString(  rand.nextLong() ).replace("-","");
     }
     
+    /**
+     * start process timer
+     */
     public static void startTimer() {
     	startTime =  System.currentTimeMillis( );	
     }
+    
+    /**
+     * write period since start/last reset
+     * and restart the timer
+     * @param report
+     */
     public static void resetTimer(String report) {
     	long endTime  =  System.currentTimeMillis( );	
     	System.out.println(endTime- startTime + " ms " + report);
@@ -44,15 +80,59 @@ public class AppContext {
     }
     
     
+    public static String getTempDir() {
+    	if(isAWS)
+    		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
+    		return "/usr/share/apache-tomcat-7.0.55/webapps/" + getHostDirectory() + "/tmp/";
+    	else if(isPollux)
+    		return  "/usr/share/apache-tomcat-7.0.42/webapps/" +  getHostDirectory() + "/tmp/";
+    	else 
+    		// vm-iric-portal
+    		return "/opt/tomcat7/webapps/" +  getHostDirectory() + "/tmp/";
+    	
+    }
+    
+    /**
+     * get domain name (for use in embedded wepapps like JBrowse)
+     * @return
+     */
     public static String getHostname() {
     	if(isAWS)
     		return "http://oryzasnp.org";
+    	else if(isPollux)
+    		return "http://pollux:8080";
     	else
-    		return "http://pollux";
+    		return "http://172.29.4.26:8080"; 
     	//return "http://localhost";
     }
     
+    /**
+     * prefix of DB Views to use (legacy or iric)
+     * @return
+     */
+    public static String getViewPrefix() {
+    	if(isChado)
+    		return "V";
+    	else return "VL";
+    	
+    }
     
+    /**
+     * directory of webapp in host
+     * @return
+     */
+    public static String getHostDirectory() {
+    	if(isDev) 
+    		return "iric-portal-dev";
+    	else 
+    		return "iric-portal";
+    }
+    
+    /**
+     * fetch only SNP-Genotypes which having mismatch with the reference
+     * else fetch all
+     * @return
+     */
     public static boolean isSNPAllvarsFetchMismatchOnly() {
     	return true;
     }
@@ -80,7 +160,7 @@ public class AppContext {
      * Utility to check if object is null (if autowired worked!)
      * 	if null, use  SpringUtil.getBean(name); 
      *  		then AppContext.getApplicationContext().getBean(name);
-     *  		then  new as last resort !
+     *  		then  throw exception !
      * 
      * @param obj	object to check
      * @param name	bean name

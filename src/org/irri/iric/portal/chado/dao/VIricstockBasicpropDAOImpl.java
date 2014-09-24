@@ -1,5 +1,6 @@
 package org.irri.iric.portal.chado.dao;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -18,7 +19,6 @@ import javax.persistence.criteria.Root;
 import org.irri.iric.portal.chado.domain.VIricstockBasicprop;
 import org.irri.iric.portal.dao.VarietyDAO;
 import org.irri.iric.portal.domain.Variety;
-import org.irri.iric.portal.variety.domain.List3k;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -120,7 +120,7 @@ public class VIricstockBasicpropDAOImpl extends AbstractJpaDao<VIricstockBasicpr
 	 *
 	 */
 	@Transactional
-	public VIricstockBasicprop findVIricstockBasicpropByPrimaryKey(Integer iricStockId) throws DataAccessException {
+	public VIricstockBasicprop findVIricstockBasicpropByPrimaryKey(BigDecimal iricStockId) throws DataAccessException {
 
 		return findVIricstockBasicpropByPrimaryKey(iricStockId, -1, -1);
 	}
@@ -131,7 +131,7 @@ public class VIricstockBasicpropDAOImpl extends AbstractJpaDao<VIricstockBasicpr
 	 */
 
 	@Transactional
-	public VIricstockBasicprop findVIricstockBasicpropByPrimaryKey(Integer iricStockId, int startResult, int maxRows) throws DataAccessException {
+	public VIricstockBasicprop findVIricstockBasicpropByPrimaryKey(BigDecimal iricStockId, int startResult, int maxRows) throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVIricstockBasicpropByPrimaryKey", startResult, maxRows, iricStockId);
 			return (org.irri.iric.portal.chado.domain.VIricstockBasicprop) query.getSingleResult();
@@ -329,6 +329,7 @@ public class VIricstockBasicpropDAOImpl extends AbstractJpaDao<VIricstockBasicpr
 	}
 
 	//@Override
+	/*
 	public Set findAllVarietyByExample(Variety germplasm) throws DataAccessException {
 		//Query query = createNamedQuery("findAllList3ks", startResult, maxRows);
 		//return new LinkedHashSet<List3k>(query.getResultList());
@@ -356,6 +357,7 @@ public class VIricstockBasicpropDAOImpl extends AbstractJpaDao<VIricstockBasicpr
 			 
 			  return new java.util.LinkedHashSet<List3k>( testQuery.getResultList() );
 	}
+	*/
 
 	@Override
 	public Variety findVarietyByIrisId(String name) {
@@ -383,7 +385,7 @@ public class VIricstockBasicpropDAOImpl extends AbstractJpaDao<VIricstockBasicpr
 	}
 
 	@Override
-	public Variety findVarietyById(Integer id) {
+	public Variety findVarietyById(BigDecimal id) {
 		// TODO Auto-generated method stub
 		return this.findVIricstockBasicpropByPrimaryKey(id);
 	}

@@ -2,8 +2,5 @@
 
 	<bean id="contextApplicationContextProvider" class="org.irri.iric.portal.ApplicationContextProvider"></bean>
 
-
-
-		<!-- bean id="ViewDist3kId" class="org.irri.iric.portal.variety.views.ViewDist3kId" / -->
 		
 </beans>

@@ -58,13 +58,13 @@ public interface VSnpAllvarsPosDAO extends JpaDao<VSnpAllvarsPos>, SnpsAllvarsPo
 	 * JPQL Query - findVSnpAllvarsPosByPrimaryKey
 	 *
 	 */
-	public VSnpAllvarsPos findVSnpAllvarsPosByPrimaryKey(Integer snpFeatureId_1) throws DataAccessException;
+	public VSnpAllvarsPos findVSnpAllvarsPosByPrimaryKey(BigDecimal snpFeatureId_1) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpAllvarsPosByPrimaryKey
 	 *
 	 */
-	public VSnpAllvarsPos findVSnpAllvarsPosByPrimaryKey(Integer snpFeatureId_1, int startResult, int maxRows) throws DataAccessException;
+	public VSnpAllvarsPos findVSnpAllvarsPosByPrimaryKey(BigDecimal snpFeatureId_1, int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpAllvarsPosByChr

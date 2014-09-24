@@ -13,7 +13,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Listcell;
 
-public class SNPListItemRenderer implements ListitemRenderer {
+public class SNPListItemRenderer implements SNPRowRendererStyle, ListitemRenderer {
 
 	//private short querymode = 0;
 	GenotypeFacade.snpQueryMode querymode;
@@ -23,6 +23,8 @@ public class SNPListItemRenderer implements ListitemRenderer {
 	
 	private static String STYLE_INTERESTING = "font-weight:bold;color:red";
 	private static String STYLE_BORING = "";
+	
+	private static int colorMode = COLOR_MISMATCH;
 	
 	
 	/* (non-Javadoc)
@@ -49,16 +51,25 @@ public class SNPListItemRenderer implements ListitemRenderer {
 	        	String  nuc2 = item.getVar2nuc();
 	        	String  nucref = item.getRefnuc();
 		        
-        		addListcell(listitem, nucref) ;
-        		
-        		if(nuc1.equals(nuc2)) {
-        			addListcell(listitem, nuc1);
-        			addListcell(listitem, nuc2) ;
-        		} else
-        		{
-        			addListcell(listitem, nuc1, STYLE_INTERESTING);
-        			addListcell(listitem, nuc2, STYLE_INTERESTING) ;
-        		}
+	        	if(colorMode==COLOR_MISMATCH) {
+	        	
+	        		addListcell(listitem, nucref) ;
+	        		
+	        		if(nuc1.equals(nuc2)) {
+	        			addListcell(listitem, nuc1);
+	        			addListcell(listitem, nuc2) ;
+	        		} else
+	        		{
+	        			addListcell(listitem, nuc1, STYLE_INTERESTING);
+	        			addListcell(listitem, nuc2, STYLE_INTERESTING) ;
+	        		}
+	        		
+	        	} else {
+	        		
+	        		addListcell(listitem, nucref, getColor(nucref)) ;
+	        		addListcell(listitem, nuc1, getColor(nuc1)) ;
+	        		addListcell(listitem, nuc2, getColor(nuc2)) ;
+	        	}
 
 	        	
 	        } else if(querymode== GenotypeFacade.snpQueryMode.SNPQUERY_REFERENCE) {
@@ -103,6 +114,23 @@ public class SNPListItemRenderer implements ListitemRenderer {
 	       
 	    }
 	
+	
+		private String getColor(String nuc) {
+			
+			if(nuc==null) return "color:black";
+			
+			if(nuc.equals("A"))
+				return STYLE_A;
+			if(nuc.equals("T"))
+				return STYLE_T;
+			if(nuc.equals("G"))
+				return STYLE_G;
+			if(nuc.equals("C"))
+				return STYLE_C;
+			
+			return "color:black";
+		}
+	
 		private void addListcell (Listitem listitem, String value) {
 			addListcell ( listitem,  value, STYLE_BORING );
 		}
@@ -133,7 +161,9 @@ public class SNPListItemRenderer implements ListitemRenderer {
 		}
 
 
-	
+		public void setColorMode(int mode) {
+			this.colorMode = mode;
+		}
 	    
 
 }

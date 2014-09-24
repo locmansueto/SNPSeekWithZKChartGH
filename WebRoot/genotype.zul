@@ -68,8 +68,7 @@ window.Boot_progressbox = function (){}
 		import org.irri.iric.portal.genotype.service.GenotypeFacade;
 		import org.irri.iric.portal.genotype.service.GenotypeFacadeLegacyImpl;
 	
-		import org.irri.iric.portal.genotype.views.Snp2lines;
-		import org.irri.iric.portal.genotype.views.Snp2linesHome;
+
 		import org.springframework.beans.factory.annotation.Autowired;
 
 		import org.irri.iric.portal.AppContext;
@@ -98,12 +97,12 @@ window.Boot_progressbox = function (){}
         //    labelScreenWidth.setValue(screenWidth);
         //}
 
-		String jbrowsestart = AppContext.getHostname() + ":8080/jbrowse-dev";
+		String jbrowsestart = AppContext.getHostname() + "/jbrowse-dev";
            
 </zscript>
 
 
-<window id="win" title="Query SNPs for Varieties"  border="none"
+<window id="win"  border="none"
     apply="org.irri.iric.portal.genotype.zkui.SNPQueryController" >
     
     
@@ -112,19 +111,19 @@ window.Boot_progressbox = function (){}
     
     <hbox>
     
-    <grid width="1000px">
+    <grid width="800px" height="280px">
     <rows>
 
     <row>
-	<textbox id="msgbox" readonly="true" value="${msg}" width="990px"/>
+	<textbox id="msgbox" readonly="true" value="${msg}" width="790px"/>
 	</row>
     <row>
-    <grid>
+    <grid height="220px">
         <rows>
         
         
        		
-            <row spans="1,2,2,1">
+            <row spans="1,5,1">
 
 
                 <!-- label value="Search:" style="font-size:14px;font-weight:bold;color:gray;" />
@@ -140,27 +139,59 @@ window.Boot_progressbox = function (){}
 			    <hbox>             
 			    <combobox id="comboVar1" autodrop="true" buttonVisible="false" width="150px"/>
 			     <label pre="true" value="(ex. loto)" style="font-size:10px"/>
-			     </hbox>
+	
 			    <zscript><![CDATA[
 			        ListModel var1ComboModel= new SimpleListModel(varnames);
 			        comboVar1.setModel(var1ComboModel);
 			    ]]></zscript>
-			    
+			    <hbox width="15px"/>
 			    <combobox id="comboVar2" autodrop="true" buttonVisible="false" width="150px"/>
 			    <zscript><![CDATA[
 			        ListModel var2ComboModel= new SimpleListModel(varnames);
 			        comboVar2.setModel(var2ComboModel);
 			    ]]></zscript>		
-			    
-			    <checkbox id="checkboxAllvarieties" label="All varieties"/>
-				
+			    <hbox width="15px"/>
+			    <hbox pack="center">
+			    <checkbox id="checkboxAllvarieties"/><label value="All Varieties"/>
+				</hbox>
+				</hbox>
+				<label />
 
 			     
  
             </row>
             <row spans="1,5">
             	<label value="Region:" style="font-size:14px;font-weight:bold;color:gray;" />
-            	<grid  ><rows><row>				            	
+            	
+
+            	<hbox>				            	
+                <label>Chromosome:</label>                
+			    <listbox id="selectChr" mold="select"  rows="1"> 
+			    <listitem label="1" selected="true"/>    
+			    <listitem label="2" />    
+			    <listitem label="3"/>    
+			    <listitem label="4"/>    
+			    <listitem label="5"/>    
+			    <listitem label="6"/>    
+			    <listitem label="7"/>    
+			    <listitem label="8"/>    
+			    <listitem label="9"/>    
+			    <listitem label="10"/>    
+			    <listitem label="11"/>    
+			    <listitem label="12"/>    
+				</listbox>
+				 <hbox width="15px"/>
+                 <label>Start:</label>
+                <intbox id="intStart" width="70px"
+                    constraint="no negative" />
+                <hbox width="15px"/>
+                <label id="labelLength" value="End: (length 43270923 bp)"/> 
+                <intbox id="intStop"  width="70px"
+                     constraint="no negative" />   
+                </hbox> 
+
+   
+  				<!--  hbox>			            	
                 <label>Chromosome:</label>                
 			    <listbox id="selectChr" mold="select"  rows="1"> 
 			    <listitem label="1" selected="true"/>    
@@ -177,15 +208,16 @@ window.Boot_progressbox = function (){}
 			    <listitem label="12"/>    
 				</listbox>
                  <label>Start:</label>
-                <intbox id="intStart" 
+                <intbox id="intStart" width="70px"
                     constraint="no negative" />
                 <label id="labelLength" value="End: (length 43270923 bp)"/> 
-                <intbox id="intStop" 
+                <intbox id="intStop"  width="70px"
                      constraint="no negative" />    
-                </row></rows></grid>
-   
+                </hbox -->
+            
+                
             </row>
-            <row spans="1,2,3,1">
+            <row spans="1,5,1">
             	
             	<label value="Gene:" style="font-size:14px;font-weight:bold;color:gray;" />
             	<hbox>
@@ -195,38 +227,37 @@ window.Boot_progressbox = function (){}
 			        comboGene.setModel(geneComboModel);
 			    ]]></zscript>		
 			    <label pre="true" value="(ex. loc_os01g01010)" style="font-size:10px"/>
+
+			    <label pre="true" value="  (The region above is ignored if GENE is specified)" />
 			    </hbox>
-			    <label pre="true" value="If GENE is specified, the positions above are ignored)" />
-
-				<label/>
-
+				<button id="resetButton" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;"
+			    	   width="75px" height="30px"  autodisable="self"/>
+				
                         	    
             </row>
             
             
             <row spans="1,5,1">
             		<label value="Options:" style="font-size:14px;font-weight:bold;color:gray;" />
-            		<grid   >
-            		<rows>
-            		<row spans="1,1,1,1,2">
-	            		<label value="Download"/>
+            		
+            		<vbox>
+
+            		<hbox>
+	            		<label pre="true" value="Download      "/>
 	            		<button id="buttonDownloadCsv"  label="CSV" width="60px" height="30px"  autodisable="self"/>
+	            		<vbox width="50px"/>
 	    				<button id="buttonDownloadTab"  label="Tab" width="60px" height="30px"  autodisable="self"/>    
-	    				
-         				<!--  checkbox id="checkShowsnp" label="Show SNP in JBrowse" value="false"/ -->
-         				
-         			
-    				</row>
-    				<row spans="1,1,1,1">
-    					<label value="SNP coloring"/>
-               	 		  <radio id="radioColorMismatch" label="Ref. mismatch" radiogroup="snpcolor"  selected="true" />
-         				  <radio id="radioColorAllele" label="Nucleotide" radiogroup="snpcolor"/>
-         				  
-    				</row>
-    				
-    				</rows></grid>
-    				
-    				<!-- label value="(download is faster than display)"/ -->
+         			</hbox>	
+
+    				<hbox>
+    					<label pre="true" value="SNP coloring  "/>
+               	 		<radio id="radioColorMismatch" label="Ref. mismatch" radiogroup="snpcolor"  selected="true" />
+               	 		<vbox width="30px"/>
+         				<radio id="radioColorAllele" label="Nucleotide" radiogroup="snpcolor"/>
+         			</hbox>	  
+
+    				</vbox>
+
     				
             		<button id="searchButton" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
 			    	   width="100px" height="50px"  autodisable="self"
@@ -253,17 +284,19 @@ window.Boot_progressbox = function (){}
     
 
 	<tipBox height="280px" width="400px" desc="SNP Query" 
-		details1= "1. Select two varieties to compare OR check All Varieties "
-		details2= "2. Specify region (chromosome, start and end)"
-		details3= "             OR Gene LOC_Os (MSU locus name)" 
-		details4= "3. Set options and click action button"
-		details5= "Results"
-		details6= " Table: Allele for Varieties x SNP positions"
-		details7= " (Sorted by descending number of mismatches with the " 
-		details8= "  reference. Only varieties with mismatch are returned)"
-		details9= " JBrowse: SNPs plot in genome"
-	   details10= " Tree: Phylogenetic tree based on the number" 
-	   details11= "      of allele mismatches in the queried region"
+		details1= "  1. Select two varieties to compare OR "
+		details2= "						check All Varieties"
+		details3= "  2. Specify region(chromosome, start and end) "
+		details4= "             OR Gene LOC_Os (MSU locus name)" 
+		details5= "  3. Set options and click action button"
+		details6= "  Results"
+		details7= "   Table: Allele for Varieties x SNP positions"
+		details8= "   (Sorted by descending number of mismatches"
+		details9= "	   with the reference. Only varieties having "
+	   details10= "	   mismatch with reference are returned"
+	   details11= "   JBrowse: SNPs plot in genome"
+	   details12= "   Tree: Phylogenetic tree based on the number " 
+	   details13= "     of allele mismatches in the region"
 		/>
 	</hbox>
 	<separator bar="true"/>
@@ -278,6 +311,7 @@ window.Boot_progressbox = function (){}
             <tab id="tabTable" label="Table"/>  
             <tab id="tabJbrowse" label="JBrowse" visible="false"/>  
             <tab id="tabPhylo" label="Phylotree" visible="false"/>  
+            <tab id="tabJBrowsePhylo" label="PhyloJBrowse" visible="false"/>  
         </tabs>  
         <tabpanels>  
     <tabpanel> <!--    vflex="1" style="overflow:auto" -->  
@@ -322,25 +356,6 @@ window.Boot_progressbox = function (){}
 <iframe id= "iframeJbrowse"  align="left" visible="false" style="width:1500px;height:3000px;border:0px inset;" src="${jbrowsestart}" />
 </vbox>
  
-     <!--  portallayout id="portalLayout" maximizedMode="whole">
-        <portalchildren style="padding: 5px" width="30%">
-            <panel id="wiki" height="300px" title="SNP JBrowser" border="normal" collapsible="true" closable="true" maximizable="true" style="margin-bottom:10px">
-             	<panelchildren>
-					<label id="msgJbrowse"  visible="false" style="font-family: arial;font-size:16px" />               
-             	</panelchildren>
-             	<panelchildren>
-					<iframe width="100%" height="100%" id= "iframeJbrowse"  align="left" visible="false" src="http://pollux:8080/jbrowse-dev" />
-             	</panelchildren>
-            </panel>
-            <panel id="tool" height="200px" title="Google Tools" border="normal" collapsible="true" closable="true" maximizable="true" style="margin-bottom:10px">
-                <panelchildren>
-                    <iframe width="100%" height="100%"
-                        src="http://3.gmodules.com/ig/ifr?url=http://www.google.com/ig/modules/toolspromo.xml&amp;nocache=0&amp;lang=en&amp;country=us&amp;.lang=en&amp;.country=us&amp;synd=ig&amp;mid=3&amp;ifpctok=5090480830848781425&amp;parent=http://www.google.com&amp;extern_js=/extern_js/f/CgJlbhICdXMrMAs4ACwrMBA4ACwrMBI4ACwrMBM4ACw/zYieI_ujwr4.js" />
-                </panelchildren>
-            </panel>
-        </portalchildren>
- 	</portallayout -->
-      
                 
             </tabpanel>  
             <tabpanel> <!--  vflex="1" style="overflow:auto" -->
@@ -373,6 +388,18 @@ window.Boot_progressbox = function (){}
 </vbox>
 
             </tabpanel>
+            
+   <tabpanel id="fourth"> 
+ 
+<vbox>
+<label id="msgJbrowsePhylo"  visible="false" style="font-family: arial;font-size:16px" />
+<iframe id= "iframeJbrowsePhylo"  align="left" visible="false" style="width:1500px;height:3000px;border:0px inset;" src="${jbrowsestart}" />
+</vbox>
+ 
+                
+            </tabpanel>             
+            
+            
         </tabpanels> 
     </tabbox> 
         

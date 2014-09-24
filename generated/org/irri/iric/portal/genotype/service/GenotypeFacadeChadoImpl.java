@@ -39,9 +39,9 @@ import org.irri.iric.portal.domain.Variety;
 //import org.irri.iric.portal.domain.VarietyService;
 //import org.irri.iric.portal.genotype.domain.Variety3k;
 //import org.irri.iric.portal.genotype.views.*;
-import org.irri.iric.portal.service.GeneService;
-import org.irri.iric.portal.service.Snps2VarsService;
-import org.irri.iric.portal.service.VarietyService;
+//import org.irri.iric.portal.service.GeneService;
+//import org.irri.iric.portal.service.Snps2VarsService;
+//import org.irri.iric.portal.service.VarietyService;
 //import org.irri.iric.portal.utils.zkui.HibernateSearchObject;
 import org.irri.iric.portal.variety.service.VarietyFacade;
 //import org.irri.iric.portal.variety.views.IViewDist3kHome;
@@ -79,6 +79,8 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	private java.util.HashMap<Integer,BigDecimal> mapOrder2Variety; // 0-indexed
 	private java.util.HashMap<BigDecimal, Integer> mapVariety2Order;  // 0-indexed
 	private java.util.HashMap<BigDecimal, Integer> mapVariety2Mismatch;
+	
+	private java.util.HashMap<BigDecimal, Integer> mapVariety2PhyloOrder;
 
 
 	private List<SnpsAllvarsPos> snpsposlist; 
@@ -405,14 +407,15 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	 * 	 		
 	 */
 	
-	
 	public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows) {
+		return getSNPinAllVarieties(startPos, endPos, chromosome, firstRow, numRows,AppContext.isSNPAllvarsFetchMismatchOnly()); 
+	}
+	
+	public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows, boolean fetchMismatchOnly) {
 		// TODO Auto-generated method stub
 
 		if(startPos<0)  startPos=0;
-		
-		boolean fetchMismatchOnly = AppContext.isSNPAllvarsFetchMismatchOnly();
-		
+	
 		// if first row, get the new variety-mismatch sort order
 		if(firstRow==1 ) {
 			listSNPAllVarsMismatches=countSNPMismatchesInAlllVarieties( startPos,  endPos,  chromosome, true);
@@ -846,137 +849,6 @@ within a subpopulation group
 
 	 */
 	 
-/*
-	public String constructPhylotree(String scale, String chr, int start, int end) {
-		
-		snpcount2linesService = (Snps2VarsCountMismatchDAO)AppContext.checkBean(snpcount2linesService, "Snps2VarsCountMismatchDAO");
-		
-		List<Snps2VarsCountmismatch>  mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end));
-		
-		
-		int snps = getSnpsposlist().size();
-		
-		
-		//germplasms
-		System.out.println(mismatches.size() + " mismatch pairs");
-		
-		java.util.Map<BigDecimal, Integer> mapName2Row = new java.util.HashMap<BigDecimal, Integer>();
-		
-
-		Set<BigDecimal> setWithMismatch = new java.util.TreeSet();
-		
-		//java.util.Map<String, BigDecimal> mapPairMismatch = new java.util.HashMap<String, BigDecimal>();
-		java.util.Iterator<Snps2VarsCountmismatch>  itdist = mismatches.iterator();		
-		while(itdist.hasNext())
-		{
-			
-			Snps2VarsCountmismatch dist3k = itdist.next();
-			//mapPairMismatch.put( dist3k.getVar1() + ":" + dist3k.getVar2(), dist3k.getMismatch());
-			setWithMismatch.add( dist3k.getVar1());
-			setWithMismatch.add( dist3k.getVar2());
-		}
-		
-		
-		BasicSymmetricalDistanceMatrix symdistmatrix = new BasicSymmetricalDistanceMatrix( setWithMismatch.size() );
-		
-		System.out.println( setWithMismatch.size() + " unique names with mismatch");
-		
-		varietyfacade = (VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade");
-		Map<BigDecimal,Variety> mapVarid2Variety = varietyfacade.getMapId2Variety();
-		
-		int i=0;
-		Iterator<BigDecimal> itgerm = setWithMismatch.iterator();
-		while(itgerm.hasNext()) {
-			BigDecimal varid = itgerm.next();
-			mapName2Row.put(varid , i);
-			symdistmatrix.setIdentifier( i, "varid_" + varid );
-			i++;
-		}		
-
-		System.out.println("symdistmatrix done");
-		
-		double distscale = 1.0; 
-		
-		java.util.Iterator<Snps2VarsCountmismatch>  itdist2 = mismatches.iterator();		
-		while(itdist2.hasNext())
-		{
-			Snps2VarsCountmismatch dist3k = itdist2.next();
-			double dist =   dist3k.getMismatch().intValue()*distscale /( snps -  dist3k.getMismatch().intValue() );
-			
-			try {
-				
-				if(  mapName2Row.get(dist3k.getVar1()).equals(  mapName2Row.get(dist3k.getVar2()) ) ) {
-					System.out.println( mapName2Row.get(dist3k.getVar1()) + ": " +  mapVarid2Variety.get(dist3k.getVar1()) + "\t" +  mapName2Row.get(dist3k.getVar2()) + ": " +    mapVarid2Variety.get(dist3k.getVar2())  + "  -- " + dist);
-					dist = 0.0;
-				}
-				
-				symdistmatrix.setValue( mapName2Row.get(dist3k.getVar1()) , mapName2Row.get(dist3k.getVar2()) , dist );
-				symdistmatrix.setValue( mapName2Row.get(dist3k.getVar2()) , mapName2Row.get(dist3k.getVar1()),  dist );
-				
-			} catch(Exception ex) {
-				
-				System.out.println( "NULL EXCEPTION:\t" + dist + "\t" + dist3k.getVar1() + "\t" + mapName2Row.get(dist3k.getVar1()) + "\t" + dist3k.getVar2() + "\t" +  mapName2Row.get(dist3k.getVar2()) + "\t" + dist );
-			
-			}
-		}
-		
-		
-		
-		System.out.print(symdistmatrix.getSize() + " symdistmatrix ready");
-		
-		try {
-			
-			TreeConstructor tree = new  TreeConstructor(symdistmatrix,
-				org.biojava3.phylo.TreeType.NJ ,
-				org.biojava3.phylo.TreeConstructionAlgorithm.PID ,
-			//	null);
-				new org.biojava3.phylo.ProgessListenerStub());
-				tree.process();
-
-				System.out.println("process done");
-			//tree.getN
-			String newick = tree.getNewickString(false, true);
-			
-			
-			
-			System.out.println(newick);
-			Iterator<BigDecimal> itgerm2 = setWithMismatch.iterator();
-			while(itgerm2.hasNext()) {
-				BigDecimal c = itgerm2.next();
-				//String newc = c.replace(' ', '_');
-				// replace iris_id to varnames
-				//String varname  = mapIRISId2Varname.get(c);
-				//newick = newick.replace(c,  mapIRISId2Varname.get(c).replace("-", "_").replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "")   );
-				//String subpop = mapVarname2IRISId.get(varname)[2];
-				//if(subpop == null) subpop = ""; 
-				
-				Variety var = mapVarid2Variety.get(c);
-				
-				String subpop = "";
-				if( var.getSubpopulation()!=null) subpop = "/" +  var.getSubpopulation();
-				
-				newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0] + "/" + var.getIrisId() + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
-			}
-			
-			
-			System.out.println(newick);
-			
-			
-			
-			//System.out.println(newick);
-			return newick;
-			
-			
-		} catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-		
-		return null;
-	            //   NJTreeProgressListener _treeProgessListener)
-		
-	}
-	*/
 	
 	
 public String constructPhylotree(String scale, String chr, int start, int end) {
@@ -1137,176 +1009,18 @@ public String constructPhylotreeTopN(String scale, String chr, int start, int en
 		
 	}
 	
-
-/*	public String constructPhylotreeWithCommon(String scale, String chr, int start, int end) {
-		
-		snpcount2linesService = (IViewCount2linesMismatchHome)AppContext.checkBean(snpcount2linesService, "IViewCount2linesMismatchHome");
-		
-		
-		String sql = "select upper(var1) var1, upper(var2) var2, count(*) mismatch from snp_2lines where " 
-				+ " var1nuc<>var2nuc "
-				+ " and (var1nuc is not null or var2nuc is not null) "
-				+ " and chr=" + chr 
-				+ " and pos between " + (start-1) + " and " + (end+1) 
-				+ " and var1<=var2 "
-				+ " group by var1, var2 "
-				+ " order by var1, var2";
-				
-		List<ViewCount2linesMismatchId>  mismatches =  snpcount2linesService.executeSQL( sql );
-		
-		
-		String sql2 = "select upper(var1) var1, upper(var2) var2, count(*) mismatch from snp_2lines where " 
-				+ " var1nuc=var2nuc "
-				+ " and (var1nuc is not null or var2nuc is not null) "
-				+ " and chr=" + chr 
-				+ " and pos between " + (start-1) + " and " + (end+1) 
-				+ " and var1<=var2 "
-				+ " group by var1, var2 "
-				+ " order by var1, var2";
-				
-		List<ViewCount2linesMismatchId>  common =  snpcount2linesService.executeSQL( sql2 );
-		
-		
-		
-		
-		//germplasms
-		System.out.println(mismatches.size() + " mismatch pairs");
-		System.out.println(common.size() + " common pairs");
-		
-		java.util.Map<String, Integer> mapName2Row = new java.util.HashMap<String, Integer>();
-		
-
-		Set setNames = new java.util.TreeSet();
-		
-		java.util.Map<String, BigDecimal> mapPairMismatch = new java.util.HashMap<String, BigDecimal>();
-		java.util.Iterator<ViewCount2linesMismatchId>  itdist = mismatches.iterator();		
-		while(itdist.hasNext())
-		{
-			
-			ViewCount2linesMismatchId dist3k = itdist.next();
-			mapPairMismatch.put( dist3k.getVar1() + ":" + dist3k.getVar2(), dist3k.getMismatch());
-			setNames.add( dist3k.getVar1());
-			setNames.add( dist3k.getVar2());
-		}
-		
-		
 	
-		BasicSymmetricalDistanceMatrix symdistmatrix = new BasicSymmetricalDistanceMatrix( setNames.size() );
-		
-		System.out.println( setNames.size() + " unique names with mismatch");
-		
-		
-		int i=0;
-		Iterator<String> itgerm = setNames.iterator();
-		while(itgerm.hasNext()) {
-			String c = itgerm.next();
-			mapName2Row.put(c , i);
-			symdistmatrix.setIdentifier( i, c );
-			i++;
-		}		
-		
-
-		
-
-		System.out.println("symdistmatrix done");
-
-		
-		
-		
-		//setNames = new java.util.HashSet();
-		
-		//double distscale = Integer.valueOf(scale)*20.0/(end-start) ; // Integer.parseInt(scale);
-		
-		double distscale = 1.0; 
-		
-		// distance = # mismatch / # common snps
-		
-
-		
-		java.util.Iterator<ViewCount2linesMismatchId>  itcommon = common.iterator();		
-		
-		while(itcommon.hasNext())
-		{
-			
-			ViewCount2linesMismatchId paircommon = itcommon.next();
-			
-			String pair = paircommon.getVar1() + ":" + paircommon.getVar2();
-			BigDecimal pairmismatch =  mapPairMismatch.get(pair );
-			
-			mapPairMismatch.remove( pair );
-			
-			if( pairmismatch==null) {
-				pairmismatch = BigDecimal.ZERO ;
-				//continue;
-			}
-			
-			
-			
-			Double dist = distscale*pairmismatch.doubleValue() / paircommon.getMismatch().doubleValue() ;
-
-			
-			try {
-						
-				symdistmatrix.setValue( mapName2Row.get(paircommon.getVar1()) , mapName2Row.get(paircommon.getVar2()) , dist );
-				symdistmatrix.setValue( mapName2Row.get(paircommon.getVar2()) , mapName2Row.get(paircommon.getVar1()),  dist );
-				
-			} catch(Exception ex) {
-				
-				System.out.println( "NULL EXCEPTION:\t" + dist + "\t" + paircommon.getVar1() + "\t" + mapName2Row.get(paircommon.getVar1()) + "\t" + paircommon.getVar2() + "\t" +  mapName2Row.get(paircommon.getVar2()) );
-				
-			//	ex.printStackTrace();
-			}
-		}
-		
-		System.out.println(mapPairMismatch.size() + " pairs no common");
-
-		
-		
-		System.out.print(symdistmatrix.getSize() + " symdistmatrix ready");
-		
-		try {
-			
-			TreeConstructor tree = new  TreeConstructor(symdistmatrix,
-				org.biojava3.phylo.TreeType.NJ ,
-				org.biojava3.phylo.TreeConstructionAlgorithm.PID ,
-			//	null);
-				new org.biojava3.phylo.ProgessListenerStub());
-				tree.process();
-
-				System.out.println("process done");
-			//tree.getN
-			String newick = tree.getNewickString(false, true);
-			
-			newick = newick.replace(' ', '_').replace("'","").replace(":-",":");
-			//newick = newick.replace("IRIS", newChar)
-	
-			
-			//System.out.println(newick);
-			
-			orderVarietiesFromPhylotree( newick);
-			
-			return newick;
-			
-			
-		} catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-		
-		return null;
-	            //   NJTreeProgressListener _treeProgessListener)
-		
-	}*/
-	
-	
-	public Map<String,Integer> orderVarietiesFromPhylotree(String newick)
+	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String newick)
 	{
 
 		//org.forester.application.phyloxml_converter
-		   Map<String,Integer> mapVariety2Order = new HashMap<String,Integer>(); 
-			try {
+		    mapVariety2PhyloOrder = new HashMap<BigDecimal,Integer>(); 
+		    
+		    //Map<String,Integer> mapVarietyName2PhyloOrder = new HashMap<String,Integer>(); 
+		    
+		    try {
 
-				String tmpfile = AppContext.tempdir + AppContext.createTempFilename() + ".newick";
+				String tmpfile = AppContext.getTempDir() + AppContext.createTempFilename() + ".newick";
 				PrintWriter out = new PrintWriter(tmpfile);
 				out.print(newick);
 				out.close();
@@ -1329,6 +1043,7 @@ public String constructPhylotreeTopN(String scale, String chr, int start, int en
 		        }
 		        
 		        System.out.println("Newick postorder listing:");
+		        Map<String,Variety> varname2var = varietyfacade.getMapVarname2Variety();
 		     
 		        int leafcount = 0;
 		        for(int iphy=0; iphy<phys.length; iphy++)
@@ -1336,8 +1051,9 @@ public String constructPhylotreeTopN(String scale, String chr, int start, int en
 			        for(PhylogenyNodeIterator it = phys[iphy].iteratorPostorder(); it.hasNext(); ) {
 			        	PhylogenyNode node = it.next();
 			        	if(node.isExternal()) {
-			        		System.out.println( node.getName() );
-			        		mapVariety2Order.put(node.getName(), leafcount);
+			        		//System.out.println( node.getName() );
+			        		//mapVarietyName2PhyloOrder.put(node.getName(), leafcount);
+			        		mapVariety2PhyloOrder.put(  varname2var.get(node.getName().split("/")[0] ).getVarietyId() , leafcount);
 			        		leafcount++;
 			        	}
 			        }
@@ -1350,7 +1066,11 @@ public String constructPhylotreeTopN(String scale, String chr, int start, int en
 				e.printStackTrace();
 			}
 			
-			return mapVariety2Order;
+		    
+		    
+		    
+		    
+			return mapVariety2PhyloOrder;
 
 	}
 	/*
@@ -1384,6 +1104,11 @@ public String constructPhylotreeTopN(String scale, String chr, int start, int en
 	public HashMap<BigDecimal, Integer> getMapVariety2Mismatch() {
 		// TODO Auto-generated method stub
 		return this.mapVariety2Mismatch;
+	}
+
+	@Override
+	public java.util.HashMap<BigDecimal, Integer> getMapVariety2PhyloOrder() {
+		return mapVariety2PhyloOrder;
 	}
 
 	

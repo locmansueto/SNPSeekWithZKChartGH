@@ -1,0 +1,39 @@
+
+V_IRICSTOCK_DISTANCE
+select stock1.iric_stock_id as var1, stock2.iric_stock_id as var2 ,dist_3k.dist
+from nalexandrov.dist_3k, v_iricstock_basicprop stock1, v_iricstock_basicprop stock2
+where  stock1.IRIS_UNIQUE_ID=dist_3k.nam1
+  and stock2.IRIS_UNIQUE_ID=dist_3k.nam2
+  and  stock1.iric_stock_id<=stock2.iric_stock_id
+
+V_IRICSTOCK_PASSPORT
+select irp.iric_stockprop_id, irs.iric_stock_id, ct.name, ct.definition, irp.value
+from iric_stock irs, iric_stockprop irp, cvterm ct
+where irs.iric_stock_id=irp.iric_stock_id
+and irp.type_id=ct.cvterm_id
+and ct.definition like 'GRIMS%'
+order by ct.definition;
+
+V_SNP_ALLVARS
+select sg.snp_genotype_id, sg.iric_stock_id  var, to_number(replace(upper(f.name),'CHR',''))  chr,  sfl.position  pos,  sf.refcall  refnuc, sg.allele1  varnuc
+from snp_feature sf, snp_featureloc sfl, snp_genotype sg, feature f  
+where sf.snp_feature_id=sfl.snp_feature_id
+and sf.snp_feature_id=sg.snp_feature_id
+and f.feature_id=sfl.srcfeature_id
+
+
+V_SNP_ALLVARS_POS
+select sf.snp_feature_id, to_number(replace(upper(f.name),'CHR','')) as chr,  sfl.position as pos,  sf.refcall as refnuc
+from snp_feature sf, snp_featureloc sfl, feature f  
+where sf.snp_feature_id=sfl.snp_feature_id
+and f.feature_id=sfl.srcfeature_id;
+
+
+V_SNP_2VARS
+ select sg1.iric_stock_id as var1, sg2.iric_stock_id as var2, sf.snp_feature_id, to_number(replace(upper(f.name),'CHR','')) as chr  , sfl.position as pos,
+    sf.refcall as refnuc, sg1.allele1 as var1nuc, sg2.allele1 as var2nuc
+from snp_feature sf, snp_featureloc sfl, snp_genotype sg1, snp_genotype sg2, feature f
+where sf.snp_feature_id=sfl.snp_feature_id
+and sf.snp_feature_id=sg1.snp_feature_id
+and sf.snp_feature_id=sg2.snp_feature_id
+and f.feature_id=sfl.srcfeature_id;

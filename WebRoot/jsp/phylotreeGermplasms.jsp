@@ -3,19 +3,13 @@
 <%@ page import="org.irri.iric.portal.AppContext" %>
 <html>
 <head>
+	
 	<link rel="stylesheet" type="text/css" href="css/doublescroll.css">
 
     <script type="text/javascript" src="js/raphael-min.js" ></script>
-    <script type="text/javascript" src="js/jsphylosvg.js"></script>
+    <script type="text/javascript" src="js/jsphylosvg_variety.js"></script>
     <!--  script type="text/javascript" src="js/jsphylosvg-min.js"></script -->
-
-
-	<!--  yui -->
-  	<link type="text/css" rel="stylesheet" href="/js/yui/build/cssfonts/fonts-min.css" /> 
-	<script type="text/javascript" src="/js/yui/build/yui/yui.js"></script> 
-	<!-- unitip -->
-	<link rel="stylesheet" type="text/css" href="/js/unitip/css/unitip.css" > 
-	<script type="text/javascript" src="/js/unitip/js/unitip.js"></script> 	
+    
 	
 
 
@@ -77,73 +71,30 @@
 		
 		//newick=newick.replace("-","");
 		
-%>
+
+	%>
 
     window.onload = function(){
-            var dataObject = { newick:  <%= newick %> };
+        var dataObject = { newick:  <%= newick %> };
 
-            phylocanvas = new Smits.PhyloCanvas(
-                dataObject,
-                'svgCanvas',
-                <%= width  %> ,  <%= height %>
-            );
-    };
+        phylocanvas = new Smits.PhyloCanvas(
+            dataObject,
+            'svgCanvas',
+            <%= width  %> ,  <%= height %>
+        );
 
-    </script>
-    
-<!--
-	window.onload = function(){
-		YUI().use('oop', 'json-stringify', 'io-base', 'event', 'event-delegate', function(Y){
-			function complete(id, o, args) {
-				var dataObject ={ newick:  <%= newick %> };
-				phylocanvas = new Smits.PhyloCanvas(
-					dataObject,
-					'svgCanvas', 
-					 <%= width  %> ,  <%= height %>
-				);
-				init(); //unitip
-			};
-			Y.on('io:complete', complete, Y);
-			var request = Y.io(uri);
-		});
 	};
+
+
+	function onClicknode(param) {
+		alert(param + ' clicked');
+		 (function(window){
+	        	window.zAu.send(new window.zk.Event(window.zk.Widget.$('$winVariety'), "onUser","Node " + param + " clicked"));
+	     })(parent);
+	}
+	
 	</script>
 	
- -->   
-    
-    
-    <!-- 
-     <script type="text/javascript">
-    $(function(){
-    $(".wrapper1").scroll(function(){
-        $(".wrapper2")
-            .scrollLeft($(".wrapper1").scrollLeft());
-    });
-    $(".wrapper2").scroll(function(){
-        $(".wrapper1")
-            .scrollLeft($(".wrapper2").scrollLeft());
-    });
-	});
-    </script>
-
-
-
-
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="js/jquery.doubleScroll.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function(){
-               $('.double-scroll').doubleScroll();
-            });
-        </script>
-
-        <style>
-            .double-scroll{
-                width: 400px;
-            }
-        </style>
--->
 
 </head>
 <body>
@@ -154,17 +105,6 @@
 	<div id="svgCanvas"/>
 </div>
 
-<!-- 
-<div class="wrapper1">
-    <div class="div1">
-    </div>
-</div>
-<div class="wrapper2">
-    <div class="div2">
-    	<div id="svgCanvas"/>
-    </div>
-</div>
--->
 
 </body>
 </html>    

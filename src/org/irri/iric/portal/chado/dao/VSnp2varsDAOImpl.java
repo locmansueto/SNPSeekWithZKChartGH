@@ -256,7 +256,7 @@ public class VSnp2varsDAOImpl extends AbstractJpaDao<VSnp2vars> implements
 	 *
 	 */
 	@Transactional
-	public VSnp2vars findVSnp2varsByPrimaryKey(Integer var1, Integer var2, Integer snpFeatureId) throws DataAccessException {
+	public VSnp2vars findVSnp2varsByPrimaryKey(BigDecimal var1, BigDecimal var2, BigDecimal snpFeatureId) throws DataAccessException {
 
 		return findVSnp2varsByPrimaryKey(var1, var2, snpFeatureId, -1, -1);
 	}
@@ -267,7 +267,7 @@ public class VSnp2varsDAOImpl extends AbstractJpaDao<VSnp2vars> implements
 	 */
 
 	@Transactional
-	public VSnp2vars findVSnp2varsByPrimaryKey(Integer var1, Integer var2, Integer snpFeatureId, int startResult, int maxRows) throws DataAccessException {
+	public VSnp2vars findVSnp2varsByPrimaryKey(BigDecimal var1, BigDecimal var2, BigDecimal snpFeatureId, int startResult, int maxRows) throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVSnp2varsByPrimaryKey", startResult, maxRows, var1, var2, snpFeatureId);
 			return (org.irri.iric.portal.chado.domain.VSnp2vars) query.getSingleResult();

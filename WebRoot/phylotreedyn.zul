@@ -34,7 +34,8 @@ window.Boot_progressbox = function (){}
 	<![CDATA[
 		function chartLoaded(obj) {
 		zAu.send(new zk.Event(zk.Widget.$(obj), "onChartLoaded"));
-	}
+		}
+		
 	]]>
 	</script>
 
@@ -42,6 +43,12 @@ window.Boot_progressbox = function (){}
        String url  = (String)desktop.getExecution().getArg().get("href");
 	   ]]>
 	</zscript>
+    
+    
+    <window id="winTreeBrowser" title="Variety Tree Browser" border="none" >
+    
+    
+    <!--   include self="@define(content)" src="/variety_info.zul"/ -->
     
     <iframe src="jsp/phylotreeGermplasms.jsp?scale=1&amp;varid=all" style="height:1500px;width:1500px" 
     	xmlns:ca="http://www.zkoss.org/2005/zk/client/attribute" ca:onload="chartLoaded(this)">
@@ -51,8 +58,13 @@ window.Boot_progressbox = function (){}
   		<attribute name="onChartLoaded">
   			Clients.clearBusy(self);
   		</attribute>
+  		
+  		<attribute name="onClickTreenode">
+  			Clients.alert("Treenode Clicked");
+  		</attribute>
+  		
   	</iframe> 
   
-   
+   </window>
      
 </zk>

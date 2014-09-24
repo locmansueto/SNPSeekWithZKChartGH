@@ -1,5 +1,6 @@
 package org.irri.iric.portal.chado.dao;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import org.irri.iric.portal.chado.domain.VIricstockBasicprop;
@@ -41,13 +42,13 @@ public interface VIricstockBasicpropDAO extends JpaDao<VIricstockBasicprop> , Va
 	 * JPQL Query - findVIricstockBasicpropByPrimaryKey
 	 *
 	 */
-	public VIricstockBasicprop findVIricstockBasicpropByPrimaryKey(Integer iricStockId) throws DataAccessException;
+	public VIricstockBasicprop findVIricstockBasicpropByPrimaryKey(BigDecimal iricStockId) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockBasicpropByPrimaryKey
 	 *
 	 */
-	public VIricstockBasicprop findVIricstockBasicpropByPrimaryKey(Integer iricStockId, int startResult, int maxRows) throws DataAccessException;
+	public VIricstockBasicprop findVIricstockBasicpropByPrimaryKey(BigDecimal iricStockId, int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockBasicpropByIrisUniqueIdContaining

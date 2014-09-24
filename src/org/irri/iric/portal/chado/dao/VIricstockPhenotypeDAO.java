@@ -66,13 +66,13 @@ public interface VIricstockPhenotypeDAO extends JpaDao<VIricstockPhenotype>, Phe
 	 * JPQL Query - findVIricstockPhenotypeByPrimaryKey
 	 *
 	 */
-	public VIricstockPhenotype findVIricstockPhenotypeByPrimaryKey(Integer iricStockPhenotypeId_1) throws DataAccessException;
+	public VIricstockPhenotype findVIricstockPhenotypeByPrimaryKey(BigDecimal bigDecimal) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByPrimaryKey
 	 *
 	 */
-	public VIricstockPhenotype findVIricstockPhenotypeByPrimaryKey(Integer iricStockPhenotypeId_1, int startResult, int maxRows) throws DataAccessException;
+	public VIricstockPhenotype findVIricstockPhenotypeByPrimaryKey(BigDecimal iricStockPhenotypeId_1, int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByIricStockId

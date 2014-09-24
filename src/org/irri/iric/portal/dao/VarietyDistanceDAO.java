@@ -8,9 +8,19 @@ import org.irri.iric.portal.domain.VarietyDistance;
 
 public interface VarietyDistanceDAO {
 
-	//List<VarietyDistance> findVarieties(String string);
 
+	/**
+	 * Get distance between varieties for variety IDs in germplasms
+	 * @param germplasms
+	 * @return
+	 */
 	List<VarietyDistance> findVarieties(Set<BigDecimal> germplasms);
+	
+	/**
+	 * Get distance between varieties for all varieties
+	 * @param germplasms
+	 * @return
+	 */
 	List<VarietyDistance> findAllVarieties();
 
 }

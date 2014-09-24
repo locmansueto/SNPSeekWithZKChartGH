@@ -2,6 +2,7 @@ package org.irri.iric.portal.variety.zkui;
 
 
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.domain.VarietyPlus;
 //import org.irri.iric.portal.genotype.views.Snp2linesId;
 //import org.irri.iric.portal.variety.domain.List3k;
 //import org.irri.iric.portal.variety.domain.Germplasm;
@@ -37,8 +38,10 @@ public class VarietyListItemRenderer implements ListitemRenderer {
 	        addListcell(listitem, item.getIrisId());
 	        addListcell(listitem, item.getSubpopulation());
 	        addListcell(listitem, item.getCountry());
-
 	        
+	        if(item instanceof VarietyPlus ) {
+	        	addListcell(listitem, ((VarietyPlus)item).getValue().toString() );
+	        }
 	       
 	    }
 	

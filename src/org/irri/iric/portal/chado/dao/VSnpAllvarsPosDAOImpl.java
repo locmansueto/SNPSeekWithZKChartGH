@@ -144,7 +144,7 @@ public class VSnpAllvarsPosDAOImpl extends AbstractJpaDao<VSnpAllvarsPos>
 	 *
 	 */
 	@Transactional
-	public VSnpAllvarsPos findVSnpAllvarsPosByPrimaryKey(Integer snpFeatureId) throws DataAccessException {
+	public VSnpAllvarsPos findVSnpAllvarsPosByPrimaryKey(BigDecimal snpFeatureId) throws DataAccessException {
 
 		return findVSnpAllvarsPosByPrimaryKey(snpFeatureId, -1, -1);
 	}
@@ -155,7 +155,7 @@ public class VSnpAllvarsPosDAOImpl extends AbstractJpaDao<VSnpAllvarsPos>
 	 */
 
 	@Transactional
-	public VSnpAllvarsPos findVSnpAllvarsPosByPrimaryKey(Integer snpFeatureId, int startResult, int maxRows) throws DataAccessException {
+	public VSnpAllvarsPos findVSnpAllvarsPosByPrimaryKey(BigDecimal snpFeatureId, int startResult, int maxRows) throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVSnpAllvarsPosByPrimaryKey", startResult, maxRows, snpFeatureId);
 			return (org.irri.iric.portal.chado.domain.VSnpAllvarsPos) query.getSingleResult();

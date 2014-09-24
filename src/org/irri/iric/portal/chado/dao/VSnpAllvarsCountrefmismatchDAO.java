@@ -43,13 +43,13 @@ public interface VSnpAllvarsCountrefmismatchDAO extends
 	 * JPQL Query - findVSnpAllvarsCountrefmismatchByPrimaryKey
 	 *
 	 */
-	public VSnpAllvarsCountrefmismatch findVSnpAllvarsCountrefmismatchByPrimaryKey(Integer var_1) throws DataAccessException;
+	public VSnpAllvarsCountrefmismatch findVSnpAllvarsCountrefmismatchByPrimaryKey(BigDecimal var_1) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpAllvarsCountrefmismatchByPrimaryKey
 	 *
 	 */
-	public VSnpAllvarsCountrefmismatch findVSnpAllvarsCountrefmismatchByPrimaryKey(Integer var_1, int startResult, int maxRows) throws DataAccessException;
+	public VSnpAllvarsCountrefmismatch findVSnpAllvarsCountrefmismatchByPrimaryKey(BigDecimal var_1, int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpAllvarsCountrefmismatchByMismatch

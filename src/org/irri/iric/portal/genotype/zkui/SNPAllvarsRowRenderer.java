@@ -4,12 +4,9 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-public class SNPAllvarsRowRenderer implements RowRenderer{
+public class SNPAllvarsRowRenderer implements SNPRowRendererStyle, RowRenderer{
 
-	private static String STYLE_A = "color:green";
-	private static String STYLE_T = "color:red";
-	private static String STYLE_G = "color:orange";
-	private static String STYLE_C = "color:blue";
+
 
 	private static String STYLE_INTERESTING = "font-weight:bold;color:red";
 	private static String STYLE_BORING = "";
@@ -18,8 +15,6 @@ public class SNPAllvarsRowRenderer implements RowRenderer{
 	private static String STYLE_HEADER = "font-weight:bold;color:black;background-color:lightgray;";
 	private static String STYLE_SAMEASREF = "";
 	
-	public static short COLOR_MISMATCH = 0;
-	public static short COLOR_NUCLEOTIDE = 1;
 	
 	private int colorMode = COLOR_MISMATCH;	// 0
 	

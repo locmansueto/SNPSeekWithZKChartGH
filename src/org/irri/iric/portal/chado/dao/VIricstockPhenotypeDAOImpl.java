@@ -1,5 +1,6 @@
 package org.irri.iric.portal.chado.dao;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -165,7 +166,7 @@ public class VIricstockPhenotypeDAOImpl extends AbstractJpaDao<VIricstockPhenoty
 	 *
 	 */
 	@Transactional
-	public VIricstockPhenotype findVIricstockPhenotypeByPrimaryKey(Integer iricStockPhenotypeId) throws DataAccessException {
+	public VIricstockPhenotype findVIricstockPhenotypeByPrimaryKey(BigDecimal iricStockPhenotypeId) throws DataAccessException {
 
 		return findVIricstockPhenotypeByPrimaryKey(iricStockPhenotypeId, -1, -1);
 	}
@@ -176,7 +177,7 @@ public class VIricstockPhenotypeDAOImpl extends AbstractJpaDao<VIricstockPhenoty
 	 */
 
 	@Transactional
-	public VIricstockPhenotype findVIricstockPhenotypeByPrimaryKey(Integer iricStockPhenotypeId, int startResult, int maxRows) throws DataAccessException {
+	public VIricstockPhenotype findVIricstockPhenotypeByPrimaryKey(BigDecimal iricStockPhenotypeId, int startResult, int maxRows) throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVIricstockPhenotypeByPrimaryKey", startResult, maxRows, iricStockPhenotypeId);
 			return (org.irri.iric.portal.chado.domain.VIricstockPhenotype) query.getSingleResult();

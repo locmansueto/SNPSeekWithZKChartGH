@@ -38,14 +38,14 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.Variety;
 //import org.irri.iric.portal.domain.VarietyService;
 //import org.irri.iric.portal.genotype.domain.Variety3k;
-import org.irri.iric.portal.genotype.views.*;
-import org.irri.iric.portal.service.GeneService;
-import org.irri.iric.portal.service.Snps2VarsService;
-import org.irri.iric.portal.service.VarietyService;
-import org.irri.iric.portal.utils.zkui.HibernateSearchObject;
+//import org.irri.iric.portal.genotype.views.*;
+//import org.irri.iric.portal.service.GeneService;
+//import org.irri.iric.portal.service.Snps2VarsService;
+//import org.irri.iric.portal.service.VarietyService;
+//import org.irri.iric.portal.utils.zkui.HibernateSearchObject;
 import org.irri.iric.portal.variety.service.VarietyFacade;
-import org.irri.iric.portal.variety.views.IViewDist3kHome;
-import org.irri.iric.portal.variety.views.ViewDist3kId;
+//import org.irri.iric.portal.variety.views.IViewDist3kHome;
+//import org.irri.iric.portal.variety.views.ViewDist3kId;
 //import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -76,9 +76,9 @@ public class GenotypeFacadeLegacyImpl implements GenotypeFacade {
 	
 	// Values updated on call to getSNPinAllVarieties w/ firstRow=1
 	private List<SnpsAllvarsRefMismatch> listSNPAllVarsMismatches;
-	private java.util.HashMap<Integer,Integer> mapOrder2Variety; // 0-indexed
-	private java.util.HashMap<Integer, Integer> mapVariety2Order;  // 0-indexed
-	private java.util.HashMap<Integer, Integer> mapVariety2Mismatch;
+	private java.util.HashMap<Integer,BigDecimal> mapOrder2Variety; // 0-indexed
+	private java.util.HashMap<BigDecimal, Integer> mapVariety2Order;  // 0-indexed
+	private java.util.HashMap<BigDecimal, Integer> mapVariety2Mismatch;
 
 
 	private List<SnpsAllvarsPos> snpsposlist; 
@@ -433,9 +433,9 @@ public class GenotypeFacadeLegacyImpl implements GenotypeFacade {
 			listSNPAllVarsMismatches=countSNPMismatchesInAlllVarieties( startPos,  endPos,  chromosome, true);
 
 			
-			mapOrder2Variety = new java.util.HashMap<Integer,Integer>();
-			mapVariety2Order = new java.util.HashMap<Integer,Integer>();
-			mapVariety2Mismatch = new java.util.HashMap<Integer,Integer>();		
+			mapOrder2Variety = new java.util.HashMap<Integer,BigDecimal>();
+			mapVariety2Order = new java.util.HashMap<BigDecimal,Integer>();
+			mapVariety2Mismatch = new java.util.HashMap<BigDecimal,Integer>();		
 			
 		}
 		
@@ -457,7 +457,7 @@ public class GenotypeFacadeLegacyImpl implements GenotypeFacade {
 		if(numRows==0)  lastRow = listSNPAllVarsMismatches.size();
 		
 
-		Set<Integer> varsMismatch = new HashSet();
+		Set<BigDecimal> varsMismatch = new HashSet();
 		
 		for(long iVariety= firstRow-1;  iVariety<lastRow;  iVariety++ ) {
 			
@@ -625,8 +625,8 @@ public class GenotypeFacadeLegacyImpl implements GenotypeFacade {
 
 			Set<Snps2Vars> snpslist=null;
 			
-			Integer var1Id = varservice.findVarietyByName(var1).getVarietyId();
-			Integer var2Id = varservice.findVarietyByName(var2).getVarietyId();
+			BigDecimal var1Id = varservice.findVarietyByName(var1).getVarietyId();
+			BigDecimal var2Id = varservice.findVarietyByName(var2).getVarietyId();
 
 			if(querymode==snpQueryMode.SNPQUERY_VARIETIES) {
 				snpslist = snp2linesService.findVSnp2varsByVarsChrPosBetweenMismatch(Integer.valueOf(chromosome), BigDecimal.valueOf(startPos-1), BigDecimal.valueOf(endPos+1), var1Id, var2Id);
@@ -781,10 +781,10 @@ within a subpopulation group
 		//germplasms
 		System.out.println(mismatches.size() + " mismatch pairs");
 		
-		java.util.Map<Integer, Integer> mapName2Row = new java.util.HashMap<Integer, Integer>();
+		java.util.Map<BigDecimal, Integer> mapName2Row = new java.util.HashMap<BigDecimal, Integer>();
 		
 
-		Set<Integer> setWithMismatch = new java.util.TreeSet();
+		Set<BigDecimal> setWithMismatch = new java.util.TreeSet();
 		
 		//java.util.Map<String, BigDecimal> mapPairMismatch = new java.util.HashMap<String, BigDecimal>();
 		java.util.Iterator<Snps2VarsCountmismatch>  itdist = mismatches.iterator();		
@@ -803,12 +803,12 @@ within a subpopulation group
 		System.out.println( setWithMismatch.size() + " unique names with mismatch");
 		
 		varietyfacade = (VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade" + checkbeanext);
-		Map<Integer,Variety> mapVarid2Variety = varietyfacade.getMapId2Variety();
+		Map<BigDecimal,Variety> mapVarid2Variety = varietyfacade.getMapId2Variety();
 		
 		int i=0;
-		Iterator<Integer> itgerm = setWithMismatch.iterator();
+		Iterator<BigDecimal> itgerm = setWithMismatch.iterator();
 		while(itgerm.hasNext()) {
-			Integer varid = itgerm.next();
+			BigDecimal varid = itgerm.next();
 			mapName2Row.put(varid , i);
 			symdistmatrix.setIdentifier( i, "varid_" + varid );
 			i++;
@@ -859,9 +859,9 @@ within a subpopulation group
 			String newick = tree.getNewickString(false, true);
 			
 			System.out.println(newick);
-			java.util.Iterator<Integer> itgerm2 = setWithMismatch.iterator();
+			java.util.Iterator<BigDecimal> itgerm2 = setWithMismatch.iterator();
 			while(itgerm2.hasNext()) {
-				Integer c = itgerm2.next();
+				BigDecimal c = itgerm2.next();
 				//String newc = c.replace(' ', '_');
 				// replace iris_id to varnames
 				//String varname  = mapIRISId2Varname.get(c);
@@ -1065,7 +1065,7 @@ within a subpopulation group
 		   Map<String,Integer> mapVariety2Order = new HashMap<String,Integer>(); 
 			try {
 
-				String tmpfile = AppContext.tempdir + AppContext.createTempFilename() + ".newick";
+				String tmpfile = AppContext.getTempDir() + AppContext.createTempFilename() + ".newick";
 				PrintWriter out = new PrintWriter(tmpfile);
 				out.print(newick);
 				out.close();
@@ -1113,10 +1113,6 @@ within a subpopulation group
 
 	}
 	
-	public List getBySearchObject(HibernateSearchObject so, int start, int pageSize) {
-		return null;
-	}
-
 
 	@Override
 	public List<Snps2Vars> getSNPinVarieties(int n) {
@@ -1126,24 +1122,49 @@ within a subpopulation group
 
 
 	@Override
-	public HashMap<Integer, Integer> getMapOrder2Variety() {
+	public HashMap<Integer, BigDecimal> getMapOrder2Variety() {
 		// TODO Auto-generated method stub
-		return this.mapOrder2Variety;
+		return null;
 	}
 
 
 	@Override
-	public HashMap<Integer, Integer> getMapVariety2Order() {
+	public HashMap<BigDecimal, Integer> getMapVariety2Order() {
 		// TODO Auto-generated method stub
-		return this.mapVariety2Order;
+		return null;
 	}
 
 
 	@Override
-	public HashMap<Integer, Integer> getMapVariety2Mismatch() {
+	public HashMap<BigDecimal, Integer> getMapVariety2Mismatch() {
 		// TODO Auto-generated method stub
-		return this.mapVariety2Mismatch;
+		return null;
 	}
+
+
+	@Override
+	public String constructPhylotreeTopN(String scale, String chr, int start,
+			int end, int topN) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public HashMap<BigDecimal, Integer> getMapVariety2PhyloOrder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos,
+			Integer endPos, String chromosome, long firstRow, long numRows,
+			boolean mismatchOnly) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 	

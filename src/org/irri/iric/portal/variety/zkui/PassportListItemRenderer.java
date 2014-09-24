@@ -3,9 +3,7 @@ package org.irri.iric.portal.variety.zkui;
 
 import org.irri.iric.portal.chado.domain.VIricstockPassport;
 import org.irri.iric.portal.domain.Variety;
-import org.irri.iric.portal.genotype.views.Snp2linesId;
-import org.irri.iric.portal.variety.domain.List3k;
-//import org.irri.iric.portal.variety.domain.Germplasm;
+//import org.irri.iric.portal.genotype.views.Snp2linesId;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;

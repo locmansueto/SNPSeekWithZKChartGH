@@ -9,7 +9,8 @@ window.Boot_progressbox = function (){}
 <?init class="org.zkoss.zk.ui.util.Composition"
         arg0="/template.zul"?>
 <zk>
-      <include self="@define(content)" src="help.html"/>
 
-    
+
+      <include self="@define(content)" src="_helpiframe.zul"/>
+	
 </zk>

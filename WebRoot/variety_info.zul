@@ -1,0 +1,54 @@
+<?page title="Variety Info" contentType="text/html;charset=UTF-8"?>
+
+	<grid id="gridGermplasm" visible="false"   >
+	        	<columns>
+                <column label="PASSPORT DATA"/>
+                <column label="PHENOTYPES" />
+            	</columns>
+		<rows>
+		<row>
+		
+		<cell align="left" valign="top">
+		   
+		<vbox pack="start">
+		<grid>
+		<rows>
+		<row> Variety name<textbox id="textboxGermAccession" readonly="true"/></row>
+		<row> IRIS ID<textbox id="textboxIRISId" readonly="true"/></row>
+		<row> Subpopulation<textbox id="textboxGermSubpopulation" readonly="true"/></row>
+		<row> Country<textbox id="textboxGermCountry" readonly="true"/></row>
+		</rows>
+		</grid>
+		<listbox id="listboxGermPassport">
+			<listhead>
+			<listheader>PASSPORT</listheader>
+			<listheader>FIELD</listheader>
+			<listheader>VALUE</listheader>		
+			</listhead>
+		</listbox>
+		<hbox height="100%"/>
+		</vbox>
+		</cell>
+		<cell align="left" valign="top">
+		<listbox id="listboxGermPhenotypes">
+			<listhead>
+			<listheader>PHENOTYPE</listheader>
+			<listheader>VALUE</listheader>
+			<listheader>FIELD</listheader>
+			</listhead>		
+		</listbox>
+		</cell>
+					<zscript><![CDATA[
+			        listboxGermPassport.setItemRenderer(new org.irri.iric.portal.variety.zkui.PassportListItemRenderer() );
+			        listboxGermPassport.setModel(new SimpleListModel(new java.util.ArrayList()));
+			    ]]></zscript>
+			    		
+					<zscript><![CDATA[
+			        listboxGermPhenotypes.setItemRenderer(new org.irri.iric.portal.variety.zkui.PhenotypesListRenderer() );
+			        listboxGermPhenotypes.setModel(new SimpleListModel(new java.util.ArrayList()));
+			    ]]></zscript>
+			    
+		</row>
+		</rows>
+
+		</grid>	   

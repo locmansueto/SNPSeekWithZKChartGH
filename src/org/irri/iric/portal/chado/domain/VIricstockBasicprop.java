@@ -17,18 +17,18 @@ import org.irri.iric.portal.domain.Variety;
 
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "findAllVIricstockBasicprops", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop"),
+		@NamedQuery(name = "findAllVIricstockBasicprops", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop order by myVIricstockBasicprop.name"),
 		@NamedQuery(name = "findVIricstockBasicpropByIricStockId", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where myVIricstockBasicprop.iricStockId = ?1"),
 		@NamedQuery(name = "findVIricstockBasicpropByIrisUniqueId", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where upper(myVIricstockBasicprop.irisUniqueId) = upper(?1)"),
 		@NamedQuery(name = "findVIricstockBasicpropByIrisUniqueIdContaining", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where upper(myVIricstockBasicprop.irisUniqueId) like upper(?1)"),
 		@NamedQuery(name = "findVIricstockBasicpropByName", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where upper(myVIricstockBasicprop.name) = upper(?1)"),
 		@NamedQuery(name = "findVIricstockBasicpropByNameContaining", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where upper(myVIricstockBasicprop.name) like upper(?1)"),
-		@NamedQuery(name = "findVIricstockBasicpropByOriCountry", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where upper(myVIricstockBasicprop.oriCountry) = upper(?1)"),
+		@NamedQuery(name = "findVIricstockBasicpropByOriCountry", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where upper(myVIricstockBasicprop.oriCountry) = upper(?1)  order by myVIricstockBasicprop.name"),
 		@NamedQuery(name = "findVIricstockBasicpropByOriCountryContaining", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where upper(myVIricstockBasicprop.oriCountry) like upper(?1)"),
 		@NamedQuery(name = "findVIricstockBasicpropByPrimaryKey", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where myVIricstockBasicprop.iricStockId = ?1"),
 
-		@NamedQuery(name = "findVIricstockBasicpropBySubpopulation", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where upper(myVIricstockBasicprop.subpopulation) = upper(?1)"),
-		@NamedQuery(name = "findVIricstockBasicpropByOriCountrySubpopulation", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where upper(myVIricstockBasicprop.oriCountry) = upper(?1) and upper(myVIricstockBasicprop.subpopulation) = upper(?2)") })
+		@NamedQuery(name = "findVIricstockBasicpropBySubpopulation", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where upper(myVIricstockBasicprop.subpopulation) = upper(?1)  order by myVIricstockBasicprop.name"),
+		@NamedQuery(name = "findVIricstockBasicpropByOriCountrySubpopulation", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where upper(myVIricstockBasicprop.oriCountry) = upper(?1) and upper(myVIricstockBasicprop.subpopulation) = upper(?2)  order by myVIricstockBasicprop.name") })
 
 
 @Table(schema = "IRIC", name = "VL_IRICSTOCK_BASICPROP")

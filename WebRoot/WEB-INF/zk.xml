@@ -55,7 +55,7 @@
  	 
  	 <library-property>
     <name>org.zkoss.theme.preferred</name>
-    <value>greenblacktext</value> 
+    <value>greenlightwhitewin</value> 
 	</library-property>
 	
 	<library-property>

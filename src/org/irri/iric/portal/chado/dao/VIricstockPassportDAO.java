@@ -66,13 +66,13 @@ public interface VIricstockPassportDAO extends JpaDao<VIricstockPassport>, Irics
 	 * JPQL Query - findVIricstockPassportByPrimaryKey
 	 *
 	 */
-	public VIricstockPassport findVIricstockPassportByPrimaryKey(Integer iricStockpropId_1) throws DataAccessException;
+	public VIricstockPassport findVIricstockPassportByPrimaryKey(BigDecimal iricStockpropId_1) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPassportByPrimaryKey
 	 *
 	 */
-	public VIricstockPassport findVIricstockPassportByPrimaryKey(Integer iricStockpropId_1, int startResult, int maxRows) throws DataAccessException;
+	public VIricstockPassport findVIricstockPassportByPrimaryKey(BigDecimal iricStockpropId_1, int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPassportByIricStockId

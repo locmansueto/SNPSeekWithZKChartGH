@@ -16,7 +16,7 @@ import javax.persistence.Query;
 import org.hibernate.Session;
 import org.irri.iric.portal.chado.domain.VSnp2varsCountmismatch;
 import org.irri.iric.portal.domain.Snps2VarsCountmismatch;
-import org.irri.iric.portal.genotype.views.Snp2linesId;
+//import org.irri.iric.portal.genotype.views.Snp2linesId;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -162,7 +162,7 @@ public class VSnp2varsCountmismatchDAOImpl extends AbstractJpaDao<VSnp2varsCount
 	 *
 	 */
 	@Transactional
-	public VSnp2varsCountmismatch findVSnp2varsCountmismatchByPrimaryKey(Integer var1, Integer var2) throws DataAccessException {
+	public VSnp2varsCountmismatch findVSnp2varsCountmismatchByPrimaryKey(BigDecimal var1, BigDecimal var2) throws DataAccessException {
 
 		return findVSnp2varsCountmismatchByPrimaryKey(var1, var2, -1, -1);
 	}
@@ -173,7 +173,7 @@ public class VSnp2varsCountmismatchDAOImpl extends AbstractJpaDao<VSnp2varsCount
 	 */
 
 	@Transactional
-	public VSnp2varsCountmismatch findVSnp2varsCountmismatchByPrimaryKey(Integer var1, Integer var2, int startResult, int maxRows) throws DataAccessException {
+	public VSnp2varsCountmismatch findVSnp2varsCountmismatchByPrimaryKey(BigDecimal var1, BigDecimal var2, int startResult, int maxRows) throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVSnp2varsCountmismatchByPrimaryKey", startResult, maxRows, var1, var2);
 			return (org.irri.iric.portal.chado.domain.VSnp2varsCountmismatch) query.getSingleResult();

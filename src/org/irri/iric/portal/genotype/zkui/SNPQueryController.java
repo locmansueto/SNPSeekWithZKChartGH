@@ -28,6 +28,9 @@ import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
 import org.irri.iric.portal.domain.Variety;
 //import org.irri.iric.portal.genotype.domain.Gene;
 import org.irri.iric.portal.genotype.service.GenotypeFacade;
+
+import org.irri.iric.portal.domain.Snps2Vars;
+
 /*
 import org.irri.iric.portal.genotype.service.GenotypeFacadeImpl;
 import org.irri.iric.portal.genotype.views.Snp2lines;
@@ -89,7 +92,7 @@ import org.zkoss.zul.ext.Selectable;
 @Controller
 public class SNPQueryController extends SelectorComposer<Component>  { //implements Initiator {
  
-	private String urljbrowse,gfffile,urlphylo;
+	private String urljbrowse,gfffile,urlphylo,urljbrowsephylo;
 	//private String phylochr, phylostart, phyloend;
 	private boolean tallJbrowse;
 	
@@ -114,6 +117,10 @@ public class SNPQueryController extends SelectorComposer<Component>  { //impleme
     
     @Wire
     private Label labelScreenWidth;
+    
+    @Wire
+    private Button resetButton;
+    
     
     @Wire
     private Combobox comboVar1;
@@ -163,6 +170,12 @@ public class SNPQueryController extends SelectorComposer<Component>  { //impleme
     private Iframe iframeJbrowse;
     @Wire
     private Label msgJbrowse;
+    
+    @Wire
+    private Iframe iframeJbrowsePhylo;
+    @Wire
+    private Label msgJbrowsePhylo;
+    
    // @Wire
    // private Listbox snpallvarsresult;
     
@@ -203,53 +216,43 @@ public class SNPQueryController extends SelectorComposer<Component>  { //impleme
     private Tab tabJbrowse;
     @Wire
     private Tab tabPhylo;
+    @Wire
+    private Tab tabJBrowsePhylo;
     @Wire 
     private Tab tabTable;
     
     @Wire
     private Tabbox tabboxDisplay;
     
-    @Listen("onSelect = #selectChr")
-    public void setchrlength() {
-    	
-    	//genotype = (GenotypeFacade)checkBean(genotype, "GenotypeFacade");
+/**
+ * Chromosome selected
+ */
+@Listen("onSelect = #selectChr")
+public void setchrlength() {
+	
+	//genotype = (GenotypeFacade)checkBean(genotype, "GenotypeFacade");
   
     	String name = "GenotypeFacade";
-    	genotype =  (GenotypeFacade)AppContext.checkBean(genotype , classGenotypefacade);
-    	
-    	/*
-    	if (genotype==null) {
-    		log.debug(name + "==null using SpringUtil");
-    		System.out.println("genotype==null using SpringUtil");
-    		genotype = (GenotypeFacade)SpringUtil.getBean(name);
-    	}
-    	if (genotype==null) {
-    		log.debug(name + "==null using static");
-    		System.out.println("genotype==null using static");
-    		genotype = (GenotypeFacade)AppContext.getApplicationContext().getBean(name);
-    	}   	
-    	if (genotype==null) {
-    		System.out.println("APP ERROR: null genotype");
-    		log.debug("APP ERROR: null genotype");
-    		genotype= new GenotypeFacadeImpl();
-    		
-    	}
-    	*/
-    	
-    	
-    	Integer length = getchrLength();
-    	labelLength.setValue("end: (length " + length + " bp)" );
-    	chrlength=length.intValue();
-    }
+	genotype =  (GenotypeFacade)AppContext.checkBean(genotype , classGenotypefacade);
+
+	
+	Integer length = getchrLength();
+	labelLength.setValue("End: (length " + length + " bp)" );
+	
+	chrlength=length.intValue();
+}
 
 private Integer getchrLength() {
 	return genotype.getFeatureLength(selectChr.getSelectedItem().getLabel());
 }
-    
+
+/**
+ * JBrowse tab selected    
+ */
 @Listen("onSelect = #tabJbrowse")    
 public void onselectTabJbrowse() {
 
-	if(urljbrowse!=null) {
+	if(urljbrowse!=null  ) {
 
 		System.out.println("loading " + urljbrowse);
 		
@@ -285,6 +288,53 @@ public void onselectTabJbrowse() {
 		
 }
 
+/**
+ * JBrowse using phylotree ordering, visible only after Phylotree is computed
+ */
+@Listen("onSelect = #tabJbrowsePhylo")    
+public void onselectTabJbrowsePhylo() {
+
+	if(urljbrowsephylo!=null) {
+
+		System.out.println("loading " + urljbrowsephylo);
+		
+		Clients.showBusy("Loading JBrowsePhylo");
+		if(tallJbrowse) {
+			
+			List newpagelist;
+			if(!comboGene.getValue().isEmpty())
+			{
+				Gene gene =genotype.getGeneFromName(comboGene.getValue() );
+				newpagelist = genotype.getSNPinAllVarieties(gene.getFmin(), gene.getFmax(), gene.getChr().toString() , 1, 0 , false );
+				//newpagelist = 	genotype.getSNPinAllVarieties(comboGene.getValue(), 0);
+				
+				createSNPVarietyGFF(newpagelist, gfffile+".phylo.gff",  genotype.getMapVariety2PhyloOrder() , 1, BigDecimal.valueOf(gene.getFmin()), BigDecimal.valueOf(gene.getFmax()) );
+			
+			}
+			else
+			{
+				newpagelist = genotype.getSNPinAllVarieties(intStart.getValue(), intStop.getValue(), selectChr.getSelectedItem().getLabel() , 1, 0 , false );
+				createSNPVarietyGFF(newpagelist, gfffile+".phylo.gff",  genotype.getMapVariety2PhyloOrder() , 1, BigDecimal.valueOf(intStart.getValue()), BigDecimal.valueOf(intStop.getValue()) );
+			}
+			
+			AppContext.resetTimer("write gff");
+			iframeJbrowse.setSrc( urljbrowse );
+		}
+		
+		
+	
+	    msgJbrowsePhylo.setVisible(true);
+	    iframeJbrowsePhylo.setVisible(true);
+	    Clients.clearBusy();
+	}
+	urljbrowsephylo=null;
+		
+}
+
+/**
+ * Phylogenetic tree tab selected 
+ */
+
 @Listen("onSelect = #tabPhylo")    
 public void onselectTabPhylo() {
 
@@ -295,29 +345,38 @@ public void onselectTabPhylo() {
 		iframePhylotree.setVisible(true);
 		Clients.clearBusy();
 	}
+	
 	urlphylo=null;
+	
+	if(!comboGene.getValue().isEmpty()) {
+		String genename2 = comboGene.getValue().trim();
+		Gene gene2 =  genotype.getGeneFromName( genename2);
+		updateJBrowsePhylo( gene2.getChr().toString(),
+			gene2.getFmin().toString(), gene2.getFmax().toString() , genename2.toUpperCase());
+	} else
+		updateJBrowse( selectChr.getSelectedItem().getLabel().trim(),  intStart.getValue().toString() , intStop.getValue().toString(), "");
+
+	tabJBrowsePhylo.setVisible(true);
+	
 }
     
 
-
+/**
+ * Next page selected
+ * @param pe
+ */
     
 @Listen("onPaging = #snpallvarsresultpaging")    
 public void onpageAllvarsresult(PagingEvent pe)
 {
 	
 	Clients.showBusy("Fetching next page");
-	//PagingEvent pe = (PagingEvent)e;
 	int desiredPage = pe.getActivePage();
 	
 	List newpagelist  = genotype.getSNPinAllVarieties(intStart.getValue(), intStop.getValue(), selectChr.getSelectedItem().getLabel().trim(), desiredPage*snpallvars_pagesize+1 , snpallvars_pagesize  );
 
 	setAllvargridforDBPaging();
 	
-	//snpallvarsresult.getChildren().clear();
-	//snpallvarsresult.setMold("default");
-	//snpallvarsresult.setMold("paging");
-	//snpallvarsresult.setSizedByContent(true);
-	//npallvarsresult.setPageSize(snpallvars_pagesize);
 
     updateAllvarsList(newpagelist,false,null,null,null, desiredPage*snpallvars_pagesize+1 , snpallvars_pagesize );		
     
@@ -326,38 +385,66 @@ public void onpageAllvarsresult(PagingEvent pe)
     Clients.clearBusy();
 }
 
+
+/**
+ * Clears all inputs
+ */
+@Listen("onClick = #resetButton")    
+public void reset()    {
+    comboVar1.setValue("");
+    comboVar2.setValue("");
+    checkboxAllvarieties.setChecked(false);
+    intStart.setValue(null);
+    intStop.setValue(null);
+    comboGene.setValue("");
+    selectChr.setSelectedIndex(0);
+    msgbox.setValue("Select varieties, then set chromosome region or gene locus");
+    setchrlength();
+}
+
+
+/**
+ * Download Tab format
+ */
 @Listen("onClick = #buttonDownloadTab")    
 public void downloadTab()    {
 	 downloadDelimited("snpfile.txt", "\t"); 
 }
 
+/**
+ * Download CSV format
+ */
 @Listen("onClick = #buttonDownloadCsv")    
 public void downloadCsv()    {
 	 downloadDelimited("snpfile.csv",","); 
 }
 
+
+/**
+ * Generate download file
+ * @param filename
+ * @param limitchar
+ */
 private void downloadDelimited(String filename, String limitchar)    {
 
 	Clients.showBusy("Fetching from Database");
 	searchWithServerpaging(filename, limitchar);
 	Clients.clearBusy();
-	
-	/*
-	try {
-	Filedownload.save(  new File(filename), filename);
-	} catch(Exception ex)
-	{
-		ex.printStackTrace();
-	}
-	*/
-	
 }
 
-
-private void writeSNP2Lines2File(String filename, String header,  String var1, String var2, String delimiter, List<org.irri.iric.portal.genotype.views.Snp2linesId> listSNPs )
+/**
+ * Write SNP for 2 varieties in file
+ * @param filename	filename to write
+ * @param header	to write in first line
+ * @param var1		variety 1
+ * @param var2		variety 2
+ * @param delimiter	
+ * @param listSNPs	SNPs list
+ */
+private void writeSNP2Lines2File(String filename, String header,  String var1, String var2, String delimiter, List<Snps2Vars> listSNPs )
 {
 	
-	Iterator<org.irri.iric.portal.genotype.views.Snp2linesId> it=listSNPs.iterator();
+	Iterator<Snps2Vars> it=listSNPs.iterator();
 	StringBuffer buff= new StringBuffer();
 	
 	if(header!=null && !header.isEmpty()) {
@@ -377,7 +464,7 @@ private void writeSNP2Lines2File(String filename, String header,  String var1, S
 		
 		long linecount = 0;
 		while(it.hasNext()) {
-			org.irri.iric.portal.genotype.views.Snp2linesId snp2lines= it.next();
+			Snps2Vars snp2lines= it.next();
 			buff.append( snp2lines.getChr() );  buff.append(delimiter);
 			buff.append( snp2lines.getPos() );  buff.append(delimiter);
 			buff.append( snp2lines.getRefnuc() );  buff.append(delimiter);
@@ -418,8 +505,9 @@ private void writeSNP2Lines2File(String filename, String header,  String var1, S
 	}
 }
 
-
-
+/**
+ * Search button clicked
+ */
 
 @Listen("onClick = #searchButton")    
 public void searchWithServerpaging()    {
@@ -429,7 +517,9 @@ public void searchWithServerpaging()    {
 	Clients.clearBusy();
 }
 
-
+/**
+ * Set components for Database Paging mode. Each page is fetched from DB separately, on demand
+ */
 private void setAllvargridforDBPaging() {
 	snpallvarsresultpaging.setPageSize(snpallvars_pagesize);
 	snpallvarsresultpaging.setMold("os");
@@ -440,6 +530,9 @@ private void setAllvargridforDBPaging() {
 	
 }
 
+/**
+ * Set components for Grid paging mode. All records fetched in one DB call 
+ */
 private void setAllvargridforGridPaging() {
 	//snpallvarsresult.setMold("select");
 
@@ -508,14 +601,18 @@ private void setAllvargridforGridPaging() {
 	2. if(writetofile) writeSNP2Lines2File(filename, "REGION: CHR " + chr + " " +  intStart.getValue() + ".." + intStop.getValue() ,   var1,  var2,  delimiter,  listSNPs); return;
 	3. createSNP2linesGFF(listSNPs, gfffile );
 
+
+	render2varsList
+
  *
  *
  *	if(serverpaging) ON showPage
  *	1. newpagelist = genotype.getSNPinAllVarieties(intStart.getValue(), intStop.getValue(), selectChr.getSelectedItem().getLabel().trim(), desiredPage*snpallvars_pagesize+1 , snpallvars_pagesize  );
     2. updateAllvarsList(newpagelist,false,null,null,null, desiredPage*snpallvars_pagesize+1 , snpallvars_pagesize );		
     
+    
+    
  */
-
 
 public void searchWithServerpaging(String filename, String delimiter)    {
 	
@@ -524,12 +621,6 @@ public void searchWithServerpaging(String filename, String delimiter)    {
 	
 	// to facilitate render on Tab select for JBrowse and phylogenetic tree
 	
-	gfffile=null;
-	urljbrowse = null;	// if has URL address, will render on TabSelect on JBrowse
-	urlphylo = null;   // if has URL address, will render on TabSelect on Phylotree
-	tallJbrowse = false;	// jbrowse if tall (for all variety) or short (for 2 varieties)
-	
-	snpallvars_pagesize=100;	 // initial rows per page
 	GenotypeFacade.snpQueryMode mode=null;
 	
 	if(writetofile)
@@ -552,7 +643,17 @@ public void searchWithServerpaging(String filename, String delimiter)    {
 	    tabTable.setSelected(true);
 	    tabJbrowse.setVisible(false);
 	    tabPhylo.setVisible(false);
+	    tabJBrowsePhylo.setVisible(false);
+	
 	    
+		gfffile=null;
+		urljbrowse = null;	// if has URL address, will render on TabSelect on JBrowse
+		urlphylo = null;   // if has URL address, will render on TabSelect on Phylotree
+		tallJbrowse = false;	// jbrowse if tall (for all variety) or short (for 2 varieties)
+		urljbrowsephylo = null;
+		
+		snpallvars_pagesize=100;	 // initial rows per page
+	
 	}
 	
 	
@@ -570,18 +671,6 @@ public void searchWithServerpaging(String filename, String delimiter)    {
 			
 		msgbox.setValue("SEARCHING: in chromosome " + selectChr.getSelectedItem().getLabel() + " [" + intStart.getValue() +  "-" + intStop.getValue()+  "]" );
 
-		
-		// get selected qury mode (autodetect later)
-		
-		
-		/*
-		if (selectQueryMode.getSelectedIndex()==0)
-		mode = GenotypeFacade.snpQueryMode.SNPQUERY_VARIETIES;
-		else if  (selectQueryMode.getSelectedIndex()==1)
-		mode = GenotypeFacade.snpQueryMode.SNPQUERY_REFERENCE;
-		else if  (selectQueryMode.getSelectedIndex()==2)
-		mode = GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS;
-		*/
 		
 		String var1= comboVar1.getValue().trim().toUpperCase();
 		String var2 =  comboVar2.getValue().trim().toUpperCase();
@@ -603,8 +692,6 @@ public void searchWithServerpaging(String filename, String delimiter)    {
 
 		// initialize empty SNP list
 		List listSNPs = new java.util.ArrayList();
-		//List<Snp2lines> listSNPs = new java.util.ArrayList();
-		//List<ViewSnpAllvars> listSNPs = new java.util.ArrayList();
 
 
 		String genename = comboGene.getValue().trim().toUpperCase();
@@ -919,6 +1006,12 @@ public void searchWithServerpaging(String filename, String delimiter)    {
 			}
 			((SNPListItemRenderer)snpresult.getItemRenderer()).setQuerymode(mode);
 			
+			
+		    if(radioColorAllele.isSelected())
+	        	((SNPListItemRenderer)snpresult.getItemRenderer()).setColorMode( SNPListItemRenderer.COLOR_NUCLEOTIDE );
+	        else if (radioColorMismatch.isSelected())
+	        	((SNPListItemRenderer)snpresult.getItemRenderer()).setColorMode( SNPListItemRenderer.COLOR_MISMATCH );
+		    
 			snpresult.setModel( new SimpleListModel(listSNPs) );
 			snpresult.setVisible(true);
 
@@ -942,7 +1035,7 @@ private void updateAllvarsList(List listSNPs, boolean updateHeaders)
 }
 
 /**
- * Write all varities to file, with delimeter and header (first line)
+ * Write all varieties to file, with delimeter and header (first line)
  * 
  * @param listSNPs
  * @param updateHeaders
@@ -955,8 +1048,9 @@ private void updateAllvarsList(List listSNPs, boolean updateHeaders, String file
 	updateAllvarsList(listSNPs, updateHeaders, filename, delimiter, header, 1, 0);
 }
 
+
 /**
- * Render (filename==null) of write to file varities firstrow to (firstrow-numRows-1)
+ * Render (filename==null) OR write to file varieties from firstrow to (firstrow-numRows-1)
  * 
  * @param listSNPs	// SNP object list
  * @param updateHeaders	// change table headers
@@ -1366,6 +1460,10 @@ private void updateAllvarsList(List<SnpsAllvars> listSNPs, boolean updateHeaders
 }
 
 
+/**
+ * Set the grid column width based on the number of digits for positions
+ * @param npos
+ */
 private void setGridWidth(int npos) {
 	 Columns cols = snpallvarsresult.getColumns();
 	 
@@ -1395,753 +1493,17 @@ private void setGridWidth(int npos) {
      
 
      if(tablewidth>1300) {
-
      	win.setWidth(tablewidth + "px");
      } else
      	win.setWidth(labelScreenWidth.getValue());
             
 }
 
-
-/*
-private void updateAllvarsListOld(List listSNPs, boolean updateHeaders, String filename, String delimiter, String header)
-{
-	
-	boolean write2file = filename!=null && !filename.isEmpty();
-	
-	long startQuery = System.currentTimeMillis( );
-	
-	List<ViewSnpAllvarsPosId> snpsposlist = genotype.getSnpsposlist();
-	
-	StringBuffer buff=new StringBuffer();
-	
-	if(write2file) {
-		
-		buff.append(header ); buff.append("\n");
-		buff.append("VARIETY"); buff.append(delimiter);  buff.append("MISMATCH");  buff.append(delimiter);
-		
-//		java.util.Map<Long, Character> mapRefPos2Nuc = new java.util.HashMap<Long, Character>();
-		Iterator<ViewSnpAllvarsPosId> itPos = snpsposlist.iterator();
-		
-		StringBuffer buffRefnuc = new StringBuffer();
-		buffRefnuc.append("REFERENCE");  buffRefnuc.append(delimiter);  buffRefnuc.append(delimiter);
-		
-		while(itPos.hasNext()) {
-			ViewSnpAllvarsPosId posnuc=itPos.next();
-			buff.append( posnuc.getPos());
-			buffRefnuc.append( posnuc.getRefnuc() );
-			
-			if(itPos.hasNext()){
-				buff.append(delimiter);
-				buffRefnuc.append(delimiter);
-			}
-//			mapRefPos2Nuc.put(posnuc.getPos() , posnuc.getRefnuc() );
-		}
-		buff.append("\n");
-		buffRefnuc.append("\n");
-		buff.append( buffRefnuc );
-		
-	}
-	else 
-	{
-		Listheader lhr;
-		Listhead lh=null ;
-		Auxheader listheader1;
-		
-		if(updateHeaders) {
-	
-			
-			lhr_variety =  new Listheader();
-			
-			lh = snpallvarsresult.getListhead();
-			lh.getChildren().clear();
-		     
-			
-			
-			lhr_variety.setLabel("VARIETY");
-	//		lhr_variety.setSortAscending(  new SNPAllvarsListItemComparator(true, 1) );
-	//		lhr_variety.setSortDescending(  new SNPAllvarsListItemComparator(false, 1) );
-			lh.appendChild(lhr_variety);
-		
-			lhrMismatch =  new Listheader();
-			lhrMismatch.setLabel("MISMATCH");
-	//		lhrMismatch.setSortAscending(new SNPAllvarsListItemComparator(true, 2));
-	//		lhrMismatch.setSortDescending(new SNPAllvarsListItemComparator(false, 2));
-		
-			
-			//lhr.setSort("auto");
-			lh.appendChild(lhrMismatch);
-		
-			auxheadpos.getChildren().clear();
-			
-			listheader1=new Auxheader(); 
-			listheader1.setLabel("REFERENCE"); 
-			//listheader1.setParent(listhead1); 
-			auxheadpos.appendChild( listheader1 );			
-			listheader1=new Auxheader(); 
-			listheader1.setLabel(""); 
-			//listheader1.setParent(listhead1); 
-			auxheadpos.appendChild( listheader1 );			
-		}
-		
-		java.util.Map<Long, Character> mapRefPos2Nuc = new java.util.HashMap<Long, Character>();
-		Iterator<ViewSnpAllvarsPosId> itPos = snpsposlist.iterator();
-		while(itPos.hasNext()) {
-			ViewSnpAllvarsPosId posnuc=itPos.next();
-			mapRefPos2Nuc.put(posnuc.getPos() , posnuc.getRefnuc() );
-			
-			if(updateHeaders) {
-				
-				lhr =  new Listheader();
-				//lhr.get
-				
-				//lhr.setSclass("word-wrap");
-				lhr.setLabel(posnuc.getPos().toString());
-				
-				//lhr.setLabel("<html>"+ posnuc.getPos() + "<BR>" + posnuc.getRefnuc() + "</html>" );
-				lh.appendChild(lhr);
-				
-				listheader1=new Auxheader(); 
-				listheader1.setLabel(posnuc.getRefnuc().toString()); 
-				//listheader1.setParent(listhead1); 
-				auxheadpos.appendChild( listheader1 );
-			}
-		}
-	
-	}
-	
-	
-
-    long endQuery = System.currentTimeMillis( );
-    System.out.println("query and setup positions: " +  Long.toString(endQuery-startQuery) + " ms"); 
-    startQuery=endQuery;
-    
-    
-		// transform into 1 pos per item
-		
-		Iterator<ViewSnpAllvarsId> itSnps = listSNPs.iterator();
-		java.util.Map<Long, Character> mapPos2Nuc = new java.util.HashMap<Long, Character>() ; 
-		
-		String prevvar = "";
-//		List<SNPAllvarsListItem> viewerlist = new java.util.ArrayList<SNPAllvarsListItem>();
-//		List<String> varlist= new java.util.ArrayList<String>();
-//		List<Long> mismatchlist= new java.util.ArrayList<Long>();
-		
-		
-		//long mismatchcount = 0;
-		if(itSnps.hasNext()) {
-			ViewSnpAllvarsId snps = itSnps.next();
-			mapPos2Nuc = new java.util.HashMap<Long, Character>() ; 
-			mapPos2Nuc.put( snps.getPos() , snps.getVar1nuc().charAt(0));
-			prevvar=snps.getVarname();
-			
-			//if ( !snps.getVar1nuc().isEmpty() &&  !mapRefPos2Nuc.get(snps.getPos()).equals( snps.getVar1nuc().charAt(0)))  mismatchcount++;
-			
-		}			
-		
-		java.util.Map<Integer,SNPAllvarsListItem> mapOrder2SNPAllvarsListItem = new java.util.TreeMap<Integer, SNPAllvarsListItem>();
-
-		if(genotype==null) throw new RuntimeException("genotype==null");
-		if(genotype.getMapVariety2Mismatch()==null) throw new RuntimeException("genotype.getMapVariety2Mismatch()==null");
-		if(genotype.getMapVariety2Order()==null) throw new RuntimeException("genotype.getMapVariety2Order()==null");
-
-		
-		while(itSnps.hasNext())
-		{
-			ViewSnpAllvarsId snps = itSnps.next();
-			if(prevvar.equals(snps.getVarname()))
-					{
-						// add pos
-						mapPos2Nuc.put( snps.getPos() , snps.getVar1nuc().charAt(0));
-						//if ( !snps.getVar1nuc().isEmpty() &&  !mapRefPos2Nuc.get(snps.getPos()).equals( snps.getVar1nuc().charAt(0)))  mismatchcount++;
-
-					} else
-					{
-						// new row, new var
-						// add map to list
-						
-						//mapPos2Nuc.put( 0,  varlist.size() + 1);
-						
-						if(genotype.getMapVariety2Mismatch().get( prevvar ) ==null) throw new RuntimeException("genotype.getMapVariety2Mismatch()get(" + prevvar + ") ==null");
-
-						
-						SNPAllvarsListItem newvar = new SNPAllvarsListItem();
-						newvar.setMismatches( new Long( genotype.getMapVariety2Mismatch().get( prevvar ))  );
-						newvar.setPos2nuc( mapPos2Nuc );
-						newvar.setVarname(prevvar);
-						
-						mapOrder2SNPAllvarsListItem.put( genotype.getMapVariety2Order().get( prevvar )  ,newvar);
-						
-						//viewerlist.add( newvar );
-						
-						// create new row
-						
-						mapPos2Nuc = new java.util.HashMap<Long, Character>() ; 
-						mapPos2Nuc.put( snps.getPos() , snps.getVar1nuc().charAt(0));
-						
-//						varlist.add(prevvar);		
-//						mismatchlist.add( mismatchcount );
-						
-//						mismatchcount=0;
-						prevvar=snps.getVarname();
-					}					
-		}
-//		varlist.add(prevvar);
-//		mismatchlist.add( mismatchcount );
-//		viewerlist.add( mapPos2Nuc );
-		
-		SNPAllvarsListItem newvar = new SNPAllvarsListItem();
-		newvar.setMismatches( (long)genotype.getMapVariety2Mismatch().get( prevvar )  );
-		newvar.setPos2nuc( mapPos2Nuc );
-		newvar.setVarname(prevvar);
-		mapOrder2SNPAllvarsListItem.put( genotype.getMapVariety2Order().get( prevvar )  ,newvar);
-
-		
-		List<SNPAllvarsListItem> viewerlist = new java.util.ArrayList<SNPAllvarsListItem>();
-		Iterator itOrders = mapOrder2SNPAllvarsListItem.keySet().iterator();
-		while(itOrders.hasNext())
-		{
-			viewerlist.add(  mapOrder2SNPAllvarsListItem.get( itOrders.next()) );
-		}
-		
-		
-		if(write2file) {
-			
-	
-			try {
-			
-				File file = new File(filename);
-				FileWriter fw = new FileWriter(file.getAbsoluteFile());
-				BufferedWriter bw = new BufferedWriter(fw);
-				
-				long linecount = 0;
-				
-				Iterator<SNPAllvarsListItem> it = viewerlist.iterator();
-				while(it.hasNext()) {
-					SNPAllvarsListItem item = it.next();
-					buff.append( item.getVarname() ); buff.append( delimiter );
-					buff.append( item.getMismatches() );  buff.append( delimiter );
-					
-					
-					Map<Long, Character> mappos2nuc = item.getPos2nuc();
-					for(int col=0; col<  snpsposlist.size(); col++ ){
-						Long pos = snpsposlist.get(col).getPos();
-						if(mappos2nuc.containsKey(pos ))
-						{
-							buff.append(mappos2nuc.get(pos) );
-						}
-						if(col+1< snpsposlist.size() ) buff.append( delimiter );
-					}
-					buff.append("\n");				
-				
-				
-					if(linecount > 100 ) {
-						bw.write(buff.toString());
-						buff.delete(0, buff.length());
-						buff = new StringBuffer();
-						bw.flush();
-						linecount = 0;
-					}
-					linecount++;
-				}
-				bw.write(buff.toString());
-				buff.delete(0, buff.length());
-				buff = new StringBuffer();
-				bw.flush();
-
-				
-				bw.close();
-				
-				System.out.println("File write complete! Saved to: "+ file.getAbsolutePath());
-				
-				try {
-					Filedownload.save(  new File(filename), filename);
-					} catch(Exception ex)
-					{
-						ex.printStackTrace();
-					}
-				
-
-			} catch(Exception ex) {
-				ex.printStackTrace();
-			}
-		
-		
-			return;
-		}
-		
-		
-        endQuery = System.currentTimeMillis( );
-        System.out.println("counting mismatches, creating viewer list: " +  Long.toString(endQuery-startQuery) + " ms"); 
-        startQuery=endQuery;
-        
-
-		((SNPAllvarsListItemRenderer)snpallvarsresult.getItemRenderer()).setArrRefnucPos( snpsposlist );
-
-		//			((SNPAllvarsListItemRenderer)snpallvarsresult.getItemRenderer()).setVarlist(varlist );
-		//((SNPAllvarsListItemRenderer)snpallvarsresult.getItemRenderer()).setMismatchlist(mismatchlist );
-			
-		((SNPAllvarsListItemRenderer)snpallvarsresult.getItemRenderer()).setSNPAllvarsListItemList(viewerlist);
-	
-		snpallvarsresult.setSizedByContent(true);
-
-		snpallvarsresult.setAttribute("org.zkoss.zul.listbox.rod", true);
-		
-		snpallvarsresult.setModel(   new SimpleListModel(viewerlist) );
-		
-	
-		//System.out.println("paging: total size" + snpallvarsresult.getPagingChild().getTotalSize() + 
-		//		" activepage:" +  snpallvarsresult.getPagingChild().getActivePage());
-		
-		
-		
-		
-		snpallvarsresultMsg.setValue("");
-		snpallvarsresultMsg.setVisible(true);
-		snpallvarsresult.setVisible(true);
-
-//		lhrMismatch.setSortDirection("descending");
-//		lhrMismatch.sort(false, true);
-		
-        endQuery = System.currentTimeMillis( );
-        System.out.println("rendering: " +  Long.toString(endQuery-startQuery) + " ms"); 
-        startQuery=endQuery; 
-   
-        
-        
-}
-*/
-
-/*
-
-public void search()    {
-	
-	genotype =  (GenotypeFacade)AppContext.checkBean(genotype , "GenotypeFacade");
-
-	
-		//	List<Snp2lines>  listSNP= new java.util.ArrayList();
-			
-		msgbox.setValue("SEARCHING: in chromosome " + selectChr.getSelectedItem().getLabel() + " [" + intStart.getValue() +  "-" + intStop.getValue()+  "]" );
-
-		
-		GenotypeFacade.snpQueryMode mode=null;
-		if (selectQueryMode.getSelectedIndex()==0)
-		mode = GenotypeFacade.snpQueryMode.SNPQUERY_VARIETIES;
-		else if  (selectQueryMode.getSelectedIndex()==1)
-		mode = GenotypeFacade.snpQueryMode.SNPQUERY_REFERENCE;
-		else if  (selectQueryMode.getSelectedIndex()==2)
-		mode = GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS;
-		
-
-		
-		List listSNPs = new java.util.ArrayList();
-		//List<Snp2lines> listSNPs = new java.util.ArrayList();
-		//List<ViewSnpAllvars> listSNPs = new java.util.ArrayList();
-
-		String var1= comboVar1.getValue().trim().toUpperCase();
-		String var2 =  comboVar2.getValue().trim().toUpperCase();
-		String genename = comboGene.getValue().trim().toUpperCase();
-		
-		
-		
-		if( (var1.isEmpty() ||  var2.isEmpty()  ) && mode != GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS )
-		{
-			Messagebox.show("Both varieties are required", "INVALID VARIETIES VALUE", Messagebox.OK, Messagebox.EXCLAMATION);
-			return;
-		}
-		
-
-        long startQuery = System.currentTimeMillis( );					
-					
-		if( !genename.isEmpty() )
-		{
-			String genename2 = comboGene.getValue().trim();
-			Gene gene2 =  genotype.getGeneFromName( genename2);
-			
-			msgbox.setValue("Searching within GENE " + comboGene.getValue().toUpperCase()  + " " + gene2.getChr() + " [" + 
-					gene2.getFmin() + ".." + gene2.getFmax() + "] ");
-			
-			if(mode== GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS ) {
-				listSNPs = genotype.getSNPinAllVarieties( comboGene.getValue().trim(), 0);
-				msgbox.setValue( msgbox.getValue() + " ... RESULT: " + listSNPs.size() + " varietyXposition rows" );
-				msgbox.setStyle( "font-color=black" );			
-			}
-			else
-			{
-				listSNPs = genotype.getSNPinVarieties(var1, var2, comboGene.getValue().trim(), 0, mode);
-				msgbox.setValue( msgbox.getValue() + " ... RESULT: " + listSNPs.size() + " position rows" );
-				msgbox.setStyle( "font-color=black" );
-			}
-		
-			if(listSNPs.size()>0)
-			{
-				updateJBrowse( gene2.getChr().toUpperCase().replace("CHR",""),
-						gene2.getFmin().toString(), gene2.getFmax().toString() ,
-					 genename2, null,false);
-			}
-			else {
-				iframeJbrowse.setVisible(false);
-				msgJbrowse.setVisible(false);
-			}
-		
-		} else
-		{
-		
-			int chrlen = genotype.getFeatureLength( selectChr.getSelectedItem().getLabel());
-	
-			
-			if(intStop==null || intStart==null)
-			{
-				Messagebox.show("Please provide start and end positions", "INVALID POSITION VALUE", Messagebox.OK, Messagebox.EXCLAMATION);
-				return;  					
-			}   
-			
-			if(intStop.getValue()> chrlen  || intStart.getValue()> chrlen)
-			{
-				
-				Messagebox.show("Positions should be less than length", "INVALID POSITION VALUE", Messagebox.OK, Messagebox.EXCLAMATION);
-				return;  					
-			} 
-			if(intStop.getValue()<1  || intStart.getValue()<1)
-			{
-				Messagebox.show("Positions should be positive integer", "INVALID POSITION VALUE", Messagebox.OK, Messagebox.EXCLAMATION);
-				return;  					
-			}   				
-			if(intStop.getValue()<=intStart.getValue())
-			{
-				Messagebox.show("End should be greater than start", "INVALID POSITION VALUE", Messagebox.OK, Messagebox.EXCLAMATION);
-				return;  					
-			}  
-			
-			if( (intStop.getValue()-intStart.getValue()) > 1000000 )
-			{
-				Messagebox.show("Limit to 1000 kbp range for now", "OPERATION NOT ALLOWED", Messagebox.OK, Messagebox.EXCLAMATION);
-				msgbox.setStyle( "font-color=red" );
-			return;  					
-			}  
-			if(  mode == GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS  && ((intStop.getValue()-intStart.getValue()) > 100000 ) )
-			{
-				Messagebox.show("Limit to 100 kbp range for all variety query", "OPERATION NOT ALLOWED", Messagebox.OK, Messagebox.EXCLAMATION);
-				msgbox.setStyle( "font-color=red" );
-			return;  					
-			}  
-			
-			String chr = selectChr.getSelectedItem().getLabel().trim();
-			if(chr.isEmpty())
-			{
-				Messagebox.show("No chromosome selected", "INVALID CHROMOSOME VALUE", Messagebox.OK, Messagebox.EXCLAMATION);
-				msgbox.setValue("INVALID CHROMOSOME VALUE: no chromosome selected" );
-				return;
-			}
-			msgbox.setValue("SEARCHING: in chromosome " + chr + " [" + intStart.getValue() +  "-" + intStop.getValue()+  "]" );
-			msgbox.setStyle( "font-color:black" );
-			
-			if(mode== GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS ){
-				
-				listSNPs =  genotype.getSNPinAllVarieties(intStart.getValue(), intStop.getValue(), chr);
-				msgbox.setValue( msgbox.getValue() + " ... RESULT: " + listSNPs.size() + " varietyXposition rows" );
-				msgbox.setStyle( "font-color=black" );
-			}
-			else {
-				listSNPs =  genotype.getSNPinVarieties(var1,var2, intStart.getValue(), intStop.getValue(), chr, mode);
-				msgbox.setValue( msgbox.getValue() + " ... RESULT: " + listSNPs.size() + " position rows" );
-				msgbox.setStyle( "font-color=black" );
-			}
-			if(listSNPs.size()>0)
-				updateJBrowse( selectChr.getSelectedItem().getLabel().trim(),  intStart.getValue().toString() , intStop.getValue().toString(), null, null,false);
-			else {
-				iframeJbrowse.setVisible(false);
-				msgJbrowse.setVisible(false);
-			}
-		}
-		
-		
-        long endQuery = System.currentTimeMillis( );
-        System.out.println("query snps: " +  Long.toString(endQuery-startQuery) + " ms"); 
-        startQuery=endQuery;
-		
-		
-		
-		if(mode==GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS) {
-	
-
-	        
-			snpresult.setModel( new SimpleListModel(new java.util.ArrayList()) );
-			snpresult.setVisible(false);
-			
-		//	snpallvarsresult.setModel(model);
-			List snpsposlist = genotype.getSnpsposlist();
-			//listSNPs
-			
-			//snpallvarsresult.getChildren().clear();
-			snpallvarsresult.setMold("select");
-			snpallvarsresult.setMold("paging");
-			snpallvarsresult.setSizedByContent(true);
-			snpallvarsresult.setPageSize(snpallvars_pagesize);
-			
-	
-			Listhead lh = snpallvarsresult.getListhead();
-			lh.getChildren().clear();
-			
-			
-			//Auxhead listhead1=new Auxhead(); 			
-			//listhead1.setParent(snpallvarsresult); 
-			
-			
-			//snpallvarsresult.getFrozen().setRows(1);
-			//snpallvarsresult.getFrozen().setStart(1);
-		
-			//snpsposlist.	
-
-	        
-	   
-	         
-			
-			Listheader lhr =  new Listheader();
-			lhr.setLabel("VARIETY");
-			lhr.setSortAscending(  new SNPAllvarsListItemComparator(true, 1) );
-			lhr.setSortDescending(  new SNPAllvarsListItemComparator(false, 1) );
-			lh.appendChild(lhr);
-
-			Listheader lhrMismatch =  new Listheader();
-			lhrMismatch.setLabel("MISMATCH");
-			lhrMismatch.setSortAscending(new SNPAllvarsListItemComparator(true, 2));
-			lhrMismatch.setSortDescending(new SNPAllvarsListItemComparator(false, 2));
-
-			
-			//lhr.setSort("auto");
-			lh.appendChild(lhrMismatch);
-
-			auxheadpos.getChildren().clear();
-			
-			Auxheader listheader1=new Auxheader(); 
-			listheader1.setLabel("REFERENCE"); 
-			//listheader1.setParent(listhead1); 
-			auxheadpos.appendChild( listheader1 );			
-			listheader1=new Auxheader(); 
-			listheader1.setLabel(""); 
-			//listheader1.setParent(listhead1); 
-			auxheadpos.appendChild( listheader1 );			
-			
-			java.util.Map<Long, Character> mapRefPos2Nuc = new java.util.HashMap<Long, Character>();
-			Iterator<ViewSnpAllvarsPosId> itPos = snpsposlist.iterator();
-			while(itPos.hasNext()) {
-				lhr =  new Listheader();
-				ViewSnpAllvarsPosId posnuc=itPos.next();
-				
-				//lhr.get
-				
-				//lhr.setSclass("word-wrap");
-				lhr.setLabel(posnuc.getPos().toString());
-				
-				//lhr.setLabel("<html>"+ posnuc.getPos() + "<BR>" + posnuc.getRefnuc() + "</html>" );
-				lh.appendChild(lhr);
-				
-				listheader1=new Auxheader(); 
-				listheader1.setLabel(posnuc.getRefnuc().toString()); 
-				//listheader1.setParent(listhead1); 
-				auxheadpos.appendChild( listheader1 );
-				
-				mapRefPos2Nuc.put(posnuc.getPos() , posnuc.getRefnuc() );
-			}
-			
-			
-
-	        endQuery = System.currentTimeMillis( );
-	        System.out.println("query and setup positions: " +  Long.toString(endQuery-startQuery) + " ms"); 
-	        startQuery=endQuery;
-	        
-	        
-			// transform into 1 pos per item
-			
-			Iterator<ViewSnpAllvarsId> itSnps = listSNPs.iterator();
-			java.util.Map<Long, Character> mapPos2Nuc = new java.util.HashMap<Long, Character>() ; 
-			
-			String prevvar = "";
-			List<SNPAllvarsListItem> viewerlist = new java.util.ArrayList<SNPAllvarsListItem>();
-//			List<String> varlist= new java.util.ArrayList<String>();
-//			List<Long> mismatchlist= new java.util.ArrayList<Long>();
-			
-			
-			long mismatchcount = 0;
-			if(itSnps.hasNext()) {
-				ViewSnpAllvarsId snps = itSnps.next();
-				mapPos2Nuc = new java.util.HashMap<Long, Character>() ; 
-				mapPos2Nuc.put( snps.getPos() , snps.getVar1nuc().charAt(0));
-				prevvar=snps.getVarname();
-				
-				if ( !snps.getVar1nuc().isEmpty() &&  !mapRefPos2Nuc.get(snps.getPos()).equals( snps.getVar1nuc().charAt(0)))  mismatchcount++;
-				
-			}			
-			
-			
-			while(itSnps.hasNext())
-			{
-				ViewSnpAllvarsId snps = itSnps.next();
-				if(prevvar.equals(snps.getVarname()))
-						{
-							// add pos
-							mapPos2Nuc.put( snps.getPos() , snps.getVar1nuc().charAt(0));
-							if ( !snps.getVar1nuc().isEmpty() &&  !mapRefPos2Nuc.get(snps.getPos()).equals( snps.getVar1nuc().charAt(0)))  mismatchcount++;
-
-						} else
-						{
-							// new row, new var
-							// add map to list
-							
-							//mapPos2Nuc.put( 0,  varlist.size() + 1);
-							
-							SNPAllvarsListItem newvar = new SNPAllvarsListItem();
-							newvar.setMismatches( mismatchcount );
-							newvar.setPos2nuc( mapPos2Nuc );
-							newvar.setVarname(prevvar);
-							
-							viewerlist.add( newvar );
-							
-							// create new row
-							
-							
-							
-							mapPos2Nuc = new java.util.HashMap<Long, Character>() ; 
-							mapPos2Nuc.put( snps.getPos() , snps.getVar1nuc().charAt(0));
-							
-//							varlist.add(prevvar);		
-//							mismatchlist.add( mismatchcount );
-							
-							mismatchcount=0;
-							prevvar=snps.getVarname();
-						}					
-			}
-//			varlist.add(prevvar);
-//			mismatchlist.add( mismatchcount );
-//			viewerlist.add( mapPos2Nuc );
-			
-			SNPAllvarsListItem newvar = new SNPAllvarsListItem();
-			newvar.setMismatches( mismatchcount );
-			newvar.setPos2nuc( mapPos2Nuc );
-			newvar.setVarname(prevvar);
-			viewerlist.add(newvar);
-			
-			
-	        endQuery = System.currentTimeMillis( );
-	        System.out.println("counting mismatches, creating viewer list: " +  Long.toString(endQuery-startQuery) + " ms"); 
-	        startQuery=endQuery;
-	        
-
-			((SNPAllvarsListItemRenderer)snpallvarsresult.getItemRenderer()).setArrRefnucPos( snpsposlist );
-
-			((SNPAllvarsListItemRenderer)snpallvarsresult.getItemRenderer()).setSNPAllvarsListItemList(viewerlist);
-		
-
-			snpallvarsresult.setAttribute("org.zkoss.zul.listbox.rod", true);
-			
-			snpallvarsresult.setModel(   new SimpleListModel(viewerlist) );
-			
-		
-			System.out.println("paging: total size" + snpallvarsresult.getPagingChild().getTotalSize() + 
-					" activepage:" +  snpallvarsresult.getPagingChild().getActivePage());
-			
-			
-			
-			
-			snpallvarsresultMsg.setValue("Click VARIETY or MISMATCH headers to sort");
-			snpallvarsresultMsg.setVisible(true);
-			snpallvarsresult.setVisible(true);
-
-			lhrMismatch.setSortDirection("descending");
-			lhrMismatch.sort(false, true);
-			
-	        endQuery = System.currentTimeMillis( );
-	        System.out.println("rendering: " +  Long.toString(endQuery-startQuery) + " ms"); 
-	        startQuery=endQuery;
-
-		}
-		else {
-			snpallvarsresult.setModel(   new SimpleListModel(new java.util.ArrayList()) );
-			snpallvarsresult.setVisible(false);
-			snpallvarsresultMsg.setVisible(false);
-			
-			// update table header
-			Listheader lhr = (Listheader)snpresult.getListhead().getFirstChild();    	
-			String[] headers = new String[]{"CHROMOSOME","POSITION", "REFERENCE (NIPPONBARE)",
-			"ALLELE (" + comboVar1.getValue().toUpperCase() + ")","ALLELE (" + comboVar2.getValue().toUpperCase() + ")"};
-			int i = 0;
-			while(lhr != null) {
-				lhr.setLabel(headers[i] );
-				lhr = (Listheader)lhr.getNextSibling();
-				i++;
-			}
-			((SNPListItemRenderer)snpresult.getItemRenderer()).setQuerymode( (short)selectQueryMode.getSelectedIndex()  );
-			
-			snpresult.setModel( new SimpleListModel(listSNPs) );
-			snpresult.setVisible(true);
-			
-	        endQuery = System.currentTimeMillis( );
-	        System.out.println("rendering: " +  Long.toString(endQuery-startQuery) + " ms"); 
-	        startQuery=endQuery;
-		}
-
-}
-*/
-/*
-private void createSNPGFF(List listSNPs, String filename) {
-	
-	//if(!checkShowsnp.isChecked()) return; 
-	
-	StringBuffer buff = new StringBuffer();
-	
-	try {
-		File file = new File(tempdir + filename);
-		
-		FileWriter fw = new FileWriter(file.getAbsoluteFile());
-		BufferedWriter bw = new BufferedWriter(fw);
-		
-		int linecount = 0;
-		Iterator<ViewSnpAllvarsId> itsnp = listSNPs.iterator();
-		while(itsnp.hasNext()) {
-			ViewSnpAllvarsId snpvars = itsnp.next();
-			
-			if(snpvars.getRefnuc().equals(snpvars.getVar1nuc())) continue;
-			
-			String chr = snpvars.getChr().toString(); 
-			if(chr.length()==1)
-				chr= "chr0" + chr + "|msu7";
-			else 
-				chr= "chr" + chr + "|msu7";
-			
-			buff.append(chr); buff.append("\tIRIC\tsnp\t");
-			buff.append( snpvars.getPos() ); buff.append( "\t" ); buff.append( snpvars.getPos() );
-			buff.append( "\t.\t.\t.\tName=" + snpvars.getVarname() +
-					";ID=" +  snpvars.getVarname() + "-" + snpvars.getPos() + 
-					";Allele=" +   snpvars.getRefnuc() + "/" + snpvars.getVar1nuc() +
-					";Position=" +  snpvars.getPos() +
-					"\n");
-
-			
-			if(linecount > 100 ) {
-				bw.write(buff.toString());
-				buff.delete(0, buff.length());
-				buff = new StringBuffer();
-				bw.flush();
-				linecount = 0;
-			}
-			linecount++;
-		}
-		bw.write(buff.toString());
-		buff.delete(0, buff.length());
-		buff = new StringBuffer();
-		bw.flush();
-		bw.close();
-		
-		System.out.println("temgff written in: " + file.getAbsolutePath() );
-		log.info( "temgff written in: " + file.getAbsolutePath());
-	} catch (Exception ex) {
-		ex.printStackTrace();
-	}
-}
-*/
-
-	
+/**
+ * Class to write GFF file from SNP for use in JBrowse
+ * @author lmansueto
+ *
+ */
 	 private class GFF {
 		private String left;
 		private String right;
@@ -2303,173 +1665,10 @@ private void createSNPGFF(List listSNPs, String filename) {
 			
 			
 			
-			
-//			long prevpos = 0;
-//			
-//			long prevstartpos = 0;
-//			String prevline_left="";
-//			String prevline_right="";
-//			long prevvar = -1;
-//			
-//			long intStart = start.longValueExact();
-//			long intEnd = end.longValueExact();
-//			
-//			
-//			// include left and right snps
-//			intStart = intStart - (intEnd-intStart);
-//			if(intStart<1) intStart=1;
-//			intEnd = intEnd +  (intEnd-intStart);
-//
-//			if(intEnd>chrlength) intEnd = chrlength;
-//			
-//			if(itsnp.hasNext())
-//			{
-//				
-//				SnpsAllvars snpvars = itsnp.next();
-//				String chr = snpvars.getChr().toString(); 
-//				if(chr.length()==1)
-//					chr= "chr0" + chr + "|msu7";
-//				else 
-//					chr= "chr" + chr + "|msu7";
-//				
-//				prevline_left = chr + "\tIRIC\tsnp\t"  ;
-//				prevpos = snpvars.getPos().longValue();
-//				//prevstartpos = intStart;
-//				prevstartpos = prevpos;
-//				prevvar = snpvars.getVar().longValue();
-//				String  order =  var2order.get(snpvars.getVar() ).toString();
-//
-//				Variety var=mapId2Variety.get( snpvars.getVar() );
-//				
-//				if(snpvars.getRefnuc().equals(snpvars.getVarnuc()))
-//						prevline_right="";
-//				else
-//					prevline_right =  "\t.\t.\t.\tName=" + var.getName() +
-//						";ID=var_" +  var.getVarietyId() + "-" + snpvars.getPos() + 
-//						";AlleleRef=" +  snpvars.getRefnuc() + 
-//						";AlleleAlt=" + snpvars.getVarnuc() +					
-//						";Position=" +  snpvars.getPos() +
-//						";order=" + order +
-//						"\n";
-//				
-//				
-//				//buff.append("##gff-version 3\n#Note: See http://song.sourceforge.net\n\n");
-//			}
-//			
-//			java.util.List listGFF = new java.util.ArrayList();
-//			
-//			while(itsnp.hasNext()) {
-//				SnpsAllvars snpvars = itsnp.next();
-//				
-//				long longsnpvar = snpvars.getVar().longValueExact();
-//				long longsnppos = snpvars.getPos().longValueExact();
-//				
-//				if(!mapPrevPos.containsKey( longsnppos)) System.out.println("prevpos doest not contain " + longsnppos);
-//				else
-//					prevpos=mapPrevPos.get(longsnppos).longValue();
-//				
-//				if(longsnpvar==prevvar ) {
-//				
-//					if(mismatchOnly && snpvars.getRefnuc().equals(snpvars.getVarnuc())) continue;
-//					
-//					long prevendpos =    (prevpos + longsnppos)/2 - bpgap;
-//					
-//					// for very short (adjacent positions)
-//					if(prevstartpos>longsnppos)
-//						prevstartpos=longsnppos;
-//
-//					if(prevendpos>longsnppos)
-//						prevendpos=longsnppos;
-//					
-//					//buff.append(prevline_left);
-//					//buff.append(prevstartpos);buff.append("\t"); buff.append(prevendpos);
-//					//buff.append(prevline_right);
-//					
-//					//if(!snpvars.getRefnuc().equals(snpvars.getVarnuc()))
-//					
-//					if(!prevline_right.isEmpty())
-//						listGFF.add(new GFF(prevline_left, prevline_right,  prevstartpos, prevendpos));
-//					
-//					prevstartpos = prevendpos + 1;
-//					
-//					
-//				} else {
-//					// finish last prev
-//
-//					// for very short (adjacent positions)
-//					if(prevstartpos>prevpos)
-//						prevstartpos=prevpos;
-//
-//					
-//					//buff.append(prevline_left);
-//					//buff.append(prevstartpos);buff.append("\t"); buff.append(end);
-//					//buff.append(prevline_right);
-//					
-//					if(!prevline_right.isEmpty())
-//						if(!mapNextPos.containsKey(prevpos)) {
-//							listGFF.add(new GFF(prevline_left, prevline_right,  prevstartpos, intEnd));
-//							System.out.println("mapNextPos doesnt contain " + prevpos);
-//						}
-//						else listGFF.add(new GFF(prevline_left, prevline_right,  prevstartpos, mapNextPos.get(prevpos).longValue() ));
-//					
-//					
-//					prevstartpos = intStart;
-//					
-//					
-//				}
-//				
-//				
-//				String chr = snpvars.getChr().toString(); 
-//				if(chr.length()==1)
-//					chr= "chr0" + chr + "|msu7";
-//				else 
-//					chr= "chr" + chr + "|msu7";
-//				
-//				prevline_left = chr + "\tIRIC\tsnp\t"  ;
-//				
-//				//prevpos = snpvars.getPos().intValue();
-//				
-//				prevvar = snpvars.getVar().intValueExact();
-//				String order =  var2order.get(snpvars.getVar() ).toString();
-//
-//				Variety var=mapId2Variety.get( snpvars.getVar() );
-//				
-//				if(snpvars.getRefnuc().equals( snpvars.getVarnuc()   ))
-//					prevline_right="";
-//				else
-//					prevline_right =  "\t.\t.\t.\tName=" +  var.getName() +
-//						";ID=var_" +  var.getVarietyId() + "-" + snpvars.getPos() + 
-//						";AlleleRef=" +   snpvars.getRefnuc() + 
-//						";AlleleAlt=" + snpvars.getVarnuc() +
-//						";Position=" +  snpvars.getPos() +
-//						";order=" + order +
-//						"\n";	
-//
-//			}
-//
-//			// for very short (adjacent positions)
-//			if(prevstartpos>prevpos)
-//				prevstartpos=prevpos;
-//
-//			
-//			//buff.append(prevline_left);
-//			//buff.append(prevstartpos);buff.append("\t"); buff.append(end);
-//			//buff.append(prevline_right);
-//			
-//			if(!prevline_right.isEmpty())
-//				if(!mapNextPos.containsKey(prevpos)) {
-//					System.out.println("mapNextPos doesnt contain " + prevpos);
-//					listGFF.add(new GFF(prevline_left, prevline_right,  prevstartpos, intEnd));
-//				}
-//				else
-//					listGFF.add(new GFF(prevline_left, prevline_right,  prevstartpos, mapNextPos.get(prevpos).longValue()));
-//			
-			
-			
 
 			java.util.Collections.sort( listGFF, new GFFStartComparator());
 			
-			File file = new File(AppContext.tempdir + filename);	
+			File file = new File(AppContext.getTempDir() + filename);	
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 				
@@ -2507,7 +1706,16 @@ private void createSNPGFF(List listSNPs, String filename) {
 			ex.printStackTrace();
 		}
 	}
-
+/**
+ * Orig create GFF when all (match and mismatched) are fetched
+ * @param listSNPs
+ * @param filename
+ * @param var2order
+ * @param bpgap
+ * @param start
+ * @param end
+ * @param mismatchOnly
+ */
 private void createSNPVarietyGFFFetchAll(List<SnpsAllvars> listSNPs, String filename, Map var2order, int bpgap, BigDecimal start, BigDecimal end, boolean mismatchOnly) {
 		
 		
@@ -2688,7 +1896,7 @@ private void createSNPVarietyGFFFetchAll(List<SnpsAllvars> listSNPs, String file
 			java.util.Collections.sort( listGFF, new GFFStartComparator());
 			
 			
-			File file = new File(AppContext.tempdir + filename);	
+			File file = new File(AppContext.getTempDir() + filename);	
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 				
@@ -2732,14 +1940,24 @@ private void createSNPVarietyGFFFetchAll(List<SnpsAllvars> listSNPs, String file
 		createSNP2linesGFF(listSNPs, filename, false);
 	}
 	
+	/**
+	 * Create SNP GFF for 2-varieties query
+	 * @param listSNPs
+	 * @param filename
+	 * @param mismatchOnly
+	 */
 	private void createSNP2linesGFF(List<Snps2Vars> listSNPs, String filename, boolean mismatchOnly) {
 		
 		//if(!checkShowsnp.isChecked()) return; 
 		
 		StringBuffer buff = new StringBuffer();
 		
+	
+		varietyfacade = (VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade");
+		Map<BigDecimal,Variety> mapId2Var=varietyfacade.getMapId2Variety();
+		
 		try {
-			File file = new File( AppContext.tempdir + filename);
+			File file = new File( AppContext.getTempDir() + filename);
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 			
@@ -2757,7 +1975,7 @@ private void createSNPVarietyGFFFetchAll(List<SnpsAllvars> listSNPs, String file
 				if(!mismatchOnly || !snpvars.getRefnuc().equals( snpvars.getVar1nuc()  ) ) {
 					buff.append(chr); buff.append("\tIRIC\tsnp\t");
 					buff.append( snpvars.getPos() ); buff.append( "\t" ); buff.append( snpvars.getPos() );
-					buff.append( "\t.\t.\t.\tName=" + snpvars.getVar1()
+					buff.append( "\t.\t.\t.\tName=" + mapId2Var.get( snpvars.getVar1() ).getName()
 							+";ID=" +  snpvars.getVar1() + "-" + snpvars.getPos() + 
 							 ";AlleleRef=" +   snpvars.getRefnuc() +
 							 ";AlleleAlt=" + snpvars.getVar1nuc() +
@@ -2768,7 +1986,7 @@ private void createSNPVarietyGFFFetchAll(List<SnpsAllvars> listSNPs, String file
 				if(!mismatchOnly || !snpvars.getRefnuc().equals( snpvars.getVar2nuc()  ) ) {
 					buff.append(chr); buff.append("\tIRIC\tsnp\t");
 					buff.append( snpvars.getPos() ); buff.append( "\t" ); buff.append( snpvars.getPos() );
-					buff.append( "\t.\t.\t.\tName=" + snpvars.getVar2()
+					buff.append( "\t.\t.\t.\tName=" +  mapId2Var.get( snpvars.getVar2() ).getName()
 							+ ";ID=" +  snpvars.getVar2() + "-" + snpvars.getPos() + 
 							";AlleleRef=" +   snpvars.getRefnuc() +
 							";AlleleAlt=" + snpvars.getVar2nuc() +
@@ -2800,12 +2018,14 @@ private void createSNPVarietyGFFFetchAll(List<SnpsAllvars> listSNPs, String file
 		}
 	}
 
-	/*
-	private void updateJBrowse(String chr, String start, String end) {
-		updateJBrowse(chr,start, end, "");
-	}
-	*/
-	
+
+	/**
+	 * Prepare JBRowse URL. JBrowse is not fetched/rendered until the tab is clicked, but the URL is already formulated
+	 * @param chr
+	 * @param start
+	 * @param end
+	 * @param locus
+	 */
 	private void updateJBrowse(String chr, String start, String end, String locus) {
 		//return;
 		
@@ -2826,12 +2046,7 @@ private void createSNPVarietyGFFFetchAll(List<SnpsAllvars> listSNPs, String file
 			iframeJbrowse.setStyle("width:1500px;height:800px;border:0px inset;" );
 		
 		String  rendertype="";
-		if(radioColorAllele.isSelected()) {
-			rendertype = "%22JBrowse%2FView%2FTrack%2FAlignments2Variety%22";
-		} else if (radioColorMismatch.isSelected() )
-		{			
-			 rendertype = "%22JBrowse%2FView%2FTrack%2FAlignments2VarietyMismatch%22";
-		}
+
 			
 		
 		if(locus.isEmpty())		
@@ -2842,52 +2057,47 @@ private void createSNPVarietyGFFFetchAll(List<SnpsAllvars> listSNPs, String file
 		iframeJbrowse.setScrolling("yes");
 		iframeJbrowse.setAlign("left");		
 
-		
-		//String urljbrowse="http://pollux:8080/jbrowse/?loc=chr" + chrpad + "%7Cmsu7%3A" + start + ".." + end + "&tracks=DNA%2CGenes&tracklist=0&overview=0&highlight%3D=&highlight=";
-		
-		//String urljbrowse="http://pollux:8080/jbrowse/?loc=chr" + chrpad + "%7Cmsu7%3A" + start + ".." + end + "&tracks=DNA%2CGenes,SNP&tracklist=0&overview=0&" +
-		//		"addStores%3D%7B%22url%22%3A%7B%22type%22%3A%22JBrowse%2FStore%2FSeqFeature%2FGFF3%22%2C%22urlTemplate%22%3A%22"
-		//		+ "http://pollux:8080/iric-portal/tmp/" + gfffile 
-		//		+ "%22%7D%7D%26addTracks%3D%5B%7B%22label%22%3A%22SNP%22%2C%22type%22%3A%22JBrowse%2FView%2FTrack%2FCanvasFeatures%22%2C%22store%22%3A%22url%22%7D%5D";
-
-		//String urljbrowse="http://pollux:8080/jbrowse-dev/?loc=" + chrpad + "|msu7:" + start + ".." + end + "&tracks=DNA,Genes,SNP&addStores={\"url\":{\"type\":\"JBrowse/Store/SeqFeature/GFF3\",\"urlTemplate\":\"http://pollux:8080/iric-portal/tmp/" + gfffile  + "\"}}&" + 
-		//		"addTracks=[{\"label\":\"SNP\",\"type\":\"JBrowse/View/Track/CanvasFeatures\",\"store\":\"url\", \"maxHeight\":\"30000\", \"style\":{\"showLabels\":\"false\"}}]";
-		
-		//String urltemplate = "http://pollux:8080/iric-portal/tmp/" + gfffile;
-		String urltemplate = "..%2F..%2Firic-portal%2Ftmp%2F" + gfffile;
-		//String urljbrowse;
-		
-		
+		String urltemplate = "..%2F..%2F" + AppContext.getHostDirectory() + "%2Ftmp%2F" + gfffile;
 		
 		//if(checkShowsnp.isChecked() ) {
 		if(true) {
 		
 			if(tallJbrowse) {
-			//urljbrowse="http://pollux:8080/jbrowse-dev/?loc=chr" + chrpad + "|msu7:" + start + ".." + end + 
-			//		"&tracks=DNA,Genes,SNP&addStores={%22url%22:{%22type%22:%22JBrowse/Store/SeqFeature/GFF3Variety%22,%22urlTemplate%22:%22" + urltemplate
-			//		+ "%22}}&addTracks=[{%22label%22:%22SNP%22,%22type%22:%22JBrowse/View/Track/Alignments2Variety%22,%22store%22:%22url%22," + displaymode + ",%22style%22:{%22showLabels%22:%22false%22,%22textFont%22:%22normal 8px Univers,Helvetica,Arial,sans-serif%22," +
-			//		"%22showLabels%22:%22false%22,%22label%22:%22Name%22,%22strandArrow%22:%22false%22}}]";
-		
-			//http://pollux:8080/jbrowse-dev/?loc=chr01|msu7%3A7291..12139&tracks=DNA%2CGenes%2CSNP&addStores={%22url%22%3A{%22type%22%3A%22JBrowse%2FStore%2FSeqFeature%2FGFF3Variety%22%2C%22urlTemplate%22%3A%22..%2F..%2Firic-portal%2Ftmp%2Ftmp_5728269420009599070.gff%22}}&addTracks=[{%22label%22%3A%22SNP%22%2C%22type%22%3A%22JBrowse%2FView%2FTrack%2FAlignments2Variety%22%2C%22store%22%3A%22url%22%2C%20%22maxHeight%22%3A%2232000%22%2C%20%22style%22%3A{%22showLabels%22%3A%22false%22%2C%22textFont%22%3A%22normal%208px%20Univers%2CHelvetica%2CArial%2Csans-serif%22}%20}]&highlight=
-				urljbrowse= AppContext.getHostname() + ":8080/jbrowse-dev/?loc=chr"  + chrpad + "|msu7:" + start + ".." + end +   "&tracks=DNA%2Cmsu7gff%2Csnp3k%2CSNP%20Genotyping&addStores={%22url%22%3A{%22type%22%3A%22JBrowse%2FStore%2FSeqFeature%2FGFF3Variety%22%2C%22urlTemplate%22%3A%22" + urltemplate +
+				// for all varieties
+				if(radioColorAllele.isSelected()) {
+					rendertype = "%22JBrowse%2FView%2FTrack%2FAlignments2Variety%22";
+				} else if (radioColorMismatch.isSelected() )
+				{			
+					 rendertype = "%22JBrowse%2FView%2FTrack%2FAlignments2VarietyMismatch%22";
+				}
+				
+				urljbrowse= AppContext.getHostname() + "/jbrowse-dev/?loc=chr"  + chrpad + "|msu7:" + start + ".." + end +   "&tracks=DNA%2Cmsu7gff%2Csnp3k%2CSNP%20Genotyping&addStores={%22url%22%3A{%22type%22%3A%22JBrowse%2FStore%2FSeqFeature%2FGFF3Variety%22%2C%22urlTemplate%22%3A%22" + urltemplate +
 					 "%22}}&addTracks=[{%22label%22%3A%22SNP%20Genotyping%22%2C%22type%22%3A" + rendertype + "%2C%22store%22%3A%22url%22%2C%20" + displaymode 
 					 + ",%22metadata%22:{%22Description%22%3A%20%22Varieties%20SNP%20Genotyping%20in%20the%20region.%20Each%20row%20is%20a%20variety.%20Red%20means%20there%20is%20variation%20with%20the%20reference%22}"  
+					 + ",%22fmtDetailValue_Name%22%3A%20%22function(name)%20%7B%20return%20%27%3Ca%20target%3D%5C%22variety%5C%22%20href%3D%5C%22/" + AppContext.getHostDirectory()  + "/_variety.zul%3Fname%3D%27%2Bname%2B%27%5C%22%3E%27%2Bname%2B%27%3C%2Fa%3E%27%3B%20%7D%22%20"
 					 + "%2C%20%22style%22%3A{%22showLabels%22%3A%22false%22%2C%22textFont%22%3A%22normal%208px%20Univers%2CHelvetica%2CArial%2Csans-serif%22}}]&highlight=";
 
-			
+					//"fmtDetailValue_Name": "function(name) { return '<a target=\"variety\" href=\"_variety.zul?name='+name+'\">'+name+'</a>'; }" 
 
 			}
 			else
 			{
-				urljbrowse= AppContext.getHostname() + ":8080/jbrowse-dev/?loc=chr" + chrpad + "|msu7:" + start + ".." + end + 
+				
+
+				if(radioColorAllele.isSelected()) {
+					rendertype = "CanvasFeatures2Vars";
+				} else if (radioColorMismatch.isSelected() )
+				{			
+					 rendertype = "CanvasFeatures2VarsMismatch";
+				}
+				
+				// for 2 varieties
+				urljbrowse= AppContext.getHostname() + "/jbrowse-dev/?loc=chr" + chrpad + "|msu7:" + start + ".." + end + 
 					"&tracks=DNA,msu7gff,snp3k,SNP%20Genotyping&addStores={%22url%22:{%22type%22:%22JBrowse/Store/SeqFeature/GFF3%22,%22urlTemplate%22:%22" + urltemplate
-					+ "%22}}&addTracks=[{%22label%22:%22SNP%20Genotyping%22,%22type%22:%22JBrowse/View/Track/CanvasFeatures%22,%22store%22:%22url%22," + displaymode + 
-					
-					",%22style%22:{%22showLabels%22:%22false%22,%22textFont%22:%22normal 8px Univers,Helvetica,Arial,sans-serif%22," +
+					+ "%22}}&addTracks=[{%22label%22:%22SNP%20Genotyping%22,%22type%22:%22JBrowse/View/Track/" + rendertype + "%22,%22store%22:%22url%22," + displaymode + 
+					 ",%22fmtDetailValue_Name%22%3A%20%22function(name)%20%7B%20return%20%27%3Ca%20target%3D%5C%22variety%5C%22%20href%3D%5C%22/" + AppContext.getHostDirectory() + "/_variety.zul%3Fname%3D%27%2Bname%2B%27%5C%22%3E%27%2Bname%2B%27%3C%2Fa%3E%27%3B%20%7D%22%20"
+					+ ",%22style%22:{%22showLabels%22:%22false%22,%22textFont%22:%22normal 8px Univers,Helvetica,Arial,sans-serif%22," +
 					"%22showLabels%22:%22false%22,%22label%22:%22Name%22,%22strandArrow%22:%22false%22}}]";
-			
-			
-			
 			
 			}
 		}
@@ -2898,27 +2108,70 @@ private void createSNPVarietyGFFFetchAll(List<SnpsAllvars> listSNPs, String file
 		}
 		*/
 				
-		
-		//http://pollux:8080/jbrowse-dev/?loc=chr01|msu7:900..1100&tracks=DNA,Genes,SNP&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://pollux:8080/jbrowse-dev/rice_data/raw/dynamic/test.gff"}}&addTracks=[{"label":"SNP","type":"JBrowse/View/Track/CanvasFeatures","store":"url"}]
-
-		
+				
 		log.debug(urljbrowse);
 		
 		System.out.println(urljbrowse);
-		//iframeJbrowse.setSrc("http://jbrowse.org/code/JBrowse-1.11.4/?loc=ctgA%3A9896..31887&tracks=DNA%2CTranscript%2Cvolvox_microarray_bw_density%2Cvolvox_microarray_bw_xyplot%2Cvolvox-sorted-vcf%2Cvolvox-sorted_bam_coverage%2Cvolvox-sorted_bam&data=sample_data%2Fjson%2Fvolvox&highlight=&tracklist=1&nav=1&overview=1");
-		
-		
-		
-		//iframeJbrowse.setSrc( urljbrowse );
-		
-		//if(showTall) show_phylotree(chr, start, end); 	
-		
-		//phylochr = chr;
-		//phylostart = start;
-		//phyloend = end;
 			
 	}
 	
+	private void updateJBrowsePhylo(String chr, String start, String end, String locus) {
+		//return;
+		
+		chr = chr.trim();
+		String chrpad = chr;
+		if(chrpad.length()==1) chrpad="0" + chr;
+		
+		if (iframeJbrowsePhylo==null) throw new RuntimeException("jbrowsephylo==null");
+		
+		String displaymode="%22displayMode%22:%22normal%22,%22maxHeight%22:%222000%22";
+		
+		if(tallJbrowse) {
+			iframeJbrowsePhylo.setStyle("width:1500px;height:1000px;border:0px inset;" );
+			//displaymode="%22displayMode%22:%22compact%22,%22maxHeight%22:%2232000%22";
+			displaymode="%22displayMode%22:%22compact%22,%22maxHeight%22:%222000%22";
+		}
+		
+		String  rendertype="";
+		
+		if(locus.isEmpty())		
+			msgJbrowsePhylo.setValue("Chromosome " + chr + " [" + start + ".." + end + "]");
+		else
+			msgJbrowsePhylo.setValue(locus + "  Chromosome " + chr + " [" + start + ".." + end + "]");
+		
+		iframeJbrowsePhylo.setScrolling("yes");
+		iframeJbrowsePhylo.setAlign("left");		
+
+		String urltemplate = "..%2F..%2F" + AppContext.getHostDirectory() + "%2Ftmp%2F" + gfffile + ".phylo.gff";
+		
+			if(tallJbrowse) {
+				// for all varieties
+				
+				rendertype = "%22JBrowse%2FView%2FTrack%2FAlignments2Variety%22";
+
+				
+				urljbrowse= AppContext.getHostname() + "/jbrowse-dev/?loc=chr"  + chrpad + "|msu7:" + start + ".." + end +   "&tracks=DNA%2Cmsu7gff%2Csnp3k%2CSNP%20Genotyping&addStores={%22url%22%3A{%22type%22%3A%22JBrowse%2FStore%2FSeqFeature%2FGFF3Variety%22%2C%22urlTemplate%22%3A%22" + urltemplate +
+					 "%22}}&addTracks=[{%22label%22%3A%22SNP%20Genotyping%22%2C%22type%22%3A" + rendertype + "%2C%22store%22%3A%22url%22%2C%20" + displaymode 
+					 + ",%22metadata%22:{%22Description%22%3A%20%22Varieties%20SNP%20Genotyping%20in%20the%20region.%20Each%20row%20is%20a%20variety.%20Red%20means%20there%20is%20variation%20with%20the%20reference%22}"  
+					 + ",%22fmtDetailValue_Name%22%3A%20%22function(name)%20%7B%20return%20%27%3Ca%20target%3D%5C%22variety%5C%22%20href%3D%5C%22/" + AppContext.getHostDirectory()  + "/_variety.zul%3Fname%3D%27%2Bname%2B%27%5C%22%3E%27%2Bname%2B%27%3C%2Fa%3E%27%3B%20%7D%22%20"
+					 + "%2C%20%22style%22%3A{%22showLabels%22%3A%22false%22%2C%22textFont%22%3A%22normal%208px%20Univers%2CHelvetica%2CArial%2Csans-serif%22}}]&highlight=";
+
+			}
+		
+				
+		log.debug(urljbrowsephylo);
+		
+		System.out.println(urljbrowsephylo);
+			
+	}
+	
+	
+	/**
+	 * Prepare phylogenetic tree URL. Tree is not computed/displayed until the tab is clicked
+	 * @param chr
+	 * @param start
+	 * @param end
+	 */
 	
 	private void show_phylotree(String  chr, String start, String end) {
 
@@ -2930,41 +2183,13 @@ private void createSNPVarietyGFFFetchAll(List<SnpsAllvars> listSNPs, String file
 			int treescale = 1;
 			
 			iframePhylotree.setStyle("height:" + Integer.toString(height) + "px;width:1400px");
-			//iframePhylotree.setStyle("height:" + Integer.toString(height) + "px;width:" + Integer.toString(width) + "px");
 			iframePhylotree.setScrolling("yes");
-			
-
 			
 			urlphylo = "jsp/phylotreeGermplasms.jsp?scale=" + treescale + "&chr=" + chr + "&start=" + start + "&end=" + end + "&topn=-1";
 			log.debug(urlphylo);
-
-			
-		
+			System.out.println(urlphylo);
 	}
 	
 
 
-
-	/*
-	@Override
-	public void doInit(Page arg0, Map<String, Object> arg1) throws Exception {
-		// TODO Auto-generated method stub
-	     Session session=Executions.getCurrent().getSession();
-	     java.util.Date now = new java.util.Date();
-	     log.info(now + "\t" + session.getRemoteAddr() + "\t" +  session.getRemoteAddr());
-	     
-         //user=(user) session.getAttribute("user");
-         //System.out.println("user Id="+user);		
-	}
-	
-	private Object getSessionAttribute(String key) {
-		Session session=Executions.getCurrent().getSession();
-		return session.getAttribute(key);
-		
-	}
-	private void setSessionAttribute(String key, Object value) {
-		Session session=Executions.getCurrent().getSession();
-		session.setAttribute(key,value);
-	}
-     */
 }

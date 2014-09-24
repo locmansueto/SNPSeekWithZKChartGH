@@ -94,13 +94,13 @@ public interface VSnp2varsDAO extends JpaDao<VSnp2vars>, Snps2VarsDAO {
 	 * JPQL Query - findVSnp2varsByPrimaryKey
 	 *
 	 */
-	public VSnp2vars findVSnp2varsByPrimaryKey(Integer var1, Integer var2_1, Integer snpFeatureId) throws DataAccessException;
+	public VSnp2vars findVSnp2varsByPrimaryKey(BigDecimal var1, BigDecimal var2_1, BigDecimal snpFeatureId) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnp2varsByPrimaryKey
 	 *
 	 */
-	public VSnp2vars findVSnp2varsByPrimaryKey(Integer var1, Integer var2_1, Integer snpFeatureId_1, int startResult, int maxRows) throws DataAccessException;
+	public VSnp2vars findVSnp2varsByPrimaryKey(BigDecimal var1, BigDecimal var2_1, BigDecimal snpFeatureId_1, int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnp2varsByRefnucContaining

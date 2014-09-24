@@ -1,5 +1,6 @@
 package org.irri.iric.portal.chado.dao;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -11,13 +12,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.irri.iric.portal.chado.domain.VIricstockPassport;
-
 import org.skyway.spring.util.dao.AbstractJpaDao;
-
 import org.springframework.dao.DataAccessException;
-
 import org.springframework.stereotype.Repository;
-
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -162,7 +159,7 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 	 *
 	 */
 	@Transactional
-	public VIricstockPassport findVIricstockPassportByPrimaryKey(Integer iricStockpropId) throws DataAccessException {
+	public VIricstockPassport findVIricstockPassportByPrimaryKey(BigDecimal iricStockpropId) throws DataAccessException {
 
 		return findVIricstockPassportByPrimaryKey(iricStockpropId, -1, -1);
 	}
@@ -173,7 +170,7 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 	 */
 
 	@Transactional
-	public VIricstockPassport findVIricstockPassportByPrimaryKey(Integer iricStockpropId, int startResult, int maxRows) throws DataAccessException {
+	public VIricstockPassport findVIricstockPassportByPrimaryKey(BigDecimal iricStockpropId, int startResult, int maxRows) throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVIricstockPassportByPrimaryKey", startResult, maxRows, iricStockpropId);
 			return (org.irri.iric.portal.chado.domain.VIricstockPassport) query.getSingleResult();

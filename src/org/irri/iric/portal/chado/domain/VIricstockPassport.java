@@ -1,17 +1,13 @@
 package org.irri.iric.portal.chado.domain;
 
 import java.io.Serializable;
-
 import java.lang.StringBuilder;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-
 import javax.xml.bind.annotation.*;
-
 import javax.persistence.*;
 
 /**
@@ -42,7 +38,7 @@ public class VIricstockPassport implements Serializable {
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	@XmlElement
-	Integer iricStockpropId;
+	BigDecimal iricStockpropId;
 	/**
 	 */
 
@@ -74,13 +70,13 @@ public class VIricstockPassport implements Serializable {
 
 	/**
 	 */
-	public void setIricStockpropId(Integer iricStockpropId) {
+	public void setIricStockpropId(BigDecimal iricStockpropId) {
 		this.iricStockpropId = iricStockpropId;
 	}
 
 	/**
 	 */
-	public Integer getIricStockpropId() {
+	public BigDecimal getIricStockpropId() {
 		return this.iricStockpropId;
 	}
 

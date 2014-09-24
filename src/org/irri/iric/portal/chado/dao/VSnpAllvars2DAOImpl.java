@@ -39,7 +39,7 @@ public class VSnpAllvars2DAOImpl extends AbstractJpaDao<VSnpAllvars2> implements
 	 * EntityManager injected by Spring for persistence unit Production
 	 *
 	 */
-	@PersistenceContext(unitName = "Production")
+	@PersistenceContext(unitName = "IRIC_Production")
 	private EntityManager entityManager;
 
 	/**

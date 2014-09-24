@@ -1,0 +1,97 @@
+﻿<html>
+	
+<head>
+	<title>Variety Query</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Personal Edition 4.5.0.497">
+	<meta name="keywords" content="Variety information, Varity name, IRIS ID, Passport data, Phenotype data, country, subpopulation">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #00FF00;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "RiceSNP-SeekDatabase.html?" + sTopicUrl;
+			}
+			else if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+			{
+				top.FrameTOC.SelectTocItem("VarietyQuery");
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">Variety Query</h1>
+				
+				<div id="topic_breadcrumb">
+					<a href="WebInterface.html">Web Interface</a> &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="WebInterface.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="SNPQuery.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="GenomeBrowser.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<p class="rvps7"><span class="rvts18"><br/></span></p>
+<p class="rvps7"><span class="rvts14"><br/></span></p>
+<p class="rvps8"><img width="595" height="315" alt="" style="padding : 1px;" src="lib/NewItem19.png"/></p>
+<p class="rvps7"><span class="rvts6"><br/></span></p>
+<p class="rvps13"><span class="rvts14">The Variety Query interface returns the list of varieties from specified country of origin and/or is a member a subpopulation. It can also retrieve passport and phenotypic data for a given Variety or IRIS ID.</span></p>
+<p class="rvps7"><span class="rvts14"><br/></span></p>
+<h1 class="rvps11"><span class="rvts0"><span class="rvts17">To get Variety information: </span></span></h1>
+<p class="rvps17"><span class="rvts14">Type in the </span><span class="rvts18">Varity name</span><span class="rvts14"> or </span><span class="rvts18">IRIS ID</span><span class="rvts14"> at their corresponding boxes, which have auto-completion features. Only one of either should be specified otherwise an error message is displayed. The results are Passport data listed at the left panel and Phenotypes with values at the right. The meaning of the values are explained in the </span><span class="rvts18">Passport data dictionary </span><span class="rvts14">and </span><span class="rvts18">Phenotype data dictionary.</span></p>
+<p class="rvps16"><span class="rvts14"><br/></span></p>
+<p class="rvps8"><img width="593" height="314" alt="" style="padding : 1px;" src="lib/NewItem20.png"/></p>
+<p class="rvps7"><span class="rvts14"><br/></span></p>
+<h1 class="rvps11"><span class="rvts0"><span class="rvts17">To search varieties from a country and/or a subpopulation</span></span></h1>
+<p class="rvps16"><span class="rvts14"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts14">Type in the country and/or the subpopulation at their corresponding auto-complete boxes. If both are specified, the resulting set of varieties satisfy both constraints. The examples below query for varieties from the Philippines.</span></p>
+<h1 class="rvps11"><span class="rvts0"><span class="rvts17">Varieties search result</span></span></h1>
+<p class="rvps13"><span class="rvts14">The resulting set of varieties can be viewed as a table, or in a phylogenetic tree.</span></p>
+<p class="rvps10"><span class="rvts14"><br/></span></p>
+<p class="rvps10"><span class="rvts14">Table &nbsp;- This lists the varieties satisfying the constraints sorted by name. Selecting a variety from this list will display its Variety passport and phenotype data.</span></p>
+<p class="rvps8"><img width="611" height="324" alt="" style="padding : 1px;" src="lib/NewItem21.png"/></p>
+<p class="rvps7"><span class="rvts14"><br/></span></p>
+<p class="rvps10"><span class="rvts14">Phylotree &nbsp;- The phylogenetic tree of the result is dynamically computed &nbsp;based on SNP values from 200,000 random positions between the varieties. The varieties are colored based on their subpopulation, and clicking the node displays the Variety passport and phenotype data.</span></p>
+<p class="rvps7"><span class="rvts14"><br/></span></p>
+<p class="rvps8"><img width="602" height="319" alt="" style="padding : 1px;" src="lib/NewItem22.png"/></p>
+<p class="rvps8"><span class="rvts18"><br/></span></p>
+<p></p>
+
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2014 by International Rice Informatics Consortium. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+
