@@ -20,8 +20,8 @@ public interface Snps2VarsDAO {
 	 * @return
 	 * @throws DataAccessException
 	 */
-	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenAll(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1Id, BigDecimal var2Id) throws DataAccessException;
-	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenAll(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2, int startResult, int maxRows) throws DataAccessException;
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenAll(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1Id, BigDecimal var2Id, boolean isCore) throws DataAccessException;
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenAll(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2,  boolean isCore, int startResult, int maxRows) throws DataAccessException;
 	
 	
 	/**
@@ -34,8 +34,11 @@ public interface Snps2VarsDAO {
 	 * @return
 	 * @throws DataAccessException
 	 */
-	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenMismatch(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1Id, BigDecimal var2Id) throws DataAccessException;
-	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenMismatch(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2, int startResult, int maxRows) throws DataAccessException;
-	
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenMismatch(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1Id, BigDecimal var2Id,  boolean isCore) throws DataAccessException;
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenMismatch(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2,  boolean isCore, int startResult, int maxRows) throws DataAccessException;
+
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosInMismatch(Integer chr, Set poslist, BigDecimal var1Id, BigDecimal var2Id,  boolean isCore) throws DataAccessException;
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosInAll(Integer chr, Set poslist, BigDecimal var1Id, BigDecimal var2Id, boolean isCore) throws DataAccessException;
+
 	
 }

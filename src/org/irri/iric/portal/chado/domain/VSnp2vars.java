@@ -19,12 +19,12 @@ import org.irri.iric.portal.domain.Snps2Vars;
 @NamedQueries({
 		@NamedQuery(name = "findAllVSnp2varss", query = "select myVSnp2vars from VSnp2vars myVSnp2vars"),
 		@NamedQuery(name = "findVSnp2varsByChr", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where myVSnp2vars.chr = ?1"),
-		@NamedQuery(name = "findVSnp2varsByPos", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where myVSnp2vars.pos = ?1"),
+		@NamedQuery(name = "findVSnp2varsByPos", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where myVSnp2vars.pos = ?1-1"),
 		
-		@NamedQuery(name = "findVSnp2varsByVarsChrPosBetweenAll", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where  myVSnp2vars.chr = ?1 " +
-														" and myVSnp2vars.pos between ?2 and ?3 and myVSnp2vars.var1 = ?4 and myVSnp2vars.var2 = ?5 order by myVSnp2vars.pos"),
-		@NamedQuery(name = "findVSnp2varsByVarsChrPosBetweenMismatch", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where  myVSnp2vars.chr = ?1 " +
-																" and myVSnp2vars.pos between ?2 and ?3 and myVSnp2vars.var1 = ?4 and myVSnp2vars.var2 = ?5 " + 
+		@NamedQuery(name = "findVSnp2varsByVarsChrPosBetweenAll", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where  myVSnp2vars.chr = (?1+2) " +
+														" and myVSnp2vars.pos between ?2-1 and ?3 and myVSnp2vars.var1 = ?4 and myVSnp2vars.var2 = ?5 order by myVSnp2vars.pos"),
+		@NamedQuery(name = "findVSnp2varsByVarsChrPosBetweenMismatch", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where  myVSnp2vars.chr = (?1+2) " +
+																" and myVSnp2vars.pos between ?2-1 and ?3 and myVSnp2vars.var1 = ?4 and myVSnp2vars.var2 = ?5 " + 
 																" and myVSnp2vars.var1nuc<>myVSnp2vars.var2nuc order by myVSnp2vars.pos"),
 		
 		
@@ -38,7 +38,7 @@ import org.irri.iric.portal.domain.Snps2Vars;
 		@NamedQuery(name = "findVSnp2varsByVar2", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where myVSnp2vars.var2 = ?1"),
 		@NamedQuery(name = "findVSnp2varsByVar2nuc", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where myVSnp2vars.var2nuc = ?1"),
 		@NamedQuery(name = "findVSnp2varsByVar2nucContaining", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where myVSnp2vars.var2nuc like ?1") })
-@Table(schema = "IRIC", name = "VL_SNP_2VARS")
+@Table(schema = "IRIC", name = "V_SNP_2VARS")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VSnp2vars")
 public class VSnp2vars implements Serializable, Snps2Vars {
@@ -71,7 +71,7 @@ public class VSnp2vars implements Serializable, Snps2Vars {
 	/**
 	 */
 
-	@Column(name = "CHR")
+	@Column(name = "PARTITION_ID")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	Integer chr;
@@ -143,13 +143,13 @@ public class VSnp2vars implements Serializable, Snps2Vars {
 	/**
 	 */
 	public void setChr(Integer chr) {
-		this.chr = chr;
+		this.chr = chr+2;
 	}
 
 	/**
 	 */
 	public Integer getChr() {
-		return this.chr;
+		return this.chr-2;
 	}
 
 	/**

@@ -21,11 +21,14 @@ import org.irri.iric.portal.domain.SnpsAllvars;
 		@NamedQuery(name = "findVSnpAllvarsByChr", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where myVSnpAllvars.chr = ?1"),
 		@NamedQuery(name = "findVSnpAllvarsByPos", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where myVSnpAllvars.pos = ?1"),
 
-		@NamedQuery(name = "findVSnpAllvarsByChrPosBetween", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2 and ?3 " ),
+		@NamedQuery(name = "findVSnpAllvarsByChrPosBetween", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2-1 and ?3 " ),
 				 										//	+ " and (myVSnpAllvars.refnuc<>myVSnpAllvars.varnuc) and (myVSnpAllvars.refnuc is not null or myVSnpAllvars.varnuc is not null)"  ),
-		@NamedQuery(name = "findVSnpAllvarsByVarsChrPosBetween", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2 and ?3 " +
-														//	" and (myVSnpAllvars.refnuc<>myVSnpAllvars.varnuc) and (myVSnpAllvars.refnuc is not null or myVSnpAllvars.varnuc is not null) "  +	
+		@NamedQuery(name = "findVSnpAllvarsByVarsChrPosBetween", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2-1 and ?3 " +
 															" and myVSnpAllvars.var in (?4)" ),
+		@NamedQuery(name = "findVSnpAllvarsByVarsChrPosBetween2", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2-1 and ?3 " +
+					" and ( myVSnpAllvars.var in (?4) or myVSnpAllvars.var in (?5))" ),
+		@NamedQuery(name = "findVSnpAllvarsByVarsChrPosBetween3", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2-1 and ?3 " +
+					" and ( myVSnpAllvars.var in (?4) or myVSnpAllvars.var in (?5)  or  myVSnpAllvars.var in (?6))" ),
 													 
 		
 		@NamedQuery(name = "findVSnpAllvarsByPrimaryKey", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where myVSnpAllvars.snpGenotypeId = ?1"),
@@ -35,7 +38,7 @@ import org.irri.iric.portal.domain.SnpsAllvars;
 		@NamedQuery(name = "findVSnpAllvarsByVar", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where myVSnpAllvars.var = ?1"),
 		@NamedQuery(name = "findVSnpAllvarsByVarnuc", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where myVSnpAllvars.varnuc = ?1"),
 		@NamedQuery(name = "findVSnpAllvarsByVarnucContaining", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where myVSnpAllvars.varnuc like ?1") })
-@Table(schema = "IRIC", name = "VL_SNP_ALLVARS")
+@Table(schema = "IRIC", name = "V_SNP_ALLVARS")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VSnpAllvars")
 public class VSnpAllvars implements Serializable, SnpsAllvars {
@@ -60,7 +63,7 @@ public class VSnpAllvars implements Serializable, SnpsAllvars {
 	/**
 	 */
 
-	@Column(name = "CHR")
+	@Column(name = "PARTITION_ID")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	Long chr;
@@ -113,13 +116,13 @@ public class VSnpAllvars implements Serializable, SnpsAllvars {
 	/**
 	 */
 	public void setChr(Long chr) {
-		this.chr = chr;
+		this.chr = chr+2;
 	}
 
 	/**
 	 */
 	public Long getChr() {
-		return this.chr;
+		return this.chr-2;
 	}
 
 	/**

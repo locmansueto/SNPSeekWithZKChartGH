@@ -22,7 +22,7 @@ import javax.persistence.*;
 		@NamedQuery(name = "findAllVSnpAllvars2s", query = "select myVSnpAllvars2 from VSnpAllvars2 myVSnpAllvars2"),
 		@NamedQuery(name = "findVSnpAllvars2ByChr", query = "select myVSnpAllvars2 from VSnpAllvars2 myVSnpAllvars2 where myVSnpAllvars2.chr = ?1"),
 		@NamedQuery(name = "findVSnpAllvars2ByIricStockId", query = "select myVSnpAllvars2 from VSnpAllvars2 myVSnpAllvars2 where myVSnpAllvars2.iricStockId = ?1"),
-		@NamedQuery(name = "findVSnpAllvars2ByPos", query = "select myVSnpAllvars2 from VSnpAllvars2 myVSnpAllvars2 where myVSnpAllvars2.pos = ?1"),
+		@NamedQuery(name = "findVSnpAllvars2ByPos", query = "select myVSnpAllvars2 from VSnpAllvars2 myVSnpAllvars2 where myVSnpAllvars2.pos = ?1-1"),
 		@NamedQuery(name = "findVSnpAllvars2ByPrimaryKey", query = "select myVSnpAllvars2 from VSnpAllvars2 myVSnpAllvars2 where myVSnpAllvars2.snpFeatureId = ?1 and myVSnpAllvars2.iricStockId = ?2"),
 		@NamedQuery(name = "findVSnpAllvars2ByRefnuc", query = "select myVSnpAllvars2 from VSnpAllvars2 myVSnpAllvars2 where myVSnpAllvars2.refnuc = ?1"),
 		@NamedQuery(name = "findVSnpAllvars2ByRefnucContaining", query = "select myVSnpAllvars2 from VSnpAllvars2 myVSnpAllvars2 where myVSnpAllvars2.refnuc like ?1"),

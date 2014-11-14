@@ -3,14 +3,18 @@ package org.irri.iric.portal.genotype.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.logging.Level;
 
 import org.apache.commons.logging.Log;
@@ -28,6 +32,7 @@ import org.irri.iric.portal.dao.Snps2VarsDAO;
 import org.irri.iric.portal.dao.SnpsAllvarsDAO;
 import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
 import org.irri.iric.portal.dao.SnpsAllvarsRefMismatchDAO;
+import org.irri.iric.portal.dao.SnpsStringAllvarsDAO;
 import org.irri.iric.portal.dao.VarietyDAO;
 import org.irri.iric.portal.domain.Gene;
 import org.irri.iric.portal.domain.Snps2VarsCountmismatch;
@@ -35,7 +40,13 @@ import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
 import org.irri.iric.portal.domain.Snps2Vars;
 import org.irri.iric.portal.domain.SnpsAllvars;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
+import org.irri.iric.portal.domain.SnpsStringAllvars;
+import org.irri.iric.portal.domain.SnpsStringAllvarsImpl;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.flatfile.dao.SnpcoreRefposindexDAO;
+//import org.irri.iric.portal.flatfile.domain.SnpcoreRefposindex;
+import org.irri.iric.portal.flatfile.domain.VSnpRefposindex;
+import org.irri.iric.portal.genotype.service.GenotypeFacade.snpQueryMode;
 //import org.irri.iric.portal.domain.VarietyService;
 //import org.irri.iric.portal.genotype.domain.Variety3k;
 //import org.irri.iric.portal.genotype.views.*;
@@ -51,7 +62,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 
@@ -66,24 +80,30 @@ import org.forester.phylogeny.iterators.PhylogenyNodeIterator;
 //@Secured("ROLE_IRRIUSER")
 //@Service("GenotypeFacadeChado")
 @Service("GenotypeFacade")
+//@Scope("prototype")
+@Scope(value="session",  proxyMode = ScopedProxyMode.INTERFACES)
 public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 //public class GenotypeFacadeChadoImpl {
 
 	private static final Log log = LogFactory.getLog(GenotypeFacadeChadoImpl.class);
-	private static String onlymismatchsql = " (REFNUC is not null or VAR1NUC is not null) and  REFNUC<>VAR1NUC and  ";
+	//private static String onlymismatchsql = " (REFNUC is not null or VAR1NUC is not null) and  REFNUC<>VAR1NUC and  ";
 	//private static String onlymismatchsql = "";
 	
 	
 	// Values updated on call to getSNPinAllVarieties w/ firstRow=1
-	private List<SnpsAllvarsRefMismatch> listSNPAllVarsMismatches;
+	//private List<SnpsAllvarsRefMismatch> listSNPAllVarsMismatches;
+	
+	
+	private List listSNPAllVarsMismatches;
 	private java.util.HashMap<Integer,BigDecimal> mapOrder2Variety; // 0-indexed
 	private java.util.HashMap<BigDecimal, Integer> mapVariety2Order;  // 0-indexed
 	private java.util.HashMap<BigDecimal, Integer> mapVariety2Mismatch;
-	
 	private java.util.HashMap<BigDecimal, Integer> mapVariety2PhyloOrder;
-
-
-	private List<SnpsAllvarsPos> snpsposlist; 
+	private List<SnpsAllvarsPos> snpsposlist;
+	private Set<BigDecimal> limitVarIds;
+	private boolean isCore=false;
+	
+	
 	private java.util.List<String> varnames;
 	private java.util.List<String> genenames;
 	
@@ -107,20 +127,47 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	
 	@Autowired
 	//@Qualifier("SnpsAllvarsDAO")
-	@Qualifier("VSnpAllvarsMinDAO")
+	@Qualifier("VSnpAllvarsMinDAO")  // no snp_genotype_id
 	private  SnpsAllvarsDAO snpallvarsService; // = new Snp2linesHome();
-	
-	
 	
 	@Autowired
 	@Qualifier("SnpsAllvarsPosDAO")
 	private  SnpsAllvarsPosDAO snpallvarsposService; // = new Snp2linesHome();
+
+	@Autowired
+	@Qualifier("MvCoreSnpsDAO")		// using core snps
+	private SnpsAllvarsPosDAO snpcoreallvarsposService;
+
+
+	
+	
 	@Autowired
 	@Qualifier("SnpsAllvarsRefMismatchDAO")
 	private  SnpsAllvarsRefMismatchDAO snpcountallvarsService;
 	@Autowired 
-	@Qualifier("Snps2VarsCountMismatchDAO")
+	//@Qualifier("Snps2VarsCountMismatchDAO")
+	@Qualifier("SnpsString2VarsCountMismatchDAO")
 	private  Snps2VarsCountMismatchDAO snpcount2linesService; // = new Snp2linesHome();
+	
+	
+	@Autowired
+	@Qualifier("SnpcoreMismatchAllelesDAO")	
+	private SnpsStringAllvarsDAO snpstringAllvarsDao; // using core snps, allelestring in database
+	
+//	@Autowired
+//	@Qualifier("SnpstringAllelesFileDAO")	// using core snps, allelestring in flatfile
+//	private SnpsStringAllvarsDAO snpstringallelesfileDao;
+
+
+	@Autowired
+	@Qualifier("VSnpRefposindexDAO")		// using core snps, allelestring in database
+	private SnpsAllvarsPosDAO snpstringcoreallvarsposService;
+
+	@Autowired
+	@Qualifier("MismatchCountDAO")
+	private SnpsAllvarsRefMismatchDAO refmismatchDAO;
+
+	
 	
 	@Autowired
 	@Qualifier("VarietyFacade")
@@ -130,10 +177,23 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	public GenotypeFacadeChadoImpl() {
 		super();
 		// TODO Auto-generated constructor stub
+		
+		System.out.println("created GenotypeFacadeChadoImpl: " + this );
 
 	}
 	
 	
+	
+	
+	@Override
+	public void setCoreSnp(boolean isCore) {
+		// TODO Auto-generated method stub
+		this.isCore=isCore;
+	}
+
+
+
+
 	public List<SnpsAllvarsRefMismatch> getListSNPAllVarsMismatches() {
 		return listSNPAllVarsMismatches;
 	}
@@ -145,9 +205,10 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 			numRows = listSNPAllVarsMismatches.size() - firstRow  +1 ;
 		}
 
-		for(int i=firstRow-1; i<firstRow-1+numRows; i++)
+		for(int i=firstRow-1; i<firstRow-1+numRows && i<listSNPAllVarsMismatches.size() ; i++)
 				newlist.add(listSNPAllVarsMismatches.get(i));
-
+		
+		System.out.println("created page with " + newlist.size() + " varieties");
 		return newlist;
 	}
 
@@ -186,7 +247,11 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 		
 	}
 	
-
+	@Override
+	public List<String>getSubpopulations() {
+		return varietyfacade.getSubpopulations();
+	}
+	 
 	/**
 	 * Use for development only
 	 */
@@ -355,21 +420,33 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	
 	public List<SnpsAllvarsRefMismatch> countSNPMismatchesInAlllVarieties(Integer startPos, Integer endPos, String chromosome, boolean update)
 	{
+		
+		if(limitVarIds!=null && !limitVarIds.isEmpty()){
+				return countSNPMismatchesInSetVarieties(limitVarIds,  startPos,  endPos,  chromosome,  update);
+		}
+		
 		if(update || listSNPAllVarsMismatches==null) {
 			snpcountallvarsService = (SnpsAllvarsRefMismatchDAO)AppContext.checkBean(snpcountallvarsService, "SnpsAllvarsRefMismatchDAO") ; 
-		
-			/*
-			String sql="select VARNAME, count(*) as mismatch from VIEW_SNP_ALLVARS where " + onlymismatchsql 
-					+ " chr=" + chromosome 
-					+ " and pos between " + (startPos-1) + " and " + (endPos+1)
-					+ " group by VARNAME  order by mismatch desc, VARNAME";
-			listSNPAllVarsMismatches = snpcountallvarsService.executeSQL(sql);
-			*/
-			
-			listSNPAllVarsMismatches = snpcountallvarsService.countMismatches( chromosome,  startPos,  endPos);
+			listSNPAllVarsMismatches = snpcountallvarsService.countMismatches( chromosome,  startPos,  endPos, isCore);
 		}
 		return listSNPAllVarsMismatches;
 	}
+	
+	public List<SnpsAllvarsRefMismatch> countSNPMismatchesInSetVarieties(Set setvarIds, Integer startPos, Integer endPos, String chromosome, boolean update)
+	{
+		if(update || listSNPAllVarsMismatches==null) {
+			snpcountallvarsService = (SnpsAllvarsRefMismatchDAO)AppContext.checkBean(snpcountallvarsService, "SnpsAllvarsRefMismatchDAO") ; 
+			
+			if(setvarIds==null || setvarIds.isEmpty())
+				listSNPAllVarsMismatches = snpcountallvarsService.countMismatches( chromosome,  startPos,  endPos, isCore);
+			else {
+				System.out.println("countMismatchesInvars  setvarIds:" + setvarIds);
+				listSNPAllVarsMismatches = snpcountallvarsService.countMismatchesInvars(setvarIds, chromosome,  startPos,  endPos, isCore);
+			}
+		}
+		return listSNPAllVarsMismatches;
+	}
+	
 	
 	/**
 	 * Get the SNP alleles for ALL varieties
@@ -380,6 +457,12 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	{
 		 return getSNPinAllVarieties(startPos, endPos, chromosome, 1,0); 
 	}
+	
+	public List<SnpsAllvars> getSNPinSetVarieties(Set varids, Integer startPos, Integer endPos, String chromosome)
+	{
+		 return getSNPinSetVarieties(varids, startPos, endPos, chromosome, 1,0); 
+	}
+	
 	
 	/**
 	 * Get the SNP alleles for ALL varieties
@@ -410,41 +493,51 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows) {
 		return getSNPinAllVarieties(startPos, endPos, chromosome, firstRow, numRows,AppContext.isSNPAllvarsFetchMismatchOnly()); 
 	}
+	public List<SnpsAllvars> getSNPinSetVarieties(Set varids, Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows) {
+		return getSNPinSetVarieties(varids, startPos, endPos, chromosome, firstRow, numRows,AppContext.isSNPAllvarsFetchMismatchOnly()); 
+	}
 	
+	
+
 	public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows, boolean fetchMismatchOnly) {
+		 return getSNPinSetVarieties(null,  startPos,  endPos,  chromosome,  firstRow,  numRows,  fetchMismatchOnly); 
+	}
+	
+	public List<SnpsAllvars> getSNPinAllVarieties(Set setvarIds, Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows, boolean fetchMismatchOnly) {
+		return getSNPinSetVarieties(setvarIds, startPos, endPos,  chromosome, firstRow, numRows, fetchMismatchOnly);
+	}
+	
+
+	
+	
+	
+	/*
+	public List<SnpsAllvars> getSNPinAllVarietiesOld(Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows, boolean fetchMismatchOnly) {
 		// TODO Auto-generated method stub
 
 		if(startPos<0)  startPos=0;
 	
-		// if first row, get the new variety-mismatch sort order
+		// if first row=1, reset variety-mismatch sort order,  
 		if(firstRow==1 ) {
 			listSNPAllVarsMismatches=countSNPMismatchesInAlllVarieties( startPos,  endPos,  chromosome, true);
-
 			
 			mapOrder2Variety = new java.util.HashMap<Integer,BigDecimal>();
 			mapVariety2Order = new java.util.HashMap<BigDecimal,Integer>();
 			mapVariety2Mismatch = new java.util.HashMap<BigDecimal,Integer>();		
 			
 		}
-		
+
+		// if no SNP result, return empty
 		if(listSNPAllVarsMismatches.size()==0) {
-			
 			snpsposlist = new java.util.ArrayList();
 			return new java.util.ArrayList();
-			
-			//throw new RuntimeException("listSNPAllVarsMismatches.size()==0"); 
 		}
-		
-		
-		//String firstVariety = listSNPAllVarsMismatches.get((int) firstRow-1).getVarname();
-		//String lastVariety = null;
 		
 		StringBuffer topVarieties = new StringBuffer();
 		
 		long lastRow = firstRow + numRows - 1;  // 1-indexed
 		if(listSNPAllVarsMismatches.size() >  lastRow)
 		{
-		//	lastVariety = listSNPAllVarsMismatches.get((int) lastRow-1).getVarname();			
 		} else
 			lastRow = listSNPAllVarsMismatches.size();
 		
@@ -453,123 +546,131 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 
 		Set<BigDecimal> varsMismatch = new HashSet();
 		
+		// generate variety listing order
 		for(long iVariety= firstRow-1;  iVariety<lastRow;  iVariety++ ) {
 			
 			SnpsAllvarsRefMismatch varmismatch = listSNPAllVarsMismatches.get((int)iVariety);
 			
-			/*
-			topVarieties.append("'"); 
-			topVarieties.append( varmismath.getVarname().replace("'","''")  ); 
-			topVarieties.append("'"); 
-			if(iVariety+1<lastRow) topVarieties.append(","); 
-			*/
-			
 			mapOrder2Variety.put( Integer.valueOf((int)iVariety),  varmismatch.getVar()  );
 			mapVariety2Order.put( varmismatch.getVar(), Integer.valueOf((int)iVariety)   );
 			mapVariety2Mismatch.put( varmismatch.getVar(), varmismatch.getMismatch().intValue()  );
-			//System.out.println(iVariety + "  " + varmismath.getMismatch().intValue()  +  "   "  + varmismath.getVarname()  );
-			
-			
-			
 			varsMismatch.add(  varmismatch.getVar() );
-			
-			//System.out.println( varmismatch.getVar());
 		}
 		
 		 
-	
-		
-		try {
-
-			
-		
 
 			snpallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpallvarsposService, "SnpsAllvarsPosDAO") ; 
-			/*
-			String sql = "select CHR, POS, REFNUC from VIEW_SNP_ALLVARS_POS where ";
-			  sql += " chr=" + chromosome + " and pos between " +
-					(startPos -1) + " and " + (endPos + 1) + " order by POS";
-			 */ 
 			snpsposlist = snpallvarsposService.getSNPs(chromosome, startPos, endPos );
 			
 			if(snpsposlist==null) throw new RuntimeException("snpsposlist==null");
 
 			snpallvarsService = (SnpsAllvarsDAO)AppContext.checkBean(snpallvarsService, "VSnpAllvarsMinDAO") ; 
 			
-			// use sql query because this object is mapped from a view without primary key
-			
-			String  sql2 = "";
 			Set<SnpsAllvars> snpslist; 
 			
-			/*
-			if(firstRow==1 && numRows==0)
-				//sql2 = "select VARNAME, CHR, POS, REFNUC, VAR1NUC from VIEW_SNP_ALLVARS where " // + onlymismatchsql
-				//+ " chr=" + chromosome + " and pos between " +
-				//(startPos -1) + " and " + (endPos + 1) + " order by VARNAME, CHR, POS" ;		
-				 snpslist = snpallvarsService.findVSnpAllvarsByChrPosBetween( Integer.valueOf(chromosome) , BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos)); //.getSNPs(chromosome, startPos, endPos );
-			else
-				//sql2 = "SELECT VARNAME, chr, pos, refnuc, var1nuc  FROM VIEW_SNP_ALLVARS  where " //+ onlymismatchsql 
-				//+ " chr="
-				//+ chromosome + " and pos between " + (startPos-1) + " and " + (endPos+1) + 
-				//" and varname in ("  + topVarieties.toString().replace("\"","\\\"")
-				//+  ") order by VARNAME, chr, pos" ;				
-				
-				//snpslist = snpallvarsService.getSNPs(chromosome, startPos, endPos, varieties );
-				snpslist = snpallvarsService.findVSnpAllvarsByVarsChrPosBetween( Integer.valueOf(chromosome) , BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), varsMismatch); 
-			*/
-			
 			if(fetchMismatchOnly)
-				snpslist = snpallvarsService.findVSnpAllvarsByVarsChrPosBetweenRefmismatch( Integer.valueOf(chromosome) , BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), varsMismatch); 
+				snpslist = snpallvarsService.findVSnpAllvarsByVarsChrPosBetweenRefmismatch( Integer.valueOf(chromosome) , BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), varsMismatch ); 
 			else
 				snpslist = snpallvarsService.findVSnpAllvarsByVarsChrPosBetween( Integer.valueOf(chromosome) , BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), varsMismatch); 
 			
-//			//if(firstRow>-1 && numRows>0)
-//			//if(firstRow>-1)			
-//			if(numRows>0)
-//				/*
-//				sql2 ="SELECT VARNAME, chr, pos, refnuc, var1nuc from " +
-//					"( SELECT VARNAME, chr, pos, refnuc, var1nuc, ROWNUM r FROM " +
-//					" ( SELECT VARNAME, chr, pos, refnuc, var1nuc  FROM VIEW_SNP_ALLVARS  where  chr="
-//					+ chromosome + " and pos between " + startPos + " and " + endPos + " order by VARNAME, chr, pos ) WHERE ROWNUM <= " + ( firstRow + numRows - 1)
-//					+ ") WHERE r >= " + firstRow;
-//					*/
-//				sql2 = "SELECT VARNAME, chr, pos, refnuc, var1nuc  FROM VIEW_SNP_ALLVARS  where " //+ onlymismatchsql 
-//						+ " chr="
-//						+ chromosome + " and pos between " + (startPos-1) + " and " + (endPos+1) + 
-//						//" and varname in ("  + topVarieties.toString().replace("(","\\(").replace(")", "\\)").replace("\"","\\\"")
-//						" and varname in ("  + topVarieties.toString().replace("\"","\\\"")
-//						+  ") order by VARNAME, chr, pos" ;				
-//			else 
-//			{
-//				sql2 = "select VARNAME, CHR, POS, REFNUC, VAR1NUC from VIEW_SNP_ALLVARS where " // + onlymismatchsql
-//						+ " chr=" + chromosome + " and pos between " +
-//				(startPos -1) + " and " + (endPos + 1) + " order by VARNAME, CHR, POS" ;
-//			}
-						
-			
-			
-			//List<ViewSnpAllvarsId> snpslist = snpallvarsService.executeSQL(sql2);
-			
-			
-			
-			//System.out.println(sql2);
-			//System.out.println(snpslist.size() + " ViewSnpAllvarsId");
 
 			log.debug( "snpslist Results: " + snpslist.size() ); 
 			
 			List<SnpsAllvars> list = new java.util.ArrayList<SnpsAllvars>();
 			list.addAll(snpslist);
 			return list;
+	}
+	*/
+	
+	
+
+
+
+	public List<SnpsAllvars> getSNPinSetVarieties(Set setvarIds, Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows, boolean fetchMismatchOnly) {
+		// TODO Auto-generated method stub
+
+		if(startPos<0)  startPos=0;
+	
+		
+		if(setvarIds==null || setvarIds.isEmpty()) {
+			if(limitVarIds!=null && !limitVarIds.isEmpty())
+				setvarIds=limitVarIds;
 		}
-		catch (RuntimeException re) {
-				log.error("getSNPinAllVarieties failed:", re);
-				throw re;
+		
+		// if first row=1, reset variety-mismatch sort order,  
+		if(firstRow==1 ) {
+			listSNPAllVarsMismatches=countSNPMismatchesInSetVarieties(setvarIds, startPos,  endPos,  chromosome, true);
+			
+			mapOrder2Variety = new java.util.HashMap<Integer,BigDecimal>();
+			mapVariety2Order = new java.util.HashMap<BigDecimal,Integer>();
+			mapVariety2Mismatch = new java.util.HashMap<BigDecimal,Integer>();		
+			
 		}
 
+		// if no SNP result, return empty
+		if(listSNPAllVarsMismatches.size()==0) {
+			snpsposlist = new java.util.ArrayList();
+			return new java.util.ArrayList();
+		}
+		
+		StringBuffer topVarieties = new StringBuffer();
+		
+		long lastRow = firstRow + numRows - 1;  // 1-indexed
+		if(listSNPAllVarsMismatches.size() >  lastRow)
+		{
+		} else
+			lastRow = listSNPAllVarsMismatches.size();
+		
+		if(numRows==0)  lastRow = listSNPAllVarsMismatches.size();
+		
+
+		Set<BigDecimal> varsMismatch = new HashSet();
+		
+		// generate variety listing order
+		for(long iVariety= firstRow-1;  iVariety<lastRow;  iVariety++ ) {
+			
+			SnpsAllvarsRefMismatch varmismatch = (SnpsAllvarsRefMismatch)listSNPAllVarsMismatches.get((int)iVariety);
+			
+			mapOrder2Variety.put( Integer.valueOf((int)iVariety),  varmismatch.getVar()  );
+			mapVariety2Order.put( varmismatch.getVar(), Integer.valueOf((int)iVariety)   );
+			mapVariety2Mismatch.put( varmismatch.getVar(), varmismatch.getMismatch().intValue()  );
+			varsMismatch.add(  varmismatch.getVar() );
+		}
+		
+		if(numRows==0)  varsMismatch=null;
+		
+		
+		 if(isCore) {
+				snpcoreallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpcoreallvarsposService, "MvCoreSnpsDAO") ; 
+				snpsposlist = snpcoreallvarsposService.getSNPs(chromosome, startPos, endPos, null );
+			 
+		 }
+		 else {
+			snpallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpallvarsposService, "SnpsAllvarsPosDAO") ; 
+			snpsposlist = snpallvarsposService.getSNPs(chromosome, startPos, endPos , null);
+		 }
+			if(snpsposlist==null) throw new RuntimeException("snpsposlist==null");
+
+			snpallvarsService = (SnpsAllvarsDAO)AppContext.checkBean(snpallvarsService, "VSnpAllvarsMinDAO") ; 
+			
+			Set<SnpsAllvars> snpslist; 
+			
+			if(fetchMismatchOnly)
+				//snpslist = snpallvarsService.findVSnpAllvarsByVarsChrPosBetweenRefmismatch( Integer.valueOf(chromosome) , BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), varsMismatch, isCore); 
+				snpslist = snpallvarsService.findVSnpAllvarsByVarsChrPosBetweenRefmismatch( Integer.valueOf(chromosome) , BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), firstRow, lastRow+1, isCore);
+			else
+				snpslist = snpallvarsService.findVSnpAllvarsByVarsChrPosBetween( Integer.valueOf(chromosome) , BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), varsMismatch, isCore); 
+			
+
+			log.debug( "snpslist Results: " + snpslist.size() ); 
+			
+			List<SnpsAllvars> list = new java.util.ArrayList<SnpsAllvars>();
+			list.addAll(snpslist);
+			return list;
+	
+
 	}
-	
-	
-	
+	/*
 	public List<SnpsAllvars> getSNPinAllVarietiesPivot(Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows) {
 		// TODO Auto-generated method stub
 
@@ -641,6 +742,7 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 		}
 
 	}
+	*/
 	
 	/**
 	 * Get the SNP alleles for varieties
@@ -652,12 +754,16 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	 * querymode	what alleles to query, allowed values
 	 * 				enum snpQueryMode { SNPQUERY_VARIETIES		alleles between the two varieties
 	 * 								,  SNPQUERY_REFERENCE	allele with the reference
-	 * 								, SNPQUERY_ALLREFPOS 	all snp positions in the reference
+	 * 								//, SNPQUERY_ALLREFPOS 	all snp positions in the reference
 	 * 	
 	 */
 	@Override
-	public List<Snps2Vars> getSNPinVarieties(String var1, String var2,
-			 Integer startPos, Integer endPos, String chromosome, snpQueryMode querymode) {
+	public List<Snps2Vars> getSNPinVarieties(String var1, String var2, Integer startPos, Integer endPos, String chromosome, snpQueryMode querymode, boolean isCore) {
+		return getSNPinVarieties(var1, var2, startPos, endPos, chromosome,  querymode,  isCore, null) ;
+	}
+	
+	
+	private List<Snps2Vars> getSNPinVarieties(String var1, String var2, Integer startPos, Integer endPos, String chromosome, snpQueryMode querymode, boolean isCore, Set snpposlist ) {
 		// TODO Auto-generated method stub
 
 		//var1 = var1.split("::")[0].trim();
@@ -710,15 +816,24 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 			BigDecimal var1Id = mapVarname2Variety.get(var1.toUpperCase()).getVarietyId();
 			BigDecimal var2Id = mapVarname2Variety.get(var2.toUpperCase()).getVarietyId();
 
-			if(querymode==snpQueryMode.SNPQUERY_VARIETIES) {
-				snpslist = snp2linesService.findVSnp2varsByVarsChrPosBetweenMismatch(Integer.valueOf(chromosome), BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), var1Id, var2Id);
-			}
-			else if(querymode== snpQueryMode.SNPQUERY_REFERENCE) {
-				snpslist = snp2linesService.findVSnp2varsByVarsChrPosBetweenAll(Integer.valueOf(chromosome), BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), var1Id, var2Id);
-			}
 			
+			if(snpposlist!=null && !snpposlist.isEmpty()) {
+				if(querymode==snpQueryMode.SNPQUERY_VARIETIES) {
+					snpslist = snp2linesService.findVSnp2varsByVarsChrPosInMismatch(Integer.valueOf(chromosome), snpposlist, var1Id, var2Id, isCore);
+				}
+				else if(querymode== snpQueryMode.SNPQUERY_ALLREFPOS) { //SNPQUERY_REFERENCE) {
+					snpslist = snp2linesService.findVSnp2varsByVarsChrPosInAll(Integer.valueOf(chromosome), snpposlist, var1Id, var2Id, isCore);
+				}
+			} else {
+				if(querymode==snpQueryMode.SNPQUERY_VARIETIES) {
+					snpslist = snp2linesService.findVSnp2varsByVarsChrPosBetweenMismatch(Integer.valueOf(chromosome), BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), var1Id, var2Id, isCore);
+				}
+				else if(querymode== snpQueryMode.SNPQUERY_ALLREFPOS) { //SNPQUERY_REFERENCE) {
+					snpslist = snp2linesService.findVSnp2varsByVarsChrPosBetweenAll(Integer.valueOf(chromosome), BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), var1Id, var2Id, isCore);
+				}
+			}
 
-			log.debug( "Results: " + snpslist.size() ); 
+			System.out.println( "Results: " + snpslist.size() ); 
 			
 			List list = new ArrayList();
 			list.addAll(snpslist);
@@ -745,16 +860,20 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	@Override
 	public List<Snps2Vars> getSNPinVarieties(String var1, String var2, String genename, Integer plusminusBp, snpQueryMode querymode) {
 		// TODO Auto-generated method stub
-		
 		Gene gene = getGeneFromName( genename );
 		log.debug(gene.getUniquename() + " " + gene.getChr() + " " + gene.getFmin() + " " + gene.getFmax());
 		return getSNPinVarieties(var1, var2,  gene.getFmin()  , gene.getFmax(), 
-				gene.getChr().toString(), querymode);
-		
-
-		
+				gene.getChr().toString(), querymode, AppContext.isCore() , null);
 	}
 
+	@Override
+	public List getSNPinVarieties(String var1, String var2, Set snpposlist, String chr, snpQueryMode mode, boolean isCore) {
+		// TODO Auto-generated method stub
+		return getSNPinVarieties(var1, var2, null,null, chr, mode, isCore , snpposlist);
+	}
+	
+	
+	
 	@Override
 	public List<SnpsAllvars> getSNPinAllVarieties(String genename, Integer plusminusBp) {
 		// TODO Auto-generated method stub
@@ -762,9 +881,42 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 		Gene gene = getGeneFromName( genename );
 		log.debug(gene.getUniquename() + " " + gene.getChr() + " " + gene.getFmin() + " " + gene.getFmax());
 		
-		return getSNPinAllVarieties(gene.getFmin() , gene.getFmax(), 
-				gene.getChr().toString());
+		return getSNPinAllVarieties(gene.getFmin() , gene.getFmax(), gene.getChr().toString());
 		
+	}
+	
+	
+	/*
+	@Override
+	public List<Snps2Vars> getSNPinVarieties(String var1, String var2,
+			Integer startPos, Integer endPos, String chromosome,
+			snpQueryMode querymode, boolean isCore) {
+		
+		// TODO Auto-generated method stub
+		return null;
+	}
+	 */
+
+
+
+
+
+
+	@Override
+	public void limitVarieties(Set varieties) {
+		if(varieties!=null)
+		{
+			Set setVarid=new HashSet();
+			Iterator<Variety> itVar=varieties.iterator();
+			while(itVar.hasNext())
+			{
+				Variety var = itVar.next();
+				
+				if(var!=null) setVarid.add(var.getVarietyId());
+			}
+			limitVarIds=setVarid;
+		}
+		else limitVarIds=null;
 	}
 	
 	
@@ -851,21 +1003,26 @@ within a subpopulation group
 	 
 	
 	
-public String constructPhylotree(String scale, String chr, int start, int end) {
-	return constructPhylotreeTopN(scale, chr, start, end, -1);
+public String[] constructPhylotree(String scale, String chr, int start, int end, String requestid) {
+	return constructPhylotreeTopN(scale, chr, start, end, -1, requestid);
 }	
 
 
-public String constructPhylotreeTopN(String scale, String chr, int start, int end, int topN) {
+public String[] constructPhylotreeTopN(String scale, String chr, int start, int end, int topN,  String requestid) {
 		
-		snpcount2linesService = (Snps2VarsCountMismatchDAO)AppContext.checkBean(snpcount2linesService, "Snps2VarsCountMismatchDAO");
+		//snpcount2linesService = (Snps2VarsCountMismatchDAO)AppContext.checkBean(snpcount2linesService, "Snps2VarsCountMismatchDAO");
+		snpcount2linesService = (Snps2VarsCountMismatchDAO)AppContext.checkBean(snpcount2linesService, "SnpsString2VarsCountMismatchDAO");
 		
 		List<Snps2VarsCountmismatch>  mismatches = null;
 		
 		AppContext.startTimer();
 		
 		if(topN>0) {
-			mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topN);
+			
+			if(limitVarIds!=null && !limitVarIds.isEmpty())
+				mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topN, limitVarIds);
+			else	
+				mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topN);
 			
 			System.out.println(mismatches.size() + " mismatch pairs");
 			
@@ -883,11 +1040,35 @@ public String constructPhylotreeTopN(String scale, String chr, int start, int en
 			
 		}
 		else {
-			mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end));
+			if(limitVarIds!=null && !limitVarIds.isEmpty())
+				mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), limitVarIds);
+			else
+				mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end));
+			
+			
+			
 			AppContext.resetTimer(" all distance calc");
 		}
 		
-		int snps = getSnpsposlist().size();
+		int snps = -1;
+		//List snps = null;
+		snpstringcoreallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpstringcoreallvarsposService, "SnpcoreRefposindexDAO") ; 
+		if(isCore) {
+			//snpcoreallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpcoreallvarsposService, "MvCoreSnpsDAO") ; 
+			//snps = snpcoreallvarsposService.getSNPs(chr, start, end, null ).size();
+			
+			snps = snpstringcoreallvarsposService.getSNPs(chr, start, end,  SnpcoreRefposindexDAO.TYPE_3KCORESNP  ).size();
+			
+			 
+		 }
+		 else {
+			snps = snpstringcoreallvarsposService.getSNPs(chr, start, end,  SnpcoreRefposindexDAO.TYPE_3KALLSNP   ).size();
+			 //snpallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpallvarsposService, "SnpsAllvarsPosDAO") ; 
+			 // snps = snpallvarsposService.getSNPs(chr, start, end ,null ).size();
+		 }
+		 
+		 
+		 if(snps==0) return new String[] {"", "0","0"};
 		
 		//germplasms
 		System.out.println(mismatches.size() + " mismatch pairs");
@@ -933,12 +1114,16 @@ public String constructPhylotreeTopN(String scale, String chr, int start, int en
 		while(itdist2.hasNext())
 		{
 			Snps2VarsCountmismatch dist3k = itdist2.next();
-			double dist =   dist3k.getMismatch().intValue()*distscale /( snps -  dist3k.getMismatch().intValue() );
+			double dist =0 ;
+			if(snps > dist3k.getMismatch().intValue())
+				dist =   dist3k.getMismatch().intValue()*distscale /( snps -  dist3k.getMismatch().intValue() );
+			else
+				dist = AppContext.getMaxPhylodistance();
 			
 			try {
 				
 				if(  mapName2Row.get(dist3k.getVar1()).equals(  mapName2Row.get(dist3k.getVar2()) ) ) {
-					System.out.println( mapName2Row.get(dist3k.getVar1()) + ": " +  mapVarid2Variety.get(dist3k.getVar1()) + "\t" +  mapName2Row.get(dist3k.getVar2()) + ": " +    mapVarid2Variety.get(dist3k.getVar2())  + "  -- " + dist);
+					//System.out.println( mapName2Row.get(dist3k.getVar1()) + ": " +  mapVarid2Variety.get(dist3k.getVar1()) + "\t" +  mapName2Row.get(dist3k.getVar2()) + ": " +    mapVarid2Variety.get(dist3k.getVar2())  + "  -- " + dist);
 					dist = 0.0;
 				}
 				
@@ -970,8 +1155,9 @@ public String constructPhylotreeTopN(String scale, String chr, int start, int en
 			String newick = tree.getNewickString(false, true);
 			
 			
+			Map<BigDecimal,Variety> mapId2Variety = varietyfacade.getMapId2Variety();
 			
-			System.out.println(newick);
+			//System.out.println(newick);
 			Iterator<BigDecimal> itgerm2 = setWithMismatch.iterator();
 			while(itgerm2.hasNext()) {
 				BigDecimal c = itgerm2.next();
@@ -982,12 +1168,23 @@ public String constructPhylotreeTopN(String scale, String chr, int start, int en
 				//String subpop = mapVarname2IRISId.get(varname)[2];
 				//if(subpop == null) subpop = ""; 
 				
-				Variety var = mapVarid2Variety.get(c);
 				
+				//Variety var = mapVarid2Variety.get(c);
+				//String subpop = "";
+				//if( var.getSubpopulation()!=null) subpop = "/" +  var.getSubpopulation();
+				//newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0] + "/" + var.getIrisId() + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
+
+			
+				Variety var = mapId2Variety.get(c);
 				String subpop = "";
-				if( var.getSubpopulation()!=null) subpop = "/" +  var.getSubpopulation();
+				if( var.getSubpopulation()!=null) subpop =  var.getSubpopulation(); //.replace("/","_").replace(", ","_");
+				String irisid = "";
+				if( var.getIrisId()!=null) irisid=var.getIrisId();
+				//newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0] + "/" + irisid + "/" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
+				newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0].replace(", ","_") + "|" + irisid + "|" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
 				
-				newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0] + "/" + var.getIrisId() + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
+			
+			
 			}
 			
 			
@@ -996,7 +1193,8 @@ public String constructPhylotreeTopN(String scale, String chr, int start, int en
 			
 			
 			//System.out.println(newick);
-			return newick;
+			return new String[] {newick, Integer.toString(symdistmatrix.getSize()), Integer.toString( mismatches.size()) };
+			
 			
 			
 		} catch(Exception ex)
@@ -1009,8 +1207,203 @@ public String constructPhylotreeTopN(String scale, String chr, int start, int en
 		
 	}
 	
+
+public String[] constructPhylotreeTopNOrig(String scale, String chr, int start, int end, int topN) {
 	
-	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String newick)
+	snpcount2linesService = (Snps2VarsCountMismatchDAO)AppContext.checkBean(snpcount2linesService, "Snps2VarsCountMismatchDAO");
+	
+	List<Snps2VarsCountmismatch>  mismatches = null;
+	
+	AppContext.startTimer();
+	
+	if(topN>0) {
+		
+		if(limitVarIds!=null && !limitVarIds.isEmpty())
+			mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topN, limitVarIds);
+		else	
+			mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topN);
+		
+		System.out.println(mismatches.size() + " mismatch pairs");
+		
+		// get varieties in topN
+		java.util.Iterator<Snps2VarsCountmismatch>  itdist = mismatches.iterator();		
+		Set topVars =new java.util.HashSet();
+		while(itdist.hasNext())
+		{
+			Snps2VarsCountmismatch dist3k = itdist.next();
+			topVars.add( dist3k.getVar1());
+			topVars.add( dist3k.getVar2());
+		}
+		mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topVars);
+		AppContext.resetTimer(" topN distance calc");
+		
+	}
+	else {
+		if(limitVarIds!=null && !limitVarIds.isEmpty())
+			mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), limitVarIds);
+		else
+			mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end));
+		
+		
+		
+		AppContext.resetTimer(" all distance calc");
+	}
+	
+	int snps = -1;
+	 if(isCore) {
+		snpcoreallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpcoreallvarsposService, "MvCoreSnpsDAO") ; 
+		snps = snpcoreallvarsposService.getSNPs(chr, start, end, null ).size();
+		 
+	 }
+	 else {
+		snpallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpallvarsposService, "SnpsAllvarsPosDAO") ; 
+		snps = snpallvarsposService.getSNPs(chr, start, end, null ).size();
+	 }
+	 
+	 if(snps==0) return new String[] {"", "0","0"};
+	
+	//germplasms
+	System.out.println(mismatches.size() + " mismatch pairs");
+	
+	java.util.Map<BigDecimal, Integer> mapName2Row = new java.util.HashMap<BigDecimal, Integer>();
+	
+
+	Set<BigDecimal> setWithMismatch = new java.util.TreeSet();
+	
+	//java.util.Map<String, BigDecimal> mapPairMismatch = new java.util.HashMap<String, BigDecimal>();
+	java.util.Iterator<Snps2VarsCountmismatch>  itdist = mismatches.iterator();		
+	while(itdist.hasNext())
+	{
+		
+		Snps2VarsCountmismatch dist3k = itdist.next();
+		//mapPairMismatch.put( dist3k.getVar1() + ":" + dist3k.getVar2(), dist3k.getMismatch());
+		setWithMismatch.add( dist3k.getVar1());
+		setWithMismatch.add( dist3k.getVar2());
+	}
+	
+	
+	BasicSymmetricalDistanceMatrix symdistmatrix = new BasicSymmetricalDistanceMatrix( setWithMismatch.size() );
+	
+	System.out.println( setWithMismatch.size() + " unique names with mismatch");
+	
+	varietyfacade = (VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade");
+	Map<BigDecimal,Variety> mapVarid2Variety = varietyfacade.getMapId2Variety();
+	
+	int i=0;
+	Iterator<BigDecimal> itgerm = setWithMismatch.iterator();
+	while(itgerm.hasNext()) {
+		BigDecimal varid = itgerm.next();
+		mapName2Row.put(varid , i);
+		symdistmatrix.setIdentifier( i, "varid_" + varid );
+		i++;
+	}		
+
+	System.out.println("symdistmatrix done");
+	
+	double distscale = 1.0; 
+	
+	java.util.Iterator<Snps2VarsCountmismatch>  itdist2 = mismatches.iterator();		
+	while(itdist2.hasNext())
+	{
+		Snps2VarsCountmismatch dist3k = itdist2.next();
+		double dist =0 ;
+		if(snps > dist3k.getMismatch().intValue())
+			dist =   dist3k.getMismatch().intValue()*distscale /( snps -  dist3k.getMismatch().intValue() );
+		else
+			dist = AppContext.getMaxPhylodistance();
+		
+		try {
+			
+			if(  mapName2Row.get(dist3k.getVar1()).equals(  mapName2Row.get(dist3k.getVar2()) ) ) {
+				System.out.println( mapName2Row.get(dist3k.getVar1()) + ": " +  mapVarid2Variety.get(dist3k.getVar1()) + "\t" +  mapName2Row.get(dist3k.getVar2()) + ": " +    mapVarid2Variety.get(dist3k.getVar2())  + "  -- " + dist);
+				dist = 0.0;
+			}
+			
+			symdistmatrix.setValue( mapName2Row.get(dist3k.getVar1()) , mapName2Row.get(dist3k.getVar2()) , dist );
+			symdistmatrix.setValue( mapName2Row.get(dist3k.getVar2()) , mapName2Row.get(dist3k.getVar1()),  dist );
+			
+		} catch(Exception ex) {
+			
+			System.out.println( "NULL EXCEPTION:\t" + dist + "\t" + dist3k.getVar1() + "\t" + mapName2Row.get(dist3k.getVar1()) + "\t" + dist3k.getVar2() + "\t" +  mapName2Row.get(dist3k.getVar2()) + "\t" + dist );
+		
+		}
+	}
+	
+	
+	
+	System.out.print(symdistmatrix.getSize() + " symdistmatrix ready");
+	
+	try {
+		
+		TreeConstructor tree = new  TreeConstructor(symdistmatrix,
+			org.biojava3.phylo.TreeType.NJ ,
+			org.biojava3.phylo.TreeConstructionAlgorithm.PID ,
+		//	null);
+			new org.biojava3.phylo.ProgessListenerStub());
+			tree.process();
+
+			System.out.println("process done");
+		//tree.getN
+		String newick = tree.getNewickString(false, true);
+		
+		
+		Map<BigDecimal,Variety> mapId2Variety = varietyfacade.getMapId2Variety();
+		
+		//System.out.println(newick);
+		Iterator<BigDecimal> itgerm2 = setWithMismatch.iterator();
+		while(itgerm2.hasNext()) {
+			BigDecimal c = itgerm2.next();
+			//String newc = c.replace(' ', '_');
+			// replace iris_id to varnames
+			//String varname  = mapIRISId2Varname.get(c);
+			//newick = newick.replace(c,  mapIRISId2Varname.get(c).replace("-", "_").replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "")   );
+			//String subpop = mapVarname2IRISId.get(varname)[2];
+			//if(subpop == null) subpop = ""; 
+			
+			
+			//Variety var = mapVarid2Variety.get(c);
+			//String subpop = "";
+			//if( var.getSubpopulation()!=null) subpop = "/" +  var.getSubpopulation();
+			//newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0] + "/" + var.getIrisId() + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
+
+		
+			Variety var = mapId2Variety.get(c);
+			String subpop = "";
+			if( var.getSubpopulation()!=null) subpop =  var.getSubpopulation(); //.replace("/","_").replace(", ","_");
+			String irisid = "";
+			if( var.getIrisId()!=null) irisid=var.getIrisId();
+			//newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0] + "/" + irisid + "/" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
+			newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0].replace(", ","_") + "|" + irisid + "|" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
+			
+		
+		
+		}
+		
+		
+		System.out.println(newick);
+		
+		
+		
+		//System.out.println(newick);
+		return new String[] {newick, Integer.toString(symdistmatrix.getSize()), Integer.toString( mismatches.size()) };
+		
+		
+		
+	} catch(Exception ex)
+	{
+		ex.printStackTrace();
+	}
+	
+	return null;
+            //   NJTreeProgressListener _treeProgessListener)
+	
+}
+
+	//@Override
+	//public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String newick)
+	
+	@Override
+	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile)
 	{
 
 		//org.forester.application.phyloxml_converter
@@ -1018,57 +1411,82 @@ public String constructPhylotreeTopN(String scale, String chr, int start, int en
 		    
 		    //Map<String,Integer> mapVarietyName2PhyloOrder = new HashMap<String,Integer>(); 
 		    
-		    try {
 
-				String tmpfile = AppContext.getTempDir() + AppContext.createTempFilename() + ".newick";
-				PrintWriter out = new PrintWriter(tmpfile);
-				out.print(newick);
-				out.close();
+
+				//String tmpfile = AppContext.getTempDir() + AppContext.createTempFilename() + ".newick";
+				//PrintWriter out = new PrintWriter(tmpfile);
+				//out.print(newick);
+				//out.close();
 				
 		        // Reading-in of (a) tree(s) from a file.
-		        File treefile = new File( tmpfile );
+		    	String treefilename = AppContext.getTempDir() + "/" + tmpfile + "newick";
+		        File treefile = new File( treefilename );
 		        PhylogenyParser parser = null;
 		        try {
 		            parser = ParserUtils.createParserDependingOnFileType( treefile, true );
-		        }
-		        catch ( final IOException e ) {
-		            e.printStackTrace();
-		        }
-		        Phylogeny[] phys = null;
-		        try {
+		        	//parser = ParserUtils.createParserDependingOnSuffix( treefilename, false );
+
+		            Phylogeny[] phys = null;
+
 		            phys = PhylogenyMethods.readPhylogenies( parser, treefile );
+
+		        
+			        System.out.println("Newick postorder listing:");
+			        Map<String,Variety> varname2var = varietyfacade.getMapVarname2Variety();
+			        //Map<String,Variety> irisid2var = varietyfacade.getGermplasmByIrisId(name)
+			        Map<String,Variety> irisid2var = varietyfacade.getIrisId2Variety();
+			     
+			        int leafcount = 0;
+			        for(int iphy=0; iphy<phys.length; iphy++)
+			        {
+				        for(PhylogenyNodeIterator it = phys[iphy].iteratorPostorder(); it.hasNext(); ) {
+				        	PhylogenyNode node = it.next();
+				        	if(node.isExternal()) {
+				        		//System.out.println( node.getName() );
+				        		//mapVarietyName2PhyloOrder.put(node.getName(), leafcount);
+				        		//mapVariety2PhyloOrder.put(  varname2var.get(node.getName().split("/")[0] ).getVarietyId() , leafcount);
+				        		
+				        		String[] nodenames = node.getName().split("\\|");
+				        		if(nodenames.length!=3) System.out.println("Invalid nodename " +  node.getName());
+				        		
+				        		if(nodenames.length>1 &&  !nodenames[1].isEmpty() ){
+				        			Variety varNode =   irisid2var.get(nodenames[1].replace("_"," ").toUpperCase() );  //varietyfacade.getGermplasmByIrisId(nodenames[1].replace("_"," "));
+				        			if(varNode!=null) {
+				        				mapVariety2PhyloOrder.put( varNode.getVarietyId() , leafcount);
+				        				leafcount++; 
+				        			} else
+				        			{
+				        				System.out.println("cant resolve irisid " + nodenames[1]);
+				        			}				        			
+				        		}
+				        		else if(!nodenames[0].isEmpty())
+				        		{
+				        			Variety varNode =  varname2var.get(nodenames[0].replace("_"," ").replace("//",""));
+				        			if(varNode!=null) {
+				        				mapVariety2PhyloOrder.put(  varNode.getVarietyId() , leafcount);
+				        				leafcount++;
+				        			} else
+				        			{
+				        				System.out.println("cant resolve variety name " + nodenames[0] );
+				        			}
+				        		}
+				        	}
+				        }
+			        }
+			        
+			        // Display of the tree(s) with Archaeopteryx.													
+			       // Archaeopteryx.createApplication( phys );
+	
 		        }
+		        
 		        catch ( final IOException e ) {
 		            e.printStackTrace();
+		            System.out.println(e.getMessage());
+		            throw new RuntimeException("newick parse error");
 		        }
-		        
-		        System.out.println("Newick postorder listing:");
-		        Map<String,Variety> varname2var = varietyfacade.getMapVarname2Variety();
-		     
-		        int leafcount = 0;
-		        for(int iphy=0; iphy<phys.length; iphy++)
-		        {
-			        for(PhylogenyNodeIterator it = phys[iphy].iteratorPostorder(); it.hasNext(); ) {
-			        	PhylogenyNode node = it.next();
-			        	if(node.isExternal()) {
-			        		//System.out.println( node.getName() );
-			        		//mapVarietyName2PhyloOrder.put(node.getName(), leafcount);
-			        		mapVariety2PhyloOrder.put(  varname2var.get(node.getName().split("/")[0] ).getVarietyId() , leafcount);
-			        		leafcount++;
-			        	}
-			        }
-		        }
-		        
-		        // Display of the tree(s) with Archaeopteryx.													
-		       // Archaeopteryx.createApplication( phys );
-		        
-			} catch(IOException e ) {
-				e.printStackTrace();
-			}
-			
 		    
 		    
-		    
+		    System.out.println( "mapVariety2PhyloOrder.size()=" + mapVariety2PhyloOrder.size());
 		    
 			return mapVariety2PhyloOrder;
 
@@ -1111,6 +1529,514 @@ public String constructPhylotreeTopN(String scale, String chr, int start, int en
 		return mapVariety2PhyloOrder;
 	}
 
+
+	@Override
+	public Set getVarietiesForSubpopulation(String subpopulation) {
+		// TODO Auto-generated method stub
+		return varietyfacade.getGermplasmBySubpopulation(subpopulation);
+	}
+
+	@Override
+	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start, Integer end, Integer chr, int firstRow, int maxRows) {
+		return getSNPStringInAllVarieties( start, end, chr, false, firstRow, maxRows);
+	}
+	
+	/*
+	@Override
+	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start, Integer end, Integer chr, boolean exactMismatch, int firstRow, int maxRows) {
+		return getSNPStringInAllVarieties( start,  end,  chr,  exactMismatch, null, firstRow, maxRows);
+	}
+*/
+	
+	@Override
+	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start, Integer end, Integer chr, boolean exactMismatch,  int firstRow, int maxRows) {
+		
+		//snpstringcoreallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpstringcoreallvarsposService, "SnpcoreRefposindexDAO") ; 
+		//snpsposlist = snpstringcoreallvarsposService.getSNPs(chr.toString(), start, end );
+		
+		//snpstringAllvarsDao = (SnpsStringAllvarsDAO)AppContext.checkBean(snpstringAllvarsDao, "SnpsStringAllvarsDAO") ;
+		//return snpstringAllvarsDao.getSNPsString(chr, new BigDecimal(start), new BigDecimal(end), firstRow, maxRows);
+		
+		
+		
+		//SnpcoreRefposindex startpos =  (SnpcoreRefposindex)snpsposlist.get(0);
+		//SnpcoreRefposindex endpos =  (SnpcoreRefposindex)snpsposlist.get( snpsposlist.size()-1 );
+		
+//		snpstringallelesfileDao = (SnpsStringAllvarsDAO)AppContext.checkBean(snpstringallelesfileDao, "SnpstringAllelesFileDAO") ;
+//		return snpstringallelesfileDao.getSNPsString(chr, new BigDecimal(start), new BigDecimal(end), firstRow, maxRows);
+		
+		listSNPAllVarsMismatches =  getSNPsString(chr, new BigDecimal(start), new BigDecimal(end), exactMismatch, firstRow, maxRows );
+		return listSNPAllVarsMismatches;
+		//return null;
+	}
+	
+
+
+	private List<SnpsStringAllvars> getSNPsString(Integer chr, BigDecimal start,
+			BigDecimal end, boolean exactMismatch, int firstRow, int maxRows) {
+		return getSNPsString(chr,  start,  end,   null,  exactMismatch, firstRow,  maxRows); 
+	}
+	
+	private List<SnpsStringAllvars> getSNPsString(Integer chr, BigDecimal start,
+			BigDecimal end, Set setPositions, boolean exactMismatch, int firstRow, int maxRows) {
+		// TODO Auto-generated method stub
+
+		List listResult = new ArrayList();
+		
+		
+		// get snp positions/index
+		snpstringcoreallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpstringcoreallvarsposService, "SnpcoreRefposindexDAO") ;
+		
+		
+		
+		List listpos = null;
+		if(setPositions!=null && !setPositions.isEmpty()) {
+			listpos = new ArrayList();
+			listpos.addAll(new TreeSet(setPositions));
+
+			if(this.isCore)
+				snpsposlist  = snpstringcoreallvarsposService.getSNPsInChromosome(chr.toString(), listpos, SnpcoreRefposindexDAO.TYPE_3KCORESNP);
+			else
+				snpsposlist  = snpstringcoreallvarsposService.getSNPsInChromosome(chr.toString(),  listpos, SnpcoreRefposindexDAO.TYPE_3KALLSNP);
+			
+			if(snpsposlist.size()!=listpos.size())
+				System.out.println("snpsposlist.size()!=listpos.size():" + snpsposlist.size()+ "!=" + listpos.size());
+				
+
+		}
+		else {
+			if(this.isCore)
+				snpsposlist  = snpstringcoreallvarsposService.getSNPs(chr.toString(), start.intValue(),  end.intValue(), SnpcoreRefposindexDAO.TYPE_3KCORESNP,   firstRow, maxRows);
+			else
+				snpsposlist  = snpstringcoreallvarsposService.getSNPs(chr.toString(), start.intValue(), end.intValue(),   SnpcoreRefposindexDAO.TYPE_3KALLSNP, firstRow, maxRows );
+		}
+		
+		if(snpsposlist.isEmpty()) return listResult;
+		
+
+		// get allele column indices from start to end positions
+		VSnpRefposindex startpos =  (VSnpRefposindex)snpsposlist.get(0);
+		VSnpRefposindex endpos =  (VSnpRefposindex)snpsposlist.get( snpsposlist.size()-1 );
+
+		// if recount
+		String strRef=null;
+		Map<Integer,Map> mapMis2Vars = new TreeMap();
+		
+		int refLength=-1;
+		
+		System.out.println( snpsposlist.size() + " snpposlist");
+		
+		
+		if( exactMismatch ) {
+			
+			int indxs[] = new int[snpsposlist.size()];
+			int indxscount = 0;
+			
+			Iterator itSnppos =snpsposlist.iterator();
+			StringBuffer buffRef = new StringBuffer();
+			
+			while(itSnppos.hasNext()) {
+				VSnpRefposindex snppos = (VSnpRefposindex)itSnppos.next(); 
+				buffRef.append( snppos.getRefnuc());
+				indxs[indxscount] =  snppos.getAlleleIndex().intValue();
+				indxscount++;
+			}
+			strRef = buffRef.toString();
+			refLength = strRef.length();
+			
+			
+			String filename="";
+			if(isCore)
+				filename = AppContext.getFlatfilesDir() +  "chr-" + chr + ".txt";
+			else
+				filename = AppContext.getFlatfilesDir() +  "varsorted_allelestring_chr" + chr + ".txt" ; //allsnp_chr-" + chr + ".txt";
+			
+			Map  mapVarid2Snpsstr = null;
+			
+			
+			
+			if(listpos!=null && !listpos.isEmpty()) {
+				if(this.limitVarIds!=null && !this.limitVarIds.isEmpty() ) {
+					System.out.println("using readSNPString1");
+					mapVarid2Snpsstr = readSNPString(limitVarIds, chr,  indxs , filename);
+				}
+				else {
+					System.out.println("using readSNPString2");
+					mapVarid2Snpsstr = readSNPString(chr,  indxs, filename);
+				}
+			}
+			else {
+				if(this.limitVarIds!=null && !this.limitVarIds.isEmpty() )
+				{System.out.println("using readSNPString3");
+					mapVarid2Snpsstr = readSNPString(limitVarIds, chr,  startpos.getAlleleIndex().intValue(), endpos.getAlleleIndex().intValue(), filename);
+				}
+				else {
+					System.out.println("using readSNPString4");
+					mapVarid2Snpsstr = readSNPString(chr,  startpos.getAlleleIndex().intValue(), endpos.getAlleleIndex().intValue(), filename);
+				}
+			}
+				
+				
+			Iterator<BigDecimal> itVar = mapVarid2Snpsstr.keySet().iterator();
+			while(itVar.hasNext()) {
+				BigDecimal var = itVar.next();
+				String snpstr = (String)mapVarid2Snpsstr.get(var);
+				
+				if( exactMismatch ) {
+					int misCount = 0;
+					for(int iStr=0; iStr<refLength; iStr++) {
+						char charatistr=snpstr.charAt(iStr);
+						if(charatistr!='0' && charatistr!='.'  && charatistr!='*' && strRef.charAt(iStr)!=charatistr) misCount++;
+					}
+					if(misCount>0) {
+						
+						Map mapVarId2Snpstr = mapMis2Vars.get(-misCount);
+						if(mapVarId2Snpstr==null) {
+							mapVarId2Snpstr = new TreeMap();
+							mapMis2Vars.put(-misCount,  mapVarId2Snpstr );
+						}
+						mapVarId2Snpstr.put( var,  new SnpsStringAllvarsImpl(var,Long.valueOf(chr), snpstr,  BigDecimal.valueOf(misCount) ));
+					}
+				}
+			}	
+			
+			Map mapVarid2Var = varietyfacade.getMapId2Variety();
+			
+			Iterator itMisNew = mapMis2Vars.keySet().iterator();
+			mapVariety2Order = new HashMap();
+			int ordercount = 0;
+			while(itMisNew.hasNext()) {
+				Map mapVarId2Snpstr = mapMis2Vars.get( itMisNew.next() );
+				
+				// sort var by subpop, then country, then name here
+				itVar = mapVarId2Snpstr.keySet().iterator();
+				Set sortedVarieties = new TreeSet(new VarSubpopCntrySorter());
+				while(itVar.hasNext()) {
+					BigDecimal varid = itVar.next();
+					sortedVarieties.add( mapVarid2Var.get(varid) );
+				}
+				
+				Iterator<Variety> itVariety = sortedVarieties.iterator();
+				while(itVariety.hasNext()) {
+					Variety varid = itVariety.next();
+					
+					listResult.add(  mapVarId2Snpstr.get(varid.getVarietyId()) );
+					mapVariety2Order.put(varid.getVarietyId() ,ordercount);
+					ordercount++;
+				}
+				
+				/*itVar = mapVarId2Snpstr.keySet().iterator();
+				while(itVar.hasNext()) {
+					BigDecimal varid = itVar.next();
+					
+					listResult.add(  mapVarId2Snpstr.get(varid) );
+					mapVariety2Order.put(varid ,ordercount);
+					ordercount++;
+				}
+				*/
+			}
+		}
+		
+//		else {
+//		
+//
+//			// use precounted mismatches
+//			refmismatchDAO = (SnpsAllvarsRefMismatchDAO)AppContext.checkBean(refmismatchDAO, "MismatchCountDAO") ; 
+//			// get varieties with >0 mismatches in 100kb segment
+//			List listmismatch = refmismatchDAO.countMismatches(chr.toString(), start.intValue(), end.intValue());
+//			Iterator<SnpsAllvarsRefMismatch> itMis = listmismatch.iterator();
+//			Map<BigDecimal,BigDecimal> mapVar2Mismatch = new HashMap();
+//			while(itMis.hasNext()) {
+//				SnpsAllvarsRefMismatch mismatch = itMis.next();
+//				mapVar2Mismatch.put(mismatch.getVar() , mismatch.getMismatch());
+//			}
+//			
+//			// get variety row index for varieties with mismatch
+//			// right now, varindex = varid
+//			
+//			// read SNPString for row indices, from startpos index to endpos index
+//			String filename="";
+//			if(isCore)
+//				filename = AppContext.getFlatfilesDir() +  "chr-" + chr + ".txt";
+//			else
+//				filename = AppContext.getFlatfilesDir() +  "allsnp_chr-" + chr + ".txt";
+//			Map  mapVarid2Snpsstr = readSNPString(mapVar2Mismatch.keySet(), chr,  startpos.getAlleleIndex().intValue(), endpos.getAlleleIndex().intValue(), filename );
+//			int ordercount=0;
+//			mapVariety2Order = new HashMap();
+//			itMis = listmismatch.iterator();
+//			while(itMis.hasNext()) {
+//				SnpsAllvarsRefMismatch mismatch = itMis.next();
+//				String snpstr = (String)mapVarid2Snpsstr.get(mismatch.getVar());
+//				
+//				/*
+//				if( exactMismatch ) {
+//					int misCount = 0;
+//					for(int iStr=0; iStr<refLength; iStr++) {
+//						if(strRef.charAt(iStr)==snpstr.charAt(iStr)) misCount++;
+//					}
+//					if(misCount>0) {
+//						
+//						Map mapVarId2Snpstr = mapMis2Vars.get(-misCount);
+//						if(mapVarId2Snpstr==null) {
+//							mapVarId2Snpstr = new TreeMap();
+//							mapMis2Vars.put(-misCount,  mapVarId2Snpstr );
+//						}
+//						mapVarId2Snpstr.put( mismatch.getVar(),  new SnpsStringAllvarsImpl(mismatch.getVar(), snpstr,  BigDecimal.valueOf(misCount) ));
+//					}
+//				}
+//				else
+//					*/
+//					
+//				listResult.add( new SnpsStringAllvarsImpl(mismatch.getVar(), Long.valueOf(chr), snpstr, mismatch.getMismatch() ) );
+//				
+//				mapVariety2Order.put(mismatch.getVar() ,ordercount);
+//				ordercount++;
+//
+//			}
+//		
+//		}
+//		
+		
+		
+
+		return listResult;
+		
+	}
+	
+	/**
+	 * Sorts variety by subpopulation, then country, then id
+	 * Used in Mismatch ordering for the same number of mismatch,
+	 * assuming variety from same subpopulation, then country will be closer relative than random 
+	 * @author lmansueto
+	 *
+	 */
+	class VarSubpopCntrySorter implements Comparator {
+		@Override
+		public int compare(Object o1, Object o2) {
+			// TODO Auto-generated method stub
+			Variety v1 =(Variety)o1;
+			Variety v2 =(Variety)o2;
+			if(v1.getSubpopulation()!=null && v2.getSubpopulation()!=null)
+				return v1.getSubpopulation().compareTo(v2.getSubpopulation());
+			if(v1.getCountry()!=null && v2.getCountry()!=null)
+				return v1.getCountry().compareTo(v2.getCountry());			
+			return v1.getVarietyId().compareTo(v2.getVarietyId()) ;
+		}
+		
+	}
+	
+	
+	public static Map readSNPString(int chr,  int startIdx,  int endIdx,  String filename) {
+		
+		/*
+		if(limitVarIds!=null && !limitVarIds.isEmpty()){
+			return readSNPString(limitVarIds,  chr,   startIdx,   endIdx, filename); 
+		}
+		*/
+		
+		Map mapVarid2Snps = new HashMap();
+		
+		//File file = new File( AppContext.getFlatfilesDir() + "chr-" + chr + ".txt");
+		File file = new File( filename);
+		try {
+		RandomAccessFile raf = new RandomAccessFile(file,"r");
+		
+		String firstline = raf.readLine();
+		System.out.println("File has " + firstline.length() + " alleles");
+		System.out.println("reading for 3000 rows/varieties from " +  startIdx + "-" + endIdx + " (" + (endIdx-startIdx+1) + ") cols/snps");
+		
+		long rowlength = firstline.length() + 1;
+		// return to start
+		raf.seek(0);
+		
+		byte readBuffer[] = new byte[endIdx-startIdx+1];
+
+		for(int varid=1; varid<=3000; varid++) {
+			raf.seek(  (varid-1)*rowlength + startIdx -1 );
+			raf.read( readBuffer );
+			mapVarid2Snps.put(BigDecimal.valueOf(varid) , new String(readBuffer));
+		}
+		
+		raf.close();
+		
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+		
+		return mapVarid2Snps;
+		
+		
+	}
+	
+	public static Map readSNPString(int chr,  int posIdxs[],  String filename) {
+		
+		/*
+		if(limitVarIds!=null && !limitVarIds.isEmpty()){
+			return readSNPString(limitVarIds,  chr,   startIdx,   endIdx, filename); 
+		}
+		*/
+		
+		Map mapVarid2Snps = new HashMap();
+		
+		//File file = new File( AppContext.getFlatfilesDir() + "chr-" + chr + ".txt");
+		File file = new File( filename);
+		try {
+		RandomAccessFile raf = new RandomAccessFile(file,"r");
+		
+		String firstline = raf.readLine();
+		System.out.println("File has " + firstline.length() + " alleles");
+		System.out.println("reading for 3000 rows/varieties for (" + posIdxs.length + ") cols/snps");
+		
+		long rowlength = firstline.length() + 1;
+		// return to start
+		raf.seek(0);
+		
+		byte readBuffer[] = new byte[1];
+
+		for(int varid=1; varid<=3000; varid++) {
+			StringBuffer readSNPBuffer = new StringBuffer();
+			for(int iIdx=0; iIdx<posIdxs.length; iIdx++) {
+				raf.seek(  (varid-1)*rowlength + posIdxs[iIdx]-1 );
+				raf.read( readBuffer );
+				readSNPBuffer.append( new String(readBuffer)); 
+			}
+			if(readSNPBuffer.length()!=posIdxs.length) {
+				System.out.println("readSNPBuffer.length()!=posIdxs.length:" + readSNPBuffer.length() +"!=" + posIdxs.length);
+			}
+			mapVarid2Snps.put(BigDecimal.valueOf(varid) , readSNPBuffer.toString() );
+		}
+		
+		raf.close();
+		
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+		
+		return mapVarid2Snps;
+		
+		
+	}
+	
+public static Map readSNPString(Set colVarids, int chr,  int posIdxs[],  String filename) {
+		
+		// order varids based on file ordering for 1pass/smooth disk read
+		Set orderedVarids = new TreeSet(colVarids);
+		
+		Map mapVarid2Snps = new HashMap();
+		
+		//File file = new File(AppContext.getFlatfilesDir() +  "chr-" + chr + ".txt");
+		File file = new File( filename);
+		try {
+		RandomAccessFile raf = new RandomAccessFile(file,"r");
+		
+		String firstline = raf.readLine();
+		System.out.println("File has " + firstline.length() + " alleles");
+		System.out.println("reading for " + colVarids.size() + " rows/varieties for (" + posIdxs.length + ") cols/snps");
+		
+		long rowlength = firstline.length() + 1;
+		// return to start
+		raf.seek(0);
+		
+		Iterator<BigDecimal> itVarid = orderedVarids.iterator();
+		
+		byte readBuffer[] = new byte[1];
+		while(itVarid.hasNext()) {
+			BigDecimal bdVarid = itVarid.next(); 
+			int varid = bdVarid.intValue();
+			StringBuffer readSNPBuffer = new StringBuffer();
+			for(int iIdx=0; iIdx<posIdxs.length; iIdx++) {
+				raf.seek(  (varid-1)*rowlength + posIdxs[iIdx]-1 );
+				raf.read( readBuffer );
+				readSNPBuffer.append( new String(readBuffer)); 
+			}
+			if(readSNPBuffer.length()!=posIdxs.length) {
+				System.out.println("readSNPBuffer.length()!=posIdxs.length:" + readSNPBuffer.length() +"!=" + posIdxs.length);
+			}
+			mapVarid2Snps.put(bdVarid , readSNPBuffer.toString() );
+		}
+			
+		raf.close();
+		
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+		
+		
+		return mapVarid2Snps;
+		
+	}
+
+
+	
+	public static Map readSNPString(Set colVarids, int chr,  int startIdx, int endIdx,  String filename) {
+		
+		// order varids based on file ordering for 1pass/smooth disk read
+		Set orderedVarids = new TreeSet(colVarids);
+		
+		Map mapVarid2Snps = new HashMap();
+		
+		//File file = new File(AppContext.getFlatfilesDir() +  "chr-" + chr + ".txt");
+		File file = new File( filename);
+		try {
+		RandomAccessFile raf = new RandomAccessFile(file,"r");
+		
+		String firstline = raf.readLine();
+		System.out.println("File has " + firstline.length() + " alleles");
+		System.out.println("reading for " + colVarids.size() + " rows/varieties for" +  startIdx + "-" + endIdx + " (" + (endIdx-startIdx+1) + ") cols/snps");
+		
+		long rowlength = firstline.length() + 1;
+		// return to start
+		raf.seek(0);
+		
+		Iterator<BigDecimal> itVarid = orderedVarids.iterator();
+		
+		byte readBuffer[] = new byte[endIdx-startIdx+1];
+		while(itVarid.hasNext()) {
+			BigDecimal bdVarid = itVarid.next(); 
+			int varid = bdVarid.intValue();
+			raf.seek(  (varid-1)*rowlength + startIdx-1 );
+			raf.read( readBuffer );
+			mapVarid2Snps.put(bdVarid , new String(readBuffer) );
+		}
+			
+		raf.close();
+		
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+		
+		return mapVarid2Snps;
+		
+	}
+
+
+
+
+	@Override
+	public Set checkSNPInChromosome(String chr, Set setSNP, BigDecimal type) {
+		
+		// TODO Auto-generated method stub
+		
+		snpstringcoreallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean( snpstringcoreallvarsposService, "VSnpRefposindexDAO");
+		//snpstringcoreallvarsposService.
+		List listtmp = new ArrayList();
+		listtmp.addAll(setSNP);
+		return new HashSet(snpstringcoreallvarsposService.getSNPsInChromosome(chr, listtmp, type));
+
+	}
+
+
+	@Override
+	public List getSNPStringInAllVarieties(Set snpposlist, Integer chr, boolean isCore, boolean exactMatch, int firstRow, int maxRows) {
+		// TODO Auto-generated method stub
+		
+		return getSNPsString(chr, null, null,  snpposlist,  exactMatch,  firstRow,  maxRows);
+	}
+	
 	
 	
 	

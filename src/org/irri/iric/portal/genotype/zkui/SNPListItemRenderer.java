@@ -16,7 +16,7 @@ import org.zkoss.zul.Listcell;
 public class SNPListItemRenderer implements SNPRowRendererStyle, ListitemRenderer {
 
 	//private short querymode = 0;
-	GenotypeFacade.snpQueryMode querymode;
+	//GenotypeFacade.snpQueryMode querymode;
 	private String var1;
 	private String var2;
 	private String varref;
@@ -44,7 +44,7 @@ public class SNPListItemRenderer implements SNPRowRendererStyle, ListitemRendere
 	        addListcell(listitem, item.getPos().toString());
 
 	        
-	        if(querymode == GenotypeFacade.snpQueryMode.SNPQUERY_VARIETIES) {
+	        //if(querymode == GenotypeFacade.snpQueryMode.SNPQUERY_VARIETIES) {
 	        	// two varieties are alleles with each other
 	        	// all are interesting
 	        	String  nuc1 = item.getVar1nuc();
@@ -72,7 +72,7 @@ public class SNPListItemRenderer implements SNPRowRendererStyle, ListitemRendere
 	        	}
 
 	        	
-	        } else if(querymode== GenotypeFacade.snpQueryMode.SNPQUERY_REFERENCE) {
+	        /* }  else if(querymode== GenotypeFacade.snpQueryMode.SNPQUERY_REFERENCE) {
 	        	// variety is allele with reference
 	        	// interesting is allele with reference
 	        	String  nuc1 = item.getVar1nuc();
@@ -91,7 +91,8 @@ public class SNPListItemRenderer implements SNPRowRendererStyle, ListitemRendere
 	        		addListcell(listitem, nuc2, STYLE_INTERESTING) ;
 	        	
 	        	
-		    } else if(querymode==GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS) {
+		    } 
+	        else if(querymode==GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS) {
 		    	// all allele positions,
 		    	// interesting is alleles
 		    	String  nuc1 = item.getVar1nuc();
@@ -107,9 +108,8 @@ public class SNPListItemRenderer implements SNPRowRendererStyle, ListitemRendere
 		    		addListcell(listitem, nuc1 , STYLE_INTERESTING) ;
 		    		addListcell(listitem, nuc2, STYLE_INTERESTING) ;
 		    	}
-	        	
-	        
 		    }
+		    */
 
 	       
 	    }
@@ -157,7 +157,7 @@ public class SNPListItemRenderer implements SNPRowRendererStyle, ListitemRendere
 		}
 
 		public void setQuerymode(GenotypeFacade.snpQueryMode querymode) {
-			this.querymode = querymode;
+			//this.querymode = querymode;
 		}
 
 

@@ -2,7 +2,7 @@ package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
 
-public interface Variety {
+public interface Variety extends Comparable {
 	
 	
 	/**

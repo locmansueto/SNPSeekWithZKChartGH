@@ -35,7 +35,10 @@ import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
 import org.irri.iric.portal.domain.Snps2Vars;
 import org.irri.iric.portal.domain.SnpsAllvars;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
+import org.irri.iric.portal.domain.SnpsStringAllvars;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.flatfile.dao.SnpcoreRefposindexDAO;
+import org.irri.iric.portal.genotype.service.GenotypeFacade.snpQueryMode;
 //import org.irri.iric.portal.domain.VarietyService;
 //import org.irri.iric.portal.genotype.domain.Variety3k;
 //import org.irri.iric.portal.genotype.views.*;
@@ -494,7 +497,7 @@ public class GenotypeFacadeLegacyImpl implements GenotypeFacade {
 			  sql += " chr=" + chromosome + " and pos between " +
 					(startPos -1) + " and " + (endPos + 1) + " order by POS";
 			 */ 
-			snpsposlist = snpallvarsposService.getSNPs(chromosome, startPos, endPos );
+			snpsposlist = snpallvarsposService.getSNPs(chromosome, startPos, endPos , SnpcoreRefposindexDAO.TYPE_3KCORESNP );
 
 
 			snpallvarsService = (SnpsAllvarsDAO)AppContext.checkBean(snpallvarsService, "SnpsAllvarsDAO" + checkbeanext) ; 
@@ -581,7 +584,7 @@ public class GenotypeFacadeLegacyImpl implements GenotypeFacade {
 	 */
 	@Override
 	public List<Snps2Vars> getSNPinVarieties(String var1, String var2,
-			 Integer startPos, Integer endPos, String chromosome, snpQueryMode querymode) {
+			 Integer startPos, Integer endPos, String chromosome, snpQueryMode querymode, boolean isCore) {
 		// TODO Auto-generated method stub
 
 		var1 = var1.split("::")[0].trim();
@@ -629,10 +632,10 @@ public class GenotypeFacadeLegacyImpl implements GenotypeFacade {
 			BigDecimal var2Id = varservice.findVarietyByName(var2).getVarietyId();
 
 			if(querymode==snpQueryMode.SNPQUERY_VARIETIES) {
-				snpslist = snp2linesService.findVSnp2varsByVarsChrPosBetweenMismatch(Integer.valueOf(chromosome), BigDecimal.valueOf(startPos-1), BigDecimal.valueOf(endPos+1), var1Id, var2Id);
+				snpslist = snp2linesService.findVSnp2varsByVarsChrPosBetweenMismatch(Integer.valueOf(chromosome), BigDecimal.valueOf(startPos-1), BigDecimal.valueOf(endPos+1), var1Id, var2Id, false);
 			}
-			else if(querymode== snpQueryMode.SNPQUERY_REFERENCE) {
-				snpslist = snp2linesService.findVSnp2varsByVarsChrPosBetweenAll(Integer.valueOf(chromosome), BigDecimal.valueOf(startPos-1), BigDecimal.valueOf(endPos+1), var1Id, var2Id);
+			else if(querymode== snpQueryMode.SNPQUERY_ALLREFPOS) { // //SNPQUERY_REFERENCE) {
+				snpslist = snp2linesService.findVSnp2varsByVarsChrPosBetweenAll(Integer.valueOf(chromosome), BigDecimal.valueOf(startPos-1), BigDecimal.valueOf(endPos+1), var1Id, var2Id, false);
 			}
 			
 
@@ -667,11 +670,22 @@ public class GenotypeFacadeLegacyImpl implements GenotypeFacade {
 		Gene gene = getGeneFromName( genename );
 		log.debug(gene.getUniquename() + " " + gene.getChr() + " " + gene.getFmin() + " " + gene.getFmax());
 		return getSNPinVarieties(var1, var2,  gene.getFmin()  , gene.getFmax(), 
-				gene.getChr().toString(), querymode);
+				gene.getChr().toString(), querymode, AppContext.isCore());
 		
 
 		
 	}
+	
+	
+	
+
+	@Override
+	public List getSNPinVarieties(String var1, String var2, Set snpposlist,
+			String chr, snpQueryMode mode, boolean checked) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	@Override
 	public List<SnpsAllvars> getSNPinAllVarieties(String genename, Integer plusminusBp) {
@@ -768,7 +782,7 @@ within a subpopulation group
 	 */
 	 
 
-	public String constructPhylotree(String scale, String chr, int start, int end) {
+	public String[] constructPhylotree(String scale, String chr, int start, int end, String requestid) {
 		
 		snpcount2linesService = (Snps2VarsCountMismatchDAO)AppContext.checkBean(snpcount2linesService, "Snps2VarsCountMismatchDAO" + checkbeanext);
 		
@@ -883,7 +897,7 @@ within a subpopulation group
 			
 			
 			//System.out.println(newick);
-			return newick;
+			return new String[] {newick, Integer.toString(symdistmatrix.getSize()) };
 			
 			
 		} catch(Exception ex)
@@ -1058,11 +1072,12 @@ within a subpopulation group
 	}*/
 	
 	
-	public Map<String,Integer> orderVarietiesFromPhylotree(String newick)
+	@Override
+	public Map<BigDecimal, Integer> orderVarietiesFromPhylotree(String newick)
 	{
 
 		//org.forester.application.phyloxml_converter
-		   Map<String,Integer> mapVariety2Order = new HashMap<String,Integer>(); 
+		   Map<BigDecimal,Integer> mapVariety2Order = new HashMap<BigDecimal,Integer>(); 
 			try {
 
 				String tmpfile = AppContext.getTempDir() + AppContext.createTempFilename() + ".newick";
@@ -1096,7 +1111,7 @@ within a subpopulation group
 			        	PhylogenyNode node = it.next();
 			        	if(node.isExternal()) {
 			        		System.out.println( node.getName() );
-			        		mapVariety2Order.put(node.getName(), leafcount);
+			        	//	mapVariety2Order.put(node.getName(), leafcount);
 			        		leafcount++;
 			        	}
 			        }
@@ -1143,8 +1158,8 @@ within a subpopulation group
 
 
 	@Override
-	public String constructPhylotreeTopN(String scale, String chr, int start,
-			int end, int topN) {
+	public String[] constructPhylotreeTopN(String scale, String chr, int start,
+			int end, int topN, String requestid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1164,6 +1179,77 @@ within a subpopulation group
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	@Override
+	public List<String> getSubpopulations() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Set getVarietiesForSubpopulation(String subpopulation) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<SnpsAllvars> getSNPinSetVarieties(Set varietyIds,
+			Integer startPos, Integer endPos, String chromosome, long firstRow,
+			long numRows, boolean mismatchOnly) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void limitVarieties(Set varieties) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setCoreSnp(boolean isCore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start,
+			Integer end, Integer chr, int firstRow, int maxRows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start,
+			Integer end, Integer chr, boolean exactMismatch, int firstRow,
+			int maxRows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Set checkSNPInChromosome(String chr, Set setSNP, BigDecimal type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public List getSNPStringInAllVarieties(Set snpposlist, Integer chr,
+			boolean isCore, boolean exactMatch, int firstRow, int maxRows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 	

@@ -1,9 +1,12 @@
 package org.irri.iric.portal.chado.dao;
 
+import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Set;
 
 import org.irri.iric.portal.chado.domain.VSnpAllvarsMin;
 import org.irri.iric.portal.dao.SnpsAllvarsDAO;
+import org.irri.iric.portal.domain.SnpsAllvars;
 import org.skyway.spring.util.dao.JpaDao;
 import org.springframework.dao.DataAccessException;
 
@@ -120,5 +123,15 @@ public interface VSnpAllvarsMinDAO extends JpaDao<VSnpAllvarsMin>, SnpsAllvarsDA
 	 *
 	 */
 	public Set<VSnpAllvarsMin> findVSnpAllvarsMinByRefnucContaining(String refnuc_1, int startResult, int maxRows) throws DataAccessException;
+
+
+	public Set<SnpsAllvars> findVSnpAllvarsByVarsChrPosBetweenRefmismatch(Integer chr,
+			BigDecimal start, BigDecimal end, Collection<BigDecimal> vars,
+			boolean isCore, int startResult, int maxRows)
+			throws DataAccessException;
+	
+	
+	public Set<SnpsAllvars> findVSnpAllvarsMinByChrVar(Integer chr, BigDecimal var);
+	
 
 }

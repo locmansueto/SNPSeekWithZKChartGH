@@ -22,7 +22,7 @@ import org.irri.iric.portal.domain.Snps2VarsCountmismatch;
 		@NamedQuery(name = "findVSnp2varsCountmismatchByPrimaryKey", query = "select myVSnp2varsCountmismatch from VSnp2varsCountmismatch myVSnp2varsCountmismatch where myVSnp2varsCountmismatch.var1 = ?1 and myVSnp2varsCountmismatch.var2 = ?2"),
 		@NamedQuery(name = "findVSnp2varsCountmismatchByVar1", query = "select myVSnp2varsCountmismatch from VSnp2varsCountmismatch myVSnp2varsCountmismatch where myVSnp2varsCountmismatch.var1 = ?1"),
 		@NamedQuery(name = "findVSnp2varsCountmismatchByVar2", query = "select myVSnp2varsCountmismatch from VSnp2varsCountmismatch myVSnp2varsCountmismatch where myVSnp2varsCountmismatch.var2 = ?1") })
-@Table(schema = "IRIC", name = "VL_SNP_2VARS_COUNTMISMATCH")
+@Table(schema = "IRIC", name = "V_SNP_2VARS_COUNTMISMATCH")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VSnp2varsCountmismatch")
 public class VSnp2varsCountmismatch implements Serializable, Snps2VarsCountmismatch  {

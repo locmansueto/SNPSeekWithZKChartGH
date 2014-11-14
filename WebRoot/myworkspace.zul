@@ -1,0 +1,143 @@
+<?page title="My Workspace" contentType="text/html;charset=UTF-8"?>
+
+<?link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" ?>
+<?link rel="icon" href="/favicon.ico" type="image/x-icon" ?>
+
+<?component name="tipBox" macroURI="tipBox.zul"?>
+
+<?script type="text/javascript"><![CDATA[
+window.Boot_progressbox = function (){}
+]]>?>
+
+
+<zk>
+<window   border="none" apply="org.irri.iric.portal.admin.zkui.WorkspaceController">
+
+<zscript>
+		import org.zkoss.zkplus.spring.SpringUtil;     
+		import org.irri.iric.portal.admin.WorkspaceFacade;
+		import javax.servlet.http.HttpSession;
+		
+		import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
+		import org.irri.iric.portal.admin.zkui.SNPChrPositionListitemRenderer;
+		
+
+       	WorkspaceFacade workspace = (WorkspaceFacade)SpringUtil.getBean("WorkspaceFacade");
+       	List listVarlistNames = new ArrayList();
+       	//if(listVarlistNames.size()==0) listVarlistNames.add("");
+       	//listVarlistNames.addAll( workspace.getVarietylistNames( (HttpSession)Sessions.getCurrent().getNativeSession()  ));
+       	listVarlistNames.addAll( workspace.getVarietylistNames(  ));
+       	
+	
+	
+</zscript>
+
+<hbox height="30px"/>
+
+<div align="center">
+<label value="My Lists" style="font-size:20px;font-weight:bold;color:green;"/>
+<hbox height="10px" />
+<vbox>
+<label value="NOTE: Lists are not saved in the server and available only for this session" style="font-size:12px;color:red" />
+<label value="Click Download button to save your created lists for future reference" style="font-size:12px;color:red" />
+</vbox>
+</div>
+<hbox height="30px"/>
+<hbox>
+<vbox width="200px"/>
+<vbox>
+
+<hbox>
+<label value="List Type:  " pre="true" style="font-size:14px;font-weight:bold;color:gray;"/> 
+<radiogroup visible="true">
+    <hlayout>
+      <radio id="radioVariety" label="Variety" selected="true"/>
+      <radio id="radioSNP" label="SNP"/>
+    </hlayout>
+</radiogroup>
+</hbox>
+
+<hbox height="20px"/>
+
+<label value="Select list:  " pre="true" style="font-size:14px;font-weight:bold;color:gray;"/>
+<listbox id="listboxVarietylist" width="200px" height="100px"/>
+ <zscript><![CDATA[			
+     listboxVarietylist.setModel(new SimpleListModel(listVarlistNames));
+ ]]></zscript>
+			    
+<hbox height="20px"/>
+<hbox>
+<button id="buttonCreate" label="Create"/>
+<button id="buttonSave" label="Save" visible="false"/>
+<button id="buttonCancel" label="Cancel" visible="false"/>
+<button id="buttonDelete" label="Delete" disabled="true" />
+</hbox>
+<button id="buttonQueryIric" label="Query IRIC" visible="false"/>
+
+<hbox height="30px"/>
+<button id="buttonDownload" label="Download"/>
+</vbox>
+
+<vbox width="80px"/>
+<vbox>
+<label id="labelNItems" visible="true"/>
+
+<listbox id="listboxVarieties" width="500px" height="300px" visible="false">
+<listhead sizable="true">
+           <listheader label="NAME" />
+           <listheader label="IRIS ID" />
+           <listheader label="SUBPOPULATION" />
+           <listheader label="COUNTRY" />
+</listhead>
+</listbox>
+<listbox id="listboxPositions" width="200px" height="300px" visible="false">
+<listhead sizable="true">
+           <listheader label="CHR : POSITION" />
+</listhead>
+</listbox>
+</vbox>
+			    <zscript><![CDATA[
+			        listboxPositions.setItemRenderer( new SNPChrPositionListitemRenderer());
+			        listboxVarieties.setItemRenderer( new VarietyListItemRenderer());
+			    ]]></zscript>
+			    
+
+
+<vbox id="vboxEditVariety" visible="false">
+<hbox>
+<label value = "List name:"  style="font-size:14px;font-weight:bold;color:gray;"/>
+<textbox id="txtboxEditListname"/>
+</hbox>
+<div id="divMsgVariety">
+<label pre="true" value="Type or paste variety Name, IRIS ID or Accessions here. One variety per line"/>
+</div>
+<div id="divMsgSNP" visible="false">
+<vbox>
+<label pre="true" value="Set chromosome and SNP positions here, one position per line"/>
+<hbox>
+<label value="Chromosome"/>
+<vbox width="10px" />
+<listbox id="selectChromosome"  mold="select"  rows="1">
+<listitem label="1" selected="true"/>
+<listitem label="2"/>
+<listitem label="3"/>
+<listitem label="4"/>
+<listitem label="5"/>
+<listitem label="6"/>
+<listitem label="7"/>
+<listitem label="8"/>
+<listitem label="9"/>
+<listitem label="10"/>
+<listitem label="11"/>
+<listitem label="12"/>
+</listbox>
+</hbox>
+</vbox>
+</div>
+
+<textbox id="txtboxEditVariety" rows="30" width="300px"/>
+</vbox>
+</hbox>
+
+</window>
+</zk>

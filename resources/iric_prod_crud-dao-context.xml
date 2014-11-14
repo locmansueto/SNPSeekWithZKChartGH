@@ -28,6 +28,9 @@
 	<!-- ******************************************************************** -->
 	<!-- Scan for dao layer annotated beans -->
 	<!-- ******************************************************************** -->
+	<context:component-scan base-package="org.irri.iric.portal.flatfile.dao" scoped-proxy="interfaces" />
+	<context:component-scan base-package="org.irri.iric.portal.admin.dao" scoped-proxy="interfaces" />
+	<context:component-scan base-package="org.irri.iric.portal.admin" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.dao" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.chado.dao" scoped-proxy="interfaces" />
 	
@@ -52,28 +55,28 @@
 	<!-- Setup a data source -->
 	<!-- ******************************************************************** -->
 
+			
 
 				<!-- IRRI local -->
-				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
+				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
 				
 					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 					<property name="username" value="iricguest"/>
 					<property name="password" value="iricguest"/>
 					<property name="url" value="jdbc:oracle:thin:@172.29.4.231:1521:orcl"/>
-					<property name="maxIdle" value="1"/>
-					<property name="maxActive" value="10"/>
-				</bean>
-
+					<property name="maxIdle" value="16"/>
+					<property name="maxActive" value="32"/>
+				</bean -->
 
 				<!-- AWS -->
-				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
+				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
 					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 					<property name="username" value="iricguest"/>
 					<property name="password" value="iricguest"/>
 					<property name="url" value="jdbc:oracle:thin:@202.123.56.231:1521:orcl"/>
-					<property name="maxIdle" value="1"/>
-					<property name="maxActive" value="10"/>
-				</bean -->			
+					<property name="maxIdle" value="8"/>
+					<property name="maxActive" value="32"/>
+				</bean>			
 	
 	<!-- ******************************************************************** -->
 	<!-- Setup each persistence unit -->
@@ -83,7 +86,7 @@
 				<!-- Configure a JPA vendor adapter -->
 				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" id="IRIC_ProductionJPAVendorAdapter">
 					<!-- property name="showSql" value="false" / -->
-					<property name="showSql" value="true"/>
+					<property name="showSql" value="false"/>
 					<!-- property name="generateDdl" value="false" / -->
 					<property name="generateDdl" value="false"/>
 					<property name="databasePlatform" value="org.hibernate.dialect.Oracle10gDialect"/>

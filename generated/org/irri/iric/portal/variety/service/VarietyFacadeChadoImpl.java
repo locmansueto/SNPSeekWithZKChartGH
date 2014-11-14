@@ -1,5 +1,7 @@
 package org.irri.iric.portal.variety.service;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,11 +13,13 @@ import java.util.TreeMap;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.dao.VIricstockPassportDAO;
+import org.irri.iric.portal.chado.domain.VIricstockBasicprop2;
 import org.irri.iric.portal.dao.CvTermDAO;
 import org.irri.iric.portal.dao.CvTermUniqueValuesDAO;
 //import org.irri.iric.portal.dao.IricstockPassportDAO;
 import org.irri.iric.portal.dao.PhenotypeDAO;
 import org.irri.iric.portal.dao.VarietyByPassportDAO;
+import org.irri.iric.portal.dao.VarietyByPhenotypeDAO;
 import org.irri.iric.portal.dao.VarietyDAO;
 import org.irri.iric.portal.dao.VarietyDistanceDAO;
 import org.irri.iric.portal.domain.CvTerm;
@@ -29,6 +33,8 @@ import org.irri.iric.portal.domain.VarietyDistance;
 //import org.irri.iric.portal.variety.domain.List3k;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,17 +44,36 @@ import org.forester.evoinference.matrix.distance.BasicSymmetricalDistanceMatrix;
 //import org.irri.iric.portal.variety.views.ViewDist3kId;
 
 @Service("VarietyFacade")
+//@Scope("prototype")
+@Scope(value="session",  proxyMode = ScopedProxyMode.INTERFACES)
 public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	private static final Log log = LogFactory.getLog(VarietyFacadeChadoImpl.class);
 
+	private static final int PHENOTYPETYPE_NONE=0;
+	private static final int PHENOTYPETYPE_QUAL=1;
+	private static final int PHENOTYPETYPE_QUAN=2;
+	
+	private int phenotype_type=PHENOTYPETYPE_NONE;
+	
 	
 	@Autowired
 	@Qualifier("VarietyDAO")
 	private VarietyDAO germdao;
+
+	@Autowired
+	@Qualifier("VarietyBasicprop2DAO")
+	private VarietyDAO germ2dao;
+
+	
+	@Autowired
+	@Qualifier("IricStockDAO")
+	private VarietyDAO iricstockdao;
 	
 	@Autowired
 	private VarietyByPassportDAO varbypassportdao;
+	@Autowired
+	private VarietyByPhenotypeDAO varbyphenotypedao;
 	
 	
 	@Autowired
@@ -72,9 +97,17 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	@Qualifier("VCvPassportValuesDAO")
 	private CvTermUniqueValuesDAO cvpassportValuesDao;
 	
+	//@Autowired
+	//@Qualifier("VCvPhenotypeValuesDAO")
+	//private CvTermUniqueValuesDAO cvphenotypeValuesDao;
+	
 	@Autowired
-	@Qualifier("VCvPhenotypeValuesDAO")
-	private CvTermUniqueValuesDAO cvphenotypeValuesDao;
+	@Qualifier("VCvPhenotypeQualValuesDAO")
+	private CvTermUniqueValuesDAO cvphenotypeQualValuesDao;
+	
+	@Autowired
+	@Qualifier("VCvPhenotypeQuanValuesDAO")
+	private CvTermUniqueValuesDAO cvphenotypeQuanValuesDao;
 	
 	
 	
@@ -112,13 +145,20 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		mapId2Variety = new java.util.HashMap<BigDecimal, Variety>() ;
 		
 		int germcount = 0;
-		java.util.Iterator<Variety> itgerm =  germdao.findAllVariety().iterator();
+		
+		Set setvars = germdao.findAllVariety();
+		System.out.println(setvars.size() + " vars from iricstock_basicprop");
+		java.util.Iterator<Variety> itgerm =  setvars.iterator();
+		
+	
+		
 		while( itgerm.hasNext() )	
 		{
 			Variety germ = itgerm.next();
 			if(germ==null) throw new RuntimeException("germ==null");
 
 			mapId2Variety.put(germ.getVarietyId(), germ);
+			germcount++;
 			
 			if(germ.getName()==null)
 				{
@@ -163,8 +203,45 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 			germnames.add( germ.getName().toUpperCase() );		
 	
 			//germnames.add( germ.getAccession());
-			germcount++;
+
 		}
+		
+		setvars = iricstockdao.findAllVariety();
+		System.out.println(setvars.size() + " vars from iricstock");
+		itgerm =  setvars.iterator();
+		while( itgerm.hasNext() )	
+		{
+			Variety germ = itgerm.next();
+			if(germ==null) throw new RuntimeException("germ==null");
+
+			if(mapId2Variety.containsKey(germ.getVarietyId())) continue;
+			
+			
+			System.out.println(germ.getName() + "   " + germ.getVarietyId() + "  added");
+			
+			
+			germcount++;
+			mapId2Variety.put(germ.getVarietyId(), germ);
+			
+			if(germ.getName()==null)
+				{
+					System.out.println( "germ..getVarnameOfGenStockSrc()==null");
+					continue;					
+				}
+
+			mapVarname2Variety.put(germ.getName().toUpperCase(), germ);
+
+			germnames.add( germ.getName().toLowerCase() );
+			germnames.add( germ.getName().toUpperCase() );		
+	
+			//germnames.add( germ.getAccession());
+			
+			
+			
+			
+		}	
+		
+		System.out.println(mapId2Variety.size() + " variety Ids;  " + germnames.size()/2 + "  names");
 		
 		this.germnames = new java.util.ArrayList();
 			this.germnames.addAll(germnames);
@@ -178,6 +255,29 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		
 	}
 
+	@Override
+	public Map getIrisId2Variety() {
+		
+	
+		java.util.Map irisid= new java.util.HashMap();
+		
+		Set setvars = germdao.findAllVariety();
+		System.out.println(setvars.size() + " vars from iricstock_basicprop");
+		java.util.Iterator<Variety> itgerm =  setvars.iterator();
+	
+		
+		while( itgerm.hasNext() )	
+		{
+			Variety germ = itgerm.next();
+			if(germ==null) throw new RuntimeException("germ==null");
+			if(germ.getIrisId()!=null) // throw new RuntimeException("germ..getSubpopulation()==null");
+			{
+				irisid.put( germ.getIrisId().toUpperCase() , germ);	
+			}
+		}
+		return irisid;
+		
+	}
 
 	
 	private void initMoreConstraints() {
@@ -235,17 +335,33 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	
 	public Variety getGermplasmByNameLike(String name) {
 		
-		return germdao.findVarietyByNameLike(name);
-		
+		Variety var =  germdao.findVarietyByNameLike(name);
+		if(var==null) {
+			var = iricstockdao.findVarietyByNameLike(name);
+		}
+		return var;	
 	}
 	
 	public Variety getGermplasmByName(String name) {
 	
-		return germdao.findVarietyByName(name);
-		
-	
+		Variety var = germdao.findVarietyByName(name);
+		if(var==null) {
+			var= iricstockdao.findVarietyByName(name);
+		}
+		return var;
 	}
 		
+	@Override
+	public List getGermplasmsByNameOrIrisid(String names) {
+		// TODO Auto-generated method stub
+		//irisIds = irisIds.replace("_"," ");
+		
+		
+		//return germdao.findVarietyByNameOrIrisId(String names,  irisIds);
+		return null;
+		
+	}
+	
 	
 	public java.util.Set getGermplasmByCountry(String country) {		
 		return  germdao.findAllVarietyByCountry(country);	
@@ -314,7 +430,12 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	/**
 	 * Construct phylogenetic tree for varieties in variety list varid (comma separated)
 	 */
-	public String constructPhylotree(String varids, String scale) {
+	public String constructPhylotree(String varids, String scale,  String requestid) {
+		return constructPhylotree(varids,  scale, null, requestid);
+	}
+	
+	@Override
+	public String constructPhylotree(String varids, String scale,  String topN,  String requestid) {
 		
 		//return "'((((penHA34a,penHA34b,penHA32b,penHA32a,penSH30b,penSH30a,penSH28b,penSH28a,penIT13b,penIT13a,penIT12a,firSA26b,firGU7b,firGU8b,firSP18b,firSP20b,firSP36b,firSP39b,penSH31a,penSH31b),(firSP19b,(firSP17b,penIT12b))),firSA24a,firSA24b,firSA25a,firSA26a,firGU7a,firGU8a,firSP17a,firSP18a,firSP19a,firSP20a,firSP36a,firSP39a,(firSA25b,firSP40b),firSP40a,penIT11b,penIT11a),(ovi47a,ovi47b));'";
 
@@ -322,11 +443,17 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		Set setids = new java.util.TreeSet<BigDecimal>();		
 		if(varids.equals("all")) {
 			setids.addAll( getMapId2Variety().keySet() );
-			return  constructPhylotree(setids, scale, true);
+			if(topN!=null)
+				return  constructPhylotree(setids, scale, true, Integer.parseInt(topN), requestid);
+			else	
+				return  constructPhylotree(setids, scale, true, requestid);
 		} else {
 			String[] ids = varids.split(",");			
 			for(int i=0; i<ids.length; i++) setids.add(BigDecimal.valueOf(Long.parseLong(ids[i])));
-			return  constructPhylotree(setids, scale, false);
+			if(topN!=null)
+				return  constructPhylotree(setids, scale, false, Integer.parseInt(topN), requestid);
+			else	
+				return  constructPhylotree(setids, scale, false, requestid);
 		}
 		
 	
@@ -335,8 +462,8 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 /**
  * Construct phylogenetic tree for set of germplasm
  */
-public String constructPhylotree(Set<BigDecimal> germplasms, String scale) {
-		return  constructPhylotree( germplasms,  scale, false);
+public String constructPhylotree(Set<BigDecimal> germplasms, String scale,  String requestid) {
+		return  constructPhylotree( germplasms,  scale, false, requestid);
 }	
 	
 /**
@@ -346,9 +473,27 @@ public String constructPhylotree(Set<BigDecimal> germplasms, String scale) {
  * @param isAll	all germplasm, if true germplasms is ignored
  * @return
  */
-private String constructPhylotree(Set<BigDecimal> germplasms, String scale, boolean isAll) {
+private String constructPhylotree(Set<BigDecimal> germplasms, String scale, boolean isAll, String requestid) {
+	return constructPhylotree(germplasms,  scale,  isAll, -1, requestid); 
+}
+
+private String constructPhylotree(Set<BigDecimal> germplasms, String scale, boolean isAll, int topN, String requestid) {
 		
+		if(isAll)
+			return constructPhylotreeFromCoreNewick();
+	
 		dist3kdao = (VarietyDistanceDAO)AppContext.checkBean(dist3kdao, "VarietyDistanceDAO");
+		dist3kdao.setRequestId(requestid);
+		
+		
+
+		MemoryMXBean bean = ManagementFactory.getMemoryMXBean(); 
+		System.out.println("heap space used MB:" +   bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
+		//Collector
+		bean.gc();
+		System.out.print("GC successful");
+		System.out.println("heap space used MB:" +  bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
+		
 		
 		// get 
 		//Set<Integer> sortedIds =  new java.util.TreeSet<Integer>();
@@ -359,7 +504,7 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 		
 		//java.util.Set sortedNames = new java.util.TreeSet(germplasms);
 		
-		
+		System.out.println("constructPhylotree: " + germplasms.size() + ", " + scale + "  " + isAll + "  " + topN );
 		
 		//germplasms
 		System.out.println(germplasms.size() + " germplasms");
@@ -368,7 +513,7 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 		
 		
 		
-		System.out.println("symdistmatrix done");
+		//System.out.println("symdistmatrix done");
 		
 		
 		BasicSymmetricalDistanceMatrix symdistmatrix = new BasicSymmetricalDistanceMatrix(germplasms.size());
@@ -399,12 +544,49 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 		List<VarietyDistance> listdist;
 		
 		if(isAll)
-			listdist =  dist3kdao.findAllVarieties();
+			if(topN>0)
+				listdist =  dist3kdao.findAllVarietiesTopN(topN);
+			else
+				listdist =  dist3kdao.findAllVarieties();
 		else	
 			listdist =  dist3kdao.findVarieties(germplasms);
 			
+		
+		if(topN>0) {
+			System.out.println("ORIG:" +  listdist.size() + " distances; varieties " + germplasms.size());
+			germplasms=new HashSet();
+			java.util.Iterator<VarietyDistance>  itdist = listdist.iterator();
+			while(itdist.hasNext())
+			{
+				VarietyDistance dist3k = itdist.next();
+				germplasms.add(dist3k.getVar1());
+				germplasms.add(dist3k.getVar2());
+			}
+			listdist =  dist3kdao.findVarieties(germplasms);
+			
+			symdistmatrix = new BasicSymmetricalDistanceMatrix(germplasms.size());
+			mapVarid2Row = new java.util.HashMap<BigDecimal, Integer>();
+			itgerm=germplasms.iterator();
+			i=0;
+			while(itgerm.hasNext()) {
+				BigDecimal c = itgerm.next();
+				symdistmatrix.setIdentifier( i, "varid_" + mapId2Variety.get(c).getVarietyId() );
 
-		System.out.println(listdist.size() + " distances; varieties " + germplasms.size());
+				mapVarid2Row.put(c , i);
+				
+				//buffVarId.append( c );
+				
+				//if(itgerm.hasNext()) {
+				//	buffVarId.append(",");
+				//}			
+				i++;			
+			
+			}
+		}
+		
+		dist3kdao.setRequestId(null);
+
+		System.out.println("topN:" + listdist.size() + " distances; varieties " + germplasms.size());
 		java.util.Iterator<VarietyDistance>  itdist = listdist.iterator();
 		
 		
@@ -414,18 +596,29 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 		{
 			
 			VarietyDistance dist3k = itdist.next();
+			BigDecimal var1 = dist3k.getVar1();
+			BigDecimal var2 = dist3k.getVar2();
+			
 
-			if(!mapVarid2Row.containsKey(dist3k.getVar1()) ) continue ; //throw new RuntimeException("No key " + dist3k.getVar1() + " in mapVarid2Row");
-			if(!mapVarid2Row.containsKey(dist3k.getVar2()) ) continue ; //throw new RuntimeException("No key " + dist3k.getVar2() + " in mapVarid2Row");
+			if(!mapVarid2Row.containsKey(var1) ) continue ; //throw new RuntimeException("No key " + dist3k.getVar1() + " in mapVarid2Row");
+			if(!mapVarid2Row.containsKey(var2) ) continue ; //throw new RuntimeException("No key " + dist3k.getVar2() + " in mapVarid2Row");
 
-			Double dist = Double.valueOf( dist3k.getDist().toString() )*distscale;
+			Double dist = dist3k.getDist().doubleValue()*distscale; 
+			//Double dist = Double.valueOf( dist3k.getDist().toString() )*distscale;
 			//System.out.println(dist3k.getIrisid1() + " "  +  dist3k.getIrisid2() + " " + dist) ;
 			
-			symdistmatrix.setValue( mapVarid2Row.get(dist3k.getVar1() ) , mapVarid2Row.get(dist3k.getVar2()) , dist );
-			symdistmatrix.setValue( mapVarid2Row.get(dist3k.getVar2() ) , mapVarid2Row.get(dist3k.getVar1()),  dist );
+			symdistmatrix.setValue( mapVarid2Row.get(var1 ) , mapVarid2Row.get(var2) , dist );
+			symdistmatrix.setValue( mapVarid2Row.get(var2) , mapVarid2Row.get(var1),  dist );
 		}
 		
-		System.out.print(symdistmatrix.getSize() + " symdistmatrix ready");
+		itdist = null;
+		listdist = null;
+		
+		
+		System.out.println("heap space used MB:" +  bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
+		bean.gc();
+		System.out.print("GC successful, " + symdistmatrix.getSize() + " symdistmatrix ready");
+		System.out.println("heap space used MB:" +  bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
 		
 		try {
 			
@@ -444,7 +637,7 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 			//newick = newick.replace("IRIS", newChar)
 			
 			//newick=newick.replace("-", "");
-			System.out.println(newick);
+			//System.out.println(newick);
 			Iterator<BigDecimal> itgerm2 = germplasms.iterator();
 			while(itgerm2.hasNext()) {
 				BigDecimal c = itgerm2.next();
@@ -458,9 +651,12 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 				Variety var = mapId2Variety.get(c);
 				
 				String subpop = "";
-				if( var.getSubpopulation()!=null) subpop = "/" +  var.getSubpopulation();
+				if( var.getSubpopulation()!=null) subpop =  var.getSubpopulation(); //.replace("/","_").replace(", ","_");
 				
-				newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0] + "/" + var.getIrisId() + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
+				String irisid = "";
+				if( var.getIrisId()!=null) irisid=var.getIrisId();
+				
+				newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0] + "|" + irisid + "|" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
 			}
 			
 			
@@ -477,6 +673,230 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 	            //   NJTreeProgressListener _treeProgessListener)
 		
 	}
+
+
+	private String constructPhylotreeFromCoreNewick() {
+		
+		germ2dao = (VarietyDAO)AppContext.checkBean(germ2dao, "VarietyBasicprop2DAO");
+	
+		String newick= Data.get3kCoreNewick();
+	
+		
+		Iterator<VIricstockBasicprop2> itVars = germ2dao.findAllVariety().iterator();
+		while(itVars.hasNext()) {
+			VIricstockBasicprop2 var = itVars.next();
+			
+			
+			String subpop = "";
+			if( var.getSubpopulation()!=null) subpop =  var.getSubpopulation(); //.replace("/","_").replace(", ","_");
+			String irisid = "";
+			if( var.getIrisId()!=null) irisid=var.getIrisId();
+			
+			String boxcode = var.getIrisId();
+			if(boxcode==null) boxcode= var.getBoxCode();
+			else boxcode=boxcode.replace("IRIS ", "IRIS_");
+			newick = newick.replace(boxcode + ":"  ,(var.getName().split("::")[0].replace(", ","_") + "|" + irisid + "|" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
+		}
+		//System.out.println(newick);
+		return newick;
+	}
+
+	public double[][] constructMDSPlot(String varids, String scale, boolean isAll) {
+		
+		//return "'((((penHA34a,penHA34b,penHA32b,penHA32a,penSH30b,penSH30a,penSH28b,penSH28a,penIT13b,penIT13a,penIT12a,firSA26b,firGU7b,firGU8b,firSP18b,firSP20b,firSP36b,firSP39b,penSH31a,penSH31b),(firSP19b,(firSP17b,penIT12b))),firSA24a,firSA24b,firSA25a,firSA26a,firGU7a,firGU8a,firSP17a,firSP18a,firSP19a,firSP20a,firSP36a,firSP39a,(firSA25b,firSP40b),firSP40a,penIT11b,penIT11a),(ovi47a,ovi47b));'";
+	
+		//varnames = varnames.replace(' ', '_');
+		List setids = new java.util.ArrayList<BigDecimal>();
+		
+		/* dont use all because varids ordering is fixed by the caller
+		if(varids.equals("all")) {
+			setids.addAll( getMapId2Variety().keySet() );
+			return  constructMDSPlot(null, scale, true);
+		} else {
+			String[] ids = varids.split(",");			
+			for(int i=0; i<ids.length; i++) setids.add(BigDecimal.valueOf(Long.parseLong(ids[i])));
+			return  constructMDSPlot(setids, scale, false);
+		}
+		*/
+		
+		String[] ids = varids.split(",");			
+		for(int i=0; i<ids.length; i++) setids.add(BigDecimal.valueOf(Long.parseLong(ids[i])));
+		return  constructMDSPlot(setids, scale, isAll);
+	}
+
+
+	public double[][] constructMDSPlot(List<BigDecimal> germplasms,  String scale, boolean isAll) {
+		return constructMDSPlot( germplasms,  scale, isAll, -1);
+	}
+	
+	public double[][] constructMDSPlot(List<BigDecimal> germplasms,  String scale, boolean isAll, int topN) {
+	
+		if(isAll)
+			return constructMDSPlotFromCore(germplasms);
+			
+		
+		
+		dist3kdao = (VarietyDistanceDAO)AppContext.checkBean(dist3kdao, "VarietyDistanceDAO");
+		
+		MemoryMXBean bean = ManagementFactory.getMemoryMXBean(); 
+		System.out.println("heap space used MB:" +   bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
+		//Collector
+		bean.gc();
+		System.out.print("GC successful");
+		System.out.println("heap space used MB:" +  bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
+		
+		
+		
+//		BasicSymmetricalDistanceMatrix symdistmatrix = new BasicSymmetricalDistanceMatrix(germplasms.size());
+		java.util.Map<BigDecimal, Integer> mapVarid2Row = new java.util.HashMap<BigDecimal, Integer>();
+		
+
+		int distscale =  Integer.parseInt(scale);
+		//List listdist =  dist3kdao.findVarieties(buffIrisId.toString());
+		List<VarietyDistance> listdist;
+
+		int i=0;
+
+		java.util.Iterator<BigDecimal> itgerm=germplasms.iterator();
+		while(itgerm.hasNext()) {
+			BigDecimal c = itgerm.next();
+			mapVarid2Row.put(c , i);
+			i++;			
+		}
+
+		
+		/*
+		if(isAll)
+			if(topN>0)
+				listdist =  dist3kdao.findAllVarietiesTopN(topN);
+			else
+				listdist =  dist3kdao.findAllVarieties();
+		else	
+			listdist =  dist3kdao.findVarieties(new HashSet(germplasms));
+		
+		if(topN>0) {
+			System.out.println("ORIG:" +  listdist.size() + " distances; varieties " + germplasms.size());
+			germplasms=new HashSet();
+			java.util.Iterator<VarietyDistance>  itdist = listdist.iterator();
+			while(itdist.hasNext())
+			{
+				VarietyDistance dist3k = itdist.next();
+				germplasms.add(dist3k.getVar1());
+				germplasms.add(dist3k.getVar2());
+			}
+			listdist =  dist3kdao.findVarieties(germplasms);
+			
+			symdistmatrix = new BasicSymmetricalDistanceMatrix(germplasms.size());
+			mapVarid2Row = new java.util.HashMap<BigDecimal, Integer>();
+			itgerm=germplasms.iterator();
+			i=0;
+			while(itgerm.hasNext()) {
+				BigDecimal c = itgerm.next();
+				symdistmatrix.setIdentifier( i, "varid_" + mapId2Variety.get(c).getVarietyId() );
+
+				mapVarid2Row.put(c , i);
+				
+				//buffVarId.append( c );
+				
+				//if(itgerm.hasNext()) {
+				//	buffVarId.append(",");
+				//}			
+				i++;			
+			
+			}
+		}
+		
+
+		System.out.println("topN:" + listdist.size() + " distances; varieties " + germplasms.size());
+*/		
+		
+		if(isAll) {
+			listdist =  dist3kdao.findAllVarieties();
+			i = listdist.size();
+		}
+		else {
+			listdist =  dist3kdao.findVarieties(new HashSet(germplasms));
+		}
+		
+		java.util.Iterator<VarietyDistance>  itdist = listdist.iterator();
+		double input[][] = new double[i][i];
+		
+		while(itdist.hasNext())
+		{
+			
+			VarietyDistance dist3k = itdist.next();
+
+			if(!mapVarid2Row.containsKey(dist3k.getVar1()) ) continue ; //throw new RuntimeException("No key " + dist3k.getVar1() + " in mapVarid2Row");
+			if(!mapVarid2Row.containsKey(dist3k.getVar2()) ) continue ; //throw new RuntimeException("No key " + dist3k.getVar2() + " in mapVarid2Row");
+
+			Double dist = dist3k.getDist().doubleValue()*distscale; // Double.valueOf( dist3k.getDist().toString() )*distscale;;
+			//System.out.println(dist3k.getIrisid1() + " "  +  dist3k.getIrisid2() + " " + dist) ;
+			
+			input[ mapVarid2Row.get(dist3k.getVar1() )][mapVarid2Row.get(dist3k.getVar2())] = dist ;
+			input[ mapVarid2Row.get(dist3k.getVar2() )][mapVarid2Row.get(dist3k.getVar1())] = dist ;
+		}
+		
+		itdist = null;
+		listdist = null;
+		
+		
+		
+		
+		System.out.println("heap space used MB:" +   bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
+		
+		//Collector
+		bean.gc();
+		
+		
+		System.out.print("GC successful");
+		System.out.println("heap space used MB:" +  bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
+		
+		
+		return mdsj.MDSJ.classicalScaling(input);
+		
+		
+	}
+	
+	private double[][] constructMDSPlotFromCore(List<BigDecimal> germplasms)
+	{
+		Map<String, double[]> mapCode2XY = Data.get3kCoreMDSXY();
+		
+		
+		germ2dao = (VarietyDAO)AppContext.checkBean(germ2dao, "VarietyBasicprop2DAO");
+		
+		Iterator<VIricstockBasicprop2> itVars = germ2dao.findAllVariety().iterator();
+		Map<BigDecimal,VIricstockBasicprop2> mapId2Var = new HashMap();
+		while(itVars.hasNext()) {
+			VIricstockBasicprop2 var = itVars.next();
+			mapId2Var.put(var.getVarietyId(), var);
+		}
+		
+		Iterator itId = germplasms.iterator();
+		
+		double xy[][] = new double[2][germplasms.size()];
+		
+		
+		int i=0;
+		while(itId.hasNext()) {
+			VIricstockBasicprop2 var = mapId2Var.get(itId.next());
+			if(var.getIrisId()!=null && !var.getIrisId().isEmpty()) {
+				  double xyi[] = mapCode2XY.get( var.getIrisId().replace(" ", "_").toUpperCase() );
+				  xy[0][i] = xyi[0];
+				  xy[1][i] = xyi[1];
+				  i++;
+			} else if(var.getBoxCode()!=null && !var.getBoxCode().isEmpty() ) {
+				  double xyi[] = mapCode2XY.get( var.getBoxCode().toUpperCase() );
+				  xy[0][i] = xyi[0];
+				  xy[1][i] = xyi[1];
+				  i++;
+			}
+			
+		}
+		System.out.println(i + " varieties in MDS all");
+		
+		return xy;
+	}
+	
 
 	public java.util.Map<String, Variety> getMapVarname2Variety() {
 		if(mapVarname2Variety==null) initNames();
@@ -511,6 +931,7 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 	public  Map<String,BigDecimal>  getPhenotypeDefinitions() {
 		// TODO Auto-generated method stub
 		if(phenotypeDefinitions==null) initMoreConstraints();
+		phenotype_type=PHENOTYPETYPE_NONE;
 		return phenotypeDefinitions;
 	}
 	
@@ -523,6 +944,7 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 
 	}	
 
+	/*
 	@Override
 	public Set getPhenotypeUniqueValues(String definition) {
 		cvphenotypeValuesDao = (CvTermUniqueValuesDAO)AppContext.checkBean(cvphenotypeValuesDao, "VCvPhenotypeValuesDAO");
@@ -530,8 +952,27 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 		Set values = cvphenotypeValuesDao.getUniqueValues(phenotypeDefinitions.get(definition));
 		System.out.println( definition + "  =>  " + phenotypeDefinitions.get(definition) + "   values=" + values.size() + " : " + values);
 		return values;
-	}	
+	}
+	*/	
 
+	@Override
+	public Set getPhenotypeUniqueValues(String definition) {
+		cvphenotypeQuanValuesDao = (CvTermUniqueValuesDAO)AppContext.checkBean(cvphenotypeQuanValuesDao, "VCvPhenotypeQuanValuesDAO");
+		Set values = cvphenotypeQuanValuesDao.getUniqueValues(phenotypeDefinitions.get(definition));
+		System.out.println( definition + "  =>  " + phenotypeDefinitions.get(definition) + "   values=" + values.size() + " : " + values);
+		
+		phenotype_type=PHENOTYPETYPE_QUAN;
+		
+		if(values.size()==1 && values.iterator().next()==null ) {
+			
+			cvphenotypeQualValuesDao = (CvTermUniqueValuesDAO)AppContext.checkBean(cvphenotypeQualValuesDao, "VCvPhenotypeQualValuesDAO");
+			values = cvphenotypeQualValuesDao.getUniqueValues(phenotypeDefinitions.get(definition));
+			System.out.println( definition + "  =>  " + phenotypeDefinitions.get(definition) + "   values=" + values.size() + " : " + values);
+			phenotype_type=PHENOTYPETYPE_QUAL;
+		}
+		return values;
+	}
+	
 	@Override
 	public List getVarietyByPassport(String definition, String value) {
 		varbypassportdao = (VarietyByPassportDAO)AppContext.checkBean(varbypassportdao, "VIricstocksByPassportDAO");
@@ -539,10 +980,44 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 	}
 	
 	@Override
-	public List getVarietyByPhenotype(String definition, String comparator,  String qualvalue, BigDecimal quanvalue) {
+	public List getVarietyByPhenotype(String definition, String comparator,  String value) {
+		
+		varbyphenotypedao = (VarietyByPhenotypeDAO)AppContext.checkBean(varbyphenotypedao, "VIricstocksByPhenotypeDAO");
+		
+		/*
+		@Autowired
+		@Qualifier("VCvPhenotypeQualValuesDAO")
+		private CvTermUniqueValuesDAO cvphenotypeQualValuesDao;
+		
+		@Autowired
+		@Qualifier("VCvPhenotypeQuanValuesDAO")
+		private CvTermUniqueValuesDAO cvphenotypeQuanValuesDao;
+		*/
+		
+		if(phenotype_type==PHENOTYPETYPE_QUAN) {
+			
+			if(comparator.equals(COMPARATOR_EQUALS) ) {
+				return varbyphenotypedao.findVarietyByQuanPhenotypeEquals(phenotypeDefinitions.get(definition),  Double.valueOf(value));
+			} else if( comparator.equals(COMPARATOR_LESSTHAN) ){
+				return varbyphenotypedao.findVarietyByQuanPhenotypeLessThan(phenotypeDefinitions.get(definition),  Double.valueOf(value));
+			} else if( comparator.equals(COMPARATOR_GREATERTHAN) ){
+				return varbyphenotypedao.findVarietyByQuanPhenotypeGreaterThan(phenotypeDefinitions.get(definition),  Double.valueOf(value));
+			}
+			
+		} else if(phenotype_type==PHENOTYPETYPE_QUAL) {
+			return varbyphenotypedao.findVarietyByQualPhenotypeEquals(phenotypeDefinitions.get(definition), value);
+		}
+		
 		//varbypassportdao = (VarietyByPassportDAO)AppContext.checkBean(varbypassportdao, "VIricstocksByPassportDAO");
 		//return varbypassportdao.findVarietyByPassportEquals(phenotypeDefinitions.get(definition), value);
 		return null;
 	}
+
+
+
+
+	
+	
+	
 	
 }

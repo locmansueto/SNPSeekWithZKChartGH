@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -228,7 +229,39 @@ public class VSnpAllvarsDAOImpl extends AbstractJpaDao<VSnpAllvars> implements
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public Set<SnpsAllvars> findVSnpAllvarsByVarsChrPosBetween(Integer chr, java.math.BigDecimal start, java.math.BigDecimal end , Collection<BigDecimal> vars, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVSnpAllvarsByVarsChrPosBetween", startResult, maxRows, new Long(chr), start, end, vars);
+		Query query;
+
+		
+		if(vars.size()>2000)
+		{	
+			java.util.Set set1 = new HashSet();
+			Iterator it=vars.iterator();
+			for(int i=0; i<1000; i++)
+				set1.add(  it.next() );
+			java.util.Set set2 = new HashSet();
+			for(int i=0; i<1000; i++)
+				set2.add(  it.next() );
+			java.util.Set set3 = new HashSet();
+			while(it.hasNext())
+				set3.add(it.next());
+			
+			query = createNamedQuery("findVSnpAllvarsByVarsChrPosBetween3", startResult, maxRows, new Long(chr+2), start, end, set1, set2, set3);
+			
+		} else if(vars.size()>1000)
+		{
+			java.util.Set set1 = new HashSet();
+			Iterator it=vars.iterator();
+			for(int i=0; i<1000; i++)
+				set1.add(  it.next() );
+			java.util.Set set2 = new HashSet();
+			while(it.hasNext())
+				set2.add(it.next());
+			
+			query = createNamedQuery("findVSnpAllvarsByVarsChrPosBetween2", startResult, maxRows, new Long(chr+2), start, end, set1, set2);
+			
+		} else
+			 query = createNamedQuery("findVSnpAllvarsByVarsChrPosBetween", startResult, maxRows, new Long(chr+2), start, end, vars);
+		
 		return new LinkedHashSet<SnpsAllvars>(query.getResultList());
 	}
 	
@@ -372,6 +405,34 @@ public class VSnpAllvarsDAOImpl extends AbstractJpaDao<VSnpAllvars> implements
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
+	
+	@Override
+	public Set<SnpsAllvars> findVSnpAllvarsByVarsChrPosBetweenRefmismatch(
+			Integer valueOf, BigDecimal valueOf2, BigDecimal valueOf3,
+			Set<BigDecimal> varsMismatch, boolean isCore) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<SnpsAllvars> findVSnpAllvarsByVarsChrPosBetween(Integer valueOf,
+			BigDecimal valueOf2, BigDecimal valueOf3,
+			Set<BigDecimal> varsMismatch, boolean isCore) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<SnpsAllvars> findVSnpAllvarsByVarsChrPosBetweenRefmismatch(
+			Integer valueOf, BigDecimal valueOf2, BigDecimal valueOf3,
+			long firstRow, long l, boolean isCore) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	
 	
 	

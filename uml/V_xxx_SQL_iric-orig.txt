@@ -1,3 +1,8 @@
+V_SNP_ALLVARS_POS
+select sf.snp_feature_id, to_number(replace(upper(f.name),'CHR','')) as chr,  sfl.position as pos,  sf.refcall as refnuc
+from snp_feature sf, snp_featureloc sfl, feature f  
+where sf.snp_feature_id=sfl.snp_feature_id
+and f.feature_id=sfl.srcfeature_id
 
 V_IRICSTOCK_DISTANCE
 select stock1.iric_stock_id as var1, stock2.iric_stock_id as var2 ,dist_3k.dist

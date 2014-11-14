@@ -1,3 +1,3 @@
 eclipse.preferences.version=1
-validator.Checked=WebRoot/helpndoc/js/jquery.min.js
+validator.Checked=WebRoot/helpndoc/js/jquery.min.js,src/org/irri/iric/portal/admin/zkui/CancelQueryThread.java,WebRoot/WEB-INF/web.servlet-2.3.xml,WebRoot/helpndoc
 validator.Unchecked=

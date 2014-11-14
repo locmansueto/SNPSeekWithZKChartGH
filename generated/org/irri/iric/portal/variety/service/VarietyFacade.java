@@ -107,7 +107,7 @@ public interface VarietyFacade {
 	 * @param scale
 	 * @return
 	 */
-	public String constructPhylotree(String ids, String scale);
+	public String constructPhylotree(String ids, String scale, String requestid);
 	
 	/**
 	 * Construct phylogenetic tree from set of variety IDs
@@ -115,7 +115,20 @@ public interface VarietyFacade {
 	 * @param scale
 	 * @return
 	 */
-	public String constructPhylotree(Set<BigDecimal> germplasms, String scale);
+	public String constructPhylotree(Set<BigDecimal> germplasms, String scale, String requestid);
+	
+	public String constructPhylotree(String varids, String scale, String topN, String requestid);
+
+	/**
+	 * 
+	 * @param germplasms	list of variety Ids (include even if showAll=true because it's used in ordering)
+	 * @param scale
+	 * @param showAll		all varieties are used
+	 * @return
+	 */
+	public double[][] constructMDSPlot(List<BigDecimal> germplasms, String scale, boolean showAll);
+	public double[][] constructMDSPlot(String ids, String scale,  boolean showAll);
+	
 	
 	/**
 	 * Get variety matching properties in example
@@ -176,8 +189,17 @@ public interface VarietyFacade {
 	 * @param quanvalue
 	 * @return
 	 */
-	public List getVarietyByPhenotype(String definition, String comparator,
-			String qualvalue, BigDecimal quanvalue);
+	public List getVarietyByPhenotype(String definition, String comparator, String value);
+
+	
+	/**
+	 * 
+	 * @param names	  comma separated names or iris ids
+	 * @return
+	 */
+	public List getGermplasmsByNameOrIrisid(String names);
+
+	public Map getIrisId2Variety();
 	
 	
 	

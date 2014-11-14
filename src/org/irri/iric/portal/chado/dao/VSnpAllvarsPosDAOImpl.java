@@ -182,7 +182,7 @@ public class VSnpAllvarsPosDAOImpl extends AbstractJpaDao<VSnpAllvarsPos>
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public Set<VSnpAllvarsPos> findVSnpAllvarsPosByChr(Integer chr, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVSnpAllvarsPosByChr", startResult, maxRows, chr);
+		Query query = createNamedQuery("findVSnpAllvarsPosByChr", startResult, maxRows, "Chr" + chr.toString());
 		return new LinkedHashSet<VSnpAllvarsPos>(query.getResultList());
 	}
 
@@ -198,7 +198,9 @@ public class VSnpAllvarsPosDAOImpl extends AbstractJpaDao<VSnpAllvarsPos>
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public Set<VSnpAllvarsPos> findVSnpAllvarsPosByChrPosBetween(Integer chr, java.math.BigDecimal start, java.math.BigDecimal end, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVSnpAllvarsPosByChrPosBetween", startResult, maxRows, chr, start, end);
+		
+	//	System.out.println(chr + "  " +  chr.TYPE);
+		Query query = createNamedQuery("findVSnpAllvarsPosByChrPosBetween", startResult, maxRows, "Chr" + chr , start, end);
 		return new LinkedHashSet<VSnpAllvarsPos>(query.getResultList());
 	}
 	
@@ -261,8 +263,17 @@ public class VSnpAllvarsPosDAOImpl extends AbstractJpaDao<VSnpAllvarsPos>
 		return true;
 	}
 
+	
+	
 	@Override
-	public List getSNPs(String chromosome, Integer startPos, Integer endPos) {
+	public List getSNPs(String chromosome, Integer startPos, Integer endPos, BigDecimal type,
+			int firstRow, int maxRows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List getSNPs(String chromosome, Integer startPos, Integer endPos, BigDecimal type) {
 		// TODO Auto-generated method stub
 		List list = new java.util.ArrayList();
 		
@@ -291,6 +302,14 @@ public class VSnpAllvarsPosDAOImpl extends AbstractJpaDao<VSnpAllvarsPos>
 	
 	private Session getSession() {
 		return entityManager.unwrap(Session.class);
+	}
+
+	@Override
+	public List getSNPsInChromosome(String chr, List posset, BigDecimal type) {
+		// TODO Auto-generated method stub
+		return null;
 	}	
+
+	
 	
 }

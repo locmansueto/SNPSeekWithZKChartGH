@@ -443,34 +443,34 @@ public class VIricstocksByPhenotypeDAOImpl extends AbstractJpaDao<VIricstocksByP
 	
 	@Override
 	@Transactional
-	public List findVarietyByQuanPhenotypeLessThan(Phenotype phen, double value) {
+	public List findVarietyByQuanPhenotypeLessThan(BigDecimal phen, double value) {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanLessthan", -1,-1, phen.getPhenotypeId(), BigDecimal.valueOf(value));
+		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanLessthan", -1,-1, phen, BigDecimal.valueOf(Double.valueOf(value)));
 		return query.getResultList();
 	}
 
 	@Override
 	@Transactional
-	public List findVarietyByQuanPhenotypeGreaterThan(Phenotype phen,
+	public List findVarietyByQuanPhenotypeGreaterThan(BigDecimal phen,
 			double value) {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanGreaterthan", -1, -1, phen.getPhenotypeId(), BigDecimal.valueOf(value));
+		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanGreaterthan", -1, -1, phen, BigDecimal.valueOf(value));
 		return query.getResultList();
 	}
 
 	@Override
 	@Transactional
-	public List findVarietyByQuanPhenotypeEquals(Phenotype phen, int value) {
+	public List findVarietyByQuanPhenotypeEquals(BigDecimal phen, double value) {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanEquals", -1, -1, phen.getPhenotypeId(), BigDecimal.valueOf(value));
+		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanEquals", -1, -1, phen, BigDecimal.valueOf(value));
 		return query.getResultList();
 	}
 
 	@Override
 	@Transactional
-	public List findVarietyByQualPhenotypeEquals(Phenotype phen, String value) {
+	public List findVarietyByQualPhenotypeEquals(BigDecimal phen, String value) {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQualEquals", -1, -1, phen.getPhenotypeId(), value);
+		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQualEquals", -1, -1, phen, value);
 		return query.getResultList();
 	}
 	

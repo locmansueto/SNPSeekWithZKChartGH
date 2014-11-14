@@ -32,7 +32,7 @@ public class VSnpAllvarsMinPK implements Serializable {
 	/**
 	 */
 
-	@Column(name = "CHR", nullable = false)
+	@Column(name = "PARTITION_ID", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	public Long chr;
@@ -64,13 +64,13 @@ public class VSnpAllvarsMinPK implements Serializable {
 	/**
 	 */
 	public void setChr(Long chr) {
-		this.chr = chr;
+		this.chr = chr+2;
 	}
 
 	/**
 	 */
 	public Long getChr() {
-		return this.chr;
+		return this.chr-2;
 	}
 
 	/**

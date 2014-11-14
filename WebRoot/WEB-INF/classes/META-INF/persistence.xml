@@ -12,14 +12,27 @@
 				<class>org.irri.iric.portal.chado.domain.VSnpAllvars2</class>
 				<class>org.irri.iric.portal.chado.domain.VSnp2varsCountmismatch</class>
 				<class>org.irri.iric.portal.chado.domain.VSnpAllvarsPos</class>
+				<class>org.irri.iric.portal.chado.domain.MvCoreSnps</class>
 				
 				<class>org.irri.iric.portal.chado.domain.VSnpAllvarsMin</class>
+				
+				<class>org.irri.iric.portal.chado.domain.MismatchCount</class>
+				<class>org.irri.iric.portal.chado.domain.SnpcoreMismatchAlleles</class>
+				<class>org.irri.iric.portal.flatfile.domain.SnpcoreRefposindex</class>
+				<class>org.irri.iric.portal.flatfile.domain.VSnpRefposindex</class>
+				
+				<class>org.irri.iric.portal.admin.domain.VOracleSessions</class>
+				
+				<!-- class>org.irri.iric.portal.flatfile.dao.SnpsStringAllvarsImpl</class -->
+				
 				
 				<class>org.irri.iric.portal.chado.domain.VIricstockPhenotype</class>		
 								
 				<class>org.irri.iric.portal.chado.domain.VGene</class>
       			<class>org.irri.iric.portal.chado.domain.VIricstockPassport</class>
 				<class>org.irri.iric.portal.chado.domain.VIricstockBasicprop</class>
+				<class>org.irri.iric.portal.chado.domain.VIricstockBasicprop2</class>
+				<class>org.irri.iric.portal.chado.domain.IricStock</class>
 				<class>org.irri.iric.portal.chado.domain.VIricstockDistance</class>
 
 				<class>org.irri.iric.portal.chado.domain.VIricstocksByPassport</class>
@@ -29,6 +42,8 @@
 
 				<class>org.irri.iric.portal.chado.domain.VIricstockPassportValues</class>
 				<class>org.irri.iric.portal.chado.domain.VIricstockPhenotypeValues</class>
+				<class>org.irri.iric.portal.chado.domain.VIricstockPhenotypeQuanval</class>
+				<class>org.irri.iric.portal.chado.domain.VIricstockPhenotypeQualval</class>
 
    			<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		</persistence-unit>

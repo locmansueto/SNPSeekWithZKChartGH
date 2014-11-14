@@ -57,27 +57,28 @@ a.rvts10, span.rvts10
  color: #008000;
  text-decoration: underline;
 }
-span.rvts11 /* Font Style */
+a.rvts11, span.rvts11
+{
+ color: #0000ff;
+ text-decoration: underline;
+}
+span.rvts12 /* Font Style */
 {
  font-family: 'Tahoma', 'Geneva', sans-serif;
  font-style: italic;
  color: #c0c0c0;
 }
-a.rvts12, span.rvts12 /* Font Style */
+a.rvts13, span.rvts13 /* Font Style */
 {
  font-family: 'Tahoma', 'Geneva', sans-serif;
  font-style: italic;
  color: #6666ff;
  text-decoration: underline;
 }
-span.rvts13
-{
- font-size: 10.5pt;
- font-style: italic;
-}
 span.rvts14
 {
  font-size: 10.5pt;
+ font-style: italic;
 }
 span.rvts15
 {
@@ -86,7 +87,6 @@ span.rvts15
 span.rvts16
 {
  font-size: 10.5pt;
- font-family: 'Times New Roman', 'Times', serif;
 }
 span.rvts17
 {
@@ -104,10 +104,14 @@ a.rvts19, span.rvts19
  color: #0000ff;
  text-decoration: underline;
 }
-a.rvts20, span.rvts20
+span.rvts20
 {
- color: #0000ff;
- text-decoration: underline;
+ font-size: 10.5pt;
+ font-weight: bold;
+}
+span.rvts21
+{
+ font-weight: bold;
 }
 /* ========== Para Styles ========== */
 p,ul,ol /* Paragraph Style */
@@ -160,13 +164,9 @@ p,ul,ol /* Paragraph Style */
 .rvps9
 {
  line-height: 1.50;
-}
-.rvps10
-{
- line-height: 1.50;
  margin: 0px 0px 0px 24px;
 }
-.rvps11
+.rvps10
 {
  text-align: left;
  text-indent: 0px;
@@ -174,33 +174,50 @@ p,ul,ol /* Paragraph Style */
  padding: 0px 0px 0px 0px;
  margin: 16px 0px 4px 0px;
 }
-.rvps12
+.rvps11
 {
  margin: 0px 0px 0px 24px;
 }
-.rvps13
+.rvps12
 {
  text-indent: 48px;
  line-height: 1.50;
 }
-.rvps14
+.rvps13
 {
  margin: 0px 0px 0px 48px;
+}
+.rvps14
+{
+ line-height: 1.50;
+ margin: 0px 0px 0px 24px;
 }
 .rvps15
 {
  line-height: 1.50;
- margin: 0px 0px 0px 24px;
+ margin: 0px 0px 0px 48px;
 }
 .rvps16
 {
- line-height: 1.50;
+ text-indent: 48px;
  margin: 0px 0px 0px 48px;
 }
 .rvps17
 {
+ line-height: 1.50;
+ margin: 0px 0px 0px 72px;
+}
+.rvps18
+{
  text-indent: 48px;
- margin: 0px 0px 0px 48px;
+ line-height: 1.50;
+ margin: 0px 0px 0px 24px;
+}
+.rvps19
+{
+ text-align: center;
+ line-height: 1.50;
+ margin: 0px 0px 0px 24px;
 }
 /* ========== Lists ========== */
 .list0 {text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;}

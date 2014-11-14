@@ -7,14 +7,6 @@ import org.zkoss.zul.RowRenderer;
 public class SNPAllvarsRowRenderer implements SNPRowRendererStyle, RowRenderer{
 
 
-
-	private static String STYLE_INTERESTING = "font-weight:bold;color:red";
-	private static String STYLE_BORING = "";
-	private static String STYLE_DIFFFROMREF = "font-weight:bold;color:red";
-	private static String STYLE_HEADERNARROW = "font-weight:normal;color:black;background-color:lightgray;font-family:Arial Narrow;";
-	private static String STYLE_HEADER = "font-weight:bold;color:black;background-color:lightgray;";
-	private static String STYLE_SAMEASREF = "";
-	
 	
 	private int colorMode = COLOR_MISMATCH;	// 0
 	
@@ -26,6 +18,7 @@ public class SNPAllvarsRowRenderer implements SNPRowRendererStyle, RowRenderer{
 		// TODO Auto-generated method stub
 		
 		Row row = (Row)arg0;
+		row.setAlign("center");
 		String[] varrow = (String[])arg1;
 
 		if(arg2==0 || arg2==1) {
@@ -44,6 +37,7 @@ public class SNPAllvarsRowRenderer implements SNPRowRendererStyle, RowRenderer{
 				for( int j=2; j<varrow.length; j++ ) 
 				{
 					newcell= new Label(varrow[j]);
+					
 					newcell.setStyle(STYLE_HEADERNARROW);
 					newcell.setParent(row);
 				}
@@ -51,6 +45,7 @@ public class SNPAllvarsRowRenderer implements SNPRowRendererStyle, RowRenderer{
 				for( int j=2; j<varrow.length; j++ ) 
 				{
 					newcell= new Label(varrow[j]);
+	
 					newcell.setStyle(STYLE_HEADER);
 					newcell.setParent(row);
 				}
@@ -71,10 +66,15 @@ public class SNPAllvarsRowRenderer implements SNPRowRendererStyle, RowRenderer{
 				if(element==null || element.isEmpty() ||  mapIdx2Refnuc==null || mapIdx2Refnuc.get(j)==null  )
 					new Label("").setParent(row);
 				//else if(mapIdx2Refnuc.get(j).equals(element.charAt(0) ))
-				else if(mapIdx2Refnuc.get(j).toString().equals(element ))
-					new Label(element).setParent(row);
+				else if(mapIdx2Refnuc.get(j).toString().equals(element )) {
+					Label newlabel = new Label(element);
+					
+					newlabel.setStyle(STYLE_BORING);
+					newlabel.setParent(row);
+				}
 				else {
-						Label newlabel = new Label(element);
+						Label newlabel = new Label( element);
+						
 						newlabel.setStyle(STYLE_DIFFFROMREF);
 						newlabel.setParent(row);
 				}
@@ -88,7 +88,8 @@ public class SNPAllvarsRowRenderer implements SNPRowRendererStyle, RowRenderer{
 				if(element==null || element.isEmpty() ||  mapIdx2Refnuc==null || mapIdx2Refnuc.get(j)==null  )
 					new Label("").setParent(row);
 				else {
-					Label newlabel = new Label(element);
+					Label newlabel = new Label( element);
+					
 					if(element.equals("A")) newlabel.setStyle(STYLE_A);
 					else if(element.equals("T")) newlabel.setStyle(STYLE_T);
 					else if(element.equals("G")) newlabel.setStyle(STYLE_G);

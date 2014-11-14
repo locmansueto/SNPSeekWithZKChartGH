@@ -1,8 +1,12 @@
 package org.irri.iric.portal.variety.zkui;
 
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.domain.VarietyPlus;
+import org.irri.iric.portal.domain.VarietyPlusPlus;
 //import org.irri.iric.portal.genotype.views.Snp2linesId;
 //import org.irri.iric.portal.variety.domain.List3k;
 //import org.irri.iric.portal.variety.domain.Germplasm;
@@ -21,6 +25,7 @@ public class VarietyListItemRenderer implements ListitemRenderer {
 	private static String STYLE_INTERESTING = "font-weight:bold;color:red";
 	private static String STYLE_BORING = "";
 	
+	private boolean isBasic = true;
 	
 	/* (non-Javadoc)
 	 * @see org.zkoss.zul.ListitemRenderer#render(org.zkoss.zul.Listitem, java.lang.Object, int)
@@ -30,17 +35,28 @@ public class VarietyListItemRenderer implements ListitemRenderer {
 		// TODO Auto-generated method stub
 			Variety  item = (Variety)value;
 		
+			if(item==null || listitem==null) return;
 	
 	        // keep value in listitem
 	        listitem.setValue(value);
 
+	        
+	        
 	        addListcell(listitem, item.getName());
 	        addListcell(listitem, item.getIrisId());
 	        addListcell(listitem, item.getSubpopulation());
 	        addListcell(listitem, item.getCountry());
 	        
-	        if(item instanceof VarietyPlus ) {
-	        	addListcell(listitem, ((VarietyPlus)item).getValue().toString() );
+	        if(!isBasic) {
+		        if(item instanceof VarietyPlusPlus) {
+		        	Iterator itValues = ((VarietyPlusPlus)item).getValueMap().values().iterator();
+		        	while(itValues.hasNext()) {
+		        		addListcell(listitem,  itValues.next().toString() );
+		        	}
+		        }
+		        else if(item instanceof VarietyPlus ) {
+		        	addListcell(listitem, ((VarietyPlus)item).getValue().toString() );
+		        }
 	        }
 	       
 	    }
@@ -57,5 +73,11 @@ public class VarietyListItemRenderer implements ListitemRenderer {
 	        lb.setParent(lc);
 	        lc.setParent(listitem);
 	    }
+
+		public void setBasic(boolean isBasic) {
+			this.isBasic = isBasic;
+		}
+	    
+	    
 
 }

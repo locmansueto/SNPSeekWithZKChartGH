@@ -2,6 +2,14 @@ package org.irri.iric.portal;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +26,7 @@ import org.zkoss.zkplus.spring.SpringUtil;
  *
  * @author Siegfried Bolz
  */
+
 public class AppContext {
 
 	private static final Log log = LogFactory.getLog(AppContext.class);
@@ -31,20 +40,24 @@ public class AppContext {
 	/**
 	 * is Amazon Web Service compile?
 	 */
-	private static final boolean isAWS = false;
-	
-	private static final boolean isPollux = true;
-	
-	/**
-	 * using the Chado Schema?
-	 */
-	private static final boolean isChado = false;
+	private static final boolean isAWS = true;
+	private static final boolean isVMIRRI = false;
+	private static final boolean isPollux = false;
+	private static final boolean isLocalhost = false;
 	
 	/**
 	 * is development
 	 */
-	private static final boolean isDev = true;
+	private static final boolean isDev = false;
 
+
+
+	/**
+	 * using the Chado Schema?
+	 */
+	private static final boolean isChado = true;
+	
+	
     private static ApplicationContext ctx;
     
     /**
@@ -69,6 +82,13 @@ public class AppContext {
     }
     
     /**
+     * default core/all SNP set
+     */
+    public static boolean isCore() {
+    	return false;
+    }
+    
+    /**
      * write period since start/last reset
      * and restart the timer
      * @param report
@@ -84,12 +104,15 @@ public class AppContext {
     	if(isAWS)
     		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
     		return "/usr/share/apache-tomcat-7.0.55/webapps/" + getHostDirectory() + "/tmp/";
-    	else if(isPollux)
-    		return  "/usr/share/apache-tomcat-7.0.42/webapps/" +  getHostDirectory() + "/tmp/";
-    	else 
+    	else  if(isVMIRRI)
     		// vm-iric-portal
     		return "/opt/tomcat7/webapps/" +  getHostDirectory() + "/tmp/";
+    	else if(isLocalhost)
+    		return "E:/MyEclipse for Spring 2014/plugins/com.genuitec.eclipse.easie.tomcat7.myeclipse_11.5.0.me201310302042/tomcat/bin/iric-portal/tmp/";
+    	else if(isPollux)
+    		return  "/usr/share/apache-tomcat-7.0.42/webapps/" +  getHostDirectory() + "/tmp/";
     	
+    	return null;
     }
     
     /**
@@ -99,11 +122,23 @@ public class AppContext {
     public static String getHostname() {
     	if(isAWS)
     		return "http://oryzasnp.org";
+    	else if(isVMIRRI)
+    		return "http://202.123.56.26:8080";
     	else if(isPollux)
     		return "http://pollux:8080";
     	else
     		return "http://172.29.4.26:8080"; 
     	//return "http://localhost";
+    }
+    
+    
+    public static String getFlatfilesDir() {
+    	if(isLocalhost)
+    		return "E:/My Document/Transfer/3kcore_alleles/";
+    	else if(isAWS)
+    		return "/data/lmansueto/iric-portal-files/";
+    	else
+    		return "/home/lmansueto/iric-portal-files/";
     }
     
     /**
@@ -122,8 +157,12 @@ public class AppContext {
      * @return
      */
     public static String getHostDirectory() {
-    	if(isDev) 
-    		return "iric-portal-dev";
+    	if(isDev) {
+    		if(isAWS)
+    			return "iric-portal-test";
+    		else
+    			return "iric-portal-dev";
+    	}
     	else 
     		return "iric-portal";
     }
@@ -155,6 +194,87 @@ public class AppContext {
     public static ApplicationContext getApplicationContext() {
         return ctx;
     }
+    
+    /**
+     * Slice a large set into groups of 1000, (for oracle IN has limit 1000)
+     * @param vars
+     * @return
+     */
+    public static Set[] setSlicer(Set vars) {
+	    if(vars.size()>2000)
+		{	
+			java.util.Set set1 = new HashSet();
+			Iterator it=vars.iterator();
+			for(int i=0; i<1000; i++)
+				set1.add(  it.next() );
+			java.util.Set set2 = new HashSet();
+			for(int i=0; i<1000; i++)
+				set2.add(  it.next() );
+			java.util.Set set3 = new HashSet();
+			while(it.hasNext())
+				set3.add(it.next());
+			
+			return new Set[] {set1, set2, set3};
+			
+		} else if(vars.size()>1000)
+		{
+			java.util.Set set1 = new HashSet();
+			Iterator it=vars.iterator();
+			for(int i=0; i<1000; i++)
+				set1.add(  it.next() );
+			java.util.Set set2 = new HashSet();
+			while(it.hasNext())
+				set2.add(it.next());
+
+			return new Set[] {set1, set2};
+			
+		} else
+			return new Set[] {vars};
+    }
+    
+    public static List setSlicerIds(Set varIds) {
+    	List<String> listVaridSets= new ArrayList();
+		if(varIds!=null && !varIds.isEmpty()) {
+			// create varids list
+			Set[] sets = AppContext.setSlicer(varIds);
+			
+			for(int iset=0; iset<sets.length; iset++) {
+				
+				StringBuffer buff = new StringBuffer();
+				Iterator<BigDecimal>  itSet = sets[iset].iterator();
+				while(itSet.hasNext()) {
+					buff.append( itSet.next() );
+					if(itSet.hasNext()) buff.append(",");
+				}
+				listVaridSets.add( buff.toString() );
+			}
+			
+		}
+		return listVaridSets;
+    }
+    
+    
+    /**
+     * if #mismatch=#snps, dist=Inf. Use this value instead
+     * @return
+     */
+    public static int getMaxPhylodistance(){
+    	return 5;
+    }
+    
+    
+    public static void displayCollection(String name, Collection col) {
+    	StringBuffer buff= new StringBuffer();
+    	buff.append(name + ": ");
+    	col=new TreeSet(col);
+    	Iterator it=col.iterator();
+    	while(it.hasNext()) { buff.append(it.next());
+    	if(it.hasNext()) buff.append(",");
+    	}
+    	
+    	System.out.println( buff );
+    }
+    
     
     /**
      * Utility to check if object is null (if autowired worked!)

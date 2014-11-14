@@ -31,7 +31,7 @@ import org.irri.iric.portal.domain.Variety;
 		@NamedQuery(name = "findVIricstockBasicpropByOriCountrySubpopulation", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where upper(myVIricstockBasicprop.oriCountry) = upper(?1) and upper(myVIricstockBasicprop.subpopulation) = upper(?2)  order by myVIricstockBasicprop.name") })
 
 
-@Table(schema = "IRIC", name = "VL_IRICSTOCK_BASICPROP")
+@Table(schema = "IRIC", name = "V_IRICSTOCK_BASICPROP")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockBasicprop")
 public class VIricstockBasicprop implements Serializable, Variety {
@@ -169,14 +169,20 @@ public class VIricstockBasicprop implements Serializable, Variety {
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
-		if (!(obj instanceof VIricstockBasicprop))
+		if (!(obj instanceof Variety)) //VIricstockBasicprop))
 			return false;
-		VIricstockBasicprop equalCheck = (VIricstockBasicprop) obj;
-		if ((iricStockId == null && equalCheck.iricStockId != null) || (iricStockId != null && equalCheck.iricStockId == null))
+		//VIricstockBasicprop equalCheck = (VIricstockBasicprop) obj;
+		Variety equalCheck = (Variety) obj;
+		
+		//return iricStockId.equals(equalCheck.getIricStockId());
+		
+		
+		if ((iricStockId == null && equalCheck.getVarietyId() != null) || (iricStockId != null && equalCheck.getVarietyId() == null))
 			return false;
-		if (iricStockId != null && !iricStockId.equals(equalCheck.iricStockId))
+		if (iricStockId != null && !iricStockId.equals(equalCheck.getVarietyId()))
 			return false;
 		return true;
+		
 	}
 
 	
@@ -220,6 +226,10 @@ public class VIricstockBasicprop implements Serializable, Variety {
 	}
 	
 	
-	
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return getName().compareTo( ((Variety)o).getName() );
+	}
 	
 }

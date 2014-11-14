@@ -1,0 +1,10 @@
+<?page title="window" contentType="text/html;charset=UTF-8"?>
+
+<zk>
+	<window width="300px" title="User Input" border="normal">
+		<label value="Provide variety list name:"/>
+		<separator/>
+		<textbox id="tb"/>
+		<button label="OK" id="okBtn"/>
+	</window>
+</zk>

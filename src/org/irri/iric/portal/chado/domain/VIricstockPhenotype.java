@@ -35,7 +35,7 @@ import org.irri.iric.portal.domain.Phenotype;
 		@NamedQuery(name = "findVIricstockPhenotypeByQualValueContaining", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.qualValue like ?1"),
 		@NamedQuery(name = "findVIricstockPhenotypeByQuanValue", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.quanValue = ?1") })
 		
-@Table(schema = "IRIC", name = "VL_IRICSTOCK_PHENOTYPE")
+@Table(schema = "IRIC", name = "V_IRICSTOCK_PHENOTYPE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockPhenotype")
 public class VIricstockPhenotype implements Serializable, Phenotype {

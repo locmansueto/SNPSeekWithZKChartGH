@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.hibernate.Session;
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.domain.VSnp2varsCountmismatch;
 import org.irri.iric.portal.domain.Snps2VarsCountmismatch;
 //import org.irri.iric.portal.genotype.views.Snp2linesId;
@@ -192,14 +193,15 @@ public class VSnp2varsCountmismatchDAOImpl extends AbstractJpaDao<VSnp2varsCount
 		return true;
 	}
 	
-	
+	/*
 	@Override
 	public List<Snps2VarsCountmismatch> countMismatch(Integer chr, BigDecimal start , BigDecimal end) {
 	
-		String sql = "select var1, var2, count(*) as mismatch from IRIC.VL_SNP_2VARS where " 
+		String sql = "select var1, var2, count(*) as mismatch from IRIC." +  AppContext.getViewPrefix() +   "_SNP_2VARS where " 
 			+ " var1nuc<>var2nuc "
 			+ " and var1nuc is not null AND var2nuc is not null "
-			+ " and chr=" + chr 
+			//+ " and chr=" + chr 
+			+ " and partition_id=" + (chr+2) 
 			+ " and pos between " + start + " and " + end 
 			+ " and var1<=var2 "
 			+ " group by var1, var2 "
@@ -213,10 +215,11 @@ public class VSnp2varsCountmismatchDAOImpl extends AbstractJpaDao<VSnp2varsCount
 	
 		String sql = "select * from " 
 				
-			+ "(select var1, var2, count(*) as mismatch from IRIC.VL_SNP_2VARS where " 
+			+ "(select var1, var2, count(*) as mismatch from IRIC." +  AppContext.getViewPrefix()   + "_SNP_2VARS where " 
 			+ " var1nuc<>var2nuc "
 			+ " and var1nuc is not null AND var2nuc is not null "
-			+ " and chr=" + chr 
+			//+ " and chr=" + chr 
+			+ " partition_id=" + (chr+2)
 			+ " and pos between " + start + " and " + end 
 			+ " and var1<=var2 "
 			+ " group by var1, var2 "
@@ -237,10 +240,11 @@ public class VSnp2varsCountmismatchDAOImpl extends AbstractJpaDao<VSnp2varsCount
 			if( itVar.hasNext() ) buff.append(",");
 		}
 		
-		String sql = "select var1, var2, count(*) as mismatch from IRIC.VL_SNP_2VARS where " 
+		String sql = "select var1, var2, count(*) as mismatch from IRIC."  +  AppContext.getViewPrefix()   + "_SNP_2VARS where " 
 			+ " var1nuc<>var2nuc "
 			+ " and var1nuc is not null AND var2nuc is not null "
-			+ " and chr=" + chr 
+			//+ " and chr=" + chr
+			+ " and partition_id=" + (chr+2)
 			+ " and pos between " + start + " and " + end 
 			+ " and var1<=var2 "
 			+ " and var1 in (" + buff.toString() + ") "
@@ -252,7 +256,9 @@ public class VSnp2varsCountmismatchDAOImpl extends AbstractJpaDao<VSnp2varsCount
 		return executeSQL(sql);
 	}
 	
-
+	*/
+	
+	
 	private List<Snps2VarsCountmismatch> executeSQL(String sql) {
 		//System.out.println("executing :" + sql);
 		//log.info("executing :" + sql);
@@ -263,6 +269,260 @@ public class VSnp2varsCountmismatchDAOImpl extends AbstractJpaDao<VSnp2varsCount
 		return entityManager.unwrap(Session.class);
 	}
 
+/*	@Override
+	public List<Snps2VarsCountmismatch> countMismatch(Integer chr,
+			BigDecimal start, BigDecimal end, boolean isCore) {
+		// TODO Auto-generated method stub
+		
+		
+//		select var1, var2,  count(*) mismatch from (
+//				  
+//				WITH subquery AS
+//				(
+//				  select sf.snp_feature_id, sg1.iric_stock_id, sg1.allele1 , sg1.partition_id, sfl.position, sf.refcall
+//				  from snp_genotype sg1
+//				    inner join snp_feature sf
+//				    on sg1.SNP_FEATURE_ID=sf.snp_feature_id
+//				    and  sg1.partition_id=3
+//				    
+//				    inner join snp_featureloc sfl
+//				    on  sfl.snp_feature_id=sf.SNP_FEATURE_ID 
+//				    and sfl.position between 50000 and 55000
+//				    and sfl.srcfeature_id in (select feature_id from feature where name = 'Chr1')
+//				)
+//				select  subqueryA.iric_stock_id var1, subqueryB.iric_stock_id var2, subqueryA.snp_feature_id snp_feature_id, subqueryA.partition_id, subqueryA.position pos, subqueryA.refcall refnuc,   subqueryA.allele1 var1nuc,  subqueryB.allele1 var2nuc
+//				from subquery subqueryA, subquery subqueryB
+//				where  subqueryA.snp_feature_id=subqueryB.snp_feature_id
+//				and subqueryA.iric_stock_id<=subqueryB.iric_stock_id
+//				and  subqueryA.allele1<>subqueryB.allele1 ) t_2vars
+//
+//				where var1<=var2
+//				group by var1, var2
+//				order by mismatch
+//		
+		
+				String chrom = "Chr" + chr;
+					
+		
+				String sql = "select var1, var2,  count(*) mismatch from ( "
+				+ "	WITH subquery AS"
+				+ "	("
+				+ "	  select sf.snp_feature_id, sg1.iric_stock_id, sg1.allele1 , sg1.partition_id, sfl.position, sf.refcall"
+				+ "	  from iric.snp_genotype sg1"
+				+ "	    inner join iric.snp_feature sf"
+				+ "		    on sg1.SNP_FEATURE_ID=sf.snp_feature_id"
+				+ "	    and  sg1.partition_id=" + (chr+2) 
+					    
+				+  "	    inner join iric.snp_featureloc sfl"
+				+ "	    on  sfl.snp_feature_id=sf.SNP_FEATURE_ID" 
+				+ "	    and sfl.position between " + start + " and " + end
+				+  "	    and sfl.srcfeature_id in (select feature_id from iric.feature where name = '" + chrom + "')"
+				+  "	) " 
+				+ " select  subqueryA.iric_stock_id var1, subqueryB.iric_stock_id var2, subqueryA.snp_feature_id snp_feature_id, subqueryA.partition_id, subqueryA.position pos, subqueryA.refcall refnuc,   subqueryA.allele1 var1nuc,  subqueryB.allele1 var2nuc "
+				+ " from subquery subqueryA, subquery subqueryB"
+				+ " where  subqueryA.snp_feature_id=subqueryB.snp_feature_id"
+				+ " and subqueryA.iric_stock_id<=subqueryB.iric_stock_id"
+				+ " and  subqueryA.allele1<>subqueryB.allele1 ) t_2vars"
+
+				+ " where var1<=var2"
+				+ " group by var1, var2"
+				+ " order by mismatch desc ";
+				
+				
+		
+		return executeSQL(sql);
+	}
+	
+
+	@Override
+	public List<Snps2VarsCountmismatch> countMismatch(Integer chr,
+			BigDecimal start, BigDecimal end, int topN, boolean isCore) {
+		// TODO Auto-generated method stub
+		String chrom = "Chr" + chr;
+			
+
+		String sql = " select * from  (" 
+				
+		+ " select var1, var2,  count(*) mismatch from ( "
+		+ "	WITH subquery AS"
+		+ "	("
+		+ "	  select sf.snp_feature_id, sg1.iric_stock_id, sg1.allele1 , sg1.partition_id, sfl.position, sf.refcall"
+		+ "	  from iric.snp_genotype sg1"
+		+ "	    inner join iric.snp_feature sf"
+		+ "		    on sg1.SNP_FEATURE_ID=sf.snp_feature_id"
+		+ "	    and  sg1.partition_id=" + (chr+2) 
+			    
+		+  "	    inner join iric.snp_featureloc sfl"
+		+ "	    on  sfl.snp_feature_id=sf.SNP_FEATURE_ID" 
+		+ "	    and sfl.position between " + start + " and " + end
+		+  "	    and sfl.srcfeature_id in (select feature_id from iric.feature where name = '" + chrom + "')"
+		+  "	) " 
+		+ " select  subqueryA.iric_stock_id var1, subqueryB.iric_stock_id var2, subqueryA.snp_feature_id snp_feature_id, subqueryA.partition_id, subqueryA.position pos, subqueryA.refcall refnuc,   subqueryA.allele1 var1nuc,  subqueryB.allele1 var2nuc "
+		+ " from subquery subqueryA, subquery subqueryB"
+		+ " where  subqueryA.snp_feature_id=subqueryB.snp_feature_id"
+		+ " and subqueryA.iric_stock_id<=subqueryB.iric_stock_id"
+		+ " and  subqueryA.allele1<>subqueryB.allele1 ) t_2vars"
+
+		+ " where var1<=var2"
+		+ " group by var1, var2"
+		+ " order by mismatch desc "
+		
+		+ ") where rownum<=" + topN;
+
+		return executeSQL(sql);
+	}
+		
+
+	@Override
+	public List<Snps2VarsCountmismatch> countMismatch(Integer chr,
+			BigDecimal start, BigDecimal end, Set<BigDecimal> varieties, boolean isCore) {
+		// TODO Auto-generated method stub
+		String chrom = "Chr" + chr;
+		
+			
+		Iterator<BigDecimal> itVar = varieties.iterator();
+		StringBuffer buff = new StringBuffer();
+		while(itVar.hasNext()) {
+			buff.append( itVar.next() );
+			if( itVar.hasNext() ) buff.append(",");
+		}
+		
+		String sql = "select var1, var2,  count(*) mismatch from ( "
+		+ "	WITH subquery AS"
+		+ "	("
+		+ "	  select sf.snp_feature_id, sg1.iric_stock_id, sg1.allele1 , sg1.partition_id, sfl.position, sf.refcall"
+		+ "	  from iric.snp_genotype sg1"
+		+ "	    inner join iric.snp_feature sf"
+		+ "		    on sg1.SNP_FEATURE_ID=sf.snp_feature_id"
+		+ "	    and sg1.partition_id=" + (chr+2) 
+		+ "     and sg1.iric_stock_id in (" + buff.toString() + ") "
+			    
+		+  "	    inner join iric.snp_featureloc sfl"
+		+ "	    on  sfl.snp_feature_id=sf.SNP_FEATURE_ID" 
+		+ "	    and sfl.position between " + start + " and " + end
+		+  "	    and sfl.srcfeature_id in (select feature_id from iric.feature where name = '" + chrom + "')"
+		+  "	) " 
+		+ " select  subqueryA.iric_stock_id var1, subqueryB.iric_stock_id var2, subqueryA.snp_feature_id snp_feature_id, subqueryA.partition_id, subqueryA.position pos, subqueryA.refcall refnuc,   subqueryA.allele1 var1nuc,  subqueryB.allele1 var2nuc "
+		+ " from subquery subqueryA, subquery subqueryB"
+		+ " where  subqueryA.snp_feature_id=subqueryB.snp_feature_id"
+		+ " and subqueryA.iric_stock_id<=subqueryB.iric_stock_id"
+		+ " and  subqueryA.allele1<>subqueryB.allele1 ) t_2vars"
+
+		+ " where var1<=var2"
+		+ " group by var1, var2"
+		+ " order by mismatch desc ";
+
+		return executeSQL(sql);
+	}*/
+
 	
 	
+	
+	@Override
+	public List<Snps2VarsCountmismatch> countMismatch(Integer chr,
+			BigDecimal start, BigDecimal end, int topN, Set<BigDecimal> varieties) {
+		return countMismatch( chr,
+				 start,  end,  topN, varieties, true);
+	}
+	
+	@Override
+	public List<Snps2VarsCountmismatch> countMismatch(Integer chr,
+			BigDecimal start, BigDecimal end) {
+		// TODO Auto-generated method stub
+		return countMismatch( chr,
+				 start,  end, -1);
+	}
+
+	@Override
+	public List<Snps2VarsCountmismatch> countMismatch(Integer chr,
+			BigDecimal start, BigDecimal end, int topN) {
+		// TODO Auto-generated method stub
+		return countMismatch( chr,
+				 start,  end,  topN, null, true);
+	}
+
+	@Override
+	public List<Snps2VarsCountmismatch> countMismatch(Integer chr,
+			BigDecimal start, BigDecimal end, Set<BigDecimal> varieties) {
+		// TODO Auto-generated method stub
+		return countMismatch( chr,
+				 start,  end, -1 , varieties, true);
+	}
+
+	@Override
+	public List<Snps2VarsCountmismatch> countMismatch(Integer chr,
+			BigDecimal start, BigDecimal end, int topN, Set<BigDecimal> varieties, boolean isCore) {
+		
+	
+	
+		// TODO Auto-generated method stub
+		String chrom = "Chr" + chr;
+		
+		StringBuffer buff = new StringBuffer();	
+		
+		if(varieties!=null && !varieties.isEmpty()) {
+		Iterator<BigDecimal> itVar = varieties.iterator();
+		while(itVar.hasNext()) {
+			buff.append( itVar.next() );
+			if( itVar.hasNext() ) buff.append(",");
+		}
+		}
+		
+		String sql = "";
+		
+		if(topN>0)
+			sql += " select * from  ("; 
+				
+		sql+= " select var1, var2,  count(*) mismatch from ( ";
+		
+		if(isCore) {
+			sql +=  "	WITH subquery AS"
+					+ "	("
+					+ "	  select sfl.snp_feature_id, sg1.iric_stock_id, sg1.allele1 , sg1.partition_id, sfl.position, sfl.refcall"
+					+ "	  from iric.snp_genotype sg1"
+					+ "	    inner join iric.mv_core_snps sfl"
+					+ "		    on sg1.SNP_FEATURE_ID=sfl.snp_feature_id"
+					+ "	    and sg1.partition_id=" + (chr+2) ;
+			if(varieties!=null && !varieties.isEmpty())
+					sql += "     and sg1.iric_stock_id in (" + buff.toString() + ") ";
+			
+					sql += "	    and sfl.position between " + start.intValue()+1 + " and " + end
+					+  "	and sfl.srcfeature_id=" + (chr+2)
+					+  "	) ";			
+		}
+		else {		
+			sql +=  "	WITH subquery AS"
+			+ "	("
+			+ "	  select sf.snp_feature_id, sg1.iric_stock_id, sg1.allele1 , sg1.partition_id, sfl.position, sf.refcall"
+			+ "	  from iric.snp_genotype sg1"
+			+ "	    inner join iric.snp_feature sf"
+			+ "		    on sg1.SNP_FEATURE_ID=sf.snp_feature_id"
+			+ "	    and sg1.partition_id=" + (chr+2) ;
+			
+			if(varieties!=null && !varieties.isEmpty())
+				sql += "     and sg1.iric_stock_id in (" + buff.toString() + ") ";
+			
+			sql +=  "	    inner join iric.snp_featureloc sfl"
+			+ "	    on  sfl.snp_feature_id=sf.SNP_FEATURE_ID" 
+			+ "	    and sfl.position between " + start.intValue()+1  + " and " + end
+			+  "	    and sfl.srcfeature_id=" + (chr+2)
+			+  "	) ";
+		}
+		
+		sql += " select  subqueryA.iric_stock_id var1, subqueryB.iric_stock_id var2, subqueryA.snp_feature_id snp_feature_id, subqueryA.partition_id, subqueryA.position pos, subqueryA.refcall refnuc,   subqueryA.allele1 var1nuc,  subqueryB.allele1 var2nuc "
+		+ " from subquery subqueryA, subquery subqueryB"
+		+ " where  subqueryA.snp_feature_id=subqueryB.snp_feature_id"
+		+ " and subqueryA.iric_stock_id<=subqueryB.iric_stock_id"
+		+ " and  subqueryA.allele1<>subqueryB.allele1 ) t_2vars"
+
+		+ " where var1<=var2"
+		+ " group by var1, var2"
+		+ " order by mismatch desc ";
+		
+		if(topN>0)
+			sql += ") where rownum<=" + topN;
+		
+
+		return executeSQL(sql);
+	}
 }

@@ -3,17 +3,24 @@ package org.irri.iric.portal.chado.dao;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
+//import javassist.bytecode.Descriptor.Iterator;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.Session;
 import org.irri.iric.portal.chado.domain.VSnp2vars;
+import org.irri.iric.portal.chado.domain.VSnp2varsCountmismatch;
 import org.irri.iric.portal.domain.Snps2Vars;
+import org.irri.iric.portal.domain.Snps2VarsCountmismatch;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -123,26 +130,114 @@ public class VSnp2varsDAOImpl extends AbstractJpaDao<VSnp2vars> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenAll(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2) throws DataAccessException {
-		return findVSnp2varsByVarsChrPosBetweenAll( chr,  start,   end, var1, var2,  -1, -1);
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenAll(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2, boolean isCore) throws DataAccessException {
+		return findVSnp2varsByVarsChrPosBetweenAll( chr,  start,   end, var1, var2, isCore, -1, -1);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenAll(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVSnp2varsByVarsChrPosBetweenAll", startResult, maxRows,  chr, start, end,  var1, var2);
-		return new LinkedHashSet<Snps2Vars>(query.getResultList());
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenAll(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2,  boolean isCore, int startResult, int maxRows) throws DataAccessException {
+		 return findVSnp2varsByVarsChrPosBetweenInAll(chr, start, end, var1, var2, isCore, null, startResult, maxRows);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosInAll(Integer chr, Set poslist, BigDecimal var1, BigDecimal var2,  boolean isCore) throws DataAccessException {
+		 return findVSnp2varsByVarsChrPosBetweenInAll(chr, null, null, var1, var2, isCore, poslist, -1, -1);
+	}
+
+	
+	private Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenInAll(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2,  boolean isCore, java.util.Set poslist, int startResult, int maxRows) throws DataAccessException {
+		//Query query = createNamedQuery("findVSnp2varsByVarsChrPosBetweenAll", startResult, maxRows,  chr, start, end,  var1, var2);
+		
+		
+		String posconst = "";
+		if(poslist!=null && !poslist.isEmpty()) {
+			StringBuffer buff = new StringBuffer();
+			Iterator<BigDecimal> itPos = poslist.iterator();
+			while(itPos.hasNext()) {
+				buff.append( itPos.next().intValue() -1  );	// chado is 0 indexed/interbase
+				if(itPos.hasNext()) buff.append(",");
+			}
+			posconst = " and sfl.position in ( " + buff.toString() + ")";					
+		}
+		else
+			posconst = " and sfl.position between " + (start.intValue()-1) + " and " + end;
+
+		
+		String sql = "";
+		
+		if(isCore) {
+		      sql = "select /*+ leading(sfl) use_nl(sg1) use_nl(sg2) */ sg1.iric_stock_id as var1, sg2.iric_stock_id as var2, sfl.snp_feature_id, sg1.partition_id  , sfl.position + 1 as pos,"
+				+ " sfl.refcall as refnuc, sg1.allele1 as var1nuc, sg2.allele1 as var2nuc"
+				+ " from iric.mv_core_snps sfl, iric.snp_genotype sg1, iric.snp_genotype sg2"
+				+ " where sfl.snp_feature_id=sg1.snp_feature_id"
+				+ " and sfl.snp_feature_id=sg2.snp_feature_id"
+				+ " and sg1.partition_id=sg2.partition_id"
+				+ " and sfl.srcfeature_id=" + (chr+2)
+				+ posconst
+				+ " and sg1.partition_id=" + (chr+2)
+				+ " and sg2.partition_id="  + (chr+2)
+				+ " and sg1.iric_stock_id=" + var1
+				+ " and sg2.iric_stock_id=" + var2
+				+ " order by sfl.position";			
+		}
+		else {
+		      sql = "select /*+ leading(sfl) use_nl(sg1) use_nl(sg2) */ sg1.iric_stock_id as var1, sg2.iric_stock_id as var2, sf.snp_feature_id, sg1.partition_id  , sfl.position +1 as pos,"
+				+ " sf.refcall as refnuc, sg1.allele1 as var1nuc, sg2.allele1 as var2nuc"
+				+ " from iric.snp_feature sf,  iric.snp_featureloc sfl, iric.snp_genotype sg1,  iric.snp_genotype sg2"
+				+ " where sf.snp_feature_id=sfl.snp_feature_id"
+				+ " and sf.snp_feature_id=sg1.snp_feature_id"
+				+ " and sf.snp_feature_id=sg2.snp_feature_id"
+				+ " and sg1.partition_id=sg2.partition_id"
+				
+				+ " and sfl.srcfeature_id=" + (chr+2)
+				+ posconst
+				//+ " and sfl.position between " + start + " and " + end
+				+ " and sg1.partition_id=" + (chr+2)
+				+ " and sg2.partition_id="  + (chr+2)
+				+ " and sg1.iric_stock_id=" + var1
+				+ " and sg2.iric_stock_id=" + var2
+				+ " order by sfl.position";
+		}
+		return new LinkedHashSet<Snps2Vars>(executeSQL( sql) );
+	}
+
+	
+	private List<Snps2Vars> executeSQL(String sql) {
+		//System.out.println("executing :" + sql);
+		//log.info("executing :" + sql);
+		return  getSession().createSQLQuery(sql).addEntity( VSnp2vars.class).list();
+	}
+	
+	private Session getSession() {
+		return entityManager.unwrap(Session.class);
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenMismatch(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2, boolean isCore) throws DataAccessException {
+		return findVSnp2varsByVarsChrPosBetweenMismatch( chr,  start,   end, var1, var2, isCore,  -1, -1);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenMismatch(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2) throws DataAccessException {
-		return findVSnp2varsByVarsChrPosBetweenMismatch( chr,  start,   end, var1, var2,  -1, -1);
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenMismatch(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2,  boolean isCore, int startResult, int maxRows) throws DataAccessException {
+		return findVSnp2varsByVarsChrPosBetweenInMismatch(chr, start, end, var1, var2, isCore, null, startResult, maxRows); 
 	}
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenMismatch(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2, int startResult, int maxRows) throws DataAccessException {
+	public Set<Snps2Vars> findVSnp2varsByVarsChrPosInMismatch(Integer chr,  Set poslist, BigDecimal var1, BigDecimal var2,  boolean isCore) throws DataAccessException {
+		return findVSnp2varsByVarsChrPosBetweenInMismatch(chr, null, null, var1, var2, isCore, poslist, -1, -1); 
+	}
+
+	
+	private Set<Snps2Vars> findVSnp2varsByVarsChrPosBetweenInMismatch(Integer chr, java.math.BigDecimal start,  java.math.BigDecimal end, BigDecimal var1, BigDecimal var2,  boolean isCore, Set poslist, int startResult, int maxRows) throws DataAccessException {
 		/*
 		if( chr == 3305729 ) System.out.println("chr=3305729");
 		if( var1 == 3305729 ) System.out.println("var1=3305729");
@@ -151,9 +246,69 @@ public class VSnp2varsDAOImpl extends AbstractJpaDao<VSnp2vars> implements
 		if( end.intValueExact() == 3305729 ) System.out.println("end=3305729");
 		*/	
 		
-		Query query = createNamedQuery("findVSnp2varsByVarsChrPosBetweenAll", startResult, maxRows,  chr, start, end,   var1,  var2);
+		//Query query = createNamedQuery("findVSnp2varsByVarsChrPosBetweenAll", startResult, maxRows,  chr, start, end,   var1,  var2);
 		//Query query = createNamedQuery("findVSnp2varsByVarsChrPosBetweenAll", startResult, maxRows,  chr, start, end,   var1,   var2);
-		return new LinkedHashSet<Snps2Vars>(query.getResultList());
+		//return new LinkedHashSet<Snps2Vars>(query.getResultList());
+		
+		String posconst = "";
+		if(poslist!=null && !poslist.isEmpty()) {
+			StringBuffer buff = new StringBuffer();
+			Iterator<BigDecimal> itPos = poslist.iterator();
+			while(itPos.hasNext()) {
+				buff.append( (itPos.next().intValue()-1) );
+				if(itPos.hasNext()) buff.append(",");
+			}
+			posconst = " and sfl.position in ( " + buff.toString() + ")";					
+		}
+		else
+			posconst = " and sfl.position between " + (start.intValue()-1) + " and " + end;
+		
+		String sql = "";
+		if(isCore) {
+		      sql = "select /*+ leading(sfl) use_nl(sg1) use_nl(sg2) */ sg1.iric_stock_id as var1, sg2.iric_stock_id as var2, sfl.snp_feature_id, sg1.partition_id  , sfl.position + 1 as pos,"
+				+ " sfl.refcall as refnuc, sg1.allele1 as var1nuc, sg2.allele1 as var2nuc"
+				+ " from iric.mv_core_snps sfl, iric.snp_genotype sg1, iric.snp_genotype sg2"
+				+ " where sfl.snp_feature_id=sg1.snp_feature_id"
+				+ " and sfl.snp_feature_id=sg2.snp_feature_id"
+				+ " and sg1.partition_id=sg2.partition_id"
+				+ " and sg1.allele1<>sg2.allele1"
+				+ " and sg1.allele1 is not null"
+				+ " and sg2.allele1 is not null"
+				
+				+ " and sfl.srcfeature_id=" + (chr+2)
+				// + " and sfl.position between " + start + " and " + end
+				+ posconst
+				
+				+ " and sg1.partition_id=" + (chr+2)
+				+ " and sg2.partition_id="  + (chr+2)
+				+ " and sg1.iric_stock_id=" + var1
+				+ " and sg2.iric_stock_id=" + var2
+				+ " order by sfl.position";			
+		}
+		else {
+		      sql = "select /*+ leading(sfl) use_nl(sg1) use_nl(sg2) */ sg1.iric_stock_id as var1, sg2.iric_stock_id as var2, sf.snp_feature_id, sg1.partition_id  , sfl.position + 1 as pos,"
+				+ " sf.refcall as refnuc, sg1.allele1 as var1nuc, sg2.allele1 as var2nuc"
+				+ " from iric.snp_feature sf,  iric.snp_featureloc sfl, iric.snp_genotype sg1,  iric.snp_genotype sg2"
+				+ " where sf.snp_feature_id=sfl.snp_feature_id"
+				+ " and sf.snp_feature_id=sg1.snp_feature_id"
+				+ " and sf.snp_feature_id=sg2.snp_feature_id"
+				+ " and sg1.partition_id=sg2.partition_id"
+				+ " and sg1.allele1<>sg2.allele1"
+				+ " and sg1.allele1 is not null"
+				+ " and sg2.allele1 is not null"
+				
+				+ " and sfl.srcfeature_id=" + (chr+2)
+				//+ " and sfl.position between " + start + " and " + end
+				+ posconst
+				+ " and sg1.partition_id=" + (chr+2)
+				+ " and sg2.partition_id="  + (chr+2)
+				+ " and sg1.iric_stock_id=" + var1
+				+ " and sg2.iric_stock_id=" + var2
+				+ " order by sfl.position";
+		}
+		
+		return new LinkedHashSet<Snps2Vars>(executeSQL( sql) );
+	
 	}
 	
 	

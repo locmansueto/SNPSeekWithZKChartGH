@@ -23,4 +23,8 @@ public interface VarietyDistanceDAO {
 	 */
 	List<VarietyDistance> findAllVarieties();
 
+	List<VarietyDistance> findAllVarietiesTopN(Integer topN);
+
+	void setRequestId(String requestid);
+	
 }

@@ -39,4 +39,19 @@ public interface Snps2VarsCountMismatchDAO {
 	 */
 	public List<Snps2VarsCountmismatch> countMismatch(Integer chr, BigDecimal start , BigDecimal end, Set<BigDecimal> varieties);
 	
+	/**
+	 * Count number of allele nismatches between 2 varieties within region.
+	 * Returning only the top N largest distance pairs and only varieties in Set of Variety IDs
+	 * @param chr	chromosome
+	 * @param start	region start
+	 * @param end	region end
+	 * @param topN
+	 * @return
+	 */
+	public List<Snps2VarsCountmismatch> countMismatch(Integer chr, BigDecimal start , BigDecimal end, int topN, Set<BigDecimal> varieties);
+
+	List<Snps2VarsCountmismatch> countMismatch(Integer chr, BigDecimal start,
+			BigDecimal end, int topN, Set<BigDecimal> varieties, boolean isCore);
+	
+	
 }

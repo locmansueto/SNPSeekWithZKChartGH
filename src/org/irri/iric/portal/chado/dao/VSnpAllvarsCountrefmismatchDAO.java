@@ -1,6 +1,7 @@
 package org.irri.iric.portal.chado.dao;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 import org.irri.iric.portal.chado.domain.VSnpAllvarsCountrefmismatch;
@@ -62,5 +63,10 @@ public interface VSnpAllvarsCountrefmismatchDAO extends
 	 *
 	 */
 	public Set<VSnpAllvarsCountrefmismatch> findVSnpAllvarsCountrefmismatchByMismatch(BigDecimal mismatch, int startResult, int maxRows) throws DataAccessException;
+
+	//public List countMismatchesInvars(Set<BigDecimal> varIds, String chr,
+	//		Integer start, Integer end, boolean isCore);
+
+	// public List countMismatches(String chr, Integer start, Integer end, boolean isCore);
 
 }

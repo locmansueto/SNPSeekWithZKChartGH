@@ -21,7 +21,7 @@ import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
 		@NamedQuery(name = "findVSnpAllvarsCountrefmismatchByMismatch", query = "select myVSnpAllvarsCountrefmismatch from VSnpAllvarsCountrefmismatch myVSnpAllvarsCountrefmismatch where myVSnpAllvarsCountrefmismatch.mismatch = ?1"),
 		@NamedQuery(name = "findVSnpAllvarsCountrefmismatchByPrimaryKey", query = "select myVSnpAllvarsCountrefmismatch from VSnpAllvarsCountrefmismatch myVSnpAllvarsCountrefmismatch where myVSnpAllvarsCountrefmismatch.var = ?1"),
 		@NamedQuery(name = "findVSnpAllvarsCountrefmismatchByVar", query = "select myVSnpAllvarsCountrefmismatch from VSnpAllvarsCountrefmismatch myVSnpAllvarsCountrefmismatch where myVSnpAllvarsCountrefmismatch.var = ?1") })
-@Table(schema = "IRIC", name = "VL_SNPALLVARS_COUNTREFMISMATCH")
+@Table(schema = "IRIC", name = "V_SNPALLVARS_COUNTREFMISMATCH")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VSnpAllvarsCountrefmismatch")
 public class VSnpAllvarsCountrefmismatch implements Serializable ,  SnpsAllvarsRefMismatch {

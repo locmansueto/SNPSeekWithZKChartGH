@@ -17,6 +17,7 @@
 			<menupopup>
 				<menuitem src="/images/iric/gene1.png" label="SNP and Genes" href="_snp.zul"/>
 				<menuitem src="/images/iric/var5.png" label="Variety" href="_variety.zul"/>
+				<menuitem src="/images/iric/query.png" label="My Lists" href="_workspace.zul"/>
 			</menupopup>
 		</menu>			
 		<menu label="Browse" src="/images/iric/browse5.png">
@@ -27,11 +28,13 @@
 				
 				<!--  menuitem src="/images/iric/tree1.png" label="Tree (dynamic)" target="_blank" href="jsp/phylotreeGermplasms.jsp?scale=1&amp;varid=all"/ -->
 				<!--  menuitem src="/images/iric/tree1.png" label="Phylogenetic Tree (dynamic)" href="_phylotreedyn.zul"/ -->
-				<menuitem src="/images/iric/tree1.png" label="Phylogenetic Tree" href="_variety.zul?irisid=all"/>
+				<menuitem src="/images/iric/tree1.png" label="Phylogenetic Tree" href="_variety.zul?irisid=alltree"/>
+				<menuitem src="/images/iric/tree1.png" label="MDS Plot" href="_variety.zul?irisid=allmds"/>
+
 			</menupopup>
 		</menu>			
-		<menuitem src="/images/iric/email.png" label="Contact Us" href="_contactus.zul"/>
 		<menuitem src="/images/iric/help.png" label="Help" href="_help.zul"/>
+		<menuitem src="/images/iric/email.png" label="Contact Us" href="_contactus.zul"/>
 	</menubar>
 		<!--  h:a href="mailto:iric@irri.org">
 		

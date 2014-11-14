@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 
 public class VarietyImpl implements Variety {
 
-	private BigDecimal id;
-	private String name;
-	private String irisId;
-	private String country;
-	private String subpopulation;
+	protected BigDecimal id;
+	protected String name;
+	protected String irisId;
+	protected String country;
+	protected String subpopulation;
 	
 	@Override
 	public String getName() {
@@ -52,6 +52,42 @@ public class VarietyImpl implements Variety {
 		return id;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = (int) (prime * result + ((getVarietyId() == null) ? 0 : getVarietyId().hashCode()));
+		return result;
+	}
+
+	/**
+	 */
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (!(obj instanceof Variety)) //VIricstockBasicprop))
+			return false;
+		//VIricstockBasicprop equalCheck = (VIricstockBasicprop) obj;
+		Variety equalCheck = (Variety) obj;
+		
+		//return iricStockId.equals(equalCheck.getIricStockId());
+		
+		
+		if ((getVarietyId() == null && equalCheck.getVarietyId() != null) || (getVarietyId() != null && equalCheck.getVarietyId() == null))
+			return false;
+		if (getVarietyId() != null && !getVarietyId().equals(equalCheck.getVarietyId()))
+			return false;
+		return true;
+		
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return getName().compareTo( ((Variety)o).getName() );
+	}
+	
+	
 	
 	
 }

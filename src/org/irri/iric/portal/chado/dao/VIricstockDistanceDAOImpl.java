@@ -12,7 +12,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.domain.VIricstockDistance;
+import org.irri.iric.portal.dao.DAOLongQueryProcessor;
 import org.irri.iric.portal.domain.VarietyDistance;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
@@ -28,6 +30,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class VIricstockDistanceDAOImpl extends AbstractJpaDao<VIricstockDistance>
 		implements VIricstockDistanceDAO {
+	
+	
+	private String requestid = null;
+	
+	
+	
+
+	@Override
+	public void setRequestId(String requestid) {
+		// TODO Auto-generated method stub
+		this.requestid = requestid;
+	}
 
 	/**
 	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
@@ -85,7 +99,9 @@ public class VIricstockDistanceDAOImpl extends AbstractJpaDao<VIricstockDistance
 	@Transactional
 	public Set<VIricstockDistance> findAllVIricstockDistances(int startResult, int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findAllVIricstockDistances", startResult, maxRows);
-		return new LinkedHashSet<VIricstockDistance>(query.getResultList());
+
+		DAOLongQueryProcessor longquery = new  DAOLongQueryProcessor( getEntityManager(),  requestid);
+		return new LinkedHashSet<VIricstockDistance>( longquery.executeQuery(query) );
 	}
 
 	/**
@@ -192,8 +208,15 @@ public class VIricstockDistanceDAOImpl extends AbstractJpaDao<VIricstockDistance
 	@Override
 	public List<VarietyDistance> findVarieties(Set<BigDecimal> germplasms) {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstockDistanceByVarieties", -1, -1 , germplasms);
-		return query.getResultList();
+		
+		Set[] slicedSet = AppContext.setSlicer(germplasms);
+		if(slicedSet.length==1)
+			return createNamedQuery("findVIricstockDistanceByVarieties", -1, -1 , slicedSet[0]).getResultList();
+		else if(slicedSet.length==2)
+			return createNamedQuery("findVIricstockDistanceByVarieties2", -1, -1 , slicedSet[0], slicedSet[1]).getResultList();
+		else if(slicedSet.length==3)
+			return createNamedQuery("findVIricstockDistanceByVarieties3", -1, -1 , slicedSet[0], slicedSet[1],  slicedSet[2]).getResultList();
+		return null;
 	}
 
 	@Override
@@ -203,5 +226,14 @@ public class VIricstockDistanceDAOImpl extends AbstractJpaDao<VIricstockDistance
 		return query.getResultList();
 	}
 	
+	@Override
+	public List<VarietyDistance> findAllVarietiesTopN(Integer topN) {
+		// TODO Auto-generated method stub
+		//String sql = "select * from  (select * from VIricstockDistance where var1 <= var2 order by dist desc) where rownum <= ?1 ) myVIricstockDistance"),
+		
+		//Query query = createNamedQuery("findAllVIricstockDistancesTopN", -1, -1,topN);
+		Query query = createNamedQuery("findAllVIricstockDistancesTopN", 0, topN);
+		return query.getResultList();
+	}
 	
 }

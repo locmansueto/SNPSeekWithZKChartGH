@@ -18,18 +18,18 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "findAllVSnpAllvarsPoss", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos"),
-		@NamedQuery(name = "findVSnpAllvarsPosByChr", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where myVSnpAllvarsPos.chr = ?1"),
-		@NamedQuery(name = "findVSnpAllvarsPosByPos", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where myVSnpAllvarsPos.pos = ?1"),
+		@NamedQuery(name = "findVSnpAllvarsPosByChr", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where myVSnpAllvarsPos.chr = ?1+2"),
+		@NamedQuery(name = "findVSnpAllvarsPosByPos", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where myVSnpAllvarsPos.pos = ?1-1"),
 		
-		@NamedQuery(name = "findVSnpAllvarsPosByChrPosBetween", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where  myVSnpAllvarsPos.chr = ?1 " +
-						" and myVSnpAllvarsPos.pos between ?2 and ?3 order by myVSnpAllvarsPos.pos"),
+		@NamedQuery(name = "findVSnpAllvarsPosByChrPosBetween", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where  myVSnpAllvarsPos.chr = ?1+2 " +
+						" and myVSnpAllvarsPos.pos between ?2-1 and ?3 order by myVSnpAllvarsPos.pos"),
 		
 		
 		@NamedQuery(name = "findVSnpAllvarsPosByPrimaryKey", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where myVSnpAllvarsPos.snpFeatureId = ?1"),
 		@NamedQuery(name = "findVSnpAllvarsPosByRefnuc", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where myVSnpAllvarsPos.refnuc = ?1"),
 		@NamedQuery(name = "findVSnpAllvarsPosByRefnucContaining", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where myVSnpAllvarsPos.refnuc like ?1"),
 		@NamedQuery(name = "findVSnpAllvarsPosBySnpFeatureId", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where myVSnpAllvarsPos.snpFeatureId = ?1") })
-@Table(schema = "IRIC", name = "VL_SNP_ALLVARS_POS")
+@Table(schema = "IRIC", name = "V_SNP_ALLVARS_POS")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VSnpAllvarsPos")
 public class VSnpAllvarsPos implements Serializable, SnpsAllvarsPos {
@@ -49,7 +49,7 @@ public class VSnpAllvarsPos implements Serializable, SnpsAllvarsPos {
 	@Column(name = "CHR")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
-	Integer chr;
+	String chr;
 	/**
 	 */
 
@@ -80,13 +80,13 @@ public class VSnpAllvarsPos implements Serializable, SnpsAllvarsPos {
 	/**
 	 */
 	public void setChr(Integer chr) {
-		this.chr = chr;
+		this.chr = "Chr" + chr;
 	}
 
 	/**
 	 */
 	public Integer getChr() {
-		return this.chr;
+		return Integer.valueOf( chr.replace("Chr","") );
 	}
 
 	/**

@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.Set;
 
 
+
+
+
 import org.irri.iric.portal.domain.SnpsAllvars;
 import org.springframework.dao.DataAccessException;
 
@@ -54,6 +57,15 @@ public interface SnpsAllvarsDAO {
 	 */
 	public Set<SnpsAllvars> findVSnpAllvarsByVarsChrPosBetweenRefmismatch(Integer chr, java.math.BigDecimal start, java.math.BigDecimal end , Collection<BigDecimal> vars) throws DataAccessException;
 	public Set<SnpsAllvars> findVSnpAllvarsByVarsChrPosBetweenRefmismatch(Integer chr, java.math.BigDecimal start, java.math.BigDecimal end , Collection<BigDecimal> vars, int startResult, int maxRows) throws DataAccessException;
+	public Set<SnpsAllvars> findVSnpAllvarsByVarsChrPosBetweenRefmismatch(
+			Integer valueOf, BigDecimal valueOf2, BigDecimal valueOf3,
+			Set<BigDecimal> varsMismatch, boolean isCore);
+	public Set<SnpsAllvars> findVSnpAllvarsByVarsChrPosBetween(Integer valueOf,
+			BigDecimal valueOf2, BigDecimal valueOf3,
+			Set<BigDecimal> varsMismatch, boolean isCore);
+	public Set<SnpsAllvars> findVSnpAllvarsByVarsChrPosBetweenRefmismatch(
+			Integer valueOf, BigDecimal valueOf2, BigDecimal valueOf3,
+			long firstRow, long l, boolean isCore);
 	
 	
 }

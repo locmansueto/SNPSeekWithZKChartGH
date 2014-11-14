@@ -42,12 +42,14 @@ import org.irri.iric.portal.domain.VarietyPlus;
 
 
 
-@Table(schema = "IRIC", name = "VL_IRICSTOCKS_BY_PASSPORT")
+@Table(schema = "IRIC", name = "V_IRICSTOCKS_BY_PASSPORT")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstocksByPassport")
 public class VIricstocksByPassport implements Serializable, VarietyPlus {
 	private static final long serialVersionUID = 1L;
 
+	//private String valuename;
+	
 	/**
 	 */
 
@@ -242,8 +244,7 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 		return buffer.toString();
 	}
 
-	/**
-	 */
+	/*
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -252,8 +253,6 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 		return result;
 	}
 
-	/**
-	 */
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
@@ -265,6 +264,36 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 		if (iricStockpropId != null && !iricStockpropId.equals(equalCheck.iricStockpropId))
 			return false;
 		return true;
+	}
+	*/
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = (int) (prime * result + ((getVarietyId() == null) ? 0 : getVarietyId().hashCode()));
+		return result;
+	}
+
+	/**
+	 */
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (!(obj instanceof Variety)) //VIricstockBasicprop))
+			return false;
+		//VIricstockBasicprop equalCheck = (VIricstockBasicprop) obj;
+		Variety equalCheck = (Variety) obj;
+		
+		//return iricStockId.equals(equalCheck.getIricStockId());
+		
+		
+		if ((getVarietyId() == null && equalCheck.getVarietyId() != null) || (getVarietyId() != null && equalCheck.getVarietyId() == null))
+			return false;
+		if (getVarietyId() != null && !getVarietyId().equals(equalCheck.getVarietyId()))
+			return false;
+		return true;
+		
 	}
 
 	@Override
@@ -291,9 +320,27 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 	
 		this.setOriCountry(country);
 	}
+
+	/*
+	@Override
+	public String getValueName() {
+		// TODO Auto-generated method stub
+		return valuename;
+	}
+
+	@Override
+	public void setValueName(String valuename) {
+		// TODO Auto-generated method stub
+		this.valuename=valuename;
+	}
+	*/
+
 	
-	
-	
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return getName().compareTo( ((Variety)o).getName() );
+	}
 	
 	
 }

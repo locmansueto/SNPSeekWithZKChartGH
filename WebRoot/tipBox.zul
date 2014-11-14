@@ -9,7 +9,7 @@
 	<!--  caption label="${empty arg.title ? 'No Title': arg.title}" / -->
 	<vbox align="left" style="background:lightgreen;border-color:white" >
 
-	    <label class="desc" value="${empty arg.desc ? 
+	    <label pre="true" class="desc" value="${empty arg.desc ? 
 	    		'This Product have no description.': arg.desc}" />
 	    <!--  image class="pic" src="${arg.img}" href="${arg.href}" / -->
 	    <!-- button label="${empty arg.desc ? 
@@ -30,6 +30,10 @@
 	    <label class="details" value="${empty arg.details12 ? '': arg.details12}" pre="true" />	   
 	    <label class="details" value="${empty arg.details13 ? '': arg.details13}" pre="true" />	   
 	    <label class="details" value="${empty arg.details14 ? '': arg.details14}" pre="true" />	   
+	    <label class="details" value="${empty arg.details15 ? '': arg.details15}" pre="true" />	   
+	    <label class="details" value="${empty arg.details16 ? '': arg.details16}" pre="true" />	   
+	    <label class="details" value="${empty arg.details17 ? '': arg.details17}" pre="true" />	   
+	    <label class="details" value="${empty arg.details18 ? '': arg.details18}" pre="true" />	   
 	 
 	</vbox>
 	

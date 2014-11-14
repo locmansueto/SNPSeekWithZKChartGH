@@ -24,6 +24,15 @@
 		<listener-class>org.zkoss.zkspringessentials.init.ExampleWebAppInit</listener-class>
 	</listener>
 	
+	
+	<listener> 
+		<description>Session cleanup</description> 
+		<listener-class> 
+				org.irri.iric.portal.admin.zkui.ZKSessionCleaner 
+		</listener-class> 
+	</listener> 
+
+	
 <!-- 
 	<listener>
 		<description>ThreadLocal Synchronization Listener
@@ -48,11 +57,22 @@
 		<value>true</value>
 	</preference>
 
-	<preference>
+	<!-- preference>
 		<name>org.zkoss.zul.grid.rod</name>
 		<value>true</value>
-	</preference>
- 	 
+	</preference -->
+	
+	<library-property>
+    <name>org.zkoss.zul.grid.rod</name>
+    <value>true</value>
+	</library-property>
+ 	
+ 	<library-property>
+    <name>org.zkoss.zul.grid.initRodSize</name>
+    <value>25</value>
+	</library-property>
+
+
  	 <library-property>
     <name>org.zkoss.theme.preferred</name>
     <value>greenlightwhitewin</value> 

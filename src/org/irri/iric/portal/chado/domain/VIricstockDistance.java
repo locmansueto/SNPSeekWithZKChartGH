@@ -23,11 +23,17 @@ import org.irri.iric.portal.domain.VarietyDistance;
 		@NamedQuery(name = "findVIricstockDistanceByPrimaryKey", query = "select myVIricstockDistance from VIricstockDistance myVIricstockDistance where myVIricstockDistance.var1 = ?1 and myVIricstockDistance.var2 = ?2"),
 		@NamedQuery(name = "findVIricstockDistanceByVar1", query = "select myVIricstockDistance from VIricstockDistance myVIricstockDistance where myVIricstockDistance.var1 = ?1"),
 
+		@NamedQuery(name = "findAllVIricstockDistancesTopN", query = "select myVIricstockDistance from VIricstockDistance myVIricstockDistance where myVIricstockDistance.var1 <= myVIricstockDistance.var2 order by myVIricstockDistance.dist desc"),
+
+		
+		
 		@NamedQuery(name = "findVIricstockDistanceByVarieties", query = "select myVIricstockDistance from VIricstockDistance myVIricstockDistance where myVIricstockDistance.var1 <= myVIricstockDistance.var2 and myVIricstockDistance.var1 in (?1) and  myVIricstockDistance.var2 in (?1)"),
+		@NamedQuery(name = "findVIricstockDistanceByVarieties2", query = "select myVIricstockDistance from VIricstockDistance myVIricstockDistance where myVIricstockDistance.var1 <= myVIricstockDistance.var2 and (myVIricstockDistance.var1 in (?1) or myVIricstockDistance.var1 in (?2)) and  (myVIricstockDistance.var2 in (?1) or myVIricstockDistance.var1 in (?2))"),
+		@NamedQuery(name = "findVIricstockDistanceByVarieties3", query = "select myVIricstockDistance from VIricstockDistance myVIricstockDistance where myVIricstockDistance.var1 <= myVIricstockDistance.var2 and (myVIricstockDistance.var1 in (?1) or myVIricstockDistance.var1 in (?2) or myVIricstockDistance.var1 in (?3)) and  (myVIricstockDistance.var2 in (?1) or myVIricstockDistance.var2 in (?2) or myVIricstockDistance.var2 in (?3))"),
 		
 		
 		@NamedQuery(name = "findVIricstockDistanceByVar2", query = "select myVIricstockDistance from VIricstockDistance myVIricstockDistance where myVIricstockDistance.var2 = ?1") })
-@Table(schema = "IRIC", name = "VL_IRICSTOCK_DISTANCE")
+@Table(schema = "IRIC", name = "V_IRICSTOCK_DISTANCE")
 //@Table(schema = "IRIC", name = "IRIC_STOCK_DISTANCE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockDistance")
@@ -56,8 +62,8 @@ public class VIricstockDistance implements Serializable, VarietyDistance {
 	/**
 	 */
 
-	@Column(name = "DIST")
-//	@Column(name = "DISTANCE")
+//	@Column(name = "DIST")
+	@Column(name = "DISTANCE")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	BigDecimal dist;

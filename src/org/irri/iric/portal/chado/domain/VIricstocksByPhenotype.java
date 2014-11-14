@@ -32,9 +32,9 @@ import org.irri.iric.portal.domain.VarietyPlus;
 
 		
 		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQuanLessthan", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and " +
-															" myVIricstocksByPhenotype.quanValue <= ?2 order by myVIricstocksByPhenotype.quanValue, myVIricstocksByPhenotype.name"),
+				" myVIricstocksByPhenotype.quanValue < ?2 order by myVIricstocksByPhenotype.quanValue, myVIricstocksByPhenotype.name"),
 		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQuanGreaterthan", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and " +
-				" myVIricstocksByPhenotype.quanValue >= ?2 order by myVIricstocksByPhenotype.quanValue, myVIricstocksByPhenotype.name"),
+				" myVIricstocksByPhenotype.quanValue > ?2 order by myVIricstocksByPhenotype.quanValue, myVIricstocksByPhenotype.name"),
 		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQuanEquals", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and " +
 				" myVIricstocksByPhenotype.quanValue = ?2 order by  myVIricstocksByPhenotype.name"),
 		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQualEquals", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and " +
@@ -56,11 +56,13 @@ import org.irri.iric.portal.domain.VarietyPlus;
 		@NamedQuery(name = "findVIricstocksByPhenotypeBySubpopulationContaining", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.subpopulation like ?1") })
 
 
-@Table(schema = "IRIC", name = "VL_IRICSTOCKS_BY_PHENOTYPE")
+@Table(schema = "IRIC", name = "V_IRICSTOCKS_BY_PHENOTYPE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstocksByPhenotype")
 public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 	private static final long serialVersionUID = 1L;
+	
+	//private String valuename;
 
 	/**
 	 */
@@ -277,8 +279,7 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 		return buffer.toString();
 	}
 
-	/**
-	 */
+	/*
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -286,9 +287,6 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 		result = (int) (prime * result + ((iricStockPhenotypeId == null) ? 0 : iricStockPhenotypeId.hashCode()));
 		return result;
 	}
-
-	/**
-	 */
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
@@ -301,6 +299,37 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 			return false;
 		return true;
 	}
+	*/
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = (int) (prime * result + ((getVarietyId() == null) ? 0 : getVarietyId().hashCode()));
+		return result;
+	}
+
+	/**
+	 */
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (!(obj instanceof Variety)) //VIricstockBasicprop))
+			return false;
+		//VIricstockBasicprop equalCheck = (VIricstockBasicprop) obj;
+		Variety equalCheck = (Variety) obj;
+		
+		//return iricStockId.equals(equalCheck.getIricStockId());
+		
+		
+		if ((getVarietyId() == null && equalCheck.getVarietyId() != null) || (getVarietyId() != null && equalCheck.getVarietyId() == null))
+			return false;
+		if (getVarietyId() != null && !getVarietyId().equals(equalCheck.getVarietyId()))
+			return false;
+		return true;
+		
+	}
+	
 
 	@Override
 	public BigDecimal getVarietyId() {
@@ -333,8 +362,27 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 		else if(this.qualValue!=null) return this.qualValue;
 		return null;
 	}
+
+	/*
+	@Override
+	public String getValueName() {
+		// TODO Auto-generated method stub
+		return valuename;
+	}
+
+	@Override
+	public void setValueName(String valuename) {
+		// TODO Auto-generated method stub
+		this.valuename=valuename;
+		
+	}
+	*/
 	
 	
-	
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return getName().compareTo( ((Variety)o).getName() );
+	}
 	
 }
