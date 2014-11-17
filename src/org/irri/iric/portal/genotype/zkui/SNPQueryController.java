@@ -297,6 +297,11 @@ public class SNPQueryController extends SelectorComposer<Component>  { //impleme
     private Button buttonCreateVarlist;
     @Wire
     private Textbox textboxVarlistName; 
+    
+    @Wire
+    private Radio radioGraySynonymous;
+    @Wire
+    private Radio radioNonsynOnly;
 	
 	
     /*
@@ -567,11 +572,13 @@ public void setchrlength() {
 @Listen("onChange = #intStart")
 public void onchangedStart() {
 	listboxMySNPList.setSelectedIndex(0);
+	comboGene.setValue("");
 }
 
 @Listen("onChange = #intStop")
 public void onchangedStop() {
 	listboxMySNPList.setSelectedIndex(0);
+	comboGene.setValue("");
 }
 
 
@@ -804,6 +811,8 @@ public void reset()    {
     intStop.setValue(null);
     comboGene.setValue("");
     selectChr.setSelectedIndex(0);
+    this.listboxMySNPList.setSelectedIndex(0);
+    this.listboxMyVarieties.setSelectedIndex(0);
     
     this.checkboxCoreSNP.setChecked(true);
     this.selectPhyloTopN.setSelectedIndex(0);
@@ -1091,8 +1100,10 @@ public void searchWithServerpaging(String filename, String delimiter)    {
 		genotype =  (GenotypeFacade)AppContext.checkBean(genotype , classGenotypefacade);
 		workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
 	
-			
-		msgbox.setValue("SEARCHING: in chromosome " + selectChr.getSelectedItem().getLabel() + " [" + intStart.getValue() +  "-" + intStop.getValue()+  "]" );
+		if(this.listboxMySNPList.getSelectedIndex()>0)
+			msgbox.setValue("SEARCHING: in chromosome " + selectChr.getSelectedItem().getLabel() + " , list " + listboxMySNPList.getSelectedItem().getLabel() );
+		else
+			msgbox.setValue("SEARCHING: in chromosome " + selectChr.getSelectedItem().getLabel() + " [" + intStart.getValue() +  "-" + intStop.getValue()+  "]" );
 
 		
 		String var1= comboVar1.getValue().trim().toUpperCase();
@@ -1135,7 +1146,10 @@ public void searchWithServerpaging(String filename, String delimiter)    {
 		
 		genotype.limitVarieties(setVarieties);	
 		
-		genotype.setCoreSnp( checkboxCoreSNP.isChecked() );
+		genotype.setCore( checkboxCoreSNP.isChecked() );
+		
+		genotype.setColorByNonsyn(  this.radioGraySynonymous.isSelected() );
+		genotype.setNonsynOnly( this.radioNonsynOnly.isSelected() );
 		
 		// initialize empty SNP list
 		List listSNPs = new java.util.ArrayList();
@@ -1377,17 +1391,21 @@ public void searchWithServerpaging(String filename, String delimiter)    {
 					//updateAllvarsList(newpagelist, true, null, null, "",-1,-1);
 					
 					
-					if(snpposlist!=null && !snpposlist.isEmpty())
+					if(snpposlist!=null && !snpposlist.isEmpty()) {
+						
 						newpagelist = genotype.getSNPStringInAllVarieties(snpposlist, Integer.valueOf(chr), checkboxCoreSNP.isChecked(), true,  -1,  -1 );
+						updateAllvarsList(newpagelist,true,filename,delimiter,  "REGION: CHR " + chr + "  SNPLIST: " + listboxMySNPList.getSelectedItem().getLabel() );
+				        AppContext.resetTimer("query allvars region " + snpposlist.size() + " size snplist");	
+					}
 					else 
 					{
 						//newpagelist = genotype.getSNPStringInAllVarieties(intStart.getValue(), intStop.getValue(), Integer.valueOf(chr), false,  -1,  -1 );
 						newpagelist = genotype.getSNPStringInAllVarieties(intStart.getValue(), intStop.getValue(), Integer.valueOf(chr),  true,  -1,  -1 );
 						updateAllvarsList(newpagelist,true,filename,delimiter,  "REGION: CHR " + chr + " " +  intStart.getValue() + ".." + intStop.getValue() );
+				        AppContext.resetTimer("query allvars region " + (intStop.getValue() - intStart.getValue()) + " bp");	
 						
 					}
 
-			        AppContext.resetTimer("query allvars region " + (intStop.getValue() - intStart.getValue()) + " bp");	
 					return;
 				}
 				
@@ -1962,6 +1980,7 @@ private void updateAllvarsListOrig(List<SnpsAllvars> listSNPs, boolean updateHea
 		}
 				
 	
+		//((SNPAllvarsRowRenderer)snpallvarsresult.getRowRenderer())
         ((SNPAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setMapIdx2Refnuc(mapIdx2Refnuc);  
         
         if(radioColorAllele.isSelected())
@@ -2094,7 +2113,6 @@ private void updateAllvarsListSnpstring(List<SnpsStringAllvars> listSNPs, boolea
 		buff.append("\n");
 		buffRefnuc.append("\n");
 		buff.append( buffRefnuc );
-		
 	}
 	
 	
@@ -2180,11 +2198,25 @@ private void updateAllvarsListSnpstring(List<SnpsStringAllvars> listSNPs, boolea
 		buffReference.append("\t");
 	}	
 	int posidx=0;
+	
+	// for use in heterozygous and color codings of some alleles
+	/*
+	Map<Integer,Long> mapPosidx2Snpid = new HashMap();
+	String snpfeatureid = "";
+	 if(selectChr.getSelectedItem().getLabel().length()>1)
+	 	snpfeatureid = "1" + selectChr.getSelectedItem().getLabel();
+	 else snpfeatureid = "10" + selectChr.getSelectedItem().getLabel();
+	 */
+		 
+	
 	while(itPos.hasNext()) {
 		SnpsAllvarsPos posnuc=itPos.next();
+		
 		buffPositions.append( posnuc.getPos());
 		buffReference.append( posnuc.getRefnuc() );
 		refnuc[posidx]=posnuc.getRefnuc().charAt(0);
+		
+		//mapPosidx2Snpid.put(posidx, Long.valueOf(snpfeatureid + String.format("%08d",posnuc.getPos())) );
 		
 		if(itPos.hasNext()){
 			buffPositions.append("\t");
@@ -2269,15 +2301,35 @@ private void updateAllvarsListSnpstring(List<SnpsStringAllvars> listSNPs, boolea
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}
-		
-			
 			return;
 		}
 	
 				
 	
+		
         ((SNPStringAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setRefnuc(refnuc); 
         ((SNPStringAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setMapVarId2Var(mapVarid2Variety); 
+        ((SNPStringAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setAllele2Matrix( genotype.getHeteroAlleleMatrix() );
+        
+        if(radioGraySynonymous.isSelected() || radioNonsynOnly.isSelected()) {
+        	((SNPStringAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setGraySynonymous(true);
+        	((SNPStringAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setMapIdx2NonsynFlags( genotype.getMapIdx2Nonsynflags() ); 
+        } else {
+        	((SNPStringAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setGraySynonymous(false);
+        	((SNPStringAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setMapIdx2NonsynFlags( null ); 
+        }
+        
+        /*
+        if(radioGraySynonymous.isSelected()) {
+        	((SNPStringAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setGraySynonymous(true);
+        	//((SNPStringAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setListNonsynFlags(genotype .getListNonsynFlags());
+        	((SNPStringAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setListNonsynFlags(genotype.get);
+        } else if (radioNonsynOnly.isSelected()) {
+        	//((SNPStringAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setMapIdx2NonsynAlleles(  genotype.getMapIdx2NonsynAlleles() );
+        	((SNPStringAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setGraySynonymous(true);
+        	((SNPStringAllvarsRowRenderer)snpallvarsresult.getRowRenderer()).setListNonsynFlags(genotype.getListNonsynFlags());
+        }
+        */
         
         
         if(radioColorAllele.isSelected())
@@ -2346,8 +2398,17 @@ private void updateAllvarsListSnpstring(List<SnpsStringAllvars> listSNPs, boolea
         	win.setWidth(labelScreenWidth.getValue());
                
      */
+        //Map mapPosidx2Snpid, Map mapOrder2Var, Map mapVar2Pos2Allele2
+        
+        
+
+        
         
 		snpallvarsresult.setModel(   new SimpleListModel(listTable) );
+		
+		
+		
+		//genotype.getMapVariety2Order();
 		
 		snpallvarsresult.setSizedByContent(true);
 		

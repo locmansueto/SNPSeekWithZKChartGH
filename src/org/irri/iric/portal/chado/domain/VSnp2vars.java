@@ -19,12 +19,12 @@ import org.irri.iric.portal.domain.Snps2Vars;
 @NamedQueries({
 		@NamedQuery(name = "findAllVSnp2varss", query = "select myVSnp2vars from VSnp2vars myVSnp2vars"),
 		@NamedQuery(name = "findVSnp2varsByChr", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where myVSnp2vars.chr = ?1"),
-		@NamedQuery(name = "findVSnp2varsByPos", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where myVSnp2vars.pos = ?1-1"),
+		@NamedQuery(name = "findVSnp2varsByPos", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where myVSnp2vars.pos = ?1"),
 		
 		@NamedQuery(name = "findVSnp2varsByVarsChrPosBetweenAll", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where  myVSnp2vars.chr = (?1+2) " +
-														" and myVSnp2vars.pos between ?2-1 and ?3 and myVSnp2vars.var1 = ?4 and myVSnp2vars.var2 = ?5 order by myVSnp2vars.pos"),
+														" and myVSnp2vars.pos between ?2 and ?3 and myVSnp2vars.var1 = ?4 and myVSnp2vars.var2 = ?5 order by myVSnp2vars.pos"),
 		@NamedQuery(name = "findVSnp2varsByVarsChrPosBetweenMismatch", query = "select myVSnp2vars from VSnp2vars myVSnp2vars where  myVSnp2vars.chr = (?1+2) " +
-																" and myVSnp2vars.pos between ?2-1 and ?3 and myVSnp2vars.var1 = ?4 and myVSnp2vars.var2 = ?5 " + 
+																" and myVSnp2vars.pos between ?2 and ?3 and myVSnp2vars.var1 = ?4 and myVSnp2vars.var2 = ?5 " + 
 																" and myVSnp2vars.var1nuc<>myVSnp2vars.var2nuc order by myVSnp2vars.pos"),
 		
 		

@@ -276,6 +276,14 @@ public class AppContext {
     }
     
     
+    public static BigDecimal convertRegion2Snpfeatureid(Integer chr, Long pos) {
+    	
+    	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos)  ));
+    	
+    }
+    	
+    
+    
     /**
      * Utility to check if object is null (if autowired worked!)
      * 	if null, use  SpringUtil.getBean(name); 

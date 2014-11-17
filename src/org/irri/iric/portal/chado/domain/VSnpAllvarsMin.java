@@ -23,33 +23,33 @@ import org.irri.iric.portal.domain.SnpsAllvars;
 		@NamedQuery(name = "findVSnpAllvarsMinByChrVar", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.var = ?2"),
 		
 		
-		@NamedQuery(name = "findVSnpAllvarsMinByPos", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where myVSnpAllvarsMin.pos = ?1-1"),
+		@NamedQuery(name = "findVSnpAllvarsMinByPos", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where myVSnpAllvarsMin.pos = ?1"),
 
 		
-		@NamedQuery(name = "findVSnpAllvarsMinByChrPosBetween", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2-1 and ?3 " ),
+		@NamedQuery(name = "findVSnpAllvarsMinByChrPosBetween", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2 and ?3 " ),
 			//	+ " and (myVSnpAllvars.refnuc<>myVSnpAllvars.varnuc) and (myVSnpAllvars.refnuc is not null or myVSnpAllvars.varnuc is not null)"  ),
-		@NamedQuery(name = "findVSnpAllvarsMinByVarsChrPosBetween", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2-1 and ?3 " +
+		@NamedQuery(name = "findVSnpAllvarsMinByVarsChrPosBetween", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2 and ?3 " +
 		//	" and (myVSnpAllvars.refnuc<>myVSnpAllvars.varnuc) and (myVSnpAllvars.refnuc is not null or myVSnpAllvars.varnuc is not null) "  +	
 			" and myVSnpAllvarsMin.var in (?4)" ),
 
-			@NamedQuery(name = "findVSnpAllvarsMinByVarsChrPosBetween2", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2-1 and ?3 " +
+			@NamedQuery(name = "findVSnpAllvarsMinByVarsChrPosBetween2", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2 and ?3 " +
 					//	" and (myVSnpAllvars.refnuc<>myVSnpAllvars.varnuc) and (myVSnpAllvars.refnuc is not null or myVSnpAllvars.varnuc is not null) "  +	
 						" and (myVSnpAllvarsMin.var in (?4) or myVSnpAllvarsMin.var in (?5) ) " ),
-			@NamedQuery(name = "findVSnpAllvarsMinByVarsChrPosBetween3", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2-1 and ?3 " +
+			@NamedQuery(name = "findVSnpAllvarsMinByVarsChrPosBetween3", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2 and ?3 " +
 					//	" and (myVSnpAllvars.refnuc<>myVSnpAllvars.varnuc) and (myVSnpAllvars.refnuc is not null or myVSnpAllvars.varnuc is not null) "  +	
 						" and (myVSnpAllvarsMin.var in (?4) or myVSnpAllvarsMin.var in (?5) or myVSnpAllvarsMin.var in (?6))" ),
 			
 			
 
-		@NamedQuery(name = "findVSnpAllvarsMinByChrPosBetweenRefmismatch", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2-1 and ?3 " 
+		@NamedQuery(name = "findVSnpAllvarsMinByChrPosBetweenRefmismatch", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2 and ?3 " 
 				+ " and ( (myVSnpAllvarsMin.refnuc<>myVSnpAllvarsMin.varnuc) or (myVSnpAllvarsMin.varnuc is null) )"  ),
-		@NamedQuery(name = "findVSnpAllvarsMinByVarsChrPosBetweenRefmismatch", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2-1 and ?3 " 
+		@NamedQuery(name = "findVSnpAllvarsMinByVarsChrPosBetweenRefmismatch", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2 and ?3 " 
 				+ " and ( (myVSnpAllvarsMin.refnuc<>myVSnpAllvarsMin.varnuc) or (myVSnpAllvarsMin.varnuc is null) )" 
 				+ " and myVSnpAllvarsMin.var in (?4)" ),
-		@NamedQuery(name = "findVSnpAllvarsMinByVarsChrPosBetweenRefmismatch2", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2-1 and ?3 " 
+		@NamedQuery(name = "findVSnpAllvarsMinByVarsChrPosBetweenRefmismatch2", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2 and ?3 " 
 				+ " and ( (myVSnpAllvarsMin.refnuc<>myVSnpAllvarsMin.varnuc) or (myVSnpAllvarsMin.varnuc is null) )" 
 				+ " and (myVSnpAllvarsMin.var in (?4) or myVSnpAllvarsMin.var in (?5))" ),
-		@NamedQuery(name = "findVSnpAllvarsMinByVarsChrPosBetweenRefmismatch3", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2-1 and ?3 " 
+		@NamedQuery(name = "findVSnpAllvarsMinByVarsChrPosBetweenRefmismatch3", query = "select myVSnpAllvarsMin from VSnpAllvarsMin myVSnpAllvarsMin where  myVSnpAllvarsMin.chr = ?1+2 and myVSnpAllvarsMin.pos between ?2 and ?3 " 
 				+ " and ( (myVSnpAllvarsMin.refnuc<>myVSnpAllvarsMin.varnuc) or (myVSnpAllvarsMin.varnuc is null) )" 
 				+ " and (myVSnpAllvarsMin.var in (?4) or myVSnpAllvarsMin.var in (?5) or myVSnpAllvarsMin.var in (?6))" ),
 		

@@ -23,9 +23,11 @@
 	
 	
 	
-	<bean id="VarietyFacade" class="org.irri.iric.portal.variety.service.VarietyFacadeChadoImpl"  scope="session">
+	<!-- bean id="VarietyFacade" class="org.irri.iric.portal.variety.service.VarietyFacadeChadoImpl"  scope="session">
 	 	<aop:scoped-proxy/>
-	</bean>
+	</bean -->
+
+	<bean id="VarietyFacade" class="org.irri.iric.portal.variety.service.VarietyFacadeChadoImpl"/>
 	<bean id="GenotypeFacade" class="org.irri.iric.portal.genotype.service.GenotypeFacadeChadoImpl"  scope="session">
 	 	<aop:scoped-proxy/>
 	</bean>

@@ -20,6 +20,8 @@
 				<class>org.irri.iric.portal.chado.domain.SnpcoreMismatchAlleles</class>
 				<class>org.irri.iric.portal.flatfile.domain.SnpcoreRefposindex</class>
 				<class>org.irri.iric.portal.flatfile.domain.VSnpRefposindex</class>
+				<class>org.irri.iric.portal.chado.domain.VSnpgenotypeAllele2</class>
+				<class>org.irri.iric.portal.chado.domain.VSnpNonsynAllele</class>
 				
 				<class>org.irri.iric.portal.admin.domain.VOracleSessions</class>
 				

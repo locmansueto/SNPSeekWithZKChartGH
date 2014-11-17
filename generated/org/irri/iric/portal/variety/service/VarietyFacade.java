@@ -170,7 +170,7 @@ public interface VarietyFacade {
 	 * @return
 	 */
 	public Set getPassportUniqueValues(String definition);
-	public Set getPhenotypeUniqueValues(String definition);
+	public Object[] getPhenotypeUniqueValues(String definition);
 
 	/**
 	 * Get varieties with passport = value
@@ -189,7 +189,7 @@ public interface VarietyFacade {
 	 * @param quanvalue
 	 * @return
 	 */
-	public List getVarietyByPhenotype(String definition, String comparator, String value);
+	//public List getVarietyByPhenotype(String definition, String comparator, String value);
 
 	
 	/**
@@ -200,6 +200,9 @@ public interface VarietyFacade {
 	public List getGermplasmsByNameOrIrisid(String names);
 
 	public Map getIrisId2Variety();
+
+	public List getVarietyByPhenotype(String definition, String comparator,
+			String value, int phenotype_type);
 	
 	
 	

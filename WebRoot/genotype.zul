@@ -125,6 +125,7 @@ window.Boot_progressbox = function (){}
     
     <label id="labelScreenWidth" visible="false"/>
     <radiogroup id="snpcolor" />
+    <radiogroup id="synonymoussnps" />
     
     <hbox>
     
@@ -320,8 +321,23 @@ window.Boot_progressbox = function (){}
                	 		<radio id="radioColorMismatch" label="Ref. mismatch" radiogroup="snpcolor"  selected="true" tooltip="popupSNPColoringMismatch"/>
                	 		<vbox width="15px"/>
          				<radio id="radioColorAllele" label="Nucleotide" radiogroup="snpcolor" tooltip="popupSNPColoringAllele"/>
-         				
+
+         				<div visible="false">
          				<vbox width="30px"/>
+         				<label pre="true" value="Synonymous SNPs  " style="font-weight:bold;"/>
+         				<radio id="radioShowSyn" label="Include" radiogroup="synonymoussnps"  selected="true" tooltip="popupSynonymousShow"/>
+         				<radio id="radioGraySynonymous" label="Grayed" radiogroup="synonymoussnps" tooltip="popupSynonymousGray"/>
+			    		<radio id="radioNonsynOnly" label="Exclude" radiogroup="synonymoussnps" tooltip="popupSynonymousExclude"/>
+			    		<vbox width="30px"/>
+			    		</div>
+          				<label pre="true" value="Exact mismatch" style="font-weight:bold;"  visible="false"/>
+          				<checkbox id="checkboxExactMismatch" checked="true" tooltip="popupExactMismatch" disabled="true"  visible="false"/>			    		
+			    		
+         			</hbox>	  
+          			<hbox>
+          				<label pre="true" value="Core SNPs only " style="font-weight:bold;"/>
+          				<checkbox id="checkboxCoreSNP" checked="true" tooltip="popupCoreSNP"/>
+          				<vbox width="40px"/>
          				<label pre="true" value="Phylotree topN  " style="font-weight:bold;"  visible="true"/>
          				<listbox id="selectPhyloTopN" mold="select"  rows="1" tooltip="popupTopN" visible="true"> 
          					<listitem label="20" />    
@@ -331,14 +347,6 @@ window.Boot_progressbox = function (){}
 			    			<listitem label="500" />
 			    			<listitem label="all" />
 			    		</listbox>
-			    		<vbox width="30px"/>
-          				<label pre="true" value="Exact mismatch" style="font-weight:bold;"  visible="false"/>
-          				<checkbox id="checkboxExactMismatch" checked="true" tooltip="popupExactMismatch" disabled="true"  visible="false"/>			    		
-			    		
-         			</hbox>	  
-          			<hbox>
-          				<label pre="true" value="Core SNPs only " style="font-weight:bold;"/>
-          				<checkbox id="checkboxCoreSNP" checked="true" tooltip="popupCoreSNP"/>
           				<vbox width="40px"/>
 	            		<label pre="true" value="Download  " style="font-weight:bold;"/>
 	            		<button id="buttonDownloadCsv"  label="CSV" width="60px" height="30px"  autodisable="self"/>
@@ -648,6 +656,23 @@ window.Boot_progressbox = function (){}
           Add another allele filter.
         ]]></html>
 </popup>
+<popup id="popupSynonymousShow" width="300px">
+        <html><![CDATA[
+          Include synonymous SNPs.
+        ]]></html>
+</popup>
+<popup id="popupSynonymousGray" width="300px">
+        <html><![CDATA[
+		  Color synonymous SNPs in gray.
+        ]]></html>
+</popup>
+<popup id="popupSynonymousExclude" width="300px">
+        <html><![CDATA[
+		  Exclude varieties with no non-synonymous SNPs in the queried regions.
+        ]]></html>
+</popup>
+
+
 
 </window>
 

@@ -19,10 +19,10 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 @NamedQueries({
 		@NamedQuery(name = "findAllVSnpAllvarsPoss", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos"),
 		@NamedQuery(name = "findVSnpAllvarsPosByChr", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where myVSnpAllvarsPos.chr = ?1+2"),
-		@NamedQuery(name = "findVSnpAllvarsPosByPos", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where myVSnpAllvarsPos.pos = ?1-1"),
+		@NamedQuery(name = "findVSnpAllvarsPosByPos", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where myVSnpAllvarsPos.pos = ?1"),
 		
 		@NamedQuery(name = "findVSnpAllvarsPosByChrPosBetween", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where  myVSnpAllvarsPos.chr = ?1+2 " +
-						" and myVSnpAllvarsPos.pos between ?2-1 and ?3 order by myVSnpAllvarsPos.pos"),
+						" and myVSnpAllvarsPos.pos between ?2 and ?3 order by myVSnpAllvarsPos.pos"),
 		
 		
 		@NamedQuery(name = "findVSnpAllvarsPosByPrimaryKey", query = "select myVSnpAllvarsPos from VSnpAllvarsPos myVSnpAllvarsPos where myVSnpAllvarsPos.snpFeatureId = ?1"),

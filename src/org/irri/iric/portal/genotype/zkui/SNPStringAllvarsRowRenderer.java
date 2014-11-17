@@ -1,6 +1,7 @@
 package org.irri.iric.portal.genotype.zkui;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,14 +16,23 @@ public class SNPStringAllvarsRowRenderer implements SNPRowRendererStyle, RowRend
 
 	private Set setHighlighColumns = null;
 	
+	private char allele2Matrix[][] = null;
+	
+	
+	
 	private int colorMode = COLOR_MISMATCH;	// 0
+	private boolean graySynonymous = false;
+	
+	private Map<Integer,Set<Character>> mapIdx2NonsynAlleles = null;
+	//private List<boolean[]> listNonsynFlags;
+	private Map<Integer,boolean[]> mapIdx2NonsynFlags = null;
 	
 	//private java.util.Map<Integer,Character> mapIdx2Refnuc;
 	private char[] refnuc; 
 	private Map<BigDecimal, Variety> mapVarId2Var;
 	
 	@Override
-	public void render(Row arg0, Object arg1, int arg2) throws Exception {
+	public void render(Row arg0, Object arg1, int i) throws Exception {
 		// TODO Auto-generated method stub
 		
 		Row row = (Row)arg0;
@@ -68,13 +78,19 @@ public class SNPStringAllvarsRowRenderer implements SNPRowRendererStyle, RowRend
 
 		String snpstr = snpstring.getVarnuc().trim();
 		
+		
 		if(snpstr.length()!=refnuc.length) {
 			System.out.println(snpstring.getVar() + "  " + mapVarId2Var.get(snpstring.getVar()).getName()  + "snpstr.length()!=refnuc.length:" + snpstr + "  " + new String(refnuc));
 			return;
 		}
+		
+		boolean nonsynflag[] = null;
+		//if(listNonsynFlags!=null) nonsynflag=listNonsynFlags.get(i);
+		if(mapIdx2NonsynFlags!=null) nonsynflag=mapIdx2NonsynFlags.get(i);
 			
 		if(colorMode==this.COLOR_MISMATCH) {
 		
+			
 			for( int j=0; j<snpstr.length(); j++ ) 
 			{
 				char element = snpstr.charAt(j);
@@ -83,22 +99,44 @@ public class SNPStringAllvarsRowRenderer implements SNPRowRendererStyle, RowRend
 				Label newlabel=null;
 				String backcolor = "";
 				if(setHighlighColumns!=null && setHighlighColumns.contains(j))
-					backcolor = "background-color;lightgray";
+					backcolor = "background-color:lightgray";
 				
-				if(element=='0' || element=='.' || element=='*' ) {
-					newlabel = new Label("");
-					newlabel.setStyle(backcolor);
-				}
-				else if(refnuc[j]==element ) {
-					newlabel = new Label(String.valueOf(element));
+				String hetero="";
+				if(allele2Matrix!=null && allele2Matrix[i][j]!='\0') hetero = "/" + allele2Matrix[i][j];
+				
+				
+				if(refnuc[j]==element ) {
+					newlabel = new Label(String.valueOf(element)+hetero);
 					//newlabel.setStyle("align:center");
-					newlabel.setStyle(STYLE_BORING + ";" + backcolor);
+					if (!hetero.isEmpty())  newlabel.setStyle(STYLE_HETERO + ";" + backcolor);
+					else newlabel.setStyle(STYLE_BORING + ";" + backcolor);
 				}
 				else {
-						newlabel = new Label( String.valueOf(element));
+					
+					if(element=='0' || element=='.' || element=='*'  || element=='$' ) {
+						newlabel = new Label("");
+						newlabel.setStyle(backcolor);
+					} else {
+						newlabel = new Label( String.valueOf(element)+hetero);
 						//newlabel.setStyle("align:center");
-						newlabel.setStyle(STYLE_DIFFFROMREF+ ";" + backcolor);
+						if (!hetero.isEmpty())  newlabel.setStyle(STYLE_HETERO + ";" + backcolor);
+						else if(nonsynflag!=null) {
+							if(nonsynflag[j])
+								newlabel.setStyle(STYLE_DIFFFROMREF+ ";" + backcolor);
+							else
+								newlabel.setStyle(STYLE_SYNONYMOUS+ ";" + backcolor);
+						}
+						else if(mapIdx2NonsynAlleles!=null) {
+							Set setAlleles = mapIdx2NonsynAlleles.get(j);
+							if(setAlleles!=null && setAlleles.contains( element )) {
+								newlabel.setStyle(STYLE_DIFFFROMREF+ ";" + backcolor);
+							} else 
+								newlabel.setStyle(STYLE_SYNONYMOUS+ ";" + backcolor);
+						}
+						else newlabel.setStyle(STYLE_DIFFFROMREF+ ";" + backcolor);
+					}
 				}
+				
 				newlabel.setParent(row);
 					
 			}
@@ -110,20 +148,48 @@ public class SNPStringAllvarsRowRenderer implements SNPRowRendererStyle, RowRend
 				Label newlabel=null;
 				String backcolor = "";
 				if(setHighlighColumns!=null && setHighlighColumns.contains(j))
-					backcolor = "background-color;lightgray";
+					backcolor = "background-color:lightgray";
 				
-				if(element=='0' || element=='.' || element=='*'){
+				String hetero="";
+				if(allele2Matrix!=null && allele2Matrix[i][j]!='\0') hetero = "/" + allele2Matrix[i][j];
+
+				
+				if(element=='0' || element=='.' || element=='*' || element=='$'){
 					newlabel = new Label("");
 					newlabel.setStyle(backcolor);
 				}
 				else {
-					newlabel = new Label( String.valueOf(element));
+					newlabel = new Label( String.valueOf(element)+hetero);
 					//newlabel.setStyle("align:center");
 
-					if(element=='A') newlabel.setStyle(STYLE_A + ";" + backcolor);
-					else if(element=='T') newlabel.setStyle(STYLE_T+ ";" + backcolor);
-					else if(element=='G') newlabel.setStyle(STYLE_G+ ";" + backcolor);
-					else if(element=='C') newlabel.setStyle(STYLE_C+ ";" + backcolor);
+					if(!hetero.isEmpty())  newlabel.setStyle(STYLE_HETERO + ";" + backcolor);
+					else {
+						
+						if(nonsynflag!=null) {
+							if(nonsynflag[j]) {
+								if(element=='A') newlabel.setStyle(STYLE_A + ";" + backcolor);
+								else if(element=='T') newlabel.setStyle(STYLE_T+ ";" + backcolor);
+								else if(element=='G') newlabel.setStyle(STYLE_G+ ";" + backcolor);
+								else if(element=='C') newlabel.setStyle(STYLE_C+ ";" + backcolor);
+							}
+							else
+								newlabel.setStyle(STYLE_SYNONYMOUS+ ";" + backcolor);
+						}
+						 if(mapIdx2NonsynAlleles!=null) {
+								Set setAlleles = mapIdx2NonsynAlleles.get(j);
+								if(setAlleles!=null && setAlleles.contains( element )) {
+									if(element=='A') newlabel.setStyle(STYLE_A + ";" + backcolor);
+									else if(element=='T') newlabel.setStyle(STYLE_T+ ";" + backcolor);
+									else if(element=='G') newlabel.setStyle(STYLE_G+ ";" + backcolor);
+									else if(element=='C') newlabel.setStyle(STYLE_C+ ";" + backcolor);
+								} else 
+									newlabel.setStyle(STYLE_SYNONYMOUS+ ";" + backcolor);
+						 } 
+						else if(element=='A') newlabel.setStyle(STYLE_A + ";" + backcolor);
+						else if(element=='T') newlabel.setStyle(STYLE_T+ ";" + backcolor);
+						else if(element=='G') newlabel.setStyle(STYLE_G+ ";" + backcolor);
+						else if(element=='C') newlabel.setStyle(STYLE_C+ ";" + backcolor);
+					}
 				}
 				newlabel.setParent(row);
 			}
@@ -154,8 +220,46 @@ public class SNPStringAllvarsRowRenderer implements SNPRowRendererStyle, RowRend
 	public void setSetHighlighColumns(Set setHighlighColumns) {
 		this.setHighlighColumns = setHighlighColumns;
 	}
-	
-	
+
+
+
+
+	public void setAllele2Matrix(char[][] allele2Matrix) {
+		this.allele2Matrix = allele2Matrix;
+	}
+
+
+
+
+	public void setGraySynonymous(boolean graySynonymous) {
+		this.graySynonymous = graySynonymous;
+	}
+
+
+
+
+	public void setMapIdx2NonsynAlleles(
+			Map<Integer, Set<Character>> mapIdx2NonsynAlleles) {
+		this.mapIdx2NonsynAlleles = mapIdx2NonsynAlleles;
+	}
+
+
+
+
+	public void setMapIdx2NonsynFlags(Map<Integer, boolean[]> mapIdx2NonsynFlags) {
+		this.mapIdx2NonsynFlags = mapIdx2NonsynFlags;
+	}
+
+
+	/*
+	public void setListNonsynFlags(List<boolean[]> listNonsynFlags) {
+		this.listNonsynFlags = listNonsynFlags;
+	}
+	*/
+
+
+
+
 	
 	
 }

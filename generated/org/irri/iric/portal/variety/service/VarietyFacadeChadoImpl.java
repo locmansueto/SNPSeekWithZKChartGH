@@ -16,6 +16,7 @@ import org.irri.iric.portal.chado.dao.VIricstockPassportDAO;
 import org.irri.iric.portal.chado.domain.VIricstockBasicprop2;
 import org.irri.iric.portal.dao.CvTermDAO;
 import org.irri.iric.portal.dao.CvTermUniqueValuesDAO;
+import org.irri.iric.portal.dao.ListItemsDAO;
 //import org.irri.iric.portal.dao.IricstockPassportDAO;
 import org.irri.iric.portal.dao.PhenotypeDAO;
 import org.irri.iric.portal.dao.VarietyByPassportDAO;
@@ -45,30 +46,30 @@ import org.forester.evoinference.matrix.distance.BasicSymmetricalDistanceMatrix;
 
 @Service("VarietyFacade")
 //@Scope("prototype")
-@Scope(value="session",  proxyMode = ScopedProxyMode.INTERFACES)
+//@Scope(value="session",  proxyMode = ScopedProxyMode.INTERFACES)
 public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	private static final Log log = LogFactory.getLog(VarietyFacadeChadoImpl.class);
 
-	private static final int PHENOTYPETYPE_NONE=0;
-	private static final int PHENOTYPETYPE_QUAL=1;
-	private static final int PHENOTYPETYPE_QUAN=2;
+
 	
-	private int phenotype_type=PHENOTYPETYPE_NONE;
+	//private int phenotype_type=PHENOTYPETYPE_NONE;
 	
 	
-	@Autowired
-	@Qualifier("VarietyDAO")
-	private VarietyDAO germdao;
+//	@Autowired
+//	@Qualifier("VarietyDAO")
+//	private VarietyDAO germdao;
 
 	@Autowired
 	@Qualifier("VarietyBasicprop2DAO")
 	private VarietyDAO germ2dao;
 
-	
 	@Autowired
-	@Qualifier("IricStockDAO")
-	private VarietyDAO iricstockdao;
+	private ListItemsDAO listitemsDAO;
+	
+//	@Autowired
+//	@Qualifier("IricStockDAO")
+//	private VarietyDAO iricstockdao;
 	
 	@Autowired
 	private VarietyByPassportDAO varbypassportdao;
@@ -109,25 +110,27 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	@Qualifier("VCvPhenotypeQuanValuesDAO")
 	private CvTermUniqueValuesDAO cvphenotypeQuanValuesDao;
 	
+	//private int phenotype_type=ListItemsDAO.PHENOTYPETYPE_NONE;
 	
 	
-	private java.util.List germnames;
-	private java.util.List countries;
-	private java.util.List subpopulations;
-	private java.util.List irisid;
+//	private java.util.List germnames;
+//	private java.util.List countries;
+//	private java.util.List subpopulations;
+//	private java.util.List irisid;
 	
-	private Map<String,BigDecimal> passportDefinitions;
-	private Map<String,BigDecimal> phenotypeDefinitions;
+//	private Map<String,BigDecimal> passportDefinitions;
+//	private Map<String,BigDecimal> phenotypeDefinitions;
 	
 	
-	private java.util.Map<String,Variety> mapVarname2Variety; 
-	private Map<BigDecimal, Variety> mapId2Variety; 
+//	private java.util.Map<String,Variety> mapVarname2Variety; 
+//	private Map<BigDecimal, Variety> mapId2Variety; 
 
 
 	/**
 	 * Generate all name lists
 	 */
-	private void initNames() {
+	/*
+	private void initNamesOld() {
 		
 		//AppContext.checkBean(germdao, "GermplasmDAO");
 
@@ -190,14 +193,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 				//subpopulations.add( germ.getSubpopulation() );
 			}
 			
-			/*
-			if(germ.getName()!=null && germ.getIrisId()!=null) {
-				mapVarname2IRISId.put(germ.getName().toUpperCase(), new String[] {germ.getIrisId().toUpperCase(), Long.toString(germcount),
-					germ.getSubpopulation()} );
-				mapIRISId2Varname.put(germ.getIrisId().toUpperCase() , germ.getName().toUpperCase() );
-				mapId2Varname.put(Long.toString(germcount),  germ.getName().toUpperCase() );
-			}
-			*/
 
 			germnames.add( germ.getName().toLowerCase() );
 			germnames.add( germ.getName().toUpperCase() );		
@@ -254,11 +249,14 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		
 		
 	}
+	*/
 
 	@Override
 	public Map getIrisId2Variety() {
 		
+		return listitemsDAO.getIrisId2Variety();
 	
+		/*
 		java.util.Map irisid= new java.util.HashMap();
 		
 		Set setvars = germdao.findAllVariety();
@@ -276,10 +274,11 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 			}
 		}
 		return irisid;
+		*/
 		
 	}
 
-	
+	/*
 	private void initMoreConstraints() {
 		
 		cvtermsPassportdao = (CvTermDAO)AppContext.checkBean(cvtermsPassportdao, "VCvPassportDAO");
@@ -316,39 +315,35 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		
 				
 	}
+	*/
 	
+	@Override
 	public java.util.List getVarietyNames() {
-		if(germnames==null || germnames.size()==0) initNames();
-		return germnames;
+		return listitemsDAO.getVarietyNames();
+
 	}
 	
+	@Override
 	public java.util.List getIrisIds() {
-		if(irisid==null) initNames();
-		return irisid;		
+		return listitemsDAO.getIrisIds();
 	}
 	
+	@Override
 	public Variety getGermplasmByIrisId(String name)
 	{
-			return germdao.findVarietyByIrisId(name);
+		return listitemsDAO.getGermplasmByIrisId(name);
 	}
 	
-	
+	@Override
 	public Variety getGermplasmByNameLike(String name) {
+		return listitemsDAO.getGermplasmByNameLike(name);
 		
-		Variety var =  germdao.findVarietyByNameLike(name);
-		if(var==null) {
-			var = iricstockdao.findVarietyByNameLike(name);
-		}
-		return var;	
 	}
 	
+	@Override
 	public Variety getGermplasmByName(String name) {
-	
-		Variety var = germdao.findVarietyByName(name);
-		if(var==null) {
-			var= iricstockdao.findVarietyByName(name);
-		}
-		return var;
+		return listitemsDAO.getGermplasmByName(name);
+		
 	}
 		
 	@Override
@@ -356,19 +351,20 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		// TODO Auto-generated method stub
 		//irisIds = irisIds.replace("_"," ");
 		
+		return listitemsDAO.getGermplasmsByNameOrIrisid(names);
 		
 		//return germdao.findVarietyByNameOrIrisId(String names,  irisIds);
-		return null;
 		
 	}
 	
-	
+	@Override
 	public java.util.Set getGermplasmByCountry(String country) {		
-		return  germdao.findAllVarietyByCountry(country);	
+		return listitemsDAO.getGermplasmByCountry(country);
 	}
 	
+	@Override
 	public java.util.Set getGermplasmBySubpopulation(String subpopulation) {		
-		return  germdao.findAllVarietyBySubpopulation(subpopulation) ;	
+		return listitemsDAO.getGermplasmBySubpopulation(subpopulation);
 	}
 
 
@@ -376,21 +372,19 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	@Override
 	public Set getGermplasm() {
 		// TODO Auto-generated method stub
-		return germdao.findAllVariety() ;
+		return listitemsDAO.getGermplasm();
 	}
 
 
-
+	@Override
 	public java.util.List getCountries() {
-		if(countries==null) initNames();
-		return countries;
+		return listitemsDAO.getCountries();
 	}
 
 
-
+	@Override
 	public java.util.List getSubpopulations() {
-		if(subpopulations==null) initNames();
-		return subpopulations;
+		return listitemsDAO.getSubpopulations();
 	}
 
 
@@ -398,20 +392,9 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	@Override
 	public Set getGermplasmByExample(Variety germplasm) {
 		// TODO Auto-generated method stub
-		
-		if(germplasm.getCountry()!=null && !germplasm.getCountry().isEmpty()  && germplasm.getSubpopulation()!=null &&  !germplasm.getSubpopulation().isEmpty() )
-			return germdao.findAllVarietyByCountryAndSubpopulation(germplasm.getCountry(), germplasm.getSubpopulation()); // .findAllVarietyByExample(germplasm);
-
-		if(germplasm.getCountry()!=null && !germplasm.getCountry().isEmpty())
-			return getGermplasmByCountry( germplasm.getCountry() );
-		
-		if(germplasm.getSubpopulation()!=null && !germplasm.getSubpopulation().isEmpty())
-			return getGermplasmBySubpopulation( germplasm.getSubpopulation() );
-		
-		return null;
+		return listitemsDAO.getGermplasmByExample(germplasm);
 		
 	}
-	
 	
 	public List getPhenotypesByGermplasm(Variety var) {
 	//	return phendao.findPhenotypesByNsftvId(id);
@@ -524,6 +507,7 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 
 		//StringBuffer buffVarId = new StringBuffer();
 		
+		Map<BigDecimal,Variety> mapId2Variety = getMapId2Variety();
 		while(itgerm.hasNext()) {
 			BigDecimal c = itgerm.next();
 			symdistmatrix.setIdentifier( i, "varid_" + mapId2Variety.get(c).getVarietyId() );
@@ -899,16 +883,15 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 	
 
 	public java.util.Map<String, Variety> getMapVarname2Variety() {
-		if(mapVarname2Variety==null) initNames();
-		return mapVarname2Variety;
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItemsDAO"); 
+		return listitemsDAO.getMapVarname2Variety();
 	}
 
 
 	public Map<BigDecimal, Variety> getMapId2Variety() {
-		if(mapId2Variety==null) initNames();
-		return mapId2Variety;
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItemsDAO"); 
+		return listitemsDAO.getMapId2Variety();
 	}
-
 
 
 	@Override
@@ -917,22 +900,29 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 		return passportdao.findVIricstockPassportByIricStockId(id );
 	}
 
-
-
 	@Override
 	public Map<String,BigDecimal> getPassportDefinitions() {
 		// TODO Auto-generated method stub
-		if(passportDefinitions==null) initMoreConstraints();		
-		return passportDefinitions;
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItemsDAO"); 
+		return listitemsDAO.getPassportDefinitions();
+		
+		//if(passportDefinitions==null) initMoreConstraints();		
+		//return passportDefinitions;
 	}
 
 
 	@Override
 	public  Map<String,BigDecimal>  getPhenotypeDefinitions() {
 		// TODO Auto-generated method stub
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItemsDAO"); 
+		//phenotype_type=ListItemsDAO.PHENOTYPETYPE_NONE;
+		return listitemsDAO.getPhenotypeDefinitions();
+		
+		/*
 		if(phenotypeDefinitions==null) initMoreConstraints();
 		phenotype_type=PHENOTYPETYPE_NONE;
 		return phenotypeDefinitions;
+		*/
 	}
 	
 	
@@ -940,7 +930,8 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 	public Set getPassportUniqueValues(String definition) {
 	
 		cvpassportValuesDao = (CvTermUniqueValuesDAO)AppContext.checkBean(cvpassportValuesDao, "VCvPassportValuesDAO");
-		return cvpassportValuesDao.getUniqueValues(passportDefinitions.get(definition));
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItemsDAO"); 
+		return cvpassportValuesDao.getUniqueValues( listitemsDAO.getPassportDefinitions().get(definition));
 
 	}	
 
@@ -956,34 +947,40 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 	*/	
 
 	@Override
-	public Set getPhenotypeUniqueValues(String definition) {
+	//public Set getPhenotypeUniqueValues(String definition) {
+	public Object[] getPhenotypeUniqueValues(String definition) {
 		cvphenotypeQuanValuesDao = (CvTermUniqueValuesDAO)AppContext.checkBean(cvphenotypeQuanValuesDao, "VCvPhenotypeQuanValuesDAO");
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItemsDAO"); 
+		Map<String,BigDecimal> phenotypeDefinitions = listitemsDAO.getPhenotypeDefinitions();
 		Set values = cvphenotypeQuanValuesDao.getUniqueValues(phenotypeDefinitions.get(definition));
 		System.out.println( definition + "  =>  " + phenotypeDefinitions.get(definition) + "   values=" + values.size() + " : " + values);
 		
-		phenotype_type=PHENOTYPETYPE_QUAN;
+		int phenotype_type=ListItemsDAO.PHENOTYPETYPE_QUAN;
 		
 		if(values.size()==1 && values.iterator().next()==null ) {
 			
 			cvphenotypeQualValuesDao = (CvTermUniqueValuesDAO)AppContext.checkBean(cvphenotypeQualValuesDao, "VCvPhenotypeQualValuesDAO");
 			values = cvphenotypeQualValuesDao.getUniqueValues(phenotypeDefinitions.get(definition));
 			System.out.println( definition + "  =>  " + phenotypeDefinitions.get(definition) + "   values=" + values.size() + " : " + values);
-			phenotype_type=PHENOTYPETYPE_QUAL;
+			phenotype_type=ListItemsDAO.PHENOTYPETYPE_QUAL;
 		}
-		return values;
+		
+		return  new Object[] {values, phenotype_type}; 
+		//return values;
 	}
 	
 	@Override
 	public List getVarietyByPassport(String definition, String value) {
 		varbypassportdao = (VarietyByPassportDAO)AppContext.checkBean(varbypassportdao, "VIricstocksByPassportDAO");
-		return varbypassportdao.findVarietyByPassportEquals(passportDefinitions.get(definition), value);
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItemsDAO"); 
+		return varbypassportdao.findVarietyByPassportEquals(listitemsDAO.getPassportDefinitions().get(definition), value);
 	}
 	
 	@Override
-	public List getVarietyByPhenotype(String definition, String comparator,  String value) {
+	public List getVarietyByPhenotype(String definition, String comparator,  String value, int phenotype_type) {
 		
 		varbyphenotypedao = (VarietyByPhenotypeDAO)AppContext.checkBean(varbyphenotypedao, "VIricstocksByPhenotypeDAO");
-		
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItemsDAO"); 
 		/*
 		@Autowired
 		@Qualifier("VCvPhenotypeQualValuesDAO")
@@ -994,18 +991,18 @@ private String constructPhylotree(Set<BigDecimal> germplasms, String scale, bool
 		private CvTermUniqueValuesDAO cvphenotypeQuanValuesDao;
 		*/
 		
-		if(phenotype_type==PHENOTYPETYPE_QUAN) {
+		if(phenotype_type==ListItemsDAO.PHENOTYPETYPE_QUAN) {
 			
 			if(comparator.equals(COMPARATOR_EQUALS) ) {
-				return varbyphenotypedao.findVarietyByQuanPhenotypeEquals(phenotypeDefinitions.get(definition),  Double.valueOf(value));
+				return varbyphenotypedao.findVarietyByQuanPhenotypeEquals(listitemsDAO.getPhenotypeDefinitions().get(definition),  Double.valueOf(value));
 			} else if( comparator.equals(COMPARATOR_LESSTHAN) ){
-				return varbyphenotypedao.findVarietyByQuanPhenotypeLessThan(phenotypeDefinitions.get(definition),  Double.valueOf(value));
+				return varbyphenotypedao.findVarietyByQuanPhenotypeLessThan(listitemsDAO.getPhenotypeDefinitions().get(definition),  Double.valueOf(value));
 			} else if( comparator.equals(COMPARATOR_GREATERTHAN) ){
-				return varbyphenotypedao.findVarietyByQuanPhenotypeGreaterThan(phenotypeDefinitions.get(definition),  Double.valueOf(value));
+				return varbyphenotypedao.findVarietyByQuanPhenotypeGreaterThan(listitemsDAO.getPhenotypeDefinitions().get(definition),  Double.valueOf(value));
 			}
 			
-		} else if(phenotype_type==PHENOTYPETYPE_QUAL) {
-			return varbyphenotypedao.findVarietyByQualPhenotypeEquals(phenotypeDefinitions.get(definition), value);
+		} else if(phenotype_type==ListItemsDAO.PHENOTYPETYPE_QUAL) {
+			return varbyphenotypedao.findVarietyByQualPhenotypeEquals(listitemsDAO.getPhenotypeDefinitions().get(definition), value);
 		}
 		
 		//varbypassportdao = (VarietyByPassportDAO)AppContext.checkBean(varbypassportdao, "VIricstocksByPassportDAO");

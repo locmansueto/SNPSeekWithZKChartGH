@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.admin.WorkspaceFacade;
 import org.irri.iric.portal.admin.zkui.InputMessageBox;
+import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.domain.CvTermUniqueValues;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.domain.VarietyImpl;
@@ -86,6 +87,10 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     private boolean isdonePhylo=false;
     private boolean isdoneMDS=false;
     private boolean istreebrowser=true;
+    
+    //private int phenotype_type= ListItemsDAO.PHENOTYPETYPE_NONE;
+    private List<ListboxPhenotype> listPhenotypeListbox= new ArrayList();
+    private int phenotypevalue_type= ListItemsDAO.PHENOTYPETYPE_NONE;
     
     
     @Wire
@@ -184,6 +189,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     
     @Wire
     private Listbox listboxPhenotypes;
+    //private ListboxPhenotype listboxPhenotypes;
     @Wire
     private Listbox listboxPhenComparator;
     @Wire
@@ -332,7 +338,10 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     	
         java.util.List listPhenotype = new java.util.ArrayList();
         listPhenotype.addAll( variety.getPhenotypeDefinitions().keySet());
-    	Listbox listboxMorePhenConstraint= new ListboxPhenotype(listboxPhenValues, variety, listboxComparator );
+        //phenotype_type=ListItemsDAO.PHENOTYPETYPE_NONE;
+        
+    	Listbox listboxMorePhenConstraint= new ListboxPhenotype(listboxPhenValues, variety, listboxComparator);
+        
     	listboxMorePhenConstraint.setRows(1);
     	listboxMorePhenConstraint.setMold("select");
     	listboxMorePhenConstraint.setWidth("300px");
@@ -344,6 +353,8 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
         hboxPhen.appendChild(listboxPhenValues);
         
         hboxPhen.appendChild(vboxPhenConstraints.getLastChild().getLastChild());
+        
+        listPhenotypeListbox.add( (ListboxPhenotype)listboxMorePhenConstraint);
         
         vboxPhenConstraints.appendChild( hboxPhen );
     }
@@ -853,6 +864,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 			
 			
 			Component hbchildPhenConstraint = vboxPhenConstraints.getFirstChild();
+			int listcount = 0;
 			while(hbchildPhenConstraint!=null) 
 			{
 				Listbox  hblistboxPhenotypes = (Listbox)hbchildPhenConstraint.getFirstChild();
@@ -863,9 +875,18 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 				
 				if(hblistboxPhenotypes.getSelectedItem()!=null && !hblistboxPhenotypes.getSelectedItem().getLabel().trim().isEmpty()) {
 					String definition = hblistboxPhenotypes.getSelectedItem().getLabel().trim();
+					
+					
+					
+					int phenotypetype;
+					if(listcount==0)
+						phenotypetype = phenotypevalue_type;
+					else 
+						phenotypetype = listPhenotypeListbox.get(listcount-1).getPhenotype_type();
+					
 					List<VarietyPlus> listVarsByPhenotype = variety.getVarietyByPhenotype(definition, 
 							hblistboxPhenComparator.getSelectedItem().getLabel(),	
-							hblistboxPhenValue.getSelectedItem().getLabel().trim());
+							hblistboxPhenValue.getSelectedItem().getLabel().trim(), phenotypetype );
 					
 					
 					varsresult = intersectVarietyListPlus(varsresult, listVarsByPhenotype, definition );
@@ -878,6 +899,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 							hblistboxPhenValue.getSelectedItem().getLabel());
 				}
 				hbchildPhenConstraint = hbchildPhenConstraint.getNextSibling();
+				listcount++;
 			}
 			
 			/*
@@ -1531,7 +1553,12 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 		
 		if(!listboxPhenotypes.getSelectedItem().getLabel().trim().isEmpty())
 		{
-			Iterator<CvTermUniqueValues> itValues = variety.getPhenotypeUniqueValues( listboxPhenotypes.getSelectedItem().getLabel() ).iterator();
+			Object retobj[] = variety.getPhenotypeUniqueValues( listboxPhenotypes.getSelectedItem().getLabel() ); //variety.getPhenotypeUniqueValues( listboxPhenotypes.getSelectedItem().getLabel() ).iterator();
+			Iterator<CvTermUniqueValues> itValues =  ((Set)retobj[0]).iterator();
+			//listPhenotypeListbox.get(0).setPhenotype_type( (Integer)retobj[1]);
+			//listboxPhenotypes.setPhenotype_type( (Integer)retobj[1]);
+			phenotypevalue_type=(Integer)retobj[1];
+			//phenotype_type= (Integer)retobj[1];
 			while(itValues.hasNext()) {
 				CvTermUniqueValues value= itValues.next();
 				

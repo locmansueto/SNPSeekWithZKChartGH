@@ -20,11 +20,11 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 		@NamedQuery(name = "findAllMvCoreSnpss", query = "select myMvCoreSnps from MvCoreSnps myMvCoreSnps"),
 		@NamedQuery(name = "findMvCoreSnpsByName", query = "select myMvCoreSnps from MvCoreSnps myMvCoreSnps where myMvCoreSnps.name = ?1"),
 		@NamedQuery(name = "findMvCoreSnpsByNameContaining", query = "select myMvCoreSnps from MvCoreSnps myMvCoreSnps where myMvCoreSnps.name like ?1"),
-		@NamedQuery(name = "findMvCoreSnpsByPosition", query = "select myMvCoreSnps from MvCoreSnps myMvCoreSnps where myMvCoreSnps.position = ?1-1"),
+		@NamedQuery(name = "findMvCoreSnpsByPosition", query = "select myMvCoreSnps from MvCoreSnps myMvCoreSnps where myMvCoreSnps.position = ?1"),
 		
 		
 		@NamedQuery(name = "findVSnpAllvarsPosBySrcfeatureidPosBetween", query = "select myMvCoreSnps from MvCoreSnps myMvCoreSnps where myMvCoreSnps.srcfeatureId = ?1 "
-							+ " and myMvCoreSnps.position between ?2-1 and ?3 order by myMvCoreSnps.position"),
+							+ " and myMvCoreSnps.position between ?2 and ?3 order by myMvCoreSnps.position"),
 
 				
 		@NamedQuery(name = "findMvCoreSnpsByPrimaryKey", query = "select myMvCoreSnps from MvCoreSnps myMvCoreSnps where myMvCoreSnps.snpFeatureId = ?1"),

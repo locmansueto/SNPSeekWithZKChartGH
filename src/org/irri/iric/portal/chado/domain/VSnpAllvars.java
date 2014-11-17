@@ -21,13 +21,13 @@ import org.irri.iric.portal.domain.SnpsAllvars;
 		@NamedQuery(name = "findVSnpAllvarsByChr", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where myVSnpAllvars.chr = ?1"),
 		@NamedQuery(name = "findVSnpAllvarsByPos", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where myVSnpAllvars.pos = ?1"),
 
-		@NamedQuery(name = "findVSnpAllvarsByChrPosBetween", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2-1 and ?3 " ),
+		@NamedQuery(name = "findVSnpAllvarsByChrPosBetween", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2 and ?3 " ),
 				 										//	+ " and (myVSnpAllvars.refnuc<>myVSnpAllvars.varnuc) and (myVSnpAllvars.refnuc is not null or myVSnpAllvars.varnuc is not null)"  ),
-		@NamedQuery(name = "findVSnpAllvarsByVarsChrPosBetween", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2-1 and ?3 " +
+		@NamedQuery(name = "findVSnpAllvarsByVarsChrPosBetween", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2 and ?3 " +
 															" and myVSnpAllvars.var in (?4)" ),
-		@NamedQuery(name = "findVSnpAllvarsByVarsChrPosBetween2", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2-1 and ?3 " +
+		@NamedQuery(name = "findVSnpAllvarsByVarsChrPosBetween2", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2 and ?3 " +
 					" and ( myVSnpAllvars.var in (?4) or myVSnpAllvars.var in (?5))" ),
-		@NamedQuery(name = "findVSnpAllvarsByVarsChrPosBetween3", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2-1 and ?3 " +
+		@NamedQuery(name = "findVSnpAllvarsByVarsChrPosBetween3", query = "select myVSnpAllvars from VSnpAllvars myVSnpAllvars where  myVSnpAllvars.chr = ?1 and myVSnpAllvars.pos between ?2 and ?3 " +
 					" and ( myVSnpAllvars.var in (?4) or myVSnpAllvars.var in (?5)  or  myVSnpAllvars.var in (?6))" ),
 													 
 		

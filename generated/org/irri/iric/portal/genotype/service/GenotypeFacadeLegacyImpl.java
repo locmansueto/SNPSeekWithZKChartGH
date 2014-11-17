@@ -1211,12 +1211,6 @@ within a subpopulation group
 	}
 
 
-	@Override
-	public void setCoreSnp(boolean isCore) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	@Override
 	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start,
@@ -1246,6 +1240,48 @@ within a subpopulation group
 	@Override
 	public List getSNPStringInAllVarieties(Set snpposlist, Integer chr,
 			boolean isCore, boolean exactMatch, int firstRow, int maxRows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public char[][] getHeteroAlleleMatrix() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void setCore(boolean isCore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setNonsynOnly(boolean isNonsynOnly) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setColorByNonsyn(boolean isColorByNonsyn) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public Map<Integer, Set<Character>> getMapIdx2NonsynAlleles() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Map<Integer, boolean[]> getMapIdx2Nonsynflags() {
 		// TODO Auto-generated method stub
 		return null;
 	}

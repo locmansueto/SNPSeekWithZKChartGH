@@ -2,10 +2,12 @@ package org.irri.iric.portal.genotype.zkui;
 
 public interface SNPRowRendererStyle {
 
+	public static String STYLE_HETERO = "font-weight:bold;color:brown;align:center";
 	public static String STYLE_A = "color:green;align:center";
 	public static String STYLE_T = "color:red;align:center";
 	public static String STYLE_G = "color:orange;align:center";
 	public static String STYLE_C = "color:blue;align:center";
+	public static String STYLE_SYNONYMOUS = "font-weight:bold;color:lightgray;align:center";
 	
 	public static short COLOR_MISMATCH = 0;
 	public static short COLOR_NUCLEOTIDE = 1;

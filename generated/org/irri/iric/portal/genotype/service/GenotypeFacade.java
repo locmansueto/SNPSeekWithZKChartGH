@@ -39,7 +39,7 @@ public interface GenotypeFacade {
 	 * if true, use Core SNP only
 	 * @param isCore
 	 */
-	public void setCoreSnp(boolean isCore);
+	public void setCore(boolean isCore);
 	
 	
 	/**
@@ -301,5 +301,23 @@ public interface GenotypeFacade {
 
 	public List getSNPinVarieties(String var1, String var2, Set snpposlist,
 			String chr, snpQueryMode mode, boolean checked);
+
+
+	char[][] getHeteroAlleleMatrix();
+
+
+	void setNonsynOnly(boolean isNonsynOnly);
+
+
+	void setColorByNonsyn(boolean isColorByNonsyn);
+
+
+	Map<Integer, Set<Character>> getMapIdx2NonsynAlleles();
+
+
+	//List<boolean[]> getListNonsynFlags();
+
+
+	Map<Integer, boolean[]> getMapIdx2Nonsynflags();
 	
 }
