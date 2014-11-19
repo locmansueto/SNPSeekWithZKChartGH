@@ -64,8 +64,10 @@ The codes are organized in these folders and packages
 	Within these packages are  .service  and .zkui subpakages. **service** serves as a facade where the query logic are defined. These are user-interface and data store independent implementations, and can be used as the API to access the data. And **zkui** contains the ZK controller classes, and supporting classes to model the components (buttons, listboxes, tables, checkboxes, etc.) in the user interface. The interface itself is defined in the *.zul files in /WebRoot
  
 	To make the API and User Interface transparent to the data store used, the service and user interfaces use only well defined java interfaces in:
+
 		org.irri.iric.portal.domain
 		org.irri.iric.portal.dao
+
 	Each domain (or entity) has its corresponding DAO interface. The current defined entities are the following:
 
 			CvTerm
