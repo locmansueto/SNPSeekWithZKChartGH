@@ -56,20 +56,15 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     private VarietyFacade  variety;
     @Autowired
     private GenotypeFacade  genotype;
-    
 	
     @Wire
     private Listbox listboxVarietylist;
-    
     @Wire
     private Listbox listboxVarieties;
     @Wire
     private Listbox listboxPositions;
-
-    
     @Wire
     private Button  buttonQueryIric;
-    
     @Wire
     private Button buttonCreate;
     @Wire
@@ -84,25 +79,18 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     private Textbox txtboxEditVariety;
     @Wire
     private Textbox txtboxEditListname;
-    
     @Wire
     private Button buttonDownload;
-    
-    
-    
     @Wire
     private Radio radioVariety;
     @Wire
     private Radio radioSNP;
-    
     @Wire
     private Listbox selectChromosome;
-    
     @Wire
     private Div divMsgVariety;
     @Wire
     private Div divMsgSNP;
-    
     @Wire
     private Label labelNItems;
     
@@ -110,7 +98,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     public WorkspaceController() {
 		super();
 		// TODO Auto-generated constructor stub
-		System.out.println("created WorkspaceController:" + this);
+		AppContext.debug("created WorkspaceController:" + this);
 	}
 
     private HttpSession getHttpSession() {
@@ -136,7 +124,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	if(listVarlistNames.size()>0) {
 	    	listboxVarietylist.setSelectedIndex( listVarlistNames.size() -1 );
 	    	
-	    	System.out.println( listboxVarietylist.getSelectedItem().getLabel() + "  selected");
+	    	AppContext.debug( listboxVarietylist.getSelectedItem().getLabel() + "  selected");
 	    	Events.postEvent( "onSelect", listboxVarietylist, null);
     	}
     	listboxPositions.setVisible(false);
@@ -161,7 +149,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     		
 	    	listboxVarietylist.setSelectedIndex( listNames.size() -1 );
 	    	
-	    	System.out.println( listboxVarietylist.getSelectedItem().getLabel() + "  selected");
+	    	AppContext.debug( listboxVarietylist.getSelectedItem().getLabel() + "  selected");
 	    	Events.postEvent( "onSelect", listboxVarietylist, null);
     	}
     	listboxVarieties.setVisible(false);
@@ -361,13 +349,13 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 								@Override
 								public void onEvent(Event e) throws Exception {
 									// TODO Auto-generated method stub
-									//System.out.println( e.getName() + " pressed");
+									//AppContext.debug( e.getName() + " pressed");
 									
 				                    if(Messagebox.ON_YES.equals(e.getName())){
 				                    	Integer chr = Integer.valueOf(selectChromosome.getSelectedItem().getLabel());
 				                    	if(setMatched.size()>0) {
 				                    		
-				                    		System.out.println("Adding SNP list");
+				                    		AppContext.debug("Adding SNP list");
 				                    		
 				                    		String newlistname = txtboxEditListname.getValue().replaceAll(":", "").trim();
 				                    		if(newlistname.isEmpty()) {
@@ -381,7 +369,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 				                    		}
 				                    		if(workspace.addSnpPositionList(chr, newlistname , setMatched)) {
 				                    			
-				                    			System.out.println(newlistname + " added with " + setMatched.size() +  " items" );
+				                    			AppContext.debug(newlistname + " added with " + setMatched.size() +  " items" );
 				                    			
 				                    			txtboxEditVariety.setValue("");
 				                    	    	txtboxEditListname.setValue("");
@@ -410,50 +398,13 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     			
     		}
     	}
-    	/*
-    	Integer chr = Integer.valueOf(selectChromosome.getSelectedItem().getLabel());
-    	if(setMatched.size()>0) {
-    		
-    		System.out.println("Adding SNP list");
-    		
-    		String newlistname = txtboxEditListname.getValue().replaceAll(":", "").trim();
-    		if(newlistname.isEmpty()) {
-    			Messagebox.show("Provide unique list name","INVALID VALUE",Messagebox.OK, Messagebox.EXCLAMATION);
-    			return;
-    		}
-    		if(workspace.getSnpPositions(chr, newlistname)!=null && !workspace.getSnpPositions(chr,newlistname).isEmpty())
-    		{
-    			Messagebox.show("Listname already exists","INVALID VALUE",Messagebox.OK, Messagebox.EXCLAMATION);
-    			return;   			
-    		}
-    		if(workspace.addSnpPositionList(chr, newlistname , setMatched)) {
-    			
-    			System.out.println(newlistname + " added with " + setMatched.size() +  " items" );
-    			
-    			txtboxEditVariety.setValue("");
-    	    	txtboxEditListname.setValue("");
-    	     	listboxVarieties.setVisible(true);
-    	    	vboxEditVariety.setVisible(false);
-    	    	buttonCreate.setVisible(true);
-    	    	buttonDelete.setVisible(true);
-    	    	buttonSave.setVisible(false);
-    	    	buttonCancel.setVisible(false);
-    	       	
-    	    	onclickSNP();
-    			
-    		}
-    		else {
-    			Messagebox.show("Failed to add list","OPERATION FAILED",Messagebox.OK, Messagebox.EXCLAMATION);
-    		}
-    	}
-    	 */
-    	
+    
     }
     
     private void addVarlist(Set setMatched) {
     	if(setMatched.size()>0) {
     		
-    		System.out.println("Adding variety list");
+    		AppContext.debug("Adding variety list");
     		
     		if(txtboxEditListname.getValue().trim().isEmpty()) {
     			Messagebox.show("Provide unique list name","INVALID VALUE",Messagebox.OK, Messagebox.EXCLAMATION);
@@ -466,7 +417,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     		}
     		if(workspace.addVarietyList(txtboxEditListname.getValue().trim() , setMatched)) {
     			
-    			System.out.println( txtboxEditListname.getValue().trim() + " added with " + setMatched.size() +  " items" );
+    			AppContext.debug( txtboxEditListname.getValue().trim() + " added with " + setMatched.size() +  " items" );
     			
     			txtboxEditVariety.setValue("");
     	    	txtboxEditListname.setValue("");
@@ -544,59 +495,18 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 	    		}
 	    		buff.append("Do you want to proceed?");
 	    		
-	    		/*
-	    		int intret = Messagebox.show(buff.toString(),"WARNING",Messagebox.YES | Messagebox.NO, Messagebox.QUESTION); 
-	    		System.out.print("intret=" + intret);
-	    		if(intret==Messagebox.YES )
-	    		{} 
-	    		else return;
-	    			*/	
-	    		
+	   	    		
 	    		Messagebox.show(buff.toString(),"WARNING",Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, 0,
 	    				 	new org.zkoss.zk.ui.event.EventListener() {
 								@Override
 								public void onEvent(Event e) throws Exception {
 									// TODO Auto-generated method stub
-									System.out.println( e.getName() + " pressed");
+									AppContext.debug( e.getName() + " pressed");
 									
 				                    if(Messagebox.ON_YES.equals(e.getName())){
 				                        //OK is clicked
 				                    	addVarlist(setMatched);
-				                    	/*
-				                    	if(setMatched.size()>0) {
-				                    		
-				                    		System.out.println("Adding variety list");
-				                    		
-				                    		if(txtboxEditListname.getValue().trim().isEmpty()) {
-				                    			Messagebox.show("Provide unique list name","INVALID VALUE",Messagebox.OK, Messagebox.EXCLAMATION);
-				                    			return;
-				                    		}
-				                    		if(workspace.getVarieties(txtboxEditListname.getValue().trim())!=null && !workspace.getVarieties(txtboxEditListname.getValue().trim()).isEmpty())
-				                    		{
-				                    			Messagebox.show("Listname already exists","INVALID VALUE",Messagebox.OK, Messagebox.EXCLAMATION);
-				                    			return;   			
-				                    		}
-				                    		if(workspace.addVarietyList(txtboxEditListname.getValue().trim() , setMatched)) {
-				                    			
-				                    			System.out.println( txtboxEditListname.getValue().trim() + " added with " + setMatched.size() +  " items" );
-				                    			
-				                    			txtboxEditVariety.setValue("");
-				                    	    	txtboxEditListname.setValue("");
-				                    	     	listboxVarieties.setVisible(true);
-				                    	    	vboxEditVariety.setVisible(false);
-				                    	    	buttonCreate.setVisible(true);
-				                    	    	buttonDelete.setVisible(true);
-				                    	    	buttonSave.setVisible(false);
-				                    	    	buttonCancel.setVisible(false);
-				                    	       	
-				                    	    
-				                    	    	onclickVariety();
-				                    			
-				                    		}
-				                    		else {
-				                    			Messagebox.show("Failed to add list","OPERATION FAILED",Messagebox.OK, Messagebox.EXCLAMATION);
-				                    		}
-				                    	} */
+				                    	
 				                    }
 								}
 	    				});
@@ -613,45 +523,6 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	}
     	
     	
-    	/*
-    	if(setMatched.size()>0) {
-    		
-    		System.out.println("Adding variety list");
-    		
-    		if(txtboxEditListname.getValue().trim().isEmpty()) {
-    			Messagebox.show("Provide unique list name","INVALID VALUE",Messagebox.OK, Messagebox.EXCLAMATION);
-    			return;
-    		}
-    		if(workspace.getVarieties(txtboxEditListname.getValue().trim())!=null && !workspace.getVarieties(txtboxEditListname.getValue().trim()).isEmpty())
-    		{
-    			Messagebox.show("Listname already exists","INVALID VALUE",Messagebox.OK, Messagebox.EXCLAMATION);
-    			return;   			
-    		}
-    		if(workspace.addVarietyList(txtboxEditListname.getValue().trim() , setMatched)) {
-    			
-    			System.out.println( txtboxEditListname.getValue().trim() + " added with " + setMatched.size() +  " items" );
-    			
-    			txtboxEditVariety.setValue("");
-    	    	txtboxEditListname.setValue("");
-    	     	listboxVarieties.setVisible(true);
-    	    	vboxEditVariety.setVisible(false);
-    	    	buttonCreate.setVisible(true);
-    	    	buttonDelete.setVisible(true);
-    	    	buttonSave.setVisible(false);
-    	    	buttonCancel.setVisible(false);
-    	       	
-    	    
-    	    	onclickVariety();
-    			
-    		}
-    		else {
-    			Messagebox.show("Failed to add list","OPERATION FAILED",Messagebox.OK, Messagebox.EXCLAMATION);
-    		}
-    	}
-    	*/
-
-    	
-       	
     }
     
     @Listen("onClick =#buttonDelete")
@@ -667,7 +538,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	listboxVarietylist.setModel( new SimpleListModel(listVarlistNames));
     	listboxVarietylist.setSelectedIndex(0);
     	
-    	//System.out.println( listboxVarietylist.getSelectedItem().getLabel() + "  selected");
+    	//AppContext.debug( listboxVarietylist.getSelectedItem().getLabel() + "  selected");
     	
     	//Events.postEvent( "onSelect", listboxVarietylist, null);
 

@@ -58,7 +58,7 @@
 			
 
 				<!-- IRRI local -->
-				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
+				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
 				
 					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 					<property name="username" value="iricguest"/>
@@ -66,17 +66,17 @@
 					<property name="url" value="jdbc:oracle:thin:@172.29.4.231:1521:orcl"/>
 					<property name="maxIdle" value="16"/>
 					<property name="maxActive" value="32"/>
-				</bean -->
+				</bean>
 
 				<!-- AWS -->
-				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
+				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
 					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 					<property name="username" value="iricguest"/>
 					<property name="password" value="iricguest"/>
 					<property name="url" value="jdbc:oracle:thin:@202.123.56.231:1521:orcl"/>
 					<property name="maxIdle" value="8"/>
 					<property name="maxActive" value="32"/>
-				</bean>			
+				</bean -->			
 	
 	<!-- ******************************************************************** -->
 	<!-- Setup each persistence unit -->

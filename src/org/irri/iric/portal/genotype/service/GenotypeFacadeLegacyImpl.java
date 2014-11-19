@@ -393,7 +393,7 @@ public class GenotypeFacadeLegacyImpl implements GenotypeFacade {
 	 * Get the SNP alleles for ALL varieties
 	 * for ALL varieties
 	 */
-	@Override
+	//@Override
 	public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome)
 	{
 		 return getSNPinAllVarieties(startPos, endPos, chromosome, 1,0); 
@@ -687,7 +687,7 @@ public class GenotypeFacadeLegacyImpl implements GenotypeFacade {
 	}
 
 
-	@Override
+	//@Override
 	public List<SnpsAllvars> getSNPinAllVarieties(String genename, Integer plusminusBp) {
 		// TODO Auto-generated method stub
 		
@@ -1128,13 +1128,13 @@ within a subpopulation group
 
 	}
 	
-
+/*
 	@Override
 	public List<Snps2Vars> getSNPinVarieties(int n) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+*/
 
 	@Override
 	public HashMap<Integer, BigDecimal> getMapOrder2Variety() {
@@ -1172,7 +1172,7 @@ within a subpopulation group
 	}
 
 
-	@Override
+	//@Override
 	public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos,
 			Integer endPos, String chromosome, long firstRow, long numRows,
 			boolean mismatchOnly) {
@@ -1195,7 +1195,7 @@ within a subpopulation group
 	}
 
 
-	@Override
+	//@Override
 	public List<SnpsAllvars> getSNPinSetVarieties(Set varietyIds,
 			Integer startPos, Integer endPos, String chromosome, long firstRow,
 			long numRows, boolean mismatchOnly) {
@@ -1212,22 +1212,6 @@ within a subpopulation group
 
 
 
-	@Override
-	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start,
-			Integer end, Integer chr, int firstRow, int maxRows) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start,
-			Integer end, Integer chr, boolean exactMismatch, int firstRow,
-			int maxRows) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	@Override
 	public Set checkSNPInChromosome(String chr, Set setSNP, BigDecimal type) {
@@ -1237,12 +1221,6 @@ within a subpopulation group
 
 
 
-	@Override
-	public List getSNPStringInAllVarieties(Set snpposlist, Integer chr,
-			boolean isCore, boolean exactMatch, int firstRow, int maxRows) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 	@Override
@@ -1258,7 +1236,7 @@ within a subpopulation group
 		
 	}
 
-
+/*
 	@Override
 	public void setNonsynOnly(boolean isNonsynOnly) {
 		// TODO Auto-generated method stub
@@ -1271,6 +1249,12 @@ within a subpopulation group
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public Map<Integer, boolean[]> getMapIdx2Nonsynflags() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+*/
 
 
 	@Override
@@ -1281,10 +1265,34 @@ within a subpopulation group
 
 
 	@Override
-	public Map<Integer, boolean[]> getMapIdx2Nonsynflags() {
+	public void setColorByNonsyn(boolean selected) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setNonsynOnly(boolean selected) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start,
+			Integer end, Integer chr) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	@Override
+	public List getSNPStringInAllVarieties(Set snpposlist, Integer chr) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 
 

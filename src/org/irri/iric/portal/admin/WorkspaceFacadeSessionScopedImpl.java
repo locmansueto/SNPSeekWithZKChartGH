@@ -36,7 +36,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 		super();
 		// TODO Auto-generated constructor stub
 		//sessionmgr = new UserSessionManager();			
-		System.out.println("created WorkspaceFacadeSessionScopedImpl:" + this);
+		AppContext.debug("created WorkspaceFacadeSessionScopedImpl:" + this);
 	}
 	
 
@@ -118,7 +118,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 			if(session==null) throw new RuntimeException("session==null");
 			
 			session.setAttribute("manager", sessionmgr);
-			System.out.println("UserSessionManager created for session " + session.getId() + "  created at:" + session.getCreationTime() );
+			AppContext.debug("UserSessionManager created for session " + session.getId() + "  created at:" + session.getCreationTime() );
 		}
 		return sessionmgr;
 	}
@@ -194,7 +194,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 			bw.flush();
 			bw.close();
 			
-			System.out.println("Mylist write complete! Saved to: "+ file.getAbsolutePath());
+			AppContext.debug("Mylist write complete! Saved to: "+ file.getAbsolutePath());
 			
 			try {
 				String filetype = "text/plain";

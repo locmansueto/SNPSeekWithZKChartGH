@@ -81,14 +81,12 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 	
     private static final long serialVersionUID = 1L;
     
-    //private boolean isShowAll = false;
     private java.util.List<Variety> varsresult;
     
     private boolean isdonePhylo=false;
     private boolean isdoneMDS=false;
     private boolean istreebrowser=true;
     
-    //private int phenotype_type= ListItemsDAO.PHENOTYPETYPE_NONE;
     private List<ListboxPhenotype> listPhenotypeListbox= new ArrayList();
     private int phenotypevalue_type= ListItemsDAO.PHENOTYPETYPE_NONE;
     
@@ -96,20 +94,18 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     @Wire
     private Window winVariety;
     
-	private Window winUserInput;
+	//private Window winUserInput;
 	private String strUserInput;
-	
 	
     @Autowired
     private WorkspaceFacade workspace;
     
-    
     @Wire
     private Combobox comboVarname;
+    
     @Wire
     private Combobox comboIrisId;
 
-    
     @Wire
     private Combobox comboCountry;
     
@@ -140,10 +136,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     @Wire
     private Tab tabPhylo;
     
-    /*
-    @Wire
-    private Tab tabPhyloAll;
-    */
     @Wire
     private Tab tabMDS;
     
@@ -155,8 +147,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     
     @Wire
     private Tab tabTable;
-    //@Wire
-    //private Grid gridQuery;
     
     @Wire
     private Vbox hboxQuery;
@@ -189,7 +179,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     
     @Wire
     private Listbox listboxPhenotypes;
-    //private ListboxPhenotype listboxPhenotypes;
+
     @Wire
     private Listbox listboxPhenComparator;
     @Wire
@@ -202,15 +192,12 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     
     @Wire
     private Vbox vboxPassportConstraints;
-    private Button buttonAddPassConstraint;
-	
     
     @Wire
     private Listbox listboxGermPassport;
     
     @Wire
     private Iframe iframePhylotree;
-    
 
     @Wire
     private Button buttonCheckAll;
@@ -251,7 +238,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     		Messagebox.show( "EMPTY VARIETY LIST");
     		return;
     	}
-    	
     	if(txtboxListname.getValue().isEmpty()) {
     		Messagebox.show( "PROVIDE LIST NAME");
     		return;
@@ -267,51 +253,51 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     	txtboxListname.setValue("");
     }
     
-    public void addToList2() {
-    	
-    	variety =  (VarietyFacade)AppContext.checkBean(variety , "VarietyFacade");
-    	
-    	if(varietyresult.getSelectedItems().size()>0) {
-    	
-    		strUserInput="";
-    		/*
-    		while(strUserInput.isEmpty()) {
-    		
-    			final Window win;
-		    	final Window dialog = (Window) Executions.createComponents("window.zul", winVariety  , null);
-	    		dialog.doModal();
-	    		Button okBtn = (Button) dialog.getFellow("okBtn");
-	    		okBtn.addEventListener("onClick", new EventListener() {
-	    			@Override
-	    			public void onEvent(Event event) throws Exception {
-	    				Textbox tb = (Textbox) dialog.getFellow("tb");
-	    				strUserInput = tb.getValue();
-	    				dialog.detach();
-	    			}
-	    		});
-    		}
-    		*/
-    		
-    		try {
-    		String object = (String)InputMessageBox.showQuestion("MY QUESTION?", "MY APPLICATION TITLE");
-    		strUserInput = object;
-    		System.out.println("RESULT: " + object);
-    		} catch(Exception ex) {
-    			ex.printStackTrace();
-    			System.out.println(ex.getMessage());
-    		}
-    		
-    		
-		} else return;
-    	
-    	Set setVarieties = new LinkedHashSet();
-    	Iterator<Listitem> itItems= varietyresult.getSelectedItems().iterator();
-    	
-    	while(itItems.hasNext()) {
-    		setVarieties.add(  (Variety)itItems.next().getValue()) ;
-    	}
-    	workspace.addVarietyList( strUserInput, setVarieties);
-    }
+//    public void addToList2() {
+//    	
+//    	variety =  (VarietyFacade)AppContext.checkBean(variety , "VarietyFacade");
+//    	
+//    	if(varietyresult.getSelectedItems().size()>0) {
+//    	
+//    		strUserInput="";
+//    		/*
+//    		while(strUserInput.isEmpty()) {
+//    		
+//    			final Window win;
+//		    	final Window dialog = (Window) Executions.createComponents("window.zul", winVariety  , null);
+//	    		dialog.doModal();
+//	    		Button okBtn = (Button) dialog.getFellow("okBtn");
+//	    		okBtn.addEventListener("onClick", new EventListener() {
+//	    			@Override
+//	    			public void onEvent(Event event) throws Exception {
+//	    				Textbox tb = (Textbox) dialog.getFellow("tb");
+//	    				strUserInput = tb.getValue();
+//	    				dialog.detach();
+//	    			}
+//	    		});
+//    		}
+//    		*/
+//    		
+//    		try {
+//    		String object = (String)InputMessageBox.showQuestion("MY QUESTION?", "MY APPLICATION TITLE");
+//    		strUserInput = object;
+//    		AppContext.debug("RESULT: " + object);
+//    		} catch(Exception ex) {
+//    			ex.printStackTrace();
+//    			AppContext.debug(ex.getMessage());
+//    		}
+//    		
+//    		
+//		} else return;
+//    	
+//    	Set setVarieties = new LinkedHashSet();
+//    	Iterator<Listitem> itItems= varietyresult.getSelectedItems().iterator();
+//    	
+//    	while(itItems.hasNext()) {
+//    		setVarieties.add(  (Variety)itItems.next().getValue()) ;
+//    	}
+//    	workspace.addVarietyList( strUserInput, setVarieties);
+//    }
     
     
     @Listen("onClick =#buttonAddPhenConstraint")
@@ -338,7 +324,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     	
         java.util.List listPhenotype = new java.util.ArrayList();
         listPhenotype.addAll( variety.getPhenotypeDefinitions().keySet());
-        //phenotype_type=ListItemsDAO.PHENOTYPETYPE_NONE;
         
     	Listbox listboxMorePhenConstraint= new ListboxPhenotype(listboxPhenValues, variety, listboxComparator);
         
@@ -355,7 +340,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
         hboxPhen.appendChild(vboxPhenConstraints.getLastChild().getLastChild());
         
         listPhenotypeListbox.add( (ListboxPhenotype)listboxMorePhenConstraint);
-        
         vboxPhenConstraints.appendChild( hboxPhen );
     }
     
@@ -364,13 +348,11 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     public void buttonAddPassConstraint() {
     	variety =  (VarietyFacade)AppContext.checkBean(variety , "VarietyFacade");
          
-    	
     	Hbox hboxPass = new Hbox();
     	
     	Listbox listboxPassValues = new Listbox();
     	listboxPassValues.setMold("select");
     	listboxPassValues.setRows(1);
-    	
     	
         java.util.List listPassport = new java.util.ArrayList();
         listPassport.addAll( variety.getPassportDefinitions().keySet());
@@ -394,9 +376,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
         vboxPassportConstraints.appendChild( hboxPass );
     }
     
-    
     private Set getVariety(String varstrs) {
-    	
     	Set varset = new LinkedHashSet();
     	String varstrarr[] = varstrs.split(",");
     	for(int ivar = 0; ivar<  varstrarr.length ; ivar++ ) {
@@ -420,7 +400,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     		} catch(Exception ex) {
     			ex.printStackTrace();
     		}
-    		
     	}
     	return varset;
 	}
@@ -447,7 +426,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     	String eventParam  = event.getData().toString();
         //ForwardEvent eventx = (ForwardEvent)event;
         //String eventParam = eventx.getOrigin().getData().toString(); 
-        //System.out.println( eventParam ); 
+        //AppContext.debug( eventParam ); 
         
         //Messagebox.show(eventParam);
         
@@ -496,7 +475,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 	        
 	      
 	        //Event eventx = Events.getRealOrigin((ForwardEvent)event);
-	        //System.out.println(eventx.getData());
+	        //AppContext.debug(eventx.getData());
         }
     }
     
@@ -534,7 +513,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     		return;
     	}
 
-    	//System.out.println("loading phylotree " + urlphylo);
+    	//AppContext.debug("loading phylotree " + urlphylo);
     	Clients.showBusy("Computing Phylogenetic Tree");
     	gridGermplasm.setVisible(false);
     	
@@ -547,22 +526,13 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     	isdonePhylo=true;
     }
     
-    
-
-/*    
-    @Listen("onSelect = #tabPhyloAll")    
-    public void onselectTabPhyloAll() {
-    	iframePhylotree.setSrc("treeBrowser3k.htm"); //"jsp/phylotreeGermplasms.jsp?scale=1&amp;varid=all" ; //   "treeBrowser3k.htm"; // //"treeBrowser1k.htm";
-    	iframePhylotree.setVisible(true);
-    }
-*/
-    
+        
     @Listen("onSelect = #tabMDS")    
     public void onselectTabMDS() {
 
     	if(isdoneMDS) return;
     	
-    	//System.out.println("loading phylotree " + urlphylo);
+    	//AppContext.debug("loading phylotree " + urlphylo);
     	Clients.showBusy("Computing MDS plot");
     	gridGermplasm.setVisible(false);
     	
@@ -592,66 +562,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 
     	chartMDSNeighbors.setModel(new DefaultXYModel());
     	showmds_allvars(chartMDSNeighbors, textboxGermAccession.getValue());
-    	
-    	/*
-    	XYModel mdsModel = (XYModel)chartMDSNeighbors.getModel();
-    	if(mdsModel==null) throw new RuntimeException("mdsModel==null");
-    	Collection colSeries = mdsModel.getSeries();
-    	if(colSeries==null) throw new RuntimeException("colSeries==null");
-    	int nSeries =  colSeries.size();
-    	
-    	
-    	//int nSeries = chartMDSNeighbors.getSeriesSize();
-    	
-    	System.out.println("Serching in " + nSeries + " series");
-    	
-    	Number centerX = 0;
-    	Number centerY = 0;
-
-    	boolean pointfound = false;
-    	
-    	for(int iSeries=0; iSeries<nSeries; iSeries++) {
-    		Series ser = chartMDSNeighbors.getSeries(iSeries);
-    		
-    		String varsubpop = textboxGermSubpopulation.getValue();
-    		if(varsubpop==null || varsubpop.isEmpty())
-    			varsubpop = "none";
-    		if(ser.getName().toUpperCase().equals( varsubpop.toLowerCase() )) {
-    			// find variety
-    			
-    			System.out.println(ser.getName() + " subpop found");
-    			
-    			Iterator<Point> itPoint = ser.getData().iterator();
-    			String varname = textboxGermAccession.getValue().toUpperCase();
-    			while(itPoint.hasNext()) {
-    				Point pt = itPoint.next();
-    				if(pt.getName().toUpperCase().equals( varname )) {
-    					centerX = pt.getX();
-    					centerY = pt.getY();
-    					pt.getMarker().setRadius( pt.getMarker().getRadius().intValue()*2 );
-    					pt.setSelected(true);
-    					
-    					System.out.println(textboxGermAccession.getValue() + " accession found");
-    					 
-    					break;
-    				}
-    			}
-    			break;
-    		}
-    	}
-    	
-    	if(!pointfound) System.out.println("Point not found");
-    	
-    	
-    	
-    	chartMDSNeighbors.getXAxis().setMax( centerX.doubleValue() + 0.025);
-    	chartMDSNeighbors.getXAxis().setMin( centerX.doubleValue() - 0.025);
-    	
-    	chartMDSNeighbors.getYAxis().setMax( centerY.doubleValue() + 0.025);
-    	chartMDSNeighbors.getYAxis().setMin( centerY.doubleValue() - 0.025);
-    	
-    	*/
-    	
     	
     } 
     
@@ -700,8 +610,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     	
     	
     }
-    
-    
     
     @Listen("onClick = #showallButton")   
     public void showAll()
@@ -851,17 +759,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 				hbchildPassConstraint = hbchildPassConstraint.getNextSibling();
 			}
 			
-			/*
-			if(listboxPassport.getSelectedItem()!=null && !listboxPassport.getSelectedItem().getLabel().trim().isEmpty()) {
-				
-				List<VarietyPlus> listVarsByPassport = variety.getVarietyByPassport(listboxPassport.getSelectedItem().getLabel().trim(), listboxPassportValue.getSelectedItem().getLabel().trim());
-				varsresult = intersectVarietyListPlus(varsresult, listVarsByPassport, listboxPassport.getSelectedItem().getLabel().trim());
-				listExtraheader.add( listboxPassport.getSelectedItem().getLabel().trim() );
-				msgbox.setValue( msgbox.getValue() + ", " + listboxPassport.getSelectedItem().getLabel() + "=" +   listboxPassportValue.getSelectedItem().getLabel() );
-			}
-			*/
-			
-			
 			
 			Component hbchildPhenConstraint = vboxPhenConstraints.getFirstChild();
 			int listcount = 0;
@@ -875,8 +772,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 				
 				if(hblistboxPhenotypes.getSelectedItem()!=null && !hblistboxPhenotypes.getSelectedItem().getLabel().trim().isEmpty()) {
 					String definition = hblistboxPhenotypes.getSelectedItem().getLabel().trim();
-					
-					
 					
 					int phenotypetype;
 					if(listcount==0)
@@ -902,19 +797,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 				listcount++;
 			}
 			
-			/*
-			if(listboxPhenotypes.getSelectedItem()!=null && !listboxPhenotypes.getSelectedItem().getLabel().trim().isEmpty()) {
-				
-				List<VarietyPlus> listVarsByPhenotype = variety.getVarietyByPhenotype(listboxPhenotypes.getSelectedItem().getLabel().trim(), 
-						listboxPhenComparator.getSelectedItem().getLabel(),	
-						listboxPhenValue.getSelectedItem().getLabel().trim());
-				varsresult = intersectVarietyListPlus(varsresult, listVarsByPhenotype, listboxPhenotypes.getSelectedItem().getLabel());
-				listExtraheader.add( listboxPhenotypes.getSelectedItem().getLabel().trim() );
-				msgbox.setValue( msgbox.getValue() + ", " + listboxPhenotypes.getSelectedItem().getLabel() + listboxPhenComparator.getSelectedItem().getLabel() + 
-						listboxPhenValue.getSelectedItem().getLabel());
-			}
-			*/
-			
 			if(listboxMyVariety.getSelectedItem()==null || listboxMyVariety.getSelectedItem().getLabel().trim().isEmpty()) {}
 			else {
 				String msg =  msgbox.getValue().trim();
@@ -931,60 +813,17 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 				varsresult.retainAll(setVarlist);
 			}
 			
-
 			msgbox.setValue( msgbox.getValue() + " ... RESULT: " + varsresult.size() + " rows" );
 			msgbox.setStyle( "font-color:black" );
 			
 			displayResults(false, listExtraheader);
-
-			
 		}
 		
 		isdoneMDS=false;
 		isdonePhylo=false;
 		istreebrowser=false;
 				
-		//gmaps.setCenter( 14.167774, 121.254547);
-		//gmaps.setZoom(15);
-		
 	}
-	
-
-	/*
-	private List<Variety> intersectVarietyList(java.util.Collection<Variety> list1, Collection<Variety> list2, String valuename) {
-		
-		List listNew = new ArrayList();
-		
-		if(list1.size()==0)
-			return (List)list2;
-		
-		
-		Map<BigDecimal, Variety> setList1Id=new HashMap();
-		Iterator<Variety> itVar = list1.iterator();
-		
-		boolean list1IsVarietyPlus=false;
-		boolean list1IsVarietyPlusList=false;
-		
-		// get vars in list1
-		while(itVar.hasNext()) {
-			Variety var = itVar.next();
-			setList1Id.put(var.getVarietyId(), var );
-		}
-
-		// add vars in list2 only if in list 1
-		Iterator<Variety> it2Var = list2.iterator();
-		while(it2Var.hasNext()) {
-			Variety var2 = it2Var.next();
-			if(setList1Id.containsKey(  var2.getVarietyId() ))
-				listNew.add( var2 );
-		}
-
-		return listNew;
-		
-	}
-	*/
-	
-	
 	
 	private List intersectVarietyListPlus(java.util.Collection<Variety> list1, Collection<VarietyPlus> list2, String valuename) {
 		
@@ -1038,7 +877,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 			} else
 			{
 				// create a VarietyPlusPlus from var1 and var2
-				
 				Iterator<VarietyPlus> it2Var = list2.iterator();
 				while(it2Var.hasNext()) {
 					VarietyPlus var2 = it2Var.next();
@@ -1048,12 +886,9 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 					}
 				}			
 			}
-				
-			
 		}
 		else
 		{
-			
 			// use var2 in return (Return is VarietyPlus list)
 			// add vars in list2 only if in list 1
 			Iterator<VarietyPlus> it2Var = list2.iterator();
@@ -1068,106 +903,12 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 					
 				}
 			}
-			
-			/*
-			Iterator<VarietyPlus> it2Var = list2.iterator();
-			while(it2Var.hasNext()) {
-				VarietyPlus var2 = it2Var.next();
-				VarietyPlusPlus var1 = new VarietyPlusPlusImpl( var2, valuename );
-					listNew.add( var1 );
-			}				
-			return listNew;
-			*/
-
 		}
 		
 		return listNew;
 	
 	}
 
-	/*
-	
-	private List<Variety> intersectVarietyList2(java.util.Collection<Variety> list1, Collection<Variety> list2) {
-		
-		List listNew = new ArrayList();
-		
-		if(list1.size()==0)
-			return (List)list2;
-		
-		
-		Map<BigDecimal, Variety> setList1Id=new HashMap();
-		Iterator<Variety> itVar = list1.iterator();
-		
-		boolean list1IsVarietyPlus=false;
-		boolean list1IsVarietyPlusList=false;
-		
-		// get vars in list1
-		while(itVar.hasNext()) {
-			Variety var = itVar.next();
-			
-			if(!list1IsVarietyPlus && var instanceof VarietyPlus) {
-				list1IsVarietyPlus=true;
-				VarietyPlus varplus = (VarietyPlus)var;
-				if( varplus.getValue() instanceof List)
-					list1IsVarietyPlusList = true;
-			}
-			
-			setList1Id.put(var.getVarietyId(), var );
-		}
-		
-		if(list1IsVarietyPlus) {
-			
-			if(list1IsVarietyPlusList) {
-				
-				Iterator<Variety> it2Var = list2.iterator();
-				while(it2Var.hasNext()) {
-					VarietyPlus var2 = (VarietyPlus)it2Var.next();
-					if(setList1Id.containsKey(  var2.getVarietyId() )) {
-						
-						// if var from list2 is in list 1, add 
-						// add object value in var2 to list in var 1
-						VarietyPlus var1 = (VarietyPlus)setList1Id.get( var2.getVarietyId() );
-						((List)var1.getValue()).add( var2.getValue()  );
-						listNew.add( var1 );
-					}
-				}			
-				
-			} else
-			{
-
-				
-				Iterator<Variety> it2Var = list2.iterator();
-				while(it2Var.hasNext()) {
-					VarietyPlus var2 = (VarietyPlus)it2Var.next();
-					if(setList1Id.containsKey(  var2.getVarietyId() )) {
-						
-						// if var from list2 is in list 1, add 
-						// make the object in var1 a list, first value is list1, append from list 2
-						
-						VarietyPlus var1 = (VarietyPlus)setList1Id.get( var2.getVarietyId() );
-						List listPlus = new ArrayList();
-						listPlus.add(var1.getValue());
-						listPlus.add(var2.getValue());
-						var1.setValue(listPlus);
-						listNew.add( var1 );
-					}
-				}
-			}
-		} 
-		else {
-			
-			// if var from list2 is in list 1, add 
-			Iterator<Variety> it2Var = list2.iterator();
-			while(it2Var.hasNext()) {
-				Variety var2 = it2Var.next();
-				if(setList1Id.containsKey(  var2.getVarietyId() ))
-					listNew.add( var2 );
-			}
-		}
-		return listNew;
-		
-	}
-	*/
 	private void displayResults(boolean showAll) {
 		displayResults(showAll, null);
 		
@@ -1177,7 +918,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 		
 		boolean hasExtraField = (extrafield!=null && !extrafield.isEmpty());
 		
-		System.out.println("Displaying " +  varsresult.size() + " varieties");
+		AppContext.debug("Displaying " +  varsresult.size() + " varieties");
 		
 		// update table header
 
@@ -1217,26 +958,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 				}
 
 				
-				/*
-				if(varsresult.size()>2)
-				{
-					if(showAll) {
-						show_phylotree_allvars();
-					}
-					else {
-						show_phylotree(varsresult); 
-						//iframePhylotree.setVisible(true);
-					}
-					tabPhylo.setVisible(true);
-					tabMDS.setVisible(true);
-				} 
-				else {
-					//iframePhylotree.setVisible(false);
-					tabPhylo.setVisible(false);
-					tabMDS.setVisible(false);
-				}
-				*/
-				
 				if(varsresult.size()>2)
 				{
 					tabPhylo.setVisible(true);
@@ -1258,9 +979,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 				
 				gridGermplasm.setVisible(false);
 				tabboxDisplay.setVisible(true);
-				
-			//	if(showAll)
-			//		tabPhylo.setSelected(true);
 				
 	}
 	
@@ -1309,13 +1027,9 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 			
 			iframePhylotree.setVisible(true);
 			String url = "jsp/phylotreeGermplasms.jsp?scale=" + treescale + "&varid=" + varids + "&requestid="  + (HttpSession)Sessions.getCurrent().getNativeSession();
-			System.out.println( url );
+			AppContext.debug( url );
 			iframePhylotree.setSrc( url );
 	
-			
-			// create MDS
-			
-			//plotXY( variety.constructMDSPlot(varids, "1"), "Varieties MDS Plot", varids );
 	}
 	
 	private void show_phylotree(List varsresult1) {
@@ -1328,20 +1042,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 		show_phylotree(varids.toString()); 
 	}
 	
-
-	private void show_phylotree_allvars() {
-		
-		iframePhylotree.setStyle("height:1500px;width:1500px");
-		iframePhylotree.setScrolling("yes");
-		String url = "treeBrowser1k.htm";
-		System.out.println( url );
-		iframePhylotree.setSrc( url );
-		iframePhylotree.setVisible(true);
-		
-		// create MDS
-		//plotXY( variety.constructMDSPlot(null, "1", true), "Varieties MDS Plot", "");
-	}
-	
 	
 	   /**
      * Show MDS for all varieties
@@ -1349,21 +1049,6 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 	
 	@Listen("onShowAllMDS = #winVariety")
     public void showmds_allvars() {
-		/*
-    	List listIds = new ArrayList(); 
-    	variety =  (VarietyFacade)AppContext.checkBean(variety , "VarietyFacade");
-    	  
-    	listIds.addAll( variety.getMapId2Variety().keySet() );
-    	
-		StringBuffer varids = new StringBuffer();
-		java.util.Iterator<Variety> itvars = listIds.iterator();
-		while(itvars.hasNext()) {
-			varids.append(  itvars.next() );
-			if(itvars.hasNext()) varids.append(",");
-		}   	
-    	plotXY( variety.constructMDSPlot( listIds , "1", true), "Varieties MDS Plot", varids.toString() );
-    	*/
-		
     	showmds_allvars(chartMDS); 
     }
     
@@ -1400,14 +1085,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 	private void plotXY(Charts mdsChart, double xy[][], String title, String varids, String centerName) {
 	
 		mdsChart.setModel(new DefaultXYModel());
-		
-		/*
-		int nSeries = mdsChart.getSeriesSize();
-		for(int iSeries=nSeries-1; iSeries>=0; iSeries--) {
-			mdsChart.getSeries(iSeries).remove();
-		}
-		*/
-		
+				
 		ScatterPlotOptions plotOptions = mdsChart.getPlotOptions().getScatter();
         Marker marker = plotOptions.getMarker();
         marker.setRadius(4);
@@ -1520,7 +1198,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 		
 		variety = (VarietyFacade)AppContext.checkBean(variety, "VarietyFacade");
 	  
-		System.out.println("passport selected:" + listboxPassport.getSelectedItem().getLabel());
+		AppContext.debug("passport selected:" + listboxPassport.getSelectedItem().getLabel());
 		
 		List listValues = new java.util.ArrayList();
 		
@@ -1529,9 +1207,8 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 			Iterator<CvTermUniqueValues> itValues = variety.getPassportUniqueValues( listboxPassport.getSelectedItem().getLabel() ).iterator();
 			while(itValues.hasNext()) {
 				CvTermUniqueValues value= itValues.next();
+				if(value==null) continue;
 				listValues.add(value.getValue());
-				
-				//System.out.println(value.getValue());
 			}
 		}
 		
@@ -1549,7 +1226,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 		
 		List listValues = new java.util.ArrayList();
 		
-		System.out.println("phenotype selected:" + listboxPhenotypes.getSelectedItem().getLabel());
+		AppContext.debug("phenotype selected:" + listboxPhenotypes.getSelectedItem().getLabel());
 		
 		if(!listboxPhenotypes.getSelectedItem().getLabel().trim().isEmpty())
 		{
@@ -1563,15 +1240,15 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 				CvTermUniqueValues value= itValues.next();
 				
 				if(value==null){  
-					System.out.println("null value");
+					AppContext.debug("null value");
 					continue;
 				}
 				
-				System.out.println(value.toString());
+				AppContext.debug(value.toString());
 				
 				listValues.add(value.getValue());
 				
-				//System.out.println(value.getValue());
+				//AppContext.debug(value.getValue());
 			}
 		}
 		

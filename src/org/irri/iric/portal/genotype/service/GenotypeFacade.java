@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 
-
-
-
-
 import java.util.Map;
 import java.util.Set;
 
@@ -19,22 +15,12 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
 import org.irri.iric.portal.genotype.service.GenotypeFacade.snpQueryMode;
-//import org.irri.iric.portal.genotype.domain.Gene;
-//import org.irri.iric.portal.genotype.views.Snp2lines;
-//import org.irri.iric.portal.genotype.views.ViewCountVarrefMismatchId;
-//import org.irri.iric.portal.genotype.views.ViewSnpAllvars;
-//import org.irri.iric.portal.genotype.views.ViewSnpAllvarsId;
-//import org.irri.iric.portal.genotype.views.ViewSnpAllvarsPos;
-//import org.irri.iric.portal.genotype.views.ViewSnpAllvarsPosId;
-//import org.irri.iric.portal.utils.zkui.HibernateSearchObject;
 import org.zkoss.zk.ui.select.annotation.Wire;
-//import org.zkoss.zul.Combobox;
-//import org.zkoss.zul.Intbox;
-//import org.zkoss.zul.Selectbox;
 
 public interface GenotypeFacade {
 
 	
+	// Set session state values
 	/**
 	 * if true, use Core SNP only
 	 * @param isCore
@@ -51,14 +37,15 @@ public interface GenotypeFacade {
 	/**
 	 * Query mode
 	 * SNPQUERY_VARIETIES	query and compare two varieties
-	 *  SNPQUERY_REFERENCE  allele with the reference
-	 *  SNPQUERY_ALLREFPOS  all snp positions in the reference
+	 * SNPQUERY_ALLREFPOS  all snp positions in the reference
 	 * SNPQUERY_ALLVARIETIESPOS	query for all varieties
 	 * @author lmansueto
 	 *
 	 */
-	//public static enum snpQueryMode { SNPQUERY_VARIETIES,  SNPQUERY_REFERENCE, SNPQUERY_ALLREFPOS ,SNPQUERY_ALLVARIETIESPOS, SNPQUERY_SETVARIETIESPOS} ;
-	public static enum snpQueryMode { SNPQUERY_VARIETIES,  SNPQUERY_ALLREFPOS, SNPQUERY_ALLVARIETIESPOS }; //, SNPQUERY_SETVARIETIESPOS} ;
+	public static enum snpQueryMode { SNPQUERY_VARIETIES,  SNPQUERY_ALLREFPOS, SNPQUERY_ALLVARIETIESPOS }; 
+
+	
+	// Queries for UI list item values
 	
 	/**
 	 * Get list of variety names
@@ -72,13 +59,6 @@ public interface GenotypeFacade {
 	 */
 	public java.util.List<String> getSubpopulations();
 	
-	
-	/**
-	 * 
-	 * @param subpopulation
-	 * @return
-	 */
-	public Set getVarietiesForSubpopulation(String subpopulation);
 	
 	/**
 	 * Get list of gene names
@@ -98,6 +78,34 @@ public interface GenotypeFacade {
 	 * @return
 	 */
 	public Integer getFeatureLength(String feature);
+	
+	
+	// Query for Variety instances from constraints
+	
+	/**
+	 * 
+	 * @param subpopulation
+	 * @return
+	 */
+	public Set getVarietiesForSubpopulation(String subpopulation);
+		
+		
+	
+	
+	
+	// Query for Gene instance
+	/**
+	 * Get Gene object with name
+	 * @param name
+	 * @return
+	 */
+	public Gene getGeneFromName(String name);
+	
+
+	
+	// Query for SNPs in variety comparison 	
+
+	//public List<Snps2Vars> getSNPinVarieties(int n);
 	
 	/**
 	 * Get list of SNPs for two varieties in chromosome position
@@ -125,15 +133,8 @@ public interface GenotypeFacade {
 	public List<Snps2Vars> getSNPinVarieties( String var1, String var2, String genename, Integer plusminusBp,  snpQueryMode querymode);
 	
 	
-	public List<Snps2Vars> getSNPinVarieties(int n);	
-	
-	/**
-	 * Get Gene object with name
-	 * @param name
-	 * @return
-	 */
-	public Gene getGeneFromName(String name);
-	
+	// Query for SNPs for All Varieties
+	// some methods are commented out because they are used only for SNP_GENOTYPE query, which might be used in the future
 	
 	/**
 	 * Get SNP positions within the queried region, based on last call of getSNPinAllVarieties()
@@ -150,7 +151,7 @@ public interface GenotypeFacade {
 	 * @param plusminusBp
 	 * @return
 	 */
-	public List<SnpsAllvars> getSNPinAllVarieties(String genename, Integer plusminusBp);
+	//public List<SnpsAllvars> getSNPinAllVarieties(String genename, Integer plusminusBp);
 
 	
 	/**
@@ -160,7 +161,7 @@ public interface GenotypeFacade {
 	 * @param chromosome
 	 * @return
 	 */
-	public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome) ;
+	//public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome) ;
 
 	
 	/**
@@ -174,7 +175,7 @@ public interface GenotypeFacade {
 	 * @param numRows
 	 * @return
 	 */
-	public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows) ;
+	//public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows) ;
 	
 	
 	/**
@@ -188,11 +189,24 @@ public interface GenotypeFacade {
 	 * @param mismatchOnly	if true, fetch only mismatch with reference, else fetch all
 	 * @return
 	 */
-	public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows, boolean mismatchOnly) ;
+	//public List<SnpsAllvars> getSNPinAllVarieties(Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows, boolean mismatchOnly) ;
 	
 	
-	public List<SnpsAllvars> getSNPinSetVarieties(Set varietyIds, Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows, boolean mismatchOnly) ;
+	/**
+	 * Get SNPs in region for a given set of variety ids
+	 * @param varietyIds
+	 * @param startPos
+	 * @param endPos
+	 * @param chromosome
+	 * @param firstRow
+	 * @param numRows
+	 * @param mismatchOnly
+	 * @return
+	 */
+	//public List<SnpsAllvars> getSNPinSetVarieties(Set varietyIds, Integer startPos, Integer endPos, String chromosome, long firstRow, long numRows, boolean mismatchOnly) ;
 	
+	
+	// Query for variety and reference mismatches 
 	
 	/**
 	 * Count the number of mismatches for each variety in the region, sorted by decreasing number
@@ -202,8 +216,9 @@ public interface GenotypeFacade {
 	 * @param update	if true, update the counting, else use result from last getSNPinAllVarieties()
 	 * @return
 	 */
-	public List<SnpsAllvarsRefMismatch> countSNPMismatchesInAlllVarieties(Integer startPos, Integer endPos, String chromosome, boolean update);
+	//public List<SnpsAllvarsRefMismatch> countSNPMismatchesInAlllVarieties(Integer startPos, Integer endPos, String chromosome, boolean update);
 
+	
 	/**
 	 * after calling countSNPMismatchesInAlllVarieties(), results and subsets can be accessed from these
 	 * @return
@@ -213,18 +228,22 @@ public interface GenotypeFacade {
 
 	
 	/**
-	 * Sorting of varieties
+	 * Sorting of varieties, based on number of varieties. call after countSNPMismatchesInAlllVarieties
 	 * @return
 	 */
 	public HashMap<Integer, BigDecimal> getMapOrder2Variety();
 	public HashMap<BigDecimal, Integer> getMapVariety2Order();
 	
+	
 	/**
-	 * variety to mismatch map
+	 * variety to number of mismatch map
 	 * @return
 	 */
 	public java.util.HashMap<BigDecimal, Integer> getMapVariety2Mismatch(); 
 	
+	
+	
+	// Methods for phylogenetic tree construction based on allele mismatches
 	
 	/**
 	 * Construct phylogenetic tree based on mismatches within the region
@@ -247,8 +266,9 @@ public interface GenotypeFacade {
 	 */
 	public String[] constructPhylotreeTopN(String scale, String chr, int start, int end, int topN, String requestid);
 	
+	
 	/**
-	 * Ordering of varieties from phylogenetic computation based on mismatches in region
+	 * Ordering of varieties from phylogenetic computation based on mismatches in region. call after constructPhylotree
 	 * @return	null if not yet computed
 	 */
 	public java.util.HashMap<BigDecimal, Integer> getMapVariety2PhyloOrder();
@@ -256,8 +276,10 @@ public interface GenotypeFacade {
 	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile);
 
 
+	
 	/**
-	 * SNPs string for all varieties with mismatch between positions in chromosome
+	 * SNPs string for all varieties with mismatch between positions in chromosome.
+	 * SNPString are alleles in adjacent SNPs position, concatenated into one string
 	 * @param start
 	 * @param end
 	 * @param chr
@@ -265,27 +287,16 @@ public interface GenotypeFacade {
 	 * @param maxRows
 	 * @return
 	 */
-	List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start, Integer end,
-			Integer chr, int firstRow, int maxRows);
+	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start, Integer end, Integer chr);
 
-
-	List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start,
+/*
+	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start,
 			Integer end, Integer chr, boolean exactMismatch, int firstRow,
 			int maxRows);
-/*
-	List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start,
-			Integer end, Integer chr, boolean exactMismatch, Map mapPos2Allele, int firstRow,
-			int maxRows);
-*/
-
-
-
-
-	public Set checkSNPInChromosome(String chr, Set setSNP, BigDecimal type);
-
-
+*/	
+	
 	/**
-	 * Get SNPs in the provided set of positions
+	 * Get SNPs in the provided set of positions, for all varieties
 	 * @param snpposlist
 	 * @param chr
 	 * @param exactMatch
@@ -293,31 +304,61 @@ public interface GenotypeFacade {
 	 * @param maxRows
 	 * @return
 	 */
+	public List getSNPStringInAllVarieties(Set snpposlist, Integer chr);
+	
+
+	// Query for MyList definition
+	/**
+	 * Verify the snps in setSNP and return only the valid ones  
+	 * @param chr
+	 * @param setSNP
+	 * @param type
+	 * @return
+	 */
+	public Set checkSNPInChromosome(String chr, Set setSNP, BigDecimal type);
 
 
-	public List getSNPStringInAllVarieties(Set snpposlist, Integer valueOf,
-			boolean isCore, boolean exactMatch, int firstRow, int maxRows);
 
-
+	/**
+	 * Get SNPs in the provided set of positions, for two varieties
+	 * @param snpposlist
+	 * @param chr
+	 * @param exactMatch
+	 * @param firstRow
+	 * @param maxRows
+	 * @return
+	 */
 	public List getSNPinVarieties(String var1, String var2, Set snpposlist,
 			String chr, snpQueryMode mode, boolean checked);
 
 
+	/**
+	 * Get heterozygous allele (allele2) matrix varietyXposition
+	 * @return
+	 */
 	char[][] getHeteroAlleleMatrix();
 
 
-	void setNonsynOnly(boolean isNonsynOnly);
+	
+	//void setNonsynOnly(boolean isNonsynOnly);
 
 
-	void setColorByNonsyn(boolean isColorByNonsyn);
+	//void setColorByNonsyn(boolean isColorByNonsyn);
 
 
+	/**
+	 * Map of table index to Set of non-synonymous alleles
+	 * @return
+	 */
 	Map<Integer, Set<Character>> getMapIdx2NonsynAlleles();
 
 
-	//List<boolean[]> getListNonsynFlags();
+	public void setColorByNonsyn(boolean selected);
 
 
-	Map<Integer, boolean[]> getMapIdx2Nonsynflags();
+	public void setNonsynOnly(boolean selected);
+
+
+	//Map<Integer, boolean[]> getMapIdx2Nonsynflags();
 	
 }

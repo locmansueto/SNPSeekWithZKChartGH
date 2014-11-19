@@ -5,11 +5,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import oracle.sql.DATE;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,15 +43,15 @@ public class AppContext {
 	/**
 	 * is Amazon Web Service compile?
 	 */
-	private static final boolean isAWS = true;
+	private static final boolean isAWS = false;
 	private static final boolean isVMIRRI = false;
 	private static final boolean isPollux = false;
-	private static final boolean isLocalhost = false;
+	private static final boolean isLocalhost = true;
 	
 	/**
 	 * is development
 	 */
-	private static final boolean isDev = false;
+	private static final boolean isDev = true;
 
 
 
@@ -63,7 +66,8 @@ public class AppContext {
     /**
      * used for timing processes
      */
-    private static long startTime;
+    private static long startTime=0;
+    private static long startTimeDate=0;
 
     /**
      * get a temporary file name
@@ -79,6 +83,7 @@ public class AppContext {
      */
     public static void startTimer() {
     	startTime =  System.currentTimeMillis( );	
+    	startTimeDate = new Date().getTime();
     }
     
     /**
@@ -94,9 +99,12 @@ public class AppContext {
      * @param report
      */
     public static void resetTimer(String report) {
-    	long endTime  =  System.currentTimeMillis( );	
-    	System.out.println(endTime- startTime + " ms " + report);
+    	long endTime  = System.currentTimeMillis();  	
+    	long endTimeDate  = new Date().getTime();  
+    	//System.out.println(endTime- startTime + " ms " + report);
+    	debug( "TIMER: " + (endTime- startTime) + " ms (system),  " + ( endTimeDate-startTimeDate) + " ms (date) : " + report);
     	startTime=endTime;
+    	startTimeDate = endTimeDate;
     }
     
     
@@ -262,7 +270,44 @@ public class AppContext {
     	return 5;
     }
     
+
+    /**
+     * Message logger used by the webapp, for easy maintainance and change of loggers
+     * @param msg
+     */
+    public static void logger(StringBuffer msg) {
+    	logger(msg.toString());
+    }
+
+    public static void logger(String msg) {
+    	System.out.println(msg);
+    }
     
+    // display on expected error
+    public static void error(String msg) {
+    	logger(msg);
+    }
+    
+    // display on expected warning
+    public static void warning(String msg) {
+    	logger(msg);
+    }
+
+    // display in debug mode
+    public static void debug(String msg) {
+    	logger(msg);
+    }
+
+    // display in production mode
+    public static void info(String msg) {
+    	logger(msg);
+    }
+
+    /**
+     * Display the elements in a collection
+     * @param name
+     * @param col
+     */
     public static void displayCollection(String name, Collection col) {
     	StringBuffer buff= new StringBuffer();
     	buff.append(name + ": ");
@@ -272,7 +317,7 @@ public class AppContext {
     	if(it.hasNext()) buff.append(",");
     	}
     	
-    	System.out.println( buff );
+    	logger( buff );
     }
     
     

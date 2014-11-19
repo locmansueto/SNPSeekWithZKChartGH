@@ -36,58 +36,7 @@ public class WorkspaceFacadeImpl implements WorkspaceFacade {
 			}
 			return sessionmgr;
 		}
-		/*
-		@Override
-		public Set getVarietylistNames(HttpSession session) {
-			UserSessionListsManager sessionmgr = getSessionManager(session);
-			return sessionmgr.getVarietylistNames();
-		}
-
-		@Override
-		public Set getVarieties(HttpSession session, String listname) {
-			UserSessionListsManager sessionmgr =  getSessionManager(session);
-			return sessionmgr.getVarieties(listname);
-		}
-
-
-		@Override
-		public boolean addVarietyList(HttpSession session, String name, Set varietylist) {
-			// TODO Auto-generated method stub
-			UserSessionListsManager sessionmgr = getSessionManager(session);
-			return sessionmgr.addVarietyList(name, varietylist);
-		}
-	
-		@Override
-		public void deleteVarietyList(HttpSession session, String listname) {
-			UserSessionListsManager sessionmgr = getSessionManager(session);
-			sessionmgr.deleteVarietyList( listname); 
-		}
-
-
-
-
-
-		@Override
-		public Set getSnpPositions(HttpSession nativeSession, String trim) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-
-		@Override
-		public boolean addSnpPositionList(HttpSession nativeSession,
-				String trim, Set setMatched) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-
-		@Override
-		public Set getSnpPositionListNames(HttpSession nativeSession) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-*/
+		
 		@Override
 		public void queryIric() {
 			// TODO Auto-generated method stub

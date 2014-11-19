@@ -25,7 +25,7 @@ public class SNPStringAllvarsRowRenderer implements SNPRowRendererStyle, RowRend
 	
 	private Map<Integer,Set<Character>> mapIdx2NonsynAlleles = null;
 	//private List<boolean[]> listNonsynFlags;
-	private Map<Integer,boolean[]> mapIdx2NonsynFlags = null;
+	//private Map<Integer,boolean[]> mapIdx2NonsynFlags = null;
 	
 	//private java.util.Map<Integer,Character> mapIdx2Refnuc;
 	private char[] refnuc; 
@@ -86,7 +86,7 @@ public class SNPStringAllvarsRowRenderer implements SNPRowRendererStyle, RowRend
 		
 		boolean nonsynflag[] = null;
 		//if(listNonsynFlags!=null) nonsynflag=listNonsynFlags.get(i);
-		if(mapIdx2NonsynFlags!=null) nonsynflag=mapIdx2NonsynFlags.get(i);
+		//if(mapIdx2NonsynFlags!=null) nonsynflag=mapIdx2NonsynFlags.get(i);
 			
 		if(colorMode==this.COLOR_MISMATCH) {
 		
@@ -120,19 +120,23 @@ public class SNPStringAllvarsRowRenderer implements SNPRowRendererStyle, RowRend
 						newlabel = new Label( String.valueOf(element)+hetero);
 						//newlabel.setStyle("align:center");
 						if (!hetero.isEmpty())  newlabel.setStyle(STYLE_HETERO + ";" + backcolor);
+						else if(mapIdx2NonsynAlleles!=null) {
+							Set setAlleles = mapIdx2NonsynAlleles.get(j);
+							if(setAlleles==null) { // assume this is noncoding or intron region because not in nonsynonymous aanalysis
+								newlabel.setStyle(STYLE_DIFFFROMREF+ ";" + backcolor);
+							} else if (setAlleles.contains( element )) {
+								newlabel.setStyle(STYLE_DIFFFROMREF+ ";" + backcolor);
+							} else 
+								newlabel.setStyle(STYLE_SYNONYMOUS+ ";" + backcolor);
+						}
+						/*
 						else if(nonsynflag!=null) {
 							if(nonsynflag[j])
 								newlabel.setStyle(STYLE_DIFFFROMREF+ ";" + backcolor);
 							else
 								newlabel.setStyle(STYLE_SYNONYMOUS+ ";" + backcolor);
 						}
-						else if(mapIdx2NonsynAlleles!=null) {
-							Set setAlleles = mapIdx2NonsynAlleles.get(j);
-							if(setAlleles!=null && setAlleles.contains( element )) {
-								newlabel.setStyle(STYLE_DIFFFROMREF+ ";" + backcolor);
-							} else 
-								newlabel.setStyle(STYLE_SYNONYMOUS+ ";" + backcolor);
-						}
+						*/
 						else newlabel.setStyle(STYLE_DIFFFROMREF+ ";" + backcolor);
 					}
 				}
@@ -164,8 +168,26 @@ public class SNPStringAllvarsRowRenderer implements SNPRowRendererStyle, RowRend
 
 					if(!hetero.isEmpty())  newlabel.setStyle(STYLE_HETERO + ";" + backcolor);
 					else {
-						
-						if(nonsynflag!=null) {
+
+						 if(mapIdx2NonsynAlleles!=null) {
+								Set setAlleles = mapIdx2NonsynAlleles.get(j);
+								if(setAlleles==null) {
+									// non-exonic region
+									if(element=='A') newlabel.setStyle(STYLE_A + ";" + backcolor);
+									else if(element=='T') newlabel.setStyle(STYLE_T+ ";" + backcolor);
+									else if(element=='G') newlabel.setStyle(STYLE_G+ ";" + backcolor);
+									else if(element=='C') newlabel.setStyle(STYLE_C+ ";" + backcolor);
+								}
+								else if(setAlleles.contains( element )) {
+									// exonic and non-synonymous
+									if(element=='A') newlabel.setStyle(STYLE_A + ";" + backcolor);
+									else if(element=='T') newlabel.setStyle(STYLE_T+ ";" + backcolor);
+									else if(element=='G') newlabel.setStyle(STYLE_G+ ";" + backcolor);
+									else if(element=='C') newlabel.setStyle(STYLE_C+ ";" + backcolor);
+								} else 
+									newlabel.setStyle(STYLE_SYNONYMOUS+ ";" + backcolor);
+						 } 
+						 /* else if(nonsynflag!=null) {
 							if(nonsynflag[j]) {
 								if(element=='A') newlabel.setStyle(STYLE_A + ";" + backcolor);
 								else if(element=='T') newlabel.setStyle(STYLE_T+ ";" + backcolor);
@@ -174,17 +196,7 @@ public class SNPStringAllvarsRowRenderer implements SNPRowRendererStyle, RowRend
 							}
 							else
 								newlabel.setStyle(STYLE_SYNONYMOUS+ ";" + backcolor);
-						}
-						 if(mapIdx2NonsynAlleles!=null) {
-								Set setAlleles = mapIdx2NonsynAlleles.get(j);
-								if(setAlleles!=null && setAlleles.contains( element )) {
-									if(element=='A') newlabel.setStyle(STYLE_A + ";" + backcolor);
-									else if(element=='T') newlabel.setStyle(STYLE_T+ ";" + backcolor);
-									else if(element=='G') newlabel.setStyle(STYLE_G+ ";" + backcolor);
-									else if(element=='C') newlabel.setStyle(STYLE_C+ ";" + backcolor);
-								} else 
-									newlabel.setStyle(STYLE_SYNONYMOUS+ ";" + backcolor);
-						 } 
+						} */
 						else if(element=='A') newlabel.setStyle(STYLE_A + ";" + backcolor);
 						else if(element=='T') newlabel.setStyle(STYLE_T+ ";" + backcolor);
 						else if(element=='G') newlabel.setStyle(STYLE_G+ ";" + backcolor);
@@ -246,9 +258,9 @@ public class SNPStringAllvarsRowRenderer implements SNPRowRendererStyle, RowRend
 
 
 
-	public void setMapIdx2NonsynFlags(Map<Integer, boolean[]> mapIdx2NonsynFlags) {
-		this.mapIdx2NonsynFlags = mapIdx2NonsynFlags;
-	}
+	//public void setMapIdx2NonsynFlags(Map<Integer, boolean[]> mapIdx2NonsynFlags) {
+	//	this.mapIdx2NonsynFlags = mapIdx2NonsynFlags;
+	//}
 
 
 	/*

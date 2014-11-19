@@ -27,7 +27,7 @@ public interface ListItemsDAO {
 
 	Variety getGermplasmByName(String name);
 
-	List getGermplasmsByNameOrIrisid(String names);
+//	List getGermplasmsByNameOrIrisid(String names);
 
 	Set getGermplasmByCountry(String country);
 

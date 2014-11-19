@@ -322,7 +322,7 @@ window.Boot_progressbox = function (){}
                	 		<vbox width="15px"/>
          				<radio id="radioColorAllele" label="Nucleotide" radiogroup="snpcolor" tooltip="popupSNPColoringAllele"/>
 
-         				<div visible="false">
+         				<div visible="true">
          				<vbox width="30px"/>
          				<label pre="true" value="Synonymous SNPs  " style="font-weight:bold;"/>
          				<radio id="radioShowSyn" label="Include" radiogroup="synonymoussnps"  selected="true" tooltip="popupSynonymousShow"/>

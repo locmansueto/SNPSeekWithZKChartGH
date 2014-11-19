@@ -36,7 +36,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	@Qualifier("VCvPhenotypeDAO")
 	private CvTermDAO cvtermsPhenotypedao;
 	
-//	private java.util.List<String> varnames;
+
 	private java.util.List<String> genenames;
 	
 	private java.util.List germnames;
@@ -47,53 +47,22 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	private java.util.Map<String,Variety> mapVarname2Variety; 
 	private Map<BigDecimal, Variety> mapId2Variety; 
 	
-	//private int phenotype_type=PHENOTYPETYPE_NONE;
 	private Map<String,BigDecimal> passportDefinitions;
 	private Map<String,BigDecimal> phenotypeDefinitions;
 
 	
-	@Override
-	public List<String> getGenenames() {
-		
-		
-		// TODO Auto-generated method stub
-		if(genenames==null || genenames.size()==0) {
-
-			genenames = new java.util.ArrayList();
-			
-			geneDAO = (GeneDAO)AppContext.checkBean(geneDAO, "GeneDAO");
-				
-			java.util.Iterator<Gene> it = geneDAO.findAllGene().iterator();
-		    while(it.hasNext()) {
-		    	Gene gene = it.next();
-		    	
-		    	String genename = gene.getUniquename();
-
-		    	
-		    	genenames.add(genename.toUpperCase());
-		    	genenames.add(genename.toLowerCase());
-		    }
-			
-		}
-		return genenames;
-	}
+	
 	
 	/**
-	 * Generate all name lists
+	 * Generate all variety name lists
 	 */
 	private void initNames() {
 		
-		//AppContext.checkBean(germdao, "GermplasmDAO");
-
 		java.util.Set<String> germnames= new java.util.TreeSet<String>();
 		java.util.Set<String> countries= new java.util.TreeSet<String>();
 		java.util.Set<String> subpopulations= new java.util.TreeSet<String>();
 		java.util.Set<String> irisid= new java.util.TreeSet<String>();
 		
-		
-		//mapVarname2IRISId = new java.util.HashMap<String, String[]>() ;
-		//mapIRISId2Varname  = new java.util.HashMap<String, String>() ;
-		//mapId2Varname  = new java.util.HashMap<String, String>() ;
 		
 		mapVarname2Variety = new java.util.HashMap<String, Variety>() ;
 		mapId2Variety = new java.util.HashMap<BigDecimal, Variety>() ;
@@ -101,10 +70,9 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		int germcount = 0;
 		
 		Set setvars = germdao.findAllVariety();
-		System.out.println(setvars.size() + " vars from iricstock_basicprop");
+		AppContext.info(setvars.size() + " vars from iricstock_basicprop");
 		java.util.Iterator<Variety> itgerm =  setvars.iterator();
 		
-	
 		
 		while( itgerm.hasNext() )	
 		{
@@ -116,7 +84,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			
 			if(germ.getName()==null)
 				{
-					System.out.println( "germ..getVarnameOfGenStockSrc()==null");
+					AppContext.info("variety.getVarnameOfGenStockSrc()==null");
 					continue;					
 				}
 
@@ -126,7 +94,6 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			{
 				countries.add( germ.getCountry().toLowerCase() );
 				countries.add( germ.getCountry().toUpperCase() );	
-				//countries.add( germ.getCountry() );
 			}
 			
 			
@@ -134,34 +101,21 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			{
 				subpopulations.add( germ.getSubpopulation().toLowerCase() );
 				subpopulations.add( germ.getSubpopulation().toUpperCase() );	
-				//subpopulations.add( germ.getSubpopulation() );
 			}
 			
 			if(germ.getIrisId()!=null) // throw new RuntimeException("germ..getSubpopulation()==null");
 			{
 				irisid.add( germ.getIrisId().toLowerCase() );
 				irisid.add( germ.getIrisId().toUpperCase() );	
-				//subpopulations.add( germ.getSubpopulation() );
 			}
-			
-			/*
-			if(germ.getName()!=null && germ.getIrisId()!=null) {
-				mapVarname2IRISId.put(germ.getName().toUpperCase(), new String[] {germ.getIrisId().toUpperCase(), Long.toString(germcount),
-					germ.getSubpopulation()} );
-				mapIRISId2Varname.put(germ.getIrisId().toUpperCase() , germ.getName().toUpperCase() );
-				mapId2Varname.put(Long.toString(germcount),  germ.getName().toUpperCase() );
-			}
-			*/
 
 			germnames.add( germ.getName().toLowerCase() );
 			germnames.add( germ.getName().toUpperCase() );		
 	
-			//germnames.add( germ.getAccession());
-
 		}
 		
 		setvars = iricstockdao.findAllVariety();
-		System.out.println(setvars.size() + " vars from iricstock");
+		AppContext.info(setvars.size() + " vars from iricstock");
 		itgerm =  setvars.iterator();
 		while( itgerm.hasNext() )	
 		{
@@ -170,32 +124,23 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 
 			if(mapId2Variety.containsKey(germ.getVarietyId())) continue;
 			
-			
-			System.out.println(germ.getName() + "   " + germ.getVarietyId() + "  added");
-			
+			AppContext.debug(germ.getName() + "   " + germ.getVarietyId() + "  added");
 			
 			germcount++;
 			mapId2Variety.put(germ.getVarietyId(), germ);
 			
 			if(germ.getName()==null)
 				{
-					System.out.println( "germ..getVarnameOfGenStockSrc()==null");
+					AppContext.debug("germ..getVarnameOfGenStockSrc()==null");
 					continue;					
 				}
 
 			mapVarname2Variety.put(germ.getName().toUpperCase(), germ);
-
 			germnames.add( germ.getName().toLowerCase() );
 			germnames.add( germ.getName().toUpperCase() );		
-	
-			//germnames.add( germ.getAccession());
-			
-			
-			
-			
 		}	
 		
-		System.out.println(mapId2Variety.size() + " variety Ids;  " + germnames.size()/2 + "  names");
+		AppContext.info(mapId2Variety.size() + " variety Ids;  " + germnames.size()/2 + "  names");
 		
 		this.germnames = new java.util.ArrayList();
 			this.germnames.addAll(germnames);
@@ -205,34 +150,45 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			this.subpopulations.addAll(subpopulations);
 		this.irisid =  new java.util.ArrayList();
 			this.irisid.addAll(irisid);
-		
+	}
+	
+	@Override
+	public List<String> getGenenames() {
+		// TODO Auto-generated method stub
+		if(genenames==null || genenames.size()==0) {
+
+			genenames = new java.util.ArrayList();
+			geneDAO = (GeneDAO)AppContext.checkBean(geneDAO, "GeneDAO");
+				
+			java.util.Iterator<Gene> it = geneDAO.findAllGene().iterator();
+		    while(it.hasNext()) {
+		    	Gene gene = it.next();
+		    	String genename = gene.getUniquename();
+		    	genenames.add(genename.toUpperCase());
+		    	genenames.add(genename.toLowerCase());
+		    }
+		}
+		return genenames;
 	}
 	
 	@Override
 	public Map getIrisId2Variety() {
-		
 	
 		java.util.Map irisid= new java.util.HashMap();
 		
 		Set setvars = germdao.findAllVariety();
-		System.out.println(setvars.size() + " vars from iricstock_basicprop");
 		java.util.Iterator<Variety> itgerm =  setvars.iterator();
-	
 		
 		while( itgerm.hasNext() )	
 		{
 			Variety germ = itgerm.next();
 			if(germ==null) throw new RuntimeException("germ==null");
 			if(germ.getIrisId()!=null) // throw new RuntimeException("germ..getSubpopulation()==null");
-			{
 				irisid.put( germ.getIrisId().toUpperCase() , germ);	
-			}
 		}
 		return irisid;
-		
 	}
 	
-
 	@Override
 	public java.util.List getVarietyNames() {
 		if(germnames==null || germnames.size()==0) initNames();
@@ -270,7 +226,8 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		}
 		return var;
 	}
-		
+	
+	/*	
 	@Override
 	public List getGermplasmsByNameOrIrisid(String names) {
 		// TODO Auto-generated method stub
@@ -279,8 +236,8 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		
 		//return germdao.findVarietyByNameOrIrisId(String names,  irisIds);
 		return null;
-		
 	}
+	*/
 	
 	@Override
 	public java.util.Set getGermplasmByCountry(String country) {		
@@ -291,7 +248,6 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	public java.util.Set getGermplasmBySubpopulation(String subpopulation) {		
 		return  germdao.findAllVarietyBySubpopulation(subpopulation) ;	
 	}
-
 
 
 	@Override
@@ -307,13 +263,11 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		return countries;
 	}
 
-
 	@Override
 	public java.util.List getSubpopulations() {
 		if(subpopulations==null) initNames();
 		return subpopulations;
 	}
-
 
 
 	@Override
@@ -328,9 +282,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		
 		if(germplasm.getSubpopulation()!=null && !germplasm.getSubpopulation().isEmpty())
 			return getGermplasmBySubpopulation( germplasm.getSubpopulation() );
-		
 		return null;
-		
 	}
 
 	@Override
@@ -378,17 +330,12 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			phenotypeDefinitions.put(term.getDefinition(), term.getCvTermId());
 		}	
 		
-		System.out.println("phenotypeDefinitions");
-		System.out.println(phenotypeDefinitions);
-		
-				
 	}
 	
 	@Override
 	public  Map<String,BigDecimal>  getPhenotypeDefinitions() {
 		// TODO Auto-generated method stub
 		if(phenotypeDefinitions==null) initMoreConstraints();
-		
 		return phenotypeDefinitions;
 	}
 	
