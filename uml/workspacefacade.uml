@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_qb8akM37EdqwVrslYOdUDA" name="workspacefacade">
+  <packagedElement xmi:type="uml:Package" xmi:id="_u8MAsW_PEeSQKdMHSAVNmA" name="org">
+    <packagedElement xmi:type="uml:Package" xmi:id="_u8MAsm_PEeSQKdMHSAVNmA" name="irri">
+      <packagedElement xmi:type="uml:Package" xmi:id="_u8MAs2_PEeSQKdMHSAVNmA" name="iric">
+        <packagedElement xmi:type="uml:Package" xmi:id="_u8MAtG_PEeSQKdMHSAVNmA" name="portal">
+          <packagedElement xmi:type="uml:Package" xmi:id="_u8MAtW_PEeSQKdMHSAVNmA" name="admin">
+            <packagedElement xmi:type="uml:Class" xmi:id="_u8MAtm_PEeSQKdMHSAVNmA" name="UserSessionListsManager">
+              <ownedAttribute xmi:id="_vL9iL2_PEeSQKdMHSAVNmA" name="mapVarietyLists" visibility="private" type="_vL9iLm_PEeSQKdMHSAVNmA">
+                <ownedComment xmi:id="_vL9iMG_PEeSQKdMHSAVNmA">
+                  <body>/** 
+ * Stores a map of name 2 variety list
+ */
+</body>
+                </ownedComment>
+              </ownedAttribute>
+              <ownedAttribute xmi:id="_vL9iMm_PEeSQKdMHSAVNmA" name="mapSnpposLists" visibility="private" type="_vL9iMW_PEeSQKdMHSAVNmA"/>
+              <ownedOperation xmi:id="_vL9iNW_PEeSQKdMHSAVNmA" name="addVarietyList" visibility="public">
+                <ownedComment xmi:id="_vL9iOW_PEeSQKdMHSAVNmA">
+                  <body>/** 
+ * @param name
+ * @param varietylist
+ * @return	false if name already exists
+ */
+</body>
+                </ownedComment>
+                <ownedParameter xmi:id="_vL9iNm_PEeSQKdMHSAVNmA" name="name">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_vL9iN2_PEeSQKdMHSAVNmA" name="varietylist" type="_vKLZZm_PEeSQKdMHSAVNmA"/>
+                <ownedParameter xmi:id="_vL9iOG_PEeSQKdMHSAVNmA" name="return" direction="return">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                </ownedParameter>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vL9iOm_PEeSQKdMHSAVNmA" name="getVarietylistNames" visibility="public">
+                <ownedParameter xmi:id="_vL9iO2_PEeSQKdMHSAVNmA" name="return" type="_vKLZZm_PEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMGsAG_PEeSQKdMHSAVNmA" name="getVarieties" visibility="public">
+                <ownedParameter xmi:id="_vMGsAW_PEeSQKdMHSAVNmA" name="listname">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_vMGsAm_PEeSQKdMHSAVNmA" name="return" type="_vKLZZm_PEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMGsA2_PEeSQKdMHSAVNmA" name="deleteVarietyList" visibility="public">
+                <ownedParameter xmi:id="_vMGsBG_PEeSQKdMHSAVNmA" name="listname">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMGsBm_PEeSQKdMHSAVNmA" name="addSNPList" visibility="public">
+                <ownedParameter xmi:id="_vMGsB2_PEeSQKdMHSAVNmA" name="chromosome">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_vMGsCG_PEeSQKdMHSAVNmA" name="name">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_vMGsCW_PEeSQKdMHSAVNmA" name="poslist" type="_vKLZZm_PEeSQKdMHSAVNmA"/>
+                <ownedParameter xmi:id="_vMGsCm_PEeSQKdMHSAVNmA" name="return" direction="return">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                </ownedParameter>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMGsC2_PEeSQKdMHSAVNmA" name="getSNPlistNames" visibility="public">
+                <ownedParameter xmi:id="_vMGsDG_PEeSQKdMHSAVNmA" name="return" type="_vKLZZm_PEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMGsDW_PEeSQKdMHSAVNmA" name="getSNPs" visibility="public">
+                <ownedParameter xmi:id="_vMGsDm_PEeSQKdMHSAVNmA" name="chromosome">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_vMGsD2_PEeSQKdMHSAVNmA" name="listname">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_vMGsEG_PEeSQKdMHSAVNmA" name="return" type="_vKLZZm_PEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMGsEW_PEeSQKdMHSAVNmA" name="deleteSNPList" visibility="public">
+                <ownedParameter xmi:id="_vMGsEm_PEeSQKdMHSAVNmA" name="chromosome">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_vMGsE2_PEeSQKdMHSAVNmA" name="listname">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMGsFW_PEeSQKdMHSAVNmA" name="downloadLists" visibility="public">
+                <ownedParameter xmi:id="_vMGsFm_PEeSQKdMHSAVNmA" name="return" type="_vMGsFG_PEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Class" xmi:id="_u8MAt2_PEeSQKdMHSAVNmA" name="WorkspaceFacadeSessionScopedImpl" clientDependency="_vMQdAW_PEeSQKdMHSAVNmA">
+              <ownedAttribute xmi:id="_vMQdAm_PEeSQKdMHSAVNmA" name="sessionmgr" visibility="private" type="_u8MAtm_PEeSQKdMHSAVNmA" association="_vcBXUG_PEeSQKdMHSAVNmA"/>
+              <interfaceRealization xmi:id="_vMQdAW_PEeSQKdMHSAVNmA" name="WorkspaceFacade" supplier="_vMQdAG_PEeSQKdMHSAVNmA" client="_u8MAt2_PEeSQKdMHSAVNmA" contract="_vMQdAG_PEeSQKdMHSAVNmA"/>
+              <ownedOperation xmi:id="_vMQdA2_PEeSQKdMHSAVNmA" name="getHttpSession" visibility="private">
+                <ownedParameter xmi:id="_vMQdBG_PEeSQKdMHSAVNmA" name="return" type="_vKLZd2_PEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMQdBW_PEeSQKdMHSAVNmA" name="queryIric" visibility="public"/>
+              <ownedOperation xmi:id="_vMQdBm_PEeSQKdMHSAVNmA" name="getSessionManager" visibility="private">
+                <ownedParameter xmi:id="_vMQdB2_PEeSQKdMHSAVNmA" name="return" type="_u8MAtm_PEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMQdCG_PEeSQKdMHSAVNmA" name="getVarietylistNames" visibility="public">
+                <ownedParameter xmi:id="_vMQdCW_PEeSQKdMHSAVNmA" name="return" type="_vKLZZm_PEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMQdCm_PEeSQKdMHSAVNmA" name="getVarieties" visibility="public">
+                <ownedParameter xmi:id="_vMQdC2_PEeSQKdMHSAVNmA" name="listname">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_vMQdDG_PEeSQKdMHSAVNmA" name="return" type="_vKLZZm_PEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMQdDW_PEeSQKdMHSAVNmA" name="addVarietyList" visibility="public">
+                <ownedParameter xmi:id="_vMQdDm_PEeSQKdMHSAVNmA" name="name">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_vMQdD2_PEeSQKdMHSAVNmA" name="varietylist" type="_vKLZZm_PEeSQKdMHSAVNmA"/>
+                <ownedParameter xmi:id="_vMQdEG_PEeSQKdMHSAVNmA" name="return" direction="return">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                </ownedParameter>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMQdEW_PEeSQKdMHSAVNmA" name="deleteVarietyList" visibility="public">
+                <ownedParameter xmi:id="_vMQdEm_PEeSQKdMHSAVNmA" name="listname">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMQdE2_PEeSQKdMHSAVNmA" name="getSnpPositions" visibility="public">
+                <ownedParameter xmi:id="_vMQdFG_PEeSQKdMHSAVNmA" name="chromosome">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_vMQdFW_PEeSQKdMHSAVNmA" name="name">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_vMQdFm_PEeSQKdMHSAVNmA" name="return" type="_vKLZZm_PEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMaOAG_PEeSQKdMHSAVNmA" name="addSnpPositionList" visibility="public">
+                <ownedParameter xmi:id="_vMaOAW_PEeSQKdMHSAVNmA" name="chromosome">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_vMaOAm_PEeSQKdMHSAVNmA" name="name">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_vMaOA2_PEeSQKdMHSAVNmA" name="poslist" type="_vKLZZm_PEeSQKdMHSAVNmA"/>
+                <ownedParameter xmi:id="_vMaOBG_PEeSQKdMHSAVNmA" name="return" direction="return">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                </ownedParameter>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMaOBW_PEeSQKdMHSAVNmA" name="getSnpPositionListNames" visibility="public">
+                <ownedParameter xmi:id="_vMaOBm_PEeSQKdMHSAVNmA" name="return" type="_vKLZZm_PEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_vMaOB2_PEeSQKdMHSAVNmA" name="downloadLists" visibility="public"/>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Package" xmi:id="_u8MAuG_PEeSQKdMHSAVNmA" name="zkui">
+              <packagedElement xmi:type="uml:Class" xmi:id="_u8VxsG_PEeSQKdMHSAVNmA" name="WorkspaceController">
+                <generalization xmi:id="_vMaOCW_PEeSQKdMHSAVNmA" general="_vMaOCG_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vMaOCm_PEeSQKdMHSAVNmA" name="workspace" visibility="private" type="_vKUjUm_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vMjX8G_PEeSQKdMHSAVNmA" name="variety" visibility="private" type="_vKUjXG_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vMjX8W_PEeSQKdMHSAVNmA" name="genotype" visibility="private" type="_vKUjWW_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vMtI8G_PEeSQKdMHSAVNmA" name="listboxVarietylist" visibility="private" type="_vKUjbm_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vMtI8W_PEeSQKdMHSAVNmA" name="listboxVarieties" visibility="private" type="_vKUjbm_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vM2S4G_PEeSQKdMHSAVNmA" name="listboxPositions" visibility="private" type="_vKUjbm_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNAD4G_PEeSQKdMHSAVNmA" name="buttonQueryIric" visibility="private" type="_vKUja2_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNAD4W_PEeSQKdMHSAVNmA" name="buttonCreate" visibility="private" type="_vKUja2_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNJ04G_PEeSQKdMHSAVNmA" name="buttonSave" visibility="private" type="_vKUja2_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNJ04W_PEeSQKdMHSAVNmA" name="buttonCancel" visibility="private" type="_vKUja2_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNS-0G_PEeSQKdMHSAVNmA" name="buttonDelete" visibility="private" type="_vKUja2_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNS-0W_PEeSQKdMHSAVNmA" name="vboxEditVariety" visibility="private" type="_vKUjdm_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNS-0m_PEeSQKdMHSAVNmA" name="txtboxEditVariety" visibility="private" type="_vKUjdW_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNcv0G_PEeSQKdMHSAVNmA" name="txtboxEditListname" visibility="private" type="_vKUjdW_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNcv0W_PEeSQKdMHSAVNmA" name="buttonDownload" visibility="private" type="_vKUja2_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNl5wG_PEeSQKdMHSAVNmA" name="radioVariety" visibility="private" type="_vKUjc2_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNl5wW_PEeSQKdMHSAVNmA" name="radioSNP" visibility="private" type="_vKUjc2_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNl5wm_PEeSQKdMHSAVNmA" name="selectChromosome" visibility="private" type="_vKUjbm_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNvqwG_PEeSQKdMHSAVNmA" name="divMsgVariety" visibility="private" type="_vKUjbG_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vNvqwW_PEeSQKdMHSAVNmA" name="divMsgSNP" visibility="private" type="_vKUjbG_PEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vN5bwG_PEeSQKdMHSAVNmA" name="labelNItems" visibility="private" type="_vKUjbW_PEeSQKdMHSAVNmA"/>
+                <ownedOperation xmi:id="_vN5bwW_PEeSQKdMHSAVNmA" name="getHttpSession" visibility="private">
+                  <ownedParameter xmi:id="_vN5bwm_PEeSQKdMHSAVNmA" name="return" type="_vKLZd2_PEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vN5bw2_PEeSQKdMHSAVNmA" name="onclickDownloadLists" visibility="public"/>
+                <ownedOperation xmi:id="_vN5bxG_PEeSQKdMHSAVNmA" name="onclickVariety" visibility="public"/>
+                <ownedOperation xmi:id="_vOClsG_PEeSQKdMHSAVNmA" name="onclickSNP" visibility="public"/>
+                <ownedOperation xmi:id="_vOClsW_PEeSQKdMHSAVNmA" name="onselectVarlist" visibility="public"/>
+                <ownedOperation xmi:id="_vOClsm_PEeSQKdMHSAVNmA" name="onbuttonQueryIric" visibility="public"/>
+                <ownedOperation xmi:id="_vOCls2_PEeSQKdMHSAVNmA" name="onbuttonCreate" visibility="public"/>
+                <ownedOperation xmi:id="_vOMWsG_PEeSQKdMHSAVNmA" name="onbuttonSave" visibility="public"/>
+                <ownedOperation xmi:id="_vOMWsW_PEeSQKdMHSAVNmA" name="onbuttonCancel" visibility="public"/>
+                <ownedOperation xmi:id="_vOMWsm_PEeSQKdMHSAVNmA" name="onbuttonSaveSNP" visibility="private"/>
+                <ownedOperation xmi:id="_vOMWs2_PEeSQKdMHSAVNmA" name="addVarlist" visibility="private">
+                  <ownedParameter xmi:id="_vOMWtG_PEeSQKdMHSAVNmA" name="setMatched" type="_vKLZZm_PEeSQKdMHSAVNmA"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vOMWtW_PEeSQKdMHSAVNmA" name="onbuttonSaveVariety" visibility="private"/>
+                <ownedOperation xmi:id="_vOVgoG_PEeSQKdMHSAVNmA" name="onbuttonDelete" visibility="public"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_vMaOCG_PEeSQKdMHSAVNmA" name="SelectorComposer&lt;Component>"/>
+            </packagedElement>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjUm_PEeSQKdMHSAVNmA" name="WorkspaceFacade"/>
+            <packagedElement xmi:type="uml:Interface" xmi:id="_vMQdAG_PEeSQKdMHSAVNmA" name="WorkspaceFacade"/>
+            <packagedElement xmi:type="uml:Association" xmi:id="_vcBXUG_PEeSQKdMHSAVNmA" memberEnd="_vMQdAm_PEeSQKdMHSAVNmA _vcBXUW_PEeSQKdMHSAVNmA">
+              <ownedEnd xmi:id="_vcBXUW_PEeSQKdMHSAVNmA" name="WorkspaceFacadeSessionScopedImpl" type="_u8MAt2_PEeSQKdMHSAVNmA" association="_vcBXUG_PEeSQKdMHSAVNmA"/>
+            </packagedElement>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_vKLZaG_PEeSQKdMHSAVNmA" name="domain">
+            <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZaW_PEeSQKdMHSAVNmA" name="Variety"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZeW_PEeSQKdMHSAVNmA" name="SnpsStringAllvars"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjU2_PEeSQKdMHSAVNmA" name="SnpsAllvarsPos"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZeG_PEeSQKdMHSAVNmA" name="AppContext"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_vKUjVG_PEeSQKdMHSAVNmA" name="flatfile">
+            <packagedElement xmi:type="uml:Package" xmi:id="_vKUjVW_PEeSQKdMHSAVNmA" name="dao">
+              <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjVm_PEeSQKdMHSAVNmA" name="SnpcoreRefposindexDAO"/>
+            </packagedElement>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_vKUjV2_PEeSQKdMHSAVNmA" name="genotype">
+            <packagedElement xmi:type="uml:Package" xmi:id="_vKUjWG_PEeSQKdMHSAVNmA" name="service">
+              <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjWW_PEeSQKdMHSAVNmA" name="GenotypeFacade"/>
+            </packagedElement>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_vKUjWm_PEeSQKdMHSAVNmA" name="variety">
+            <packagedElement xmi:type="uml:Package" xmi:id="_vKUjW2_PEeSQKdMHSAVNmA" name="service">
+              <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjXG_PEeSQKdMHSAVNmA" name="VarietyFacade"/>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Package" xmi:id="_vKUjXW_PEeSQKdMHSAVNmA" name="zkui">
+              <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjXm_PEeSQKdMHSAVNmA" name="VarietyListItemRenderer"/>
+            </packagedElement>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_vKLZam_PEeSQKdMHSAVNmA" name="springframework">
+      <packagedElement xmi:type="uml:Package" xmi:id="_vKLZa2_PEeSQKdMHSAVNmA" name="context">
+        <packagedElement xmi:type="uml:Package" xmi:id="_vKLZbG_PEeSQKdMHSAVNmA" name="annotation">
+          <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZbW_PEeSQKdMHSAVNmA" name="Scope"/>
+          <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZhW_PEeSQKdMHSAVNmA" name="ScopedProxyMode"/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_vKLZbm_PEeSQKdMHSAVNmA" name="stereotype">
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZb2_PEeSQKdMHSAVNmA" name="Component"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZfm_PEeSQKdMHSAVNmA" name="Service"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjYG_PEeSQKdMHSAVNmA" name="Controller"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_vKLZem_PEeSQKdMHSAVNmA" name="beans">
+        <packagedElement xmi:type="uml:Package" xmi:id="_vKLZe2_PEeSQKdMHSAVNmA" name="factory">
+          <packagedElement xmi:type="uml:Package" xmi:id="_vKLZfG_PEeSQKdMHSAVNmA" name="annotation">
+            <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZfW_PEeSQKdMHSAVNmA" name="Autowired"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjX2_PEeSQKdMHSAVNmA" name="Qualifier"/>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_vKLZf2_PEeSQKdMHSAVNmA" name="zkoss">
+      <packagedElement xmi:type="uml:Package" xmi:id="_vKLZgG_PEeSQKdMHSAVNmA" name="zk">
+        <packagedElement xmi:type="uml:Package" xmi:id="_vKLZgW_PEeSQKdMHSAVNmA" name="ui">
+          <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZgm_PEeSQKdMHSAVNmA" name="Sessions"/>
+          <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjYW_PEeSQKdMHSAVNmA" name="Component"/>
+          <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjYm_PEeSQKdMHSAVNmA" name="Executions"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_vKUjY2_PEeSQKdMHSAVNmA" name="event">
+            <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjZG_PEeSQKdMHSAVNmA" name="Event"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjZW_PEeSQKdMHSAVNmA" name="Events"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_vKUjZm_PEeSQKdMHSAVNmA" name="select">
+            <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjZ2_PEeSQKdMHSAVNmA" name="SelectorComposer"/>
+            <packagedElement xmi:type="uml:Package" xmi:id="_vKUjaG_PEeSQKdMHSAVNmA" name="annotation">
+              <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjaW_PEeSQKdMHSAVNmA" name="Listen"/>
+              <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjam_PEeSQKdMHSAVNmA" name="Wire"/>
+            </packagedElement>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_vKLZg2_PEeSQKdMHSAVNmA" name="zul">
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZhG_PEeSQKdMHSAVNmA" name="Filedownload"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKUja2_PEeSQKdMHSAVNmA" name="Button"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjbG_PEeSQKdMHSAVNmA" name="Div"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjbW_PEeSQKdMHSAVNmA" name="Label"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjbm_PEeSQKdMHSAVNmA" name="Listbox"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjb2_PEeSQKdMHSAVNmA" name="Listcell"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjcG_PEeSQKdMHSAVNmA" name="Listitem"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjcW_PEeSQKdMHSAVNmA" name="ListitemRenderer"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjcm_PEeSQKdMHSAVNmA" name="Messagebox"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjc2_PEeSQKdMHSAVNmA" name="Radio"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjdG_PEeSQKdMHSAVNmA" name="SimpleListModel"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjdW_PEeSQKdMHSAVNmA" name="Textbox"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjdm_PEeSQKdMHSAVNmA" name="Vbox"/>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_vKBoYG_PEeSQKdMHSAVNmA" name="java">
+    <packagedElement xmi:type="uml:Package" xmi:id="_vKBoYW_PEeSQKdMHSAVNmA" name="math">
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKBoYm_PEeSQKdMHSAVNmA" name="BigDecimal"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_vKBoY2_PEeSQKdMHSAVNmA" name="util">
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKBoZG_PEeSQKdMHSAVNmA" name="HashMap"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZYG_PEeSQKdMHSAVNmA" name="HashSet"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZYW_PEeSQKdMHSAVNmA" name="Iterator"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZYm_PEeSQKdMHSAVNmA" name="LinkedHashMap"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZY2_PEeSQKdMHSAVNmA" name="LinkedHashSet"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZZG_PEeSQKdMHSAVNmA" name="List"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZZW_PEeSQKdMHSAVNmA" name="Map"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZZm_PEeSQKdMHSAVNmA" name="Set"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZZ2_PEeSQKdMHSAVNmA" name="TreeMap"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjUG_PEeSQKdMHSAVNmA" name="ArrayList"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKUjUW_PEeSQKdMHSAVNmA" name="TreeSet"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_vKLZcG_PEeSQKdMHSAVNmA" name="io">
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZcW_PEeSQKdMHSAVNmA" name="BufferedWriter"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZcm_PEeSQKdMHSAVNmA" name="File"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZc2_PEeSQKdMHSAVNmA" name="FileWriter"/>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_vKLZdG_PEeSQKdMHSAVNmA" name="javax">
+    <packagedElement xmi:type="uml:Package" xmi:id="_vKLZdW_PEeSQKdMHSAVNmA" name="servlet">
+      <packagedElement xmi:type="uml:Package" xmi:id="_vKLZdm_PEeSQKdMHSAVNmA" name="http">
+        <packagedElement xmi:type="uml:DataType" xmi:id="_vKLZd2_PEeSQKdMHSAVNmA" name="HttpSession"/>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_vL9iLm_PEeSQKdMHSAVNmA" name="Map&lt;String,Set>"/>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_vL9iMW_PEeSQKdMHSAVNmA" name="Map&lt;Integer,Map&lt;String,Set>>"/>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_vMGsFG_PEeSQKdMHSAVNmA" name="StringBuffer"/>
+</uml:Model>

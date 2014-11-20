@@ -1,36 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
 	
+
+		<persistence-unit name="IRIC_Production"  >
+			<description>generated-persistence-unit</description>
+					<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+				<class>org.irri.iric.portal.chado.domain.VSnp2vars</class>
+				<class>org.irri.iric.portal.chado.domain.VSnpAllvarsCountrefmismatch</class>
+				<class>org.irri.iric.portal.chado.domain.VSnpAllvars</class>
+				<class>org.irri.iric.portal.chado.domain.VSnpAllvars2</class>
+				<class>org.irri.iric.portal.chado.domain.VSnp2varsCountmismatch</class>
+				<class>org.irri.iric.portal.chado.domain.VSnpAllvarsPos</class>
+				<class>org.irri.iric.portal.chado.domain.MvCoreSnps</class>
+				
+				<class>org.irri.iric.portal.chado.domain.VSnpAllvarsMin</class>
+				
+				<class>org.irri.iric.portal.chado.domain.MismatchCount</class>
+				<class>org.irri.iric.portal.chado.domain.SnpcoreMismatchAlleles</class>
+				<class>org.irri.iric.portal.flatfile.domain.SnpcoreRefposindex</class>
+				<class>org.irri.iric.portal.flatfile.domain.VSnpRefposindex</class>
+				<class>org.irri.iric.portal.chado.domain.VSnpgenotypeAllele2</class>
+				<class>org.irri.iric.portal.chado.domain.VSnpNonsynAllele</class>
+				
+				<class>org.irri.iric.portal.admin.domain.VOracleSessions</class>
+				
+				<!-- class>org.irri.iric.portal.flatfile.dao.SnpsStringAllvarsImpl</class -->
+				
+				
+				<class>org.irri.iric.portal.chado.domain.VIricstockPhenotype</class>		
+								
+				<class>org.irri.iric.portal.chado.domain.VGene</class>
+      			<class>org.irri.iric.portal.chado.domain.VIricstockPassport</class>
+				<class>org.irri.iric.portal.chado.domain.VIricstockBasicprop</class>
+				<class>org.irri.iric.portal.chado.domain.VIricstockBasicprop2</class>
+				<class>org.irri.iric.portal.chado.domain.IricStock</class>
+				<class>org.irri.iric.portal.chado.domain.VIricstockDistance</class>
+
+				<class>org.irri.iric.portal.chado.domain.VIricstocksByPassport</class>
+				<class>org.irri.iric.portal.chado.domain.VIricstocksByPhenotype</class>
+				<class>org.irri.iric.portal.chado.domain.VCvPhenotype</class>
+				<class>org.irri.iric.portal.chado.domain.VCvPassport</class>
+
+				<class>org.irri.iric.portal.chado.domain.VIricstockPassportValues</class>
+				<class>org.irri.iric.portal.chado.domain.VIricstockPhenotypeValues</class>
+				<class>org.irri.iric.portal.chado.domain.VIricstockPhenotypeQuanval</class>
+				<class>org.irri.iric.portal.chado.domain.VIricstockPhenotypeQualval</class>
+
+   			<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		</persistence-unit>
+
 	
-		<persistence-unit name="Production">
-			<description>generated-persistence-unit</description>
-					<provider>org.hibernate.ejb.HibernatePersistence</provider>
-      			<class>org.irri.iric.portal.genotype.domain.Gene</class>
-      			<class>org.irri.iric.portal.genotype.domain.Variety3k</class>
-      			
-      			<class>org.irri.iric.portal.genotype.views.Snp2lines</class>
-      			<class>org.irri.iric.portal.genotype.views.Snp2linesId</class>
-      			
-   			<exclude-unlisted-classes>true</exclude-unlisted-classes>
-		</persistence-unit>
-
-		<persistence-unit name="Development"  >
-			<description>generated-persistence-unit</description>
-					<provider>org.hibernate.ejb.HibernatePersistence</provider>
-      			<class>org.irri.iric.portal.variety.domain.Var700</class>
-      			<class>org.irri.iric.portal.variety.domain.Phenotypes</class>
-      			<class>org.irri.iric.portal.variety.domain.Snps</class>
-      			<class>org.irri.iric.portal.variety.domain.Names700</class>
-      			<class>org.irri.iric.portal.variety.domain.Snp700</class>
-      			<class>org.irri.iric.portal.variety.domain.Genotyp700</class>
-      			<class>org.irri.iric.portal.variety.domain.List3k</class>
-      			<class>org.irri.iric.portal.variety.domain.Genotyping</class>
-      			<class>org.irri.iric.portal.variety.domain.Germplasm</class>
-      			<class>org.irri.iric.portal.variety.domain.PhenGc</class>
-      			<class>org.irri.iric.portal.variety.domain.Dist3k</class>
-   			<exclude-unlisted-classes>true</exclude-unlisted-classes>
-		</persistence-unit>
-
-
 	
 </persistence>

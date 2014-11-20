@@ -17,6 +17,7 @@ public class ExampleWebAppInit implements WebAppInit {
 	 */
 	public void init(WebApp wapp) throws Exception {
 		// TODO Auto-generated method stub
+		System.out.println("Webapp init...");
 
 	}
 

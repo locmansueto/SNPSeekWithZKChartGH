@@ -1,0 +1,70 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<?link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" ?>
+<?link rel="icon" href="/favicon.ico" type="image/x-icon" ?>
+
+<?script type="text/javascript"><![CDATA[
+window.Boot_progressbox = function (){}
+]]>?>
+
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+
+<zk>
+
+    
+   
+	<style>
+        .z-loading {
+            background-color:#808080;
+            border:1px outset #A0A0A0;
+            font-weight: bold;
+            padding:2px;
+        }
+        .z-loading-indicator {
+            color: gray;
+            border:0 none;
+        }
+        .z-loading-icon {
+            background-image: url(${c:encodeURL('~./zk/img/progress3.gif')}); 
+        }
+    </style>
+    
+
+	<script type="text/javascript">
+	<![CDATA[
+		function chartLoaded(obj) {
+		zAu.send(new zk.Event(zk.Widget.$(obj), "onChartLoaded"));
+		}
+		
+	]]>
+	</script>
+
+	<zscript><![CDATA[
+       String url  = (String)desktop.getExecution().getArg().get("href");
+	   ]]>
+	</zscript>
+    
+    
+    <window id="winTreeBrowser" title="Variety Tree Browser" border="none" >
+    
+    
+    <!--   include self="@define(content)" src="/variety_info.zul"/ -->
+    
+    <iframe src="jsp/phylotreeGermplasms.jsp?scale=1&amp;varid=all" style="height:1500px;width:1500px" 
+    	xmlns:ca="http://www.zkoss.org/2005/zk/client/attribute" ca:onload="chartLoaded(this)">
+      <attribute name="onCreate">
+  			Clients.showBusy(self,"Computing Tree ...");
+  		</attribute>
+  		<attribute name="onChartLoaded">
+  			Clients.clearBusy(self);
+  		</attribute>
+  		
+  		<attribute name="onClickTreenode">
+  			Clients.alert("Treenode Clicked");
+  		</attribute>
+  		
+  	</iframe> 
+  
+   </window>
+     
+</zk>

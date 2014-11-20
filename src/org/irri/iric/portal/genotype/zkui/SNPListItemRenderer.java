@@ -1,7 +1,9 @@
 package org.irri.iric.portal.genotype.zkui;
 
 
-import org.irri.iric.portal.genotype.views.Snp2linesId;
+import org.irri.iric.portal.domain.Snps2Vars;
+import org.irri.iric.portal.genotype.service.GenotypeFacade;
+//import org.irri.iric.portal.genotype.views.Snp2linesId;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -11,15 +13,18 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Listcell;
 
-public class SNPListItemRenderer implements ListitemRenderer {
+public class SNPListItemRenderer implements SNPRowRendererStyle, ListitemRenderer {
 
-	private short querymode = 0;
+	//private short querymode = 0;
+	//GenotypeFacade.snpQueryMode querymode;
 	private String var1;
 	private String var2;
 	private String varref;
 	
 	private static String STYLE_INTERESTING = "font-weight:bold;color:red";
 	private static String STYLE_BORING = "";
+	
+	private static int colorMode = COLOR_MISMATCH;
 	
 	
 	/* (non-Javadoc)
@@ -28,7 +33,8 @@ public class SNPListItemRenderer implements ListitemRenderer {
 	@Override
 	public void render(Listitem listitem, Object value, int index) throws Exception {
 		// TODO Auto-generated method stub
-		Snp2linesId  item = (Snp2linesId)value;
+		//Snp2linesId  item = (Snp2linesId)value;
+		Snps2Vars  item = (Snps2Vars)value;
 		
 	
 	        // keep value in listitem
@@ -38,19 +44,35 @@ public class SNPListItemRenderer implements ListitemRenderer {
 	        addListcell(listitem, item.getPos().toString());
 
 	        
-	        if(querymode==0) {
+	        //if(querymode == GenotypeFacade.snpQueryMode.SNPQUERY_VARIETIES) {
 	        	// two varieties are alleles with each other
 	        	// all are interesting
 	        	String  nuc1 = item.getVar1nuc();
 	        	String  nuc2 = item.getVar2nuc();
 	        	String  nucref = item.getRefnuc();
 		        
-        		addListcell(listitem, nucref) ;
-	        	addListcell(listitem, nuc1);
-        		addListcell(listitem, nuc2) ;
+	        	if(colorMode==COLOR_MISMATCH) {
+	        	
+	        		addListcell(listitem, nucref) ;
+	        		
+	        		if(nuc1.equals(nuc2)) {
+	        			addListcell(listitem, nuc1);
+	        			addListcell(listitem, nuc2) ;
+	        		} else
+	        		{
+	        			addListcell(listitem, nuc1, STYLE_INTERESTING);
+	        			addListcell(listitem, nuc2, STYLE_INTERESTING) ;
+	        		}
+	        		
+	        	} else {
+	        		
+	        		addListcell(listitem, nucref, getColor(nucref)) ;
+	        		addListcell(listitem, nuc1, getColor(nuc1)) ;
+	        		addListcell(listitem, nuc2, getColor(nuc2)) ;
+	        	}
 
 	        	
-	        } else if(querymode==1) {
+	        /* }  else if(querymode== GenotypeFacade.snpQueryMode.SNPQUERY_REFERENCE) {
 	        	// variety is allele with reference
 	        	// interesting is allele with reference
 	        	String  nuc1 = item.getVar1nuc();
@@ -69,7 +91,8 @@ public class SNPListItemRenderer implements ListitemRenderer {
 	        		addListcell(listitem, nuc2, STYLE_INTERESTING) ;
 	        	
 	        	
-		    } else if(querymode==2) {
+		    } 
+	        else if(querymode==GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS) {
 		    	// all allele positions,
 		    	// interesting is alleles
 		    	String  nuc1 = item.getVar1nuc();
@@ -85,12 +108,28 @@ public class SNPListItemRenderer implements ListitemRenderer {
 		    		addListcell(listitem, nuc1 , STYLE_INTERESTING) ;
 		    		addListcell(listitem, nuc2, STYLE_INTERESTING) ;
 		    	}
-	        	
-	        
 		    }
+		    */
 
 	       
 	    }
+	
+	
+		private String getColor(String nuc) {
+			
+			if(nuc==null) return "color:black";
+			
+			if(nuc.equals("A"))
+				return STYLE_A;
+			if(nuc.equals("T"))
+				return STYLE_T;
+			if(nuc.equals("G"))
+				return STYLE_G;
+			if(nuc.equals("C"))
+				return STYLE_C;
+			
+			return "color:black";
+		}
 	
 		private void addListcell (Listitem listitem, String value) {
 			addListcell ( listitem,  value, STYLE_BORING );
@@ -117,12 +156,14 @@ public class SNPListItemRenderer implements ListitemRenderer {
 			this.varref = varref;
 		}
 
-		public void setQuerymode(short querymode) {
-			this.querymode = querymode;
+		public void setQuerymode(GenotypeFacade.snpQueryMode querymode) {
+			//this.querymode = querymode;
 		}
 
 
-	
+		public void setColorMode(int mode) {
+			this.colorMode = mode;
+		}
 	    
 
 }

@@ -1,31 +1,62 @@
-<?page id="main" title="ZK Spring Essentials"?>
-<?variable-resolver class="org.zkoss.spring.DelegatingVariableResolver" ?>
-<zk>
-	<window id="win" title="Home Page" border="normal" width="500px">
-		<attribute name="onLoginOK">
-			principal.setValue(execution.getUserPrincipal().getName());
-		</attribute>
-		<grid>
-			<columns>
-				<column width="400px"/>
-				<column align="center"/>
-			</columns>
-			<rows>
-				<row>
-					Any one can list accounts. (Ajax login popup)<button label="Go!" href="listAccounts1.html"/>
-				</row>
-				<row>
-					Your principal object is ...:<label id="principal" value="${execution.userPrincipal.name}"/>
-				</row>
-				<row>
-					Secure page<button label="Go!" href="secure/index.jsp"/>
-				</row>
-				<row>
-					Extremely secure page<button label="Go!" href="secure/extreme/index.jsp"/>
-				</row>
-			</rows>
-		</grid>
-	</window>
-	<button label="Logout" href="/j_spring_security_logout"/>
-	*Any one can view this page
+<?link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" ?>
+<?link rel="icon" href="/favicon.ico" type="image/x-icon" ?>
+
+<?script type="text/javascript"><![CDATA[
+window.Boot_progressbox = function (){}
+]]>?>
+
+<?component name="newProduct" macroURI="includedMacro.zul"?>
+
+<zk  xmlns:h="native">
+<div align="center">
+
+<vbox align="center" pack="center" height="100%">
+
+<panel height="50px"  border="none"/>
+ 
+
+
+<hbox>
+<vbox width="200px"/>
+<h:p style="font-family:sans-serif;font-size:13px" align="left" width="800px">
+This site provides Genotype, Phenotype, and Variety Information for rice (Oryza sativa L.). SNP genotyping data (called against 
+ <h:a target="_blank" href="http://rice.plantbiology.msu.edu/annotation_pseudo_current.shtml">Nipponbare reference Os-Nipponbare-Reference-IRGSP-1.0</h:a>) came from <h:a target="_blank" href="http://www.gigasciencejournal.com/content/3/1/7"> 3,000 Rice Genomes Project </h:a>. 
+Phenotype and passport data for the 3,000 rice varieties came from the International Rice Information System (<h:a target="_blank" href="http://iris.irri.org">IRIS</h:a>).
+We are a part of an ongoing effort by the International Rice Informatics Consortium (<h:a target="_blank" href="http://iric.irri.org">IRIC</h:a>) to centralize information access to rice research data and provide computational tools to facilitate rice improvement via discovery of new gene-trait associations and accelerated breeding. 
+
+
+<!-- 
+Data available for dowload: <h:a target="_blank" href="http://pollux:8080/qc3k/">FastQC result</h:a> listed by variety and IRIS ID, 
+<h:a target="_blank"  href="http://172.29.4.93/cgi-bin/fqget.pl">Raw reads</h:a> search by IRIS ID (ex. 313-11683)
+
+ -->
+ 
+ </h:p>
+<vbox width="200px"/>
+</hbox>
+
+  
+ <panel height="20px"  border="none"/>
+
+
+         	<hbox>
+				<newProduct title="GENOTYPE" img="/images/iric/gfh.png" desc="Genotypes"
+					details="Query for SNPs from the 3000 genome project" href="_snp.zul"/>
+				<panel width="20px"  border="none"/>
+
+				<newProduct title="VARIETY" img="/images/iric/variety5.png" desc="Varieties"
+					details="Query for Variety passport and phenotypes" href="_variety.zul"/>
+				<panel width="20px"  border="none"/>
+
+				<newProduct title="JBROWSE" img="/images/iric/zxc.png" desc="JBrowse"
+					details="Rice Genome Browser" href="_jbrowse.zul"/>
+				<panel width="20px"  border="none"/>
+
+				<newProduct title="HELP" img="/images/iric/help5.png" desc="Help"
+					details="Help and documentation" href="_help.zul"/>
+			 </hbox>
+			 
+
+	</vbox>
+</div>	
 </zk>

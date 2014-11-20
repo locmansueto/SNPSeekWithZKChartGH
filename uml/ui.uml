@@ -1,0 +1,1468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_qb8akM37EdqwVrslYOdUDA" name="ui">
+  <packagedElement xmi:type="uml:Package" xmi:id="_uccUMG_QEeSQKdMHSAVNmA" name="org">
+    <packagedElement xmi:type="uml:Package" xmi:id="_uccUMW_QEeSQKdMHSAVNmA" name="irri">
+      <packagedElement xmi:type="uml:Package" xmi:id="_uccUMm_QEeSQKdMHSAVNmA" name="iric">
+        <packagedElement xmi:type="uml:Package" xmi:id="_uccUM2_QEeSQKdMHSAVNmA" name="portal">
+          <packagedElement xmi:type="uml:Package" xmi:id="_uccUNG_QEeSQKdMHSAVNmA" name="admin">
+            <packagedElement xmi:type="uml:Interface" xmi:id="_uccUNW_QEeSQKdMHSAVNmA" name="WorkspaceFacade">
+              <ownedOperation xmi:id="_uuUHUG_QEeSQKdMHSAVNmA" name="queryIric" visibility="public"/>
+              <ownedOperation xmi:id="_uuUHUW_QEeSQKdMHSAVNmA" name="getVarietylistNames" visibility="public">
+                <ownedParameter xmi:id="_uuUHUm_QEeSQKdMHSAVNmA" name="return" type="_uromw2_QEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_uvDudW_QEeSQKdMHSAVNmA" name="getVarieties" visibility="public">
+                <ownedParameter xmi:id="_uvDudm_QEeSQKdMHSAVNmA" name="listname">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_uvDud2_QEeSQKdMHSAVNmA" name="return" type="_uromw2_QEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_uvDueW_QEeSQKdMHSAVNmA" name="addVarietyList" visibility="public">
+                <ownedParameter xmi:id="_uvDuem_QEeSQKdMHSAVNmA" name="name">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_uvDue2_QEeSQKdMHSAVNmA" name="setVarieties" type="_uromw2_QEeSQKdMHSAVNmA"/>
+                <ownedParameter xmi:id="_uvDufG_QEeSQKdMHSAVNmA" name="return" direction="return">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                </ownedParameter>
+              </ownedOperation>
+              <ownedOperation xmi:id="_uvDufW_QEeSQKdMHSAVNmA" name="deleteVarietyList" visibility="public">
+                <ownedParameter xmi:id="_uvDufm_QEeSQKdMHSAVNmA" name="listname">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+              </ownedOperation>
+              <ownedOperation xmi:id="_uvNfMW_QEeSQKdMHSAVNmA" name="getSnpPositions" visibility="public">
+                <ownedParameter xmi:id="_uvNfMm_QEeSQKdMHSAVNmA" name="chromosome">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_uvNfM2_QEeSQKdMHSAVNmA" name="name">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_uvNfNG_QEeSQKdMHSAVNmA" name="return" type="_uromw2_QEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_uvNfNW_QEeSQKdMHSAVNmA" name="getSnpPositionListNames" visibility="public">
+                <ownedParameter xmi:id="_uvNfNm_QEeSQKdMHSAVNmA" name="return" type="_uromw2_QEeSQKdMHSAVNmA" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:id="_uvNfN2_QEeSQKdMHSAVNmA" name="addSnpPositionList" visibility="public">
+                <ownedParameter xmi:id="_uvNfOG_QEeSQKdMHSAVNmA" name="chromosome">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_uvNfOW_QEeSQKdMHSAVNmA" name="name">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedParameter>
+                <ownedParameter xmi:id="_uvNfOm_QEeSQKdMHSAVNmA" name="poslist" type="_uromw2_QEeSQKdMHSAVNmA"/>
+                <ownedParameter xmi:id="_uvNfO2_QEeSQKdMHSAVNmA" name="return" direction="return">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                </ownedParameter>
+              </ownedOperation>
+              <ownedOperation xmi:id="_uvNfPG_QEeSQKdMHSAVNmA" name="downloadLists" visibility="public"/>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Package" xmi:id="_uccUNm_QEeSQKdMHSAVNmA" name="zkui">
+              <packagedElement xmi:type="uml:Class" xmi:id="_uccUN2_QEeSQKdMHSAVNmA" name="WorkspaceController">
+                <generalization xmi:id="_uvNfPm_QEeSQKdMHSAVNmA" general="_uvNfPW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uvNfP2_QEeSQKdMHSAVNmA" name="workspace" visibility="private" type="_uccUNW_QEeSQKdMHSAVNmA" association="_vYyAoG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uvWpIG_QEeSQKdMHSAVNmA" name="variety" visibility="private" type="_uc5AI2_QEeSQKdMHSAVNmA" association="_vYyAom_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uvWpIW_QEeSQKdMHSAVNmA" name="genotype" visibility="private" type="_ucmFMG_QEeSQKdMHSAVNmA" association="_vYyApG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uvWpIm_QEeSQKdMHSAVNmA" name="listboxVarietylist" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uvgaIG_QEeSQKdMHSAVNmA" name="listboxVarieties" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uvgaIW_QEeSQKdMHSAVNmA" name="listboxPositions" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uvgaIm_QEeSQKdMHSAVNmA" name="buttonQueryIric" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uvpkEG_QEeSQKdMHSAVNmA" name="buttonCreate" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uvpkEW_QEeSQKdMHSAVNmA" name="buttonSave" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uvpkEm_QEeSQKdMHSAVNmA" name="buttonCancel" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uvzVEG_QEeSQKdMHSAVNmA" name="buttonDelete" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uvzVEW_QEeSQKdMHSAVNmA" name="vboxEditVariety" visibility="private" type="_ur7huG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uvzVEm_QEeSQKdMHSAVNmA" name="txtboxEditVariety" visibility="private" type="_ur7ht2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uv9GEG_QEeSQKdMHSAVNmA" name="txtboxEditListname" visibility="private" type="_ur7ht2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uv9GEW_QEeSQKdMHSAVNmA" name="buttonDownload" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uv9GEm_QEeSQKdMHSAVNmA" name="radioVariety" visibility="private" type="_ur7htW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uwGQAG_QEeSQKdMHSAVNmA" name="radioSNP" visibility="private" type="_ur7htW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uwGQAW_QEeSQKdMHSAVNmA" name="selectChromosome" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uwGQAm_QEeSQKdMHSAVNmA" name="divMsgVariety" visibility="private" type="_uryX0W_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uwQBAG_QEeSQKdMHSAVNmA" name="divMsgSNP" visibility="private" type="_uryX0W_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uwQBAW_QEeSQKdMHSAVNmA" name="labelNItems" visibility="private" type="_uryX0m_QEeSQKdMHSAVNmA"/>
+                <ownedOperation xmi:id="_uwQBAm_QEeSQKdMHSAVNmA" name="getHttpSession" visibility="private">
+                  <ownedParameter xmi:id="_uwQBA2_QEeSQKdMHSAVNmA" name="return" type="_uromx2_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uwi78G_QEeSQKdMHSAVNmA" name="onclickDownloadLists" visibility="public"/>
+                <ownedOperation xmi:id="_uwss8G_QEeSQKdMHSAVNmA" name="onclickVariety" visibility="public"/>
+                <ownedOperation xmi:id="_uwss8W_QEeSQKdMHSAVNmA" name="onclickSNP" visibility="public"/>
+                <ownedOperation xmi:id="_uwss8m_QEeSQKdMHSAVNmA" name="onselectVarlist" visibility="public"/>
+                <ownedOperation xmi:id="_uwss82_QEeSQKdMHSAVNmA" name="onbuttonQueryIric" visibility="public"/>
+                <ownedOperation xmi:id="_uw124G_QEeSQKdMHSAVNmA" name="onbuttonCreate" visibility="public"/>
+                <ownedOperation xmi:id="_uw124W_QEeSQKdMHSAVNmA" name="onbuttonSave" visibility="public"/>
+                <ownedOperation xmi:id="_uw124m_QEeSQKdMHSAVNmA" name="onbuttonCancel" visibility="public"/>
+                <ownedOperation xmi:id="_uw1242_QEeSQKdMHSAVNmA" name="onbuttonSaveSNP" visibility="private"/>
+                <ownedOperation xmi:id="_uw125G_QEeSQKdMHSAVNmA" name="addVarlist" visibility="private">
+                  <ownedParameter xmi:id="_uw125W_QEeSQKdMHSAVNmA" name="setMatched" type="_uromw2_QEeSQKdMHSAVNmA"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uw_n4G_QEeSQKdMHSAVNmA" name="onbuttonSaveVariety" visibility="private"/>
+                <ownedOperation xmi:id="_uw_n4W_QEeSQKdMHSAVNmA" name="onbuttonDelete" visibility="public"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:DataType" xmi:id="_utuRcW_QEeSQKdMHSAVNmA" name="InputMessageBox"/>
+              <packagedElement xmi:type="uml:Class" xmi:id="_uvNfPW_QEeSQKdMHSAVNmA" name="SelectorComposer&lt;Component>"/>
+              <packagedElement xmi:type="uml:Association" xmi:id="_vYyAoG_QEeSQKdMHSAVNmA" memberEnd="_uvNfP2_QEeSQKdMHSAVNmA _vYyAoW_QEeSQKdMHSAVNmA">
+                <ownedEnd xmi:id="_vYyAoW_QEeSQKdMHSAVNmA" name="WorkspaceController" type="_uccUN2_QEeSQKdMHSAVNmA" association="_vYyAoG_QEeSQKdMHSAVNmA"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Association" xmi:id="_vYyAom_QEeSQKdMHSAVNmA" memberEnd="_uvWpIG_QEeSQKdMHSAVNmA _vYyAo2_QEeSQKdMHSAVNmA">
+                <ownedEnd xmi:id="_vYyAo2_QEeSQKdMHSAVNmA" name="WorkspaceController" type="_uccUN2_QEeSQKdMHSAVNmA" association="_vYyAom_QEeSQKdMHSAVNmA"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Association" xmi:id="_vYyApG_QEeSQKdMHSAVNmA" memberEnd="_uvWpIW_QEeSQKdMHSAVNmA _vYyApW_QEeSQKdMHSAVNmA">
+                <ownedEnd xmi:id="_vYyApW_QEeSQKdMHSAVNmA" name="WorkspaceController" type="_uccUN2_QEeSQKdMHSAVNmA" association="_vYyApG_QEeSQKdMHSAVNmA"/>
+              </packagedElement>
+            </packagedElement>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_uccUOG_QEeSQKdMHSAVNmA" name="genotype">
+            <packagedElement xmi:type="uml:Package" xmi:id="_uccUOW_QEeSQKdMHSAVNmA" name="service">
+              <packagedElement xmi:type="uml:Interface" xmi:id="_ucmFMG_QEeSQKdMHSAVNmA" name="GenotypeFacade">
+                <ownedOperation xmi:id="_uxIx0G_QEeSQKdMHSAVNmA" name="setCore" visibility="public">
+                  <ownedParameter xmi:id="_uxIx0W_QEeSQKdMHSAVNmA" name="isCore">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx0m_QEeSQKdMHSAVNmA" name="limitVarieties" visibility="public">
+                  <ownedParameter xmi:id="_uxIx02_QEeSQKdMHSAVNmA" name="varieties" type="_uromw2_QEeSQKdMHSAVNmA"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx1G_QEeSQKdMHSAVNmA" name="getVarnames" visibility="public">
+                  <ownedParameter xmi:id="_uxIx1W_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx1m_QEeSQKdMHSAVNmA" name="getSubpopulations" visibility="public">
+                  <ownedParameter xmi:id="_uxIx12_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx2G_QEeSQKdMHSAVNmA" name="getGenenames" visibility="public">
+                  <ownedParameter xmi:id="_uxIx2W_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx2m_QEeSQKdMHSAVNmA" name="getChromosomes" visibility="public">
+                  <ownedParameter xmi:id="_uxIx22_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx3G_QEeSQKdMHSAVNmA" name="getFeatureLength" visibility="public">
+                  <ownedParameter xmi:id="_uxIx3W_QEeSQKdMHSAVNmA" name="feature">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx3m_QEeSQKdMHSAVNmA" name="return" direction="return">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx32_QEeSQKdMHSAVNmA" name="getVarietiesForSubpopulation" visibility="public">
+                  <ownedParameter xmi:id="_uxIx4G_QEeSQKdMHSAVNmA" name="subpopulation">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx4W_QEeSQKdMHSAVNmA" name="return" type="_uromw2_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx4m_QEeSQKdMHSAVNmA" name="getGeneFromName" visibility="public">
+                  <ownedParameter xmi:id="_uxIx42_QEeSQKdMHSAVNmA" name="name">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx5G_QEeSQKdMHSAVNmA" name="return" type="_us-qkm_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx5W_QEeSQKdMHSAVNmA" name="getSNPinVarieties" visibility="public">
+                  <ownedParameter xmi:id="_uxIx5m_QEeSQKdMHSAVNmA" name="var1">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx52_QEeSQKdMHSAVNmA" name="var2">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx6G_QEeSQKdMHSAVNmA" name="startPos">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx6W_QEeSQKdMHSAVNmA" name="endPos">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx6m_QEeSQKdMHSAVNmA" name="chromosome">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx62_QEeSQKdMHSAVNmA" name="querymode" type="_ucmFMW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_uxIx7G_QEeSQKdMHSAVNmA" name="b">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx7W_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx7m_QEeSQKdMHSAVNmA" name="getSNPinVarieties" visibility="public">
+                  <ownedParameter xmi:id="_uxIx72_QEeSQKdMHSAVNmA" name="var1">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx8G_QEeSQKdMHSAVNmA" name="var2">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx8W_QEeSQKdMHSAVNmA" name="genename">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx8m_QEeSQKdMHSAVNmA" name="plusminusBp">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx82_QEeSQKdMHSAVNmA" name="querymode" type="_ucmFMW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_uxIx9G_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx9W_QEeSQKdMHSAVNmA" name="getSnpsposlist" visibility="public">
+                  <ownedParameter xmi:id="_uxIx9m_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx92_QEeSQKdMHSAVNmA" name="getListSNPAllVarsMismatches" visibility="public">
+                  <ownedParameter xmi:id="_uxIx-G_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx-m_QEeSQKdMHSAVNmA" name="getListSNPAllVarsMismatches" visibility="public">
+                  <ownedParameter xmi:id="_uxIx-2_QEeSQKdMHSAVNmA" name="firstRow">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx_G_QEeSQKdMHSAVNmA" name="numRows">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIx_W_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIx_m_QEeSQKdMHSAVNmA" name="getMapOrder2Variety" visibility="public">
+                  <ownedParameter xmi:id="_uxIx_2_QEeSQKdMHSAVNmA" name="return" type="_us-qkG_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIyAG_QEeSQKdMHSAVNmA" name="getMapVariety2Order" visibility="public">
+                  <ownedParameter xmi:id="_uxIyAW_QEeSQKdMHSAVNmA" name="return" type="_us-qkG_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIyAm_QEeSQKdMHSAVNmA" name="getMapVariety2Mismatch" visibility="public">
+                  <ownedParameter xmi:id="_uxIyA2_QEeSQKdMHSAVNmA" name="return" type="_us-qkG_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIyBG_QEeSQKdMHSAVNmA" name="constructPhylotree" visibility="public">
+                  <ownedParameter xmi:id="_uxIyBW_QEeSQKdMHSAVNmA" name="scale">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyBm_QEeSQKdMHSAVNmA" name="chr">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyB2_QEeSQKdMHSAVNmA" name="start">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyCG_QEeSQKdMHSAVNmA" name="end">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyCW_QEeSQKdMHSAVNmA" name="requestid">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyCm_QEeSQKdMHSAVNmA" name="return" direction="return">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIyC2_QEeSQKdMHSAVNmA" name="constructPhylotreeTopN" visibility="public">
+                  <ownedParameter xmi:id="_uxIyDG_QEeSQKdMHSAVNmA" name="scale">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyDW_QEeSQKdMHSAVNmA" name="chr">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyDm_QEeSQKdMHSAVNmA" name="start">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyD2_QEeSQKdMHSAVNmA" name="end">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyEG_QEeSQKdMHSAVNmA" name="topN">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyEW_QEeSQKdMHSAVNmA" name="requestid">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyEm_QEeSQKdMHSAVNmA" name="return" direction="return">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIyE2_QEeSQKdMHSAVNmA" name="getMapVariety2PhyloOrder" visibility="public">
+                  <ownedParameter xmi:id="_uxIyFG_QEeSQKdMHSAVNmA" name="return" type="_us-qkG_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIyFW_QEeSQKdMHSAVNmA" name="orderVarietiesFromPhylotree" visibility="public">
+                  <ownedParameter xmi:id="_uxIyFm_QEeSQKdMHSAVNmA" name="tmpfile">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyF2_QEeSQKdMHSAVNmA" name="return" type="_us-qkW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxIyGG_QEeSQKdMHSAVNmA" name="getSNPStringInAllVarieties" visibility="public">
+                  <ownedParameter xmi:id="_uxIyGW_QEeSQKdMHSAVNmA" name="start">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyGm_QEeSQKdMHSAVNmA" name="end">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyG2_QEeSQKdMHSAVNmA" name="chr">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxIyHG_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxSi0G_QEeSQKdMHSAVNmA" name="getSNPStringInAllVarieties" visibility="public">
+                  <ownedParameter xmi:id="_uxSi0W_QEeSQKdMHSAVNmA" name="snpposlist" type="_uromw2_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_uxSi0m_QEeSQKdMHSAVNmA" name="chr">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxSi02_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxSi1G_QEeSQKdMHSAVNmA" name="checkSNPInChromosome" visibility="public">
+                  <ownedParameter xmi:id="_uxSi1W_QEeSQKdMHSAVNmA" name="chr">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxSi1m_QEeSQKdMHSAVNmA" name="setSNP" type="_uromw2_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_uxSi12_QEeSQKdMHSAVNmA" name="type" type="_uromyW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_uxSi2G_QEeSQKdMHSAVNmA" name="return" type="_uromw2_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxSi2W_QEeSQKdMHSAVNmA" name="getSNPinVarieties" visibility="public">
+                  <ownedParameter xmi:id="_uxSi2m_QEeSQKdMHSAVNmA" name="var1">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxSi22_QEeSQKdMHSAVNmA" name="var2">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxSi3G_QEeSQKdMHSAVNmA" name="snpposlist" type="_uromw2_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_uxSi3W_QEeSQKdMHSAVNmA" name="chr">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxSi3m_QEeSQKdMHSAVNmA" name="mode" type="_ucmFMW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_uxSi32_QEeSQKdMHSAVNmA" name="checked">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_uxSi4G_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxSi4m_QEeSQKdMHSAVNmA" name="getHeteroAlleleMatrix" visibility="public">
+                  <ownedParameter xmi:id="_uxSi42_QEeSQKdMHSAVNmA" name="return" direction="return">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#char"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxSi5G_QEeSQKdMHSAVNmA" name="getMapIdx2NonsynAlleles" visibility="public">
+                  <ownedParameter xmi:id="_uxSi5W_QEeSQKdMHSAVNmA" name="return" type="_us-qkW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxSi5m_QEeSQKdMHSAVNmA" name="setColorByNonsyn" visibility="public">
+                  <ownedParameter xmi:id="_uxSi52_QEeSQKdMHSAVNmA" name="selected">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_uxSi6G_QEeSQKdMHSAVNmA" name="setNonsynOnly" visibility="public">
+                  <ownedParameter xmi:id="_uxSi6W_QEeSQKdMHSAVNmA" name="selected">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <nestedClassifier xmi:type="uml:Enumeration" xmi:id="_ucmFMW_QEeSQKdMHSAVNmA" name="snpQueryMode">
+                  <ownedComment xmi:id="_ucmFMm_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Query mode SNPQUERY_VARIETIES	query and compare two varieties SNPQUERY_ALLREFPOS  all snp positions in the reference SNPQUERY_ALLVARIETIESPOS	query for all varieties
+ * @author lmansueto
+ */
+</body>
+                  </ownedComment>
+                  <ownedLiteral xmi:id="_uxSi6m_QEeSQKdMHSAVNmA" name="SNPQUERY_VARIETIES"/>
+                  <ownedLiteral xmi:id="_uxSi62_QEeSQKdMHSAVNmA" name="SNPQUERY_ALLREFPOS"/>
+                  <ownedLiteral xmi:id="_uxSi7G_QEeSQKdMHSAVNmA" name="SNPQUERY_ALLVARIETIESPOS"/>
+                </nestedClassifier>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Package" xmi:id="_us-ql2_QEeSQKdMHSAVNmA" name="GenotypeFacade">
+                <packagedElement xmi:type="uml:DataType" xmi:id="_us-qmG_QEeSQKdMHSAVNmA" name="snpQueryMode"/>
+              </packagedElement>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Package" xmi:id="_ucmFM2_QEeSQKdMHSAVNmA" name="zkui">
+              <packagedElement xmi:type="uml:Class" xmi:id="_ucmFNG_QEeSQKdMHSAVNmA" name="SNPQueryController">
+                <generalization xmi:id="_uxSi7W_QEeSQKdMHSAVNmA" general="_uvNfPW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uxcT0G_QEeSQKdMHSAVNmA" name="urljbrowse" visibility="private">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_uxvOwG_QEeSQKdMHSAVNmA" name="gfffile" visibility="private">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_uyCJsG_QEeSQKdMHSAVNmA" name="urlphylo" visibility="private">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_uyVEoG_QEeSQKdMHSAVNmA" name="urljbrowsephylo" visibility="private">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_uyn_kG_QEeSQKdMHSAVNmA" name="tallJbrowse" visibility="private">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_uyxwkG_QEeSQKdMHSAVNmA" name="origAllVarsListModel" visibility="private" type="_uyn_kW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uzErgG_QEeSQKdMHSAVNmA" name="snpallvars_pagesize" visibility="private">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_uzErgW_QEeSQKdMHSAVNmA" value="50"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_uzOcgG_QEeSQKdMHSAVNmA" name="tmpfile_spath" visibility="private">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  <defaultValue xmi:type="uml:LiteralString" xmi:id="_uzOcgW_QEeSQKdMHSAVNmA" value=""/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_uzXmcG_QEeSQKdMHSAVNmA" name="lhr_variety" visibility="private" type="_utH0p2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uzhXcG_QEeSQKdMHSAVNmA" name="lhrMismatch" visibility="private" type="_utH0p2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_uz0SYG_QEeSQKdMHSAVNmA" name="log" visibility="private" isStatic="true" type="_utH0jG_QEeSQKdMHSAVNmA" isReadOnly="true"/>
+                <ownedAttribute xmi:id="_uz-DYG_QEeSQKdMHSAVNmA" name="TEXTSTYLE_ERROR" visibility="private" isStatic="true" isReadOnly="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  <defaultValue xmi:type="uml:LiteralString" xmi:id="_uz-DYW_QEeSQKdMHSAVNmA" value="font-color:red"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_u0HNUG_QEeSQKdMHSAVNmA" name="TEXTSTYLE_SUCCESS" visibility="private" isStatic="true" isReadOnly="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  <defaultValue xmi:type="uml:LiteralString" xmi:id="_u0HNUW_QEeSQKdMHSAVNmA" value="font-folor:black"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_u0Q-UW_QEeSQKdMHSAVNmA" name="serialVersionUID" visibility="private" isStatic="true" isReadOnly="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_u0Q-Um_QEeSQKdMHSAVNmA"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_u0j5QG_QEeSQKdMHSAVNmA" name="chrlength" visibility="private">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_u0j5QW_QEeSQKdMHSAVNmA" value="43270923"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_u0tqQG_QEeSQKdMHSAVNmA" name="classGenotypefacade" visibility="private" isReadOnly="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  <defaultValue xmi:type="uml:LiteralString" xmi:id="_u0tqQW_QEeSQKdMHSAVNmA" value="GenotypeFacade"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_u020MG_QEeSQKdMHSAVNmA" name="labelScreenWidth" visibility="private" type="_uryX0m_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u1AlMG_QEeSQKdMHSAVNmA" name="resetButton" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u1TgIG_QEeSQKdMHSAVNmA" name="intStart" visibility="private" type="_utH0om_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u1UHMG_QEeSQKdMHSAVNmA" name="intStop" visibility="private" type="_utH0om_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u1nCIG_QEeSQKdMHSAVNmA" name="comboGene" visibility="private" type="_utH0pW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u1wzIG_QEeSQKdMHSAVNmA" name="selectChr" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u2DuEG_QEeSQKdMHSAVNmA" name="snpresult" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u2NfEG_QEeSQKdMHSAVNmA" name="msgbox" visibility="private" type="_ur7ht2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u2WpAG_QEeSQKdMHSAVNmA" name="searchButton" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u2qLAG_QEeSQKdMHSAVNmA" name="labelLength" visibility="private" type="_uryX0m_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u2zU8G_QEeSQKdMHSAVNmA" name="comboVar1" visibility="private" type="_utH0pW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u29F8G_QEeSQKdMHSAVNmA" name="comboVar2" visibility="private" type="_utH0pW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u3GP4G_QEeSQKdMHSAVNmA" name="checkboxMismatchOnly" visibility="private" type="_utH0mm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u3QA4G_QEeSQKdMHSAVNmA" name="checkboxAllvarieties" visibility="private" type="_utH0mm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u3i70G_QEeSQKdMHSAVNmA" name="comboSubpopulation" visibility="private" type="_utH0pW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u3ss0G_QEeSQKdMHSAVNmA" name="listboxMyVarieties" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u312wG_QEeSQKdMHSAVNmA" name="genotype" visibility="private" type="_ucmFMG_QEeSQKdMHSAVNmA" association="_vY7xoG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u3_nwG_QEeSQKdMHSAVNmA" name="varietyfacade" visibility="private" type="_uc5AI2_QEeSQKdMHSAVNmA" association="_vY7xom_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u4SisG_QEeSQKdMHSAVNmA" name="workspace" visibility="private" type="_uccUNW_QEeSQKdMHSAVNmA" association="_vY7xpG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u4cTsG_QEeSQKdMHSAVNmA" name="iframeJbrowse" visibility="private" type="_utH0oG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u4ldoG_QEeSQKdMHSAVNmA" name="msgJbrowse" visibility="private" type="_uryX0m_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u4vOoG_QEeSQKdMHSAVNmA" name="iframeJbrowsePhylo" visibility="private" type="_utH0oG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u5CJkG_QEeSQKdMHSAVNmA" name="msgJbrowsePhylo" visibility="private" type="_uryX0m_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u5VEgG_QEeSQKdMHSAVNmA" name="snpallvarsresult" visibility="private" type="_utH0nm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u5e1gG_QEeSQKdMHSAVNmA" name="snpallvarsresultpaging" visibility="private" type="_utH0qG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u5omgG_QEeSQKdMHSAVNmA" name="buttonDownloadCsv" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u5xwcG_QEeSQKdMHSAVNmA" name="buttonDownloadTab" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u6ErYG_QEeSQKdMHSAVNmA" name="auxheadpos" visibility="private" type="_utH0mG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u6OcYG_QEeSQKdMHSAVNmA" name="radioColorAllele" visibility="private" type="_ur7htW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u6YNYG_QEeSQKdMHSAVNmA" name="radioColorMismatch" visibility="private" type="_ur7htW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u6rIUG_QEeSQKdMHSAVNmA" name="win" visibility="private" type="_utH0rG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u60SQG_QEeSQKdMHSAVNmA" name="iframePhylotree" visibility="private" type="_utH0oG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u7H0QG_QEeSQKdMHSAVNmA" name="tabJbrowse" visibility="private" type="_utH0qm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u7Q-MG_QEeSQKdMHSAVNmA" name="tabPhylo" visibility="private" type="_utH0qm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u7avMG_QEeSQKdMHSAVNmA" name="selectPhyloTopN" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u7j5IG_QEeSQKdMHSAVNmA" name="tabJBrowsePhylo" visibility="private" type="_utH0qm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u73bIG_QEeSQKdMHSAVNmA" name="tabTable" visibility="private" type="_utH0qm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u8AlEG_QEeSQKdMHSAVNmA" name="tabboxDisplay" visibility="private" type="_utH0q2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u8KWEG_QEeSQKdMHSAVNmA" name="checkboxCoreSNP" visibility="private" type="_utH0mm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u8dRAG_QEeSQKdMHSAVNmA" name="checkboxExactMismatch" visibility="private" type="_utH0mm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u8nCAG_QEeSQKdMHSAVNmA" name="selectAllele" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u8wL8G_QEeSQKdMHSAVNmA" name="listboxPosition" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u9DG4G_QEeSQKdMHSAVNmA" name="buttonFilterAllele" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u9M34G_QEeSQKdMHSAVNmA" name="hboxFilterAllele" visibility="private" type="_utH0n2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u9fy0G_QEeSQKdMHSAVNmA" name="vboxFilterAllele" visibility="private" type="_ur7huG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u9pj0G_QEeSQKdMHSAVNmA" name="listboxMySNPList" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u98ewG_QEeSQKdMHSAVNmA" name="buttonCreateVarlist" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u-PZsG_QEeSQKdMHSAVNmA" name="textboxVarlistName" visibility="private" type="_ur7ht2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u-iUoG_QEeSQKdMHSAVNmA" name="radioGraySynonymous" visibility="private" type="_ur7htW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_u-12oG_QEeSQKdMHSAVNmA" name="radioNonsynOnly" visibility="private" type="_ur7htW_QEeSQKdMHSAVNmA"/>
+                <nestedClassifier xmi:type="uml:Class" xmi:id="_ucvPIG_QEeSQKdMHSAVNmA" name="GFF" visibility="private">
+                  <ownedComment xmi:id="_ucvPIW_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Class to write GFF file from SNP for use in JBrowse
+ * @author lmansueto
+ */
+</body>
+                  </ownedComment>
+                  <ownedAttribute xmi:id="_vClHIW_QEeSQKdMHSAVNmA" name="left" visibility="private">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedAttribute>
+                  <ownedAttribute xmi:id="_vC4CEG_QEeSQKdMHSAVNmA" name="right" visibility="private">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedAttribute>
+                  <ownedAttribute xmi:id="_vDBMAG_QEeSQKdMHSAVNmA" name="start" visibility="private">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedAttribute>
+                  <ownedAttribute xmi:id="_vDK9AG_QEeSQKdMHSAVNmA" name="end" visibility="private">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedAttribute>
+                  <ownedOperation xmi:id="_vDK9AW_QEeSQKdMHSAVNmA" name="toString" visibility="public">
+                    <ownedParameter xmi:id="_vDK9Am_QEeSQKdMHSAVNmA" name="return" direction="return">
+                      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                    </ownedParameter>
+                  </ownedOperation>
+                  <ownedOperation xmi:id="_vDUuAG_QEeSQKdMHSAVNmA" name="getStart" visibility="public">
+                    <ownedParameter xmi:id="_vDUuAW_QEeSQKdMHSAVNmA" name="return" direction="return">
+                      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                    </ownedParameter>
+                  </ownedOperation>
+                </nestedClassifier>
+                <nestedClassifier xmi:type="uml:Class" xmi:id="_ucvPIm_QEeSQKdMHSAVNmA" name="GFFStartComparator" visibility="private" clientDependency="_vDd38W_QEeSQKdMHSAVNmA">
+                  <ownedComment xmi:id="_uc5AIG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Sort GFF by start (to be used by JBrowse all variety track)
+ * @author LMansueto
+ */
+</body>
+                  </ownedComment>
+                  <interfaceRealization xmi:id="_vDd38W_QEeSQKdMHSAVNmA" name="Comparator" supplier="_vDd38G_QEeSQKdMHSAVNmA" client="_ucvPIm_QEeSQKdMHSAVNmA" contract="_vDd38G_QEeSQKdMHSAVNmA"/>
+                  <ownedOperation xmi:id="_vDd382_QEeSQKdMHSAVNmA" name="compare" visibility="public">
+                    <ownedParameter xmi:id="_vDd39G_QEeSQKdMHSAVNmA" name="o1" type="_vDd38m_QEeSQKdMHSAVNmA"/>
+                    <ownedParameter xmi:id="_vDd39W_QEeSQKdMHSAVNmA" name="o2" type="_vDd38m_QEeSQKdMHSAVNmA"/>
+                    <ownedParameter xmi:id="_vDd39m_QEeSQKdMHSAVNmA" name="return" direction="return">
+                      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                    </ownedParameter>
+                  </ownedOperation>
+                </nestedClassifier>
+                <ownedOperation xmi:id="_u-_AkG_QEeSQKdMHSAVNmA" name="onclickCreateVarlist" visibility="public"/>
+                <ownedOperation xmi:id="_u-_AkW_QEeSQKdMHSAVNmA" name="onselectMyVarieties" visibility="public"/>
+                <ownedOperation xmi:id="_u-_noG_QEeSQKdMHSAVNmA" name="onselectMySNPList" visibility="public"/>
+                <ownedOperation xmi:id="_u_TJoG_QEeSQKdMHSAVNmA" name="oncheckAllVarieties" visibility="public"/>
+                <ownedOperation xmi:id="_u_c6oG_QEeSQKdMHSAVNmA" name="onclickFilterAllele" visibility="public"/>
+                <ownedOperation xmi:id="_u_mroG_QEeSQKdMHSAVNmA" name="buttonAddPassConstraint" visibility="public"/>
+                <ownedOperation xmi:id="_u_mroW_QEeSQKdMHSAVNmA" name="onselectSubpopulation" visibility="public"/>
+                <ownedOperation xmi:id="_u_v1kG_QEeSQKdMHSAVNmA" name="onchangedVar1" visibility="public"/>
+                <ownedOperation xmi:id="_u_v1kW_QEeSQKdMHSAVNmA" name="onchangedVar2" visibility="public"/>
+                <ownedOperation xmi:id="_u_5mkG_QEeSQKdMHSAVNmA" name="onSelectGene" visibility="public"/>
+                <ownedOperation xmi:id="_vACwgG_QEeSQKdMHSAVNmA" name="setchrlength" visibility="public">
+                  <ownedComment xmi:id="_vACwgW_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Chromosome selected
+ */
+</body>
+                  </ownedComment>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vACwgm_QEeSQKdMHSAVNmA" name="onchangedStart" visibility="public"/>
+                <ownedOperation xmi:id="_vAMhgG_QEeSQKdMHSAVNmA" name="onchangedStop" visibility="public"/>
+                <ownedOperation xmi:id="_vAWSgG_QEeSQKdMHSAVNmA" name="getchrLength" visibility="private">
+                  <ownedParameter xmi:id="_vAWSgW_QEeSQKdMHSAVNmA" name="return" direction="return">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vAWSgm_QEeSQKdMHSAVNmA" name="onselectTabJbrowse" visibility="public">
+                  <ownedComment xmi:id="_vAfccG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * JBrowse tab selected    
+ */
+</body>
+                  </ownedComment>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vAfccW_QEeSQKdMHSAVNmA" name="onselectTabJbrowsePhylo" visibility="public">
+                  <ownedComment xmi:id="_vApNcG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * JBrowse using phylotree ordering, visible only after Phylotree is computed
+ */
+</body>
+                  </ownedComment>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vApNcW_QEeSQKdMHSAVNmA" name="onselectTabPhylo" visibility="public">
+                  <ownedComment xmi:id="_vApNcm_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Phylogenetic tree tab selected 
+ */
+</body>
+                  </ownedComment>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vApNc2_QEeSQKdMHSAVNmA" name="reset" visibility="public">
+                  <ownedComment xmi:id="_vAyXYG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Clears all inputs
+ */
+</body>
+                  </ownedComment>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vAyXYW_QEeSQKdMHSAVNmA" name="downloadTab" visibility="public">
+                  <ownedComment xmi:id="_vAyXYm_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Download Tab format
+ */
+</body>
+                  </ownedComment>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vAyXY2_QEeSQKdMHSAVNmA" name="downloadCsv" visibility="public">
+                  <ownedComment xmi:id="_vA8IYG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Download CSV format
+ */
+</body>
+                  </ownedComment>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vA8IYW_QEeSQKdMHSAVNmA" name="downloadDelimited" visibility="private">
+                  <ownedComment xmi:id="_vBF5YG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Generate download file
+ * @param filename
+ * @param limitchar
+ */
+</body>
+                  </ownedComment>
+                  <ownedParameter xmi:id="_vA8IYm_QEeSQKdMHSAVNmA" name="filename">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vA8IY2_QEeSQKdMHSAVNmA" name="limitchar">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vBF5YW_QEeSQKdMHSAVNmA" name="writeSNP2Lines2File" visibility="private">
+                  <ownedComment xmi:id="_vBF5aG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Write SNP for 2 varieties in file
+ * @param filename	filename to write
+ * @param header	to write in first line
+ * @param var1		variety 1
+ * @param var2		variety 2
+ * @param delimiter	
+ * @param listSNPs	SNPs list
+ */
+</body>
+                  </ownedComment>
+                  <ownedParameter xmi:id="_vBF5Ym_QEeSQKdMHSAVNmA" name="filename">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBF5Y2_QEeSQKdMHSAVNmA" name="header">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBF5ZG_QEeSQKdMHSAVNmA" name="var1">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBF5ZW_QEeSQKdMHSAVNmA" name="var2">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBF5Zm_QEeSQKdMHSAVNmA" name="delimiter">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBF5Z2_QEeSQKdMHSAVNmA" name="listSNPs" type="_uromzW_QEeSQKdMHSAVNmA"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vBF5aW_QEeSQKdMHSAVNmA" name="searchWithServerpaging" visibility="public">
+                  <ownedComment xmi:id="_vBPDUG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Search button clicked
+ */
+</body>
+                  </ownedComment>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vBPDUW_QEeSQKdMHSAVNmA" name="searchWithServerpaging" visibility="public">
+                  <ownedComment xmi:id="_vBY0UG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Search SNP and render the result in webclient or write it to file
+ * @param filename	filename of output, if null will reder to client
+ * @param delimiter	delimeter of outputFour main branches in this function 1. Gene constraint 1.a All varieties 1.b 2 Varieties 2. Region (chr, start, end) constraint 2.a All varieties 2.b 2 varieties in each branch, these are the operations gene, allvariety	 1. genotype.countSNPMismatchesInAlllVarieties(Integer.valueOf(gene.getFmin().toPlainString())  ,Integer.valueOf( gene.getFmax().toPlainString() ), gene.getChr().toUpperCase().replace(&quot;CHR&quot;, &quot;&quot;), true);		!! not required because step 2 call this 2.  genotype.getSNPinAllVarieties(Integer.valueOf(gene.getFmin().toPlainString())  ,Integer.valueOf( gene.getFmax().toPlainString() ), gene.getChr().toUpperCase().replace(&quot;CHR&quot;, &quot;&quot;)); 3. if(writetofile)  updateAllvarsList(listSNPs,true,filename,delimiter,&quot;GENE: &quot; + comboGene.getValue().trim().toUpperCase()); return 4. updateAllvarsList(listSNPs,true) 5. createSNPVarietyGFF(listSNPs, gfffile, genotype.getMapVariety2Order(), bpmargin,Integer.parseInt(gene.getFmin().toString()),Integer.parseInt(gene.getFmax().toString())); gene, 2 variety 1. genotype.getSNPinVarieties(var1, var2, comboGene.getValue().trim(), 0, mode);				 2. if(writetofile) writeSNP2Lines2File(filename, &quot;GENE: &quot; + comboGene.getValue().trim().toUpperCase() ,   var1,  var2,  delimiter,  listSNPs); return; 3. createSNP2linesGFF(listSNPs, gfffile ); region, allvariety 1. check inputs 2. genotype.countSNPMismatchesInAlllVarieties(intStart.getValue(), intStop.getValue(), chr, true); 3. if(writetofile) { newpagelist = genotype.getSNPinAllVarieties(intStart.getValue(), intStop.getValue(), chr, 1, 0  ); updateAllvarsList(newpagelist,true,filename,delimiter,  &quot;REGION: CHR &quot; + chr + &quot; &quot; +  intStart.getValue() + &quot;..&quot; + intStop.getValue() );						 return; } 4. if(serverpaging) { newpagelist = genotype.getSNPinAllVarieties(intStart.getValue(), intStop.getValue(), chr, 1, snpallvars_pagesize  );		 setAllvargridforDBPaging(); updateAllvarsList(newpagelist,true, null,null,null, 1, snpallvars_pagesize );				     } else { newpagelist = genotype.getSNPinAllVarieties(intStart.getValue(), intStop.getValue(), chr, 1, 0  ); setAllvargridforGridPaging(); updateAllvarsList(newpagelist,true, null,null,null, 1, 0 );	 listSNPs = newpagelist; } region, 2 varieties 1. genotype.getSNPinVarieties(var1,var2, intStart.getValue(), intStop.getValue(), chr, mode); 2. if(writetofile) writeSNP2Lines2File(filename, &quot;REGION: CHR &quot; + chr + &quot; &quot; +  intStart.getValue() + &quot;..&quot; + intStop.getValue() ,   var1,  var2,  delimiter,  listSNPs); return; 3. createSNP2linesGFF(listSNPs, gfffile ); render2varsList if(serverpaging) ON showPage 1. newpagelist = genotype.getSNPinAllVarieties(intStart.getValue(), intStop.getValue(), selectChr.getSelectedItem().getLabel().trim(), desiredPage*snpallvars_pagesize+1 , snpallvars_pagesize  ); 2. updateAllvarsList(newpagelist,false,null,null,null, desiredPage*snpallvars_pagesize+1 , snpallvars_pagesize );		
+ */
+</body>
+                  </ownedComment>
+                  <ownedParameter xmi:id="_vBPDUm_QEeSQKdMHSAVNmA" name="filename">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBPDU2_QEeSQKdMHSAVNmA" name="delimiter">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vBY0UW_QEeSQKdMHSAVNmA" name="updateAllvarsList" visibility="private">
+                  <ownedComment xmi:id="_vBY0VG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Render all varieties to table/client
+ * @param listSNPs
+ * @param updateHeaders
+ */
+</body>
+                  </ownedComment>
+                  <ownedParameter xmi:id="_vBY0Um_QEeSQKdMHSAVNmA" name="listSNPs" type="_uromzW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vBY0U2_QEeSQKdMHSAVNmA" name="updateHeaders">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vBh-QG_QEeSQKdMHSAVNmA" name="updateAllvarsList" visibility="private">
+                  <ownedComment xmi:id="_vBh-Rm_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Write all varieties to file, with delimeter and header (first line)
+ * @param listSNPs
+ * @param updateHeaders
+ * @param filename
+ * @param delimiter
+ * @param header
+ */
+</body>
+                  </ownedComment>
+                  <ownedParameter xmi:id="_vBh-QW_QEeSQKdMHSAVNmA" name="listSNPs" type="_uromzW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vBh-Qm_QEeSQKdMHSAVNmA" name="updateHeaders">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBh-Q2_QEeSQKdMHSAVNmA" name="filename">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBh-RG_QEeSQKdMHSAVNmA" name="delimiter">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBh-RW_QEeSQKdMHSAVNmA" name="header">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vBh-R2_QEeSQKdMHSAVNmA" name="updateAllvarsList" visibility="private">
+                  <ownedComment xmi:id="_vBrvQG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Render (filename==null) OR write to file varieties from firstrow to (firstrow-numRows-1)
+ * @param listSNPs	// SNP object list
+ * @param updateHeaders	// change table headers
+ * @param filename	// write to file
+ * @param delimiter
+ * @param header
+ * @param firstRow	1-indexed variety row from orderedQuery
+ * @param numRows	varieties per page, if zero, to end
+ * @param fetchMismatchOnly  listSNPs contains only NULL and referfence mismatches
+ */
+</body>
+                  </ownedComment>
+                  <ownedParameter xmi:id="_vBh-SG_QEeSQKdMHSAVNmA" name="listSNPs" type="_uromzW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vBh-SW_QEeSQKdMHSAVNmA" name="updateHeaders">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBh-Sm_QEeSQKdMHSAVNmA" name="filename">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBh-S2_QEeSQKdMHSAVNmA" name="delimiter">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBh-TG_QEeSQKdMHSAVNmA" name="header">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBh-TW_QEeSQKdMHSAVNmA" name="firstRow">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBh-Tm_QEeSQKdMHSAVNmA" name="numRows">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vBrvQW_QEeSQKdMHSAVNmA" name="updateAllvarsListSnpstring" visibility="private">
+                  <ownedParameter xmi:id="_vBrvQm_QEeSQKdMHSAVNmA" name="listSNPs" type="_uromzW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vBrvQ2_QEeSQKdMHSAVNmA" name="updateHeaders">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBrvRG_QEeSQKdMHSAVNmA" name="filename">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBrvRW_QEeSQKdMHSAVNmA" name="delimiter">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vBrvRm_QEeSQKdMHSAVNmA" name="header">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vB1gQG_QEeSQKdMHSAVNmA" name="createSNPStringVarietyGFF" visibility="private">
+                  <ownedComment xmi:id="_vB1gSG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * @param listSNPs listSNPs contains only mismatch or NULL
+ * @param filename
+ * @param var2order
+ * @param bpgap
+ * @param start
+ * @param end
+ * @param mismatchOnly
+ */
+</body>
+                  </ownedComment>
+                  <ownedParameter xmi:id="_vB1gQW_QEeSQKdMHSAVNmA" name="listSNPs" type="_uromzW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vB1gQm_QEeSQKdMHSAVNmA" name="filename">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vB1gQ2_QEeSQKdMHSAVNmA" name="var2order" type="_us-qkW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vB1gRG_QEeSQKdMHSAVNmA" name="bpgap">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vB1gRW_QEeSQKdMHSAVNmA" name="start" type="_uromyW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vB1gRm_QEeSQKdMHSAVNmA" name="end" type="_uromyW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vB1gR2_QEeSQKdMHSAVNmA" name="mismatchOnly">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vB1gSW_QEeSQKdMHSAVNmA" name="createSNP2linesGFF" visibility="private">
+                  <ownedComment xmi:id="_vCIbMG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Orig create GFF when all (match and mismatched) are fetched
+ * @param listSNPs
+ * @param filename
+ * @param var2order
+ * @param bpgap
+ * @param start
+ * @param end
+ * @param mismatchOnly
+ */
+</body>
+                  </ownedComment>
+                  <ownedParameter xmi:id="_vB1gSm_QEeSQKdMHSAVNmA" name="listSNPs" type="_uromzW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vB1gS2_QEeSQKdMHSAVNmA" name="filename">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vCIbMW_QEeSQKdMHSAVNmA" name="createSNP2linesGFF" visibility="private">
+                  <ownedComment xmi:id="_vCRlIG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Create SNP GFF for 2-varieties query
+ * @param listSNPs
+ * @param filename
+ * @param mismatchOnly
+ */
+</body>
+                  </ownedComment>
+                  <ownedParameter xmi:id="_vCIbMm_QEeSQKdMHSAVNmA" name="listSNPs" type="_uromzW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vCIbM2_QEeSQKdMHSAVNmA" name="filename">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vCIbNG_QEeSQKdMHSAVNmA" name="mismatchOnly">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vCRlIW_QEeSQKdMHSAVNmA" name="updateJBrowse" visibility="private">
+                  <ownedComment xmi:id="_vCRlJm_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Prepare JBRowse URL. JBrowse is not fetched/rendered until the tab is clicked, but the URL is already formulated
+ * @param chr
+ * @param start
+ * @param end
+ * @param locus
+ */
+</body>
+                  </ownedComment>
+                  <ownedParameter xmi:id="_vCRlIm_QEeSQKdMHSAVNmA" name="chr">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vCRlI2_QEeSQKdMHSAVNmA" name="start">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vCRlJG_QEeSQKdMHSAVNmA" name="end">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vCRlJW_QEeSQKdMHSAVNmA" name="locus">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vCbWIG_QEeSQKdMHSAVNmA" name="updateJBrowsePhylo" visibility="private">
+                  <ownedParameter xmi:id="_vCbWIW_QEeSQKdMHSAVNmA" name="chr">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vCbWIm_QEeSQKdMHSAVNmA" name="start">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vCbWI2_QEeSQKdMHSAVNmA" name="end">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vCbWJG_QEeSQKdMHSAVNmA" name="locus">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vCbWJW_QEeSQKdMHSAVNmA" name="show_phylotree" visibility="private">
+                  <ownedComment xmi:id="_vClHIG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Prepare phylogenetic tree URL. Tree is not computed/displayed until the tab is clicked
+ * @param chr
+ * @param start
+ * @param end
+ */
+</body>
+                  </ownedComment>
+                  <ownedParameter xmi:id="_vCbWJm_QEeSQKdMHSAVNmA" name="chr">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vCbWJ2_QEeSQKdMHSAVNmA" name="start">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vCbWKG_QEeSQKdMHSAVNmA" name="end">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Interface" xmi:id="_vDd38G_QEeSQKdMHSAVNmA" name="Comparator"/>
+              <packagedElement xmi:type="uml:Association" xmi:id="_vY7xoG_QEeSQKdMHSAVNmA" memberEnd="_u312wG_QEeSQKdMHSAVNmA _vY7xoW_QEeSQKdMHSAVNmA">
+                <ownedEnd xmi:id="_vY7xoW_QEeSQKdMHSAVNmA" name="SNPQueryController" type="_ucmFNG_QEeSQKdMHSAVNmA" association="_vY7xoG_QEeSQKdMHSAVNmA"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Association" xmi:id="_vY7xom_QEeSQKdMHSAVNmA" memberEnd="_u3_nwG_QEeSQKdMHSAVNmA _vY7xo2_QEeSQKdMHSAVNmA">
+                <ownedEnd xmi:id="_vY7xo2_QEeSQKdMHSAVNmA" name="SNPQueryController" type="_ucmFNG_QEeSQKdMHSAVNmA" association="_vY7xom_QEeSQKdMHSAVNmA"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Association" xmi:id="_vY7xpG_QEeSQKdMHSAVNmA" memberEnd="_u4SisG_QEeSQKdMHSAVNmA _vY7xpW_QEeSQKdMHSAVNmA">
+                <ownedEnd xmi:id="_vY7xpW_QEeSQKdMHSAVNmA" name="SNPQueryController" type="_ucmFNG_QEeSQKdMHSAVNmA" association="_vY7xpG_QEeSQKdMHSAVNmA"/>
+              </packagedElement>
+            </packagedElement>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_uc5AIW_QEeSQKdMHSAVNmA" name="variety">
+            <packagedElement xmi:type="uml:Package" xmi:id="_uc5AIm_QEeSQKdMHSAVNmA" name="service">
+              <packagedElement xmi:type="uml:Interface" xmi:id="_uc5AI2_QEeSQKdMHSAVNmA" name="VarietyFacade">
+                <ownedAttribute xmi:id="_vDno8G_QEeSQKdMHSAVNmA" name="COMPARATOR_EQUALS" visibility="public" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  <defaultValue xmi:type="uml:LiteralString" xmi:id="_vDno8W_QEeSQKdMHSAVNmA" value="="/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_vDno8m_QEeSQKdMHSAVNmA" name="COMPARATOR_LESSTHAN" visibility="public" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  <defaultValue xmi:type="uml:LiteralString" xmi:id="_vDno82_QEeSQKdMHSAVNmA" value="&lt;"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_vDno9G_QEeSQKdMHSAVNmA" name="COMPARATOR_GREATERTHAN" visibility="public" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  <defaultValue xmi:type="uml:LiteralString" xmi:id="_vDno9W_QEeSQKdMHSAVNmA" value=">"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_vDno9m_QEeSQKdMHSAVNmA" name="COMPARATOR_LIKE" visibility="public" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  <defaultValue xmi:type="uml:LiteralString" xmi:id="_vDno92_QEeSQKdMHSAVNmA" value="like"/>
+                </ownedAttribute>
+                <ownedOperation xmi:id="_vDno-G_QEeSQKdMHSAVNmA" name="getVarietyNames" visibility="public">
+                  <ownedParameter xmi:id="_vDno-W_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDno-m_QEeSQKdMHSAVNmA" name="getGermplasmByName" visibility="public">
+                  <ownedParameter xmi:id="_vDno-2_QEeSQKdMHSAVNmA" name="name">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDno_G_QEeSQKdMHSAVNmA" name="return" type="_urom0m_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDno_W_QEeSQKdMHSAVNmA" name="getGermplasmByNameLike" visibility="public">
+                  <ownedParameter xmi:id="_vDno_m_QEeSQKdMHSAVNmA" name="name">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDno_2_QEeSQKdMHSAVNmA" name="return" type="_urom0m_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpAG_QEeSQKdMHSAVNmA" name="getGermplasmByIrisId" visibility="public">
+                  <ownedParameter xmi:id="_vDnpAW_QEeSQKdMHSAVNmA" name="name">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpAm_QEeSQKdMHSAVNmA" name="return" type="_urom0m_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpA2_QEeSQKdMHSAVNmA" name="getGermplasmByCountry" visibility="public">
+                  <ownedParameter xmi:id="_vDnpBG_QEeSQKdMHSAVNmA" name="country">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpBW_QEeSQKdMHSAVNmA" name="return" type="_uromw2_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpBm_QEeSQKdMHSAVNmA" name="getGermplasm" visibility="public">
+                  <ownedParameter xmi:id="_vDnpB2_QEeSQKdMHSAVNmA" name="return" type="_uromw2_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpCG_QEeSQKdMHSAVNmA" name="getGermplasmBySubpopulation" visibility="public">
+                  <ownedParameter xmi:id="_vDnpCW_QEeSQKdMHSAVNmA" name="subpopulation">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpCm_QEeSQKdMHSAVNmA" name="return" type="_uromw2_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpC2_QEeSQKdMHSAVNmA" name="getGermplasmByExample" visibility="public">
+                  <ownedParameter xmi:id="_vDnpDG_QEeSQKdMHSAVNmA" name="germplasm" type="_urom0m_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vDnpDW_QEeSQKdMHSAVNmA" name="return" type="_uromw2_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpDm_QEeSQKdMHSAVNmA" name="getMapVarname2Variety" visibility="public">
+                  <ownedParameter xmi:id="_vDnpD2_QEeSQKdMHSAVNmA" name="return" type="_us-qkW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpEG_QEeSQKdMHSAVNmA" name="getMapId2Variety" visibility="public">
+                  <ownedParameter xmi:id="_vDnpEW_QEeSQKdMHSAVNmA" name="return" type="_us-qkW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpEm_QEeSQKdMHSAVNmA" name="getIrisId2Variety" visibility="public">
+                  <ownedParameter xmi:id="_vDnpE2_QEeSQKdMHSAVNmA" name="return" type="_us-qkW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpFG_QEeSQKdMHSAVNmA" name="getVarietyByPassport" visibility="public">
+                  <ownedParameter xmi:id="_vDnpFW_QEeSQKdMHSAVNmA" name="definition">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpFm_QEeSQKdMHSAVNmA" name="value">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpF2_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpGG_QEeSQKdMHSAVNmA" name="getVarietyByPhenotype" visibility="public">
+                  <ownedParameter xmi:id="_vDnpGW_QEeSQKdMHSAVNmA" name="definition">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpGm_QEeSQKdMHSAVNmA" name="comparator">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpG2_QEeSQKdMHSAVNmA" name="value">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpHG_QEeSQKdMHSAVNmA" name="phenotype_type">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpHW_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpHm_QEeSQKdMHSAVNmA" name="getIrisIds" visibility="public">
+                  <ownedParameter xmi:id="_vDnpH2_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpIG_QEeSQKdMHSAVNmA" name="getCountries" visibility="public">
+                  <ownedParameter xmi:id="_vDnpIW_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpIm_QEeSQKdMHSAVNmA" name="getSubpopulations" visibility="public">
+                  <ownedParameter xmi:id="_vDnpI2_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpJG_QEeSQKdMHSAVNmA" name="getPassportDefinitions" visibility="public">
+                  <ownedParameter xmi:id="_vDnpJW_QEeSQKdMHSAVNmA" name="return" type="_us-qkW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpJm_QEeSQKdMHSAVNmA" name="getPhenotypeDefinitions" visibility="public">
+                  <ownedParameter xmi:id="_vDnpJ2_QEeSQKdMHSAVNmA" name="return" type="_us-qkW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpKG_QEeSQKdMHSAVNmA" name="getPhenotypesByGermplasm" visibility="public">
+                  <ownedParameter xmi:id="_vDnpKW_QEeSQKdMHSAVNmA" name="var" type="_urom0m_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vDnpKm_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpK2_QEeSQKdMHSAVNmA" name="getPhenotypesByGermplasmName" visibility="public">
+                  <ownedParameter xmi:id="_vDnpLG_QEeSQKdMHSAVNmA" name="name">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpLW_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpLm_QEeSQKdMHSAVNmA" name="getPhenotypeUniqueValues" visibility="public">
+                  <ownedParameter xmi:id="_vDnpL2_QEeSQKdMHSAVNmA" name="definition">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpMG_QEeSQKdMHSAVNmA" name="return" type="_vDd38m_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpMW_QEeSQKdMHSAVNmA" name="getPassportByVarietyid" visibility="public">
+                  <ownedParameter xmi:id="_vDnpMm_QEeSQKdMHSAVNmA" name="id" type="_uromyW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vDnpM2_QEeSQKdMHSAVNmA" name="return" type="_uromw2_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpNG_QEeSQKdMHSAVNmA" name="getPassportUniqueValues" visibility="public">
+                  <ownedParameter xmi:id="_vDnpNW_QEeSQKdMHSAVNmA" name="definition">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpNm_QEeSQKdMHSAVNmA" name="return" type="_uromw2_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpN2_QEeSQKdMHSAVNmA" name="constructPhylotree" visibility="public">
+                  <ownedParameter xmi:id="_vDnpOG_QEeSQKdMHSAVNmA" name="ids">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpOW_QEeSQKdMHSAVNmA" name="scale">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpOm_QEeSQKdMHSAVNmA" name="requestid">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpO2_QEeSQKdMHSAVNmA" name="return" direction="return">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpPG_QEeSQKdMHSAVNmA" name="constructPhylotree" visibility="public">
+                  <ownedParameter xmi:id="_vDnpPW_QEeSQKdMHSAVNmA" name="germplasms" type="_uromw2_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vDnpPm_QEeSQKdMHSAVNmA" name="scale">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpP2_QEeSQKdMHSAVNmA" name="requestid">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpQG_QEeSQKdMHSAVNmA" name="return" direction="return">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpQW_QEeSQKdMHSAVNmA" name="constructPhylotree" visibility="public">
+                  <ownedParameter xmi:id="_vDnpQm_QEeSQKdMHSAVNmA" name="varids">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpQ2_QEeSQKdMHSAVNmA" name="scale">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpRG_QEeSQKdMHSAVNmA" name="topN">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpRW_QEeSQKdMHSAVNmA" name="requestid">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpRm_QEeSQKdMHSAVNmA" name="return" direction="return">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDnpSG_QEeSQKdMHSAVNmA" name="constructMDSPlot" visibility="public">
+                  <ownedParameter xmi:id="_vDnpSW_QEeSQKdMHSAVNmA" name="germplasms" type="_uromzW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vDnpSm_QEeSQKdMHSAVNmA" name="scale">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpS2_QEeSQKdMHSAVNmA" name="showAll">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDnpTG_QEeSQKdMHSAVNmA" name="return" direction="return">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#double"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vDwy4G_QEeSQKdMHSAVNmA" name="constructMDSPlot" visibility="public">
+                  <ownedParameter xmi:id="_vDwy4W_QEeSQKdMHSAVNmA" name="ids">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDwy4m_QEeSQKdMHSAVNmA" name="scale">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDwy42_QEeSQKdMHSAVNmA" name="showAll">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vDwy5G_QEeSQKdMHSAVNmA" name="return" direction="return">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#double"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <packagedElement xmi:type="uml:DataType" xmi:id="_utuReW_QEeSQKdMHSAVNmA" name="Data"/>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Package" xmi:id="_uc5AJG_QEeSQKdMHSAVNmA" name="zkui">
+              <packagedElement xmi:type="uml:Class" xmi:id="_uc5AJW_QEeSQKdMHSAVNmA" name="VarietyQueryController">
+                <generalization xmi:id="_vDwy5W_QEeSQKdMHSAVNmA" general="_uvNfPW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vDwy5m_QEeSQKdMHSAVNmA" name="serialVersionUID" visibility="private" isStatic="true" isReadOnly="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_vDwy52_QEeSQKdMHSAVNmA"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_vD6j4W_QEeSQKdMHSAVNmA" name="varsresult" visibility="private" type="_vD6j4G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vEEU4G_QEeSQKdMHSAVNmA" name="isdonePhylo" visibility="private">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_vEEU4W_QEeSQKdMHSAVNmA"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_vENe0G_QEeSQKdMHSAVNmA" name="isdoneMDS" visibility="private">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_vENe0W_QEeSQKdMHSAVNmA"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_vENe0m_QEeSQKdMHSAVNmA" name="istreebrowser" visibility="private">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_vENe02_QEeSQKdMHSAVNmA" value="true"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_vEXP0W_QEeSQKdMHSAVNmA" name="listPhenotypeListbox" visibility="private" type="_vEXP0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vEgZwG_QEeSQKdMHSAVNmA" name="phenotypevalue_type" visibility="private">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_vEqKwG_QEeSQKdMHSAVNmA" name="winVariety" visibility="private" type="_utH0rG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vEqKwW_QEeSQKdMHSAVNmA" name="strUserInput" visibility="private">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:id="_vEz7wG_QEeSQKdMHSAVNmA" name="workspace" visibility="private" type="_uccUNW_QEeSQKdMHSAVNmA" association="_vY7xpm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vE9FsG_QEeSQKdMHSAVNmA" name="comboVarname" visibility="private" type="_utH0pW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vE9FsW_QEeSQKdMHSAVNmA" name="comboIrisId" visibility="private" type="_utH0pW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vFG2sG_QEeSQKdMHSAVNmA" name="comboCountry" visibility="private" type="_utH0pW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vFQAoG_QEeSQKdMHSAVNmA" name="comboSubpopulation" visibility="private" type="_utH0pW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vFZxoG_QEeSQKdMHSAVNmA" name="msgbox" visibility="private" type="_ur7ht2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vFZxoW_QEeSQKdMHSAVNmA" name="resetButton" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vFjioG_QEeSQKdMHSAVNmA" name="searchButton" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vFsskG_QEeSQKdMHSAVNmA" name="showallButton" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vF2dkG_QEeSQKdMHSAVNmA" name="variety" visibility="private" type="_uc5AI2_QEeSQKdMHSAVNmA" association="_vY7xqG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vF2dkW_QEeSQKdMHSAVNmA" name="varietyresult" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vF_ngG_QEeSQKdMHSAVNmA" name="tabboxDisplay" visibility="private" type="_utH0q2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vGJYgG_QEeSQKdMHSAVNmA" name="tabPhylo" visibility="private" type="_utH0qm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vGJYgW_QEeSQKdMHSAVNmA" name="tabMDS" visibility="private" type="_utH0qm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vGTJgG_QEeSQKdMHSAVNmA" name="chartMDS" visibility="private" type="_utuRfW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vGcTcG_QEeSQKdMHSAVNmA" name="chartMDSNeighbors" visibility="private" type="_utuRfW_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vGmEcG_QEeSQKdMHSAVNmA" name="tabTable" visibility="private" type="_utH0qm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vGmEcW_QEeSQKdMHSAVNmA" name="hboxQuery" visibility="private" type="_ur7huG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vGvOYG_QEeSQKdMHSAVNmA" name="checkboxShowMDSLabel" visibility="private" type="_utH0mm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vG4_YG_QEeSQKdMHSAVNmA" name="gridGermplasm" visibility="private" type="_utH0nm_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vHCwYG_QEeSQKdMHSAVNmA" name="textboxGermAccession" visibility="private" type="_ur7ht2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vHCwYW_QEeSQKdMHSAVNmA" name="textboxGermSubpopulation" visibility="private" type="_ur7ht2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vHL6UG_QEeSQKdMHSAVNmA" name="textboxGermCountry" visibility="private" type="_ur7ht2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vHVrUG_QEeSQKdMHSAVNmA" name="listboxGermPhenotypes" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vHe1QG_QEeSQKdMHSAVNmA" name="textboxIRISId" visibility="private" type="_ur7ht2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vHe1QW_QEeSQKdMHSAVNmA" name="splitter" visibility="private" type="_utuRe2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vHomQG_QEeSQKdMHSAVNmA" name="listboxPassport" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vHyXQG_QEeSQKdMHSAVNmA" name="listboxPassportValue" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vH7hMG_QEeSQKdMHSAVNmA" name="listboxPhenotypes" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vH7hMW_QEeSQKdMHSAVNmA" name="listboxPhenComparator" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vIFSMG_QEeSQKdMHSAVNmA" name="listboxPhenValue" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vIOcIG_QEeSQKdMHSAVNmA" name="vboxPhenConstraints" visibility="private" type="_ur7huG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vIOcIW_QEeSQKdMHSAVNmA" name="buttonAddPhenConstraint" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vIYNIG_QEeSQKdMHSAVNmA" name="vboxPassportConstraints" visibility="private" type="_ur7huG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vIh-IG_QEeSQKdMHSAVNmA" name="listboxGermPassport" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vIrIEG_QEeSQKdMHSAVNmA" name="iframePhylotree" visibility="private" type="_utH0oG_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vIrIEW_QEeSQKdMHSAVNmA" name="buttonCheckAll" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vIrvIG_QEeSQKdMHSAVNmA" name="buttonUncheckAll" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vI_RIG_QEeSQKdMHSAVNmA" name="buttonAddToList" visibility="private" type="_uryX0G_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vI_RIW_QEeSQKdMHSAVNmA" name="txtboxListname" visibility="private" type="_ur7ht2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vJJCIG_QEeSQKdMHSAVNmA" name="hboxAddtolist" visibility="private" type="_utH0n2_QEeSQKdMHSAVNmA"/>
+                <ownedAttribute xmi:id="_vJSzIG_QEeSQKdMHSAVNmA" name="listboxMyVariety" visibility="private" type="_ur7hsG_QEeSQKdMHSAVNmA"/>
+                <ownedOperation xmi:id="_vJSzIW_QEeSQKdMHSAVNmA" name="markAllVarieties" visibility="public"/>
+                <ownedOperation xmi:id="_vJb9EG_QEeSQKdMHSAVNmA" name="unmarkAllVarieties" visibility="public"/>
+                <ownedOperation xmi:id="_vJb9EW_QEeSQKdMHSAVNmA" name="addToList" visibility="public"/>
+                <ownedOperation xmi:id="_vJb9Em_QEeSQKdMHSAVNmA" name="buttonAddPhenConstraint" visibility="public"/>
+                <ownedOperation xmi:id="_vJluEG_QEeSQKdMHSAVNmA" name="buttonAddPassConstraint" visibility="public"/>
+                <ownedOperation xmi:id="_vJluEW_QEeSQKdMHSAVNmA" name="getVariety" visibility="private">
+                  <ownedParameter xmi:id="_vJluEm_QEeSQKdMHSAVNmA" name="varstrs">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vJluE2_QEeSQKdMHSAVNmA" name="return" type="_uromw2_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vJu4AG_QEeSQKdMHSAVNmA" name="show_varlist" visibility="private">
+                  <ownedParameter xmi:id="_vJu4AW_QEeSQKdMHSAVNmA" name="varset" type="_uromw2_QEeSQKdMHSAVNmA"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vJu4Am_QEeSQKdMHSAVNmA" name="onUser" visibility="public">
+                  <ownedParameter xmi:id="_vJu4A2_QEeSQKdMHSAVNmA" name="event" type="_uryXyG_QEeSQKdMHSAVNmA"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vJu4BG_QEeSQKdMHSAVNmA" name="selectVariety" visibility="public">
+                  <ownedComment xmi:id="_vJ4pAG_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * When a row in variety result list is selected, show passport and phenotype data
+ */
+</body>
+                  </ownedComment>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vJ4pAW_QEeSQKdMHSAVNmA" name="onselectTabPhylo" visibility="public">
+                  <ownedComment xmi:id="_vJ4pAm_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Phylogenetic tree tab is clicked
+ */
+</body>
+                  </ownedComment>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vJ4pA2_QEeSQKdMHSAVNmA" name="onselectTabMDS" visibility="public"/>
+                <ownedOperation xmi:id="_vJ4pBG_QEeSQKdMHSAVNmA" name="showMDSNeighbors" visibility="public"/>
+                <ownedOperation xmi:id="_vKCaAG_QEeSQKdMHSAVNmA" name="reset" visibility="public"/>
+                <ownedOperation xmi:id="_vKCaAW_QEeSQKdMHSAVNmA" name="showAll" visibility="public"/>
+                <ownedOperation xmi:id="_vKLj8G_QEeSQKdMHSAVNmA" name="searchList3k" visibility="public">
+                  <ownedComment xmi:id="_vKLj8W_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Search button is clicked 1. check if inputs are valid 2. if variety name or iris id are set, show passport and phenotype else query using values for country and subpopulation 3. display result in table    4. if result is more than 2, generate phylogenetic tree
+ */
+</body>
+                  </ownedComment>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vKLj8m_QEeSQKdMHSAVNmA" name="intersectVarietyListPlus" visibility="private">
+                  <ownedParameter xmi:id="_vKLj82_QEeSQKdMHSAVNmA" name="list1" type="_uromwm_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vKLj9G_QEeSQKdMHSAVNmA" name="list2" type="_uromwm_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vKLj9W_QEeSQKdMHSAVNmA" name="valuename">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vKLj9m_QEeSQKdMHSAVNmA" name="return" type="_uromzW_QEeSQKdMHSAVNmA" direction="return"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vKVU8G_QEeSQKdMHSAVNmA" name="displayResults" visibility="private">
+                  <ownedParameter xmi:id="_vKVU8W_QEeSQKdMHSAVNmA" name="showAll">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vKee4G_QEeSQKdMHSAVNmA" name="displayResults" visibility="private">
+                  <ownedParameter xmi:id="_vKee4W_QEeSQKdMHSAVNmA" name="showAll">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vKee4m_QEeSQKdMHSAVNmA" name="extrafield" type="_uromwm_QEeSQKdMHSAVNmA"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vKoP4G_QEeSQKdMHSAVNmA" name="show_passport" visibility="private">
+                  <ownedComment xmi:id="_vKoP4m_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Show passpot and phenotype data
+ * @param variety2
+ */
+</body>
+                  </ownedComment>
+                  <ownedParameter xmi:id="_vKoP4W_QEeSQKdMHSAVNmA" name="variety2" type="_urom0m_QEeSQKdMHSAVNmA"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vKoP42_QEeSQKdMHSAVNmA" name="show_phylotree" visibility="private">
+                  <ownedComment xmi:id="_vKoP5W_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Compute phylogenetic tree using jsp/phylotreeGermplasms.jsp
+ * @param varids	list of variety IDs
+ */
+</body>
+                  </ownedComment>
+                  <ownedParameter xmi:id="_vKoP5G_QEeSQKdMHSAVNmA" name="varids">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vKoP5m_QEeSQKdMHSAVNmA" name="show_phylotree" visibility="private">
+                  <ownedParameter xmi:id="_vKoP52_QEeSQKdMHSAVNmA" name="varsresult1" type="_uromzW_QEeSQKdMHSAVNmA"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vKyA4G_QEeSQKdMHSAVNmA" name="showmds_allvars" visibility="public">
+                  <ownedComment xmi:id="_vKyA4W_QEeSQKdMHSAVNmA">
+                    <body>/** 
+ * Show MDS for all varieties
+ */
+</body>
+                  </ownedComment>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vKyA4m_QEeSQKdMHSAVNmA" name="showmds_allvars" visibility="private">
+                  <ownedParameter xmi:id="_vKyA42_QEeSQKdMHSAVNmA" name="mdsChart" type="_utuRfW_QEeSQKdMHSAVNmA"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vK7K0G_QEeSQKdMHSAVNmA" name="showmds_allvars" visibility="private">
+                  <ownedParameter xmi:id="_vK7K0W_QEeSQKdMHSAVNmA" name="mdsChart" type="_utuRfW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vK7K0m_QEeSQKdMHSAVNmA" name="centerName">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vK7K02_QEeSQKdMHSAVNmA" name="clickShowMDSLabel" visibility="private"/>
+                <ownedOperation xmi:id="_vLE70G_QEeSQKdMHSAVNmA" name="plotXY" visibility="private">
+                  <ownedParameter xmi:id="_vLE70W_QEeSQKdMHSAVNmA" name="mdsChart" type="_utuRfW_QEeSQKdMHSAVNmA"/>
+                  <ownedParameter xmi:id="_vLE70m_QEeSQKdMHSAVNmA" name="xy">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#double"/>
+                    <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_vLE702_QEeSQKdMHSAVNmA" value="*"/>
+                    <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_vLE71G_QEeSQKdMHSAVNmA"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vLE71W_QEeSQKdMHSAVNmA" name="title">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vLE71m_QEeSQKdMHSAVNmA" name="varids">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:id="_vLE712_QEeSQKdMHSAVNmA" name="centerName">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vLE72G_QEeSQKdMHSAVNmA" name="showVarietyFromMDS" visibility="public">
+                  <ownedParameter xmi:id="_vLE72W_QEeSQKdMHSAVNmA" name="event" type="_utuRfm_QEeSQKdMHSAVNmA"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vLOFwG_QEeSQKdMHSAVNmA" name="showVarietyFromMDSNeighbors" visibility="public">
+                  <ownedParameter xmi:id="_vLOFwW_QEeSQKdMHSAVNmA" name="event" type="_utuRfm_QEeSQKdMHSAVNmA"/>
+                </ownedOperation>
+                <ownedOperation xmi:id="_vLOFwm_QEeSQKdMHSAVNmA" name="setPassportConstraint" visibility="public"/>
+                <ownedOperation xmi:id="_vLOFw2_QEeSQKdMHSAVNmA" name="setPhenotypeConstraint" visibility="public"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:DataType" xmi:id="_urom1m_QEeSQKdMHSAVNmA" name="VarietyListItemRenderer"/>
+              <packagedElement xmi:type="uml:DataType" xmi:id="_utH0jm_QEeSQKdMHSAVNmA" name="ListboxPassport"/>
+              <packagedElement xmi:type="uml:Association" xmi:id="_vY7xpm_QEeSQKdMHSAVNmA" memberEnd="_vEz7wG_QEeSQKdMHSAVNmA _vY7xp2_QEeSQKdMHSAVNmA">
+                <ownedEnd xmi:id="_vY7xp2_QEeSQKdMHSAVNmA" name="VarietyQueryController" type="_uc5AJW_QEeSQKdMHSAVNmA" association="_vY7xpm_QEeSQKdMHSAVNmA"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Association" xmi:id="_vY7xqG_QEeSQKdMHSAVNmA" memberEnd="_vF2dkG_QEeSQKdMHSAVNmA _vY7xqW_QEeSQKdMHSAVNmA">
+                <ownedEnd xmi:id="_vY7xqW_QEeSQKdMHSAVNmA" name="VarietyQueryController" type="_uc5AJW_QEeSQKdMHSAVNmA" association="_vY7xqG_QEeSQKdMHSAVNmA"/>
+              </packagedElement>
+            </packagedElement>
+          </packagedElement>
+          <packagedElement xmi:type="uml:DataType" xmi:id="_uromz2_QEeSQKdMHSAVNmA" name="AppContext"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_urom0G_QEeSQKdMHSAVNmA" name="domain">
+            <packagedElement xmi:type="uml:DataType" xmi:id="_urom0W_QEeSQKdMHSAVNmA" name="SnpsAllvarsPos"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_urom0m_QEeSQKdMHSAVNmA" name="Variety"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_us-qkm_QEeSQKdMHSAVNmA" name="Gene"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_us-qk2_QEeSQKdMHSAVNmA" name="Snps2Vars"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_us-qlG_QEeSQKdMHSAVNmA" name="SnpsAllvars"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_us-qlW_QEeSQKdMHSAVNmA" name="SnpsAllvarsRefMismatch"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_us-qlm_QEeSQKdMHSAVNmA" name="SnpsStringAllvars"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_utuRdG_QEeSQKdMHSAVNmA" name="CvTermUniqueValues"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_utuRdW_QEeSQKdMHSAVNmA" name="VarietyImpl"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_utuRdm_QEeSQKdMHSAVNmA" name="VarietyPlus"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_utuRd2_QEeSQKdMHSAVNmA" name="VarietyPlusPlus"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_utuReG_QEeSQKdMHSAVNmA" name="VarietyPlusPlusImpl"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_urom02_QEeSQKdMHSAVNmA" name="flatfile">
+            <packagedElement xmi:type="uml:Package" xmi:id="_urom1G_QEeSQKdMHSAVNmA" name="dao">
+              <packagedElement xmi:type="uml:DataType" xmi:id="_urom1W_QEeSQKdMHSAVNmA" name="SnpcoreRefposindexDAO"/>
+            </packagedElement>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_utuRcm_QEeSQKdMHSAVNmA" name="dao">
+            <packagedElement xmi:type="uml:DataType" xmi:id="_utuRc2_QEeSQKdMHSAVNmA" name="ListItemsDAO"/>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_urom12_QEeSQKdMHSAVNmA" name="springframework">
+      <packagedElement xmi:type="uml:Package" xmi:id="_urom2G_QEeSQKdMHSAVNmA" name="beans">
+        <packagedElement xmi:type="uml:Package" xmi:id="_urom2W_QEeSQKdMHSAVNmA" name="factory">
+          <packagedElement xmi:type="uml:Package" xmi:id="_urom2m_QEeSQKdMHSAVNmA" name="annotation">
+            <packagedElement xmi:type="uml:DataType" xmi:id="_urom22_QEeSQKdMHSAVNmA" name="Autowired"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_urom3G_QEeSQKdMHSAVNmA" name="Qualifier"/>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_urom3W_QEeSQKdMHSAVNmA" name="context">
+        <packagedElement xmi:type="uml:Package" xmi:id="_urom3m_QEeSQKdMHSAVNmA" name="annotation">
+          <packagedElement xmi:type="uml:DataType" xmi:id="_urom32_QEeSQKdMHSAVNmA" name="Scope"/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_urom4G_QEeSQKdMHSAVNmA" name="stereotype">
+        <packagedElement xmi:type="uml:DataType" xmi:id="_uryXwG_QEeSQKdMHSAVNmA" name="Controller"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_uryXwW_QEeSQKdMHSAVNmA" name="zkoss">
+      <packagedElement xmi:type="uml:Package" xmi:id="_uryXwm_QEeSQKdMHSAVNmA" name="zk">
+        <packagedElement xmi:type="uml:Package" xmi:id="_uryXw2_QEeSQKdMHSAVNmA" name="ui">
+          <packagedElement xmi:type="uml:DataType" xmi:id="_uryXxG_QEeSQKdMHSAVNmA" name="Component"/>
+          <packagedElement xmi:type="uml:DataType" xmi:id="_uryXxW_QEeSQKdMHSAVNmA" name="Executions"/>
+          <packagedElement xmi:type="uml:DataType" xmi:id="_uryXxm_QEeSQKdMHSAVNmA" name="Sessions"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_uryXx2_QEeSQKdMHSAVNmA" name="event">
+            <packagedElement xmi:type="uml:DataType" xmi:id="_uryXyG_QEeSQKdMHSAVNmA" name="Event"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_uryXyW_QEeSQKdMHSAVNmA" name="Events"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_utH0kW_QEeSQKdMHSAVNmA" name="EventListener"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_utuRem_QEeSQKdMHSAVNmA" name="ForwardEvent"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_uryXym_QEeSQKdMHSAVNmA" name="select">
+            <packagedElement xmi:type="uml:DataType" xmi:id="_uryXy2_QEeSQKdMHSAVNmA" name="SelectorComposer"/>
+            <packagedElement xmi:type="uml:Package" xmi:id="_uryXzG_QEeSQKdMHSAVNmA" name="annotation">
+              <packagedElement xmi:type="uml:DataType" xmi:id="_uryXzW_QEeSQKdMHSAVNmA" name="Listen"/>
+              <packagedElement xmi:type="uml:DataType" xmi:id="_uryXzm_QEeSQKdMHSAVNmA" name="Wire"/>
+            </packagedElement>
+          </packagedElement>
+          <packagedElement xmi:type="uml:DataType" xmi:id="_utH0j2_QEeSQKdMHSAVNmA" name="Page"/>
+          <packagedElement xmi:type="uml:DataType" xmi:id="_utH0kG_QEeSQKdMHSAVNmA" name="Session"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_utH0km_QEeSQKdMHSAVNmA" name="util">
+            <packagedElement xmi:type="uml:DataType" xmi:id="_utH0k2_QEeSQKdMHSAVNmA" name="Clients"/>
+            <packagedElement xmi:type="uml:DataType" xmi:id="_utH0lG_QEeSQKdMHSAVNmA" name="Initiator"/>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_uryXz2_QEeSQKdMHSAVNmA" name="zul">
+        <packagedElement xmi:type="uml:DataType" xmi:id="_uryX0G_QEeSQKdMHSAVNmA" name="Button"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_uryX0W_QEeSQKdMHSAVNmA" name="Div"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_uryX0m_QEeSQKdMHSAVNmA" name="Label"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_ur7hsG_QEeSQKdMHSAVNmA" name="Listbox"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_ur7hsW_QEeSQKdMHSAVNmA" name="Listcell"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_ur7hsm_QEeSQKdMHSAVNmA" name="Listitem"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_ur7hs2_QEeSQKdMHSAVNmA" name="ListitemRenderer"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_ur7htG_QEeSQKdMHSAVNmA" name="Messagebox"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_ur7htW_QEeSQKdMHSAVNmA" name="Radio"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_ur7htm_QEeSQKdMHSAVNmA" name="SimpleListModel"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_ur7ht2_QEeSQKdMHSAVNmA" name="Textbox"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_ur7huG_QEeSQKdMHSAVNmA" name="Vbox"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0mG_QEeSQKdMHSAVNmA" name="Auxhead"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0mW_QEeSQKdMHSAVNmA" name="Auxheader"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0mm_QEeSQKdMHSAVNmA" name="Checkbox"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0m2_QEeSQKdMHSAVNmA" name="Column"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0nG_QEeSQKdMHSAVNmA" name="Columns"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0nW_QEeSQKdMHSAVNmA" name="Filedownload"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0nm_QEeSQKdMHSAVNmA" name="Grid"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0n2_QEeSQKdMHSAVNmA" name="Hbox"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0oG_QEeSQKdMHSAVNmA" name="Iframe"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0oW_QEeSQKdMHSAVNmA" name="Image"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0om_QEeSQKdMHSAVNmA" name="Intbox"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0o2_QEeSQKdMHSAVNmA" name="ListModel"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0pG_QEeSQKdMHSAVNmA" name="ListModelList"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0pW_QEeSQKdMHSAVNmA" name="Combobox"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0pm_QEeSQKdMHSAVNmA" name="Listhead"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0p2_QEeSQKdMHSAVNmA" name="Listheader"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0qG_QEeSQKdMHSAVNmA" name="Paging"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0qW_QEeSQKdMHSAVNmA" name="Selectbox"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0qm_QEeSQKdMHSAVNmA" name="Tab"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0q2_QEeSQKdMHSAVNmA" name="Tabbox"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utH0rG_QEeSQKdMHSAVNmA" name="Window"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_utH0rW_QEeSQKdMHSAVNmA" name="event">
+          <packagedElement xmi:type="uml:DataType" xmi:id="_utH0rm_QEeSQKdMHSAVNmA" name="PagingEvent"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_utH0r2_QEeSQKdMHSAVNmA" name="ext">
+          <packagedElement xmi:type="uml:DataType" xmi:id="_utH0sG_QEeSQKdMHSAVNmA" name="Selectable"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utuRe2_QEeSQKdMHSAVNmA" name="Splitter"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_utH0lW_QEeSQKdMHSAVNmA" name="zkplus">
+        <packagedElement xmi:type="uml:Package" xmi:id="_utH0lm_QEeSQKdMHSAVNmA" name="spring">
+          <packagedElement xmi:type="uml:DataType" xmi:id="_utH0l2_QEeSQKdMHSAVNmA" name="SpringUtil"/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_utuRfG_QEeSQKdMHSAVNmA" name="chart">
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utuRfW_QEeSQKdMHSAVNmA" name="Charts"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utuRfm_QEeSQKdMHSAVNmA" name="ChartsEvent"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utuRf2_QEeSQKdMHSAVNmA" name="Legend"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utuRgG_QEeSQKdMHSAVNmA" name="Marker"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utuRgW_QEeSQKdMHSAVNmA" name="Point"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utuRgm_QEeSQKdMHSAVNmA" name="Series"/>
+        <packagedElement xmi:type="uml:DataType" xmi:id="_utuRg2_QEeSQKdMHSAVNmA" name="XAxis"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_utuRhG_QEeSQKdMHSAVNmA" name="model">
+          <packagedElement xmi:type="uml:DataType" xmi:id="_utuRhW_QEeSQKdMHSAVNmA" name="DefaultXYModel"/>
+          <packagedElement xmi:type="uml:DataType" xmi:id="_utuRhm_QEeSQKdMHSAVNmA" name="XYModel"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_utuRh2_QEeSQKdMHSAVNmA" name="plotOptions">
+          <packagedElement xmi:type="uml:DataType" xmi:id="_utuRiG_QEeSQKdMHSAVNmA" name="ScatterPlotOptions"/>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_utH0iW_QEeSQKdMHSAVNmA" name="apache">
+      <packagedElement xmi:type="uml:Package" xmi:id="_utH0im_QEeSQKdMHSAVNmA" name="commons">
+        <packagedElement xmi:type="uml:Package" xmi:id="_utH0i2_QEeSQKdMHSAVNmA" name="logging">
+          <packagedElement xmi:type="uml:DataType" xmi:id="_utH0jG_QEeSQKdMHSAVNmA" name="Log"/>
+          <packagedElement xmi:type="uml:DataType" xmi:id="_utH0jW_QEeSQKdMHSAVNmA" name="LogFactory"/>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_uromwG_QEeSQKdMHSAVNmA" name="java">
+    <packagedElement xmi:type="uml:Package" xmi:id="_uromwW_QEeSQKdMHSAVNmA" name="util">
+      <packagedElement xmi:type="uml:DataType" xmi:id="_uromwm_QEeSQKdMHSAVNmA" name="Collection"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_uromw2_QEeSQKdMHSAVNmA" name="Set"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_uromym_QEeSQKdMHSAVNmA" name="ArrayList"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_uromy2_QEeSQKdMHSAVNmA" name="HashSet"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_uromzG_QEeSQKdMHSAVNmA" name="Iterator"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_uromzW_QEeSQKdMHSAVNmA" name="List"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_uromzm_QEeSQKdMHSAVNmA" name="TreeSet"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_us-qkG_QEeSQKdMHSAVNmA" name="HashMap"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_us-qkW_QEeSQKdMHSAVNmA" name="Map"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_utH0hG_QEeSQKdMHSAVNmA" name="Comparator"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_utH0hW_QEeSQKdMHSAVNmA" name="LinkedHashSet"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_utuRcG_QEeSQKdMHSAVNmA" name="LinkedHashMap"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_vD6j4G_QEeSQKdMHSAVNmA" name="List&lt;Variety>"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_uromyG_QEeSQKdMHSAVNmA" name="math">
+      <packagedElement xmi:type="uml:DataType" xmi:id="_uromyW_QEeSQKdMHSAVNmA" name="BigDecimal"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_utH0gG_QEeSQKdMHSAVNmA" name="io">
+      <packagedElement xmi:type="uml:DataType" xmi:id="_utH0gW_QEeSQKdMHSAVNmA" name="BufferedWriter"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_utH0gm_QEeSQKdMHSAVNmA" name="File"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_utH0g2_QEeSQKdMHSAVNmA" name="FileWriter"/>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_uromxG_QEeSQKdMHSAVNmA" name="javax">
+    <packagedElement xmi:type="uml:Package" xmi:id="_uromxW_QEeSQKdMHSAVNmA" name="servlet">
+      <packagedElement xmi:type="uml:Package" xmi:id="_uromxm_QEeSQKdMHSAVNmA" name="http">
+        <packagedElement xmi:type="uml:DataType" xmi:id="_uromx2_QEeSQKdMHSAVNmA" name="HttpSession"/>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_utH0hm_QEeSQKdMHSAVNmA" name="oracle">
+    <packagedElement xmi:type="uml:Package" xmi:id="_utH0h2_QEeSQKdMHSAVNmA" name="sql">
+      <packagedElement xmi:type="uml:DataType" xmi:id="_utH0iG_QEeSQKdMHSAVNmA" name="DATE"/>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_uyn_kW_QEeSQKdMHSAVNmA" name="List&lt;SnpsStringAllvars>"/>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_vDd38m_QEeSQKdMHSAVNmA" name="Object"/>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_vEXP0G_QEeSQKdMHSAVNmA" name="List&lt;ListboxPhenotype>"/>
+</uml:Model>

@@ -10,6 +10,11 @@
       <param-name>update-uri</param-name>
       <param-value>/zkau</param-value>
     </init-param>
+    <init-param>
+        <param-name>log-level</param-name>
+        <param-value>FINER</param-value>
+    </init-param>
+    
     <load-on-startup>1</load-on-startup>
   </servlet>
   <context-param>
@@ -37,6 +42,13 @@
   <listener>
     <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
   </listener>
+  
+  
+<session-config>
+    <session-timeout>5</session-timeout>
+</session-config>
+
+
   <servlet>
     <servlet-name>auEngine</servlet-name>
     <servlet-class>
