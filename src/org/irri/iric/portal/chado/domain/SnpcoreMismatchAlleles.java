@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.lang.StringBuilder;
 import java.math.BigDecimal;
 import java.sql.Clob;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -217,6 +219,22 @@ public class SnpcoreMismatchAlleles implements Serializable, SnpsStringAllvars {
 		
 			 
 	}
+
+
+
+	@Override
+	public Set getNonsynIdxset() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<Integer, Character> getMapPosIdx2Allele2() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	
 	
 	

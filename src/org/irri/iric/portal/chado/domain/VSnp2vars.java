@@ -104,6 +104,19 @@ public class VSnp2vars implements Serializable, Snps2Vars {
 	@XmlElement
 	String var2nuc;
 
+	@Column(name = "VAR1NUC2", length = 1)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String var1nuc2;
+	/**
+	 */
+
+	@Column(name = "VAR2NUC2", length = 1)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String var2nuc2;
+
+	
 	/**
 	 */
 	public void setVar1(BigDecimal var1) {
@@ -199,6 +212,27 @@ public class VSnp2vars implements Serializable, Snps2Vars {
 	public String getVar2nuc() {
 		return this.var2nuc;
 	}
+	
+	
+	
+	
+	
+
+	public String getVar1nuc2() {
+		return var1nuc2;
+	}
+
+	public void setVar1nuc2(String var1nuc2) {
+		this.var1nuc2 = var1nuc2;
+	}
+
+	public String getVar2nuc2() {
+		return var2nuc2;
+	}
+
+	public void setVar2nuc2(String var2nuc2) {
+		this.var2nuc2 = var2nuc2;
+	}
 
 	/**
 	 */
@@ -218,6 +252,8 @@ public class VSnp2vars implements Serializable, Snps2Vars {
 		setRefnuc(that.getRefnuc());
 		setVar1nuc(that.getVar1nuc());
 		setVar2nuc(that.getVar2nuc());
+		setVar1nuc2(that.getVar1nuc2());
+		setVar2nuc2(that.getVar2nuc2());
 	}
 
 	/**
@@ -236,6 +272,8 @@ public class VSnp2vars implements Serializable, Snps2Vars {
 		buffer.append("refnuc=[").append(refnuc).append("] ");
 		buffer.append("var1nuc=[").append(var1nuc).append("] ");
 		buffer.append("var2nuc=[").append(var2nuc).append("] ");
+		buffer.append("var1nuc2=[").append(var1nuc2).append("] ");
+		buffer.append("var2nuc2=[").append(var2nuc2).append("] ");
 
 		return buffer.toString();
 	}
@@ -274,4 +312,22 @@ public class VSnp2vars implements Serializable, Snps2Vars {
 			return false;
 		return true;
 	}
+
+	@Override
+	public boolean isVar1Nonsyn() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isVar2Nonsyn() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	
+	
+	
+	
+	
 }

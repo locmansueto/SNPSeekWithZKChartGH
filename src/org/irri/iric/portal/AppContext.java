@@ -51,7 +51,7 @@ public class AppContext {
 	/**
 	 * is development
 	 */
-	private static final boolean isDev = true;
+	public static final boolean isDev = true;
 
 
 
@@ -68,6 +68,14 @@ public class AppContext {
      */
     private static long startTime=0;
     private static long startTimeDate=0;
+    
+    
+    public static boolean isWindows() {
+    	return isLocalhost;
+    }
+    
+    
+    
 
     /**
      * get a temporary file name
@@ -91,6 +99,14 @@ public class AppContext {
      */
     public static boolean isCore() {
     	return false;
+    }
+    
+    /**
+     * Factor of region end-stop to include in gff
+     * @return
+     */
+    public static int getJBrowseMargin() {
+    	return 2;
     }
     
     /**
@@ -322,11 +338,42 @@ public class AppContext {
     
     
     public static BigDecimal convertRegion2Snpfeatureid(Integer chr, Long pos) {
-    	
+    	try {
     	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos)  ));
+    	} catch (Exception ex) {
+    		ex.printStackTrace();
+    		AppContext.debug("convertRegion2Snpfeatureid chr=" + chr  + "  pos=" + pos);
+    		throw new RuntimeException("convertRegion2Snpfeatureid error"); 
+    	}
+    }
+    public static BigDecimal convertRegion2Snpfeatureid(Integer chr, Integer pos) {
+    	try {
+    	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos)  ));
+    	} catch (Exception ex) {
+    		ex.printStackTrace();
+    		AppContext.debug("convertRegion2Snpfeatureid chr=" + chr  + "  pos=" + pos);
+    		throw new RuntimeException("convertRegion2Snpfeatureid error"); 
+    	}
     	
     }
+    public static BigDecimal convertRegion2Snpfeatureid(Integer chr, BigDecimal pos) {
+    	try {
+    	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos.longValue())  ));
+    	} catch (Exception ex) {
+    		ex.printStackTrace();
+    		AppContext.debug("convertRegion2Snpfeatureid chr=" + chr  + "  pos=" + pos);
+    		throw new RuntimeException("convertRegion2Snpfeatureid error"); 
+    	}
+    }
     	
+    public static Collection convertRegion2Snpfeatureid(Integer chr, Collection poslist) {
+    	Set snpfeatureidSet = new TreeSet();
+    	Iterator<BigDecimal> it = poslist.iterator();
+    	while(it.hasNext()) {
+    		snpfeatureidSet.add(  convertRegion2Snpfeatureid(chr, it.next())) ;
+    	}
+    	return snpfeatureidSet;
+    }
     
     
     /**

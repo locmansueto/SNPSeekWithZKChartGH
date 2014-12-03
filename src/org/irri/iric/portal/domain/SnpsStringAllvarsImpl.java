@@ -1,6 +1,8 @@
 package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -13,16 +15,22 @@ public class SnpsStringAllvarsImpl implements SnpsStringAllvars {
 	private String refnuc;
 	private String varnuc;
 	private BigDecimal mismatch;
-	
+	//private boolean isnonsyn[];
+	private Set nonsynIdxset;
+	private Map<Integer, Character> mapPosIdx2Allele2;
+	private String allele2;
 	
 	
 	public SnpsStringAllvarsImpl(BigDecimal var, Long chr,  String varnuc,
-			BigDecimal mismatch) {
+			BigDecimal mismatch, Map mapPosIdx2Allele2, Set nonsynIdxset) {
 		super();
 		this.var = var;
 		this.chr = chr;
 		this.varnuc = varnuc;
 		this.mismatch = mismatch;
+		//this.isnonsyn = isnonsyn;
+		this.nonsynIdxset = nonsynIdxset;
+		this.mapPosIdx2Allele2 = mapPosIdx2Allele2;
 	}
 
 	@Override
@@ -61,6 +69,34 @@ public class SnpsStringAllvarsImpl implements SnpsStringAllvars {
 		return mismatch;
 	}
 
+	/*
+	@Override
+	public boolean[] getIsnonsyn() {
+		return isnonsyn;
+	}
+	*/
+	
+	
+
+	@Override
+	public Map<Integer, Character> getMapPosIdx2Allele2() {
+		return mapPosIdx2Allele2;
+	}
+
+	@Override
+	public Set getNonsynIdxset() {
+		return nonsynIdxset;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		 SnpsStringAllvarsImpl o = (SnpsStringAllvarsImpl)obj;
+		return var.equals(o.getVar());
+	}
+
+
+	
 	
 	
 }

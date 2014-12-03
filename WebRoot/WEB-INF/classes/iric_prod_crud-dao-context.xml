@@ -30,9 +30,10 @@
 	<!-- ******************************************************************** -->
 	<context:component-scan base-package="org.irri.iric.portal.flatfile.dao" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.admin.dao" scoped-proxy="interfaces" />
-	<context:component-scan base-package="org.irri.iric.portal.admin" scoped-proxy="interfaces" />
+	<!--  context:component-scan base-package="org.irri.iric.portal.admin" scoped-proxy="interfaces" / -->
 	<context:component-scan base-package="org.irri.iric.portal.dao" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.chado.dao" scoped-proxy="interfaces" />
+	<context:component-scan base-package="org.irri.iric.portal.hdf5.dao" scoped-proxy="interfaces" />
 	
 	<!-- ******************************************************************** -->
 	<!-- Mark bean transactions as annotation driven -->
@@ -60,6 +61,7 @@
 				<!-- IRRI local -->
 				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
 				
+				
 					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 					<property name="username" value="iricguest"/>
 					<property name="password" value="iricguest"/>
@@ -69,7 +71,7 @@
 				</bean>
 
 				<!-- AWS -->
-				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
+				<!--  bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
 					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 					<property name="username" value="iricguest"/>
 					<property name="password" value="iricguest"/>

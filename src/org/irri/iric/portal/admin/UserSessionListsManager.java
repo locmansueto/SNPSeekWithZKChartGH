@@ -11,7 +11,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.chado.dao.VIricstockBasicprop2DAO;
+import org.irri.iric.portal.chado.domain.VIricstockBasicprop2;
 import org.irri.iric.portal.domain.Variety;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +28,10 @@ public class UserSessionListsManager {
 	 */
 	private Map<String, Set> mapVarietyLists;
 	private Map<Integer, Map<String, Set>> mapSnpposLists;
+	
+	@Autowired
+	VIricstockBasicprop2DAO varietyprop2DAO;
+	
 
 	public UserSessionListsManager() {
 		super();
@@ -41,7 +49,9 @@ public class UserSessionListsManager {
 	public boolean addVarietyList(String name, Set varietylist) {
 		if(mapVarietyLists==null) mapVarietyLists=new LinkedHashMap();
 		if(mapVarietyLists.containsKey(name)) return false;
+		
 		mapVarietyLists.put(name,  varietylist);
+		AppContext.debug(name + " added with " + varietylist.size() + " varieties");
 		return true;
 	}
 	
@@ -52,7 +62,10 @@ public class UserSessionListsManager {
 	
 	public Set getVarieties(String listname) {
 		if(mapVarietyLists==null) return new HashSet();
-		return mapVarietyLists.get(listname);
+		
+		Set valist = mapVarietyLists.get(listname);
+		//valist AppContext.debug(listname + " retrieved with " + valist.size() + " varieties");
+		return valist;
 	}
 	
 	public void deleteVarietyList(String listname) {
@@ -72,6 +85,7 @@ public class UserSessionListsManager {
 		}
 		if(mapName2List.containsKey(name)) return false;
 		mapName2List.put(name,  poslist);
+		AppContext.debug(name + " added to chromosome " + chromosome + " with " + poslist.size() + " snp positions");
 		return true;
 	}
 	
@@ -116,10 +130,20 @@ public class UserSessionListsManager {
 		// TODO Auto-generated method stub
 		StringBuffer buff = new StringBuffer();
 		
+		varietyprop2DAO = (VIricstockBasicprop2DAO)AppContext.checkBean( varietyprop2DAO, "VIricstockBasicprop2DAO");
+		Iterator<VIricstockBasicprop2> itVars = varietyprop2DAO.findAllVariety().iterator();
+		Map<BigDecimal, VIricstockBasicprop2> mapVarid2Var2 = new HashMap();
+		while(itVars.hasNext()) {
+			VIricstockBasicprop2 var = itVars.next();
+			mapVarid2Var2.put(var.getVarietyId(), var);
+		}
+		
+		
+		
 		Iterator<String> itNames = getVarietylistNames().iterator();
 		
 		if(itNames.hasNext())
-			buff.append("VARIETY LISTS:\tLIST NAMES:\tVARIETIES (ID, NAME:ACCESSION, IRIS ID)\n");
+			buff.append("VARIETY LISTS:\tLIST NAMES:\tVARIETIES (ID, NAME:ACCESSION, IRIS ID, BOX CODE)\n");
 		
 		while(itNames.hasNext()) {
 			String name = itNames.next();
@@ -127,9 +151,14 @@ public class UserSessionListsManager {
 			Iterator<Variety> itVar =  getVarieties(name).iterator();
 			while(itVar.hasNext()) {
 				Variety var = itVar.next();
+				if(var==null) continue;
 				String irisid="";
+				String boxcode="";
 				if(var.getIrisId()!=null) irisid=var.getIrisId();
-				buff.append("\t\t" + var.getVarietyId() + "\t" + var.getName() + "\t" + irisid + "\n");
+				
+				VIricstockBasicprop2 var2 = mapVarid2Var2.get(var.getVarietyId()); 
+				if( var2!=null && var2.getBoxCode()!=null) boxcode = var2.getBoxCode();
+				buff.append("\t\t" + var.getVarietyId() +  "\t" + var.getName() + "\t" + irisid + "\t" + boxcode + "\n");
 			}
 			buff.append("\n");
 		}

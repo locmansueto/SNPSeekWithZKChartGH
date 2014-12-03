@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -17,6 +18,7 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.flatfile.dao.SnpcoreRefposindexDAO;
 import org.irri.iric.portal.genotype.service.GenotypeFacade;
+import org.irri.iric.portal.hdf5.dao.SNPUni3kVarietiesAllele1DAO;
 import org.irri.iric.portal.variety.service.VarietyFacade;
 import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +60,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     private GenotypeFacade  genotype;
 	
     @Wire
-    private Listbox listboxVarietylist;
+    private Listbox listboxListnames;
     @Wire
     private Listbox listboxVarieties;
     @Wire
@@ -74,9 +76,9 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     @Wire
     private Button buttonDelete;
     @Wire
-    private Vbox vboxEditVariety;
+    private Vbox vboxEditNewList;
     @Wire
-    private Textbox txtboxEditVariety;
+    private Textbox txtboxEditNewList;
     @Wire
     private Textbox txtboxEditListname;
     @Wire
@@ -93,6 +95,22 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     private Div divMsgSNP;
     @Wire
     private Label labelNItems;
+    
+    @Wire
+    private Div divSetOps;
+    @Wire
+    private Button  buttonUnion;
+    @Wire
+    private Button  buttonIntersect;
+    @Wire
+    private Button  buttonAminusB;
+    @Wire
+    private Button  buttonBminusA;
+    @Wire
+    private Textbox textboxResultSet;
+    
+    @Wire
+    private Vbox vboxListMembers;
     
     
     public WorkspaceController() {
@@ -120,17 +138,19 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	
     	List listVarlistNames=new ArrayList();
     	listVarlistNames.addAll( workspace.getVarietylistNames());
-    	listboxVarietylist.setModel( new SimpleListModel(listVarlistNames));
+    	SimpleListModel model =  new SimpleListModel(listVarlistNames);
+    	model.setMultiple(true);
+    	listboxListnames.setModel(model);
     	if(listVarlistNames.size()>0) {
-	    	listboxVarietylist.setSelectedIndex( listVarlistNames.size() -1 );
+	    	listboxListnames.setSelectedIndex( listVarlistNames.size() -1 );
 	    	
-	    	AppContext.debug( listboxVarietylist.getSelectedItem().getLabel() + "  selected");
-	    	Events.postEvent( "onSelect", listboxVarietylist, null);
+	    	AppContext.debug( listboxListnames.getSelectedItem().getLabel() + "  selected");
+	    	Events.sendEvent( "onSelect", listboxListnames, null);
     	}
     	listboxPositions.setVisible(false);
     	listboxVarieties.setVisible(true);
     	
-    	labelNItems.setVisible(false);
+    	//labelNItems.setVisible(false);
     	
     	divMsgVariety.setVisible(true);
     	divMsgSNP.setVisible(false);
@@ -144,57 +164,226 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	
     	List listNames=new ArrayList();
     	listNames.addAll( workspace.getSnpPositionListNames( ));
-    	listboxVarietylist.setModel( new SimpleListModel(listNames));
+    	SimpleListModel model =  new SimpleListModel(listNames);
+    	model.setMultiple(true);
+    	listboxListnames.setModel(model);
     	if(listNames.size()>0) {
     		
-	    	listboxVarietylist.setSelectedIndex( listNames.size() -1 );
+	    	listboxListnames.setSelectedIndex( listNames.size() -1 );
 	    	
-	    	AppContext.debug( listboxVarietylist.getSelectedItem().getLabel() + "  selected");
-	    	Events.postEvent( "onSelect", listboxVarietylist, null);
+	    	AppContext.debug( listboxListnames.getSelectedItem().getLabel() + "  selected");
+	    	Events.sendEvent( "onSelect", listboxListnames, null);
     	}
     	listboxVarieties.setVisible(false);
     	listboxPositions.setVisible(true);
-    	
-    	labelNItems.setVisible(false);
+    	//labelNItems.setVisible(false);
     	
     	divMsgVariety.setVisible(false);
     	divMsgSNP.setVisible(true);
     	
     }
     
+    private Integer getChrFromSNPListLabel(String strlabel) {
+    	return Integer.valueOf( strlabel.split(":")[0].replace("CHR","").trim() );
+    }
+    
+    @Listen("onClick = #buttonUnion") 
+    public void onclickUnion() {
+    			Set setUnion = new HashSet();
+    			Iterator<String> itSelitems = getListNamesSelection().iterator();
+    			workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
+    			while(itSelitems.hasNext()) {
+    				String listname = itSelitems.next() ;
+    				if(radioVariety.isSelected())
+    					setUnion.addAll(  workspace.getVarieties(  listname )  );
+    			}
+				if(radioVariety.isSelected())
+					addVarlistFromSetops(setUnion);	
+    			
+    }
+    
+    @Listen("onClick = #buttonIntersect") 
+    public void onclickIntersect() {
+    	Set setUnion = new HashSet();
+		Iterator<String> itSelitems = getListNamesSelection().iterator();
 
-	@Listen("onSelect = #listboxVarietylist")
-    public void onselectVarlist() {
+		workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
+		if(itSelitems.hasNext())
+		{
+			String listname = itSelitems.next();
+			if(radioVariety.isSelected())
+				setUnion.addAll(  workspace.getVarieties(  listname )  );
+		}
+		while(itSelitems.hasNext()) {
+			String listname = itSelitems.next();
+			
+			if(radioVariety.isSelected())
+				setUnion.retainAll( workspace.getVarieties(  listname )  );
+		}
+		if(radioVariety.isSelected())
+			addVarlistFromSetops(setUnion);	
+    	
+    }
+    @Listen("onClick = #buttonAminusB") 
+    public void onclickAminusB() {
+    	Set setUnion = new HashSet();
+		
+		Iterator<String> itSelitems = getListNamesSelection().iterator();
+		workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
+		if(itSelitems.hasNext())
+		{
+			String listname = itSelitems.next() ;
+			if(radioVariety.isSelected())
+				setUnion.addAll(  workspace.getVarieties(  listname )  );
+		}
+		if (itSelitems.hasNext()) {
+			String listname = itSelitems.next() ;
+			if(radioVariety.isSelected())
+				setUnion.removeAll( workspace.getVarieties(  listname )  );
+		}
+		if(radioVariety.isSelected())
+			addVarlistFromSetops(setUnion);	
+    }
+    
+    
+    @Listen("onClick = #buttonBminusA") 
+    public void onclickBminusA() {
+    	Set setLast = new HashSet();
+    	Set setUnion = new HashSet();
+		Iterator<String> itSelitems = getListNamesSelection().iterator();
+		workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
+		if(itSelitems.hasNext())
+		{
+			String listname = itSelitems.next();
+			if(radioVariety.isSelected())
+				setUnion.addAll(  workspace.getVarieties(  listname )  );
+		}
+		if (itSelitems.hasNext()) {
+			String listname = itSelitems.next();
+			if(radioVariety.isSelected()) 
+				setLast.addAll( workspace.getVarieties(  listname )); 
+		}
+		setLast.removeAll( setUnion );
+		
+		if(radioVariety.isSelected())
+			addVarlistFromSetops(setLast);	
+    }
+    
+    
+    private Set<String> getListNamesSelection() {
+    	SimpleListModel listmodel = (SimpleListModel)listboxListnames.getModel();
+    	Set setsel = listmodel.getSelection();
+    	if(setsel.size()==0 && listmodel.getSize()>0) {
+
+    		try {
+	    		Object selobj = listmodel.getElementAt( listmodel.getSize()-1);
+	    		Set newsel = new HashSet();
+	    		newsel.add( selobj );
+	    		listmodel.setSelection( newsel );
+	    		return newsel;
+    		} catch (Exception ex) {
+    			ex.printStackTrace();
+    		}
+    	}
+    	return setsel;
+    }
+    
+	@Listen("onSelect = #listboxListnames")
+    public void onselectListnames() {
     	
     	workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
 
-    	List listTmp = new ArrayList();
-    	
-    	if(this.radioVariety.isSelected() ) {
-    		listboxPositions.setVisible(false);
-	    	listboxVarieties.setItemRenderer( new VarietyListItemRenderer() );
-	    	listTmp.addAll( workspace.getVarieties( listboxVarietylist.getSelectedItem().getLabel() )  );
-    		listboxVarieties.setModel(new SimpleListModel( listTmp ));
-    		listboxVarieties.setVisible(true);
-    	}
-    	else if(this.radioSNP.isSelected() ) {
-    		listboxVarieties.setVisible(false);
-    		String snplabels[] = listboxVarietylist.getSelectedItem().getLabel().trim().split(":");
-    		Integer chr =  Integer.valueOf( snplabels[0].replace("CHR","").trim() );
-	    	((SNPChrPositionListitemRenderer)listboxPositions.getItemRenderer()).setChromosome( chr.toString() );
-    		listTmp.addAll(workspace.getSnpPositions( chr, snplabels[1].trim()  ) ) ;   	
-    		listboxPositions.setModel(new SimpleListModel(listTmp));  
-    		listboxPositions.setVisible(true);
 
+    	Set<String> selSelection = getListNamesSelection();
+    	//Set<Listitem> setListitems = listboxVarietylist.getSelectedItems();
+    	//listboxVarietylist.setSeltype(seltype);
+    	
+    	AppContext.debug(selSelection.size() + " getSelections selected" );
+    	
+    	//AppContext.debug(setListitems.size() + " listitems selected" );
+    	//AppContext.debug(listboxVarietylist.getSelectedItem() + " item selected");
+    		
+    	if(selSelection.size()==0) return;
+    	
+    	
+    	//AppContext.debug( selSelection.iterator().next() + " getSelections first value" );
+    	
+    	
+    	if(selSelection.size()>1) {
+    		vboxListMembers.setVisible(false);
+    		divSetOps.setVisible(true);
+    		
+    		/*
+    		if(selSelection.size()>2) {
+    			buttonAminusB.setVisible(false);
+    			buttonBminusA.setVisible(false);
+    		} else {
+    			buttonAminusB.setVisible(true);
+    			buttonBminusA.setVisible(true);
+    			
+    			Iterator<String> itSelitems = selSelection.iterator();
+    			String nameA=itSelitems.next();
+    			String nameB=itSelitems.next();
+    			buttonAminusB.setLabel( nameA + " Minus " +  nameB );
+    			buttonBminusA.setLabel( nameB + " Minus " +  nameA );
+    		}
+    		*/
+    		    
+    	} else {
+    	
+    		divSetOps.setVisible(false);
+    		vboxListMembers.setVisible(true);
+    		
+	    	List listTmp = new ArrayList();
+	    	
+	    	if(this.radioVariety.isSelected() ) {
+	    		listboxPositions.setVisible(false);
+		    	listboxVarieties.setItemRenderer( new VarietyListItemRenderer() );
+		    	//listTmp.addAll( workspace.getVarieties( listboxVarietylist.getSelectedItem().getLabel() )  );
+		    	listTmp.addAll( workspace.getVarieties( selSelection.iterator().next() )  );
+		    	SimpleListModel model= new SimpleListModel( listTmp );
+		    	model.setMultiple(true);
+	    		listboxVarieties.setModel(model);
+	    		listboxVarieties.setVisible(true);
+	    		
+	    		AppContext.debug(listTmp.size() + " variety lists");
+	    		
+	    	}
+	    	else if(this.radioSNP.isSelected() ) {
+	    		listboxVarieties.setVisible(false);
+	    		//String snplabels[] = listboxVarietylist.getSelectedItem().getLabel().trim().split(":");
+	    		String snplabels[] =  selSelection.iterator().next().trim().split(":"); 
+	    		Integer chr =  Integer.valueOf( snplabels[0].replace("CHR","").trim() );
+		    	((SNPChrPositionListitemRenderer)listboxPositions.getItemRenderer()).setChromosome( chr.toString() );
+	    		listTmp.addAll(workspace.getSnpPositions( chr, snplabels[1].trim()  ) ) ;
+		    	SimpleListModel model= new SimpleListModel( listTmp );
+		    	model.setMultiple(true);
+	    		listboxPositions.setModel(model);  
+	    		listboxPositions.setVisible(true);
+	    		
+	    		AppContext.debug(listTmp.size() + " position lists");
+	
+	    	}
+			labelNItems.setValue(listTmp.size() + " items in list");
+	    	labelNItems.setVisible(true);
     	}
-		labelNItems.setValue(listTmp.size() + " items in list");
-    	labelNItems.setVisible(true);
     }
     
 	@Listen("onClick =#buttonQueryIric") 
 	public void onbuttonQueryIric() {
-		workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
-		workspace.queryIric();
+		
+		System.out.println("onClick =#buttonQueryIric");
+		System.out.println("in queryIric..." );
+		SNPUni3kVarietiesAllele1DAO snpuniDAO = new SNPUni3kVarietiesAllele1DAO();
+	  	Map mapVar2Str =  snpuniDAO.readSNPString(1,  1000, 1100);
+	  	Iterator itVar = mapVar2Str.keySet().iterator();
+	  	while(itVar.hasNext()) {
+	  		Object var = itVar.next();
+	  		System.out.println( var + " : " + mapVar2Str.get(var));
+	  	}
+	  	
+		//workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
+		//workspace.queryIric();
 	}
 	
 	
@@ -203,7 +392,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	listboxVarieties.setVisible(false);
     	listboxPositions.setVisible(false);
     	
-    	vboxEditVariety.setVisible(true);
+    	vboxEditNewList.setVisible(true);
     	buttonCreate.setVisible(false);
     	buttonDelete.setVisible(false);
     	buttonSave.setVisible(true);
@@ -228,26 +417,114 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     
     @Listen("onClick =#buttonCancel")
     public void onbuttonCancel() {
-    	vboxEditVariety.setVisible(false);
+    	vboxEditNewList.setVisible(false);
     	buttonCancel.setVisible(false);
     	buttonSave.setVisible(false);
     	buttonCreate.setVisible(true);
     	buttonDelete.setVisible(true);
-    	if(radioSNP.isSelected()) onclickSNP();
-    	else if (radioVariety.isSelected()) onclickVariety();
+    	if(radioSNP.isSelected()) Events.sendEvent( "onClick", radioSNP, null); //onclickSNP();
+    	else if (radioVariety.isSelected()) Events.sendEvent( "onClick", radioVariety, null); // onclickVariety();
 
     	radioSNP.setDisabled(false);
     	radioVariety.setDisabled(false);
 
     }
     
+    private void addPoslistFromSetops(Set setMatched) { /*
+    	Integer chr =  Integer.valueOf(selectChromosome.getSelectedItem().getLabel());
+    	if(setMatched.size()>0) {
+    		
+    		AppContext.debug("Adding SNP list");
+    		
+    		String newlistname = txtboxEditListname.getValue().replaceAll(":", "").trim();
+    		if(newlistname.isEmpty()) {
+    			Messagebox.show("Provide unique list name","INVALID VALUE",Messagebox.OK, Messagebox.EXCLAMATION);
+    			return;
+    		}
+    		if(workspace.getSnpPositions(chr, newlistname)!=null && !workspace.getSnpPositions(chr,newlistname).isEmpty())
+    		{
+    			Messagebox.show("Listname already exists","INVALID VALUE",Messagebox.OK, Messagebox.EXCLAMATION);
+    			return;   			
+    		}
+    		if(workspace.addSnpPositionList(chr, newlistname , setMatched)) {
+    			
+    			AppContext.debug(newlistname + " added with " + setMatched.size() +  " items" );
+    			
+    			txtboxEditNewList.setValue("");
+    	    	txtboxEditListname.setValue("");
+    	     	listboxVarieties.setVisible(true);
+    	    	vboxEditNewList.setVisible(false);
+    	    	buttonCreate.setVisible(true);
+    	    	buttonDelete.setVisible(true);
+    	    	buttonSave.setVisible(false);
+    	    	buttonCancel.setVisible(false);
+    	       	
+    	    	onclickSNP();
+    			
+    		}
+    		else {
+    			Messagebox.show("Failed to add list","OPERATION FAILED",Messagebox.OK, Messagebox.EXCLAMATION);
+    		}
+    	}
+    	*/
+    }
+    
+    
+    private void addVarlistFromSetops(Set setMatched) {
+    	if(setMatched.size()>0) {
+    		
+    		AppContext.debug("Adding variety list");
+    		
+    		if( this.textboxResultSet.getValue().trim().isEmpty()) {
+    			Messagebox.show("Provide unique list name","INVALID VALUE",Messagebox.OK, Messagebox.EXCLAMATION);
+    			return;
+    		}
+    		if(workspace.getVarieties(textboxResultSet.getValue().trim())!=null && !workspace.getVarieties(textboxResultSet.getValue().trim()).isEmpty())
+    		{
+    			Messagebox.show("Listname already exists","INVALID VALUE",Messagebox.OK, Messagebox.EXCLAMATION);
+    			return;   			
+    		}
+    		if(workspace.addVarietyList(textboxResultSet.getValue().trim() , setMatched)) {
+    			
+    			AppContext.debug( textboxResultSet.getValue().trim() + " added with " + setMatched.size() +  " items" );
+    			
+    			//txtboxEditNewList.setValue("");
+    			textboxResultSet.setValue("");
+    	     	listboxVarieties.setVisible(true);
+    			//labelNItems.setValue(listTmp.size() + " items in list");
+    	    	
+    	    	
+    	     	Events.sendEvent( "onClick", radioVariety, null);
+    			//onclickVariety();
+    			
+    			labelNItems.setVisible(true);
+    			
+    			/*
+    	     	listboxVarieties.setVisible(true);
+    	    	vboxEditNewList.setVisible(false);
+    	    	buttonCreate.setVisible(true);
+    	    	buttonDelete.setVisible(true);
+    	    	buttonSave.setVisible(false);
+    	    	buttonCancel.setVisible(false);
+    	    	onclickVariety();
+    	    	
+    	    	*/
+    			
+    		}
+    		else {
+    			Messagebox.show("Failed to add list","OPERATION FAILED",Messagebox.OK, Messagebox.EXCLAMATION);
+    		}
+    	}
+    	else Messagebox.show("Resulting list has zero element","INVALID VALUE",Messagebox.OK, Messagebox.EXCLAMATION);
+    	
+    }
     
     private void onbuttonSaveSNP() {
     	genotype =  (GenotypeFacade)AppContext.checkBean(genotype , "GenotypeFacade");
     	workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
     	
 
-    	String lines[] = txtboxEditVariety.getValue().trim().split("\n");
+    	String lines[] = txtboxEditNewList.getValue().trim().split("\n");
 		
     	Set setSNP = new HashSet();
     	for(int isnp=0; isnp<lines.length; isnp++) {
@@ -349,9 +626,12 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 								@Override
 								public void onEvent(Event e) throws Exception {
 									// TODO Auto-generated method stub
-									//AppContext.debug( e.getName() + " pressed");
+									AppContext.debug( e.getName() + " pressed");
 									
 				                    if(Messagebox.ON_YES.equals(e.getName())){
+				                    	
+				                    	// add pos list
+				                    	
 				                    	Integer chr = Integer.valueOf(selectChromosome.getSelectedItem().getLabel());
 				                    	if(setMatched.size()>0) {
 				                    		
@@ -371,23 +651,27 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 				                    			
 				                    			AppContext.debug(newlistname + " added with " + setMatched.size() +  " items" );
 				                    			
-				                    			txtboxEditVariety.setValue("");
+				                    			txtboxEditNewList.setValue("");
 				                    	    	txtboxEditListname.setValue("");
-				                    	     	listboxVarieties.setVisible(true);
-				                    	    	vboxEditVariety.setVisible(false);
+				                    	     	listboxVarieties.setVisible(false);
+				                    	    	vboxEditNewList.setVisible(false);
 				                    	    	buttonCreate.setVisible(true);
 				                    	    	buttonDelete.setVisible(true);
 				                    	    	buttonSave.setVisible(false);
 				                    	    	buttonCancel.setVisible(false);
 				                    	       	
-				                    	    	onclickSNP();
+				                    	    	Events.sendEvent( "onClick", radioSNP, null);
+				                    	    	
+				                    	    	//onclickSNP();
 				                    			
 				                    		}
-				                    		else {
+				                    		else 
 				                    			Messagebox.show("Failed to add list","OPERATION FAILED",Messagebox.OK, Messagebox.EXCLAMATION);
-				                    		}
+
 				                    	}
-				                    }
+				                    } 
+				                    else
+				                    	Messagebox.show("Failed to add list","OPERATION FAILED",Messagebox.OK, Messagebox.EXCLAMATION);
 								}
 	    				});
 	    		
@@ -419,17 +703,17 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     			
     			AppContext.debug( txtboxEditListname.getValue().trim() + " added with " + setMatched.size() +  " items" );
     			
-    			txtboxEditVariety.setValue("");
+    			txtboxEditNewList.setValue("");
     	    	txtboxEditListname.setValue("");
     	     	listboxVarieties.setVisible(true);
-    	    	vboxEditVariety.setVisible(false);
+    	    	vboxEditNewList.setVisible(false);
     	    	buttonCreate.setVisible(true);
     	    	buttonDelete.setVisible(true);
     	    	buttonSave.setVisible(false);
     	    	buttonCancel.setVisible(false);
     	       	
-    	    
-    	    	onclickVariety();
+    	    	Events.sendEvent( "onClick", radioVariety, null);
+    	    	//onclickVariety();
     			
     		}
     		else {
@@ -445,7 +729,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	
     	List listNoMatch = new ArrayList();
     	final Set setMatched = new TreeSet();
-    	String lines[] = txtboxEditVariety.getValue().trim().split("\n");
+    	String lines[] = txtboxEditNewList.getValue().trim().split("\n");
     	for (int i=0;i<lines.length; i++) {
     		
     		Variety var = null;
@@ -507,7 +791,8 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 				                        //OK is clicked
 				                    	addVarlist(setMatched);
 				                    	
-				                    }
+				                    } else
+				                    	Messagebox.show("Failed to add list","OPERATION FAILED",Messagebox.OK, Messagebox.EXCLAMATION);
 								}
 	    				});
 	    				
@@ -529,18 +814,18 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     public void onbuttonDelete() {
     	workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
     	
-    	workspace.deleteVarietyList( listboxVarietylist.getSelectedItem().getLabel() );
+    	workspace.deleteVarietyList( listboxListnames.getSelectedItem().getLabel() );
 //    	listboxVarietylist.setSelectedIndex(0);
 //    	Executions.sendRedirect("_workspace.zul");
     	
     	List listVarlistNames=new ArrayList();
     	listVarlistNames.addAll( workspace.getVarietylistNames( ));
-    	listboxVarietylist.setModel( new SimpleListModel(listVarlistNames));
-    	listboxVarietylist.setSelectedIndex(0);
+    	listboxListnames.setModel( new SimpleListModel(listVarlistNames));
+    	listboxListnames.setSelectedIndex(0);
     	
     	//AppContext.debug( listboxVarietylist.getSelectedItem().getLabel() + "  selected");
     	
-    	//Events.postEvent( "onSelect", listboxVarietylist, null);
+    	//Events.sendEvent( "onSelect", listboxVarietylist, null);
 
     	
     }

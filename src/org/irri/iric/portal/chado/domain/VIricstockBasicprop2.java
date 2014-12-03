@@ -244,5 +244,19 @@ public class VIricstockBasicprop2 implements Serializable , Variety {
 		// TODO Auto-generated method stub
 		return getName().compareTo( ((Variety)o).getName() );
 	}
+
+	@Override
+	public String printFields(String delimiter) {
+		// TODO Auto-generated method stub
+		String irisid = getIrisId();
+		if(irisid==null) irisid="";
+		String subpop = getSubpopulation();
+		if(subpop==null) subpop="";
+		String cntr = getCountry();
+		if(cntr==null) cntr="";
+		return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr;
+	}
+	
+	
 	
 }

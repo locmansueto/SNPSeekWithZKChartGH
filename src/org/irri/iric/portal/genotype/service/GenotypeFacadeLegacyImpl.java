@@ -1222,13 +1222,13 @@ within a subpopulation group
 
 
 
-
+/*
 	@Override
 	public char[][] getHeteroAlleleMatrix() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+*/
 
 	@Override
 	public void setCore(boolean isCore) {
@@ -1256,13 +1256,13 @@ within a subpopulation group
 	}
 */
 
-
+/*
 	@Override
 	public Map<Integer, Set<Character>> getMapIdx2NonsynAlleles() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+*/
 
 	@Override
 	public void setColorByNonsyn(boolean selected) {
@@ -1292,6 +1292,23 @@ within a subpopulation group
 		return null;
 	}
 
+
+	@Override
+	public void setMismatchOnly(boolean isMismatchOnly) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public Object[] constructPhylotreeMindist(String scale, String chr,
+			int start, int end, String mindist) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	
 
 
 

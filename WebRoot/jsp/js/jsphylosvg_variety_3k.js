@@ -1005,7 +1005,7 @@ Smits.PhyloCanvas.NexmlParse.prototype = {
 	
 	text: {
 		"font-family":	'Verdana',
-		"font-size":	13, //10, //12,
+		"font-size":	10, //13, //10, //12,
 		//"font-weight":	"bold",
 		"text-anchor":	'start'
 	},

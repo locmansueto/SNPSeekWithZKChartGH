@@ -1,6 +1,7 @@
 package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 
 /**
@@ -57,5 +58,20 @@ public interface Snps2Vars {
 	 * @return
 	 */
 	public String getVar2nuc();
+
+	/**
+	 * Variety1 allele
+	 * @return
+	 */
+	public String getVar1nuc2();
+	
+	/**
+	 * Variety2 allele
+	 * @return
+	 */
+	public String getVar2nuc2();
+	
+	public boolean isVar1Nonsyn();
+	public boolean isVar2Nonsyn();
 	
 }

@@ -1,6 +1,9 @@
 package org.irri.iric.portal.variety.zkui;
 
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,6 +48,7 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Iframe;
@@ -110,7 +114,8 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     private Combobox comboCountry;
     
     @Wire
-    private Combobox comboSubpopulation;
+    //private Combobox comboSubpopulation;
+    private Listbox listboxSubpopulation;
     
     @Wire
     private Textbox msgbox;
@@ -216,7 +221,69 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     @Wire
     private Listbox listboxMyVariety;
     
+    @Wire
+    private Button buttonDownloadCSV;
+    @Wire
+    private Button buttonDownloadTab;
     
+    
+    
+    @Listen("onClick = #buttonDownloadCSV")
+    public void clickDownloadCSV() {
+    	downloadVarieties("varieties.csv", ",");
+    }
+    
+    @Listen("onClick = #buttonDownloadTab")
+    public void clickDownloadTab() {
+    	downloadVarieties("varieties.txt", "\t");
+    }
+    
+    private void downloadVarieties(String filename, String delimiter ) {
+    	
+    	StringBuffer buff = new StringBuffer();
+    	
+    	
+    	Listhead lhd= varietyresult.getListhead();
+    	Iterator itHeader = lhd.getChildren().iterator();
+		while(itHeader.hasNext())
+		{
+			Listheader lh = (Listheader)itHeader.next();
+			buff.append( lh.getLabel() );
+			if(itHeader.hasNext()) buff.append(delimiter);
+		}
+		buff.append("\n");
+    	
+     	Iterator<Variety> itvar =  varsresult.iterator();
+     
+    	while(itvar.hasNext()) {
+    		buff.append(  itvar.next().printFields(delimiter));
+    		if(itvar.hasNext()) buff.append("\n");
+    	}
+   	
+    	try {
+    		String filetype = "text/plain";
+			if(delimiter.equals(",")) filetype="text/csv";
+				
+			File file = new File(filename);
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(buff.toString());
+			bw.flush();
+			bw.close();
+			
+			AppContext.debug("Mylist write complete! Saved to: "+ file.getAbsolutePath());
+			
+			try {
+				Filedownload.save(  new File(filename), filetype);
+				} catch(Exception ex)
+				{
+					ex.printStackTrace();
+				}
+
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+    }
     
     @Listen("onClick = #buttonCheckAll")
     public void markAllVarieties() {
@@ -244,12 +311,19 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     	}
     	
     	Set setVarieties = new LinkedHashSet();
-    	Iterator<Listitem> itItems= varietyresult.getItems().iterator();
     	
+    	//varietyresult.getModel()
+    	
+    	//Iterator<Listitem> itItems= varietyresult.getItems().iterator();
+
+    	/*
+    	Iterator<Variety> itItems= varsresult.iterator();
     	while(itItems.hasNext()) {
     		setVarieties.add(  (Variety)itItems.next().getValue()) ;
     	}
-    	workspace.addVarietyList( txtboxListname.getValue().trim(), setVarieties);
+    	*/
+    	
+    	workspace.addVarietyList( txtboxListname.getValue().trim(), new LinkedHashSet(varsresult) );
     	txtboxListname.setValue("");
     }
     
@@ -571,7 +645,8 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     	comboVarname.setValue("");
     	comboIrisId.setValue("");
     	comboCountry.setValue("");
-    	comboSubpopulation.setValue("");
+    	//comboSubpopulation.setValue("");
+    	listboxSubpopulation.setSelectedIndex(0);
     	
     	listboxPhenotypes.setSelectedIndex(0);
     	listboxPhenValue.setModel(new SimpleListModel(new ArrayList()));
@@ -679,7 +754,8 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 		}
 		else {
 			
-			if( (comboCountry==null || comboCountry.getValue().isEmpty()) && (comboSubpopulation==null || comboSubpopulation.getValue().isEmpty())
+			//if( (comboCountry==null || comboCountry.getValue().isEmpty()) && (comboSubpopulation==null || comboSubpopulation.getValue().isEmpty())
+			if( (comboCountry==null || comboCountry.getValue().isEmpty()) && (listboxSubpopulation==null || listboxSubpopulation.getSelectedIndex()==0)
 				&& (listboxPassport.getSelectedItem()==null || listboxPassport.getSelectedItem().getLabel().trim().isEmpty()) 
 				&& (listboxPhenotypes.getSelectedItem()==null || listboxPhenotypes.getSelectedItem().getLabel().trim().isEmpty()) 
 				//&&	(listboxMyVariety.getSelectedItem()==null || listboxMyVariety.getSelectedItem().getLabel().trim().isEmpty() )		
@@ -697,7 +773,8 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 			
 			
 			
-			if( (comboCountry==null || comboCountry.getValue().isEmpty()) && (comboSubpopulation==null || comboSubpopulation.getValue().isEmpty()) ) {}
+			//if( (comboCountry==null || comboCountry.getValue().isEmpty()) && (comboSubpopulation==null || comboSubpopulation.getValue().isEmpty()) ) {}
+			if( (comboCountry==null || comboCountry.getValue().isEmpty()) && (listboxSubpopulation==null || listboxSubpopulation.getSelectedIndex()<1 ) ) {}
 			else {
 						
 				//Variety example = new Variety();
@@ -712,6 +789,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 					msg.append(" COUNTRY=" + comboCountry.getValue().toUpperCase());
 				}
 		
+				/*
 				if(comboSubpopulation==null) throw new RuntimeException("comboSubpopulation==null");
 				if(comboSubpopulation.getValue()!=null && !comboSubpopulation.getValue().isEmpty() )	{	
 					example.setSubpopulation( comboSubpopulation.getValue());
@@ -719,6 +797,16 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 						
 					msg.append(" SUBPOPULATION=" + comboSubpopulation.getValue().toUpperCase());
 				}
+				*/
+				if(listboxSubpopulation==null) throw new RuntimeException("comboSubpopulation==null");
+				if(listboxSubpopulation.getSelectedIndex()>0)	{	
+					example.setSubpopulation( listboxSubpopulation.getSelectedItem().getLabel());
+					if(msg.length()>0) msg.append(" AND ");
+						
+					msg.append(" SUBPOPULATION=" + listboxSubpopulation.getSelectedItem().getLabel().toUpperCase());
+				}
+
+				
 				
 				msgbox.setValue("VARIETY WHERE " + msg.toString());
 						

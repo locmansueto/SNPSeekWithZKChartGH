@@ -19,7 +19,7 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 import org.springframework.context.annotation.ScopedProxyMode;
 
-@Component("WorkspaceFacade")
+@Service("WorkspaceFacade")
 //@Scope("prototype")
 @Scope(value="session",  proxyMode = ScopedProxyMode.INTERFACES)
 public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {

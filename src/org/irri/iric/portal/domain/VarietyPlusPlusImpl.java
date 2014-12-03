@@ -1,6 +1,7 @@
 package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -143,6 +144,32 @@ public class VarietyPlusPlusImpl  implements VarietyPlusPlus  {
 		// TODO Auto-generated method stub
 		return getName().compareTo( ((Variety)o).getName() );
 	}
+
+
+	@Override
+	public String printFields(String delimiter) {
+		// TODO Auto-generated method stub
+		String irisid = getIrisId();
+		if(irisid==null) irisid="";
+		String subpop = getSubpopulation();
+		if(subpop==null) subpop="";
+		String cntr = getCountry();
+		if(cntr==null) cntr="";
+		
+	
+		StringBuffer buff = new StringBuffer();	
+		buff.append(this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr);
+		Iterator<String> itName =  mapValues.keySet().iterator();
+		if(itName.hasNext()) buff.append(delimiter);
+		while(itName.hasNext()) {
+			buff.append( mapValues.get(itName.next()) );
+			if(itName.hasNext()) buff.append(delimiter);
+		}
+		return buff.toString();
+	
+	}
+	
+	
 	
 	
 }

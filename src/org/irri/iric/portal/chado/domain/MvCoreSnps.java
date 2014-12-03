@@ -32,7 +32,8 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 		@NamedQuery(name = "findMvCoreSnpsByRefcallContaining", query = "select myMvCoreSnps from MvCoreSnps myMvCoreSnps where myMvCoreSnps.refcall like ?1"),
 		@NamedQuery(name = "findMvCoreSnpsBySnpFeatureId", query = "select myMvCoreSnps from MvCoreSnps myMvCoreSnps where myMvCoreSnps.snpFeatureId = ?1"),
 		@NamedQuery(name = "findMvCoreSnpsBySrcfeatureId", query = "select myMvCoreSnps from MvCoreSnps myMvCoreSnps where myMvCoreSnps.srcfeatureId = ?1") })
-@Table(schema = "IRIC", name = "MV_CORE_SNPS")
+//@Table(schema = "IRIC", name = "MV_CORE_SNPS")
+@Table(schema = "IRIC", name = "CORE_SNP")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "MvCoreSnps")
 public class MvCoreSnps implements Serializable, SnpsAllvarsPos {

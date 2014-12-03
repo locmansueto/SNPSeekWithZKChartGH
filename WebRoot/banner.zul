@@ -6,18 +6,17 @@
 <hbox height="10px" width="100%"/>
 <hbox align="center" pack="center" height="100%" width="100%">
 <a target="_blank" href="http://iric.irri.org" image="/images/iric/iric_logo.png"/>
-<vbox width="30px"/>
+<vbox width="20px"/>
 <vbox align="stretch" height="80px">
-	<label pre="true" value="    Rice SNP-Seek Database      " width="60%" 
+	<label pre="true" value="         Rice SNP-Seek Database               " width="70%" 
 	style="color:green;background-color:white;font-weight:bold;font-family:arial;font-size:30px" />
 	<hbox>
-	<menubar id="menubar" width="100%" orient="horizontal" autodrop="true">
+	<menubar id="menubar" width="100%" orient="horizontal" autodrop="true"  style="background-color:white">
 		<menuitem src="/images/iric/home4.png" label="Home" href="index.zul"/>
 		<menu label="Search" src="/images/iric/query.png">
 			<menupopup>
 				<menuitem src="/images/iric/gene1.png" label="SNP and Genes" href="_snp.zul"/>
 				<menuitem src="/images/iric/var5.png" label="Variety" href="_variety.zul"/>
-				<menuitem src="/images/iric/query.png" label="My Lists" href="_workspace.zul"/>
 			</menupopup>
 		</menu>			
 		<menu label="Browse" src="/images/iric/browse5.png">
@@ -32,15 +31,11 @@
 				<menuitem src="/images/iric/tree1.png" label="MDS Plot" href="_variety.zul?irisid=allmds"/>
 
 			</menupopup>
-		</menu>			
+		</menu>
+		<menuitem src="/images/iric/query.png" label="My Lists" href="_workspace.zul"/>
 		<menuitem src="/images/iric/help.png" label="Help" href="_help.zul"/>
 		<menuitem src="/images/iric/email.png" label="Contact Us" href="_contactus.zul"/>
 	</menubar>
-		<!--  h:a href="mailto:iric@irri.org">
-		
-  			<h:img src="/images/iric/email2.png" alt="Contact Us: iric@irri.org"/>
-		</h:a -->
-
 	</hbox>
 </vbox>
 </hbox>

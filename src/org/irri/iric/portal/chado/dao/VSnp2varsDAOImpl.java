@@ -163,15 +163,16 @@ public class VSnp2varsDAOImpl extends AbstractJpaDao<VSnp2vars> implements
 			posconst = " and sfl.position in ( " + buff.toString() + ")";					
 		}
 		else
-			posconst = " and sfl.position between " + (start.intValue()-1) + " and " + end;
+			posconst = " and sfl.position between " + (start.intValue()-1) + " and " + (end.intValue()-1) ;
 
 		
 		String sql = "";
 		
 		if(isCore) {
 		      sql = "select /*+ leading(sfl) use_nl(sg1) use_nl(sg2) */ sg1.iric_stock_id as var1, sg2.iric_stock_id as var2, sfl.snp_feature_id, sg1.partition_id  , sfl.position + 1 as pos,"
-				+ " sfl.refcall as refnuc, sg1.allele1 as var1nuc, sg2.allele1 as var2nuc"
-				+ " from iric.mv_core_snps sfl, iric.snp_genotype sg1, iric.snp_genotype sg2"
+				+ " sfl.refcall as refnuc, sg1.allele1 as var1nuc, sg2.allele1 as var2nuc,  sg1.allele2 as var1nuc2, sg2.allele2 as var2nuc2 "
+				//+ " from iric.mv_core_snps sfl, iric.snp_genotype sg1, iric.snp_genotype sg2"
+				+ " from iric.core_snp sfl, iric.snp_genotype sg1, iric.snp_genotype sg2"
 				+ " where sfl.snp_feature_id=sg1.snp_feature_id"
 				+ " and sfl.snp_feature_id=sg2.snp_feature_id"
 				+ " and sg1.partition_id=sg2.partition_id"
@@ -185,7 +186,7 @@ public class VSnp2varsDAOImpl extends AbstractJpaDao<VSnp2vars> implements
 		}
 		else {
 		      sql = "select /*+ leading(sfl) use_nl(sg1) use_nl(sg2) */ sg1.iric_stock_id as var1, sg2.iric_stock_id as var2, sf.snp_feature_id, sg1.partition_id  , sfl.position +1 as pos,"
-				+ " sf.refcall as refnuc, sg1.allele1 as var1nuc, sg2.allele1 as var2nuc"
+				+ " sf.refcall as refnuc, sg1.allele1 as var1nuc, sg2.allele1 as var2nuc,  sg1.allele2 as var1nuc2, sg2.allele2 as var2nuc2 "
 				+ " from iric.snp_feature sf,  iric.snp_featureloc sfl, iric.snp_genotype sg1,  iric.snp_genotype sg2"
 				+ " where sf.snp_feature_id=sfl.snp_feature_id"
 				+ " and sf.snp_feature_id=sg1.snp_feature_id"
@@ -261,17 +262,18 @@ public class VSnp2varsDAOImpl extends AbstractJpaDao<VSnp2vars> implements
 			posconst = " and sfl.position in ( " + buff.toString() + ")";					
 		}
 		else
-			posconst = " and sfl.position between " + (start.intValue()-1) + " and " + end;
+			posconst = " and sfl.position between " + (start.intValue()-1) + " and " + (end.intValue()-1) ;
 		
 		String sql = "";
 		if(isCore) {
 		      sql = "select /*+ leading(sfl) use_nl(sg1) use_nl(sg2) */ sg1.iric_stock_id as var1, sg2.iric_stock_id as var2, sfl.snp_feature_id, sg1.partition_id  , sfl.position + 1 as pos,"
-				+ " sfl.refcall as refnuc, sg1.allele1 as var1nuc, sg2.allele1 as var2nuc"
-				+ " from iric.mv_core_snps sfl, iric.snp_genotype sg1, iric.snp_genotype sg2"
+				+ " sfl.refcall as refnuc, sg1.allele1 as var1nuc, sg2.allele1 as var2nuc, sg1.allele2 as var1nuc2, sg2.allele2 as var2nuc2"
+				//+ " from iric.mv_core_snps sfl, iric.snp_genotype sg1, iric.snp_genotype sg2"
+				+ " from iric.core_snp sfl, iric.snp_genotype sg1, iric.snp_genotype sg2"
 				+ " where sfl.snp_feature_id=sg1.snp_feature_id"
 				+ " and sfl.snp_feature_id=sg2.snp_feature_id"
 				+ " and sg1.partition_id=sg2.partition_id"
-				+ " and sg1.allele1<>sg2.allele1"
+				+ " and ( sg1.allele1<>sg2.allele1 or sg1.allele2 is not null or  sg2.allele2 is not null ) "
 				+ " and sg1.allele1 is not null"
 				+ " and sg2.allele1 is not null"
 				
@@ -287,13 +289,13 @@ public class VSnp2varsDAOImpl extends AbstractJpaDao<VSnp2vars> implements
 		}
 		else {
 		      sql = "select /*+ leading(sfl) use_nl(sg1) use_nl(sg2) */ sg1.iric_stock_id as var1, sg2.iric_stock_id as var2, sf.snp_feature_id, sg1.partition_id  , sfl.position + 1 as pos,"
-				+ " sf.refcall as refnuc, sg1.allele1 as var1nuc, sg2.allele1 as var2nuc"
+				+ " sf.refcall as refnuc, sg1.allele1 as var1nuc, sg2.allele1 as var2nuc,  sg1.allele2 as var1nuc2, sg2.allele2 as var2nuc2"
 				+ " from iric.snp_feature sf,  iric.snp_featureloc sfl, iric.snp_genotype sg1,  iric.snp_genotype sg2"
 				+ " where sf.snp_feature_id=sfl.snp_feature_id"
 				+ " and sf.snp_feature_id=sg1.snp_feature_id"
 				+ " and sf.snp_feature_id=sg2.snp_feature_id"
 				+ " and sg1.partition_id=sg2.partition_id"
-				+ " and sg1.allele1<>sg2.allele1"
+				+ " and (sg1.allele1<>sg2.allele1  or sg1.allele2 is not null or  sg2.allele2 is not null ) "
 				+ " and sg1.allele1 is not null"
 				+ " and sg2.allele1 is not null"
 				

@@ -267,6 +267,21 @@ public interface GenotypeFacade {
 	public String[] constructPhylotreeTopN(String scale, String chr, int start, int end, int topN, String requestid);
 	
 	
+
+/**
+ * Construct phylogenetic tree based on mismatches within the region, 
+ * limited by grouping nodes below mindist mismatches
+ *  
+ * @param scale
+ * @param chr
+ * @param start
+ * @param end
+ * @param mindist
+ * @return
+ */
+	public Object[] constructPhylotreeMindist(String scale, String chr, int start, int end, String mindist);
+
+	
 	/**
 	 * Ordering of varieties from phylogenetic computation based on mismatches in region. call after constructPhylotree
 	 * @return	null if not yet computed
@@ -336,7 +351,7 @@ public interface GenotypeFacade {
 	 * Get heterozygous allele (allele2) matrix varietyXposition
 	 * @return
 	 */
-	char[][] getHeteroAlleleMatrix();
+	//char[][] getHeteroAlleleMatrix();
 
 
 	
@@ -350,13 +365,19 @@ public interface GenotypeFacade {
 	 * Map of table index to Set of non-synonymous alleles
 	 * @return
 	 */
-	Map<Integer, Set<Character>> getMapIdx2NonsynAlleles();
+	//Map<Integer, Set<Character>> getMapIdx2NonsynAlleles();
 
 
 	public void setColorByNonsyn(boolean selected);
 
 
 	public void setNonsynOnly(boolean selected);
+
+
+	void setMismatchOnly(boolean isMismatchOnly);
+
+
+	//Map<Integer, Set<Character>> getMapIndex2NonsynAlleles();
 
 
 	//Map<Integer, boolean[]> getMapIdx2Nonsynflags();

@@ -384,5 +384,24 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 		// TODO Auto-generated method stub
 		return getName().compareTo( ((Variety)o).getName() );
 	}
+
+	@Override
+	public String printFields(String delimiter) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+				String irisid = getIrisId();
+				if(irisid==null) irisid="";
+				String subpop = getSubpopulation();
+				if(subpop==null) subpop="";
+				String cntr = getCountry();
+				if(cntr==null) cntr="";
+				String strvalue = qualValue;
+				if(strvalue==null) strvalue = quanValue.toString();
+				
+				return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr + delimiter + strvalue;
+	}
+	
+	
+	
 	
 }

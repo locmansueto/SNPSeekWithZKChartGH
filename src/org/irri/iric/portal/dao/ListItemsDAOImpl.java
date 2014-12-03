@@ -2,6 +2,7 @@ package org.irri.iric.portal.dao;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,8 +15,9 @@ import org.irri.iric.portal.domain.Variety;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component("ListItemsDAO")
+@Service("ListItemsDAO")
 public class ListItemsDAOImpl implements  ListItemsDAO {
 
 	@Autowired
@@ -100,7 +102,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			if(germ.getSubpopulation()!=null) // throw new RuntimeException("germ..getSubpopulation()==null");
 			{
 				subpopulations.add( germ.getSubpopulation().toLowerCase() );
-				subpopulations.add( germ.getSubpopulation().toUpperCase() );	
+				//subpopulations.add( germ.getSubpopulation().toUpperCase() );	
 			}
 			
 			if(germ.getIrisId()!=null) // throw new RuntimeException("germ..getSubpopulation()==null");
@@ -147,7 +149,13 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		this.countries =  new java.util.ArrayList();
 			this.countries.addAll(countries);
 		this.subpopulations =  new java.util.ArrayList();
-			this.subpopulations.addAll(subpopulations);
+			this.subpopulations.add("");
+			this.subpopulations.add("all indica");
+			//this.subpopulations.add("ALL INDICA");
+			this.subpopulations.add("all japonica");
+			//this.subpopulations.add("ALL JAPONICA");
+		    this.subpopulations.addAll(subpopulations);
+
 		this.irisid =  new java.util.ArrayList();
 			this.irisid.addAll(irisid);
 	}
@@ -245,8 +253,28 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	}
 	
 	@Override
-	public java.util.Set getGermplasmBySubpopulation(String subpopulation) {		
-		return  germdao.findAllVarietyBySubpopulation(subpopulation) ;	
+	public java.util.Set getGermplasmBySubpopulation(String subpopulation) {
+		
+		
+		if(subpopulation.toUpperCase().equals("ALL INDICA"))
+		{
+			Set allvar = new LinkedHashSet();
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("ind1")) ;	
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("ind2")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("ind3")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("indx")) ;
+			return allvar;
+		}
+		else if(subpopulation.toUpperCase().equals("ALL JAPONICA")) {
+			Set allvar = new LinkedHashSet();
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("temp")) ;	
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("trop")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("temp/trop")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("trop/temp")) ;
+			return allvar;
+		}
+		else
+			return  germdao.findAllVarietyBySubpopulation(subpopulation) ;	
 	}
 
 

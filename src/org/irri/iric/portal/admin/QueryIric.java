@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -20,6 +21,7 @@ import org.irri.iric.portal.chado.dao.VSnpAllvarsPosDAOImpl;
 import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
 import org.irri.iric.portal.domain.SnpsAllvars;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
+import org.irri.iric.portal.hdf5.dao.SNPUni3kVarietiesAllele1DAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -162,9 +164,17 @@ public class QueryIric {
 	
 public void createSNPFile() {
 		
-
-		
-		
+	System.out.println("in createSNPFile..." );
+	SNPUni3kVarietiesAllele1DAO snpuniDAO = new SNPUni3kVarietiesAllele1DAO();
+  	Map mapVar2Str =  snpuniDAO.readSNPString(1,  1000, 1100);
+  	Iterator itVar = mapVar2Str.keySet().iterator();
+  	while(itVar.hasNext()) {
+  		Object var = itVar.next();
+  		System.out.println( var + " : " + mapVar2Str.get(var));
+  	}
+	
+}
+public void createSNPFile2() {
 		try {
 			
 			

@@ -78,7 +78,7 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
         java.util.List subpopulation = variety.getSubpopulations();
         
 
-        String msg =varnames.size()/2 + " varieties, " + irisIds.size()/2 + " IRIS IDs, "  + countries.size()/2 + " countries, " + subpopulation.size()/2 +  " subpopulations for selection";
+        String msg =varnames.size()/2 + " varieties, " + irisIds.size()/2 + " IRIS IDs, "  + countries.size()/2 + " countries, " + (subpopulation.size()-1) +  " subpopulations for selection";
         //String msg ="Get Variety Information by Name or IRIS ID.  Search varieties by Country and/or Subpopulation";
                   
         java.util.List listPassport = new java.util.ArrayList();
@@ -145,11 +145,13 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 <label value="Subpopulation" style="font-size:14px;font-weight:bold;color:gray;"/>
 
 				<hbox>
-			    <combobox id="comboSubpopulation" autodrop="true" buttonVisible="false" width="150px"/>
+			    <!--  combobox id="comboSubpopulation" autocomplete="false" autodrop="false" buttonVisible="true" width="150px"/ -->
+			    <listbox id="listboxSubpopulation"  mold="select" width="150px"/>
 			    <label pre="true" value="(ex. trop)" style="font-size:10px"/>
 			    </hbox>
 			    <zscript><![CDATA[
-			        comboSubpopulation.setModel( new SimpleListModel(subpopulation));
+			        listboxSubpopulation.setModel( new SimpleListModel(subpopulation));
+			        listboxSubpopulation.setSelectedIndex(0);
 			    ]]></zscript>
 </row>
 
@@ -360,11 +362,22 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
             <tabpanel>
  <vbox>
  <hbox id="hboxAddtolist" visible="false">
-  <button id="buttonAddToList" label="Create List:"  autodisable="self" tooltip="popupCreateList"/><label value="   List Name" pre="true"/><textbox id="txtboxListname" width="200px"/>
+ <label value="Download:  " pre="true"/>
+ <button id="buttonDownloadCSV" label="CSV"/>
+ <hbox width="5px"/>
+ <button id="buttonDownloadTab" label="Tab"/>
+ <hbox width="25px"/>
+  <button id="buttonAddToList" label="Create List:"  autodisable="self" tooltip="popupCreateList"/>
+  <label value="   List Name  " pre="true"/>
+  <textbox id="txtboxListname" width="200px"/>
  </hbox>
+ 
+ 
  <hbox visible="false">
  <button id="buttonCheckAll" label="Check All"/><vbox width="20px"/><button id="buttonUncheckAll" label="Uncheck All"/><vbox width="20px"/>
  </hbox>
+ 
+ 
  <listbox id="varietyresult" fixedLayout="true" mold="paging" pageSize="100" visible="true"  >
 		<listhead>
 			<listheader  sort="auto"></listheader>
@@ -545,6 +558,9 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		        	Events.postEvent("onClick", searchButton, null);
 		        }
 	        }
+	        
+
+	        
         </zscript>
 
 

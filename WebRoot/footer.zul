@@ -1,8 +1,15 @@
 <?page title="footer" contentType="text/html;charset=UTF-8" ?>
-<zk>
+<zk >
 <div style="background-color:green;color:white;background-color:green;font-family:arial;font-size:10px" >
-<vbox height="30px" width="100%">
-©2014 International Rice Research Institute. Los Banos, Laguna, Philippines
+
+<vbox height="25px">
+<hbox height="5px"/>
+<hbox  align="center" pack="center">
+<label value="©2014 International Rice Research Institute. Los Banos, Laguna, Philippines" style="font-size:11px"/>
+<vbox width="100px"/>
+<label value="This site is under development. We schedule maintenance every Monday, 8-9:00 GMT (4-5PM Manila)"  style="font-size:11px"/>
+</hbox>	
 </vbox>
 </div>
+
 </zk>

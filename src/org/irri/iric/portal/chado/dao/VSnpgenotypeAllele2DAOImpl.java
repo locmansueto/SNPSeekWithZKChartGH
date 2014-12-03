@@ -22,6 +22,7 @@ import org.irri.iric.portal.chado.domain.VSnpAllvarsCountrefmismatch;
 import org.irri.iric.portal.chado.domain.VSnpgenotypeAllele2;
 import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
 import org.irri.iric.portal.domain.SnpsHeteroAllele2;
+import org.irri.iric.portal.flatfile.dao.SnpcoreRefposindexDAO;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -269,8 +270,17 @@ public class VSnpgenotypeAllele2DAOImpl extends AbstractJpaDao<VSnpgenotypeAllel
 		// TODO Auto-generated method stub
 		
 
-		String sql = "select snp_feature_id, iric_stock_id, allele2 from iric.snp_genotype where 1=1 ";
-			
+		String sql = "select sg.snp_feature_id, sg.iric_stock_id, sg.allele2 from iric.snp_genotype sg "; 
+		
+		if(type==SnpcoreRefposindexDAO.TYPE_3KCORESNP) {
+			sql += ", iric.core_snp cs where sg.snp_feature_id=cs.snp_feature_id ";	
+		}
+		else if (type==SnpcoreRefposindexDAO.TYPE_3KALLSNP)
+		{
+			sql += " where 1=1 ";	
+		};
+		
+		
 		/*
 		String snpfeatureid = "1";
 		if(chr<10)
@@ -282,9 +292,13 @@ public class VSnpgenotypeAllele2DAOImpl extends AbstractJpaDao<VSnpgenotypeAllel
 		if( start!= null && end!= null)
 		{
 			//sqlsnpfeaturid = " and snp_feature_id between " + snpfeatureid + String.format("%08d", start.longValue() ) + " and " +  snpfeatureid + String.format("%08d", end.longValue()); 
-			sqlsnpfeaturid = " and snp_feature_id between " + AppContext.convertRegion2Snpfeatureid(chr, start.longValue()) + " and " +  AppContext.convertRegion2Snpfeatureid(chr, end.longValue()) ;
+			sqlsnpfeaturid = " and sg.snp_feature_id between " + AppContext.convertRegion2Snpfeatureid(chr, start.longValue()) + " and " +  AppContext.convertRegion2Snpfeatureid(chr, end.longValue()) ;
 		} else if (snpspos!=null) {
 			
+			
+			List listIds = AppContext.setSlicerIds(new HashSet(snpspos));
+			
+			/*
 			StringBuffer buff = new StringBuffer();
 			Iterator<BigDecimal> itSnpid = snpspos.iterator();
 			while(itSnpid.hasNext()) {
@@ -292,9 +306,23 @@ public class VSnpgenotypeAllele2DAOImpl extends AbstractJpaDao<VSnpgenotypeAllel
 				buff.append(  AppContext.convertRegion2Snpfeatureid(chr, itSnpid.next().longValue() ) );
 				if( itSnpid.hasNext() ) buff.append(",");
 			}
-			sqlsnpfeaturid = " and snp_feature_id in (" +  buff.toString() + ")";
+			sqlsnpfeaturid = " and sg.snp_feature_id in (" +  buff.toString() + ")";
+			*/
+			if(listIds.size()==1)
+				sqlsnpfeaturid = " and sg.snp_feature_id in ( "  + listIds.get(0) + ") ";
+			else if(listIds.size()>1) {
+				sqlsnpfeaturid = " and ( sg.snp_feature_id in ( "  + listIds.get(0) + ") ";
+				sqlsnpfeaturid += " or sg.snp_feature_id in ( "  + listIds.get(1) + ") ";
+				if(listIds.size()>2) 
+					sqlsnpfeaturid += " or sg.snp_feature_id in ( "  + listIds.get(2) + ") ";
+				if(listIds.size()>3) 
+				    sqlsnpfeaturid += " or sg.snp_feature_id in ( "  + listIds.get(3) + ") ";
+				sqlsnpfeaturid += " ) ";
+			}
 		}
-		sql += " and typ='e' and allele2 is not null and partition_id = " + (chr+2) + sqlsnpfeaturid;
+		
+		
+		sql += " and sg.typ='e' and sg.allele2 is not null and sg.partition_id = " + (chr+2) + sqlsnpfeaturid;
 		
 		if(vars!=null)
 		{
@@ -304,7 +332,7 @@ public class VSnpgenotypeAllele2DAOImpl extends AbstractJpaDao<VSnpgenotypeAllel
 				buff.append(itVar.next() );
 				if( itVar.hasNext() ) buff.append(",");
 			}
-			sql += " and iric_stock_id in (" +  buff.toString() + ")";
+			sql += " and sg.iric_stock_id in (" +  buff.toString() + ")";
 		}
 		
 		

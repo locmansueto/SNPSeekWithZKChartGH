@@ -44,4 +44,7 @@ public interface Variety extends Comparable {
 	public void setSubpopulation(String subpopulation);
 	
 	
+	public String printFields(String delimiter);
+	
+	
 }

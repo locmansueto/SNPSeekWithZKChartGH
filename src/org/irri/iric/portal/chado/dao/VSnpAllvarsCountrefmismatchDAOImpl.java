@@ -252,7 +252,8 @@ public class VSnpAllvarsCountrefmismatchDAOImpl extends AbstractJpaDao<VSnpAllva
 		
 		if(isCore) {
 			sql="select /*+ leading(sfl) use_nl(sg) */ sg.iric_stock_id as var, ROW_NUMBER() OVER (ORDER BY count(*) DESC, sg.iric_stock_id ) AS row_number, count(*) as mismatch  "
-				+ " from iric.mv_core_snps sfl, iric.snp_genotype sg "
+				//+ " from iric.mv_core_snps sfl, iric.snp_genotype sg "
+				+ " from iric.core_snp sfl, iric.snp_genotype sg "
 				+ "   where 1=1"
 				+ "   and sg.snp_feature_id=sfl.snp_feature_id"
 				+ "   and sfl.refcall<>sg.allele1 "
@@ -311,7 +312,8 @@ public class VSnpAllvarsCountrefmismatchDAOImpl extends AbstractJpaDao<VSnpAllva
 		
 		if(isCore) {
 			sql="select /*+ leading(sfl) use_nl(sg) */ sg.iric_stock_id as var, count(*) as mismatch  "
-				+ " from iric.mv_core_snps sfl, iric.snp_genotype sg "
+				//+ " from iric.mv_core_snps sfl, iric.snp_genotype sg "
+				+ " from iric.core_snp sfl, iric.snp_genotype sg "
 				+ "   where 1=1"
 				+ "   and sg.snp_feature_id=sfl.snp_feature_id"
 				+ "   and sfl.refcall<>sg.allele1 "
