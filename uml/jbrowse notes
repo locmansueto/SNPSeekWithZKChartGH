@@ -1,0 +1,4 @@
+!WRONG lib/flatfile-to-json.pl --gff   --trackLabel 3kindels  --trackType  JBrowse/View/Track/Alignments2 --key '3k Genomes InDels'   --metadata '{"description": "Insertions and deletions for the 3k Genomes Project." }'
+
+
+bin/flatfile-to-json.pl --gff  --trackLabel indel3kpoint  --trackType JBrowse/View/Track/CanvasFeaturesIndels --type insertion,deletion  --key '3k Genomes InDels (point)'   --metadata '{"description": "Insertions and deletions (point only) for the 3k Genomes Project" }'

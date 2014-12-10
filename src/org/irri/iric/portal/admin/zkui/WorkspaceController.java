@@ -112,6 +112,9 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     @Wire
     private Vbox vboxListMembers;
     
+    @Wire
+    private Textbox textboxFrom;
+    
     
     public WorkspaceController() {
 		super();
@@ -405,14 +408,23 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     
     @Listen("onClick =#buttonSave")
     public void onbuttonSave() {
+    	boolean success=false;
     	if(radioVariety.isSelected())
-    		 onbuttonSaveVariety();
+    		success = onbuttonSaveVariety();
     	else if(radioSNP.isSelected())
-    		 onbuttonSaveSNP();
+    		success =  onbuttonSaveSNP();
     	
     	radioSNP.setDisabled(false);
     	radioVariety.setDisabled(false);
 
+    	if(textboxFrom!=null && success) {
+    		if(textboxFrom.getValue().equals("variety")) {
+    			Executions.sendRedirect("_snp.zul?from=varietylist");
+    		} else if(textboxFrom.getValue().equals("snp") )
+    		{
+    			Executions.sendRedirect("_snp.zul?from=snplist");
+    		}
+    	}
     }
     
     @Listen("onClick =#buttonCancel")
@@ -427,6 +439,17 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 
     	radioSNP.setDisabled(false);
     	radioVariety.setDisabled(false);
+    	
+    	
+    	if(textboxFrom!=null) {
+    		if(textboxFrom.getValue().equals("variety")) {
+    			Executions.sendRedirect("_snp.zul");
+    		} else if(textboxFrom.getValue().equals("snp") )
+    		{
+    			Executions.sendRedirect("_snp.zul");
+    		}
+    	}
+    	
 
     }
     
@@ -519,10 +542,13 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	
     }
     
-    private void onbuttonSaveSNP() {
+    private boolean isMsgboxEventSuccess=false;
+    
+    private boolean onbuttonSaveSNP() {
     	genotype =  (GenotypeFacade)AppContext.checkBean(genotype , "GenotypeFacade");
     	workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
     	
+    	isMsgboxEventSuccess = false;
 
     	String lines[] = txtboxEditNewList.getValue().trim().split("\n");
 		
@@ -570,7 +596,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	
     	if(setMatched.size()==0) {
     		Messagebox.show("No identified SNP positions","WARNING",Messagebox.OK,Messagebox.EXCLAMATION);
-			return;
+			return false;
     	}
     	
     	// list not in snp universe
@@ -621,6 +647,8 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 	    		else return;
 	    		*/
 	    		
+	    		
+	    		
 	    		Messagebox.show(buff.toString(),"WARNING",Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, 0,
 	    				 	new org.zkoss.zk.ui.event.EventListener() {
 								@Override
@@ -663,6 +691,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 				                    	    	Events.sendEvent( "onClick", radioSNP, null);
 				                    	    	
 				                    	    	//onclickSNP();
+				                    	    	isMsgboxEventSuccess = true;
 				                    			
 				                    		}
 				                    		else 
@@ -675,13 +704,17 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 								}
 	    				});
 	    		
+	    		return isMsgboxEventSuccess;
+	    		
     		} else
     		{
     			Messagebox.show("No identified SNP positions","WARNING",Messagebox.OK,Messagebox.EXCLAMATION);
-    			return;
+    			return false;
     			
     		}
+    	
     	}
+    	return true;
     
     }
     
@@ -722,8 +755,9 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	}
     }
     
-    private void onbuttonSaveVariety() {
+    private boolean onbuttonSaveVariety() {
     	
+    	isMsgboxEventSuccess = false;
     	variety =  (VarietyFacade)AppContext.checkBean(variety , "VarietyFacade");
     	workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
     	
@@ -762,7 +796,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	
      	if(setMatched.size()==0) {
     		Messagebox.show("No identified varieties","WARNING",Messagebox.OK,Messagebox.EXCLAMATION);
-			return;
+			return false;
     	}
      	
     	if(listNoMatch.size()>0) {
@@ -790,21 +824,25 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 				                    if(Messagebox.ON_YES.equals(e.getName())){
 				                        //OK is clicked
 				                    	addVarlist(setMatched);
+				                    	isMsgboxEventSuccess = true;
 				                    	
 				                    } else
 				                    	Messagebox.show("Failed to add list","OPERATION FAILED",Messagebox.OK, Messagebox.EXCLAMATION);
 								}
 	    				});
+	    		
+	    		return isMsgboxEventSuccess;
 	    				
     		} else
     		{
     			Messagebox.show("No identified varieties","WARNING",Messagebox.OK,Messagebox.EXCLAMATION);
-    			return;
+    			return false;
     			
     		}
     		
     	} else {
     		addVarlist(setMatched);
+    		return true;
     	}
     	
     	

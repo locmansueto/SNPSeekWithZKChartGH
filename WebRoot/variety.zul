@@ -66,7 +66,7 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		import org.springframework.beans.factory.annotation.Autowired;
 
 		//import org.irri.iric.portal.variety.zkui.CvListItemRenderer;
-
+		import org.irri.iric.portal.AppContext;
 
        
        	VarietyFacade variety = (VarietyFacade)SpringUtil.getBean("VarietyFacade");
@@ -78,14 +78,13 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
         java.util.List subpopulation = variety.getSubpopulations();
         
 
-        String msg =varnames.size()/2 + " varieties, " + irisIds.size()/2 + " IRIS IDs, "  + countries.size()/2 + " countries, " + (subpopulation.size()-1) +  " subpopulations for selection";
+       
+
+       
         //String msg ="Get Variety Information by Name or IRIS ID.  Search varieties by Country and/or Subpopulation";
                   
-        java.util.List listPassport = new java.util.ArrayList();
-        listPassport.addAll( variety.getPassportDefinitions().keySet());
-        
-        java.util.List listPhenotype = new java.util.ArrayList();
-        listPhenotype.addAll( variety.getPhenotypeDefinitions().keySet());
+        Set setPassport = variety.getPassportDefinitions().keySet();
+        Set setPhenotype = variety.getPhenotypeDefinitions().keySet();
         
         WorkspaceFacade workspace = (WorkspaceFacade)SpringUtil.getBean("WorkspaceFacade");
         
@@ -93,7 +92,21 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
         listMyVarieties.add("");
         listMyVarieties.addAll( workspace.getVarietylistNames());
         
+        String msg =varnames.size() + " varieties, " + irisIds.size() + " IRIS IDs, "  + countries.size() + " countries, " +
+         subpopulation.size() +  " subpopulations, " +  setPassport.size() +  " passport fields, " + setPhenotype.size() + " phenotypes for selection";
+         
+        java.util.List listPassport = new java.util.ArrayList();
+        listPassport.add("");
+        listPassport.addAll( setPassport );
+        java.util.List listPhenotype = new java.util.ArrayList();
+        listPhenotype.add("");
+        listPhenotype.addAll( setPhenotype );
+         
         
+       	subpopulation = AppContext.createUniqueUpperLowerStrings( subpopulation, false, true);
+		countries  = AppContext.createUniqueUpperLowerStrings( countries, true, false);
+		varnames  = AppContext.createUniqueUpperLowerStrings( varnames, true, false);
+		irisIds  = AppContext.createUniqueUpperLowerStrings( irisIds, true, false);
         
                 
 </zscript>

@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -929,7 +930,7 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 				newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0].replace(", ","_") + "|" + irisid + "|" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
 			
 			}
-			AppContext.debug(newick);
+			//AppContext.debug(newick);
 			
 			return new String[] {newick, Integer.toString(symdistmatrix.getSize()), Integer.toString( mismatches.size()) };
 			
@@ -957,19 +958,19 @@ static boolean isGreaterThan(BigDecimal n1, BigDecimal n2) {
  * @param mapGroup2Set
  * @param mapVar2Group
  */
-private void changeGroupKey(BigDecimal origkey, BigDecimal newkey, Map<BigDecimal,Set<BigDecimal>> mapGroup2Set, Map<BigDecimal,BigDecimal> mapVar2Group) {
+private Map[] changeGroupKey(BigDecimal origkey, BigDecimal newkey, Map<BigDecimal,Set<BigDecimal>> mapGroup2Set, Map<BigDecimal,BigDecimal> mapVar2Group) {
 	
 	Set origset = mapGroup2Set.get(origkey);
 	Iterator<BigDecimal> itSet = origset.iterator();
 	while(itSet.hasNext()) {
 		BigDecimal var = itSet.next();
-		mapVar2Group.remove(var);
 		mapVar2Group.put(var, newkey);
 	}
 	mapVar2Group.put(newkey, newkey);
 	origset.add(newkey);
 	mapGroup2Set.put(newkey, origset);
 	mapGroup2Set.remove(origkey);
+	return new Map[]{mapVar2Group, mapGroup2Set};
 }
 
 /**
@@ -979,27 +980,79 @@ private void changeGroupKey(BigDecimal origkey, BigDecimal newkey, Map<BigDecima
  * @param mapGroup2Set
  * @param mapVar2Group
  */
-private void mergeGroups(BigDecimal destVarGroup, BigDecimal srcVarGroup, Map<BigDecimal,Set<BigDecimal>> mapGroup2Set, Map<BigDecimal,BigDecimal> mapVar2Group) {
+private Map[] mergeGroups(BigDecimal destVarGroup, BigDecimal srcVarGroup, Map<BigDecimal,Set<BigDecimal>> mapGroup2Set, Map<BigDecimal,BigDecimal> mapVar2Group) {
 	
 	Set origset = mapGroup2Set.get(srcVarGroup);
 	Iterator<BigDecimal> itSet = origset.iterator();
 	while(itSet.hasNext()) {
 		BigDecimal var = itSet.next();
-		mapVar2Group.remove(var);
 		mapVar2Group.put(var, destVarGroup);
 	}
 	
 	Set minvarset = mapGroup2Set.get(destVarGroup);
 	minvarset.addAll( origset );
 	mapGroup2Set.remove(srcVarGroup);
+	mapGroup2Set.put(destVarGroup , minvarset);
+	return new Map[]{mapVar2Group, mapGroup2Set};
 	
 }
 	
+/**
+ * 
+ * @param var1
+ * @param var2
+ * @param mapVar2Group
+ * @param mapGroup2Varset
+ */
+private double linkUngroupedToGroup(BigDecimal var1, BigDecimal var2, Map<BigDecimal,BigDecimal> mapVar2Group, 
+		Map<BigDecimal,Set<BigDecimal>> mapGroup2Varset, Map<BigDecimal,Map<BigDecimal,Double>> mapdistances) {
+		
+		Set groupset = mapGroup2Varset.get( mapVar2Group.get(var2) );
+		Iterator<BigDecimal> itGroupmems = groupset.iterator();
+		double total = 0;
+		while(itGroupmems.hasNext()) {
+			BigDecimal varmax =  itGroupmems.next();
+			BigDecimal varmin = var1;
+			if( isGreaterThan(var1,varmax) ) {
+				varmin = varmax;
+				varmax = var1;
+			}
+			//total += mapdistances.get(varmin).[varmax.intValue()-1];
+			total += mapdistances.get(varmin).get(varmax);
+		}
+		return total/groupset.size(); 
+}
+
+private double linkgroupedTogroup(BigDecimal var1, BigDecimal var2, Map<BigDecimal,BigDecimal> mapVar2Group, 
+		Map<BigDecimal,Set<BigDecimal>> mapGroup2Varset, Map<BigDecimal,Map<BigDecimal,Double>>  mapdistances) {
+		
+		Set groupset1 = mapGroup2Varset.get( mapVar2Group.get(var1) );
+		Set groupset2 = mapGroup2Varset.get( mapVar2Group.get(var2) );
+		Iterator<BigDecimal> itGroup1mems = groupset1.iterator();
+		double total = 0;
+		int ncount=0;
+		while(itGroup1mems.hasNext()) {
+			BigDecimal vargroup1 =  itGroup1mems.next();
+
+			Iterator<BigDecimal> itGroup2mems = groupset2.iterator();
+			while(itGroup2mems.hasNext()) {
+				BigDecimal vargroup2 =  itGroup2mems.next();
+				if( isGreaterThan(vargroup1,vargroup2) ) continue;
+				//total += mapdistances.get(vargroup1)[vargroup2.intValue()-1];
+				total += mapdistances.get(vargroup1).get(vargroup2);
+				ncount++;
+			}
+		}
+		return total/ncount; 
+}
+
+
+
 @Override
 //public Object[] constructPhylotreeTopNNew(String scale, String chr, int start, int end, int topN,  String requestid) {
 public Object[] constructPhylotreeMindist(String scale, String chr, int start, int end, String mindist) {
 		
-		List<Snps2VarsCountmismatch>  mismatches = new ArrayList();
+		
 		SNPsStringData snpstrdata = getSNPsStringData(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), null );
 		if(snpstrdata==null) return new String[] {"", "0","0"};
 	 
@@ -1007,11 +1060,13 @@ public Object[] constructPhylotreeMindist(String scale, String chr, int start, i
 		if(mindist!=null) {
 			try {
 				minCount = Double.valueOf(mindist);
+				AppContext.debug("grouping pairs with distance below " + minCount + " pairs (" + mindist +")");
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}
 		}
-		
+		minCount=1;
+				
 		// use minVar in Varset as group key
 		Map<BigDecimal,Set<BigDecimal>> mapGroup2Varset = new HashMap();
 		
@@ -1021,37 +1076,77 @@ public Object[] constructPhylotreeMindist(String scale, String chr, int start, i
 		Map mapVarid2Snpsstr = snpstrdata.getMapVarid2Snpsstr();
 	 
 		Set setNonsynIdx=new HashSet();
-		Set sortedVarieties = new TreeSet(new SnpsStringAllvarsImplSorter());
+		//Set sortedVarieties = new TreeSet(new SnpsStringAllvarsImplSorter());
+		
+		//Set sortedVarietiesPairsDesc = new TreeSet(new SnpsString2VarsImplSorter());
+		List sortedVarietiesPairsDesc = new ArrayList();
+		
+		Map<BigDecimal,Map<BigDecimal,Double>> mapVar1ToVar2Dist = new  HashMap();
 		
 	 	Iterator<BigDecimal> itVar1 = mapVarid2Snpsstr.keySet().iterator();
-		while(itVar1.hasNext()) {
+	 	while(itVar1.hasNext()) {
 			BigDecimal var1 = itVar1.next();
 			String snpstr1 = (String)mapVarid2Snpsstr.get(var1);
 			Map getMapVar12SnpsAllele2str = (Map)snpstrdata.getMapVarid2SnpsAllele2str().get(var1);
 			
+			//double var2distarray[] = new double[var1.intValue()];
+			Map<BigDecimal,Double> var2distmap = new HashMap();
+			
 		 	Iterator<BigDecimal> itVar2 = mapVarid2Snpsstr.keySet().iterator();
 			while(itVar2.hasNext()) {
 				BigDecimal var2 = itVar2.next();
-				if( isGreaterThan(var1, var2) || var1.equals(var2) ) continue;
+				if( isGreaterThan(var1, var2)) continue;
+				
 				
 				String snpstr2 = (String)mapVarid2Snpsstr.get(var2);
-
 				Set varNonsynIdx = new HashSet();
 				
 				double misCount = countVarpairMismatch(snpstr1, snpstr2, false,  getMapVar12SnpsAllele2str, (Map)snpstrdata.getMapVarid2SnpsAllele2str().get(var2),  
 						(Map)snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx(), varNonsynIdx,  isNonsynOnly );
-
-				if(misCount>=minCount) {
-					mismatches.add( new Snps2VarsCountmismatchImpl( var1,  var2, BigDecimal.valueOf(misCount)) );
-				} else {
+				
+				sortedVarietiesPairsDesc.add( new Snps2VarsCountmismatchImpl( var1,  var2, BigDecimal.valueOf(misCount)) ); 
+				//var2distarray[var2.intValue()-1] = misCount;
+				var2distmap.put(var2, misCount);
+				
+			}
+			mapVar1ToVar2Dist.put(var1, var2distmap);
+	 	}
+	 	
+	 	Collections.sort(sortedVarietiesPairsDesc, new SnpsString2VarsImplSorter());
+	 	
+	 	// filter sorted pairs 
+	 	
+	 	Iterator<Snps2VarsCountmismatch>  itPairs = sortedVarietiesPairsDesc.iterator();
+	 	//Set setVarietyDontGroup = new HashSet();
+	 	Set setVarietyNotGrouped = new HashSet();
+	 	Set setVarietyGrouped = new HashSet();
+	 	
+	 	while(itPairs.hasNext()) {
+	 		Snps2VarsCountmismatch pair = itPairs.next();
+	 		//AppContext.debug(pair.getMismatch().toString());
+	 	
+				if(pair.getMismatch().doubleValue()>=minCount) {
+					//mismatches.add( pair );
+					//setVarietyDontGroup.add( pair.getVar1() );
+					//setVarietyDontGroup.add( pair.getVar2() );
+					setVarietyNotGrouped.add( pair.getVar1().intValue() );
+					setVarietyNotGrouped.add( pair.getVar2().intValue() );
 					
+				//} else if( setVarietyDontGroup.contains(pair.getVar1()) || setVarietyDontGroup.contains(pair.getVar2()) ) {} 
+				}
+				else {
+					// both nodes not in paired, sould be grouped
+					//setVarietyNotGrouped.remove( pair.getVar1() );
+					//setVarietyNotGrouped.remove( pair.getVar2() );
+					setVarietyGrouped.add( pair.getVar1().intValue());
+					setVarietyGrouped.add( pair.getVar2().intValue());
 					
 					// create groups for mincount
-					BigDecimal minVar = var1;
-					BigDecimal maxVar = var1;
-					if( isGreaterThan(var1,var2)) {
-						minVar = var2;
-						maxVar = var1;
+					BigDecimal minVar = pair.getVar1();
+					BigDecimal maxVar = pair.getVar2();
+					if( isGreaterThan(minVar,maxVar)) {
+						minVar = pair.getVar2();
+						maxVar = pair.getVar1();
 					}
 					
 					// check if var1 or var2 in the groups
@@ -1076,7 +1171,9 @@ public Object[] constructPhylotreeMindist(String scale, String chr, int start, i
 							if( isLessThan(maxVarGroup, minVar) ) {
 								mapGroup2Varset.get(maxVarGroup).add(minVar);
 							} else {
-								changeGroupKey(maxVarGroup, minVar,  mapGroup2Varset, mapVar2Group);
+								Map[] groupmaps = changeGroupKey(maxVarGroup, minVar,  mapGroup2Varset, mapVar2Group);
+								mapVar2Group = groupmaps[0];
+								mapGroup2Varset = groupmaps[1];
 							}
 						}
 					} else {
@@ -1090,20 +1187,102 @@ public Object[] constructPhylotreeMindist(String scale, String chr, int start, i
 							// merge min's and max's groups
 							if(isLessThan(minVarGroup,maxVarGroup)) {
 								// merge to minvar's group
-								mergeGroups( minVarGroup, maxVarGroup, mapGroup2Varset, mapVar2Group);
+								Map[] groupmaps = mergeGroups( minVarGroup, maxVarGroup, mapGroup2Varset, mapVar2Group);
+								mapVar2Group = groupmaps[0];
+								mapGroup2Varset = groupmaps[1];
 							} else if(isGreaterThan(minVarGroup, maxVarGroup) )
 							{
 								// merge to maxvar's group
-								mergeGroups( maxVarGroup, minVarGroup,  mapGroup2Varset, mapVar2Group);
+								Map[] groupmaps = mergeGroups( maxVarGroup, minVarGroup,  mapGroup2Varset, mapVar2Group);
+								mapVar2Group = groupmaps[0];
+								mapGroup2Varset = groupmaps[1];
+
 							} // else they are from the same group, do nothing
 						}
 					}
 					
 				}
-				
-			}
 		}
+	 	
+	 	AppContext.debug( mapGroup2Varset.size() + " groups, " +  setVarietyGrouped.size() + " varieties grouped, "  + setVarietyNotGrouped.size() + " not grouped");
+	 	
+	 	Set grouponlySet = new HashSet();
+	 	grouponlySet.addAll( setVarietyGrouped);
+	 	grouponlySet.removeAll( setVarietyNotGrouped  );
+	 	Set notgrouponlySet = new HashSet();
+	 	notgrouponlySet.addAll( setVarietyNotGrouped);
+	 	notgrouponlySet.removeAll( setVarietyGrouped  );
+	 	Set bothSet = new HashSet();
+	 	bothSet.addAll( setVarietyNotGrouped);
+	 	bothSet.retainAll( setVarietyGrouped  );
+	 	AppContext.debug(grouponlySet.size() + " group only, " + notgrouponlySet.size() + " ungroup only, " + bothSet.size() + " both" );
+	 	
+	 	// linked groups to ungroupd pairs
+	 	
+	 	AppContext.debug(sortedVarietiesPairsDesc.size() + " distance pairs");
+	 	
+	 	Set setUGToUGVarietyPairs = new HashSet();
+	 	Set setGroupToGroupPairs = new HashSet();
+	 	Set setVarietyToGroupPairs = new HashSet();
+		itPairs = sortedVarietiesPairsDesc.iterator();
 		
+		long paircnt = 0;
+		int paircnt2 = 0;
+		while(itPairs.hasNext()) {
+			Snps2VarsCountmismatch pair = itPairs.next();
+			BigDecimal var1 = pair.getVar1();
+			BigDecimal var2 = pair.getVar2();
+			int ivar1 = var1.intValue();
+			int ivar2 = var2.intValue();
+					
+
+			//if(pair.getMismatch().doubleValue()>=minCount) continue;
+			
+			paircnt++;
+			if(paircnt> 1000) {
+				paircnt =0;
+				AppContext.debug("pair " + paircnt2 + "k pairs");
+				paircnt2 ++;
+			}
+			
+			if(notgrouponlySet.contains(ivar1) && notgrouponlySet.contains(ivar2)) {
+				setUGToUGVarietyPairs.add( new Snps2VarsCountmismatchImpl( var1,  mapVar2Group.get(var2) , pair.getMismatch()) ); 
+			}
+			else if(grouponlySet.contains(ivar1) && notgrouponlySet.contains(ivar2)) {
+				// link var2 to group of var1, using average distance between var2 and all group of var1
+				double avgdist = linkUngroupedToGroup(var2, var1, mapVar2Group, mapGroup2Varset , mapVar1ToVar2Dist);
+				setVarietyToGroupPairs.add( new Snps2VarsCountmismatchImpl( var2,  mapVar2Group.get(var1) , BigDecimal.valueOf(avgdist)) ); 
+			}
+			else if(grouponlySet.contains(ivar2) && notgrouponlySet.contains(ivar1)) {
+				// link var1 to group of var2, using average distance between var1 and all group of var2
+				double avgdist = linkUngroupedToGroup(var1, var2, mapVar2Group, mapGroup2Varset , mapVar1ToVar2Dist);
+				setVarietyToGroupPairs.add( new Snps2VarsCountmismatchImpl( var1,  mapVar2Group.get(var2) , BigDecimal.valueOf(avgdist)) ); 
+			}
+			else if(bothSet.contains(ivar1) && notgrouponlySet.contains(ivar2)) {
+				// link var2 to group of var1, using average distance between var2 and all group of var1
+				double avgdist = linkUngroupedToGroup(var2, var1, mapVar2Group, mapGroup2Varset , mapVar1ToVar2Dist);
+				setVarietyToGroupPairs.add( new Snps2VarsCountmismatchImpl( var2,  mapVar2Group.get(var1) , BigDecimal.valueOf( (avgdist+pair.getMismatch().doubleValue())/2 )) ); 
+			}
+			else if(bothSet.contains(ivar2) && notgrouponlySet.contains(ivar1)) {
+				// link var1 to group of var2, using average distance between var1 and all group of var2
+				double avgdist = linkUngroupedToGroup(var1, var2, mapVar2Group, mapGroup2Varset , mapVar1ToVar2Dist);
+				setVarietyToGroupPairs.add( new Snps2VarsCountmismatchImpl( var1,  mapVar2Group.get(var2) , BigDecimal.valueOf( (avgdist+pair.getMismatch().doubleValue())/2 )) ); 
+			}
+			else if( grouponlySet.contains(ivar1) &&  grouponlySet.contains(ivar2) ) {
+				throw new RuntimeException("cannot be both members of  grouponly because their groups should have been merged earlier");
+				//double avgdist = linkgroupedTogroup(var1, var2, mapVar2Group, mapGroup2Varset , mapVar1ToVar2Dist);
+				//setGroupToGroupPairs.add( new Snps2VarsCountmismatchImpl( mapVar2Group.get(var1),  mapVar2Group.get(var2) , BigDecimal.valueOf(avgdist)) ); 
+			}
+			else if( (grouponlySet.contains(ivar1) || bothSet.contains(ivar1)) &&  (grouponlySet.contains(ivar2) || bothSet.contains(ivar2)) ) {
+				//throw new RuntimeException("cannot be both members of  grouponly because their groups should have been merged earlier");
+				double avgdist = linkgroupedTogroup(var1, var2, mapVar2Group, mapGroup2Varset , mapVar1ToVar2Dist);
+				setGroupToGroupPairs.add( new Snps2VarsCountmismatchImpl( mapVar2Group.get(var1),  mapVar2Group.get(var2) , BigDecimal.valueOf(avgdist)) ); 
+			}
+			else throw new RuntimeException("cannot be both members of bothSet because their groups should have been merged earlier");
+		}
+			
+		
+		AppContext.debug(mapGroup2Varset.size() + " groups created for tree" );
 		
 		varietyfacade = (VarietyFacade)AppContext.checkBean( varietyfacade, "VarietyFacade" );
 
@@ -1122,8 +1301,13 @@ public Object[] constructPhylotreeMindist(String scale, String chr, int start, i
 				if(subcount==null) {
 					Integer count = 1;
 					mapGroupSubpopCount.put(subpop, count);
-				} else subcount++;
+				} else {
+					mapGroupSubpopCount.remove(subpop);
+					mapGroupSubpopCount.put(subpop, subcount+1) ;
+				}
 			}
+			
+			
 			
 			// create name
 			Iterator<String> itSub = new TreeSet(mapGroupSubpopCount.keySet()).iterator();
@@ -1135,117 +1319,49 @@ public Object[] constructPhylotreeMindist(String scale, String chr, int start, i
 				 if(itSub.hasNext()) buff.append(":");
 			}
 			mapGroup2Name.put(group,buff.toString());
+			
+			AppContext.debug("group " + group + ": " +  mapGroup2Name.get(group) + " has size " + mapGroup2Varset.get(group).size() );
 		}
 		
-		
-		
-		AppContext.startTimer();
-		
-//		
-//		if(topN>0) {
-//			
-//			if(limitVarIds!=null && !limitVarIds.isEmpty())
-//				mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topN, limitVarIds);
-//			else	
-//				mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topN);
-//			
-//			AppContext.debug(mismatches.size() + " mismatch pairs");
-//			
-//			// get varieties in topN
-//			java.util.Iterator<Snps2VarsCountmismatch>  itdist = mismatches.iterator();		
-//			Set topVars =new java.util.HashSet();
-//			while(itdist.hasNext())
-//			{
-//				Snps2VarsCountmismatch dist3k = itdist.next();
-//				topVars.add( dist3k.getVar1());
-//				topVars.add( dist3k.getVar2());
-//			}
-//			mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topVars);
-//			AppContext.resetTimer(" topN distance calc");
-//			
-//		}
-//		else {
-//			if(limitVarIds!=null && !limitVarIds.isEmpty())
-//				mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), limitVarIds);
-//			else
-//				mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end));
-//			
-//			
-//			
-//			AppContext.resetTimer(" all distance calc");
-//		}
-		
-//		int snps = -1;
-//		//List snps = null;
-//		snpstringallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpstringallvarsposService, "SnpcoreRefposindexDAO") ; 
-//		if(isCore) {
-//			//snpcoreallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpcoreallvarsposService, "MvCoreSnpsDAO") ; 
-//			//snps = snpcoreallvarsposService.getSNPs(chr, start, end, null ).size();
-//			
-//			snps = snpstringallvarsposService.getSNPs(chr, start, end,  SnpcoreRefposindexDAO.TYPE_3KCORESNP  ).size();
-//			
-//			 
-//		 }
-//		 else {
-//			snps = snpstringallvarsposService.getSNPs(chr, start, end,  SnpcoreRefposindexDAO.TYPE_3KALLSNP   ).size();
-//			 //snpallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpallvarsposService, "SnpsAllvarsPosDAO") ; 
-//			 // snps = snpallvarsposService.getSNPs(chr, start, end ,null ).size();
-//		 }
+			AppContext.startTimer();
 		 
 		 int snps = snpstrdata.getStrRef().length();
 		 if(snps==0) return new String[] {"", "0","0"};
 		
 		//germplasms
-		AppContext.debug(mismatches.size() + " mismatch pairs");
-		
-		java.util.Map<BigDecimal, Integer> mapName2Row = new java.util.HashMap<BigDecimal, Integer>();
+		 
 
-		Set<BigDecimal> setWithMismatch = new java.util.TreeSet();
+		 
+		AppContext.debug(setUGToUGVarietyPairs.size() + " mismatch var-var pairs");
+		AppContext.debug(setVarietyToGroupPairs.size() + " mismatch var-group pairs");
+		AppContext.debug(setGroupToGroupPairs.size() +  " mismatch group-group pairs");
 		
-		List listMismatchGrouped = new ArrayList();
+		List<Snps2VarsCountmismatch>  mismatches = new ArrayList();
+		mismatches.addAll(setUGToUGVarietyPairs);
+		mismatches.addAll(setVarietyToGroupPairs );
+		mismatches.addAll(setGroupToGroupPairs );
+	
 		
-		//java.util.Map<String, BigDecimal> mapPairMismatch = new java.util.HashMap<String, BigDecimal>();
-		java.util.Iterator<Snps2VarsCountmismatch>  itdist = mismatches.iterator();		
-		while(itdist.hasNext())
-		{
-			
-			Snps2VarsCountmismatch dist3k = itdist.next();
-			//mapPairMismatch.put( dist3k.getVar1() + ":" + dist3k.getVar2(), dist3k.getMismatch());
-			
-			BigDecimal node1 = dist3k.getVar1();
-			BigDecimal node2 = dist3k.getVar2();
-			BigDecimal var1group = mapVar2Group.get(node1);
-			BigDecimal var2group = mapVar2Group.get(node2);
-			if(var1group!=null) node1 = var1group;
-			if(var2group!=null) node2 = var2group;
-			
-			if(var1group!=null || var2group!=null) {
-				listMismatchGrouped.add( new Snps2VarsCountmismatchImpl(node1,node2, dist3k.getMismatch()) );
-			} else
-				listMismatchGrouped.add(dist3k );
-			
-			setWithMismatch.add(  node1 );
-			setWithMismatch.add(  node2 );
-			
-			//setWithMismatch.add( dist3k.getVar1());
-			//setWithMismatch.add( dist3k.getVar2());
-		}
+		Set setNodes = new TreeSet();
 		
-		mismatches = listMismatchGrouped;
+		//AppContext.debug(grouponlySet.size() + " group only, " + notgrouponlySet.size() + " ungroup only, " + bothSet.size() + " both" );
+		//setNodes.addAll( setVarietyDontGroup );
+		setNodes.addAll( notgrouponlySet );
+		setNodes.addAll( mapGroup2Varset.keySet() );
 		
 		
-		BasicSymmetricalDistanceMatrix symdistmatrix = new BasicSymmetricalDistanceMatrix( setWithMismatch.size() );
-		
-		AppContext.debug( setWithMismatch.size() + " unique names with mismatch");
-		
+		BasicSymmetricalDistanceMatrix symdistmatrix = new BasicSymmetricalDistanceMatrix( setNodes.size() );
+
 		varietyfacade = (VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade");
 		Map<BigDecimal,Variety> mapVarid2Variety = varietyfacade.getMapId2Variety();
 		
+		Map<BigDecimal,Integer> mapVarid2Row = new HashMap();
+		
 		int i=0;
-		Iterator<BigDecimal> itgerm = setWithMismatch.iterator();
+		Iterator<BigDecimal> itgerm = setNodes.iterator();
 		while(itgerm.hasNext()) {
 			BigDecimal varid = itgerm.next();
-			mapName2Row.put(varid , i);
+			mapVarid2Row.put(varid , i);
 			symdistmatrix.setIdentifier( i, "varid_" + varid );
 			i++;
 		}		
@@ -1266,17 +1382,17 @@ public Object[] constructPhylotreeMindist(String scale, String chr, int start, i
 			
 			try {
 				
-				if(  mapName2Row.get(dist3k.getVar1()).equals(  mapName2Row.get(dist3k.getVar2()) ) ) {
+				if(  mapVarid2Row.get(dist3k.getVar1()).equals(  mapVarid2Row.get(dist3k.getVar2()) ) ) {
 					//AppContext.debug( mapName2Row.get(dist3k.getVar1()) + ": " +  mapVarid2Variety.get(dist3k.getVar1()) + "\t" +  mapName2Row.get(dist3k.getVar2()) + ": " +    mapVarid2Variety.get(dist3k.getVar2())  + "  -- " + dist);
 					dist = 0.0;
 				}
 				
-				symdistmatrix.setValue( mapName2Row.get(dist3k.getVar1()) , mapName2Row.get(dist3k.getVar2()) , dist );
-				symdistmatrix.setValue( mapName2Row.get(dist3k.getVar2()) , mapName2Row.get(dist3k.getVar1()),  dist );
+				symdistmatrix.setValue( mapVarid2Row.get(dist3k.getVar1()) , mapVarid2Row.get(dist3k.getVar2()) , dist );
+				symdistmatrix.setValue( mapVarid2Row.get(dist3k.getVar2()) , mapVarid2Row.get(dist3k.getVar1()),  dist );
 				
 			} catch(Exception ex) {
 				
-				AppContext.debug( "NULL EXCEPTION:\t" + dist + "\t" + dist3k.getVar1() + "\t" + mapName2Row.get(dist3k.getVar1()) + "\t" + dist3k.getVar2() + "\t" +  mapName2Row.get(dist3k.getVar2()) + "\t" + dist );
+				AppContext.debug( "NULL EXCEPTION:\t" + dist + "\t" + dist3k.getVar1() + "\t" + mapVarid2Row.get(dist3k.getVar1()) + "\t" + dist3k.getVar2() + "\t" +  mapVarid2Row.get(dist3k.getVar2()) + "\t" + dist );
 			
 			}
 		}
@@ -1299,7 +1415,7 @@ public Object[] constructPhylotreeMindist(String scale, String chr, int start, i
 			Map<BigDecimal,Variety> mapId2Variety = varietyfacade.getMapId2Variety();
 			
 			//AppContext.debug(newick);
-			Iterator<BigDecimal> itgerm2 = setWithMismatch.iterator();
+			Iterator<BigDecimal> itgerm2 = setNodes.iterator();
 			while(itgerm2.hasNext()) {
 				BigDecimal c = itgerm2.next();
 			
@@ -1314,7 +1430,7 @@ public Object[] constructPhylotreeMindist(String scale, String chr, int start, i
 					//newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0] + "/" + irisid + "/" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
 					newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0].replace(", ","_") + "|" + irisid + "|" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
 				} else {
-					newick = newick.replace("varid_" + c + ":", nodename + ":");
+					newick = newick.replace("varid_" + c + ":", nodename.replace("::", "_").replace(":","_") + ":");
 				}
 			
 			}
@@ -1332,6 +1448,537 @@ public Object[] constructPhylotreeMindist(String scale, String chr, int start, i
 		
 	}
 	
+
+public Object[] constructPhylotreeMindist1(String scale, String chr, int start, int end, String mindist) {
+	
+	List<Snps2VarsCountmismatch>  mismatches = new ArrayList();
+	SNPsStringData snpstrdata = getSNPsStringData(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), null );
+	if(snpstrdata==null) return new String[] {"", "0","0"};
+ 
+	double minCount = 0;
+	if(mindist!=null) {
+		try {
+			minCount = Double.valueOf(mindist);
+			AppContext.debug("grouping pairs with distance below " + minCount + " pairs (" + mindist +")");
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	minCount=1;
+			
+	// use minVar in Varset as group key
+	Map<BigDecimal,Set<BigDecimal>> mapGroup2Varset = new HashMap();
+	
+	// groups refer to group key
+	Map<BigDecimal,BigDecimal> mapVar2Group = new HashMap();
+	
+	Map mapVarid2Snpsstr = snpstrdata.getMapVarid2Snpsstr();
+ 
+	Set setNonsynIdx=new HashSet();
+	//Set sortedVarieties = new TreeSet(new SnpsStringAllvarsImplSorter());
+	
+	//Set sortedVarietiesPairsDesc = new TreeSet(new SnpsString2VarsImplSorter());
+	List sortedVarietiesPairsDesc = new ArrayList();
+	
+ 	Iterator<BigDecimal> itVar1 = mapVarid2Snpsstr.keySet().iterator();
+ 	while(itVar1.hasNext()) {
+		BigDecimal var1 = itVar1.next();
+		String snpstr1 = (String)mapVarid2Snpsstr.get(var1);
+		Map getMapVar12SnpsAllele2str = (Map)snpstrdata.getMapVarid2SnpsAllele2str().get(var1);
+		
+	 	Iterator<BigDecimal> itVar2 = mapVarid2Snpsstr.keySet().iterator();
+		while(itVar2.hasNext()) {
+			BigDecimal var2 = itVar2.next();
+			if( isGreaterThan(var1, var2)) continue;
+			
+			String snpstr2 = (String)mapVarid2Snpsstr.get(var2);
+			Set varNonsynIdx = new HashSet();
+			
+			double misCount = countVarpairMismatch(snpstr1, snpstr2, false,  getMapVar12SnpsAllele2str, (Map)snpstrdata.getMapVarid2SnpsAllele2str().get(var2),  
+					(Map)snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx(), varNonsynIdx,  isNonsynOnly );
+			
+			sortedVarietiesPairsDesc.add( new Snps2VarsCountmismatchImpl( var1,  var2, BigDecimal.valueOf(misCount)) ); 
+			
+		}
+ 	}
+ 	
+ 	Collections.sort(sortedVarietiesPairsDesc, new SnpsString2VarsImplSorter());
+ 	
+ 	// filter sorted pairs 
+ 	
+ 	Iterator<Snps2VarsCountmismatch>  itPairs = sortedVarietiesPairsDesc.iterator();
+ 	//Set setVarietyDontGroup = new HashSet();
+ 	Set setVarietyNotGrouped = new HashSet();
+ 	Set setVarietyGrouped = new HashSet();
+ 	
+ 	while(itPairs.hasNext()) {
+ 		Snps2VarsCountmismatch pair = itPairs.next();
+ 		//AppContext.debug(pair.getMismatch().toString());
+ 	
+			if(pair.getMismatch().intValue()>=minCount) {
+				mismatches.add( pair );
+				//setVarietyDontGroup.add( pair.getVar1() );
+				//setVarietyDontGroup.add( pair.getVar2() );
+				setVarietyNotGrouped.add( pair.getVar1() );
+				setVarietyNotGrouped.add( pair.getVar2() );
+				
+			//} else if( setVarietyDontGroup.contains(pair.getVar1()) || setVarietyDontGroup.contains(pair.getVar2()) ) {} 
+			}
+			else {
+				// both nodes not in paired, sould be grouped
+				//setVarietyNotGrouped.remove( pair.getVar1() );
+				//setVarietyNotGrouped.remove( pair.getVar2() );
+				setVarietyGrouped.add( pair.getVar1());
+				setVarietyGrouped.add( pair.getVar2());
+				
+				// create groups for mincount
+				BigDecimal minVar = pair.getVar1();
+				BigDecimal maxVar = pair.getVar2();
+				if( isGreaterThan(minVar,maxVar)) {
+					minVar = pair.getVar2();
+					maxVar = pair.getVar1();
+				}
+				
+				// check if var1 or var2 in the groups
+				BigDecimal minVarGroup = mapVar2Group.get(minVar);
+				if(minVarGroup==null) {
+					// minvar has no group
+					BigDecimal maxVarGroup = mapVar2Group.get(maxVar);
+					if(maxVarGroup==null) {
+						//maxvar has no group
+						
+						// make new groups
+						Set newgroup = new HashSet();
+						newgroup.add(minVar);
+						newgroup.add(maxVar);
+						mapVar2Group.put(minVar ,minVar);
+						mapVar2Group.put(maxVar ,minVar);
+						mapGroup2Varset.put(minVar, newgroup);
+						
+					} else {
+						// add minvar to max's group
+						// check nodename
+						if( isLessThan(maxVarGroup, minVar) ) {
+							mapGroup2Varset.get(maxVarGroup).add(minVar);
+						} else {
+							changeGroupKey(maxVarGroup, minVar,  mapGroup2Varset, mapVar2Group);
+						}
+					}
+				} else {
+					BigDecimal maxVarGroup = mapVar2Group.get(maxVar);
+					if(maxVarGroup==null) {
+						//maxvar has no group
+						// add maxvar to minvars group
+						mapGroup2Varset.get( minVarGroup ).add(  maxVar );
+						mapVar2Group.put(maxVar, minVarGroup );
+					} else {
+						// merge min's and max's groups
+						if(isLessThan(minVarGroup,maxVarGroup)) {
+							// merge to minvar's group
+							mergeGroups( minVarGroup, maxVarGroup, mapGroup2Varset, mapVar2Group);
+						} else if(isGreaterThan(minVarGroup, maxVarGroup) )
+						{
+							// merge to maxvar's group
+							mergeGroups( maxVarGroup, minVarGroup,  mapGroup2Varset, mapVar2Group);
+						} // else they are from the same group, do nothing
+					}
+				}
+				
+			}
+	}
+ 	
+ 	AppContext.debug(mapGroup2Varset.keySet().size() + " groups, " +  setVarietyGrouped.size() + " varieties grouped, "  + setVarietyNotGrouped.size() + " not grouped");
+ 	
+ 	Set grouponlySet = new HashSet();
+ 	grouponlySet.addAll( setVarietyGrouped);
+ 	grouponlySet.removeAll( setVarietyNotGrouped  );
+ 	Set notgrouponlySet = new HashSet();
+ 	notgrouponlySet.addAll( setVarietyNotGrouped);
+ 	notgrouponlySet.removeAll( setVarietyGrouped  );
+ 	Set bothSet = new HashSet();
+ 	bothSet.addAll( setVarietyNotGrouped);
+ 	bothSet.retainAll( setVarietyGrouped  );
+ 	AppContext.debug(grouponlySet.size() + " group only, " + notgrouponlySet.size() + " ungroup only, " + bothSet.size() + " both" );
+ 	// linked groups to ungroupd pairs
+
+ 	Set setVarietyToGroupPairs = new HashSet();
+	itPairs = sortedVarietiesPairsDesc.iterator();
+	while(itPairs.hasNext()) {
+		Snps2VarsCountmismatch pair = itPairs.next();
+		BigDecimal var1 = pair.getVar1();
+		BigDecimal var2 = pair.getVar2();
+		
+		if(pair.getMismatch().intValue()>=minCount) {
+			
+			// if var1 in group, link node to group
+			if(mapVar2Group.containsKey(var1) && !mapVar2Group.containsKey(var2)) {
+				// link var2 to group of var1
+				setVarietyToGroupPairs.add(   new Snps2VarsCountmismatchImpl( var2,  mapVar2Group.get(var1) , pair.getMismatch()  ) );
+			}
+			else if(!mapVar2Group.containsKey(var1) && mapVar2Group.containsKey(var2)) {
+				// link var1 to group of var2
+				setVarietyToGroupPairs.add(   new Snps2VarsCountmismatchImpl( var1,  mapVar2Group.get(var2) , pair.getMismatch()  ) );
+				
+			} else if(mapVar2Group.containsKey(var1) && mapVar2Group.containsKey(var2)) {
+				// link the groups of var1 and var2
+				setVarietyToGroupPairs.add(   new Snps2VarsCountmismatchImpl( mapVar2Group.get(var2),  mapVar2Group.get(var2) , pair.getMismatch()  ) );
+			}
+			
+			
+			/*
+			if(!setVarietyDontGroup.contains(pair.getVar1()) && setVarietyDontGroup.contains(var2))
+			{
+				// var1 in groups
+				// fnd in group, and join in pair
+				BigDecimal var1group = mapVar2Group.get(  var1 );
+				if(var1group==null) throw new RuntimeException("var1 supposed to be in groups");
+				setVarietyToGroupPairs.add(   new Snps2VarsCountmismatchImpl( var2,  var1group , pair.getMismatch()  ) );
+			}
+			else if(!setVarietyDontGroup.contains( var2 ) && setVarietyDontGroup.contains(var1) ) 
+			{
+				// var1 in groups
+				// fnd in group, and join in pair
+				BigDecimal var2group = mapVar2Group.get(  var2 );
+				if(var2group==null) throw new RuntimeException("var2 supposed to be in groups");
+				setVarietyToGroupPairs.add(   new Snps2VarsCountmismatchImpl( var1,  var2group , pair.getMismatch()  ) );
+			}
+			//else throw new RuntimeException("Cannot be, 1 var should be grouped, and 1 not grouped in pair");
+			 * */
+			 
+		}
+	}
+					
+					
+					
+ 	
+//	while(itVar1.hasNext()) {
+//		BigDecimal var1 = itVar1.next();
+//		String snpstr1 = (String)mapVarid2Snpsstr.get(var1);
+//		Map getMapVar12SnpsAllele2str = (Map)snpstrdata.getMapVarid2SnpsAllele2str().get(var1);
+//		
+//	 	Iterator<BigDecimal> itVar2 = mapVarid2Snpsstr.keySet().iterator();
+//		while(itVar2.hasNext()) {
+//			BigDecimal var2 = itVar2.next();
+//			if( isGreaterThan(var1, var2) || var1.equals(var2) ) continue;
+//			
+//			String snpstr2 = (String)mapVarid2Snpsstr.get(var2);
+//
+//			Set varNonsynIdx = new HashSet();
+//			
+//			double misCount = countVarpairMismatch(snpstr1, snpstr2, false,  getMapVar12SnpsAllele2str, (Map)snpstrdata.getMapVarid2SnpsAllele2str().get(var2),  
+//					(Map)snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx(), varNonsynIdx,  isNonsynOnly );
+//
+//			if(misCount>=minCount) {
+//				mismatches.add( new Snps2VarsCountmismatchImpl( var1,  var2, BigDecimal.valueOf(misCount)) );
+//			} else {
+//				
+//				
+//				// create groups for mincount
+//				BigDecimal minVar = var1;
+//				BigDecimal maxVar = var1;
+//				if( isGreaterThan(var1,var2)) {
+//					minVar = var2;
+//					maxVar = var1;
+//				}
+//				
+//				// check if var1 or var2 in the groups
+//				BigDecimal minVarGroup = mapVar2Group.get(minVar);
+//				if(minVarGroup==null) {
+//					// minvar has no group
+//					BigDecimal maxVarGroup = mapVar2Group.get(maxVar);
+//					if(maxVarGroup==null) {
+//						//maxvar has no group
+//						
+//						// make new groups
+//						Set newgroup = new HashSet();
+//						newgroup.add(minVar);
+//						newgroup.add(maxVar);
+//						mapVar2Group.put(minVar ,minVar);
+//						mapVar2Group.put(maxVar ,minVar);
+//						mapGroup2Varset.put(minVar, newgroup);
+//						
+//					} else {
+//						// add minvar to max's group
+//						// check nodename
+//						if( isLessThan(maxVarGroup, minVar) ) {
+//							mapGroup2Varset.get(maxVarGroup).add(minVar);
+//						} else {
+//							changeGroupKey(maxVarGroup, minVar,  mapGroup2Varset, mapVar2Group);
+//						}
+//					}
+//				} else {
+//					BigDecimal maxVarGroup = mapVar2Group.get(maxVar);
+//					if(maxVarGroup==null) {
+//						//maxvar has no group
+//						// add maxvar to minvars group
+//						mapGroup2Varset.get( minVarGroup ).add(  maxVar );
+//						mapVar2Group.put(maxVar, minVarGroup );
+//					} else {
+//						// merge min's and max's groups
+//						if(isLessThan(minVarGroup,maxVarGroup)) {
+//							// merge to minvar's group
+//							mergeGroups( minVarGroup, maxVarGroup, mapGroup2Varset, mapVar2Group);
+//						} else if(isGreaterThan(minVarGroup, maxVarGroup) )
+//						{
+//							// merge to maxvar's group
+//							mergeGroups( maxVarGroup, minVarGroup,  mapGroup2Varset, mapVar2Group);
+//						} // else they are from the same group, do nothing
+//					}
+//				}
+//				
+//			}
+//			
+//		}
+//	}
+	
+	AppContext.debug(mapGroup2Varset.size() + " groups created for tree" );
+	
+	varietyfacade = (VarietyFacade)AppContext.checkBean( varietyfacade, "VarietyFacade" );
+
+	// name groups (using minvar and subpop count)
+	Map<BigDecimal,Variety> mapVarid2Var = varietyfacade.getMapId2Variety();
+	Map<BigDecimal,String> mapGroup2Name = new HashMap();
+	Iterator<BigDecimal> itGroup = mapGroup2Varset.keySet().iterator();
+	while(itGroup.hasNext()) {
+		BigDecimal group = itGroup.next();
+		Iterator<BigDecimal> itVarset = mapGroup2Varset.get(group).iterator();
+		Map<String, Integer> mapGroupSubpopCount = new HashMap();
+		while(itVarset.hasNext()) {
+			BigDecimal varsetmember = itVarset.next();
+			String subpop = mapVarid2Var.get(varsetmember).getSubpopulation(); 
+			Integer subcount = mapGroupSubpopCount.get(subpop);
+			if(subcount==null) {
+				Integer count = 1;
+				mapGroupSubpopCount.put(subpop, count);
+			} else {
+				mapGroupSubpopCount.remove(subpop);
+				mapGroupSubpopCount.put(subpop, subcount+1) ;
+			}
+		}
+		
+		
+		
+		// create name
+		Iterator<String> itSub = new TreeSet(mapGroupSubpopCount.keySet()).iterator();
+		StringBuffer buff = new StringBuffer();
+		buff.append("GROUP " + mapVarid2Var.get(group).getName() + " :"  );
+		while(itSub.hasNext()) {
+			String subpop = itSub.next();
+			 buff.append(subpop +" " +  mapGroupSubpopCount.get(subpop));
+			 if(itSub.hasNext()) buff.append(":");
+		}
+		mapGroup2Name.put(group,buff.toString());
+		
+		AppContext.debug("group " + group + ": " +  mapGroup2Name.get(group) + " has size " + mapGroup2Varset.get(group).size() );
+	}
+	
+	
+	
+	AppContext.startTimer();
+	
+//	
+//	if(topN>0) {
+//		
+//		if(limitVarIds!=null && !limitVarIds.isEmpty())
+//			mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topN, limitVarIds);
+//		else	
+//			mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topN);
+//		
+//		AppContext.debug(mismatches.size() + " mismatch pairs");
+//		
+//		// get varieties in topN
+//		java.util.Iterator<Snps2VarsCountmismatch>  itdist = mismatches.iterator();		
+//		Set topVars =new java.util.HashSet();
+//		while(itdist.hasNext())
+//		{
+//			Snps2VarsCountmismatch dist3k = itdist.next();
+//			topVars.add( dist3k.getVar1());
+//			topVars.add( dist3k.getVar2());
+//		}
+//		mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topVars);
+//		AppContext.resetTimer(" topN distance calc");
+//		
+//	}
+//	else {
+//		if(limitVarIds!=null && !limitVarIds.isEmpty())
+//			mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), limitVarIds);
+//		else
+//			mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end));
+//		
+//		
+//		
+//		AppContext.resetTimer(" all distance calc");
+//	}
+	
+//	int snps = -1;
+//	//List snps = null;
+//	snpstringallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpstringallvarsposService, "SnpcoreRefposindexDAO") ; 
+//	if(isCore) {
+//		//snpcoreallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpcoreallvarsposService, "MvCoreSnpsDAO") ; 
+//		//snps = snpcoreallvarsposService.getSNPs(chr, start, end, null ).size();
+//		
+//		snps = snpstringallvarsposService.getSNPs(chr, start, end,  SnpcoreRefposindexDAO.TYPE_3KCORESNP  ).size();
+//		
+//		 
+//	 }
+//	 else {
+//		snps = snpstringallvarsposService.getSNPs(chr, start, end,  SnpcoreRefposindexDAO.TYPE_3KALLSNP   ).size();
+//		 //snpallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpallvarsposService, "SnpsAllvarsPosDAO") ; 
+//		 // snps = snpallvarsposService.getSNPs(chr, start, end ,null ).size();
+//	 }
+	 
+	 int snps = snpstrdata.getStrRef().length();
+	 if(snps==0) return new String[] {"", "0","0"};
+	
+	//germplasms
+	 
+
+	AppContext.debug(mismatches.size() + " mismatch var pairs");
+	AppContext.debug(setVarietyToGroupPairs.size() + " mismatch var-group pairs");
+	mismatches.addAll(setVarietyToGroupPairs );
+	
+	
+//	java.util.Map<BigDecimal, Integer> mapName2Row = new java.util.HashMap<BigDecimal, Integer>();
+//
+//	Set<BigDecimal> setWithMismatch = new java.util.TreeSet();
+//	
+//	List listMismatchGrouped = new ArrayList();
+//	
+//	//java.util.Map<String, BigDecimal> mapPairMismatch = new java.util.HashMap<String, BigDecimal>();
+//	java.util.Iterator<Snps2VarsCountmismatch>  itdist = mismatches.iterator();		
+//	while(itdist.hasNext())
+//	{
+//		
+//		Snps2VarsCountmismatch dist3k = itdist.next();
+//		//mapPairMismatch.put( dist3k.getVar1() + ":" + dist3k.getVar2(), dist3k.getMismatch());
+//		
+//		BigDecimal node1 = dist3k.getVar1();
+//		BigDecimal node2 = dist3k.getVar2();
+//		BigDecimal var1group = mapVar2Group.get(node1);
+//		BigDecimal var2group = mapVar2Group.get(node2);
+//		if(var1group!=null) node1 = var1group;
+//		if(var2group!=null) node2 = var2group;
+//		
+//		if(var1group!=null || var2group!=null) {
+//			listMismatchGrouped.add( new Snps2VarsCountmismatchImpl(node1,node2, dist3k.getMismatch()) );
+//		} else
+//			listMismatchGrouped.add(dist3k );
+//		
+//		setWithMismatch.add(  node1 );
+//		setWithMismatch.add(  node2 );
+//		
+//		//setWithMismatch.add( dist3k.getVar1());
+//		//setWithMismatch.add( dist3k.getVar2());
+//	}
+//	
+//	mismatches = listMismatchGrouped;
+//	
+	
+	Set setNodes = new TreeSet();
+	
+	//setNodes.addAll( setVarietyDontGroup );
+	setNodes.addAll( setVarietyNotGrouped );
+	setNodes.addAll( mapGroup2Varset.keySet() );
+	
+	AppContext.debug(setVarietyNotGrouped.size() + " varieties not grouped, " + setVarietyGrouped.size() + " grouped," +  mapGroup2Varset.keySet().size() + " groups, " + setNodes.size() + " treenodes");
+	
+	BasicSymmetricalDistanceMatrix symdistmatrix = new BasicSymmetricalDistanceMatrix( setNodes.size() );
+
+	varietyfacade = (VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade");
+	Map<BigDecimal,Variety> mapVarid2Variety = varietyfacade.getMapId2Variety();
+	
+	Map<BigDecimal,Integer> mapVarid2Row = new HashMap();
+	
+	int i=0;
+	Iterator<BigDecimal> itgerm = setNodes.iterator();
+	while(itgerm.hasNext()) {
+		BigDecimal varid = itgerm.next();
+		mapVarid2Row.put(varid , i);
+		symdistmatrix.setIdentifier( i, "varid_" + varid );
+		i++;
+	}		
+
+	AppContext.debug("symdistmatrix done");
+	
+	double distscale = 1.0; 
+	
+	java.util.Iterator<Snps2VarsCountmismatch>  itdist2 = mismatches.iterator();		
+	while(itdist2.hasNext())
+	{
+		Snps2VarsCountmismatch dist3k = itdist2.next();
+		double dist =0 ;
+		if(snps > dist3k.getMismatch().intValue())
+			dist =   dist3k.getMismatch().intValue()*distscale /( snps -  dist3k.getMismatch().intValue() );
+		else
+			dist = AppContext.getMaxPhylodistance();
+		
+		try {
+			
+			if(  mapVarid2Row.get(dist3k.getVar1()).equals(  mapVarid2Row.get(dist3k.getVar2()) ) ) {
+				//AppContext.debug( mapName2Row.get(dist3k.getVar1()) + ": " +  mapVarid2Variety.get(dist3k.getVar1()) + "\t" +  mapName2Row.get(dist3k.getVar2()) + ": " +    mapVarid2Variety.get(dist3k.getVar2())  + "  -- " + dist);
+				dist = 0.0;
+			}
+			
+			symdistmatrix.setValue( mapVarid2Row.get(dist3k.getVar1()) , mapVarid2Row.get(dist3k.getVar2()) , dist );
+			symdistmatrix.setValue( mapVarid2Row.get(dist3k.getVar2()) , mapVarid2Row.get(dist3k.getVar1()),  dist );
+			
+		} catch(Exception ex) {
+			
+			AppContext.debug( "NULL EXCEPTION:\t" + dist + "\t" + dist3k.getVar1() + "\t" + mapVarid2Row.get(dist3k.getVar1()) + "\t" + dist3k.getVar2() + "\t" +  mapVarid2Row.get(dist3k.getVar2()) + "\t" + dist );
+		
+		}
+	}
+	
+	AppContext.debug(symdistmatrix.getSize() + " symdistmatrix ready");
+	
+	try {
+		
+		TreeConstructor tree = new  TreeConstructor(symdistmatrix,
+			org.biojava3.phylo.TreeType.NJ ,
+			org.biojava3.phylo.TreeConstructionAlgorithm.PID ,
+		//	null);
+			new org.biojava3.phylo.ProgessListenerStub());
+			tree.process();
+
+			AppContext.debug("process done");
+		String newick = tree.getNewickString(false, true);
+		
+		
+		Map<BigDecimal,Variety> mapId2Variety = varietyfacade.getMapId2Variety();
+		
+		//AppContext.debug(newick);
+		Iterator<BigDecimal> itgerm2 = setNodes.iterator();
+		while(itgerm2.hasNext()) {
+			BigDecimal c = itgerm2.next();
+		
+			Variety var = mapId2Variety.get(c);
+			
+			String nodename = mapGroup2Name.get(var.getVarietyId());
+			if(nodename==null) {
+				String subpop = "";
+				if( var.getSubpopulation()!=null) subpop =  var.getSubpopulation(); //.replace("/","_").replace(", ","_");
+				String irisid = "";
+				if( var.getIrisId()!=null) irisid=var.getIrisId();
+				//newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0] + "/" + irisid + "/" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
+				newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0].replace(", ","_") + "|" + irisid + "|" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
+			} else {
+				newick = newick.replace("varid_" + c + ":", nodename.replace("::", "_").replace(":","_") + ":");
+			}
+		
+		}
+		//AppContext.debug(newick);
+		
+		return new Object[] {newick, Integer.toString(symdistmatrix.getSize()), Integer.toString( mismatches.size()) , mapGroup2Varset, mapGroup2Name};
+		
+		
+	} catch(Exception ex)
+	{
+		ex.printStackTrace();
+	}
+	
+	return null;
+	
+}
 		
 	@Override
 	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile)
@@ -2161,6 +2808,22 @@ public Object[] constructPhylotreeMindist(String scale, String chr, int start, i
 		}
 	}
 	
+	/**
+	 * Sort pairs descending
+	 * @author lmansueto
+	 *
+	 */
+	class  SnpsString2VarsImplSorter implements Comparator {
+		@Override
+		public int compare(Object o1, Object o2) {
+			// TODO Auto-generated method stub
+			Snps2VarsCountmismatch s1 = (Snps2VarsCountmismatch)o1; 
+			Snps2VarsCountmismatch s2 = (Snps2VarsCountmismatch)o2;
+			return -s1.getMismatch().compareTo(s2.getMismatch());
+
+		}
+	}
+	
 	
 	class VarSubpopCntrySorter implements Comparator {
 		@Override
@@ -2233,7 +2896,7 @@ public Object[] constructPhylotreeMindist(String scale, String chr, int start, i
 			isNonsyn[0] = false;
 			isNonsyn[1] = false;
 			Character var1allele2 = null;
-			if(!var1isref) var1allele2 =  var1allele2str.get(iStr);
+			if(!var1isref && var1allele2str!=null) var1allele2 =  var1allele2str.get(iStr);
 			
 			Character var2allele2 = null;
 			if(var2allele2str!=null) var2allele2 = var2allele2str.get(iStr);

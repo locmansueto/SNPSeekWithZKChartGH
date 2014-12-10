@@ -95,15 +95,22 @@ window.Boot_progressbox = function (){}
        	List listVarlistNames = new ArrayList();
        	listVarlistNames.add("");
        	listVarlistNames.addAll( workspace.getVarietylistNames());
+       	listVarlistNames.add("create new list...");
        	
         
         java.util.List listSNPlistNames = new java.util.ArrayList(); // fac.getSNPinVarieties(100);
         listSNPlistNames.add("");
         listSNPlistNames.addAll( workspace.getSnpPositionListNames()  );
+        listSNPlistNames.add("create new list...");
          
         java.util.List listSNPs = new ArrayList();
 
-        String msg =varnames.size()/2 + " varieties, " + (subpopulations.size()-1) + " subpopulations, " +  genenames.size()/2 + " genes for selection";
+        String msg =varnames.size() + " varieties, " + subpopulations.size() + " subpopulations, " +  genenames.size() + " genes for selection";
+        
+        genenames = AppContext.createUniqueUpperLowerStrings( genenames, true, false);
+		subpopulations = AppContext.createUniqueUpperLowerStrings( subpopulations, false, true);
+        varnames = AppContext.createUniqueUpperLowerStrings( varnames, true, false);
+        
         //String msg ="Select varieties, then set chromosome region or gene locus";
 
 
@@ -184,12 +191,12 @@ window.Boot_progressbox = function (){}
 				    <listbox id="listboxSubpopulation" width="150px" mold="select"/>
 				    	<zscript><![CDATA[
 			    	    listboxSubpopulation.setModel(new SimpleListModel(subpopulations));
-			    	    listboxSubpopulation.setSelectedIndex(0);
+			    	    listboxSubpopulation.setSelectedIndex(1);
 			   			]]></zscript>
 			   			
-				    <vbox width="10px"/>
-				    <label value="All Varieties"/>
-				    <checkbox id="checkboxAllvarieties" checked="true"/>
+				    <vbox width="10px" visible="false"/>
+				    <label value="All Varieties" visible="false"/>
+				    <checkbox id="checkboxAllvarieties" checked="true" visible="false"/>
 				    <vbox width="10px"/>
 				    <label value="My Variety List" />
 				    <listbox id="listboxMyVarieties" mold="select"/>
@@ -197,6 +204,7 @@ window.Boot_progressbox = function (){}
 			    	    listboxMyVarieties.setModel(new SimpleListModel(listVarlistNames));
 			   			]]></zscript>
 				</hbox>
+				
 				<separator bar="true" style="color:green"/>
 				</vbox>
 				
@@ -323,7 +331,7 @@ window.Boot_progressbox = function (){}
          				<radio id="radioColorAllele" label="Nucleotide" radiogroup="snpcolor" tooltip="popupSNPColoringAllele"/>
 
 						<hbox width="50px"/>
-         				<div visible="false">
+         				<div visible="true">
          				<vbox width="20px"/>
          				<label pre="true" value="Synonymous SNPs  " style="font-weight:bold;"/>
          				<radio id="radioShowSyn" label="Include" radiogroup="synonymoussnps"  selected="true" tooltip="popupSynonymousShow"/>
@@ -341,7 +349,7 @@ window.Boot_progressbox = function (){}
           				<checkbox id="checkboxCoreSNP" checked="false" tooltip="popupCoreSNP"/>
           				<vbox width="40px"/>
           				<label value="Mismatch only " pre="true" style="font-weight:bold;"/>
-			    		<checkbox id="checkboxMismatchOnly" checked="false" tooltip="popupMatchOnly"/>
+			    		<checkbox id="checkboxMismatchOnly" checked="true" tooltip="popupMatchOnly"/>
 			    		<vbox width="40px"/>
           				<!--  vbox width="40px"/>
 	            		<label pre="true" value="Download  " style="font-weight:bold;"/>
@@ -565,15 +573,32 @@ window.Boot_progressbox = function (){}
 
 <vbox>
 <hbox>
-    				<label pre="true" value="Phylotree topN  " style="font-weight:bold;"  visible="true"/>
-    				<listbox id="selectPhyloTopN" mold="select"  rows="1" tooltip="popupTopN" visible="true"> 
+    	<label pre="true" value="Phylotree topN  " style="font-weight:bold;"  visible="false"/>
+    	<listbox id="selectPhyloTopN" mold="select"  rows="1" tooltip="popupTopN" visible="false"> 
     					<listitem label="20" />    
-    					<listitem label="50" selected="true" />    
+    					<listitem label="50"/>    
     					<listitem label="100"/>    
   			<listitem label="200"/>    
   			<listitem label="500" />
-  			<listitem label="all" />
+  			<listitem label="all" selected="true"/>
   		</listbox>
+  		
+    	<label pre="true" value="Minimum pair mismatch  " style="font-weight:bold;"  visible="false"/>
+    	<listbox id="selectPhyloMindist" mold="select"  rows="1" tooltip="popupMindist" visible="false"> 
+    					<listitem label="0" />    
+    					<listitem label="1" selected="true" />    
+    					<listitem label="2"/>
+    					<listitem label="3"/>    
+  						<listitem label="5"/>    
+  						<listitem label="10" />
+  		</listbox>
+  		<intbox id="intPhyloMindist" value="2" visible="false"/>
+  		<label value="Phylogenetic tree construction takes about 5 minutes."/>
+  		<vbox width="10px"/>
+  		<button id="buttonRenderTree" label="Compute tree"/>
+
+  		
+  		
 </hbox>
 <hbox height="10px"/>
 
@@ -649,8 +674,23 @@ window.Boot_progressbox = function (){}
 			    
 			    
 			    
+			<zscript>         
+		        String from=Executions.getCurrent().getParameter("from");
+		        if(from!=null) { 
+		        	if(from.equals("varietylist")) {
+		        		listboxMyVarieties.setSelectedIndex( listboxMyVarieties.getItemCount() - 2 ); 
+		        		listboxSubpopulation.setSelectedIndex(0);
+		        		checkboxAllvarieties.setChecked(false);
+		        	}
+		        	else if(from.equals("snplist")) {
+		        		listboxMySNPList.setSelectedIndex( listboxMySNPList.getItemCount()-2 );
+		        		listboxSubpopulation.setSelectedIndex(0);
+		        		checkboxAllvarieties.setChecked(false);
+		        	}
+		        }
+		        
+	        </zscript>
 			    
-<!--  /vbox -->
 
 <popup id="popupMatchOnly" width="300px">
         <html><![CDATA[
@@ -667,6 +707,16 @@ window.Boot_progressbox = function (){}
             pairs are included in the tree.
         ]]></html>
 </popup>
+
+<popup id="popupMindist" width="300px">
+        <html><![CDATA[
+            Minimum number of mismatches to branch in the tree.<br/>
+            Below this number, the varieties are grouped<br/>
+            into one node.
+        ]]></html>
+</popup>
+
+
 
 <popup id="popupSNPColoringMismatch" width="300px">
         <html><![CDATA[

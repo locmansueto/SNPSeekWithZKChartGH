@@ -123,10 +123,13 @@ public class SNPStringAllvarsRowRenderer implements SNPRowRendererStyle, RowRend
 							newlabel.setStyle(STYLE_HETERO + ";" + backcolor);
 					}
 					else if(graySynonymous && nonsynIdxset!=null) {
+						//newlabel.setStyle(STYLE_SYNONYMOUS+ ";" + backcolor);
+						
 						if(nonsynIdxset.contains(j))
 							newlabel.setStyle(STYLE_BORING + ";" + backcolor);
 						else
 							newlabel.setStyle(STYLE_SYNONYMOUS+ ";" + backcolor);
+							
 					}
 					else newlabel.setStyle(STYLE_BORING + ";" + backcolor);
 				}

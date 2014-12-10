@@ -66,9 +66,11 @@
 				
 				
 				System.out.println("jsp: constructing tree");
-				newicknodes = genotype.constructPhylotreeMindist(request.getParameter("scale") , request.getParameter("chr") ,Integer.parseInt(request.getParameter("start")) ,
-														Integer.parseInt(request.getParameter("end")), (String)request.getParameter("mindist"));
+				//newicknodes = genotype.constructPhylotreeMindist(request.getParameter("scale") , request.getParameter("chr") ,Integer.parseInt(request.getParameter("start")) ,
+				//										Integer.parseInt(request.getParameter("end")), (String)request.getParameter("mindist"));
 				
+				newicknodes = genotype.constructPhylotreeTopN(request.getParameter("scale") , request.getParameter("chr") ,Integer.parseInt(request.getParameter("start")) ,
+														Integer.parseInt(request.getParameter("end")), topn, "");
 				newick = (String)newicknodes[0];
 				
 				if(!newick.isEmpty()) {
@@ -88,6 +90,7 @@
 				}
 				
 			
+				
 		}
 					
 		//System.out.println(newick);		

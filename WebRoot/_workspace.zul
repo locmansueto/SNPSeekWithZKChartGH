@@ -9,5 +9,17 @@ window.Boot_progressbox = function (){}
 <?init class="org.zkoss.zk.ui.util.Composition"
         arg0="/template.zul"?>
 <zk>
-      <include self="@define(content)" src="/myworkspace.zul"/>
+
+ 		<zscript>         
+ 			String fromview="";
+	        String from=Executions.getCurrent().getParameter("from");
+	        if(from==null || from.isEmpty())
+	        { 
+	        } else
+	        	fromview= "?from=" + from;
+	        	
+        </zscript>
+
+
+      <include self="@define(content)" src="/myworkspace.zul${fromview}"/>
 </zk>

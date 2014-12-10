@@ -94,7 +94,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			
 			if(germ.getCountry()!=null) // throw new RuntimeException("germ..getCountry()==null");
 			{
-				countries.add( germ.getCountry().toLowerCase() );
+				//countries.add( germ.getCountry().toLowerCase() );
 				countries.add( germ.getCountry().toUpperCase() );	
 			}
 			
@@ -107,11 +107,11 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			
 			if(germ.getIrisId()!=null) // throw new RuntimeException("germ..getSubpopulation()==null");
 			{
-				irisid.add( germ.getIrisId().toLowerCase() );
+				//irisid.add( germ.getIrisId().toLowerCase() );
 				irisid.add( germ.getIrisId().toUpperCase() );	
 			}
 
-			germnames.add( germ.getName().toLowerCase() );
+			//germnames.add( germ.getName().toLowerCase() );
 			germnames.add( germ.getName().toUpperCase() );		
 	
 		}
@@ -138,7 +138,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 				}
 
 			mapVarname2Variety.put(germ.getName().toUpperCase(), germ);
-			germnames.add( germ.getName().toLowerCase() );
+			//germnames.add( germ.getName().toLowerCase() );
 			germnames.add( germ.getName().toUpperCase() );		
 		}	
 		
@@ -149,7 +149,8 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		this.countries =  new java.util.ArrayList();
 			this.countries.addAll(countries);
 		this.subpopulations =  new java.util.ArrayList();
-			this.subpopulations.add("");
+			//this.subpopulations.add("");
+			this.subpopulations.add("all varieties");
 			this.subpopulations.add("all indica");
 			//this.subpopulations.add("ALL INDICA");
 			this.subpopulations.add("all japonica");
@@ -171,9 +172,9 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			java.util.Iterator<Gene> it = geneDAO.findAllGene().iterator();
 		    while(it.hasNext()) {
 		    	Gene gene = it.next();
-		    	String genename = gene.getUniquename();
-		    	genenames.add(genename.toUpperCase());
-		    	genenames.add(genename.toLowerCase());
+		    	//String genename = gene.getUniquename();
+		    	//genenames.add(genename.toUpperCase());
+		    	genenames.add( gene.getUniquename().toLowerCase());
 		    }
 		}
 		return genenames;
@@ -334,7 +335,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			
 		List listCVPassport =  cvtermsPassportdao.getAllTerms();
 		passportDefinitions = new TreeMap<String,BigDecimal>();
-		passportDefinitions.put("", BigDecimal.ZERO);
+	//	passportDefinitions.put("", BigDecimal.ZERO);
 		Iterator<CvTerm> itTerm=listCVPassport.iterator();
 		while(itTerm.hasNext())
 		{
@@ -350,7 +351,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		
 		List listCVPhenotype =  cvtermsPhenotypedao.getAllTerms();
 		phenotypeDefinitions = new TreeMap<String,BigDecimal>();
-		phenotypeDefinitions.put("", BigDecimal.ZERO);
+//		phenotypeDefinitions.put("", BigDecimal.ZERO);
 		Iterator<CvTerm>  itTerm2=listCVPhenotype.iterator();
 		while(itTerm2.hasNext())
 		{

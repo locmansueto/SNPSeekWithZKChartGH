@@ -230,12 +230,12 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     
     @Listen("onClick = #buttonDownloadCSV")
     public void clickDownloadCSV() {
-    	downloadVarieties("varieties.csv", ",");
+    	downloadVarieties("varieties-" + AppContext.createTempFilename()  + ".csv", ",");
     }
     
     @Listen("onClick = #buttonDownloadTab")
     public void clickDownloadTab() {
-    	downloadVarieties("varieties.txt", "\t");
+    	downloadVarieties("varieties-" +  AppContext.createTempFilename() + ".txt", "\t");
     }
     
     private void downloadVarieties(String filename, String delimiter ) {
@@ -260,21 +260,34 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     		if(itvar.hasNext()) buff.append("\n");
     	}
    	
+//    		String filetype = "text/plain";
+//			if(delimiter.equals(",")) filetype="text/csv";
+//			
+//			try {
+//				Filedownload.save(  buff.toString(), filetype, filename);
+//				AppContext.debug("Varieties write complete! Saved to: "+ filename);
+//				} catch(Exception ex)
+//				{
+//					ex.printStackTrace();
+//				}
+
+     	
     	try {
     		String filetype = "text/plain";
 			if(delimiter.equals(",")) filetype="text/csv";
 				
-			File file = new File(filename);
+			File file = new File(AppContext.getTempDir() + filename);
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(buff.toString());
 			bw.flush();
 			bw.close();
 			
-			AppContext.debug("Mylist write complete! Saved to: "+ file.getAbsolutePath());
+			org.zkoss.zk.ui.Session zksession = Sessions.getCurrent();
+			AppContext.debug("Variety write complete!"+ file.getAbsolutePath() +  " Downloaded to:"  +  zksession.getRemoteHost() + "  "  +  zksession.getRemoteAddr()  );
 			
 			try {
-				Filedownload.save(  new File(filename), filetype);
+				Filedownload.save(  new File(AppContext.getTempDir() + filename), filetype);
 				} catch(Exception ex)
 				{
 					ex.printStackTrace();

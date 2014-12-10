@@ -165,5 +165,25 @@ window.Boot_progressbox = function (){}
 </vbox>
 </hbox>
 
+<textbox id="textboxFrom" value="" visible="false"/>
+
+     <zscript>         
+	        String from=Executions.getCurrent().getParameter("from");
+	        if(from!=null) {
+	        	if(from.equals("variety")) {
+	        		Events.postEvent("onClick", radioVariety, null);
+	        		Events.postEvent("onClick", buttonCreate, null);
+	        		textboxFrom.setValue("variety");
+	        	}
+	        	else if(from.equals("snp")) {
+	        		Events.postEvent("onClick", radioSNP, null);
+	        		Events.postEvent("onClick", buttonCreate, null);
+	        		textboxFrom.setValue("snp");
+	        	}
+	        	buttonDownload.setDisabled(true);
+	        }
+	 </zscript>
+
+
 </window>
 </zk>

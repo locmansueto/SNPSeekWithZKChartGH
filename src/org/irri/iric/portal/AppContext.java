@@ -45,8 +45,8 @@ public class AppContext {
 	 */
 	private static final boolean isAWS = false;
 	private static final boolean isVMIRRI = false;
-	private static final boolean isPollux = false;
-	private static final boolean isLocalhost = true;
+	private static final boolean isPollux = true;
+	private static final boolean isLocalhost = false;
 	
 	/**
 	 * is development
@@ -287,6 +287,18 @@ public class AppContext {
     }
     
 
+    public static int getMaxlengthUni() {
+    	return 100000;
+    }
+
+    public static int getMaxlengthCore() {
+    	return 5000000;
+    }
+    public static int getMaxlengthPairwise() {
+    	return Integer.MAX_VALUE;
+    }
+
+    
     /**
      * Message logger used by the webapp, for easy maintainance and change of loggers
      * @param msg
@@ -373,6 +385,24 @@ public class AppContext {
     		snpfeatureidSet.add(  convertRegion2Snpfeatureid(chr, it.next())) ;
     	}
     	return snpfeatureidSet;
+    }
+    
+    
+    public static List createUniqueUpperLowerStrings(Collection col, boolean upperlower, boolean addBlank) {
+    	
+    	List newlist = new ArrayList(); 
+    	if(addBlank) newlist.add("");
+    	Iterator<String> it=col.iterator();
+    	while(it.hasNext()) {
+    		String item = it.next();
+    		if(upperlower) {
+    		newlist.add( item.toLowerCase());
+    		newlist.add( item.toUpperCase());
+    		} else {
+    			newlist.add(item);
+    		}
+    	}
+    	return newlist;
     }
     
     

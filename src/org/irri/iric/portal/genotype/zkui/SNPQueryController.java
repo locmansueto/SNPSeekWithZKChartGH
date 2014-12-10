@@ -239,6 +239,13 @@ public class SNPQueryController extends SelectorComposer<Component>  { //impleme
     private Tab tabPhylo;
     @Wire
     private Listbox selectPhyloTopN;
+    
+    @Wire
+    private Listbox selectPhyloMindist;
+    
+    @Wire
+    private Intbox intPhyloMindist;
+    
     @Wire
     private Tab tabJBrowsePhylo;
     @Wire 
@@ -271,7 +278,10 @@ public class SNPQueryController extends SelectorComposer<Component>  { //impleme
     private Radio radioGraySynonymous;
     @Wire
     private Radio radioNonsynOnly;
-	
+    
+    @Wire
+    private Button buttonRenderTree;
+    
 
 
 public SNPQueryController() {
@@ -303,11 +313,18 @@ public void onclickCreateVarlist() {
 @Listen("onSelect = #listboxMyVarieties")    
 public void  onselectMyVarieties() {
 	if(listboxMyVarieties.getSelectedIndex()>0) {
+
 		//comboSubpopulation.setValue("");
 		listboxSubpopulation.setSelectedIndex(0);
 		checkboxAllvarieties.setChecked(false);
 		comboVar1.setValue("");
 		comboVar2.setValue("");
+		
+		if( listboxMyVarieties.getSelectedItem().getLabel().equals("create new list...")) {
+			Executions.sendRedirect("_workspace.zul?from=variety");
+		}
+		
+		
 	}
 }
 
@@ -315,10 +332,16 @@ public void  onselectMyVarieties() {
 @Listen("onSelect = #listboxMySNPList")    
 public void  onselectMySNPList() {
 	if(listboxMySNPList.getSelectedIndex()>0) {
-		this.selectChr.setSelectedIndex( Integer.parseInt( listboxMySNPList.getSelectedItem().getLabel().split(":")[0].replace("CHR ","") )-1 );
-		this.comboGene.setValue("");
-		this.intStart.setValue(null);
-		this.intStop.setValue(null);
+
+		if( listboxMySNPList.getSelectedItem().getLabel().equals("create new list...")) {
+			Executions.sendRedirect("_workspace.zul?from=snp");
+		}
+		else {
+			this.selectChr.setSelectedIndex( Integer.parseInt( listboxMySNPList.getSelectedItem().getLabel().split(":")[0].replace("CHR ","") )-1 );
+			this.comboGene.setValue("");
+			this.intStart.setValue(null);
+			this.intStop.setValue(null);
+		}
 	}
 }
 
@@ -467,6 +490,13 @@ public void  onselectSubpopulation() {
 		listboxMyVarieties.setSelectedIndex(0);
 		comboVar1.setValue("");
 		comboVar2.setValue("");
+		
+		
+		if(listboxSubpopulation.getSelectedItem().getLabel().equals("all varieties")) {
+			checkboxAllvarieties.setChecked(true);
+		} else {
+			checkboxAllvarieties.setChecked(false);
+		}
 	}
 }
 
@@ -635,15 +665,18 @@ public void onselectTabJbrowsePhylo() {
  * Phylogenetic tree tab selected 
  */
 
-@Listen("onSelect = #tabPhylo")    
+
+@Listen("onClick = #buttonRenderTree")
+//@Listen("onSelect = #tabPhylo")    
 public void onselectTabPhylo() {
 
 	AppContext.debug("loading phylotree " + urlphylo);
+    show_phylotree(selectChr.getSelectedItem().getLabel().toUpperCase().replace("CHR0","").replace("CHR",""), intStart.getValue().toString() , intStop.getValue().toString()  );
+
 	if(urlphylo!=null) {
 		
 		Clients.showBusy("Computing Phylogenetic Tree");
 		iframePhylotree.setSrc( urlphylo );
-	
 		
 		Clients.clearBusy();
 	}
@@ -768,6 +801,22 @@ private void download2VarsList(String filename, String delimiter) {
 		buff.append(snppos.getChr() + delimiter +  snppos.getPos() + delimiter + snppos.getRefnuc() + delimiter + snppos.getVar1nuc() + var1allele2  + delimiter + snppos.getVar2nuc() + var2allele2 + "\n" );
 	}
 	
+	
+	try {
+		String filetype = "text/plain";
+		if(delimiter.equals(",")) filetype="text/csv";
+		Filedownload.save(  buff.toString(), filetype , filename);
+		//AppContext.debug("File download complete! Saved to: "+filename);
+		org.zkoss.zk.ui.Session zksession = Sessions.getCurrent();
+		AppContext.debug("snp2vars downlaod complete!"+ filename +  " Downloaded to:"  +  zksession.getRemoteHost() + "  "  +  zksession.getRemoteAddr()  );
+
+		
+		} catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	
+	/*
 	try {
 		
 		File file = new File(filename);
@@ -783,7 +832,9 @@ private void download2VarsList(String filename, String delimiter) {
 			String filetype = "text/plain";
 			if(delimiter.equals(",")) filetype="text/csv";
 				
-			Filedownload.save(  new File(filename), filetype);
+			//Filedownload.save(  new File(filename), filetype);
+			Filedownload.save(  buff.toString(), filetyp , filename);
+			
 			} catch(Exception ex)
 			{
 				ex.printStackTrace();
@@ -793,6 +844,7 @@ private void download2VarsList(String filename, String delimiter) {
 	} catch(Exception ex) {
 		ex.printStackTrace();
 	}
+	*/
 	
 	
 }
@@ -841,7 +893,7 @@ private void downloadTable(String filename, String delimiter) {
 		SnpsStringAllvars snpstring = itDisplay.next();
 		Map<Integer,Character> mapPosidx2allele2 = snpstring.getMapPosIdx2Allele2();
 		
-		buff.append( mapVarid2Var.get( snpstring.getVar()).getName()  + delimiter + snpstring.getMismatch() + delimiter );
+		buff.append( "\""+ mapVarid2Var.get( snpstring.getVar()).getName() + "\"" + delimiter + snpstring.getMismatch() + delimiter );
 		
 		String allele1 = snpstring.getVarnuc();
 		for(int iStr=0; iStr<allele1.length(); iStr++ ) {
@@ -880,7 +932,19 @@ private void downloadTable(String filename, String delimiter) {
 	
 	
 	
-	
+	try {
+		String filetype = "text/plain";
+		if(delimiter.equals(",")) filetype="text/csv";
+		Filedownload.save(  buff.toString(), filetype , filename);
+		//AppContext.debug("File download complete! Saved to: "+filename);
+		org.zkoss.zk.ui.Session zksession = Sessions.getCurrent();
+		AppContext.debug("snpallvars download complete!"+ filename +  " Downloaded to:"  +  zksession.getRemoteHost() + "  "  +  zksession.getRemoteAddr()  );
+		
+		} catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	/*
 	try {
 		
 		File file = new File(filename);
@@ -906,6 +970,7 @@ private void downloadTable(String filename, String delimiter) {
 	} catch(Exception ex) {
 		ex.printStackTrace();
 	}
+	*/
 	
 }
 
@@ -985,13 +1050,6 @@ private void writeSNP2Lines2File(String filename, String header,  String var1, S
 	buff.append(var1.toUpperCase());  buff.append(delimiter); buff.append(var2.toUpperCase());
 	buff.append("\n");
 	
-	
-	try {
-		File file = new File(filename);
-		FileWriter fw = new FileWriter(file.getAbsoluteFile());
-		BufferedWriter bw = new BufferedWriter(fw);
-		
-		long linecount = 0;
 		while(it.hasNext()) {
 			Snps2Vars snp2lines= it.next();
 			buff.append( snp2lines.getChr() );  buff.append(delimiter);
@@ -1000,38 +1058,77 @@ private void writeSNP2Lines2File(String filename, String header,  String var1, S
 			buff.append( snp2lines.getVar1nuc() );  buff.append(delimiter);
 			buff.append( snp2lines.getVar2nuc());  buff.append("\n");		
 			
-			if(linecount > 100 ) {
-				bw.write(buff.toString());
-				buff.delete(0, buff.length());
-				buff = new StringBuffer();
-				bw.flush();
-				linecount = 0;
-			}
-			linecount++;
-		}
-		bw.write(buff.toString());
-		buff.delete(0, buff.length());
-		buff = new StringBuffer();
-		bw.flush();
-		
-
-		bw.close();
-		
-		AppContext.debug("File write complete! Saved to: "+ file.getAbsolutePath());
+		}		
 		
 		try {
 			String filetype = "text/plain";
 			if(delimiter.equals(",")) filetype="text/csv";
 				
-			Filedownload.save(  new File(filename), filetype);
+			Filedownload.save( buff.toString(), filetype, filename);
+			AppContext.debug("File download complete! Saved to: "+ filename);
 			} catch(Exception ex)
 			{
 				ex.printStackTrace();
 			}
 		
-	} catch(Exception ex) {
-		ex.printStackTrace();
-	}
+//	try {
+//		File file = new File(filename);
+//		FileWriter fw = new FileWriter(file.getAbsoluteFile());
+//		BufferedWriter bw = new BufferedWriter(fw);
+//		
+//		long linecount = 0;
+//		while(it.hasNext()) {
+//			Snps2Vars snp2lines= it.next();
+//			buff.append( snp2lines.getChr() );  buff.append(delimiter);
+//			buff.append( snp2lines.getPos() );  buff.append(delimiter);
+//			buff.append( snp2lines.getRefnuc() );  buff.append(delimiter);
+//			buff.append( snp2lines.getVar1nuc() );  buff.append(delimiter);
+//			buff.append( snp2lines.getVar2nuc());  buff.append("\n");		
+//			
+//			if(linecount > 100 ) {
+//				bw.write(buff.toString());
+//				buff.delete(0, buff.length());
+//				buff = new StringBuffer();
+//				bw.flush();
+//				linecount = 0;
+//			}
+//			linecount++;
+//		}
+//		bw.write(buff.toString());
+//		buff.delete(0, buff.length());
+//		buff = new StringBuffer();
+//		bw.flush();
+//		
+//
+//		bw.close();
+//		
+//		AppContext.debug("File write complete! Saved to: "+ file.getAbsolutePath());
+//		
+//		try {
+//			String filetype = "text/plain";
+//			if(delimiter.equals(",")) filetype="text/csv";
+//				
+//			Filedownload.save(  new File(filename), filetype);
+//			} catch(Exception ex)
+//			{
+//				ex.printStackTrace();
+//			}
+//		
+//	} catch(Exception ex) {
+//		ex.printStackTrace();
+//	}
+	/*
+	try {
+		String filetype = "text/plain";
+		if(delimiter.equals(",")) filetype="text/csv";
+		Filedownload.save(  buff.toString(), filetype , filename);
+		AppContext.debug("File download complete! Saved to: "+filename);
+		
+		} catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		*/
 }
 
 /**
@@ -1315,6 +1412,42 @@ public void searchWithServerpaging(String filename, String delimiter)    {
 					return;  					
 				}  
 
+				// if length > maxlengthUni, change to core
+				
+				// if length > maxlengthCore, not allowed
+
+				
+				int maxlength = -1;
+				String limitmsg = "";
+				if(checkboxAllvarieties.isChecked()  && !checkboxCoreSNP.isChecked()) {
+					maxlength = AppContext.getMaxlengthUni();
+					limitmsg = "Limit to " + (maxlength/1000) + " kbp range for All Snps, all varieties query";
+				} else if(checkboxAllvarieties.isChecked()  && checkboxCoreSNP.isChecked() ) {
+					maxlength = AppContext.getMaxlengthCore();
+					limitmsg = "Limit to " + (maxlength/1000) + " kbp range for Core Snps, all varieties query";
+				} else
+				{
+					maxlength = AppContext.getMaxlengthPairwise();
+					limitmsg = "Limit to " + (maxlength/1000) + " kbp range for Pairwise variety query";
+				}
+				
+				int querylength = intStop.getValue()-intStart.getValue(); 
+				if(!checkboxCoreSNP.isChecked() && querylength > maxlength )
+				{
+					if( querylength > AppContext.getMaxlengthCore() ) { 
+						Messagebox.show(limitmsg, "OPERATION NOT ALLOWED", Messagebox.OK, Messagebox.EXCLAMATION);
+						msgbox.setStyle( "font-color:red" );
+						return;
+					} else
+					{
+						Messagebox.show("Query too long for all SNPs, will query core SNPs instead", "OPERATION NOT ALLOWED", Messagebox.OK, Messagebox.EXCLAMATION);
+						checkboxCoreSNP.setChecked(true);
+						maxlength =  AppContext.getMaxlengthCore();
+					}
+				}  
+				
+				
+				/*
 				int maxlength = 2000000000;
 				String limitmsg = "Limit to 2 Mbp range for Core SNPs, all varieties query";
 				if(checkboxAllvarieties.isChecked()  && !checkboxCoreSNP.isChecked()) {
@@ -1328,6 +1461,7 @@ public void searchWithServerpaging(String filename, String delimiter)    {
 					msgbox.setStyle( "font-color:red" );
 					return;  					
 				}  
+				*/
 				
 			}
 			
@@ -1476,8 +1610,7 @@ public void searchWithServerpaging(String filename, String delimiter)    {
 					tabJbrowse.setVisible(true);
 					
 					if(tallJbrowse) {
-						show_phylotree(chr.toUpperCase().replace("CHR0","").replace("CHR0",""), intStart.getValue().toString() , intStop.getValue().toString()  );
-						
+						show_phylotree(chr.toUpperCase().replace("CHR0","").replace("CHR",""), intStart.getValue().toString() , intStop.getValue().toString()  );
 						
 						tabPhylo.setVisible(true);
 					}
@@ -2157,13 +2290,6 @@ private void updateAllvarsListSnpstring(List<SnpsStringAllvars> listSNPs, boolea
 			
 		if(write2file) {
 			
-			try {
-			
-				File file = new File(filename);
-				FileWriter fw = new FileWriter(file.getAbsoluteFile());
-				BufferedWriter bw = new BufferedWriter(fw);
-				
-				long linecount = 0;
 				Iterator<SnpsStringAllvars> itSnpstring = listTable.iterator();
 				while(itSnpstring.hasNext()) {
 					SnpsStringAllvars snpstr = itSnpstring.next();
@@ -2183,40 +2309,82 @@ private void updateAllvarsListSnpstring(List<SnpsStringAllvars> listSNPs, boolea
 					}
 					buff.append("\n");
 				
-					if(linecount > 100 ) {
-						bw.write(buff.toString());
-						buff.delete(0, buff.length());
-						buff = new StringBuffer();
-						bw.flush();
-						linecount = 0;
-					}
-					linecount++;
 				}
-				bw.write(buff.toString());
-				buff.delete(0, buff.length());
-				buff = new StringBuffer();
-				bw.flush();
-
-				
-				bw.close();
-				
-				AppContext.debug("File write complete! Saved to: "+ file.getAbsolutePath());
 				
 				try {
 					String filetype = "text/plain";
 					if(delimiter.equals(",")) filetype="text/csv";
 						
-					Filedownload.save(  new File(filename), filetype);
+					Filedownload.save( buff.toString(), filetype, filename);
+					AppContext.debug("File download complete! Saved to: "+ filename);
 					} catch(Exception ex)
 					{
 						ex.printStackTrace();
 					}
 				
-
-			} catch(Exception ex) {
-				ex.printStackTrace();
-			}
 			return;
+			
+			
+//			try {
+//				
+//				File file = new File(filename);
+//				FileWriter fw = new FileWriter(file.getAbsoluteFile());
+//				BufferedWriter bw = new BufferedWriter(fw);
+//				
+//				long linecount = 0;
+//				Iterator<SnpsStringAllvars> itSnpstring = listTable.iterator();
+//				while(itSnpstring.hasNext()) {
+//					SnpsStringAllvars snpstr = itSnpstring.next();
+//					
+//					char viewtable[] = snpstr.getVarnuc().toCharArray();
+//					
+//					buff.append( mapVarid2Variety.get( snpstr.getVar() ).getName()  ).append(delimiter).append( snpstr.getMismatch().toString()  ).append(delimiter);
+//					
+//					for(int poscol=0; poscol< viewtable.length; poscol++ ) {
+//						//buff.append(viewtable[varrow][poscol].toString());
+//						if(viewtable[poscol]=='0' || viewtable[poscol]==' ')
+//							buff.append("");
+//						else
+//							buff.append(viewtable[poscol]);
+//						
+//						if( poscol< viewtable.length-1) buff.append(delimiter);
+//					}
+//					buff.append("\n");
+//				
+//					if(linecount > 100 ) {
+//						bw.write(buff.toString());
+//						buff.delete(0, buff.length());
+//						buff = new StringBuffer();
+//						bw.flush();
+//						linecount = 0;
+//					}
+//					linecount++;
+//				}
+//				bw.write(buff.toString());
+//				buff.delete(0, buff.length());
+//				buff = new StringBuffer();
+//				bw.flush();
+//
+//				
+//				bw.close();
+//				
+//				AppContext.debug("File write complete! Saved to: "+ file.getAbsolutePath());
+//				
+//				try {
+//					String filetype = "text/plain";
+//					if(delimiter.equals(",")) filetype="text/csv";
+//						
+//					Filedownload.save(  new File(filename), filetype);
+//					} catch(Exception ex)
+//					{
+//						ex.printStackTrace();
+//					}
+//				
+//
+//			} catch(Exception ex) {
+//				ex.printStackTrace();
+//			}
+//			return;
 		}
 	
 				
@@ -3173,8 +3341,11 @@ private void updateAllvarsListSnpstring(List<SnpsStringAllvars> listSNPs, boolea
 			String topN="-1";
 			if(!selectPhyloTopN.getSelectedItem().getLabel().equals("all"))
 				topN=selectPhyloTopN.getSelectedItem().getLabel();
+
+			//String mindist = selectPhyloMindist.getSelectedItem().getLabel();
 			
-			urlphylo = "jsp/phylotreeGermplasms.jsp?scale=" + treescale + "&chr=" + chr + "&start=" + start + "&end=" + end + "&topn=" + topN + "&tmpfile=" + gfffile.replace(".gff","");
+			
+			urlphylo = "jsp/phylotreeGermplasms.jsp?scale=" + treescale + "&chr=" + chr + "&start=" + start + "&end=" + end + "&topn=" + topN + "&tmpfile=" + gfffile.replace(".gff","") + "&mindist=" + intPhyloMindist.getValue();
 			log.debug(urlphylo);
 			AppContext.debug(urlphylo);
 	}
