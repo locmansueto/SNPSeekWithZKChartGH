@@ -3,6 +3,7 @@ package org.irri.iric.portal.flatfile.dao;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -297,6 +298,13 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex>
 		// TODO Auto-generated method stub
 		Query query = createNamedQuery("findVSnpRefposindexByChrPosIn", -1, -1, BigDecimal.valueOf(Long.valueOf(chr)),  posset, type);
 		return query.getResultList();
+	}
+
+	@Override
+	public List getSNPs(Collection varids, String chromosome, Integer startPos,
+			Integer endPos, BigDecimal type, int firstRow, int maxRows) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

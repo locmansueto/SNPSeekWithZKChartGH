@@ -63,6 +63,40 @@ window.Boot_progressbox = function (){}
  </style -->
 
 
+<style src="/css/demo.css.dsp"/>
+<script><![CDATA[
+jq(document).click(function (evt) {
+	if (!jq.isAncestor(zk.Widget.$('$myComp').$n('body'), evt.target)
+		 && !jq.isAncestor(jq('$tip')[0], evt.target))
+		jq('$tip').fadeOut();
+}); 
+function doPosition() {
+	var n = jq('$tip');
+	var d = n.zk.dimension(true),
+		scX = jq.innerX(),
+		scY = jq.innerY(),
+		scMaxX = scX + jq.innerWidth(),
+		scMaxY = scY + jq.innerHeight(),
+		x = d.left,
+		y = d.top;
+			
+	if (x + d.width > scMaxX) {
+		var diff = x - (scMaxX - d.width);
+	 	x = scMaxX - d.width;
+	 	n.children(":first").css('margin-left', diff + 30 + 'px');
+	} else {
+	 	n.children(":first").css('margin-left', 30 + 'px');
+	}
+	if (x < scX) x = scX;
+	if (y + d.height > scMaxY) y = scMaxY - d.height;
+	if (y < scY) y = scY;
+
+	n.offset({top: y, left: x});
+	n.hide().fadeIn(400);
+}
+]]></script>
+
+
 <zscript>
         import org.zkoss.zkplus.spring.SpringUtil;      
         import javax.servlet.http.HttpSession;
@@ -105,10 +139,17 @@ window.Boot_progressbox = function (){}
          
         java.util.List listSNPs = new ArrayList();
 
-        String msg =varnames.size() + " varieties, " + subpopulations.size() + " subpopulations, " +  genenames.size() + " genes for selection";
+		Set setgenenames=new HashSet();
+		setgenenames.addAll(genenames);
+        String msg =varnames.size() + " varieties, " + subpopulations.size() + " subpopulations, " +  setgenenames.size() + " genes for selection";
+        setgenenames = null;
         
         genenames = AppContext.createUniqueUpperLowerStrings( genenames, true, false);
-		subpopulations = AppContext.createUniqueUpperLowerStrings( subpopulations, false, true);
+        List subpopulationstmp = new ArrayList();
+        subpopulationstmp.add("all varieties");
+        subpopulationstmp.addAll(subpopulations);
+		subpopulations = AppContext.createUniqueUpperLowerStrings( subpopulationstmp, false, true);
+		subpopulationstmp=null;
         varnames = AppContext.createUniqueUpperLowerStrings( varnames, true, false);
         
         //String msg ="Select varieties, then set chromosome region or gene locus";
@@ -127,7 +168,7 @@ window.Boot_progressbox = function (){}
 
 
 <window id="win"  border="none"
-    apply="org.irri.iric.portal.genotype.zkui.SNPQueryController" >
+    apply="org.irri.iric.portal.genotype.zkui.SNPQueryController"  onClientInfo="onClientInfo(event)">
     
     
     <label id="labelScreenWidth" visible="false"/>
@@ -213,7 +254,7 @@ window.Boot_progressbox = function (){}
 			     
  
             </row>
-            <row spans="1,5">
+            <row spans="1,5,1">
             	<label value="Region:" style="font-size:14px;font-weight:bold;color:gray;" />
             	
 
@@ -231,7 +272,8 @@ window.Boot_progressbox = function (){}
 			    <listitem label="9"/>    
 			    <listitem label="10"/>    
 			    <listitem label="11"/>    
-			    <listitem label="12"/>    
+			    <listitem label="12"/>
+			    <listitem label="whole genome"/>    
 				</listbox>
 				 <hbox width="15px"/>
                  <label>Start:</label>
@@ -242,32 +284,10 @@ window.Boot_progressbox = function (){}
                 <intbox id="intStop"  width="70px"
                      constraint="no negative" />   
                 </hbox> 
-
-   
-  				<!--  hbox>			            	
-                <label>Chromosome:</label>                
-			    <listbox id="selectChr" mold="select"  rows="1"> 
-			    <listitem label="1" selected="true"/>    
-			    <listitem label="2" />    
-			    <listitem label="3"/>    
-			    <listitem label="4"/>    
-			    <listitem label="5"/>    
-			    <listitem label="6"/>    
-			    <listitem label="7"/>    
-			    <listitem label="8"/>    
-			    <listitem label="9"/>    
-			    <listitem label="10"/>    
-			    <listitem label="11"/>    
-			    <listitem label="12"/>    
-				</listbox>
-                 <label>Start:</label>
-                <intbox id="intStart" width="70px"
-                    constraint="no negative" />
-                <label id="labelLength" value="End: (length 43270923 bp)"/> 
-                <intbox id="intStop"  width="70px"
-                     constraint="no negative" />    
-                </hbox -->
-            
+           
+				<button id="resetButton" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;"
+			    	   width="75px" height="30px"  autodisable="self"/>
+				            
                 
             </row>
             <row spans="1,5,1">
@@ -294,9 +314,25 @@ window.Boot_progressbox = function (){}
 			    </hbox>
 			    <separator bar="true" style="color:green"/>
 			    </vbox>
-				<button id="resetButton" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;"
-			    	   width="75px" height="30px"  autodisable="self"/>
-				
+
+				<vbox id="buttonsDownloadNodisplay" visible="false">
+				<label value="Download" style="font-size:14px;font-weight:bold;color:gray;"/>
+				<hbox>
+				<button id="buttonDownloadNoDisplayCSV" label="CSV"   style="font-size:14px;font-weight:bold;color:gray;"
+			    	   width="50px" height="15px"  autodisable="self"/>
+				<button id="buttonDownloadNoDisplayTab" label="Tab"   style="font-size:14px;font-weight:bold;color:gray;"
+			    	   width="50px" height="15px"  autodisable="self"/>
+			     </hbox>
+			     
+			    <hbox>
+			    <div visible="false">
+				<button id="buttonDownloadNoDisplayPlink" label="Tab"   style="font-size:14px;font-weight:bold;color:gray;"
+			    	   width="50px" height="15px"  autodisable="self"/>
+				<button id="buttonDownloadNoDisplayHapmap" label="Tab"   style="font-size:14px;font-weight:bold;color:gray;"
+			    	   width="50px" height="15px"  autodisable="self"/>
+			    </div>
+				</hbox>
+				</vbox>
                         	    
             </row>
             
@@ -331,7 +367,7 @@ window.Boot_progressbox = function (){}
          				<radio id="radioColorAllele" label="Nucleotide" radiogroup="snpcolor" tooltip="popupSNPColoringAllele"/>
 
 						<hbox width="50px"/>
-         				<div visible="true">
+         				<div visible="false">
          				<vbox width="20px"/>
          				<label pre="true" value="Synonymous SNPs  " style="font-weight:bold;"/>
          				<radio id="radioShowSyn" label="Include" radiogroup="synonymoussnps"  selected="true" tooltip="popupSynonymousShow"/>
@@ -351,6 +387,13 @@ window.Boot_progressbox = function (){}
           				<label value="Mismatch only " pre="true" style="font-weight:bold;"/>
 			    		<checkbox id="checkboxMismatchOnly" checked="true" tooltip="popupMatchOnly"/>
 			    		<vbox width="40px"/>
+          				<label value="Variant:   SNP " pre="true" style="font-weight:bold;"/>
+			    		<checkbox id="checkboxSNP" checked="true" tooltip="popupSNP"/>
+			    		<label value="   Indel " pre="true" style="font-weight:bold;"/>
+			    		<checkbox id="checkboxIndel" checked="false" tooltip="popupIndel"/>
+			    		
+			    		
+			    		
           				<!--  vbox width="40px"/>
 	            		<label pre="true" value="Download  " style="font-weight:bold;"/>
 	            		<button id="buttonDownloadCsv"  label="CSV" width="60px" height="30px"  autodisable="self"/>
@@ -430,17 +473,15 @@ window.Boot_progressbox = function (){}
    <tabbox id="tabboxDisplay"> <!-- width="100%" -->  
         <tabs>  
             <tab id="tabTable" label="Table" selected="true"/>  
+            <!--  tab id="tabBiglist" label="BigTable" visible="true"/ -->
             <tab id="tabJbrowse" label="JBrowse" visible="false"/>  
             <tab id="tabPhylo" label="Phylotree" visible="false"/>  
             <tab id="tabJBrowsePhylo" label="PhyloJBrowse" visible="false"/>  
         </tabs>  
         <tabpanels>  
-    <tabpanel> <!--    vflex="1" style="overflow:auto" -->  
-    
+    <tabpanel id="tabpanelTable"> <!--    vflex="1" style="overflow:auto" -->  
     
   	<vbox>
- 	
-    
     
     <!-- listbox id="snpallvarsresult"  visible="false" fixedLayout="true" mold="select"   width="1450px"-->
 	<!--  div style="overflow:auto;position:relative" -->  
@@ -476,17 +517,18 @@ window.Boot_progressbox = function (){}
 	<hbox width="15px"/>
 	<button id="buttonFilterAllele" label="Apply Filter"/>
 	<hbox width="15px"/>
-	<button id="buttonAddAlleleConstraint" label="Add" tooltip="popupAddFilter"/>
+	<button id="buttonAddAlleleConstraint" label="Add" tooltip="popupAddFilter" visible="false"/>
+	<label id="labelFilterResult" />
 	</hbox>
 	</vbox>
 	</hbox>
 	</hbox>
 	
-	 <zscript><![CDATA[
+	 <!--  zscript><![CDATA[
 			        List listAllele= new ArrayList();
 			        listAllele.add("");listAllele.add("A");listAllele.add("T");listAllele.add("G");listAllele.add("C");
 			        listboxAllele.setModel(new SimpleListModel(listAllele));
-			    ]]></zscript>		
+			    ]]></zscript -->		
 	
 	
 	<listbox id="snpresult" fixedLayout="true" mold="paging" pageSize="100">
@@ -507,7 +549,6 @@ window.Boot_progressbox = function (){}
 	</grid -->
 	
 	
-	</vbox>
 	
 	             
 	
@@ -515,8 +556,33 @@ window.Boot_progressbox = function (){}
         	snpallvarsresult.pagingPosition = "both";
         	snpallvarsresult.pagingChild.mold = "os";
     	]]></zscript>
+    	
+		<biglistbox id="myComp" hflex="0" vflex="0" xmlns:w="client" w:onScroll="jq('$tip').fadeOut();">
+			<!-- Template example
+			<template name="heads">
+				<html><![CDATA[
+					<div class="images_${matrixInfo[0]%28}" title="x=${matrixInfo[0]},y=${matrixInfo[1]}">${each[matrixInfo[0]]}</div>
+				]]></html>
+			</template>
+			<template name="rows">
+				<html><![CDATA[
+					<div class="images_${matrixInfo[0]%28}" title="x=${matrixInfo[0]},y=${matrixInfo[1]}">${each[matrixInfo[0]]}</div>
+				]]></html>
+			</template> -->
+		</biglistbox>    	
+    	
+		    	
+    	
+    </vbox>
+		
     		           
             </tabpanel>  
+            <!--  tabpanel>
+            
+
+            
+            </tabpanel -->
+            
             <tabpanel id="second"> 
  
 <vbox>
@@ -534,11 +600,25 @@ window.Boot_progressbox = function (){}
 <label value="heterozygous   " style="color:yellow;background:gray" pre="true"/>
 </div>
 
+<div id="divNucleotideIndels" visible="false">
+<label value="SNP Genotype Track color legend:     "  pre="true"/>
+<label value="insertion  " style="color:green" pre="true"/>
+<label value="snp/substitution   " style="color:red" pre="true"/>
+<label value="deletion  " style="color:blue" pre="true"/>
+<label value="heterozygous   " style="color:yellow;background:gray" pre="true"/>
+<label value="deletion   " style="color:blue" pre="true"/>
+<label value="reference   " style="color:black" pre="true"/>
+</div>
+
+
 <div id="divMismatch"  visible="false">
 <label value="SNP Genotype Track color legend:     "  pre="true"/>
-<label value="allele mismatch  " style="color:red" pre="true"/>
+<label value="snp/substitution mismatch  " style="color:red" pre="true"/>
 <label value="allele match   " style="color:white;background:gray" pre="true"/>
 <label value="heterozygous   " style="color:yellow;background:gray" pre="true"/>
+<label value="insertion   " style="color:green" pre="true"/>
+<label value="deletion   " style="color:blue" pre="true"/>
+<label value="reference   " style="color:black" pre="true"/>
 </div>
 
 <div id="divBlackSyn"  visible="false">
@@ -548,7 +628,7 @@ window.Boot_progressbox = function (){}
 </hbox>
 
 
-<iframe id= "iframeJbrowse"  align="left" visible="false" style="width:1500px;height:3000px;border:0px inset;" src="${jbrowsestart}" />
+<iframe id= "iframeJbrowse"  align="left" visible="false" style="width:95%;height:3000px;border:0px inset;" src="${jbrowsestart}" />
 </vbox>
  
                 
@@ -720,7 +800,7 @@ window.Boot_progressbox = function (){}
 
 <popup id="popupSNPColoringMismatch" width="300px">
         <html><![CDATA[
-           Will color the SNPs based on mismatch with the reference.
+           Color the SNPs based on mismatch with the reference.
         ]]></html>
 </popup>
         
@@ -779,7 +859,29 @@ window.Boot_progressbox = function (){}
 		  Exclude varieties with no non-synonymous SNPs in the queried regions.
         ]]></html>
 </popup>
+<popup id="popupSNP" width="300px">
+        <html><![CDATA[
+		  Query SNPs.
+        ]]></html>
+</popup>
+<popup id="popupIndel" width="300px">
+        <html><![CDATA[
+		  Query indels.
+        ]]></html>
+</popup>
 
+	<div id="tip" class="tooltip" visible="false" width="280px">
+		<div class="tooltip-anchor">
+			<div class="tooltip-anchor-inner"></div>
+		</div>
+		<div class="tooltip-content">
+			<hlayout valign="bottom">
+				<label value="Edit Data:" style="font-size: 14px" />
+				<textbox id="content" />
+				<button id="update" label="Update" mold="trendy" style="text-shadow: none;" />
+			</hlayout>
+		</div>
+	</div>
 
 
 </window>

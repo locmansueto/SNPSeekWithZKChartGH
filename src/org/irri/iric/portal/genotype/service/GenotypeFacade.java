@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.irri.iric.portal.domain.Gene;
+import org.irri.iric.portal.domain.IndelsAllvarsPos;
 import org.irri.iric.portal.domain.Snps2Vars;
 import org.irri.iric.portal.domain.SnpsAllvars;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
@@ -231,15 +232,15 @@ public interface GenotypeFacade {
 	 * Sorting of varieties, based on number of varieties. call after countSNPMismatchesInAlllVarieties
 	 * @return
 	 */
-	public HashMap<Integer, BigDecimal> getMapOrder2Variety();
-	public HashMap<BigDecimal, Integer> getMapVariety2Order();
+	public Map<Integer, BigDecimal> getMapOrder2Variety();
+	public Map<BigDecimal, Integer> getMapVariety2Order();
 	
 	
 	/**
 	 * variety to number of mismatch map
 	 * @return
 	 */
-	public java.util.HashMap<BigDecimal, Integer> getMapVariety2Mismatch(); 
+	public java.util.Map<BigDecimal, Integer> getMapVariety2Mismatch(); 
 	
 	
 	
@@ -286,7 +287,7 @@ public interface GenotypeFacade {
 	 * Ordering of varieties from phylogenetic computation based on mismatches in region. call after constructPhylotree
 	 * @return	null if not yet computed
 	 */
-	public java.util.HashMap<BigDecimal, Integer> getMapVariety2PhyloOrder();
+	public Map<BigDecimal, Integer> getMapVariety2PhyloOrder();
 	
 	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile);
 
@@ -375,6 +376,34 @@ public interface GenotypeFacade {
 
 
 	void setMismatchOnly(boolean isMismatchOnly);
+
+
+	void setIncludeSNP(boolean includeSNP);
+
+
+	void setIncludeIndel(boolean includeIndel);
+
+
+
+	Map<BigDecimal, IndelsAllvarsPos> getMapIndelId2Indel();
+
+
+	Map<Integer, BigDecimal> getMapIndelIdx2Pos();
+
+
+	Map<Integer, Integer> getMapMergedIdx2SnpIdx();
+
+
+	Map<Integer, BigDecimal> getMapMergedIdx2Pos();
+
+
+	Map<BigDecimal, Set<String>> getMapPos2Allele();
+
+
+	String getIndelAlleleString(IndelsAllvarsPos indelpos);
+
+
+	String getIndelType(String allele);
 
 
 	//Map<Integer, Set<Character>> getMapIndex2NonsynAlleles();

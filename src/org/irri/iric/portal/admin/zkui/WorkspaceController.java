@@ -1,6 +1,7 @@
 package org.irri.iric.portal.admin.zkui;
 
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,6 +22,8 @@ import org.irri.iric.portal.genotype.service.GenotypeFacade;
 import org.irri.iric.portal.hdf5.dao.SNPUni3kVarietiesAllele1DAO;
 import org.irri.iric.portal.variety.service.VarietyFacade;
 import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
+import org.irri.iric.portal.zk.CookieController;
+import org.irri.iric.portal.zk.SessionController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -29,12 +32,16 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -47,10 +54,14 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vbox;
 
 @Controller
-//@Scope("session")
+@Scope("value=session")
 //@Scope("request")
 public class WorkspaceController  extends SelectorComposer<Component> {
 
+	
+	CookieController  cookieController  = new CookieController();
+	SessionController sessionController = new SessionController();
+	 
     @Autowired
     @Qualifier("WorkspaceFacade")
     private WorkspaceFacade  workspace;
@@ -58,7 +69,11 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     private VarietyFacade  variety;
     @Autowired
     private GenotypeFacade  genotype;
-	
+
+	@Wire
+	private Checkbox checkboxSavedata;
+
+    
     @Wire
     private Listbox listboxListnames;
     @Wire
@@ -83,6 +98,12 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     private Textbox txtboxEditListname;
     @Wire
     private Button buttonDownload;
+    
+    @Wire
+    private Button buttonUpload;
+    //@Wire
+    //private Fileupload fileupload; 
+    
     @Wire
     private Radio radioVariety;
     @Wire
@@ -133,6 +154,39 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	workspace.downloadLists();
     }
     
+    
+    /*
+    @Listen("onUpload =#fileupload")
+    public void onupload() {
+    	workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
+    	workspace.uploadLists();
+    	
+    }
+    */
+    
+    
+    @Listen("onClick =#buttonUpload")
+    public void onclickUploadLists() {
+    
+    	Fileupload.get(new EventListener(){
+					@Override
+					public void onEvent(Event event) throws Exception {
+						// TODO Auto-generated method stub
+						
+                        org.zkoss.util.media.Media media = ((UploadEvent)event).getMedia();
+
+                    	workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
+                    	workspace.uploadLists(media.getStringData());
+
+                    	if(radioSNP.isSelected())
+                    		Events.sendEvent( "onClick", radioSNP, null);
+                    	else
+                    		Events.sendEvent( "onClick", radioVariety, null);
+                    	
+					}
+                });
+    
+    }
     
     @Listen("onClick = #radioVariety") 
     public void onclickVariety() {
@@ -417,6 +471,16 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	radioSNP.setDisabled(false);
     	radioVariety.setDisabled(false);
 
+    	if(checkboxSavedata.isChecked()) {
+        	workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
+    		cookieController.setCookie("mylist", workspace.getMyListsCookie(), 999999999);
+   	      	cookieController.setCookie("storemylist",  String.valueOf(checkboxSavedata.isChecked()), 999999999 );
+    	} else
+    	{
+    		cookieController.setCookie("mylist", null, 0);
+    		cookieController.setCookie("storemylist", null, 0);
+    	}
+    	    	
     	if(textboxFrom!=null && success) {
     		if(textboxFrom.getValue().equals("variety")) {
     			Executions.sendRedirect("_snp.zul?from=varietylist");
@@ -425,6 +489,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     			Executions.sendRedirect("_snp.zul?from=snplist");
     		}
     	}
+    	
     }
     
     @Listen("onClick =#buttonCancel")
@@ -772,7 +837,11 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     		try {
 	    		var = variety.getGermplasmByName(varstr);
 	    		if(var==null)
+	    			var = variety.getGermplasmByName(varstr.replaceAll("_"," "));
+	    		if(var==null)
 	    			var = variety.getGermplasmByIrisId(varstr);
+	    		if(var==null)
+	    			var = variety.getGermplasmByIrisId(varstr.replaceAll("_"," ") );
 	    		if(var==null)
 	    			var = variety.getGermplasmByIrisId("IRIS " + varstr);
 	    		if(var==null)
@@ -869,6 +938,60 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     }
     
 
+    @Override
+    public void doAfterCompose(Component comp) throws Exception {
+      super.doAfterCompose(comp);
+      init();
+    }
+    
+    
+    private void init() {
+    	
+    	 if (isLoggedIn()) {
+    	      // Log in the man
+    	      //switchToLoggedInView();
+    	    } else {
+    	      //switchToLoggedOutView();
+    	      // Try to fill the form with saved data from cookie
+    	      autoFillMyList();
+    	    }
+    }
+    
+    private void autoFillMyList() {
+    	sessionController.setSessionObject("isLoggedIn", true);
+    	String storestr = cookieController.getCookie("storemylist");
+    	
+    	if(storestr!=null) checkboxSavedata.setValue(  Boolean.valueOf(storestr) );
+    	
+    	String mylist = cookieController.getCookie("mylist");
+    	
+    	if(mylist!=null) {
+    		workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
+    		workspace.setMyListsCookie(mylist);
+    	}
+    }
+
+     	
+     	
+    /**
+     * Checks if the user is already logged in
+     *
+     * @return Returns true if the user is logged in, false if not.
+     */
+    private boolean isLoggedIn() {
+      if (sessionController.sessionIsNew()) {
+        // Return false if session is fresh
+        return false;
+      } else {
+        // Returns the status that's set in the session object
+        Object status = sessionController.getSessionObject("isLoggedIn");
+        if (status == null) {
+          return false;
+        } else {
+          return (Boolean) status;
+        }
+      }
+    }
     
     
 }

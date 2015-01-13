@@ -1,0 +1,11 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<?link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" ?>
+<?link rel="icon" href="/favicon.ico" type="image/x-icon" ?>
+
+
+<?init class="org.zkoss.zk.ui.util.Composition"
+        arg0="/template.zul"?>
+<zk>
+      <include self="@define(content)" src="http://oryzasnp-atcg-irri-org.s3-website-ap-southeast-1.amazonaws.com"/>
+	
+</zk>

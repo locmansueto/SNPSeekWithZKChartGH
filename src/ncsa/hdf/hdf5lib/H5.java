@@ -438,12 +438,15 @@ public class H5 implements java.io.Serializable {
          * Optional: confirm the version This will crash immediately if not the
          * specified version.
          */
+        
         Integer majnum = Integer.getInteger("ncsa.hdf.hdf5lib.H5.hdf5maj", null);
         Integer minnum = Integer.getInteger("ncsa.hdf.hdf5lib.H5.hdf5min", null);
         Integer relnum = Integer.getInteger("ncsa.hdf.hdf5lib.H5.hdf5rel", null);
         if ((majnum != null) && (minnum != null) && (relnum != null)) {
             H5.H5check_version(majnum.intValue(), minnum.intValue(), relnum.intValue());
         }
+        
+        
     }
 
 // ////////////////////////////////////////////////////////////

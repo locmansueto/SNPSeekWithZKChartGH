@@ -12,10 +12,14 @@
 	
 -->
   
+  <system-config>
+    <disable-event-thread>false</disable-event-thread>
+  </system-config>
+
 	
-	<session-config>	
+	<!-- session-config>	
 	    <session-timeout>1800</session-timeout>    
-	</session-config>
+	</session-config -->
 	<listener>
 		<description>ZK Exception Translation Listener</description>
 		<listener-class>org.zkoss.spring.security.ui.ZkExceptionTranslationListener</listener-class>

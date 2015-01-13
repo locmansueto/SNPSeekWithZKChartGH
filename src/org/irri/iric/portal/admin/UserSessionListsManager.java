@@ -126,7 +126,102 @@ public class UserSessionListsManager {
 	}
 
 
-	public StringBuffer downloadLists() {
+	
+	public boolean uploadList(String list) {
+		
+		String lines[] = list.split("\n");
+		int state=0;
+		String listname = "";
+		String chr = "";
+		Set setListMembers = null;
+		for(int i=0; i<lines.length; i++ ) {
+			String l=lines[i];
+			switch (state) {
+				case 0:
+					if(l.startsWith("VARIETY LISTS:")) state=1;
+					else if(l.startsWith("SNP LISTS:")) state=2;
+					break;
+				case 1:
+					if(l.startsWith("#VARLIST")) {
+						if(setListMembers!=null && !listname.isEmpty())
+							addVarietyList(listname, setListMembers);
+						listname = l.split("\t")[1];
+						setListMembers = new LinkedHashSet();
+					}
+					else if(l.startsWith("\t\t")) {
+						//buff.append("\t\t" + var.getVarietyId() +  "\t" + var.getName() + "\t" + irisid + "\t" + boxcode + "\n");
+						setListMembers.add( varietyprop2DAO.findVarietyById( BigDecimal.valueOf(Long.valueOf( l.split("\t")[2]))) );
+					} else if(l.startsWith("SNP LISTS:")) {
+						if(setListMembers!=null && !listname.isEmpty())
+							addVarietyList(listname, setListMembers);
+						listname = "";
+						setListMembers = null;
+						state=2;
+					}
+					break;
+				case 2:
+					if(l.startsWith("#SNPLIST")) {
+						if(setListMembers!=null && !listname.isEmpty())
+							addSNPList(Integer.valueOf(chr) ,listname, setListMembers);
+						listname = l.split("\t")[2];
+						chr = l.split("\t")[1];
+						setListMembers = new LinkedHashSet();
+					}
+					else if(l.startsWith("\t\t")) {
+						//buff.append("\t\t\t" + itPos.next() + "\n");
+						setListMembers.add( l.split("\t")[3] ); 
+					}
+			}
+		}
+		
+		switch (state) {
+			case 0:
+				break;
+			case 1:
+					if(setListMembers!=null && !listname.isEmpty())
+						addVarietyList(listname, setListMembers);
+				break;
+			case 2:
+				if(setListMembers!=null && !listname.isEmpty())
+						addSNPList(Integer.valueOf(chr) ,listname, setListMembers);
+				break;
+		}
+		
+		return true;
+	}
+	
+	
+public boolean uploadListCookie(String list) {
+		
+		String lines[] = list.split("\n");
+		for(int i=0; i<lines.length; i++ ) {
+			String l=lines[i];
+			
+			if(l.startsWith("#VARLIST\t")) {
+				String[] cols = l.split("\t");
+				Set setListMembers = new LinkedHashSet();
+				String varids[] = cols[2].split(",");
+				for(int iVar=0; iVar<varids.length; iVar++) {
+					setListMembers.add( varietyprop2DAO.findVarietyById( BigDecimal.valueOf(Long.valueOf( varids[iVar] ))) );
+				}
+				addVarietyList(cols[1].trim(), setListMembers);
+			} else if(l.startsWith("#SNPLIST")) {
+
+				String[] cols = l.split("\t");
+				Set setListMembers = new LinkedHashSet();
+				String pos[] = cols[3].split(",");
+				for(int ipos=0; ipos<pos.length; ipos++) {
+					setListMembers.add( pos[ipos] );
+				}
+				addSNPList(Integer.valueOf(cols[1]) ,cols[2].trim(), setListMembers);
+			}
+		}
+		
+		return true;
+	}
+	
+
+	public String downloadLists() {
 		// TODO Auto-generated method stub
 		StringBuffer buff = new StringBuffer();
 		
@@ -138,8 +233,6 @@ public class UserSessionListsManager {
 			mapVarid2Var2.put(var.getVarietyId(), var);
 		}
 		
-		
-		
 		Iterator<String> itNames = getVarietylistNames().iterator();
 		
 		if(itNames.hasNext())
@@ -147,7 +240,8 @@ public class UserSessionListsManager {
 		
 		while(itNames.hasNext()) {
 			String name = itNames.next();
-			buff.append("\t" + name + "\n");
+			//buff.append("\t" + name + "\n");
+			buff.append("#VARLIST\t" + name + "\n");
 			Iterator<Variety> itVar =  getVarieties(name).iterator();
 			while(itVar.hasNext()) {
 				Variety var = itVar.next();
@@ -174,14 +268,63 @@ public class UserSessionListsManager {
 			Integer chr = Integer.valueOf(names[0].replace("CHR","").trim());
 			String listname = names[1].trim();
 			Iterator<BigDecimal> itPos =  getSNPs( chr, listname).iterator();
-			buff.append("\t" + chr + "\t" + listname + "\n");
+			//buff.append("\t" + chr + "\t" + listname + "\n");
+			buff.append("#SNPLIST\t" + chr + "\t" + listname + "\n");
 			while(itPos.hasNext()) {
 				buff.append("\t\t\t" + itPos.next() + "\n");
 			}
 			buff.append("\n");
 		}
 		
-		return buff;
+		return buff.toString();
+		
+	}
+
+	public String downloadListsCookie() {
+		// TODO Auto-generated method stub
+		StringBuffer buff = new StringBuffer();
+		
+		varietyprop2DAO = (VIricstockBasicprop2DAO)AppContext.checkBean( varietyprop2DAO, "VIricstockBasicprop2DAO");
+		Iterator<VIricstockBasicprop2> itVars = varietyprop2DAO.findAllVariety().iterator();
+		Map<BigDecimal, VIricstockBasicprop2> mapVarid2Var2 = new HashMap();
+		while(itVars.hasNext()) {
+			VIricstockBasicprop2 var = itVars.next();
+			mapVarid2Var2.put(var.getVarietyId(), var);
+		}
+		
+		Iterator<String> itNames = getVarietylistNames().iterator();
+		
+		while(itNames.hasNext()) {
+			String name = itNames.next();
+			//buff.append("\t" + name + "\n");
+			buff.append("#VARLIST\t" + name + "\t");
+			Iterator<Variety> itVar =  getVarieties(name).iterator();
+			while(itVar.hasNext()) {
+				Variety var = itVar.next();
+				if(var==null) continue;
+				buff.append( var.getVarietyId());
+				if(itVar.hasNext()) buff.append(",");
+			}
+			buff.append("\n");
+		}
+
+		itNames = getSNPlistNames().iterator();
+		
+		while(itNames.hasNext()) {
+			String names[] = itNames.next().split(":");
+			Integer chr = Integer.valueOf(names[0].replace("CHR","").trim());
+			String listname = names[1].trim();
+			Iterator<BigDecimal> itPos =  getSNPs( chr, listname).iterator();
+			//buff.append("\t" + chr + "\t" + listname + "\n");
+			buff.append("#SNPLIST\t" + chr + "\t" + listname + "\t");
+			while(itPos.hasNext()) {
+				buff.append(itPos.next());
+				if(itPos.hasNext()) buff.append(",");
+			}
+			buff.append("\n");
+		}
+		
+		return buff.toString();
 		
 	}
 

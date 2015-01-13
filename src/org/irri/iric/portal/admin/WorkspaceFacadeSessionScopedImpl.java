@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
+import org.zkoss.zul.Fileupload;
 import org.springframework.context.annotation.ScopedProxyMode;
 
 @Service("WorkspaceFacade")
@@ -179,18 +181,46 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
 
 	@Override
+	public void uploadLists(String mylist) {
+		 UserSessionListsManager sessionmgr = getSessionManager();
+		 sessionmgr.uploadList(mylist);
+	}
+	
+	
+	@Override
+	public String getMyLists() {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		return sessionmgr.downloadLists();
+	}
+
+	@Override
+	public String getMyListsCookie() {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		return sessionmgr.downloadListsCookie();
+	}
+
+	@Override
+	public void setMyListsCookie(String mylist) {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		sessionmgr.uploadListCookie(mylist);
+	}
+	
+	
+	@Override
 	public void downloadLists() {
 		// TODO Auto-generated method stub
 		UserSessionListsManager sessionmgr = getSessionManager();
-		String filename = "mylists.txt";
-		StringBuffer buff = sessionmgr.downloadLists();
+		String filename = "mylists-" + AppContext.createTempFilename()+ ".txt";
 		
 		try {
 			
 			File file = new File(filename);
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(buff.toString());
+			bw.write( sessionmgr.downloadLists() );
 			bw.flush();
 			bw.close();
 			

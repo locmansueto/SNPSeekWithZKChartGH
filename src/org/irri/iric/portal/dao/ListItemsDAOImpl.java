@@ -53,13 +53,27 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	private Map<String,BigDecimal> phenotypeDefinitions;
 
 	
-	
+	public static boolean lockGenenameReader = false;
+	public static boolean lockVarietyReader = false;
 	
 	/**
 	 * Generate all variety name lists
 	 */
 	private void initNames() {
 		
+		if(lockVarietyReader) {
+			try {
+				while(true) {
+				 Thread.sleep(5000);
+				 if(!lockVarietyReader) return;
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		
+		
+		lockVarietyReader = true;
 		java.util.Set<String> germnames= new java.util.TreeSet<String>();
 		java.util.Set<String> countries= new java.util.TreeSet<String>();
 		java.util.Set<String> subpopulations= new java.util.TreeSet<String>();
@@ -150,7 +164,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			this.countries.addAll(countries);
 		this.subpopulations =  new java.util.ArrayList();
 			//this.subpopulations.add("");
-			this.subpopulations.add("all varieties");
+			//this.subpopulations.add("all varieties");
 			this.subpopulations.add("all indica");
 			//this.subpopulations.add("ALL INDICA");
 			this.subpopulations.add("all japonica");
@@ -159,12 +173,25 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 
 		this.irisid =  new java.util.ArrayList();
 			this.irisid.addAll(irisid);
+			
+		lockVarietyReader = false;			
 	}
 	
 	@Override
 	public List<String> getGenenames() {
 		// TODO Auto-generated method stub
+		
+		while(lockGenenameReader) {
+			try {
+			 Thread.sleep(5000); 
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		
 		if(genenames==null || genenames.size()==0) {
+			
+			lockGenenameReader = true;
 
 			genenames = new java.util.ArrayList();
 			geneDAO = (GeneDAO)AppContext.checkBean(geneDAO, "GeneDAO");
@@ -176,6 +203,8 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		    	//genenames.add(genename.toUpperCase());
 		    	genenames.add( gene.getUniquename().toLowerCase());
 		    }
+		    
+		    lockGenenameReader = false;
 		}
 		return genenames;
 	}

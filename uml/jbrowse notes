@@ -2,3 +2,22 @@
 
 
 bin/flatfile-to-json.pl --gff  --trackLabel indel3kpoint  --trackType JBrowse/View/Track/CanvasFeaturesIndels --type insertion,deletion  --key '3k Genomes InDels (point)'   --metadata '{"description": "Insertions and deletions (point only) for the 3k Genomes Project" }'
+bin/flatfile-to-json.pl --gff  --trackLabel indel3kpoint  --trackType JBrowse/View/Track/CanvasFeaturesIndels --type insertion,deletion,snp,reference  --key '3k Genomes InDels (point)'   --metadata '{"description": "Insertions and deletions (point only) for the 3k Genomes Project" }'
+
+bin/flatfile-to-json.pl --gff  --trackLabel snp3kcore  --trackType JBrowse/View/Track/CanvasFeatures --type snp  --key '3k Genomes Core SNP'   --metadata '{"description": "Core SNP positions from the 3000 Rice Genome project" }'
+
+ "style" : {
+            "className" : "feature"
+         },
+         "key" : "3k Genomes Core SNP",
+         "storeClass" : "JBrowse/Store/SeqFeature/NCList",
+         "trackType" : "CanvasFeatures",
+         "urlTemplate" : "tracks/snp3kcore/{refseq}/trackData.json",
+         "compress" : 0,
+         "type" : "CanvasFeatures",
+         "label" : "snp3kcore",
+         "metadata": {
+             "Description": "Core SNP positions from the 3000 Rice Genome project"
+         }
+
+         

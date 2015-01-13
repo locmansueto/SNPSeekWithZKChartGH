@@ -21,6 +21,8 @@ public interface SnpcoreRefposindexDAO extends JpaDao<SnpcoreRefposindex>, SnpsA
 	public static BigDecimal TYPE_3KCORESNP_HDF5 = new BigDecimal(4);
 	public static BigDecimal TYPE_3KALLSNP_HDF5 = new BigDecimal(3);
 	
+	public static BigDecimal TYPE_3KALLINDEL = new BigDecimal(3);
+	
 	
 	/**
 	 * JPQL Query - findSnpcoreRefposindexByPosition

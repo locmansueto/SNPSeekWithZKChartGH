@@ -8,7 +8,7 @@
 <a target="_blank" href="http://iric.irri.org" image="/images/iric/iric_logo.png"/>
 <vbox width="20px"/>
 <vbox align="stretch" height="80px">
-	<label pre="true" value="         Rice SNP-Seek Database               " width="70%" 
+	<label pre="true" value="           Rice SNP-Seek Database            " width="80%" 
 	style="color:green;background-color:white;font-weight:bold;font-family:arial;font-size:30px" />
 	<hbox>
 	<menubar id="menubar" width="100%" orient="horizontal" autodrop="true"  style="background-color:white">
@@ -19,7 +19,7 @@
 				<menuitem src="/images/iric/var5.png" label="Variety" href="_variety.zul"/>
 			</menupopup>
 		</menu>			
-		<menu label="Browse" src="/images/iric/browse5.png">
+		<menu label="Browse" src="/images/iric/browse6.png">
 			<menupopup>
 				<menuitem src="/images/iric/genome1.png" label="Genome" href="_jbrowse.zul"/>
 				<!-- menuitem src="/images/iric/tree1.png" label="Tree (static)" href="_phylotree.zul"/ -->
@@ -33,8 +33,19 @@
 			</menupopup>
 		</menu>
 		<menuitem src="/images/iric/mylist.png" label="My Lists" href="_workspace.zul"/>
-		<menuitem src="/images/iric/help.png" label="Help" href="_help.zul"/>
-		<menuitem src="/images/iric/email.png" label="Contact Us" href="_contactus.zul"/>
+		<menuitem src="/images/iric/download.png" label="Download" target="_blank" href="http://oryzasnp-atcg-irri-org.s3-website-ap-southeast-1.amazonaws.com"/>
+		<menu label="Help" src="/images/iric/help.png">
+			<menupopup>
+				<menuitem src="/images/iric/users_manual.png" label="User's Manual" href="_help.zul"/>	
+				<menuitem src="/images/iric/faq2.png" label="FAQ" href="_faq.zul"/>
+				<menuitem src="/images/iric/bug-32.ico" label="Report bugs/Suggest features,improvements" target="_blank" href="https://riceinfo.atlassian.net/secure/CreateIssue!default.jspa"/>
+				<!-- menuitem src="/images/iric/bug-32.ico" label="Report bugs/Suggest features,improvements" href="_bugs.zul"/ -->
+				<menuitem src="/images/iric/email.png" label="Contact Us" href="_contactus.zul"/>
+				<menuitem src="/images/iric/about.png" label="About" href="_about.zul"/>	
+			</menupopup>
+		</menu>
+		
+		
 	</menubar>
 	</hbox>
 </vbox>

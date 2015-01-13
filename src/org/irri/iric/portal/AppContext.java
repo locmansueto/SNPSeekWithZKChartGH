@@ -44,6 +44,7 @@ public class AppContext {
 	 * is Amazon Web Service compile?
 	 */
 	private static final boolean isAWS = false;
+	private static final boolean isAWSdev = false;
 	private static final boolean isVMIRRI = false;
 	private static final boolean isPollux = true;
 	private static final boolean isLocalhost = false;
@@ -51,7 +52,8 @@ public class AppContext {
 	/**
 	 * is development
 	 */
-	public static final boolean isDev = true;
+	public static final boolean isDev = false;
+	public static final boolean isTest = true;
 
 
 
@@ -125,9 +127,12 @@ public class AppContext {
     
     
     public static String getTempDir() {
-    	if(isAWS)
+    	if(isAWS || isAWSdev)
     		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
     		return "/usr/share/apache-tomcat-7.0.55/webapps/" + getHostDirectory() + "/tmp/";
+    	//else if(isAWSdev)
+    		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
+    	//	return "/usr/share/apache-tomcat-7.0.55/webapps/" + getHostDirectory() + "/tmp/";
     	else  if(isVMIRRI)
     		// vm-iric-portal
     		return "/opt/tomcat7/webapps/" +  getHostDirectory() + "/tmp/";
@@ -146,6 +151,8 @@ public class AppContext {
     public static String getHostname() {
     	if(isAWS)
     		return "http://oryzasnp.org";
+    	else if(isAWSdev)
+    		return "http://54.255.100.88";
     	else if(isVMIRRI)
     		return "http://202.123.56.26:8080";
     	else if(isPollux)
@@ -159,7 +166,7 @@ public class AppContext {
     public static String getFlatfilesDir() {
     	if(isLocalhost)
     		return "E:/My Document/Transfer/3kcore_alleles/";
-    	else if(isAWS)
+    	else if(isAWS || isAWSdev)
     		return "/data/lmansueto/iric-portal-files/";
     	else
     		return "/home/lmansueto/iric-portal-files/";
@@ -184,9 +191,13 @@ public class AppContext {
     	if(isDev) {
     		if(isAWS)
     			return "iric-portal-test";
+    		else if(isAWSdev)
+    			return "iric-portal";
     		else
     			return "iric-portal-dev";
     	}
+    	else if(isTest) 
+    		return "iric-portal-test";
     	else 
     		return "iric-portal";
     }
@@ -288,11 +299,16 @@ public class AppContext {
     
 
     public static int getMaxlengthUni() {
-    	return 100000;
+    	//return 100000;
+    	if(isDev)
+    		return 1000000;
+    	else return 50000;
     }
 
     public static int getMaxlengthCore() {
-    	return 5000000;
+    	if(isDev)
+    		return 10000000;
+    	return 2000000;
     }
     public static int getMaxlengthPairwise() {
     	return Integer.MAX_VALUE;
@@ -348,6 +364,16 @@ public class AppContext {
     	logger( buff );
     }
     
+    public static BigDecimal convertRegion2Indelalleleid(Integer chr, Long pos) {
+    	return convertRegion2Snpfeatureid( chr, pos);
+    }
+    public static BigDecimal convertRegion2Indelalleleid(Integer chr, BigDecimal pos) {
+    	return convertRegion2Snpfeatureid( chr, pos);
+    }
+    public static BigDecimal convertRegion2Indelalleleid(Integer chr, Integer pos) {
+    	return convertRegion2Snpfeatureid( chr, pos);
+    }
+
     
     public static BigDecimal convertRegion2Snpfeatureid(Integer chr, Long pos) {
     	try {
@@ -395,6 +421,7 @@ public class AppContext {
     	Iterator<String> it=col.iterator();
     	while(it.hasNext()) {
     		String item = it.next();
+    		if(item==null) continue;
     		if(upperlower) {
     		newlist.add( item.toLowerCase());
     		newlist.add( item.toUpperCase());

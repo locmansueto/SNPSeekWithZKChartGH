@@ -101,7 +101,17 @@ window.Boot_progressbox = function (){}
 
 
 <hbox height="20px"/>
+<hbox>
 <button id="buttonDownload" label="Download"/>
+<hbox width="20px"/>
+<button id="buttonUpload" label="Upload"/>
+<!--  fileupload label="Upload"/ -->
+</hbox>
+<hbox height="10px"/>
+<hbox>
+<label value="Save list on this computer "  pre="true" visible="false"/>
+<checkbox id="checkboxSavedata" checked="false" visible="false"/>
+</hbox>
 </vbox>
 
 <vbox width="80px"/>

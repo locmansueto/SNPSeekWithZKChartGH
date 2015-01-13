@@ -113,6 +113,36 @@ public class WorkspaceFacadeImpl implements WorkspaceFacade {
 			// TODO Auto-generated method stub
 			
 		}
+
+
+		@Override
+		public void uploadLists(String mylist) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+		@Override
+		public String getMyLists() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		@Override
+		public String getMyListsCookie() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		@Override
+		public void setMyListsCookie(String mylist) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
 		
 		
 		

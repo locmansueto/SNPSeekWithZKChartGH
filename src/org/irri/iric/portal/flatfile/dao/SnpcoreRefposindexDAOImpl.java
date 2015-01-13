@@ -3,6 +3,7 @@ package org.irri.iric.portal.flatfile.dao;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 //import javassist.bytecode.Descriptor.Iterator;
+
 
 
 
@@ -289,5 +291,14 @@ public class SnpcoreRefposindexDAOImpl extends AbstractJpaDao<SnpcoreRefposindex
 		return query.getResultList();
 		
 	}
+
+	@Override
+	public List getSNPs(Collection varids, String chromosome, Integer startPos,
+			Integer endPos, BigDecimal type, int firstRow, int maxRows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	
 }

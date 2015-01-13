@@ -30,6 +30,7 @@ import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
 import org.irri.iric.portal.dao.SnpsAllvarsRefMismatchDAO;
 import org.irri.iric.portal.dao.VarietyDAO;
 import org.irri.iric.portal.domain.Gene;
+import org.irri.iric.portal.domain.IndelsAllvarsPos;
 import org.irri.iric.portal.domain.Snps2VarsCountmismatch;
 import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
 import org.irri.iric.portal.domain.Snps2Vars;
@@ -1303,6 +1304,69 @@ within a subpopulation group
 	@Override
 	public Object[] constructPhylotreeMindist(String scale, String chr,
 			int start, int end, String mindist) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void setIncludeSNP(boolean includeSNP) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setIncludeIndel(boolean includeIndel) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public Map<BigDecimal, IndelsAllvarsPos> getMapIndelId2Indel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Map<Integer, BigDecimal> getMapIndelIdx2Pos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Map<Integer, Integer> getMapMergedIdx2SnpIdx() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Map<Integer, BigDecimal> getMapMergedIdx2Pos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Map<BigDecimal, Set<String>> getMapPos2Allele() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public String getIndelAlleleString(IndelsAllvarsPos indelpos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public String getIndelType(String allele) {
 		// TODO Auto-generated method stub
 		return null;
 	}

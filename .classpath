@@ -21,20 +21,16 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/zkcharts.jar" sourcepath="WebRoot/WEB-INF/lib/zkcharts-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/fits.jar"/>
-	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jarfitsobj.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jarh5obj.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jarhdf5-2.10.1.jar" sourcepath="C:/Users/lmansueto/Downloads/hdf-java-2.10.1-source.zip">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="E:/HDF_Group/HDFView/2.10.1/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jarhdfobj.jar"/>
-	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jarnc2obj.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jhdf5/fits.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jhdf5/jarfitsobj.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jhdf5/jarhdfobj.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jhdf5/jarnc2obj.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jhdf5/fits.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jhdf5/jarfitsobj.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jhdf5/jarhdfobj.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jhdf5/jarnc2obj.jar"/>
 	<classpathentry exported="true" kind="con" path="com.genuitec.runtime.library/com.genuitec.me4s/skyway.spring.utils_7.1.3">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="WEB-INF/lib"/>
@@ -136,5 +132,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jhdf5/netcdf.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/log4j-over-slf4j-1.7.8.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>
