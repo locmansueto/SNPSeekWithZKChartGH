@@ -24,6 +24,6 @@ public interface SnpsAllvarsPosDAO {
 
 	//public Set getSNPsInChromosome(String chr, Set posset, BigDecimal type);
 
-	public List getSNPsInChromosome(String chr, List posset, BigDecimal type);
+	public List getSNPsInChromosome(String chr, Collection posset, BigDecimal type);
 
 }

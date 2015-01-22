@@ -340,7 +340,9 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 	@Override
 	public String getIrisId() {
 		// TODO Auto-generated method stub
-		return this.getIrisUniqueId();
+		if(this.getIrisUniqueId()==null || this.getIrisUniqueId().isEmpty())
+			return this.getBoxCode();
+		else return this.getIrisUniqueId();
 	}
 
 	@Override
@@ -378,13 +380,15 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 	}
 	*/
 	
-	
 	@Override
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
-		return getName().compareTo( ((Variety)o).getName() );
+		int ret = getName().compareTo( ((Variety)o).getName() ); 
+		if(ret==0)
+			ret = getVarietyId().compareTo( ((Variety)o).getVarietyId() );
+			
+		return ret;
 	}
-
 	@Override
 	public String printFields(String delimiter) {
 		// TODO Auto-generated method stub
@@ -399,6 +403,12 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 				if(strvalue==null) strvalue = quanValue.toString();
 				
 				return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr + delimiter + strvalue;
+	}
+
+	@Override
+	public String getBoxCode() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

@@ -28,8 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage VIricstockBasicprop entities.
  * 
  */
-//@Repository("VIricstockBasicpropDAO")
-@Repository("VarietyDAO")
+@Repository("VIricstockBasicpropDAOOld")
+//@Repository("VarietyDAO")
 @Transactional
 public class VIricstockBasicpropDAOImpl extends AbstractJpaDao<VIricstockBasicprop>
 		implements VIricstockBasicpropDAO {

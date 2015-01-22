@@ -294,7 +294,7 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex>
 	}
 
 	@Override
-	public List getSNPsInChromosome(String chr, List posset, BigDecimal type) {
+	public List getSNPsInChromosome(String chr, Collection posset, BigDecimal type) {
 		// TODO Auto-generated method stub
 		Query query = createNamedQuery("findVSnpRefposindexByChrPosIn", -1, -1, BigDecimal.valueOf(Long.valueOf(chr)),  posset, type);
 		return query.getResultList();

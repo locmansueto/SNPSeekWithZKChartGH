@@ -34,20 +34,21 @@ public class IndelStringDAOImpl implements IndelStringDAO {
 	private Map<BigDecimal, IndelsAllvarsPos> mapAlleleId2Indel;
 	private Map<Integer, BigDecimal> mapIdx2Pos;
 	private Map<BigDecimal, Integer> mapVariety2Order;
-	private Map<BigDecimal, Integer> mapVariety2Mismatch;
+	private Map<BigDecimal, Double> mapVariety2Mismatch;
 	private Set sortedPos;
 	private List<SnpsAllvarsPos> listPos;
-	private List<IndelsStringAllvars> listResult;
+	private List<SnpsStringAllvars> listResult;
 	
 	private IndelsAllvarsPosDAO indelsAllvarsPosDAO;
 	private IndelsAllvarsDAO indelsAllvarsDAO;
-	
+	private boolean isMismatchOnly=false;
 	
 	public IndelStringDAOImpl(IndelsAllvarsPosDAO indelsAllvarsPosDAO,
-			IndelsAllvarsDAO indelsAllvarsDAO) {
+			IndelsAllvarsDAO indelsAllvarsDAO, boolean isMismatchOnly) {
 		super();
 		this.indelsAllvarsPosDAO = indelsAllvarsPosDAO;
 		this.indelsAllvarsDAO = indelsAllvarsDAO;
+		this.isMismatchOnly = isMismatchOnly;
 	}
 
 	private Map readIndelsAllvars(Integer chr, BigDecimal start, BigDecimal end, Collection varList, Collection posList) {
@@ -155,11 +156,13 @@ public class IndelStringDAOImpl implements IndelStringDAO {
 		Iterator<BigDecimal> itVar = mapVar2AlleleCall.keySet().iterator();
 		while(itVar.hasNext()) {
 			BigDecimal var = itVar.next();
-			Map<BigDecimal, IndelsAllvars> mapPos2Indelallvars=  mapVar2AlleleCall.get(var);
 			
+			if(isMismatchOnly && mapVar2MismatchCount.get(var)==0) continue;
+			
+			Map<BigDecimal, IndelsAllvars> mapPos2Indelallvars=  mapVar2AlleleCall.get(var);
 			sortedVarieties.add( new IndelsStringAllvarsImpl(var, mapPos2Indelallvars, BigDecimal.valueOf(mapVar2MismatchCount.get(var)), Long.valueOf(chr) ) );
 			
-			mapVariety2Mismatch.put(var, mapVar2MismatchCount.get(var));
+			mapVariety2Mismatch.put(var, Double.valueOf(mapVar2MismatchCount.get(var)));
 		}
 		
 		
@@ -276,11 +279,11 @@ public class IndelStringDAOImpl implements IndelStringDAO {
 		return sortedPos;
 	}
 
-	public List<IndelsStringAllvars> getListResult() {
+	public List<SnpsStringAllvars> getListResult() {
 		return listResult;
 	}
 
-	public Map<BigDecimal, Integer> getMapVariety2Mismatch() {
+	public Map<BigDecimal, Double> getMapVariety2Mismatch() {
 		return mapVariety2Mismatch;
 	}
 

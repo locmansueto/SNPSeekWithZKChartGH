@@ -98,6 +98,12 @@ public class VarietyImpl implements Variety {
 		if(cntr==null) cntr="";
 		return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr;
 	}
+
+	@Override
+	public String getBoxCode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

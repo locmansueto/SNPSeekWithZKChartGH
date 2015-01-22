@@ -24,10 +24,12 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	private GeneDAO geneDAO; 
 	@Autowired
 	@Qualifier("VarietyDAO")
+	//@Qualifier("VarietyBasicprop2DAO")
 	private VarietyDAO germdao;
 
 	@Autowired
 	@Qualifier("IricStockDAO")
+	//@Qualifier("VIricstockBoxcodeDAO")
 	private VarietyDAO iricstockdao;
 	
 	@Autowired
@@ -207,6 +209,12 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		    lockGenenameReader = false;
 		}
 		return genenames;
+	}
+	
+	@Override
+	public Gene getGeneFromName(String  genename) {
+		geneDAO = (GeneDAO)AppContext.checkBean(geneDAO, "GeneDAO");
+		return geneDAO.findGeneByName(genename);
 	}
 	
 	@Override
@@ -403,5 +411,26 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		if(passportDefinitions==null) initMoreConstraints();		
 		return passportDefinitions;
 	}
+
 	
+	@Override
+	public Integer getFeatureLength(String feature) {
+		// TODO Auto-generated method stub
+		
+		java.util.Map<String,Integer> chrLength = new java.util.HashMap<String,Integer>();		
+		chrLength.put("1", 43270923);
+		chrLength.put("2", 35937250);
+		chrLength.put("3",36413819);
+		chrLength.put("4",35502694);
+		chrLength.put("5",29958434);
+		chrLength.put("6",31248787);
+		chrLength.put("7",29697621);
+		chrLength.put("8",28443022);
+		chrLength.put("9",23012720);
+		chrLength.put("10",23207287);
+		chrLength.put("11",29021106);
+		chrLength.put("12",27531856);
+		
+		return chrLength.get(feature);
+	}
 }

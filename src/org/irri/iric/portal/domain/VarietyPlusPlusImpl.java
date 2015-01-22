@@ -168,6 +168,13 @@ public class VarietyPlusPlusImpl  implements VarietyPlusPlus  {
 		return buff.toString();
 	
 	}
+
+
+	@Override
+	public String getBoxCode() {
+		// TODO Auto-generated method stub
+		return varplus.getBoxCode();
+	}
 	
 	
 	

@@ -17,5 +17,8 @@ public interface IndelsStringAllvars extends SnpsStringAllvars {  //SnpsAllvarsR
 	//public void setNonsynIdxset(Set setNonsynIdx);
 	
 	public void delegateSnpString(SnpsStringAllvars snpstring);
+	
+	
+	
 }
 

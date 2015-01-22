@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -74,6 +75,7 @@ import org.irri.iric.portal.genotype.service.GenotypeFacade.snpQueryMode;
 //import org.irri.iric.portal.service.VarietyService;
 //import org.irri.iric.portal.utils.zkui.HibernateSearchObject;
 import org.irri.iric.portal.variety.service.VarietyFacade;
+import org.irri.iric.portal.ws.entity.VariantTable;
 //import org.irri.iric.portal.variety.views.IViewDist3kHome;
 //import org.irri.iric.portal.variety.views.ViewDist3kId;
 //import org.jboss.logging.Logger;
@@ -147,8 +149,8 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	@Qualifier("VarietyFacade")
 	private VarietyFacade varietyfacade;
 
-	@Autowired
-	private GeneDAO geneservice; 
+	//@Autowired
+	//private GeneDAO geneservice; 
 	
 	@Autowired
 	private ListItemsDAO listitemsDAO;
@@ -453,7 +455,7 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	@Override
 	public Gene getGeneFromName(String name) {
 		// TODO Auto-generated method stub
-		return geneservice.findGeneByName(name);
+		return listitemsDAO.getGeneFromName( name);
 	}
 
 	/**
@@ -499,24 +501,30 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 
 	@Override
 	public Integer getFeatureLength(String feature) {
-		// TODO Auto-generated method stub
-		
-		java.util.Map<String,Integer> chrLength = new java.util.HashMap<String,Integer>();		
-		chrLength.put("1", 43270923);
-		chrLength.put("2", 35937250);
-		chrLength.put("3",36413819);
-		chrLength.put("4",35502694);
-		chrLength.put("5",29958434);
-		chrLength.put("6",31248787);
-		chrLength.put("7",29697621);
-		chrLength.put("8",28443022);
-		chrLength.put("9",23012720);
-		chrLength.put("10",23207287);
-		chrLength.put("11",29021106);
-		chrLength.put("12",27531856);
-		
-		return chrLength.get(feature);
+		return this.listitemsDAO.getFeatureLength(feature);
 	}
+
+
+//	@Override
+//	public Integer getFeatureLength(String feature) {
+//		// TODO Auto-generated method stub
+//		
+//		java.util.Map<String,Integer> chrLength = new java.util.HashMap<String,Integer>();		
+//		chrLength.put("1", 43270923);
+//		chrLength.put("2", 35937250);
+//		chrLength.put("3",36413819);
+//		chrLength.put("4",35502694);
+//		chrLength.put("5",29958434);
+//		chrLength.put("6",31248787);
+//		chrLength.put("7",29697621);
+//		chrLength.put("8",28443022);
+//		chrLength.put("9",23012720);
+//		chrLength.put("10",23207287);
+//		chrLength.put("11",29021106);
+//		chrLength.put("12",27531856);
+//		
+//		return chrLength.get(feature);
+//	}
 
 	
 // **************************************   Methods to query SNPs for all varieties *********************************************************************************
@@ -2376,7 +2384,7 @@ private List<Snps2Vars> getSNPinVarieties(String var1, String var2, Integer star
 			indelsAllvarsPosDAO = (IndelsAllvarsPosDAO)AppContext.checkBean(indelsAllvarsPosDAO, "IndelsAllvarsPosDAO");
 			indelsAllvarsDAO = (IndelsAllvarsDAO)AppContext.checkBean(  indelsAllvarsDAO , "IndelCallDAO");
 			
-			IndelStringDAOImpl indelstringdao = new IndelStringDAOImpl(indelsAllvarsPosDAO, indelsAllvarsDAO);
+			IndelStringDAOImpl indelstringdao = new IndelStringDAOImpl(indelsAllvarsPosDAO, indelsAllvarsDAO, isMismatchOnly);
 			Map<BigDecimal, IndelsStringAllvars> mapVar2Indelstring=null;
 			if(this.limitVarIds!=null && !this.limitVarIds.isEmpty() ) {
 				
@@ -2692,7 +2700,7 @@ private List<Snps2Vars> getSNPinVarieties(String var1, String var2, Integer star
 			indelsAllvarsPosDAO = (IndelsAllvarsPosDAO)AppContext.checkBean(indelsAllvarsPosDAO, "IndelsAllvarsPosDAO");
 			indelsAllvarsDAO = (IndelsAllvarsDAO)AppContext.checkBean(  indelsAllvarsDAO , "IndelCallDAO");
 			
-			IndelStringDAOImpl indelstringdao = new IndelStringDAOImpl(indelsAllvarsPosDAO, indelsAllvarsDAO);
+			IndelStringDAOImpl indelstringdao = new IndelStringDAOImpl(indelsAllvarsPosDAO, indelsAllvarsDAO, isMismatchOnly);
 			Map<BigDecimal, IndelsStringAllvars> mapVar2Indelstring=null;
 			
 			if(setPositions==null) {
@@ -2777,6 +2785,9 @@ private List<Snps2Vars> getSNPinVarieties(String var1, String var2, Integer star
 			itSnpString = listVariantsIndels.iterator();
 			while(itSnpString.hasNext()) {
 				IndelsStringAllvars indelstring = (IndelsStringAllvars)itSnpString.next();
+				
+				//if( this.isMismatchOnly && indelstring.getMismatch().longValue()==0) continue;
+				
 				BigDecimal var = indelstring.getVar();
 				indelstring.delegateSnpString( mapVar2SnpStringAllvars.get(var) );
 				/*
@@ -2814,7 +2825,7 @@ private List<Snps2Vars> getSNPinVarieties(String var1, String var2, Integer star
 			// merge pos
 			Set setMergedAllvarsPos = new TreeSet(new SnpsAllvarsPosComparator());
 			setMergedAllvarsPos.addAll( listIndelsnpsposlist );
-			setMergedAllvarsPos.addAll( this.snpsposlist );
+			setMergedAllvarsPos.addAll( listSNPsnpsposlist );
 			this.snpsposlist = new ArrayList();
 			this.snpsposlist.addAll(setMergedAllvarsPos);
 
@@ -4125,6 +4136,331 @@ private List<Snps2Vars> getSNPinVarieties(String var1, String var2, Integer star
 					
 			return misCount;
 		}
+  
+  
+  
+  
+  // for generic genotype table
+  
+  
+
+	 private VariantTable getVariantTable(Collection colVarIds, String sChr, Long lStart, Long lEnd, boolean bSNP, boolean bIndel,
+			 boolean bCoreonly, boolean bMismatchonly, Collection poslist, String sSubpopulation, String sLocus) throws Exception {
+		 
+			
+			// true if output is written to file
+		 	boolean bAllvars = colVarIds==null;
+			
+			// to facilitate render on Tab select for JBrowse and phylogenetic tree
+			GenotypeFacade.snpQueryMode mode=null;
+			
+			
+				
+			String msgbox = "";
+			if(poslist==null)
+				msgbox="SEARCHING: in chromosome " + sChr + " [" + lStart +  "-" + lEnd +  "]" ;
+			else 
+				msgbox="SEARCHING: in chromosome " + sChr;
+			
+				
+				
+				Set setVarieties = null; 
+				
+				if(colVarIds==null) {
+					mode = GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS;
+				} else {
+					setVarieties = new HashSet(colVarIds);
+					mode = GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS;
+				}
+				
+				if( sSubpopulation!=null && !sSubpopulation.isEmpty()) {
+					mode = GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS;
+					setVarieties = getVarietiesForSubpopulation( sSubpopulation );
+				}
+
+				
+				// set genotype facade state
+				limitVarieties(setVarieties);	
+				setCore( bCoreonly );
+				setColorByNonsyn( false );
+				setNonsynOnly( false );
+				setMismatchOnly( bMismatchonly );
+				setIncludeSNP( bSNP );
+				setIncludeIndel( bIndel );
+				
+				// initialize empty SNP list
+				List listSNPs = new java.util.ArrayList();
+
+				String genename = "";
+				if(sLocus!=null) genename = sLocus.toUpperCase();
+				//gfffile = "tmp_" + AppContext.createTempFilename() + ".gff";		
+				
+				AppContext.startTimer();
+
+				if( !genename.isEmpty() )
+				{
+					Gene gene2 = getGeneFromName( genename);
+					lStart = Long.valueOf(gene2.getFmin()) ;	
+					lEnd =  Long.valueOf(gene2.getFmax());	
+					//selectChr.setSelectedIndex( gene2.getChr()-1 );
+					//sChr =
+					sChr = gene2.getChr().toString();
+				}
+				
+			
+					Set snpposlist = null;
+					
+					
+						int chrlen = listitemsDAO.getFeatureLength( sChr );
+						
+						
+						if(lEnd> chrlen  ||lStart> chrlen)
+						{
+							throw new Exception("Positions should be less than length");
+						} 
+						if(lEnd<1  || lStart<1)
+						{
+							throw new Exception("Positions should be positive integer");
+						}   				
+						if(lEnd<lStart)
+						{
+							throw new Exception("End should be greater than or equal to start");
+						}  
+
+						// if length > maxlengthUni, change to core
+						
+						// if length > maxlengthCore, not allowed
+
+						
+						int maxlength = -1;
+						String limitmsg = "";
+						if(bAllvars && !bCoreonly) {
+							maxlength = AppContext.getMaxlengthUni();
+							limitmsg = "Limit to " + (maxlength/1000) + " kbp range for All Snps, or " + AppContext.getMaxlengthCore()/1000 + " kbp for Core Snps, All Varieties query.";
+						} else if(bAllvars && bCoreonly ) {
+							maxlength = AppContext.getMaxlengthCore();
+							limitmsg = "Limit to " + (maxlength/1000) + " kbp range for Core Snps, all varieties query";
+						} else
+						{
+							maxlength = AppContext.getMaxlengthPairwise();
+							limitmsg = "Limit to " + (maxlength/1000) + " kbp range for Pairwise variety query";
+						}
+						
+						long querylength = lEnd-lStart; 
+						//if(!checkboxCoreSNP.isChecked() && querylength > maxlength )
+						if( querylength > maxlength ) throw new Exception(limitmsg);
+						
+
+						
+					String chr= sChr;
+					if(sLocus!=null && !sLocus.isEmpty())
+						msgbox="Searching within GENE " + sLocus.toUpperCase()  + " " + chr + " [" + lStart + ".." + lEnd + "] ";
+					else
+						msgbox="SEARCHING: in chromosome " + chr + " [" + lStart +  "-" + lEnd +  "]" ;
+					
+					
+					if(mode== GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS ){
+
+
+						List  newpagelist; 
+						
+						//snpallvarsresult.setAttribute("org.zkoss.zul.grid.rod", true);
+						
+						if(snpposlist!=null && !snpposlist.isEmpty()) {
+							newpagelist = getSNPStringInAllVarieties(snpposlist, Integer.valueOf(chr)); //, this.checkboxCoreSNP.isChecked());  true,  -1,  -1 );
+							
+						}
+						else {
+							newpagelist = getSNPStringInAllVarieties(new Long(lStart).intValue(), new Long(lEnd).intValue(), Integer.valueOf(chr)); //,   true,  -1,  -1 );
+						}
+						
+						//updateAllvarsList(newpagelist, true, null, null, "",-1,-1);
+						
+						listSNPs = newpagelist;
+						
+						if(getSnpsposlist()!=null &&  getMapIndelIdx2Pos()!=null &&getSnpsposlist().size()!=getMapIndelIdx2Pos().size())
+							msgbox += " ... RESULT: " + newpagelist.size() + " varieties x " + (getSnpsposlist().size()-getMapIndelIdx2Pos().size()) + 
+									" SNP, " + getMapIndelIdx2Pos().size() + " INDEL positions";
+						else if(getMapIndelIdx2Pos()!=null)
+							msgbox +=  " ... RESULT: " + newpagelist.size() + " varieties x " + getMapIndelIdx2Pos().size() + " INDEL positions" ;
+						else if(getSnpsposlist()!=null)
+							msgbox +=  " ... RESULT: " + newpagelist.size() + " varieties x " + getSnpsposlist().size() + " SNP positions" ;
+
+				        AppContext.resetTimer("create table" );
+
+				        
+						VariantTable variants = createGenotypeTable(newpagelist);
+						variants.setMessage(msgbox);
+						
+						return variants;
+
+				        
+					}
+					
+					return null;
+		}
+	 
+	 
+
+private VariantTable createGenotypeTable(List<SnpsStringAllvars> listSNPs) //, boolean updateHeaders, String filename, String delimiter, String header, boolean doDownload, Integer chromosome) //, int firstRow, int numRows)
+{
+
+	VariantTable vartable = new VariantTable();
+	
+	boolean fetchMismatchOnly =  AppContext.isSNPAllvarsFetchMismatchOnly();  //listSNPs contains only NULL and referfence mismatches
+	
+	
+	List<SnpsAllvarsPos> snpsposlist = getSnpsposlist();
+		
+	
+	Long posarr[] = new Long[snpsposlist.size()]; 
+	String refnuc[] = new String[snpsposlist.size()];
+	Iterator<SnpsAllvarsPos> itPos = snpsposlist.iterator();
+	int poscount = 0;
+	while(itPos.hasNext()) {
+		SnpsAllvarsPos posnuc=itPos.next();
+		posarr[poscount] = posnuc.getPos().longValue();
+		refnuc[poscount] = posnuc.getRefnuc();
+		poscount++;
+	}
+	vartable.setPosition(posarr);
+	vartable.setReference(refnuc);
+		
+	
+	
+		List listTable= listSNPs;
+		
+		
+		varietyfacade = (VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade");
+		Map<BigDecimal,Variety> mapVarid2Variety = varietyfacade.getMapId2Variety();
+			
+
+		String varnames[] = new String[listTable.size()];
+		Long varids[] = new Long[listTable.size()];
+		Double varmismatch[] = new Double[listTable.size()];
+		String allelestring[][] = new String[listTable.size()][snpsposlist.size()];
+	
+		Iterator<SnpsStringAllvars> itSnpstring = listTable.iterator();
+		int varcount = 0;
+		while(itSnpstring.hasNext()) {
+			SnpsStringAllvars snpstr = itSnpstring.next();
+			
+			varmismatch[varcount]=snpstr.getMismatch().doubleValue();
+			varnames[varcount]=mapVarid2Variety.get( snpstr.getVar() ).getName();
+			varids[varcount]= snpstr.getVar().longValue();
+			
+			allelestring[varcount] = getVarietyIndelString(snpstr,snpsposlist.size() );
+			varcount++;
+		}
+		
+		vartable.setVarname(varnames);
+		vartable.setVarid(varids);
+		vartable.setVaralleles(allelestring);
+		vartable.setVarmismatch(varmismatch);
+		
+		return vartable;
+	
+}
+  
+  
+
+
+private String[] getVarietyIndelString(SnpsStringAllvars snpstr, int cols) {
+	Map<Integer,BigDecimal> mapMergedIdx2Pos = getMapMergedIdx2Pos();
+	Map<Integer,BigDecimal> mapIdx2Pos  = getMapIndelIdx2Pos();
+	Map<BigDecimal, IndelsAllvarsPos>	mapIndelId2Indels =getMapIndelId2Indel();
+	Map<Integer, Integer> mapMergedIdx2SnpIdx = getMapMergedIdx2SnpIdx();
+
+	String allelesstr[] = new String[cols];  
+	for(int iCols=0; iCols<cols; iCols++) {
+		//SnpsStringAllvars snpstr =  (SnpsStringAllvars)matrixModel.getCellAt(cellsdata, iCols);
+		StringBuffer buff = new StringBuffer();
+		
+			if(snpstr instanceof IndelsStringAllvars) {
+				
+				int j=iCols;
+				
+				BigDecimal pos = null;
+				if(mapMergedIdx2Pos!=null) 
+					pos = mapMergedIdx2Pos.get(j);
+				else 
+					pos = mapIdx2Pos.get(j);
+				
+				if(pos!=null) {
+				
+					IndelsStringAllvars indelstring=(IndelsStringAllvars)snpstr;
+					
+					
+					
+					BigDecimal alleleid = indelstring.getAllele1( pos );
+					IndelsAllvarsPos indelpos = mapIndelId2Indels.get(alleleid);
+					
+					//if(indelpos==null) throw new RuntimeException("cant find alleleid=" + alleleid);
+					if(alleleid!=null && indelpos!=null) {
+						
+						buff.append( getIndelAlleleString(indelpos) );
+						
+						BigDecimal alleleid2 = indelstring.getAllele2( pos );
+						indelpos = mapIndelId2Indels.get(alleleid2);
+						
+						if(alleleid2!=null && !alleleid2.equals(alleleid)) {
+							alleleid=alleleid2;
+							indelpos = mapIndelId2Indels.get(alleleid);
+							if(indelpos!=null) {
+								buff.append("/").append(getIndelAlleleString(indelpos) );
+							}								
+						}
+					}
+					
+					if(indelstring.getVarnuc()!=null) {
+						
+						// if not merged use j, if merged but not in mapMergedIdx2SnpIdx dont add, if merged but not in mapMergedIdx2SnpIdx  add using mapMergedIdx2SnpIdx.get(j)
+						if(mapMergedIdx2SnpIdx!=null && mapMergedIdx2SnpIdx.containsKey(iCols) && mapMergedIdx2SnpIdx.get(iCols)!=null) {
+							j = mapMergedIdx2SnpIdx.get(iCols);
+
+							//AppContext.debug( "indelstring.getVarnuc().length()=" + snpstr.getVarnuc().length() + " j=" + j + " iCols=" + iCols);
+							char element = indelstring.getVarnuc().substring(j,j+1).charAt(0);
+							if(element!='0' && element!='.' && element!=' ' && element!='*') {
+								buff.append(element);
+							
+								Map<Integer,Character> mapPosidx2allele2 = indelstring.getMapPosIdx2Allele2();
+								if(mapPosidx2allele2!=null && mapPosidx2allele2.get(j)!=null) {
+									element = mapPosidx2allele2.get(j);
+									if(element!='0' && element!='.' && element!=' ' && element!='*') 
+										buff.append("/").append(element);
+								}
+							}
+						}
+					}
+				}
+				
+			} else {
+				int j=iCols;
+				// if not merged use j, if merged but not in mapMergedIdx2SnpIdx dont add, if merged but not in mapMergedIdx2SnpIdx  add using mapMergedIdx2SnpIdx.get(j)
+				if(mapMergedIdx2SnpIdx!=null && mapMergedIdx2SnpIdx.containsKey(iCols) && mapMergedIdx2SnpIdx.get(iCols)!=null) {
+					j = mapMergedIdx2SnpIdx.get(iCols);
+				}
+				
+				if(mapMergedIdx2SnpIdx==null || mapMergedIdx2SnpIdx.get(iCols)!=null ) {
+					//AppContext.debug( "snpstr.getVarnuc().length()=" + snpstr.getVarnuc().length() + " j=" + j + " iCols=" + iCols);
+					char element = snpstr.getVarnuc().substring(j,j+1).charAt(0);
+					if(element!='0' && element!='.' && element!=' ' && element!='*') {
+						buff.append(element);
+						Map<Integer,Character> mapPosidx2allele2 = snpstr.getMapPosIdx2Allele2();
+						if(mapPosidx2allele2!=null && mapPosidx2allele2.get(j)!=null) {
+							element = mapPosidx2allele2.get(j);
+							if(element!='0' && element!='.' && element!=' ' && element!='*') 
+								buff.append("/").append(  element );
+						}
+					}
+				}
+				
+			}
+			allelesstr[iCols] = buff.toString();
+		}
+	return allelesstr;
+}
+
   
 // ************************************* old implementations  ************************************************	
 	

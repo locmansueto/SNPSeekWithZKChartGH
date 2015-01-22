@@ -281,7 +281,7 @@ public class SnpcoreRefposindexDAOImpl extends AbstractJpaDao<SnpcoreRefposindex
 	
 	
 	@Override
-	public List getSNPsInChromosome(String chr, List posset, BigDecimal type) {
+	public List getSNPsInChromosome(String chr, Collection posset, BigDecimal type) {
 		List offPos = new ArrayList();
 		Iterator it=posset.iterator();
 		while(it.hasNext()) {

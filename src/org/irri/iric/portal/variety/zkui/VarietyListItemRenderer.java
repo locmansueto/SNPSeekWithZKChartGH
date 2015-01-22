@@ -4,6 +4,11 @@ package org.irri.iric.portal.variety.zkui;
 import java.util.Collection;
 import java.util.Iterator;
 
+
+
+//import org.irri.iric.portal.chado.domain.VIricStockBoxcode;
+import org.irri.iric.portal.chado.domain.VIricstockBasicprop2;
+import org.irri.iric.portal.chado.domain.VIricstockBoxcode;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.domain.VarietyPlus;
 import org.irri.iric.portal.domain.VarietyPlusPlus;
@@ -43,7 +48,14 @@ public class VarietyListItemRenderer implements ListitemRenderer {
 	        
 	        
 	        addListcell(listitem, item.getName());
-	        addListcell(listitem, item.getIrisId());
+	        
+	        if( (item.getIrisId()==null || item.getIrisId().isEmpty()) && item instanceof VIricstockBoxcode ) {
+	        	VIricstockBoxcode varprop2 = (VIricstockBoxcode)item;
+	        	addListcell(listitem, varprop2.getBoxCode());
+	        }
+	        else
+	        	addListcell(listitem, item.getIrisId());
+	        
 	        addListcell(listitem, item.getSubpopulation());
 	        addListcell(listitem, item.getCountry());
 	        

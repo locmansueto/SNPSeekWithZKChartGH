@@ -11,10 +11,9 @@
       <param-value>/zkau</param-value>
     </init-param>
     <init-param>
-        <param-name>log-level</param-name>
-        <param-value>FINER</param-value>
+      <param-name>log-level</param-name>
+      <param-value>FINER</param-value>
     </init-param>
-    
     <load-on-startup>1</load-on-startup>
   </servlet>
   <context-param>
@@ -42,13 +41,9 @@
   <listener>
     <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
   </listener>
-  
-  
-<session-config>
+  <session-config>
     <session-timeout>10</session-timeout>
-</session-config>
-
-
+  </session-config>
   <servlet>
     <servlet-name>auEngine</servlet-name>
     <servlet-class>
@@ -78,4 +73,18 @@
   <welcome-file-list>
     <welcome-file>index.zul</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description>JAX-RS Tools Generated - Do not modify</description>
+    <servlet-name>JAX-RS Servlet</servlet-name>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    <init-param>
+  		<param-name>com.sun.jersey.config.property.packages</param-name>
+  		<param-value>org.irri.iric.portal.ws.rest</param-value>
+	</init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JAX-RS Servlet</servlet-name>
+    <url-pattern>/ws/*</url-pattern>
+  </servlet-mapping>
 </web-app>

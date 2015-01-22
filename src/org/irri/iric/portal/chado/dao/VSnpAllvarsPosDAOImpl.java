@@ -306,7 +306,7 @@ public class VSnpAllvarsPosDAOImpl extends AbstractJpaDao<VSnpAllvarsPos>
 	}
 
 	@Override
-	public List getSNPsInChromosome(String chr, List posset, BigDecimal type) {
+	public List getSNPsInChromosome(String chr, Collection posset, BigDecimal type) {
 		// TODO Auto-generated method stub
 		return null;
 	}

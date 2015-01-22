@@ -227,6 +227,27 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     private Button buttonDownloadTab;
     
     
+    @Wire
+    private Button buttonDownloadFastq;
+    @Wire
+    private Button buttonDownloadBAM;
+    @Wire
+    private Button buttonDownloadVCF;
+    
+    /*
+    @Listen("onClick = #buttonDownloadFastq")
+    public void clickDownloadFastQ() {
+    	buttonDownloadVCF.sett
+    }
+    @Listen("onClick = #buttonDownloadBAM")
+    public void clickDownloadBAM() {
+    	
+    }
+    @Listen("onClick = #buttonDownloadVCF")
+    public void clickDownloadVCF() {
+    }
+    */
+    
     
     @Listen("onClick = #buttonDownloadCSV")
     public void clickDownloadCSV() {
@@ -1095,6 +1116,10 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 		textboxGermCountry.setValue( variety2.getCountry());
 		textboxGermSubpopulation.setValue( variety2.getSubpopulation());
 		
+		
+		buttonDownloadBAM.setHref("http://172.29.4.93/cgi-bin/fqget.pl?q=" + variety2.getIrisId().replace("IRIS","").trim() + "&t=bam" );
+		buttonDownloadFastq.setHref("http://172.29.4.93/cgi-bin/fqget.pl?q=" + variety2.getIrisId().replace("IRIS","").trim() + "&t=fastq" );
+		buttonDownloadVCF.setHref("http://172.29.4.93/cgi-bin/fqget.pl?q=" + variety2.getIrisId().replace("IRIS","").trim() + "&t=vcf" );
 		
 		java.util.List listPassport = new java.util.ArrayList();
 		listPassport.addAll( variety.getPassportByVarietyid( variety2.getVarietyId())  );

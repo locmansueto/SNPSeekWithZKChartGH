@@ -1385,10 +1385,10 @@ private void downloadBigListbox(String filename, String delimiter) {
 		Object cellsdata = matrixModel.getElementAt(iCell);
 		for(int iCols=0; iCols<matrixCols; iCols++) {
 			SnpsStringAllvars snpstr =  (SnpsStringAllvars)matrixModel.getCellAt(cellsdata, iCols);
-			if (iCols>1) {
+			if (iCols>2) {
 				if(snpstr instanceof IndelsStringAllvars) {
 					
-					int j=iCols-2;
+					int j=iCols-3;
 					
 					BigDecimal pos = null;
 					if(mapMergedIdx2Pos!=null) 
@@ -1469,21 +1469,30 @@ private void downloadBigListbox(String filename, String delimiter) {
 					}
 					
 				} else {
-					int j=iCols-2;
+					int j=iCols-3;
 					if(mapMergedIdx2SnpIdx!=null && mapMergedIdx2SnpIdx.containsKey(j) && mapMergedIdx2SnpIdx.get(j)!=null) {
 						j = mapMergedIdx2SnpIdx.get(j);
 					}
-					char element = snpstr.getVarnuc().substring(j,j+1).charAt(0);
-					if(element!='0' && element!='.' && element!=' ' && element!='*') {
-						String hetero = "";
-						Map<Integer,Character> mapPosidx2allele2 = snpstr.getMapPosIdx2Allele2();
-						if(mapPosidx2allele2!=null && mapPosidx2allele2.get(j)!=null) hetero = "/" + mapPosidx2allele2.get(j);
-						buff.append( element ).append(hetero);
+					
+					if(mapMergedIdx2SnpIdx==null || mapMergedIdx2SnpIdx.get(iCols-3)!=null ) {
+						char element = snpstr.getVarnuc().substring(j,j+1).charAt(0);
+						if(element!='0' && element!='.' && element!=' ' && element!='*') {
+							String hetero = "";
+							Map<Integer,Character> mapPosidx2allele2 = snpstr.getMapPosIdx2Allele2();
+							if(mapPosidx2allele2!=null && mapPosidx2allele2.get(j)!=null) hetero = "/" + mapPosidx2allele2.get(j);
+							buff.append( element ).append(hetero);
+						}
 					}
 				}
 			}
-			else if (iCols==1)
+			else if (iCols==2)
 				buff.append( snpstr.getMismatch() );
+			else if(iCols==1) {
+				if(delimiter.equals(","))
+					buff.append( "\""+  mapVarId2Var.get( snpstr.getVar() ).getIrisId() + "\"");
+				else
+					buff.append(  mapVarId2Var.get( snpstr.getVar() ).getIrisId() );
+			}
 			else {
 				if(delimiter.equals(","))
 					buff.append( "\""+  mapVarId2Var.get( snpstr.getVar() ).getName() + "\"");
@@ -3209,6 +3218,8 @@ private void _updateAllvarsListSnpstring(List<SnpsStringAllvars> listSNPs, boole
         renderer.setMapMergedIdx2Pos(genotype.getMapMergedIdx2Pos() );
         renderer.setMapMergedIdx2SnpIdx(genotype.getMapMergedIdx2SnpIdx());
         
+        
+        
 		myComp.setMatrixRenderer(renderer);
 		
 //		//myComp.setFrozenCols(2);
@@ -3236,7 +3247,7 @@ private void _updateAllvarsListSnpstring(List<SnpsStringAllvars> listSNPs, boole
 		myComp.setHeight( "400px");
 		//myComp.setHflex("1");
 		//myComp.setVflex("1");
-		myComp.setFrozenCols(2);
+		myComp.setFrozenCols(3);
 		myComp.setFixFrozenCols(true);
 //		AppContext.debug("win.height=" +  this.win.getHeight());
 		

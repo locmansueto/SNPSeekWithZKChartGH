@@ -1,14 +1,19 @@
 package org.irri.iric.portal;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -76,7 +81,9 @@ public class AppContext {
     	return isLocalhost;
     }
     
-    
+    public static boolean isIRRILAN() {
+    	return isLocalhost || isPollux;
+    }
     
 
     /**
@@ -300,13 +307,13 @@ public class AppContext {
 
     public static int getMaxlengthUni() {
     	//return 100000;
-    	if(isDev)
+    	if(isDev|| isTest)
     		return 1000000;
     	else return 50000;
     }
 
     public static int getMaxlengthCore() {
-    	if(isDev)
+    	if(isDev || isTest)
     		return 10000000;
     	return 2000000;
     }
@@ -430,6 +437,41 @@ public class AppContext {
     		}
     	}
     	return newlist;
+    }
+    
+    
+    public static String replaceString(String instr, Map<String,String> mapReplace) {
+    	Iterator<String> itRep = mapReplace.keySet().iterator();
+    	while(itRep.hasNext()) {
+    		String rep = itRep.next();
+    		instr = instr.replaceAll(rep,  mapReplace.get(rep));
+    	}
+    	return instr;
+    }
+    
+    
+    public static void sentHttpPostRequest(String url, String args) throws IOException {
+    	
+        URLConnection connection = new URL(url).openConnection();
+        
+        // by default, connection with enable input, but won't enable output
+        connection.setDoOutput(true);
+        //connection.setDoInput(true);
+        OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+        out.write(args);
+        out.flush();
+        out.close();
+        /*
+         * If the page has respond, uncomment these statements the retrieve the respond data
+        InputStream is = connection.getInputStream();
+        FileOutputStream fos = new FileOutputStream("respond.txt");
+        byte[] buffer = new byte[1024];
+        for (int length; (length = is.read(buffer)) > 0;) {
+            fos.write(buffer, 0, length);
+        }
+        fos.close();
+        is.close();
+        */
     }
     
     

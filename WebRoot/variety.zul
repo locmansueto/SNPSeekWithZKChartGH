@@ -317,6 +317,12 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		<row> Country<textbox id="textboxGermCountry" readonly="true"/></row>
 		</rows>
 		</grid>
+		<hbox id="hboxRawfiles">
+		<label value="Raw files:   " pre="true"/>
+		<button id="buttonDownloadFastq" label="FastQ" target="_rawdownload"/><vbox width="15px"/>
+		<button id="buttonDownloadBAM" label="BAM" target="_rawdownload"/><vbox width="15px"/>
+		<button id="buttonDownloadVCF" label="VCF" target="_rawdownload"/>
+		</hbox>
 		<a target="_blank" href="/passport_dict.pdf" label="Passport data dictionary"/>
 		<listbox id="listboxGermPassport">
 			<listhead>
@@ -529,6 +535,11 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		
 
        <zscript>         
+       
+       		if(AppContext.isIRRILAN()) {
+       			hboxRawfiles.setVisible(true);
+       		}
+       
 	        String varid=Executions.getCurrent().getParameter("irisid");
 	        if(varid==null || varid.isEmpty()) {
 	        	String varname=Executions.getCurrent().getParameter("name");

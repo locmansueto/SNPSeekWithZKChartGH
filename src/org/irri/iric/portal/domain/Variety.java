@@ -47,4 +47,6 @@ public interface Variety extends Comparable {
 	public String printFields(String delimiter);
 	
 	
+	public String getBoxCode();
+	
 }

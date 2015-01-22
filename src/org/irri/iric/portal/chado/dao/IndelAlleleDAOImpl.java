@@ -322,14 +322,6 @@ public class IndelAlleleDAOImpl extends AbstractJpaDao<IndelAllele> implements
 		 return getSNPs(chromosome, startPos, endPos, type);
 	}
 
-	@Override
-	public List getSNPsInChromosome(String chr, List posset, BigDecimal type) {
-		// TODO Auto-generated method stub
-		if(type!=SnpcoreRefposindexDAO.TYPE_3KALLINDEL) throw new RuntimeException("type should be SnpcoreRefposindexDAO.TYPE_3KALLINDEL");
-		List retlist = new ArrayList();
-		retlist.addAll(findIndelAlleleByChrPosIn(Integer.valueOf(chr)+2, posset) );
-		return  retlist;
-	}
 
 	@Override
 	public Map<BigDecimal,IndelAllele> getMapIndelId2Indels(String chromosome, Integer startPos, Integer endPos) {
@@ -368,6 +360,16 @@ public class IndelAlleleDAOImpl extends AbstractJpaDao<IndelAllele> implements
 			Integer endPos, BigDecimal type, int firstRow, int maxRows) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List getSNPsInChromosome(String chr, Collection posset,
+			BigDecimal type) {
+		// TODO Auto-generated method stub
+		if(type!=SnpcoreRefposindexDAO.TYPE_3KALLINDEL) throw new RuntimeException("type should be SnpcoreRefposindexDAO.TYPE_3KALLINDEL");
+		List retlist = new ArrayList();
+		retlist.addAll(findIndelAlleleByChrPosIn(Integer.valueOf(chr)+2, posset) );
+		return  retlist;
 	}
 	
 	

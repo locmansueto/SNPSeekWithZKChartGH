@@ -24,7 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */
 //@Repository("VIricstockBasicprop2DAO")
-@Repository("VarietyBasicprop2DAO")
+//@Repository("VarietyBasicprop2DAO")
+@Repository("VarietyDAO")
 @Transactional
 public class VIricstockBasicprop2DAOImpl extends AbstractJpaDao<VIricstockBasicprop2>
 		implements VIricstockBasicprop2DAO {

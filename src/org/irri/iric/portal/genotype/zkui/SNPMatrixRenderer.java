@@ -46,22 +46,22 @@ public class SNPMatrixRenderer implements MatrixRenderer, SNPRowRendererStyle {
 		
 		
 		
-		if(colIndex>1) {
+		if(colIndex>2) {
 			
 
 			
 			if(snpstr instanceof IndelsStringAllvars) {
 				IndelsStringAllvars indelstr = (IndelsStringAllvars)snpstr;
 				StringBuffer buffCell = new StringBuffer();
-				buffCell.append( getIndelCellStyle( indelstr  , colIndex-2) );
+				buffCell.append( getIndelCellStyle( indelstr  , colIndex-3) );
 				
 				if(indelstr.getVarnuc()!=null) 
-					buffCell.append( getSNPCellStyle(snpstr,  colIndex-2) );
+					buffCell.append( getSNPCellStyle(snpstr,  colIndex-3) );
 				return buffCell.toString();
 
 			}
 			else
-				return getSNPCellStyle(snpstr,  colIndex-2);
+				return getSNPCellStyle(snpstr,  colIndex-3);
 			/*
 			String retStr = "<div ";
 			retStr+= " style=\"" +  getCellStyle(snpstr,colIndex-2) + "\">"; 
@@ -77,8 +77,10 @@ public class SNPMatrixRenderer implements MatrixRenderer, SNPRowRendererStyle {
 			*/
 
 		}
-		else if (colIndex==1)
+		else if (colIndex==2)
 			return snpstr.getMismatch().toString();
+		else if (colIndex==1)
+			return mapVarId2Var.get( snpstr.getVar() ).getIrisId();
 		else {
 			
 			owner.setAttribute("colWidth", "150px",true);

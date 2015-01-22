@@ -40,6 +40,7 @@
 				<class>org.irri.iric.portal.chado.domain.VIricstockBasicprop</class>
 				<class>org.irri.iric.portal.chado.domain.VIricstockBasicprop2</class>
 				<class>org.irri.iric.portal.chado.domain.IricStock</class>
+				<class>org.irri.iric.portal.chado.domain.VIricstockBoxcode</class>
 				<class>org.irri.iric.portal.chado.domain.VIricstockDistance</class>
 
 				<class>org.irri.iric.portal.chado.domain.VIricstocksByPassport</class>

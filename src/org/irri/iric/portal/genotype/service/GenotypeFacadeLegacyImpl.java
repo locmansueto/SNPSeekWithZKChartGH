@@ -314,7 +314,7 @@ public class GenotypeFacadeLegacyImpl implements GenotypeFacade {
 	 * Get length of features (ex. chromosome) from name, mocked! replace with DB read later
 	 */
 
-	@Override
+	
 	public Integer getFeatureLength(String feature) {
 		// TODO Auto-generated method stub
 		
