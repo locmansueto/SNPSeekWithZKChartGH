@@ -15,8 +15,9 @@ import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.genotype.service.GenotypeFacade;
 import org.irri.iric.portal.variety.service.VarietyFacade;
-import org.irri.iric.portal.ws.entity.VariantTable;
+import org.irri.iric.portal.ws.entity.VariantTableWS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +32,7 @@ import com.sun.jersey.spi.resource.Singleton;
 public class GenotypeWS2 {
 
 	@Autowired
+	@Qualifier("GenotypeFacade")
 	private GenotypeFacade genotype;
 	@Autowired
 	private VarietyFacade variety;
@@ -76,7 +78,7 @@ public class GenotypeWS2 {
 	@Path("variant")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public VariantTable getVariantTable() {
+	public VariantTableWS getVariantTable() {
 
 		/*
 			@QueryParam("varids") List listVarids,

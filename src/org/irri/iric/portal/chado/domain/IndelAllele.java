@@ -87,6 +87,8 @@ public class IndelAllele implements Serializable, IndelsAllvarsPos {
 	@XmlElement
 	Integer method;
 
+	//private String refnuc;
+	
 	/**
 	 */
 	public void setIndelId(BigDecimal indelId) {
@@ -238,6 +240,12 @@ public class IndelAllele implements Serializable, IndelsAllvarsPos {
 		if(this.insStr==null)
 			return "";
 		else return this.insStr;
+	}
+
+	@Override
+	public void setRefnuc(String refnuc) {
+		// TODO Auto-generated method stub
+	//	 this.refnuc=refnuc;
 	}
 	
 	

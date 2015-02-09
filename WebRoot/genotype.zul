@@ -9,11 +9,42 @@
 window.Boot_progressbox = function (){}
 ]]>?>
 
-
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 
 
-<zk xmlns:h="native">
+
+<!-- JQuery and JQuery-UI -->
+<?link href="external/jquery.css" rel="stylesheet" ?>
+<?script type='text/javascript' src='external/jquery-1.10.2.min.js'?>
+<?script type='text/javascript' src='external/jquery-ui-1.10.4.custom.min.js'?>
+
+<!-- JSAV -->
+<?link href="JSAV.css" rel="stylesheet" ?>
+<?script type='text/javascript' src='/JSAV.js' ?>
+
+<!-- If using tooltipster -->
+<?link href="external/tooltipster-master/css/tooltipster.css" rel="stylesheet" ?>
+<?script type='text/javascript' src='external/tooltipster-master/js/jquery.tooltipster.min.js' ?>
+<?script  type="text/javascript"><![CDATA[
+function enableTooltipster()
+{
+    $(document).ready(function() {
+        $('.tooltip').tooltipster();
+    });
+}
+enableTooltipster();
+]]> ?>
+<!-- END -->
+
+
+
+
+
+
+
+
+
+<zk xmlns:h="native"  xmlns:w="http://www.zkoss.org/2005/zk/client">
 
     <style>
     
@@ -46,9 +77,48 @@ window.Boot_progressbox = function (){}
         .z-loading-icon {
             background-image: url(${c:encodeURL('~./zk/img/progress3.gif')}); 
         }
+        
+        .vertical { 
+	   	 -webkit-writing-mode:vertical-rl; 
+	   	 -ms-writing-mode:tb-rl; 
+	   	 writing-mode:vertical-rl; 
+	   	 width:20px;
+    	 height:80px;
+    	 
+    	 text-align:center;
+	 	}
+
+ .vertical2 {
+    writing-mode:tb-rl;
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform:rotate(90deg);
+    white-space:nowrap;
+    display:block;
+    bottom:0;
+    width:20px;
+    height:80px;
+}
+
+	
+ 
     </style>
     
 <!--  style>
+
+
+.z-grid-row {
+    height: 32px;
+    overflow: hidden;
+    background: #F7F7F7;
+}
+
+.z-grid-odd.z-detail-faker .z-grid-odd td.z-row-inner{
+	background-color: #FFFFFF;
+}
+
+
 .no-highlight tr.z-grid-odd td.z-row-inner,tr.z-grid-odd .z-cell,tr.z-grid-odd, .no-highlight tr.z-row-over > td.z-row-inner
 	      {
 	      background:white;
@@ -108,6 +178,7 @@ function doPosition() {
 	
 
 		import org.springframework.beans.factory.annotation.Autowired;
+		import org.irri.iric.portal.genotype.zkui.FakerMatrixModel;
 
 		import org.irri.iric.portal.AppContext;
 		
@@ -116,6 +187,7 @@ function doPosition() {
         //  org.irri.iric.portal.genotype.service.GenotypeFacade fac  = new  org.irri.iric.portal.genotype.service.GenotypeFacadeImpl();       
        
        	//org.irri.iric.portal.genotype.service.GenotypeFacade genotype = SpringUtil.getBean("GenotypeFacadeLegacy");
+       	
         GenotypeFacade genotype = SpringUtil.getBean("GenotypeFacade");
         java.util.List genenames = genotype.getGenenames();   
         java.util.List varnames = genotype.getVarnames();
@@ -475,6 +547,7 @@ function doPosition() {
             <tab id="tabTable" label="Table" selected="true"/>  
             <!--  tab id="tabBiglist" label="BigTable" visible="true"/ -->
             <tab id="tabJbrowse" label="JBrowse" visible="false"/>  
+            <tab id="tabMSA" label="Alignment"  visible="false"/>  
             <tab id="tabPhylo" label="Phylotree" visible="false"/>  
             <tab id="tabJBrowsePhylo" label="PhyloJBrowse" visible="false"/>  
         </tabs>  
@@ -488,13 +561,25 @@ function doPosition() {
 	
 	<!--  div style="border: none; overflow-x:auto; overflow-y:auto;position:relative" -->
 	<hbox>
+	
+
+	<hbox id="divAlignIndels" visible="false">
+	<label value="Align indels  " pre="true" style="font-weight:bold" />
+	<checkbox id="checkboxAlignIndels" checked="true" tooltip="popupAlignIndels"/>
+	<vbox width="100px" />
+	<separator orient="vertical"  bar="true" style="color:green"/>
+	</hbox>		
+	
 	<hbox id="hboxDownload" visible="false">
 		<label pre="true" value="Download  "  style="font-weight:bold;"/>
 		<button id="buttonDownloadCsv"  label="CSV" width="60px" height="30px"  autodisable="self"/>
   		<vbox width="10px"/>
 		<button id="buttonDownloadTab"  label="Tab" width="60px" height="30px"  autodisable="self"/>
 		<vbox width="10px"/>
+		<button id="buttonDownloadPlink"  label="Plink" width="60px" height="30px"  autodisable="self"/>
+		<vbox width="10px"/>
 	</hbox>
+
 	
 	<hbox id="hboxFilterAllele" visible="false">
 	<hbox>
@@ -507,7 +592,6 @@ function doPosition() {
 	<label value="Allele Filters" style="font-weight:bold;"/>
 	<vbox width="20px"/>
 	<vbox id="vboxFilterAllele">
-	
 	<hbox>
 	<label>Position:</label>
 	<listbox id="listboxPosition"  mold="select"  rows="1" />
@@ -516,6 +600,8 @@ function doPosition() {
 	<listbox id="listboxAllele" mold="select" rows="1"/>
 	<hbox width="15px"/>
 	<button id="buttonFilterAllele" label="Apply Filter"/>
+	<button id="buttonAddFilterAllele" label="Add Filter"/>
+	
 	<hbox width="15px"/>
 	<button id="buttonAddAlleleConstraint" label="Add" tooltip="popupAddFilter" visible="false"/>
 	<label id="labelFilterResult" />
@@ -542,7 +628,7 @@ function doPosition() {
 	</listbox>
 	
 	<paging id="snpallvarsresultpaging" visible="false"  />
-	<custom-attributes org.zkoss.zul.grid.rod="true" org.zkoss.zul.grid.initrodsize="25"></custom-attributes>
+	<!--  custom-attributes org.zkoss.zul.grid.rod="true" org.zkoss.zul.grid.initrodsize="25"></custom-attributes -->
 	<grid id="snpallvarsresult"  sizedByContent="true" visible="false" mold="paging" width="1200px"   />  <!-- style="overflow:auto" hflex="min"   style="overflow:scroll;" width="100%" -->
 	
 	<!--  frozen rows="2" start="1"/>
@@ -557,7 +643,7 @@ function doPosition() {
         	snpallvarsresult.pagingChild.mold = "os";
     	]]></zscript>
     	
-		<biglistbox id="myComp" hflex="0" vflex="0" xmlns:w="client" w:onScroll="jq('$tip').fadeOut();">
+		<biglistbox id="myComp" visible="false" hflex="min" vflex="0" xmlns:w="client" w:onScroll="jq('$tip').fadeOut();">
 			<!-- Template example
 			<template name="heads">
 				<html><![CDATA[
@@ -571,7 +657,45 @@ function doPosition() {
 			</template> -->
 		</biglistbox>    	
     	
+	    <zscript><![CDATA[
+        	myComp.setModel(new FakerMatrixModel(0,0));
+    	]]></zscript>
 		    	
+		<div id="divIndelLegend" visible="false">
+		<label value="Positions in blue are deletion and green are insertion regions. Dashes (-) represent gaps" />
+		</div>
+		    	
+		<hbox>
+		<grid id="gridBiglistheader" width="400px" visible="false"  style="overflow-x: hidden; overflow-y:hidden">
+		<auxhead height="95px">
+            <auxheader label="Variety name"/>
+            <auxheader label="IRIS ID"/>
+            <auxheader label="Mismatch"/>
+        </auxhead>
+        <columns>
+            <column width="250px">Reference</column>
+            <column width="100px"></column>
+            <column width="50px"></column>
+        </columns>
+		</grid>
+		<biglistbox id="biglistboxArray" visible="false" hflex="min" vflex="0" xmlns:w="client" w:onScroll="jq('$tip').fadeOut();"/>
+		</hbox>		
+		
+		
+	    <zscript><![CDATA[
+			gridBiglistheader.setModel(new SimpleListModel(new ArrayList()));
+        	biglistboxArray.setModel(new FakerMatrixModel(0,0));
+        	/*
+        	biglistboxArray.addEventListener("onDataLoading",new EventListener() {					
+    			public void onEvent(Event event) throws Exception {
+    				int offset = event.getOffset();
+    				int limit = event.getLimit();
+    				
+    				System.out.println(offset+", "+limit);
+    			}
+    		});
+        	*/
+    	]]></zscript>
     	
     </vbox>
 		
@@ -628,13 +752,20 @@ function doPosition() {
 </hbox>
 
 
-<iframe id= "iframeJbrowse"  align="left" visible="false" style="width:95%;height:3000px;border:0px inset;" src="${jbrowsestart}" />
+<iframe id= "iframeJbrowse"  align="left" visible="true" style="width:95%;height:3000px;border:0px inset;" src="${jbrowsestart}" />
 </vbox>
  
                 
             </tabpanel>
             
-              
+  <tabpanel id="tabpanelAlignment"> 
+  
+  <iframe id= "iframeAlignment"  align="left" visible="true" style="width:95%;height:800px;border:0px inset;" src="/jsp/jsav.jsp" />
+  
+  
+  </tabpanel>
+               
+               
             <tabpanel> <!--  vflex="1" style="overflow:auto" -->
 <!--  div style="overflow:auto;position:relative" --> 
 	
@@ -864,6 +995,12 @@ function doPosition() {
 		  Query SNPs.
         ]]></html>
 </popup>
+<popup id="popupAlignIndels" width="300px">
+        <html><![CDATA[
+		  Show indels as sequence alignments.
+        ]]></html>
+</popup>
+
 <popup id="popupIndel" width="300px">
         <html><![CDATA[
 		  Query indels.

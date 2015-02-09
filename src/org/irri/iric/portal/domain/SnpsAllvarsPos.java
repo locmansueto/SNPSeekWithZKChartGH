@@ -21,4 +21,6 @@ public interface SnpsAllvarsPos {
 		 * @return
 		 */
 		public String getRefnuc();
+		
+		public void setRefnuc(String refnuc);
 }

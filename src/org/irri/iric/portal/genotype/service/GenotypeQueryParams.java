@@ -18,13 +18,22 @@ public class GenotypeQueryParams {
 	private String sLocus;
 	private boolean bGraySynonymous=false;
 	private boolean bExcludeSynonymous=false;
+	private boolean bAlignIndels=true;
+	private String delimiter;
+	private String filename;
 	
 	
 	
+	public void setbAlignIndels(boolean bAlignIndels) {
+		this.bAlignIndels = bAlignIndels;
+	}
+
+
+
 	public GenotypeQueryParams(Collection colVarIds, String sChr, Long lStart,
 			Long lEnd, boolean bSNP, boolean bIndel, boolean bCoreonly,
 			boolean bMismatchonly, Collection poslist, String sSubpopulation,
-			String sLocus) {
+			String sLocus, boolean bAlignIndels) {
 		super();
 		this.colVarIds = colVarIds;
 		this.sChr = sChr;
@@ -37,7 +46,11 @@ public class GenotypeQueryParams {
 		this.poslist = poslist;
 		this.sSubpopulation = sSubpopulation;
 		this.sLocus = sLocus;
+		this.bAlignIndels=bAlignIndels;
 	}
+	
+	
+	
 	public Collection getColVarIds() {
 		return colVarIds;
 	}
@@ -77,6 +90,41 @@ public class GenotypeQueryParams {
 	public boolean isbExcludeSynonymous() {
 		return bExcludeSynonymous;
 	}
+	public boolean isbAlignIndels() {
+		return bAlignIndels;
+	}
+	public void setColVarIds(Collection colVarIds) {
+		this.colVarIds = colVarIds;
+	}
+	public void setbMismatchonly(boolean bMismatchonly) {
+		this.bMismatchonly = bMismatchonly;
+	}
+	public void setsSubpopulation(String sSubpopulation) {
+		this.sSubpopulation = sSubpopulation;
+	}
+	public String getDelimiter() {
+		return delimiter;
+	}
+	public void setDelimiter(String delimiter) {
+		this.delimiter = delimiter;
+	}
+	public void setsChr(String sChr) {
+		this.sChr = sChr;
+	}
+	public void setlStart(Long lStart) {
+		this.lStart = lStart;
+	}
+	public void setlEnd(Long lEnd) {
+		this.lEnd = lEnd;
+	}
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	
+	
 	 
 	 
 	

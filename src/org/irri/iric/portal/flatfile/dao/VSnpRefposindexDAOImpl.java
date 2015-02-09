@@ -300,12 +300,6 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex>
 		return query.getResultList();
 	}
 
-	@Override
-	public List getSNPs(Collection varids, String chromosome, Integer startPos,
-			Integer endPos, BigDecimal type, int firstRow, int maxRows) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	
 	

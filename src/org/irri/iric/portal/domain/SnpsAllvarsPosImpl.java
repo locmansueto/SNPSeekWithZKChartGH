@@ -28,6 +28,12 @@ public class SnpsAllvarsPosImpl implements SnpsAllvarsPos {
 		return refnuc;
 	}
 
+	@Override
+	public void setRefnuc(String refnuc) {
+		// TODO Auto-generated method stub
+		this.refnuc=refnuc;
+	}
+
 	
 	
 }

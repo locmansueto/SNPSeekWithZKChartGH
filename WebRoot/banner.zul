@@ -38,7 +38,7 @@
 			<menupopup>
 				<menuitem src="/images/iric/users_manual.png" label="User's Manual" href="_help.zul"/>	
 				<menuitem src="/images/iric/faq2.png" label="FAQ" href="_faq.zul"/>
-				<menuitem src="/images/iric/bug-32.ico" label="Report bugs/Suggest features,improvements" target="_blank" href="https://riceinfo.atlassian.net/secure/CreateIssue!default.jspa"/>
+				<menuitem src="/images/iric/bug-32.ico" label="Report bugs/Suggest features,improvements" target="_blank" href="https://riceinfo.atlassian.net/secure/CreateIssue!default.jspa?pid=10601"/>
 				<!-- menuitem src="/images/iric/bug-32.ico" label="Report bugs/Suggest features,improvements" href="_bugs.zul"/ -->
 				<menuitem src="/images/iric/email.png" label="Contact Us" href="_contactus.zul"/>
 				<menuitem src="/images/iric/about.png" label="About" href="_about.zul"/>	

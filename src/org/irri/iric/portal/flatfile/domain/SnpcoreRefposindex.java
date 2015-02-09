@@ -226,6 +226,12 @@ public class SnpcoreRefposindex implements Serializable,  SnpsAllvarsPos {
 		// TODO Auto-generated method stub
 		return getRefcall();
 	}
+
+	@Override
+	public void setRefnuc(String refnuc) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

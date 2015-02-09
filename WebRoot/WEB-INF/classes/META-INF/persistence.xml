@@ -27,6 +27,7 @@
 				<class>org.irri.iric.portal.chado.domain.VSnpgenotypeAllele2</class>
 				<class>org.irri.iric.portal.chado.domain.VSnpNonsynAllele</class>
 				<class>org.irri.iric.portal.chado.domain.VSnpInExon</class>
+				<class>org.irri.iric.portal.chado.domain.Feature</class>
 				
 				<class>org.irri.iric.portal.admin.domain.VOracleSessions</class>
 				

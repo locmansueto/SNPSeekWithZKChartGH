@@ -161,6 +161,163 @@ Where 'mySeqDisplay' is the name of a div that will be created
 - 02.09.14 Avoid using write and writeln. Rather use jQuery to insert into DOM.
            Fixes overwrite issues with using after page closure. By: JHN
 */
+
+
+/**
+-- my revisions 
+- show controls in top of sequences
+
+*/
+
+
+function MyprintJSAV(divId, sequences, options)
+{
+   // Deal with options
+   if(options              == undefined) { options = Array();                            }
+   if(options.width        == undefined) { options.width          = "400px";             }
+   if(options.height       == undefined) { options.height         = "6pt";               }
+   if(options.submitLabel  == undefined) { options.submitLabel    = "Submit Sequences";  }
+   if(options.actionLabel  == undefined) { options.actionLabel    = "Process Sequences"; }
+   if(options.nocolor)                   { options.nocolour       = true;                }
+   if(options.toggleNocolor)             { options.toggleNocolour = true;                }
+   if(options.fastaLabel   == undefined) { options.fastaLabel     = "Export Selected";   }
+   if(options.colorScheme)               { options.colourScheme   = options.colorScheme; }
+   if(options.colourScheme == undefined) { options.colourScheme   = "taylor";            }
+   if(options.selectColor)               { options.selectColour   = true;                }
+   if(options.colorChoices != undefined) { options.colourChoices  = options.colorChoices;}
+   if(options.deletable)                 { options.selectable     = true;                }
+
+   // Initialize globals if not yet done
+   JSAV_init();
+
+   gOptions[divId]         = options;
+   gSequences[divId]       = sequences;
+   gSequenceLengths[divId] = sequences[0].sequence.length;
+
+   gIdx2Pos= options.mapseqid2pos;
+   
+   // Enable JQuery tooltips
+   if(!options.plainTooltips)
+   {
+      $(function() {
+         $(document).tooltip();
+      });
+   }
+
+   if(options.consensus)
+   {
+       gConsensus[divId] = JSAV_buildConsensus(sequences);
+   }
+   var div = '';
+   if($("#" + divId).length == 0) {
+       div = $('<div />').appendTo($('body'));
+       div.attr('id', divId);
+   }
+   else{
+       div = $("#" + divId);
+   }
+   
+   var div_sortable = $('<div />').appendTo(div);
+   
+   
+   div_sortable.attr('id', divId + '_sortable');
+   div_sortable.attr('class', 'JSAVDisplay');
+
+   var html = JSAV_buildSequencesHTML(divId, sequences, options.sortable, 
+                                      options.selectable, options.highlight,
+                                      options.dotify, options.nocolour, options.consensus);
+   div_sortable.append(html);
+
+
+   
+   var div_controls = $('<div />').appendTo(div);
+   div_controls.attr('id', divId + '_controls');
+   div_controls.attr('class', 'JSAVControls');
+
+   if(options.sortable)
+   {
+      var start = 1;
+      var stop  = gSequenceLengths[divId];
+
+      JSAV_printSlider(divId, stop, options.width, options.height);
+
+      var html = "<button type='button' class='tooltip' title='Sort the sequences based on the range specified with the slider' onclick='JSAV_sortAndRefreshSequences(\"" + divId + "\", true, " + options.selectable + ", " + options.border + ")'>Sort</button>";
+      div_controls.append(html);
+
+   }
+
+   if(options.deletable)
+   {
+      JSAV_printDelete(divId);
+   }
+/*
+   if(options.submit != undefined)
+   {
+      JSAV_printSubmit(divId, options.submit, options.submitLabel);
+   }
+
+   if(options.action != undefined)
+   {
+      JSAV_printAction(divId, options.action, options.actionLabel);
+   }
+*/
+   if(options.fasta)
+   {
+      JSAV_printFASTA(divId);
+   }
+
+   /*
+   // Colour related - on a new line
+   if(options.selectColour || options.toggleDotify)
+   {
+       div_controls.append("<br />");
+   }
+   if(options.selectColour)
+   {
+       JSAV_printColourSelector(divId, options);
+   }
+   */
+   
+   /*
+   if(options.toggleDotify)
+   {
+       JSAV_printToggleDotify(divId, options);
+       if(options.toggleNocolour)
+       {
+           JSAV_printToggleNocolour(divId, options);
+       }
+   }
+   */
+   
+   /*
+   var div_sortable = $('<div />').appendTo(div);
+   
+   
+   div_sortable.attr('id', divId + '_sortable');
+   div_sortable.attr('class', 'JSAVDisplay');
+
+   var html = JSAV_buildSequencesHTML(divId, sequences, options.sortable, 
+                                      options.selectable, options.highlight,
+                                      options.dotify, options.nocolour, options.consensus);
+   div_sortable.append(html);
+   */
+
+   if(options.border)
+   {
+       JSAV_modifyCSS(divId);
+   }
+
+    // Ensure buttons etc match the data
+    window.onload = function(){JSAV_refreshSettings(divId);};
+
+    if(options.callback != undefined)
+    {
+        window[options.callback](divId);
+    }
+}
+
+
+
 function printJSAV(divId, sequences, options)
 {
    // Deal with options
@@ -224,7 +381,7 @@ function printJSAV(divId, sequences, options)
       var start = 1;
       var stop  = gSequenceLengths[divId];
 
-      JSAV_printSlider(divId, stop, options.width, options.height);
+      JSAV_printSlider(divId, stop, options.width, options.height, options.mapseqid2pos);
 
       var html = "<button type='button' class='tooltip' title='Sort the sequences based on the range specified with the slider' onclick='JSAV_sortAndRefreshSequences(\"" + divId + "\", true, " + options.selectable + ", " + options.border + ")'>Sort</button>";
       div_controls.append(html);
@@ -907,7 +1064,7 @@ function JSAV_buildASequenceHTML(id, sequence, prevSequence, selectable, dotify,
     var tableLine = "";
     if(isConsensus)
     {
-        tableLine = "<tr class='tooltip' title='The consensus shows the most frequent amino acid. This is lower case if &le;50% of the sequences have that residue.' id='" + id + "'>";
+        tableLine = "<tr class='tooltip' title='The consensus shows the most frequent nucleotide. This is lower case if &le;50% of the sequences have that residue.' id='" + id + "'>";
     }
     else
     {
@@ -1057,7 +1214,7 @@ function JSAV_showRange(eventOrId, ui)
 
       // Display the range currently selected
       tag = "#" + eventOrId + "_showrange";
-      var html = "Sort from: " + gStartPos[eventOrId] + " to: " + gStopPos[eventOrId];
+      var html = "Sort from: " + gIdx2Pos[gStartPos[eventOrId]-1] + " to: " +  gIdx2Pos[gStopPos[eventOrId]-1];
       $(tag).text(html);
       JSAV_markRange(eventOrId, gSequenceLengths[eventOrId], gStartPos[eventOrId]-1, gStopPos[eventOrId]-1);
    }
@@ -1071,7 +1228,7 @@ function JSAV_showRange(eventOrId, ui)
       gStopPos[id]  = ui.values[1];
 
       // Display the range currently selected
-      var html = "Sort from: " + gStartPos[id] + " to: " + gStopPos[id];
+      var html = "Sort from: " + gIdx2Pos[ gStartPos[id]-1] + " to: " +  gIdx2Pos[gStopPos[id]-1];
       $(tag).text(html);
       JSAV_markRange(id, gSequenceLengths[id], gStartPos[id]-1, gStopPos[id]-1);
    }

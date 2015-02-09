@@ -28,6 +28,7 @@ import org.irri.iric.portal.domain.SnpsStringAllvars;
 import org.irri.iric.portal.domain.SnpsStringAllvarsImpl;
 import org.irri.iric.portal.domain.VariantSnpsStringData;
 import org.irri.iric.portal.domain.VariantStringData;
+import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.flatfile.dao.SnpcoreRefposindexDAO;
 import org.irri.iric.portal.flatfile.domain.VSnpRefposindex;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +109,10 @@ public class AllSnpsStringService implements VariantStringService {
 		
 		
 			SNPsStringData snpstrdata = getSNPsStringData(params, colVarids,  chr,  start,  end,  setPositions); 
-			if(snpstrdata==null) return new VariantStringData();
+			if(snpstrdata==null)  {
+				throw new RuntimeException("getSNPsString:  snpstrdata==null");
+				//return new VariantStringData();
+			}
 		 
 			Map mapVarid2Snpsstr = snpstrdata.getMapVarid2Snpsstr();
 			Set setNonsynIdx=new HashSet();
@@ -116,9 +120,17 @@ public class AllSnpsStringService implements VariantStringService {
 			
 			Map mapIndex2NonsynAlleles = snpstrdata.getMapIdx2NonsynAlleles();
 			
-		 	Iterator<BigDecimal> itVar = mapVarid2Snpsstr.keySet().iterator();
+		 	//Iterator<BigDecimal> itVar = mapVarid2Snpsstr.keySet().iterator();
+			Iterator itVar = mapVarid2Snpsstr.keySet().iterator();
+		 	
 			while(itVar.hasNext()) {
-				BigDecimal var = itVar.next();
+				Object ovar = itVar.next();
+				BigDecimal var=null;
+				if(ovar instanceof BigDecimal)
+					var = (BigDecimal)ovar;
+				else if(ovar instanceof Variety)
+					var = ((Variety)ovar).getVarietyId();
+
 				String snpstr = (String)mapVarid2Snpsstr.get(var);
 
 				//countVarpairMismatch(String var1, String var2, boolean var1isref, String var1allele2str, String var2allele2str, 
@@ -163,7 +175,7 @@ public class AllSnpsStringService implements VariantStringService {
 			List listsortedVarieties = new ArrayList();
 			listsortedVarieties.addAll(sortedVarieties);
 			VariantStringData vardata = new VariantSnpsStringData(mapVariety2Mismatch, mapVariety2Order , snpstrdata.getListSnpsPos() ,  snpstrdata.getMapIdx2Pos(), listsortedVarieties , 
-					snpstrdata.getStrRef(), snpstrdata.getMapVarid2SnpsAllele2str(), snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx() , null);
+					snpstrdata.getStrRef(), snpstrdata.getMapVarid2SnpsAllele2str(), snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx() , null, null);
 			
 			
 			//AppContext.debug( listResult.size() + " sortedvarieties in list, "  + sortedVarieties.size() + " in set" );
@@ -193,7 +205,7 @@ public class AllSnpsStringService implements VariantStringService {
 		}
 		    
 				
-		AppContext.resetTimer("getSNPsString start");
+		
 		
 		List<SnpsAllvarsPos> snpsposlist = null;
 		List listpos = null;
@@ -202,21 +214,30 @@ public class AllSnpsStringService implements VariantStringService {
 			if(setPositions!=null && !setPositions.isEmpty()) {
 				listpos = new ArrayList();
 				listpos.addAll(new TreeSet(setPositions));
+				AppContext.resetTimer("getSNPsString start1");
 				snpsposlist  = snpstringallvarsposService.getSNPsInChromosome(chr.toString(),  listpos, snptype);
 			}
 			else {
+				AppContext.resetTimer("getSNPsString start2");
 				snpsposlist  = snpstringallvarsposService.getSNPs(chr.toString(), start.intValue(), end.intValue(),   snptype, -1, -1);
 			}
 		} else {
 			if(setPositions!=null && !setPositions.isEmpty()) {
 				listpos = new ArrayList();
 				listpos.addAll(new TreeSet(setPositions));
+				AppContext.resetTimer("getSNPsString start3");
 				snpsposlist  = snpstringallvarsposService.getSNPsInChromosome( chr.toString(),  listpos, snptype);
 			}
 			else {
-				snpsposlist  = snpstringallvarsposService.getSNPs(colVarids, chr.toString(), start.intValue(), end.intValue(),  snptype, -1, -1);
+				AppContext.resetTimer("getSNPsString start4");
+				//snpsposlist  = snpstringallvarsposService.getSNPs(colVarids, chr.toString(), start.intValue(), end.intValue(),  snptype, -1, -1);
+				snpsposlist  = snpstringallvarsposService.getSNPs(chr.toString(), start.intValue(), end.intValue(),  snptype, -1, -1);
 			}
+			
+			AppContext.debug("colvarids=" + colVarids.toString());
 		}
+		
+		if(snpsposlist==null) throw new RuntimeException("snpsposlist==null");
 		
 		if(snpsposlist.isEmpty()) return new SNPsStringData();
 		

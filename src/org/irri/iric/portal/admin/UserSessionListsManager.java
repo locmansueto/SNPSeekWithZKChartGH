@@ -236,7 +236,7 @@ public boolean uploadListCookie(String list) {
 		Iterator<String> itNames = getVarietylistNames().iterator();
 		
 		if(itNames.hasNext())
-			buff.append("VARIETY LISTS:\tLIST NAMES:\tVARIETIES (ID, NAME:ACCESSION, IRIS ID, BOX CODE)\n");
+			buff.append("VARIETY LISTS:\tLIST NAMES:\tVARIETIES (ID, NAME:ACCESSION, IRIS ID, BOX CODE, SUBPOPULATION, COUNTRY)\n");
 		
 		while(itNames.hasNext()) {
 			String name = itNames.next();
@@ -248,11 +248,16 @@ public boolean uploadListCookie(String list) {
 				if(var==null) continue;
 				String irisid="";
 				String boxcode="";
+				String country="";
+				String subpop="";
 				if(var.getIrisId()!=null) irisid=var.getIrisId();
+				if(var.getCountry() !=null) country=var.getCountry();
+				if(var.getSubpopulation()!=null) subpop=var.getSubpopulation();
+				
 				
 				VIricstockBasicprop2 var2 = mapVarid2Var2.get(var.getVarietyId()); 
 				if( var2!=null && var2.getBoxCode()!=null) boxcode = var2.getBoxCode();
-				buff.append("\t\t" + var.getVarietyId() +  "\t" + var.getName() + "\t" + irisid + "\t" + boxcode + "\n");
+				buff.append("\t\t" + var.getVarietyId() +  "\t" + var.getName() + "\t" + irisid + "\t" + boxcode + "\t" +subpop + "\t" + country + "\n");
 			}
 			buff.append("\n");
 		}

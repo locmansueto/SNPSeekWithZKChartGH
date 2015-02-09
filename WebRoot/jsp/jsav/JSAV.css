@@ -54,7 +54,8 @@
 /* Willie Taylor scheme */
 .JSAV .clustalA {background-color: #80a0f0; color: #000000;}
 .JSAV .clustalR {background-color: #f01505; color: #000000;}
-.JSAV .clustalN {background-color: #00ff00; color: #000000;}
+/* .JSAV .clustalN {background-color: #00ff00; color: #000000;} */
+.JSAV .clustalN {background-color: #909090; color: #000000;}
 .JSAV .clustalD {background-color: #c048c0; color: #000000;}
 .JSAV .clustalC {background-color: #f08080; color: #000000;}
 .JSAV .clustalQ {background-color: #00ff00; color: #000000;}
@@ -75,7 +76,9 @@
 
 .JSAV .zappoA {background-color: #ffafaf; color: #000000;}
 .JSAV .zappoR {background-color: #6464ff; color: #000000;}
-.JSAV .zappoN {background-color: #00ff00; color: #000000;}
+/*.JSAV .zappoN {background-color: #00ff00; color: #000000;}*/
+
+.JSAV .zappoN {background-color: #909090; color: #000000;}
 .JSAV .zappoD {background-color: #ff0000; color: #000000;}
 .JSAV .zappoC {background-color: #ffff00; color: #000000;}
 .JSAV .zappoQ {background-color: #00ff00; color: #000000;}
@@ -94,14 +97,20 @@
 .JSAV .zappoY {background-color: #ffc800; color: #000000;}
 .JSAV .zappoV {background-color: #ffafaf; color: #000000;}
 
-.JSAV .taylorA {background-color: #ccff00; color: #000000;}
+/*.JSAV .taylorA {background-color: #ccff00; color: #000000;} */
+.JSAV .taylorA {background-color: green ; color: #000000;} 
 .JSAV .taylorR {background-color: #0000ff; color: #000000;}
-.JSAV .taylorN {background-color: #cc00ff; color: #000000;}
+/*.JSAV .taylorN {background-color: #cc00ff; color: #000000;}*/
+.JSAV .taylorN {background-color: gray; color: #000000;}
+
 .JSAV .taylorD {background-color: #ff0000; color: #000000;}
-.JSAV .taylorC {background-color: #ffff00; color: #000000;}
+/*.JSAV .taylorC {background-color: #ffff00; color: #000000;} */
+.JSAV .taylorC {background-color: blue; color: #000000;} 
+
 .JSAV .taylorQ {background-color: #ff00cc; color: #000000;}
 .JSAV .taylorE {background-color: #ff0066; color: #000000;}
-.JSAV .taylorG {background-color: #ff9900; color: #000000;}
+/*.JSAV .taylorG {background-color: #ff9900; color: #000000;}*/
+.JSAV .taylorG {background-color: orange; color: #000000;}
 .JSAV .taylorH {background-color: #0066ff; color: #000000;}
 .JSAV .taylorI {background-color: #66ff00; color: #000000;}
 .JSAV .taylorL {background-color: #33ff00; color: #000000;}
@@ -110,14 +119,18 @@
 .JSAV .taylorF {background-color: #00ff66; color: #000000;}
 .JSAV .taylorP {background-color: #ffcc00; color: #000000;}
 .JSAV .taylorS {background-color: #ff3300; color: #000000;}
-.JSAV .taylorT {background-color: #ff6600; color: #000000;}
+.JSAV .taylorT {background-color: #ff0000; color: #000000;}
+.JSAV .taylorT {background-color: red; color: #000000;}
+/*.JSAV .taylorT {background-color: #ff6600; color: #000000;}*/
 .JSAV .taylorW {background-color: #00ccff; color: #000000;}
 .JSAV .taylorY {background-color: #00ffcc; color: #000000;}
 .JSAV .taylorV {background-color: #99ff00; color: #000000;}
 
 .JSAV .hphobA {background-color: #ad0052; color: #000000;}
 .JSAV .hphobR {background-color: #0000ff; color: #000000;}
-.JSAV .hphobN {background-color: #0c00f3; color: #000000;}
+/*.JSAV .hphobN {background-color: #0c00f3; color: #000000;}*/
+.JSAV .hphobN {background-color: #909090; color: #000000;}
+
 .JSAV .hphobD {background-color: #0c00f3; color: #000000;}
 .JSAV .hphobC {background-color: #c2003d; color: #000000;}
 .JSAV .hphobQ {background-color: #0c00f3; color: #000000;}
@@ -141,7 +154,10 @@
 
 .JSAV .helixA {background-color: #e718e7; color: #000000;}
 .JSAV .helixR {background-color: #6f906f; color: #000000;}
-.JSAV .helixN {background-color: #1be41b; color: #000000;}
+/*.JSAV .helixN {background-color: #1be41b; color: #000000;} */
+
+.JSAV .helixN {background-color: #909090; color: #000000;}
+
 .JSAV .helixD {background-color: #778877; color: #000000;}
 .JSAV .helixC {background-color: #23dc23; color: #000000;}
 .JSAV .helixQ {background-color: #926d92; color: #000000;}

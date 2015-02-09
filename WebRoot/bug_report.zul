@@ -1,0 +1,46 @@
+<?page title="Contact Us" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Report bug, suggest improvments or new features" border="none" apply="org.irri.iric.portal.admin.zkui.ContactUsController"/>
+
+<hbox height="20px"/>
+<hbox>
+<vbox width="20%"/>
+<vbox>
+<label value="Report bug, suggest improvments or new features"/><textbox/>
+<grid>
+<rows>
+<row spans="2">
+</row>
+<row>
+<label value="Type"/>
+<listbox id="listboxType" mold="select">
+<listitem value="Report bug" selected="true"/>
+<listitem value="Suggest feature improvement"/>
+<listitem value="Suggest new feature"/>
+</listbox>
+</row>
+<row>
+<label value="Name"/><textbox id="txtboxName"/>
+</row>
+<row>
+<label value="Email"/><textbox  constraint="/.+@.+\.[a-z]+/: Please enter an e-mail address" id="txtboxEmail"/>
+</row>
+<row>
+<label value="Organization"/><textbox id="txtboxOrganization"/>
+</row>
+<row>
+<label value="Message"/><textbox rows="10" id="txtboxMessage"/>
+</row>
+<row>
+<label/>
+<hbox>
+<button value="Submit" id="buttonSubmit"/><vbox width="30px"><button value="Reset" id="buttonReset"/>
+</hbox>
+</row>
+</rows>
+</grid>
+</vbox>
+<vbox width="20%"/>
+</hbox>
+</window>
+</zk>

@@ -60,8 +60,6 @@
 
 				<!-- IRRI local -->
 				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
-				
-				
 					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 					<property name="username" value="iricguest"/>
 					<property name="password" value="iricguest"/>

@@ -15,7 +15,9 @@ import org.irri.iric.portal.domain.SnpsAllvars;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
+import org.irri.iric.portal.domain.VariantStringData;
 import org.irri.iric.portal.genotype.service.GenotypeFacade.snpQueryMode;
+import org.irri.iric.portal.domain.VariantTable;
 import org.zkoss.zk.ui.select.annotation.Wire;
 
 public interface GenotypeFacade {
@@ -265,7 +267,7 @@ public interface GenotypeFacade {
 	 * @param end
 	 * @return
 	 */
-	public String[] constructPhylotreeTopN(String scale, String chr, int start, int end, int topN, String requestid);
+	//public String[] constructPhylotreeTopN(String scale, String chr, int start, int end, int topN, String requestid);
 	
 	
 
@@ -280,14 +282,14 @@ public interface GenotypeFacade {
  * @param mindist
  * @return
  */
-	public Object[] constructPhylotreeMindist(String scale, String chr, int start, int end, String mindist);
+//	public Object[] constructPhylotreeMindist(String scale, String chr, int start, int end, String mindist);
 
 	
 	/**
 	 * Ordering of varieties from phylogenetic computation based on mismatches in region. call after constructPhylotree
 	 * @return	null if not yet computed
 	 */
-	public Map<BigDecimal, Integer> getMapVariety2PhyloOrder();
+	//public Map<BigDecimal, Integer> getMapVariety2PhyloOrder();
 	
 	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile);
 
@@ -404,6 +406,32 @@ public interface GenotypeFacade {
 
 
 	String getIndelType(String allele);
+
+
+
+	VariantStringData queryGenotype(GenotypeQueryParams params) throws Exception;
+	List<VariantStringData> queryGenotype(List listParams) throws Exception;
+	void downloadGenotypeGenome(GenotypeQueryParams params) throws Exception;
+
+
+	VariantTable fillGenotypeTable(VariantTable table, VariantStringData data,
+			GenotypeQueryParams params) throws Exception;
+
+
+
+
+	VariantStringData compare2Varieties(BigDecimal var1, BigDecimal var2,
+			GenotypeQueryParams params) throws Exception;
+
+
+
+	String[] constructPhylotree(PhylotreeQueryParams params, String requestid);
+
+
+	//VariantTable fillGenotypeTable(VariantTable table, VariantStringData data,
+	//		GenotypeQueryParams params) throws Exception;
+
+
 
 
 	//Map<Integer, Set<Character>> getMapIndex2NonsynAlleles();

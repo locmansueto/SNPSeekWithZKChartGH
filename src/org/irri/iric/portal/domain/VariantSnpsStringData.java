@@ -1,9 +1,12 @@
 package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class VariantSnpsStringData extends VariantStringData {
 
@@ -17,9 +20,9 @@ public class VariantSnpsStringData extends VariantStringData {
 	public VariantSnpsStringData(Map<BigDecimal, Double> mapVariety2Mismatch,
 			Map<BigDecimal, Integer> mapVariety2Order,
 			List<SnpsAllvarsPos> listPos, Map<Integer, BigDecimal> mapIdx2Pos,
-			List<SnpsStringAllvars> listVariantsString) {
+			List<SnpsStringAllvars> listVariantsString, Map<BigDecimal,Set<String>> mapPos2Alleleset) {
 		
-		this(mapVariety2Mismatch, mapVariety2Order, listPos, mapIdx2Pos, listVariantsString, null, null, null, null, null);
+		this(mapVariety2Mismatch, mapVariety2Order, listPos, mapIdx2Pos, listVariantsString, null, null, null, null, null, mapPos2Alleleset);
 	}
 	
 	
@@ -31,7 +34,7 @@ public class VariantSnpsStringData extends VariantStringData {
 			Map<BigDecimal, Map<Integer, Character>> mapVarid2SnpsAllele2str,
 			Map<BigDecimal, Set<Character>> mapIdx2NonsynAlleles,
 			Set<Integer> setSnpInExonTableIdx,
-			Map<Integer, Integer> mapMergedIdx2SnpIdx) {
+			Map<Integer, Integer> mapMergedIdx2SnpIdx, Map<BigDecimal,Set<String>> mapPos2Alleleset) {
 		super();
 
 		this.mapVariety2Mismatch = mapVariety2Mismatch;
@@ -45,6 +48,7 @@ public class VariantSnpsStringData extends VariantStringData {
 		this.mapIdx2NonsynAlleles = mapIdx2NonsynAlleles;
 		this.setSnpInExonTableIdx = setSnpInExonTableIdx;
 		this.mapMergedIdx2SnpIdx = mapMergedIdx2SnpIdx;
+		this.mapPos2Alleleset = mapPos2Alleleset;
 	}
 
 
@@ -81,7 +85,21 @@ public class VariantSnpsStringData extends VariantStringData {
 		this.mapMergedIdx2SnpIdx = mapMergedIdx2SnpIdx;
 	}
 
-	
+
+	@Override
+	public Map<BigDecimal, Set<String>> getMapPos2Alleleset() {
+		if(mapPos2Alleleset==null) {
+			mapPos2Alleleset=new HashMap();
+			Set setNuc = new TreeSet();
+			setNuc.add("A");setNuc.add("T");setNuc.add("G");setNuc.add("C");
+			Iterator<BigDecimal> itpos = this.mapIdx2Pos.values().iterator();
+			while(itpos.hasNext()) {
+				mapPos2Alleleset.put(itpos.next(), setNuc);
+			}
+		}
+		return mapPos2Alleleset;
+	}
+
 	
 	
 }

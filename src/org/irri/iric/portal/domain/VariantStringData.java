@@ -14,6 +14,7 @@ import java.util.TreeSet;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.ListItemsDAO;
+import org.irri.iric.portal.genotype.service.IndelStringService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 //import org.irri.iric.portal.genotype.service.VarietiesGenotypeServiceImpl.SnpsAllvarsPosComparator;
@@ -24,13 +25,16 @@ public class VariantStringData {
 	@Autowired
 	private ListItemsDAO listitemsdao;
 	
-	protected  Map<BigDecimal ,Double> mapVariety2Mismatch;
+	//protected  Map<BigDecimal, Double> mapVariety2Mismatch;
+	protected  Map mapVariety2Mismatch;
 	protected Map<BigDecimal, Integer> mapVariety2Order;
 	protected List<SnpsAllvarsPos> listPos;
 	protected Map<Integer,BigDecimal> mapIdx2Pos;
 	protected List<SnpsStringAllvars> listVariantsString;
-	
+	protected String refnuc[];
 	protected String msgbox="";
+	protected Map<BigDecimal, Set<String>> mapPos2Alleleset;
+	
 
 	
 	private VariantSnpsStringData snpstringdata;
@@ -62,17 +66,48 @@ public class VariantStringData {
 	
 	public void setSnpstringdata(VariantSnpsStringData snpstringdata) {
 		this.snpstringdata = snpstringdata;
-		merge();
+		
+		if(snpstringdata!=null && snpstringdata.getListPos()==null) throw new RuntimeException("snpstringdata.getListPos()==null");
+		listVariantsString=null;
+		//merge();
 	}
 
 	public void setIndelstringdata(VariantIndelStringData indelstringdata) {
 		this.indelstringdata = indelstringdata;
-		merge();
+
+		if(indelstringdata!=null && indelstringdata.getListPos()==null) throw new RuntimeException("indelstringdata.getListPos()==null");
+		listVariantsString=null;
+		//merge();
+	}
+
+	public List<SnpsStringAllvars> getListVariantsString() {
+		return listVariantsString;
 	}
 	
 	
+	public String[] getRefnuc() {
+		if(refnuc==null) {
+			refnuc = new String[listPos.size()];
+			Iterator<SnpsAllvarsPos> itlistPos = listPos.iterator();
+			int i=0;
+			while(itlistPos.hasNext()) {
+				refnuc[i]= itlistPos.next().getRefnuc();
+				i++;
+			}
+		}
+		return refnuc;
+	}
+	
 
-	public Map<BigDecimal, Double> getMapVariety2Mismatch() {
+	public VariantSnpsStringData getSnpstringdata() {
+		return snpstringdata;
+	}
+
+	public VariantIndelStringData getIndelstringdata() {
+		return indelstringdata;
+	}
+
+	public Map getMapVariety2Mismatch() {
 		return mapVariety2Mismatch;
 	}
 
@@ -88,9 +123,6 @@ public class VariantStringData {
 		return mapIdx2Pos;
 	}
 
-	public List<SnpsStringAllvars> getListVariantsString() {
-		return listVariantsString;
-	}
 
 	public void setMessage(String message) {
 		// TODO Auto-generated method stub
@@ -103,9 +135,9 @@ public class VariantStringData {
 		
 
 	
-	private void merge() {
+	public void merge() {
 		// merge
-		VariantStringData variantsmerged = null;
+		//VariantStringData variantsmerged = null;
 		
 		if(snpstringdata!=null && indelstringdata!=null) {
 			
@@ -152,9 +184,7 @@ public class VariantStringData {
 			setMergedAllvarsPos.addAll( snpstringdata.getListPos() );
 			setMergedAllvarsPos.addAll( indelstringdata.getListPos() );
 			
-			listPos = new ArrayList();
-			listPos.addAll(setMergedAllvarsPos);
-
+			
 			
 			// update mismatches and order
 			Map<BigDecimal, Double>  mapMergedVar2Mismatch = new HashMap();
@@ -168,8 +198,10 @@ public class VariantStringData {
 				ordercnt++;
 			}
 			 
+			
+			// update mapMergedIdx2SnpIdx
 			 Map<BigDecimal, Integer> mapSNPPos2SnpIdx = new HashMap();
-			 Iterator<SnpsAllvarsPos> itSNPosList = listPos.iterator();
+			 Iterator<SnpsAllvarsPos> itSNPosList =  snpstringdata.getListPos().iterator();
 			 int idxcnt = 0;
 			 while(itSNPosList.hasNext()) {
 				 SnpsAllvarsPos snppos = itSNPosList.next();
@@ -177,41 +209,87 @@ public class VariantStringData {
 				 idxcnt++;
 			 }
 			 
+		
+			//Set<Integer> setNewGappedIdx = new HashSet();
+			 
 			Map<Integer,Integer> mapMergedIdx2SnpIdx = new HashMap();
-			// merge column indexing
+			// merge column indexing, update gapped set
 			 Map<Integer, BigDecimal> mapMergedIndex2Pos = new HashMap(); 
-			 Iterator<SnpsAllvarsPos> itSnppos = listPos.iterator();
+			 Iterator<SnpsAllvarsPos> itSnppos = setMergedAllvarsPos.iterator();
 			 idxcnt=0;
 			 while(itSnppos.hasNext()) {
 				 SnpsAllvarsPos posallvars = itSnppos.next();
 				 mapMergedIndex2Pos.put( idxcnt, posallvars.getPos() );
 				 if(mapSNPPos2SnpIdx.containsKey( posallvars.getPos()))
 					 mapMergedIdx2SnpIdx.put(idxcnt, mapSNPPos2SnpIdx.get( posallvars.getPos() ) );
+				 
+			//	 if(posallvars.getRefnuc().equals(IndelStringService.INDEL_GAP)) setNewGappedIdx.add(idxcnt);
 				 idxcnt++;
 			 }
+			 
 
+			 
 			this.mapVariety2Mismatch = mapMergedVar2Mismatch;
 			this.mapVariety2Order= mapMergedVar2Order;
-			
 			this.mapIdx2Pos=mapMergedIndex2Pos;
+			this.listPos = new ArrayList();
+			this.listPos.addAll(setMergedAllvarsPos);
+			this.listVariantsString= listMergedVariants;
+
 			this.snpstringdata.setMapMergedIdx2SnpIdx( mapMergedIdx2SnpIdx );
+			//this.indelstringdata.setSetIdxGap( setNewGappedIdx );
+
+			
+			this.mapPos2Alleleset = new HashMap();
+			this.mapPos2Alleleset.putAll( this.snpstringdata.getMapPos2Alleleset() );
+			this.mapPos2Alleleset.putAll( this.indelstringdata.mapPos2Alleleset );
 			
 			//variantsmerged = new  VariantStringData(mapMergedVar2Mismatch, mapMergedVar2Order,
 			//		 listPos, mapMergedIndex2Pos, listMergedVariants);
 			// variantsmerged.setMapMergedIdx2SnpIdx(mapMergedIdx2SnpIdx);
 			 
-			 msgbox += " ... RESULT: " +  variantsmerged.getListVariantsString().size() + " varieties x " + indelstringdata.getListPos().size() + 
+			 this.msgbox += " ... RESULT: " +  listMergedVariants.size() + " varieties x " + indelstringdata.getListPos().size() + 
 						" SNP, " +  snpstringdata.getListPos().size() + " INDEL positions";
 			
 		} else if(indelstringdata!=null) {
-			 variantsmerged = indelstringdata;
-			 msgbox += " ... RESULT: " +  variantsmerged.getListVariantsString().size() + " varieties x " + indelstringdata.getListPos().size() + " INDEL positions";
+			 	msgbox += " ... RESULT: " +  indelstringdata.getListVariantsString().size() + " varieties x " + indelstringdata.getListPos().size() + " INDEL positions";
+			 
+				this.mapVariety2Mismatch = indelstringdata.mapVariety2Mismatch;
+				this.mapVariety2Order= indelstringdata.mapVariety2Order;
+				this.mapIdx2Pos= indelstringdata.mapIdx2Pos;
+				this.listPos = indelstringdata.listPos;
+				this.listVariantsString= indelstringdata.listVariantsString;
+				this.msgbox += indelstringdata.msgbox;
+				this.refnuc = indelstringdata.refnuc;
+				this.mapPos2Alleleset = indelstringdata.mapPos2Alleleset;
 			
 		} else if(snpstringdata!=null) {
-			variantsmerged = snpstringdata;
-			 msgbox += " ... RESULT: " +  variantsmerged.getListVariantsString().size() + " varieties x "  + snpstringdata.getListPos().size() + " SNPS positions";
-		}			
+
+			 msgbox += " ... RESULT: " +  snpstringdata.getListVariantsString().size() + " varieties x "  + snpstringdata.getListPos().size() + " SNPS positions";
+				this.mapVariety2Mismatch = snpstringdata.mapVariety2Mismatch;
+				this.mapVariety2Order= snpstringdata.mapVariety2Order;
+				this.mapIdx2Pos= snpstringdata.mapIdx2Pos;
+				this.listPos = snpstringdata.listPos;
+				this.listVariantsString= snpstringdata.listVariantsString;
+				this.mapPos2Alleleset = snpstringdata.getMapPos2Alleleset();
+				this.msgbox += snpstringdata.msgbox;
+				this.refnuc = snpstringdata.refnuc;
+				
+				Map mapMergedIdx2SnpIdx=new HashMap();
+				for(int i=0; i<listPos.size(); i++)
+					mapMergedIdx2SnpIdx.put(i, i);
+				this.snpstringdata.setMapMergedIdx2SnpIdx(mapMergedIdx2SnpIdx);
+		}
 	}
+	
+	
+
+	public Map<BigDecimal, Set<String>> getMapPos2Alleleset() {
+		return mapPos2Alleleset;
+	}
+
+	
+	
 	
 	/*
 	class SNPsStringData {
@@ -284,6 +362,11 @@ public class VariantStringData {
 	}
 	*/
 	
+
+
+
+
+
 
 	class SnpsAllvarsPosComparator implements Comparator {
 		@Override

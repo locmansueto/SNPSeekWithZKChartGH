@@ -20,12 +20,12 @@ public class VariantTableSerialImpl implements VariantTable {
 	private ListItemsDAO listitemdao;
 	
 	private String delimiter;
-	private java.io.StringWriter writer;
+	private java.io.Writer writer;
 	private boolean splitAllele2=false;
 	private boolean hasRowHeader=true;
 	private boolean hasColHeader=true; 
 	
-	public VariantTableSerialImpl(String delimiter, java.io.StringWriter writer, boolean splitAllele2, boolean hasRowHeader, boolean hasColHeader ) {
+	public VariantTableSerialImpl(String delimiter, java.io.Writer writer, boolean splitAllele2, boolean hasRowHeader, boolean hasColHeader ) {
 		super();
 		this.delimiter = delimiter;
 		this.writer=writer;
@@ -36,7 +36,7 @@ public class VariantTableSerialImpl implements VariantTable {
 	
 
 	@Override
-	public void setVariantStringData(VariantStringData data) {
+	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params) throws Exception{
 		// TODO Auto-generated method stub
 
 		StringBuffer buff1 = new StringBuffer();
@@ -121,6 +121,15 @@ public class VariantTableSerialImpl implements VariantTable {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	@Override
+	public VariantStringData getVariantStringData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 
 }

@@ -311,12 +311,6 @@ public class MvCoreSnpsDAOImpl extends AbstractJpaDao<MvCoreSnps> implements
 		return null;
 	}
 
-	@Override
-	public List getSNPs(Collection varids, String chromosome, Integer startPos,
-			Integer endPos, BigDecimal type, int firstRow, int maxRows) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List getSNPsInChromosome(String chr, Collection posset,

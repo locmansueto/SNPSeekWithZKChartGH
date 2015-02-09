@@ -38,8 +38,9 @@ window.Boot_progressbox = function (){}
 <label value="My Lists" style="font-size:20px;font-weight:bold;color:green;"/>
 <hbox height="10px" />
 <vbox>
-<label value="NOTE: Lists are not saved in the server and available only for this session" style="font-size:12px;color:red" />
-<label value="Click Download button to save your created lists for future reference" style="font-size:12px;color:red" />
+<label value="NOTE: Lists are not saved in the server and available only for this session." style="font-size:12px;color:red" />
+<label value="Click Download button to save your created lists for future reference." style="font-size:12px;color:red" />
+<label value="Click Upload button to recreate your list from previously downloaded MyList file." style="font-size:12px;color:red" />
 </vbox>
 </div>
 <hbox height="10px"/>

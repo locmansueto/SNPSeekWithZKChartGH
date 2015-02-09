@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 @Service("CoreSnpsService")
 public class CoreSnpsService implements VariantStringService {
 
+
+
 	@Override
 	public VariantStringData getVariantString(GenotypeQueryParams params,
 			Collection colVarids, String chr, Long start, Long stop) {
@@ -37,5 +39,7 @@ public class CoreSnpsService implements VariantStringService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
 
 }

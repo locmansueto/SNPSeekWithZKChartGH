@@ -68,7 +68,7 @@
 	
 	<library-property>
     <name>org.zkoss.zul.grid.rod</name>
-    <value>true</value>
+    <value>false</value>
 	</library-property>
  	
  	<library-property>

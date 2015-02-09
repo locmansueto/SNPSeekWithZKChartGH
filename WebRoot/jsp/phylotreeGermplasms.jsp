@@ -1,5 +1,8 @@
 <%@ page import="org.irri.iric.portal.variety.service.VarietyFacade" %>
 <%@ page import="org.irri.iric.portal.genotype.service.GenotypeFacade" %>
+<%@ page import="org.irri.iric.portal.genotype.service.PhylotreeQueryParams" %>
+<%@ page import="org.irri.iric.portal.genotype.service.GenotypeQueryParams" %>
+
 <%@ page import="org.irri.iric.portal.AppContext" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Set" %>
@@ -69,8 +72,14 @@
 				//newicknodes = genotype.constructPhylotreeMindist(request.getParameter("scale") , request.getParameter("chr") ,Integer.parseInt(request.getParameter("start")) ,
 				//										Integer.parseInt(request.getParameter("end")), (String)request.getParameter("mindist"));
 				
-				newicknodes = genotype.constructPhylotreeTopN(request.getParameter("scale") , request.getParameter("chr") ,Integer.parseInt(request.getParameter("start")) ,
-														Integer.parseInt(request.getParameter("end")), topn, "");
+				//newicknodes = genotype.constructPhylotreeTopN(request.getParameter("scale") , request.getParameter("chr") ,Integer.parseInt(request.getParameter("start")) ,
+				//										Integer.parseInt(request.getParameter("end")), topn, "");
+				
+				GenotypeQueryParams genotypeparams = new  GenotypeQueryParams(null, request.getParameter("chr"), Long.valueOf( request.getParameter("start") ),
+						Long.valueOf( request.getParameter("end") ), true, false, true, true, null, null, null, false);
+				PhylotreeQueryParams phyloparams = new PhylotreeQueryParams(genotypeparams, "topn", topn, -1, Double.valueOf( request.getParameter("scale") ));
+				newicknodes = genotype.constructPhylotree(phyloparams, "");
+
 				newick = (String)newicknodes[0];
 				
 				if(!newick.isEmpty()) {

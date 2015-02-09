@@ -1,5 +1,6 @@
 package org.irri.iric.portal;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Constructor;
@@ -7,6 +8,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.Clob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -51,14 +54,14 @@ public class AppContext {
 	private static final boolean isAWS = false;
 	private static final boolean isAWSdev = false;
 	private static final boolean isVMIRRI = false;
-	private static final boolean isPollux = true;
-	private static final boolean isLocalhost = false;
+	private static final boolean isPollux = false;
+	private static final boolean isLocalhost = true;
 	
 	/**
 	 * is development
 	 */
 	public static final boolean isDev = false;
-	public static final boolean isTest = true;
+	public static final boolean isTest = false;
 
 
 
@@ -474,6 +477,30 @@ public class AppContext {
         */
     }
     
+    /**
+     * Convert SQL CLOB field to string
+     * @param clb
+     * @return
+     * @throws IOException
+     * @throws SQLException
+     */
+    public static String clobStringConversion(Clob clb) throws IOException, SQLException
+    {
+      if (clb == null)
+    	  return  "";
+            
+      StringBuffer str = new StringBuffer();
+      String strng;
+              
+    
+      BufferedReader bufferRead = new BufferedReader(clb.getCharacterStream());
+   
+      while ((strng=bufferRead .readLine())!=null)
+       str.append(strng);
+   
+      return str.toString();
+    }        
+  
     
     /**
      * Utility to check if object is null (if autowired worked!)

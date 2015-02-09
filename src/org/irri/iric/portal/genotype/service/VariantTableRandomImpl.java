@@ -6,7 +6,7 @@ import org.irri.iric.portal.domain.VariantTable;
 public class VariantTableRandomImpl implements VariantTable {
 
 	@Override
-	public void setVariantStringData(VariantStringData data) {
+	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -22,5 +22,13 @@ public class VariantTableRandomImpl implements VariantTable {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public VariantStringData getVariantStringData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 
 }

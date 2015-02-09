@@ -32,15 +32,16 @@ public class VariantTableArraysImpl implements VariantTable {
 	private Long posarr[];
 	private String refnuc[];
 	
+	private VariantStringData data;
 	
 	@Override
-	public void setVariantStringData(VariantStringData data) {
+	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params) {
 		// TODO Auto-generated method stub
-		
+		this.data=data;
 
 		List<SnpsAllvarsPos> snpsposlist = data.getListPos();
-		Long posarr[] = new Long[snpsposlist.size()]; 
-		String refnuc[] = new String[snpsposlist.size()];
+		posarr = new Long[snpsposlist.size()]; 
+		refnuc = new String[snpsposlist.size()];
 		Iterator<SnpsAllvarsPos> itPos = snpsposlist.iterator();
 		int poscount = 0;
 		while(itPos.hasNext()) {
@@ -152,6 +153,13 @@ public class VariantTableArraysImpl implements VariantTable {
 		return this.varmismatch;
 	}
 
+
+	@Override
+	public VariantStringData getVariantStringData() {
+		// TODO Auto-generated method stub
+		return data;
+	}
+
 	
 /*
 	private String getIndelAlleleString(IndelsAllvarsPos indelpos) {
@@ -170,6 +178,7 @@ public class VariantTableArraysImpl implements VariantTable {
 		}
 	}
 	*/
+	
 	
 	
 }
