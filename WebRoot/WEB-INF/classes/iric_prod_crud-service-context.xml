@@ -22,8 +22,10 @@
 	<!-- ******************************************************************** -->
 	<!-- Scan for service layer annotated beans -->
 	<!-- ******************************************************************** -->
-	<context:component-scan base-package="org.irri.iric.portal.service" scoped-proxy="interfaces" />
-	<context:component-scan base-package="org.irri.iric.portal.chado.service" scoped-proxy="interfaces" />
+	<!--  context:component-scan base-package="org.irri.iric.portal.service" scoped-proxy="interfaces" / -->
+	<!--  context:component-scan base-package="org.irri.iric.portal.chado.service" scoped-proxy="interfaces" / -->
+	<context:component-scan base-package="org.irri.iric.portal.variety.service" scoped-proxy="interfaces" />
+	<context:component-scan base-package="org.irri.iric.portal.genotype.service" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.admin" scoped-proxy="interfaces" />
 	
 	<!-- ******************************************************************** -->

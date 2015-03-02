@@ -9,12 +9,15 @@ import java.util.Map;
 import java.util.Set;
 
 import org.irri.iric.portal.domain.Gene;
+import org.irri.iric.portal.domain.IndelsAllvarsPos;
 import org.irri.iric.portal.domain.Snps2Vars;
 import org.irri.iric.portal.domain.SnpsAllvars;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
+import org.irri.iric.portal.domain.VariantStringData;
 import org.irri.iric.portal.genotype.service.GenotypeFacade.snpQueryMode;
+import org.irri.iric.portal.domain.VariantTable;
 import org.zkoss.zk.ui.select.annotation.Wire;
 
 public interface GenotypeFacade {
@@ -25,14 +28,14 @@ public interface GenotypeFacade {
 	 * if true, use Core SNP only
 	 * @param isCore
 	 */
-	public void setCore(boolean isCore);
+	//public void setCore(boolean isCore);
 	
 	
 	/**
 	 * limit all queries to these set of varieties only
 	 * @param varieties
 	 */
-	public void limitVarieties(Set varieties);
+	//public void limitVarieties(Set varieties);
 	
 	/**
 	 * Query mode
@@ -118,8 +121,8 @@ public interface GenotypeFacade {
 	 * @param b 
 	 * @return
 	 */
-	public List<Snps2Vars> getSNPinVarieties(
-			String var1, String var2, Integer startPos, Integer endPos, String chromosome, snpQueryMode querymode, boolean b);
+	//public List<Snps2Vars> getSNPinVarieties(
+	//		String var1, String var2, Integer startPos, Integer endPos, String chromosome, snpQueryMode querymode, boolean b);
 	
 	/**
 	 *  Get list of SNPs for two varieties within gene plus bp basepairs up and downstream
@@ -130,7 +133,7 @@ public interface GenotypeFacade {
 	 * @param querymode
 	 * @return
 	 */
-	public List<Snps2Vars> getSNPinVarieties( String var1, String var2, String genename, Integer plusminusBp,  snpQueryMode querymode);
+	//public List<Snps2Vars> getSNPinVarieties( String var1, String var2, String genename, Integer plusminusBp,  snpQueryMode querymode);
 	
 	
 	// Query for SNPs for All Varieties
@@ -140,7 +143,7 @@ public interface GenotypeFacade {
 	 * Get SNP positions within the queried region, based on last call of getSNPinAllVarieties()
 	 * @return
 	 */
-	public List<SnpsAllvarsPos>  getSnpsposlist() ;
+	//public List<SnpsAllvarsPos>  getSnpsposlist() ;
 	
 	
 	/**
@@ -223,23 +226,23 @@ public interface GenotypeFacade {
 	 * after calling countSNPMismatchesInAlllVarieties(), results and subsets can be accessed from these
 	 * @return
 	 */
-	public List<SnpsAllvarsRefMismatch> getListSNPAllVarsMismatches();
-	public List<SnpsAllvarsRefMismatch> getListSNPAllVarsMismatches(int firstRow, int numRows);
+	//public List<SnpsAllvarsRefMismatch> getListSNPAllVarsMismatches();
+	//public List<SnpsAllvarsRefMismatch> getListSNPAllVarsMismatches(int firstRow, int numRows);
 
 	
 	/**
 	 * Sorting of varieties, based on number of varieties. call after countSNPMismatchesInAlllVarieties
 	 * @return
 	 */
-	public HashMap<Integer, BigDecimal> getMapOrder2Variety();
-	public HashMap<BigDecimal, Integer> getMapVariety2Order();
+	//public Map<Integer, BigDecimal> getMapOrder2Variety();
+	//public Map<BigDecimal, Integer> getMapVariety2Order();
 	
 	
 	/**
 	 * variety to number of mismatch map
 	 * @return
 	 */
-	public java.util.HashMap<BigDecimal, Integer> getMapVariety2Mismatch(); 
+	//public java.util.Map<BigDecimal, Integer> getMapVariety2Mismatch(); 
 	
 	
 	
@@ -264,14 +267,29 @@ public interface GenotypeFacade {
 	 * @param end
 	 * @return
 	 */
-	public String[] constructPhylotreeTopN(String scale, String chr, int start, int end, int topN, String requestid);
+	//public String[] constructPhylotreeTopN(String scale, String chr, int start, int end, int topN, String requestid);
 	
+	
+
+/**
+ * Construct phylogenetic tree based on mismatches within the region, 
+ * limited by grouping nodes below mindist mismatches
+ *  
+ * @param scale
+ * @param chr
+ * @param start
+ * @param end
+ * @param mindist
+ * @return
+ */
+//	public Object[] constructPhylotreeMindist(String scale, String chr, int start, int end, String mindist);
+
 	
 	/**
 	 * Ordering of varieties from phylogenetic computation based on mismatches in region. call after constructPhylotree
 	 * @return	null if not yet computed
 	 */
-	public java.util.HashMap<BigDecimal, Integer> getMapVariety2PhyloOrder();
+	//public Map<BigDecimal, Integer> getMapVariety2PhyloOrder();
 	
 	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile);
 
@@ -287,7 +305,7 @@ public interface GenotypeFacade {
 	 * @param maxRows
 	 * @return
 	 */
-	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start, Integer end, Integer chr);
+	//public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start, Integer end, Integer chr);
 
 /*
 	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start,
@@ -304,7 +322,7 @@ public interface GenotypeFacade {
 	 * @param maxRows
 	 * @return
 	 */
-	public List getSNPStringInAllVarieties(Set snpposlist, Integer chr);
+	//public List getSNPStringInAllVarieties(Set snpposlist, Integer chr);
 	
 
 	// Query for MyList definition
@@ -328,15 +346,15 @@ public interface GenotypeFacade {
 	 * @param maxRows
 	 * @return
 	 */
-	public List getSNPinVarieties(String var1, String var2, Set snpposlist,
-			String chr, snpQueryMode mode, boolean checked);
+	//public List getSNPinVarieties(String var1, String var2, Set snpposlist,
+	//		String chr, snpQueryMode mode, boolean checked);
 
 
 	/**
 	 * Get heterozygous allele (allele2) matrix varietyXposition
 	 * @return
 	 */
-	char[][] getHeteroAlleleMatrix();
+	//char[][] getHeteroAlleleMatrix();
 
 
 	
@@ -350,13 +368,73 @@ public interface GenotypeFacade {
 	 * Map of table index to Set of non-synonymous alleles
 	 * @return
 	 */
-	Map<Integer, Set<Character>> getMapIdx2NonsynAlleles();
+	//Map<Integer, Set<Character>> getMapIdx2NonsynAlleles();
 
 
-	public void setColorByNonsyn(boolean selected);
+//	public void setColorByNonsyn(boolean selected);
+//
+//
+//	public void setNonsynOnly(boolean selected);
+//
+//
+//	void setMismatchOnly(boolean isMismatchOnly);
+//
+//
+//	void setIncludeSNP(boolean includeSNP);
+//
+//
+//	void setIncludeIndel(boolean includeIndel);
+//
+//
+//
+//	Map<BigDecimal, IndelsAllvarsPos> getMapIndelId2Indel();
+//
+//
+//	Map<Integer, BigDecimal> getMapIndelIdx2Pos();
+//
+//
+//	Map<Integer, Integer> getMapMergedIdx2SnpIdx();
+//
+//
+//	Map<Integer, BigDecimal> getMapMergedIdx2Pos();
+//
+//
+//	Map<BigDecimal, Set<String>> getMapPos2Allele();
+//
+//
+//	String getIndelAlleleString(IndelsAllvarsPos indelpos);
+//
+//
+	String getIndelType(String allele);
 
 
-	public void setNonsynOnly(boolean selected);
+
+	VariantStringData queryGenotype(GenotypeQueryParams params) throws Exception;
+	List<VariantStringData> queryGenotype(List listParams) throws Exception;
+	void downloadGenotypeGenome(GenotypeQueryParams params) throws Exception;
+
+
+	VariantTable fillGenotypeTable(VariantTable table, VariantStringData data,
+			GenotypeQueryParams params) throws Exception;
+
+
+
+
+	VariantStringData compare2Varieties(BigDecimal var1, BigDecimal var2,
+			GenotypeQueryParams params) throws Exception;
+
+
+
+	String[] constructPhylotree(PhylotreeQueryParams params, String requestid);
+
+
+	//VariantTable fillGenotypeTable(VariantTable table, VariantStringData data,
+	//		GenotypeQueryParams params) throws Exception;
+
+
+
+
+	//Map<Integer, Set<Character>> getMapIndex2NonsynAlleles();
 
 
 	//Map<Integer, boolean[]> getMapIdx2Nonsynflags();

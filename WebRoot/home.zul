@@ -10,7 +10,7 @@ window.Boot_progressbox = function (){}
 <zk  xmlns:h="native">
 <div align="center">
 
-<vbox align="center" pack="center" height="100%">
+<vbox align="center" pack="center" height="100%" style="background-color:white">
 
 <panel height="50px"  border="none"/>
  
@@ -23,15 +23,13 @@ This site provides Genotype, Phenotype, and Variety Information for rice (Oryza 
  <h:a target="_blank" href="http://rice.plantbiology.msu.edu/annotation_pseudo_current.shtml">Nipponbare reference Os-Nipponbare-Reference-IRGSP-1.0</h:a>) came from <h:a target="_blank" href="http://www.gigasciencejournal.com/content/3/1/7"> 3,000 Rice Genomes Project </h:a>. 
 Phenotype and passport data for the 3,000 rice varieties came from the International Rice Information System (<h:a target="_blank" href="http://iris.irri.org">IRIS</h:a>).
 We are a part of an ongoing effort by the International Rice Informatics Consortium (<h:a target="_blank" href="http://iric.irri.org">IRIC</h:a>) to centralize information access to rice research data and provide computational tools to facilitate rice improvement via discovery of new gene-trait associations and accelerated breeding. 
-
-
-<!-- 
-Data available for dowload: <h:a target="_blank" href="http://pollux:8080/qc3k/">FastQC result</h:a> listed by variety and IRIS ID, 
-<h:a target="_blank"  href="http://172.29.4.93/cgi-bin/fqget.pl">Raw reads</h:a> search by IRIS ID (ex. 313-11683)
-
- -->
  
- </h:p>
+<h:p align="center" style="font-family:sans-serif;font-size:13px">
+To cite this resource: <h:a target="_blank" href="http://nar.oxfordjournals.org/content/43/D1/D1023.full">Alexandrov, et al. SNP-Seek database of SNPs derived from 3000 rice genomes. Nucl. Acids Res. 2015;43(D1):D1023-D1027</h:a>
+</h:p>
+ 
+</h:p>
+ 
 <vbox width="200px"/>
 </hbox>
 
@@ -57,6 +55,6 @@ Data available for dowload: <h:a target="_blank" href="http://pollux:8080/qc3k/"
 			 </hbox>
 			 
 
-	</vbox>
+</vbox>
 </div>	
 </zk>

@@ -66,7 +66,7 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		import org.springframework.beans.factory.annotation.Autowired;
 
 		//import org.irri.iric.portal.variety.zkui.CvListItemRenderer;
-
+		import org.irri.iric.portal.AppContext;
 
        
        	VarietyFacade variety = (VarietyFacade)SpringUtil.getBean("VarietyFacade");
@@ -78,14 +78,13 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
         java.util.List subpopulation = variety.getSubpopulations();
         
 
-        String msg =varnames.size()/2 + " varieties, " + irisIds.size()/2 + " IRIS IDs, "  + countries.size()/2 + " countries, " + subpopulation.size()/2 +  " subpopulations for selection";
+       
+
+       
         //String msg ="Get Variety Information by Name or IRIS ID.  Search varieties by Country and/or Subpopulation";
                   
-        java.util.List listPassport = new java.util.ArrayList();
-        listPassport.addAll( variety.getPassportDefinitions().keySet());
-        
-        java.util.List listPhenotype = new java.util.ArrayList();
-        listPhenotype.addAll( variety.getPhenotypeDefinitions().keySet());
+        Set setPassport = variety.getPassportDefinitions().keySet();
+        Set setPhenotype = variety.getPhenotypeDefinitions().keySet();
         
         WorkspaceFacade workspace = (WorkspaceFacade)SpringUtil.getBean("WorkspaceFacade");
         
@@ -93,7 +92,21 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
         listMyVarieties.add("");
         listMyVarieties.addAll( workspace.getVarietylistNames());
         
+        String msg =varnames.size() + " varieties, " + irisIds.size() + " IRIS IDs, "  + countries.size() + " countries, " +
+         subpopulation.size() +  " subpopulations, " +  setPassport.size() +  " passport fields, " + setPhenotype.size() + " phenotypes for selection";
+         
+        java.util.List listPassport = new java.util.ArrayList();
+        listPassport.add("");
+        listPassport.addAll( setPassport );
+        java.util.List listPhenotype = new java.util.ArrayList();
+        listPhenotype.add("");
+        listPhenotype.addAll( setPhenotype );
+         
         
+       	subpopulation = AppContext.createUniqueUpperLowerStrings( subpopulation, false, true);
+		countries  = AppContext.createUniqueUpperLowerStrings( countries, true, false);
+		varnames  = AppContext.createUniqueUpperLowerStrings( varnames, true, false);
+		irisIds  = AppContext.createUniqueUpperLowerStrings( irisIds, true, false);
         
                 
 </zscript>
@@ -145,11 +158,13 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 <label value="Subpopulation" style="font-size:14px;font-weight:bold;color:gray;"/>
 
 				<hbox>
-			    <combobox id="comboSubpopulation" autodrop="true" buttonVisible="false" width="150px"/>
+			    <!--  combobox id="comboSubpopulation" autocomplete="false" autodrop="false" buttonVisible="true" width="150px"/ -->
+			    <listbox id="listboxSubpopulation"  mold="select" width="150px"/>
 			    <label pre="true" value="(ex. trop)" style="font-size:10px"/>
 			    </hbox>
 			    <zscript><![CDATA[
-			        comboSubpopulation.setModel( new SimpleListModel(subpopulation));
+			        listboxSubpopulation.setModel( new SimpleListModel(subpopulation));
+			        listboxSubpopulation.setSelectedIndex(0);
 			    ]]></zscript>
 </row>
 
@@ -302,6 +317,12 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		<row> Country<textbox id="textboxGermCountry" readonly="true"/></row>
 		</rows>
 		</grid>
+		<hbox id="hboxRawfiles">
+		<label value="Raw files:   " pre="true"/>
+		<button id="buttonDownloadFastq" label="FastQ" target="_rawdownload"/><vbox width="15px"/>
+		<button id="buttonDownloadBAM" label="BAM" target="_rawdownload"/><vbox width="15px"/>
+		<button id="buttonDownloadVCF" label="VCF" target="_rawdownload"/>
+		</hbox>
 		<a target="_blank" href="/passport_dict.pdf" label="Passport data dictionary"/>
 		<listbox id="listboxGermPassport">
 			<listhead>
@@ -360,11 +381,22 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
             <tabpanel>
  <vbox>
  <hbox id="hboxAddtolist" visible="false">
-  <button id="buttonAddToList" label="Create List:"  autodisable="self" tooltip="popupCreateList"/><label value="   List Name" pre="true"/><textbox id="txtboxListname" width="200px"/>
+ <label value="Download:  " pre="true"/>
+ <button id="buttonDownloadCSV" label="CSV"/>
+ <hbox width="5px"/>
+ <button id="buttonDownloadTab" label="Tab"/>
+ <hbox width="25px"/>
+  <button id="buttonAddToList" label="Create List:"  autodisable="self" tooltip="popupCreateList"/>
+  <label value="   List Name  " pre="true"/>
+  <textbox id="txtboxListname" width="200px"/>
  </hbox>
+ 
+ 
  <hbox visible="false">
  <button id="buttonCheckAll" label="Check All"/><vbox width="20px"/><button id="buttonUncheckAll" label="Uncheck All"/><vbox width="20px"/>
  </hbox>
+ 
+ 
  <listbox id="varietyresult" fixedLayout="true" mold="paging" pageSize="100" visible="true"  >
 		<listhead>
 			<listheader  sort="auto"></listheader>
@@ -503,6 +535,11 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		
 
        <zscript>         
+       
+       		if(AppContext.isIRRILAN()) {
+       			hboxRawfiles.setVisible(true);
+       		}
+       
 	        String varid=Executions.getCurrent().getParameter("irisid");
 	        if(varid==null || varid.isEmpty()) {
 	        	String varname=Executions.getCurrent().getParameter("name");
@@ -545,6 +582,9 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		        	Events.postEvent("onClick", searchButton, null);
 		        }
 	        }
+	        
+
+	        
         </zscript>
 
 

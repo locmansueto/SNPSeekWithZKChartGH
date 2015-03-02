@@ -31,6 +31,17 @@ public interface WorkspaceFacade {
 	boolean addSnpPositionList(Integer chromosome, String name, Set poslist);
 
 	public void downloadLists();
+
+	
+	String getMyLists();
+
+
+	void uploadLists(String mylist);
+
+
+	String getMyListsCookie();
+
+	void setMyListsCookie(String mylist);
 	
 	
 	

@@ -32,17 +32,18 @@ window.Boot_progressbox = function (){}
 	
 </zscript>
 
-<hbox height="30px"/>
+<hbox height="20px"/>
 
 <div align="center">
 <label value="My Lists" style="font-size:20px;font-weight:bold;color:green;"/>
 <hbox height="10px" />
 <vbox>
-<label value="NOTE: Lists are not saved in the server and available only for this session" style="font-size:12px;color:red" />
-<label value="Click Download button to save your created lists for future reference" style="font-size:12px;color:red" />
+<label value="NOTE: Lists are not saved in the server and available only for this session." style="font-size:12px;color:red" />
+<label value="Click Download button to save your created lists for future reference." style="font-size:12px;color:red" />
+<label value="Click Upload button to recreate your list from previously downloaded MyList file." style="font-size:12px;color:red" />
 </vbox>
 </div>
-<hbox height="30px"/>
+<hbox height="10px"/>
 <hbox>
 <vbox width="200px"/>
 <vbox>
@@ -57,15 +58,18 @@ window.Boot_progressbox = function (){}
 </radiogroup>
 </hbox>
 
-<hbox height="20px"/>
+<hbox height="5px"/>
 
 <label value="Select list:  " pre="true" style="font-size:14px;font-weight:bold;color:gray;"/>
-<listbox id="listboxVarietylist" width="200px" height="100px"/>
+<listbox id="listboxListnames" width="200px" height="100px"  checkmark="false" multiple="true" seltype="multiple"/>
  <zscript><![CDATA[			
-     listboxVarietylist.setModel(new SimpleListModel(listVarlistNames));
+	 
+	 SimpleListModel listmodel =  new SimpleListModel(listVarlistNames);
+	 listmodel.setMultiple(true);
+	 listboxListnames.setModel(listmodel);
  ]]></zscript>
 			    
-<hbox height="20px"/>
+<hbox height="10px"/>
 <hbox>
 <button id="buttonCreate" label="Create"/>
 <button id="buttonSave" label="Save" visible="false"/>
@@ -74,12 +78,45 @@ window.Boot_progressbox = function (){}
 </hbox>
 <button id="buttonQueryIric" label="Query IRIC" visible="false"/>
 
-<hbox height="30px"/>
+<hbox height="20px"/>
+<label value="Set Operations:  " pre="true" style="font-size:14px;font-weight:bold;color:gray;"/>
+<label value="(enabled on multiple list selection,"/>
+<label value="press Ctrl+click to select multiple items)"/>
+
+<div id="divSetOps" visible="false">
+<hbox height="5px"/>
+<hbox>
+<label value="Result list name: " pre="true"/>
+<textbox id="textboxResultSet" value=""/>
+</hbox>
+<hbox>
+<button id="buttonUnion" label="Union"/>
+<vbox width="30px"/>
+<button id="buttonIntersect" label="Intersect"/>
+</hbox>
+</div>
+<hbox height="5px"/>
+<button id="buttonAminusB" label="A minus B" visible="false"/>
+<hbox height="5px"/>
+<button id="buttonBminusA" label="B minus A"  visible="false"/>
+
+
+<hbox height="20px"/>
+<hbox>
 <button id="buttonDownload" label="Download"/>
+<hbox width="20px"/>
+<button id="buttonUpload" label="Upload"/>
+<!--  fileupload label="Upload"/ -->
+</hbox>
+<hbox height="10px"/>
+<hbox>
+<label value="Save list on this computer "  pre="true" visible="false"/>
+<checkbox id="checkboxSavedata" checked="false" visible="false"/>
+</hbox>
 </vbox>
 
 <vbox width="80px"/>
-<vbox>
+<vbox id="vboxListMembers" visible="false">
 <label id="labelNItems" visible="true"/>
 
 <listbox id="listboxVarieties" width="500px" height="300px" visible="false">
@@ -103,7 +140,7 @@ window.Boot_progressbox = function (){}
 			    
 
 
-<vbox id="vboxEditVariety" visible="false">
+<vbox id="vboxEditNewList" visible="false">
 <hbox>
 <label value = "List name:"  style="font-size:14px;font-weight:bold;color:gray;"/>
 <textbox id="txtboxEditListname"/>
@@ -135,9 +172,29 @@ window.Boot_progressbox = function (){}
 </vbox>
 </div>
 
-<textbox id="txtboxEditVariety" rows="30" width="300px"/>
+<textbox id="txtboxEditNewList" rows="30" width="300px"/>
 </vbox>
 </hbox>
+
+<textbox id="textboxFrom" value="" visible="false"/>
+
+     <zscript>         
+	        String from=Executions.getCurrent().getParameter("from");
+	        if(from!=null) {
+	        	if(from.equals("variety")) {
+	        		Events.postEvent("onClick", radioVariety, null);
+	        		Events.postEvent("onClick", buttonCreate, null);
+	        		textboxFrom.setValue("variety");
+	        	}
+	        	else if(from.equals("snp")) {
+	        		Events.postEvent("onClick", radioSNP, null);
+	        		Events.postEvent("onClick", buttonCreate, null);
+	        		textboxFrom.setValue("snp");
+	        	}
+	        	buttonDownload.setDisabled(true);
+	        }
+	 </zscript>
+
 
 </window>
 </zk>

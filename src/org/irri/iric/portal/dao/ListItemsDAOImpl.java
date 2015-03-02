@@ -2,6 +2,7 @@ package org.irri.iric.portal.dao;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,18 +15,21 @@ import org.irri.iric.portal.domain.Variety;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component("ListItemsDAO")
+@Service("ListItemsDAO")
 public class ListItemsDAOImpl implements  ListItemsDAO {
 
 	@Autowired
 	private GeneDAO geneDAO; 
 	@Autowired
 	@Qualifier("VarietyDAO")
+	//@Qualifier("VarietyBasicprop2DAO")
 	private VarietyDAO germdao;
 
 	@Autowired
 	@Qualifier("IricStockDAO")
+	//@Qualifier("VIricstockBoxcodeDAO")
 	private VarietyDAO iricstockdao;
 	
 	@Autowired
@@ -51,13 +55,27 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	private Map<String,BigDecimal> phenotypeDefinitions;
 
 	
-	
+	public static boolean lockGenenameReader = false;
+	public static boolean lockVarietyReader = false;
 	
 	/**
 	 * Generate all variety name lists
 	 */
 	private void initNames() {
 		
+		if(lockVarietyReader) {
+			try {
+				while(true) {
+				 Thread.sleep(5000);
+				 if(!lockVarietyReader) return;
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		
+		
+		lockVarietyReader = true;
 		java.util.Set<String> germnames= new java.util.TreeSet<String>();
 		java.util.Set<String> countries= new java.util.TreeSet<String>();
 		java.util.Set<String> subpopulations= new java.util.TreeSet<String>();
@@ -92,7 +110,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			
 			if(germ.getCountry()!=null) // throw new RuntimeException("germ..getCountry()==null");
 			{
-				countries.add( germ.getCountry().toLowerCase() );
+				//countries.add( germ.getCountry().toLowerCase() );
 				countries.add( germ.getCountry().toUpperCase() );	
 			}
 			
@@ -100,16 +118,16 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			if(germ.getSubpopulation()!=null) // throw new RuntimeException("germ..getSubpopulation()==null");
 			{
 				subpopulations.add( germ.getSubpopulation().toLowerCase() );
-				subpopulations.add( germ.getSubpopulation().toUpperCase() );	
+				//subpopulations.add( germ.getSubpopulation().toUpperCase() );	
 			}
 			
 			if(germ.getIrisId()!=null) // throw new RuntimeException("germ..getSubpopulation()==null");
 			{
-				irisid.add( germ.getIrisId().toLowerCase() );
+				//irisid.add( germ.getIrisId().toLowerCase() );
 				irisid.add( germ.getIrisId().toUpperCase() );	
 			}
 
-			germnames.add( germ.getName().toLowerCase() );
+			//germnames.add( germ.getName().toLowerCase() );
 			germnames.add( germ.getName().toUpperCase() );		
 	
 		}
@@ -136,7 +154,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 				}
 
 			mapVarname2Variety.put(germ.getName().toUpperCase(), germ);
-			germnames.add( germ.getName().toLowerCase() );
+			//germnames.add( germ.getName().toLowerCase() );
 			germnames.add( germ.getName().toUpperCase() );		
 		}	
 		
@@ -147,15 +165,35 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		this.countries =  new java.util.ArrayList();
 			this.countries.addAll(countries);
 		this.subpopulations =  new java.util.ArrayList();
-			this.subpopulations.addAll(subpopulations);
+			//this.subpopulations.add("");
+			//this.subpopulations.add("all varieties");
+			this.subpopulations.add("all indica");
+			//this.subpopulations.add("ALL INDICA");
+			this.subpopulations.add("all japonica");
+			//this.subpopulations.add("ALL JAPONICA");
+		    this.subpopulations.addAll(subpopulations);
+
 		this.irisid =  new java.util.ArrayList();
 			this.irisid.addAll(irisid);
+			
+		lockVarietyReader = false;			
 	}
 	
 	@Override
 	public List<String> getGenenames() {
 		// TODO Auto-generated method stub
+		
+		while(lockGenenameReader) {
+			try {
+			 Thread.sleep(5000); 
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		
 		if(genenames==null || genenames.size()==0) {
+			
+			lockGenenameReader = true;
 
 			genenames = new java.util.ArrayList();
 			geneDAO = (GeneDAO)AppContext.checkBean(geneDAO, "GeneDAO");
@@ -163,12 +201,20 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			java.util.Iterator<Gene> it = geneDAO.findAllGene().iterator();
 		    while(it.hasNext()) {
 		    	Gene gene = it.next();
-		    	String genename = gene.getUniquename();
-		    	genenames.add(genename.toUpperCase());
-		    	genenames.add(genename.toLowerCase());
+		    	//String genename = gene.getUniquename();
+		    	//genenames.add(genename.toUpperCase());
+		    	genenames.add( gene.getUniquename().toLowerCase());
 		    }
+		    
+		    lockGenenameReader = false;
 		}
 		return genenames;
+	}
+	
+	@Override
+	public Gene getGeneFromName(String  genename) {
+		geneDAO = (GeneDAO)AppContext.checkBean(geneDAO, "GeneDAO");
+		return geneDAO.findGeneByName(genename);
 	}
 	
 	@Override
@@ -245,8 +291,28 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	}
 	
 	@Override
-	public java.util.Set getGermplasmBySubpopulation(String subpopulation) {		
-		return  germdao.findAllVarietyBySubpopulation(subpopulation) ;	
+	public java.util.Set getGermplasmBySubpopulation(String subpopulation) {
+		
+		
+		if(subpopulation.toUpperCase().equals("ALL INDICA"))
+		{
+			Set allvar = new LinkedHashSet();
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("ind1")) ;	
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("ind2")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("ind3")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("indx")) ;
+			return allvar;
+		}
+		else if(subpopulation.toUpperCase().equals("ALL JAPONICA")) {
+			Set allvar = new LinkedHashSet();
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("temp")) ;	
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("trop")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("temp/trop")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("trop/temp")) ;
+			return allvar;
+		}
+		else
+			return  germdao.findAllVarietyBySubpopulation(subpopulation) ;	
 	}
 
 
@@ -306,7 +372,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			
 		List listCVPassport =  cvtermsPassportdao.getAllTerms();
 		passportDefinitions = new TreeMap<String,BigDecimal>();
-		passportDefinitions.put("", BigDecimal.ZERO);
+	//	passportDefinitions.put("", BigDecimal.ZERO);
 		Iterator<CvTerm> itTerm=listCVPassport.iterator();
 		while(itTerm.hasNext())
 		{
@@ -322,7 +388,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		
 		List listCVPhenotype =  cvtermsPhenotypedao.getAllTerms();
 		phenotypeDefinitions = new TreeMap<String,BigDecimal>();
-		phenotypeDefinitions.put("", BigDecimal.ZERO);
+//		phenotypeDefinitions.put("", BigDecimal.ZERO);
 		Iterator<CvTerm>  itTerm2=listCVPhenotype.iterator();
 		while(itTerm2.hasNext())
 		{
@@ -345,5 +411,26 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		if(passportDefinitions==null) initMoreConstraints();		
 		return passportDefinitions;
 	}
+
 	
+	@Override
+	public Integer getFeatureLength(String feature) {
+		// TODO Auto-generated method stub
+		
+		java.util.Map<String,Integer> chrLength = new java.util.HashMap<String,Integer>();		
+		chrLength.put("1", 43270923);
+		chrLength.put("2", 35937250);
+		chrLength.put("3",36413819);
+		chrLength.put("4",35502694);
+		chrLength.put("5",29958434);
+		chrLength.put("6",31248787);
+		chrLength.put("7",29697621);
+		chrLength.put("8",28443022);
+		chrLength.put("9",23012720);
+		chrLength.put("10",23207287);
+		chrLength.put("11",29021106);
+		chrLength.put("12",27531856);
+		
+		return chrLength.get(feature);
+	}
 }

@@ -1,14 +1,25 @@
 package org.irri.iric.portal;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLConnection;
+import java.sql.Clob;
+import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -44,14 +55,16 @@ public class AppContext {
 	 * is Amazon Web Service compile?
 	 */
 	private static final boolean isAWS = false;
+	private static final boolean isAWSdev = false;
 	private static final boolean isVMIRRI = false;
-	private static final boolean isPollux = false;
-	private static final boolean isLocalhost = true;
+	private static final boolean isPollux = true;
+	private static final boolean isLocalhost = false;
 	
 	/**
 	 * is development
 	 */
-	private static final boolean isDev = true;
+	public static final boolean isDev =  false;
+	public static final boolean isTest = true;
 
 
 
@@ -68,6 +81,16 @@ public class AppContext {
      */
     private static long startTime=0;
     private static long startTimeDate=0;
+    
+    
+    public static boolean isWindows() {
+    	return isLocalhost;
+    }
+    
+    public static boolean isIRRILAN() {
+    	return isLocalhost || isPollux;
+    }
+    
 
     /**
      * get a temporary file name
@@ -94,6 +117,14 @@ public class AppContext {
     }
     
     /**
+     * Factor of region end-stop to include in gff
+     * @return
+     */
+    public static int getJBrowseMargin() {
+    	return 2;
+    }
+    
+    /**
      * write period since start/last reset
      * and restart the timer
      * @param report
@@ -109,9 +140,12 @@ public class AppContext {
     
     
     public static String getTempDir() {
-    	if(isAWS)
+    	if(isAWS || isAWSdev)
     		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
     		return "/usr/share/apache-tomcat-7.0.55/webapps/" + getHostDirectory() + "/tmp/";
+    	//else if(isAWSdev)
+    		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
+    	//	return "/usr/share/apache-tomcat-7.0.55/webapps/" + getHostDirectory() + "/tmp/";
     	else  if(isVMIRRI)
     		// vm-iric-portal
     		return "/opt/tomcat7/webapps/" +  getHostDirectory() + "/tmp/";
@@ -130,6 +164,8 @@ public class AppContext {
     public static String getHostname() {
     	if(isAWS)
     		return "http://oryzasnp.org";
+    	else if(isAWSdev)
+    		return "http://54.255.100.88";
     	else if(isVMIRRI)
     		return "http://202.123.56.26:8080";
     	else if(isPollux)
@@ -143,7 +179,7 @@ public class AppContext {
     public static String getFlatfilesDir() {
     	if(isLocalhost)
     		return "E:/My Document/Transfer/3kcore_alleles/";
-    	else if(isAWS)
+    	else if(isAWS || isAWSdev)
     		return "/data/lmansueto/iric-portal-files/";
     	else
     		return "/home/lmansueto/iric-portal-files/";
@@ -168,9 +204,13 @@ public class AppContext {
     	if(isDev) {
     		if(isAWS)
     			return "iric-portal-test";
+    		else if(isAWSdev)
+    			return "iric-portal";
     		else
     			return "iric-portal-dev";
     	}
+    	else if(isTest) 
+    		return "iric-portal-test";
     	else 
     		return "iric-portal";
     }
@@ -271,6 +311,24 @@ public class AppContext {
     }
     
 
+    public static int getMaxlengthUni() {
+    	//return 100000;
+    	if(isDev|| isTest)
+    		return 1000000;
+    	else return 50000;
+    }
+
+    public static int getMaxlengthCore() {
+    	if(isDev || isTest)
+    		return 10000000;
+    	//return 2000000;
+    	return 1000000;
+    }
+    public static int getMaxlengthPairwise() {
+    	return Integer.MAX_VALUE;
+    }
+
+    
     /**
      * Message logger used by the webapp, for easy maintainance and change of loggers
      * @param msg
@@ -320,14 +378,167 @@ public class AppContext {
     	logger( buff );
     }
     
+    public static BigDecimal convertRegion2Indelalleleid(Integer chr, Long pos) {
+    	return convertRegion2Snpfeatureid( chr, pos);
+    }
+    public static BigDecimal convertRegion2Indelalleleid(Integer chr, BigDecimal pos) {
+    	return convertRegion2Snpfeatureid( chr, pos);
+    }
+    public static BigDecimal convertRegion2Indelalleleid(Integer chr, Integer pos) {
+    	return convertRegion2Snpfeatureid( chr, pos);
+    }
+
     
     public static BigDecimal convertRegion2Snpfeatureid(Integer chr, Long pos) {
-    	
+    	try {
     	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos)  ));
+    	} catch (Exception ex) {
+    		ex.printStackTrace();
+    		AppContext.debug("convertRegion2Snpfeatureid chr=" + chr  + "  pos=" + pos);
+    		throw new RuntimeException("convertRegion2Snpfeatureid error"); 
+    	}
+    }
+    public static BigDecimal convertRegion2Snpfeatureid(Integer chr, Integer pos) {
+    	try {
+    	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos)  ));
+    	} catch (Exception ex) {
+    		ex.printStackTrace();
+    		AppContext.debug("convertRegion2Snpfeatureid chr=" + chr  + "  pos=" + pos);
+    		throw new RuntimeException("convertRegion2Snpfeatureid error"); 
+    	}
     	
     }
+    public static BigDecimal convertRegion2Snpfeatureid(Integer chr, BigDecimal pos) {
+    	try {
+    	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos.longValue())  ));
+    	} catch (Exception ex) {
+    		ex.printStackTrace();
+    		AppContext.debug("convertRegion2Snpfeatureid chr=" + chr  + "  pos=" + pos);
+    		throw new RuntimeException("convertRegion2Snpfeatureid error"); 
+    	}
+    }
     	
+    public static Collection convertRegion2Snpfeatureid(Integer chr, Collection poslist) {
+    	Set snpfeatureidSet = new TreeSet();
+    	Iterator<BigDecimal> it = poslist.iterator();
+    	while(it.hasNext()) {
+    		snpfeatureidSet.add(  convertRegion2Snpfeatureid(chr, it.next())) ;
+    	}
+    	return snpfeatureidSet;
+    }
     
+    
+    public static List createUniqueUpperLowerStrings(Collection col, boolean upperlower, boolean addBlank) {
+    	
+    	List newlist = new ArrayList(); 
+    	if(addBlank) newlist.add("");
+    	Iterator<String> it=col.iterator();
+    	while(it.hasNext()) {
+    		String item = it.next();
+    		if(item==null) continue;
+    		if(upperlower) {
+    		newlist.add( item.toLowerCase());
+    		newlist.add( item.toUpperCase());
+    		} else {
+    			newlist.add(item);
+    		}
+    	}
+    	return newlist;
+    }
+    
+    
+    public static String replaceString(String instr, Map<String,String> mapReplace) {
+    	Iterator<String> itRep = mapReplace.keySet().iterator();
+    	while(itRep.hasNext()) {
+    		String rep = itRep.next();
+    		instr = instr.replaceAll(rep,  mapReplace.get(rep));
+    	}
+    	return instr;
+    }
+    
+    
+    public static void sentHttpPostRequest(String url, String args) throws IOException {
+    	
+        URLConnection connection = new URL(url).openConnection();
+        
+        // by default, connection with enable input, but won't enable output
+        connection.setDoOutput(true);
+        //connection.setDoInput(true);
+        OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+        out.write(args);
+        out.flush();
+        out.close();
+        /*
+         * If the page has respond, uncomment these statements the retrieve the respond data
+        InputStream is = connection.getInputStream();
+        FileOutputStream fos = new FileOutputStream("respond.txt");
+        byte[] buffer = new byte[1024];
+        for (int length; (length = is.read(buffer)) > 0;) {
+            fos.write(buffer, 0, length);
+        }
+        fos.close();
+        is.close();
+        */
+    }
+    
+    /**
+     * Convert SQL CLOB field to string
+     * @param clb
+     * @return
+     * @throws IOException
+     * @throws SQLException
+     */
+    public static String clobStringConversion(Clob clb) throws IOException, SQLException
+    {
+      if (clb == null)
+    	  return  "";
+            
+      StringBuffer str = new StringBuffer();
+      String strng;
+              
+    
+      BufferedReader bufferRead = new BufferedReader(clb.getCharacterStream());
+   
+      while ((strng=bufferRead .readLine())!=null)
+       str.append(strng);
+   
+      return str.toString();
+    }        
+    
+    
+    public static void logSystemStatus() {
+    
+    	Runtime runtime = Runtime.getRuntime();
+
+        NumberFormat format = NumberFormat.getInstance();
+
+        StringBuilder sb = new StringBuilder();
+        long maxMemory = runtime.maxMemory();
+        long allocatedMemory = runtime.totalMemory();
+        long freeMemory = runtime.freeMemory();
+
+        OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(  
+                OperatingSystemMXBean.class);  
+        
+        
+        sb.append("free memory kb: " + format.format(freeMemory / 1024) + ";");
+        sb.append("allocated memory kb: " + format.format(allocatedMemory / 1024) + ";");
+        sb.append("max memory kb: " + format.format(maxMemory / 1024) + ";");
+        sb.append("total free memory kb: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / 1024) + ";");
+        sb.append("system load average: " + osBean.getSystemLoadAverage() +";");
+        sb.append("avail processors: " + osBean.getAvailableProcessors() +";");
+        
+        
+        org.zkoss.zk.ui.util.Statistic zkmonitor = new  org.zkoss.zk.ui.util.Statistic();
+        sb.append("active desktops: " +  zkmonitor.getActiveDesktopCount() +";");
+        sb.append("active sessions: " +  zkmonitor.getActiveSessionCount() +";");
+        sb.append("active update: " +  zkmonitor.getActiveUpdateCount() +"\n");
+        
+        info( sb.toString() );
+    	
+    }
+    
+  
     
     /**
      * Utility to check if object is null (if autowired worked!)

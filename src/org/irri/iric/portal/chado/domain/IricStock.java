@@ -251,7 +251,32 @@ public class IricStock implements Serializable , Variety {
 	@Override
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
-		return getName().compareTo( ((Variety)o).getName() );
+
+			// TODO Auto-generated method stub
+			int ret = getName().compareTo( ((Variety)o).getName() ); 
+			if(ret==0)
+				ret = getVarietyId().compareTo( ((Variety)o).getVarietyId() );
+				
+			return ret;
+
+	}
+
+	@Override
+	public String printFields(String delimiter) {
+		// TODO Auto-generated method stub
+		String irisid = getIrisId();
+		if(irisid==null) irisid="";
+		String subpop = getSubpopulation();
+		if(subpop==null) subpop="";
+		String cntr = getCountry();
+		if(cntr==null) cntr="";
+		return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr;
+	}
+
+	@Override
+	public String getBoxCode() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

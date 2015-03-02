@@ -7,7 +7,13 @@ public interface SNPRowRendererStyle {
 	public static String STYLE_T = "color:red;align:center";
 	public static String STYLE_G = "color:orange;align:center";
 	public static String STYLE_C = "color:blue;align:center";
-	public static String STYLE_SYNONYMOUS = "font-weight:bold;color:lightgray;align:center";
+	//public static String STYLE_SYNONYMOUS = "font-weight:bold;color:lightgray;align:center";
+	public static String STYLE_SYNONYMOUS = "color:lightgray;align:center";
+	public static String STYLE_NONSYNONYMOUS = "color:red;align:center;background-color:black;font-weight:bold";
+	
+	public static String STYLE_SPLICE_DONOR="text-align:center;color:aqua;font-weight:bold";
+	public static String STYLE_SPLICE_ACCEPTOR="text-align:center;color:chartreuse;font-weight:bold";
+	public static String STYLE_MISMATCH="text-align:center;color:red";
 	
 	public static short COLOR_MISMATCH = 0;
 	public static short COLOR_NUCLEOTIDE = 1;

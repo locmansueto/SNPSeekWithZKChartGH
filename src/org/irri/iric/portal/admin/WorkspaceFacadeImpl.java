@@ -1,11 +1,14 @@
 package org.irri.iric.portal.admin;
 
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.dao.VSnpAllvarsMinDAO;
+import org.irri.iric.portal.hdf5.dao.SNPUni3kVarietiesAllele1DAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,9 +42,21 @@ public class WorkspaceFacadeImpl implements WorkspaceFacade {
 		
 		@Override
 		public void queryIric() {
+			
+			System.out.println("in queryIric..." );
+			SNPUni3kVarietiesAllele1DAO snpuniDAO = new SNPUni3kVarietiesAllele1DAO();
+		  	Map mapVar2Str =  snpuniDAO.readSNPString(1,  1000, 1100);
+		  	Iterator itVar = mapVar2Str.keySet().iterator();
+		  	while(itVar.hasNext()) {
+		  		Object var = itVar.next();
+		  		System.out.println( var + " : " + mapVar2Str.get(var));
+		  	}
+		  	
+			// System.out.println("queryIric()"); 
+			 
 			// TODO Auto-generated method stub
-			queryiric = (QueryIric)AppContext.checkBean(queryiric, "QueryIric");
-			queryiric.createSNPFile();
+			//queryiric = (QueryIric)AppContext.checkBean(queryiric, "QueryIric");
+			//queryiric.createSNPFile();
 		}
 
 		@Override
@@ -98,6 +113,36 @@ public class WorkspaceFacadeImpl implements WorkspaceFacade {
 			// TODO Auto-generated method stub
 			
 		}
+
+
+		@Override
+		public void uploadLists(String mylist) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+		@Override
+		public String getMyLists() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		@Override
+		public String getMyListsCookie() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		@Override
+		public void setMyListsCookie(String mylist) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
 		
 		
 		

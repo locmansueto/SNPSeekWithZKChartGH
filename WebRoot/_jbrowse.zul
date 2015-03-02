@@ -9,7 +9,34 @@ window.Boot_progressbox = function (){}
 <?init class="org.zkoss.zk.ui.util.Composition"
         arg0="/template.zul"?>
 <zk>
-      <include self="@define(content)" src="_jbrowseiframe.zul"/>
+		<zscript>         
+	        String data = Executions.getCurrent().getParameter("data");
+	        String tracks = Executions.getCurrent().getParameter("tracks");
+	        
+	        String paramstr="";
+	        
+	        if(data==null || data.isEmpty()) {}
+	        else
+	        { 
+	        	paramstr += "data=" + data;
+	        }
+	        
+	        if(tracks==null || tracks.isEmpty()) {}
+	        else
+	        { 
+	        	if(paramstr.isEmpty()) {
+	        			paramstr = "tracks=" + tracks;
+	        	}
+	        	else {
+	        			paramstr = paramstr  + "&#038;tracks=" + tracks;
+	        	}
+	        }
+	        if(!paramstr.isEmpty())
+	        	paramstr = "?" + paramstr;
+	        	
+        </zscript>
+        
+      <include self="@define(content)" src="_jbrowseiframe.zul${paramstr}"/>
 
     
 </zk>

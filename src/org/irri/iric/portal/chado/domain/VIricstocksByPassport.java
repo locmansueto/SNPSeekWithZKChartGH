@@ -305,7 +305,9 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 	@Override
 	public String getIrisId() {
 		// TODO Auto-generated method stub
-		return this.getIrisUniqueId();
+		if(this.getIrisUniqueId()==null || this.getIrisUniqueId().isEmpty())
+			return this.getBoxCode();
+		else return this.getIrisUniqueId();
 	}
 
 	@Override
@@ -339,8 +341,33 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 	@Override
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
-		return getName().compareTo( ((Variety)o).getName() );
+		int ret = getName().compareTo( ((Variety)o).getName() ); 
+		if(ret==0)
+			ret = getVarietyId().compareTo( ((Variety)o).getVarietyId() );
+			
+		return ret;
 	}
+	@Override
+	public String printFields(String delimiter) {
+		// TODO Auto-generated method stub
+		String irisid = getIrisId();
+		if(irisid==null) irisid="";
+		String subpop = getSubpopulation();
+		if(subpop==null) subpop="";
+		String cntr = getCountry();
+		if(cntr==null) cntr="";
+		String strvalue = value;
+		if(strvalue==null) strvalue = "";
+		return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr + delimiter + strvalue;
+	}
+
+	@Override
+	public String getBoxCode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	
 	
 }

@@ -22,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage IricStock entities.
  * 
  */
-@Repository("IricStockDAO")
+//@Repository("IricStockDAO")
+@Repository("IricStockDAOOrig")
 @Transactional
 public class IricStockDAOImpl extends AbstractJpaDao<IricStock> implements
 		IricStockDAO {

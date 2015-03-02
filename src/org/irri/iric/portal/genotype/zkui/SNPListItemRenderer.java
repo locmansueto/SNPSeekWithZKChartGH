@@ -1,6 +1,9 @@
 package org.irri.iric.portal.genotype.zkui;
 
 
+import java.util.Map;
+import java.util.Set;
+
 import org.irri.iric.portal.domain.Snps2Vars;
 import org.irri.iric.portal.genotype.service.GenotypeFacade;
 //import org.irri.iric.portal.genotype.views.Snp2linesId;
@@ -20,6 +23,9 @@ public class SNPListItemRenderer implements SNPRowRendererStyle, ListitemRendere
 	private String var1;
 	private String var2;
 	private String varref;
+	private boolean isGraySynonymous=false;
+	//private Map<Integer,Set<Character>> setMapIdx2NonsynAlleles = null;
+	
 	
 	private static String STYLE_INTERESTING = "font-weight:bold;color:red";
 	private static String STYLE_BORING = "";
@@ -44,31 +50,146 @@ public class SNPListItemRenderer implements SNPRowRendererStyle, ListitemRendere
 	        addListcell(listitem, item.getPos().toString());
 
 	        
+	        
 	        //if(querymode == GenotypeFacade.snpQueryMode.SNPQUERY_VARIETIES) {
 	        	// two varieties are alleles with each other
 	        	// all are interesting
 	        	String  nuc1 = item.getVar1nuc();
 	        	String  nuc2 = item.getVar2nuc();
+	        	String  nuc1_allele2 = item.getVar1nuc2();
+	        	String  nuc2_allele2 = item.getVar2nuc2();
+
+	        	
 	        	String  nucref = item.getRefnuc();
 		        
 	        	if(colorMode==COLOR_MISMATCH) {
 	        	
 	        		addListcell(listitem, nucref) ;
 	        		
-	        		if(nuc1.equals(nuc2)) {
-	        			addListcell(listitem, nuc1);
-	        			addListcell(listitem, nuc2) ;
+	        		if( (nuc1_allele2!=null && !nuc1_allele2.isEmpty()) ||
+		        			(nuc2_allele2!=null && !nuc2_allele2.isEmpty()) )
+		        		{
+	        				
+	        				if(this.isGraySynonymous) {
+		        				if( nuc1_allele2!=null && !nuc1_allele2.isEmpty()  ) 
+		        				{
+		        					if( item.isVar1Nonsyn() )
+		        						addListcell(listitem, nuc1 + "/" + nuc1_allele2, STYLE_INTERESTING);
+		        					else
+		        						addListcell(listitem, nuc1 + "/" + nuc1_allele2, STYLE_SYNONYMOUS);
+		        				}
+		        				else {
+		        					if( item.isVar1Nonsyn() )
+		        						addListcell(listitem, nuc1, STYLE_INTERESTING);
+		        					else
+		        						addListcell(listitem, nuc1, STYLE_SYNONYMOUS);
+		        				}
+	
+		        				if( nuc2_allele2!=null && !nuc2_allele2.isEmpty() ) 
+		        				{
+		        					if( item.isVar2Nonsyn() )
+		        						addListcell(listitem, nuc2 + "/" + nuc2_allele2, STYLE_INTERESTING);
+		        					else 
+		        						addListcell(listitem, nuc2 + "/" + nuc2_allele2, STYLE_SYNONYMOUS);
+		        				}
+		        				else {
+		        					if( item.isVar2Nonsyn() )
+		        						addListcell(listitem, nuc2, STYLE_INTERESTING);
+		        					else
+		        						addListcell(listitem, nuc2, STYLE_SYNONYMOUS);
+		        				}
+		        				
+		        				
+	        				} else {
+		        				if( nuc1_allele2!=null && !nuc1_allele2.isEmpty() ) 
+				        			addListcell(listitem, nuc1 + "/" + nuc1_allele2, STYLE_INTERESTING);
+		        				else 
+		        					addListcell(listitem, nuc1, STYLE_INTERESTING);
+	
+		        				if( nuc2_allele2!=null && !nuc2_allele2.isEmpty() ) 
+				        			addListcell(listitem, nuc2 + "/" + nuc2_allele2, STYLE_INTERESTING);
+		        				else 
+		        					addListcell(listitem, nuc2, STYLE_INTERESTING);
+	        				}
+		        		}
+	        		else if(nuc1.equals(nuc2)) {
+	        			if(this.isGraySynonymous) {
+		        			if(item.isVar1Nonsyn()) 
+		        				addListcell(listitem, nuc1);
+		        			else 
+		        				addListcell(listitem, nuc1,STYLE_SYNONYMOUS);
+	
+		        			if(item.isVar2Nonsyn()) 
+		        				addListcell(listitem, nuc2) ;
+		        			else 
+		        				addListcell(listitem, nuc2,STYLE_SYNONYMOUS);
+	        			} else {
+		        				addListcell(listitem, nuc1);
+		        				addListcell(listitem, nuc2) ;
+	        			}
+
+	        			
 	        		} else
 	        		{
-	        			addListcell(listitem, nuc1, STYLE_INTERESTING);
-	        			addListcell(listitem, nuc2, STYLE_INTERESTING) ;
+	        			if(this.isGraySynonymous) {
+		        			if(item.isVar1Nonsyn()) 
+		        				addListcell(listitem, nuc1, STYLE_INTERESTING);
+		        			else
+		        				addListcell(listitem, nuc1, STYLE_SYNONYMOUS);
+		        				
+		        			if(item.isVar2Nonsyn()) 
+		        				addListcell(listitem, nuc2, STYLE_INTERESTING) ;
+		        			else
+		        				addListcell(listitem, nuc2, STYLE_SYNONYMOUS);
+	        			} else {
+	        				
+		        				addListcell(listitem, nuc1, STYLE_INTERESTING);
+		        				addListcell(listitem, nuc2, STYLE_INTERESTING) ;
+	        			}
 	        		}
 	        		
 	        	} else {
-	        		
 	        		addListcell(listitem, nucref, getColor(nucref)) ;
-	        		addListcell(listitem, nuc1, getColor(nuc1)) ;
-	        		addListcell(listitem, nuc2, getColor(nuc2)) ;
+
+	        		if(this.isGraySynonymous) {
+		        		if(nuc1_allele2!=null && !nuc1_allele2.isEmpty()) {
+		        			if(item.isVar1Nonsyn())
+		        				addListcell(listitem, nuc1 + "/" + nuc1_allele2, STYLE_HETERO );
+		        			else
+		        				addListcell(listitem, nuc1 + "/" + nuc1_allele2, STYLE_SYNONYMOUS);
+		        		}
+		        		else {
+		        			if(item.isVar1Nonsyn())
+		        				addListcell(listitem, nuc1, getColor(nuc1)) ;
+		        			else
+		        				addListcell(listitem, nuc1, STYLE_SYNONYMOUS) ;
+		        		}
+		        		
+		        		if(nuc2_allele2!=null && !nuc2_allele2.isEmpty()) {
+		        			if(item.isVar2Nonsyn())
+		        				addListcell(listitem, nuc2 + "/" + nuc2_allele2, STYLE_HETERO );
+		        			else
+		        				addListcell(listitem, nuc2 + "/" + nuc2_allele2, STYLE_SYNONYMOUS );
+		        		}
+		        		else {
+		        			if(item.isVar2Nonsyn())
+		        				addListcell(listitem, nuc2, getColor(nuc2)) ;
+		        			else
+		        				addListcell(listitem, nuc2, STYLE_SYNONYMOUS) ;
+		        		}
+	        			
+	        		} else
+	        		{
+		        		if(nuc1_allele2!=null && !nuc1_allele2.isEmpty())
+			        			addListcell(listitem, nuc1 + "/" + nuc1_allele2, STYLE_HETERO );
+		        		else
+			        		addListcell(listitem, nuc1, getColor(nuc1)) ;
+		        		
+		        		if(nuc2_allele2!=null && !nuc2_allele2.isEmpty())
+		        			addListcell(listitem, nuc2 + "/" + nuc2_allele2, STYLE_HETERO );
+		        		else
+		        			addListcell(listitem, nuc2, getColor(nuc2)) ;
+	        		}
 	        	}
 
 	        	
@@ -165,5 +286,8 @@ public class SNPListItemRenderer implements SNPRowRendererStyle, ListitemRendere
 			this.colorMode = mode;
 		}
 	    
+		public void setGraySynonymous(boolean isgray) {
+			this.isGraySynonymous = isgray;
+		}
 
 }

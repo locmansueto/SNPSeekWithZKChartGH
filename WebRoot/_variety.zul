@@ -19,10 +19,6 @@ window.Boot_progressbox = function (){}
 		        	varietyview="?name=" + name;
 	        } else
 	        	varietyview="?irisid=" + varid;
-	        	
-
-	        	
-	        	
         </zscript>
         
     <include self="@define(content)" src="/variety.zul${varietyview}"/>

@@ -14,8 +14,14 @@ import org.springframework.dao.DataAccessException;
  */
 public interface SnpcoreRefposindexDAO extends JpaDao<SnpcoreRefposindex>, SnpsAllvarsPosDAO {
 
-	public static BigDecimal TYPE_3KCORESNP = BigDecimal.ONE;
-	public static BigDecimal TYPE_3KALLSNP = new BigDecimal(2);
+	//public static BigDecimal TYPE_3KCORESNP = BigDecimal.ONE;
+	//public static BigDecimal TYPE_3KALLSNP = new BigDecimal(2);
+	public static BigDecimal TYPE_3KCORESNP = new BigDecimal(4);
+	public static BigDecimal TYPE_3KALLSNP = new BigDecimal(3);
+	public static BigDecimal TYPE_3KCORESNP_HDF5 = new BigDecimal(4);
+	public static BigDecimal TYPE_3KALLSNP_HDF5 = new BigDecimal(3);
+	
+	public static BigDecimal TYPE_3KALLINDEL = new BigDecimal(3);
 	
 	
 	/**

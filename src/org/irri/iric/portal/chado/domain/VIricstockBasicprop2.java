@@ -21,16 +21,22 @@ import org.irri.iric.portal.domain.Variety;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "findAllVIricstockBasicprop2s", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2"),
-		@NamedQuery(name = "findVIricstockBasicprop2ByBoxCode", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where myVIricstockBasicprop2.boxCode = ?1"),
-		@NamedQuery(name = "findVIricstockBasicprop2ByBoxCodeContaining", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where myVIricstockBasicprop2.boxCode like ?1"),
-		@NamedQuery(name = "findVIricstockBasicprop2ByIricStockId", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where myVIricstockBasicprop2.iricStockId = ?1"),
-		@NamedQuery(name = "findVIricstockBasicprop2ByIrisUniqueId", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where myVIricstockBasicprop2.irisUniqueId = ?1"),
-		@NamedQuery(name = "findVIricstockBasicprop2ByIrisUniqueIdContaining", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where myVIricstockBasicprop2.irisUniqueId like ?1"),
-		@NamedQuery(name = "findVIricstockBasicprop2ByName", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where myVIricstockBasicprop2.name = ?1"),
-		@NamedQuery(name = "findVIricstockBasicprop2ByNameContaining", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where myVIricstockBasicprop2.name like ?1"),
-		@NamedQuery(name = "findVIricstockBasicprop2ByOriCountry", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where myVIricstockBasicprop2.oriCountry = ?1"),
-		@NamedQuery(name = "findVIricstockBasicprop2ByOriCountryContaining", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where myVIricstockBasicprop2.oriCountry like ?1"),
-		@NamedQuery(name = "findVIricstockBasicprop2ByPrimaryKey", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where myVIricstockBasicprop2.iricStockId = ?1") })
+		@NamedQuery(name = "findVIricstockBasicprop2ByBoxCode", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where upper(myVIricstockBasicprop2.boxCode) = upper(?1)"),
+		@NamedQuery(name = "findVIricstockBasicprop2ByBoxCodeContaining", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where upper(myVIricstockBasicprop2.boxCode) like upper(?1)"),
+		@NamedQuery(name = "findVIricstockBasicprop2ByIricStockId", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where upper(myVIricstockBasicprop2.iricStockId) = upper(?1)"),
+		@NamedQuery(name = "findVIricstockBasicprop2ByIrisUniqueId", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where upper(myVIricstockBasicprop2.irisUniqueId) = upper(?1) or upper(myVIricstockBasicprop2.boxCode) = upper(?1)"),
+		@NamedQuery(name = "findVIricstockBasicprop2ByIrisUniqueIdContaining", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where upper(myVIricstockBasicprop2.irisUniqueId) like upper(?1)"),
+		@NamedQuery(name = "findVIricstockBasicprop2ByName", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where upper(myVIricstockBasicprop2.name) = upper(?1)"),
+		@NamedQuery(name = "findVIricstockBasicprop2ByNameContaining", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where upper(myVIricstockBasicprop2.name) like upper(?1)"),
+		@NamedQuery(name = "findVIricstockBasicprop2ByOriCountry", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where upper(myVIricstockBasicprop2.oriCountry) = upper(?1)"),
+		@NamedQuery(name = "findVIricstockBasicprop2ByOriCountryContaining", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where upper(myVIricstockBasicprop2.oriCountry) like upper(?1)"),
+		@NamedQuery(name = "findVIricstockBasicprop2ByPrimaryKey", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where upper(myVIricstockBasicprop2.iricStockId) = upper(?1)") ,
+
+
+	@NamedQuery(name = "findVIricstockBasicprop2BySubpopulation", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where upper(myVIricstockBasicprop2.subpopulation) = upper(?1)  order by myVIricstockBasicprop2.name"),
+	@NamedQuery(name = "findVIricstockBasicprop2ByOriCountrySubpopulation", query = "select myVIricstockBasicprop2 from VIricstockBasicprop2 myVIricstockBasicprop2 where upper(myVIricstockBasicprop2.oriCountry) = upper(?1) and upper(myVIricstockBasicprop2.subpopulation) = upper(?2)  order by myVIricstockBasicprop2.name") })
+
+
 @Table(schema = "IRIC", name = "V_IRICSTOCK_BASICPROP2")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockBasicprop2")
@@ -113,7 +119,9 @@ public class VIricstockBasicprop2 implements Serializable , Variety {
 	/**
 	 */
 	public String getIrisUniqueId() {
-		return this.irisUniqueId;
+		if(this.irisUniqueId==null || this.irisUniqueId.isEmpty())
+			return getBoxCode();
+		else return this.irisUniqueId;
 	}
 
 	/**
@@ -242,7 +250,25 @@ public class VIricstockBasicprop2 implements Serializable , Variety {
 	@Override
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
-		return getName().compareTo( ((Variety)o).getName() );
+		int ret = getName().compareTo( ((Variety)o).getName() ); 
+		if(ret==0)
+			ret = getVarietyId().compareTo( ((Variety)o).getVarietyId() );
+			
+		return ret;
 	}
+
+	@Override
+	public String printFields(String delimiter) {
+		// TODO Auto-generated method stub
+		String irisid = getIrisId();
+		if(irisid==null) irisid="";
+		String subpop = getSubpopulation();
+		if(subpop==null) subpop="";
+		String cntr = getCountry();
+		if(cntr==null) cntr="";
+		return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr;
+	}
+	
+	
 	
 }

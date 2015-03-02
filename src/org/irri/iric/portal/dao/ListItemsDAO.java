@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.irri.iric.portal.domain.Gene;
 import org.irri.iric.portal.domain.Variety;
 
 public interface ListItemsDAO {
@@ -48,4 +49,8 @@ public interface ListItemsDAO {
 	Map<String, BigDecimal> getPhenotypeDefinitions();
 
 	Map<String, BigDecimal> getPassportDefinitions();
+
+	Gene getGeneFromName(String genename);
+
+	Integer getFeatureLength(String feature);
 }

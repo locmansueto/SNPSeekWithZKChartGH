@@ -2,6 +2,7 @@ package org.irri.iric.portal.chado.dao;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -305,10 +306,11 @@ public class VSnpAllvarsPosDAOImpl extends AbstractJpaDao<VSnpAllvarsPos>
 	}
 
 	@Override
-	public List getSNPsInChromosome(String chr, List posset, BigDecimal type) {
+	public List getSNPsInChromosome(String chr, Collection posset, BigDecimal type) {
 		// TODO Auto-generated method stub
 		return null;
-	}	
+	}
+
 
 	
 	

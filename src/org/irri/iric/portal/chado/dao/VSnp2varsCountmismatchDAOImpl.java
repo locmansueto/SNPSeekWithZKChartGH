@@ -480,7 +480,8 @@ public class VSnp2varsCountmismatchDAOImpl extends AbstractJpaDao<VSnp2varsCount
 					+ "	("
 					+ "	  select sfl.snp_feature_id, sg1.iric_stock_id, sg1.allele1 , sg1.partition_id, sfl.position, sfl.refcall"
 					+ "	  from iric.snp_genotype sg1"
-					+ "	    inner join iric.mv_core_snps sfl"
+					//+ "	    inner join iric.mv_core_snps sfl"
+					+ "	    inner join iric.core sfl"
 					+ "		    on sg1.SNP_FEATURE_ID=sfl.snp_feature_id"
 					+ "	    and sg1.partition_id=" + (chr+2) ;
 			if(varieties!=null && !varieties.isEmpty())

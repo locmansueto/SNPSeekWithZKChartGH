@@ -1,6 +1,14 @@
 <%@ page import="org.irri.iric.portal.variety.service.VarietyFacade" %>
 <%@ page import="org.irri.iric.portal.genotype.service.GenotypeFacade" %>
+<%@ page import="org.irri.iric.portal.genotype.service.PhylotreeQueryParams" %>
+<%@ page import="org.irri.iric.portal.genotype.service.GenotypeQueryParams" %>
+
 <%@ page import="org.irri.iric.portal.AppContext" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="java.math.BigDecimal" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="org.irri.iric.portal.domain.Variety" %>
 <html>
 <head>
 	
@@ -23,6 +31,8 @@
 		int nvars = 3000; 
 		long pairs = 0;
 		int topn=-1;
+		
+		Object[] newicknodes = null;
 
 		if(request.getParameter("varid")!=null) {
 			
@@ -55,20 +65,27 @@
 				
 				if(request.getParameter("topn")!=null) {
 					topn = Integer.parseInt(request.getParameter("topn"));
-				
 				}
 				
+				
 				System.out.println("jsp: constructing tree");
+				//newicknodes = genotype.constructPhylotreeMindist(request.getParameter("scale") , request.getParameter("chr") ,Integer.parseInt(request.getParameter("start")) ,
+				//										Integer.parseInt(request.getParameter("end")), (String)request.getParameter("mindist"));
 				
-				String[] newicknodes = genotype.constructPhylotreeTopN(request.getParameter("scale") , request.getParameter("chr") ,Integer.parseInt(request.getParameter("start")) ,
-														Integer.parseInt(request.getParameter("end")), topn, request.getParameter("requestid") );
+				//newicknodes = genotype.constructPhylotreeTopN(request.getParameter("scale") , request.getParameter("chr") ,Integer.parseInt(request.getParameter("start")) ,
+				//										Integer.parseInt(request.getParameter("end")), topn, "");
 				
-				newick = newicknodes[0];
+				GenotypeQueryParams genotypeparams = new  GenotypeQueryParams(null, request.getParameter("chr"), Long.valueOf( request.getParameter("start") ),
+						Long.valueOf( request.getParameter("end") ), true, false, true, true, null, null, null, false);
+				PhylotreeQueryParams phyloparams = new PhylotreeQueryParams(genotypeparams, "topn", topn, -1, Double.valueOf( request.getParameter("scale") ));
+				newicknodes = genotype.constructPhylotree(phyloparams, "");
+
+				newick = (String)newicknodes[0];
 				
 				if(!newick.isEmpty()) {
 				
-					nvars = Integer.valueOf( newicknodes[1] );
-					pairs = Long.valueOf( newicknodes[2]  );
+					nvars = Integer.valueOf( (String)newicknodes[1] );
+					pairs = Long.valueOf( (String)newicknodes[2]  );
 					
 					if(request.getParameter("tmpfile")!=null) {
 						java.io.File file = new java.io.File(AppContext.getTempDir() + request.getParameter("tmpfile") + ".newick");	
@@ -82,9 +99,10 @@
 				}
 				
 			
+				
 		}
 					
-		System.out.println(newick);		
+		//System.out.println(newick);		
 		//newick=	"'" + newick.replace("'", "").replace("\"", "").replace("-","").replace("_","-") + "'" ; 
 		//newick=	"'" + newick.replace("'", "").replace("\"", "").replace("-","").replace("_","-") + "'" ; 
 		newick= "'" + newick.replace("\"", "").replace(":-",":")  + "'";
@@ -167,10 +185,45 @@ else
 %>
 </div>
 
+
+
+
 <div id="foo"/>
 <div id="double-scroll">
 	<div id="svgCanvas"/>
 </div>
+
+
+
+
+<%
+	if(newicknodes!=null && newicknodes.length>3) {
+		
+		VarietyFacade varietyfacade = (VarietyFacade)request.getSession().getAttribute("VarietyFacade");
+		varietyfacade =  (VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade");
+		Map<BigDecimal,Variety> mapVarid2Var = varietyfacade.getMapId2Variety();
+
+		
+		out.println("<br/><br/><br/>Node Groups Members<br/></br>");
+		Map<BigDecimal,Set<BigDecimal>> mapGroup2Varset = (Map)newicknodes[3];
+		Map<BigDecimal,String> mapGroup2Name = (Map)newicknodes[4];
+		Iterator<BigDecimal> itGroup = mapGroup2Varset.keySet().iterator();
+		while(itGroup.hasNext()) {
+			BigDecimal grp = itGroup.next();
+			
+			
+			out.println("<table><th><td>" + mapGroup2Name.get(grp) + "</td></th>" );
+			Iterator itVarset =  mapGroup2Varset.get(grp).iterator();
+			while(itVarset.hasNext()) {
+				out.println("<tr><td>" +  mapVarid2Var.get( itVarset.next() ).getName() + "</td></tr>" );
+			}
+			out.println("</table><br/><br/>");
+		}
+		
+	}
+
+
+%>
 
 
 </body>

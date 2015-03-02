@@ -57,7 +57,8 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	// Variety query DAOs
 	
 	@Autowired
-	@Qualifier("VarietyBasicprop2DAO")
+	//@Qualifier("VarietyBasicprop2DAO")
+	@Qualifier("VarietyDAO")
 	private VarietyDAO germ2dao;
 
 	@Autowired
@@ -497,7 +498,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	// get newick for all varieties, using core snp distances 
 	private String constructPhylotreeFromCoreNewick() {
 		
-		germ2dao = (VarietyDAO)AppContext.checkBean(germ2dao, "VarietyBasicprop2DAO");
+		germ2dao = (VarietyDAO)AppContext.checkBean(germ2dao, "VarietyDAO");
 
 		// get newick
 		String newick= Data.get3kCoreNewick();
@@ -612,7 +613,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	{
 		Map<String, double[]> mapCode2XY = Data.get3kCoreMDSXY();
 		
-		germ2dao = (VarietyDAO)AppContext.checkBean(germ2dao, "VarietyBasicprop2DAO");
+		germ2dao = (VarietyDAO)AppContext.checkBean(germ2dao, "VarietyDAO");
 		
 		Iterator<VIricstockBasicprop2> itVars = germ2dao.findAllVariety().iterator();
 		Map<BigDecimal,VIricstockBasicprop2> mapId2Var = new HashMap();
