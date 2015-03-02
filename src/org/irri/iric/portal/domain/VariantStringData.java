@@ -26,14 +26,14 @@ public class VariantStringData {
 	private ListItemsDAO listitemsdao;
 	
 	//protected  Map<BigDecimal, Double> mapVariety2Mismatch;
-	protected  Map mapVariety2Mismatch;
-	protected Map<BigDecimal, Integer> mapVariety2Order;
-	protected List<SnpsAllvarsPos> listPos;
-	protected Map<Integer,BigDecimal> mapIdx2Pos;
-	protected List<SnpsStringAllvars> listVariantsString;
+	protected  Map mapVariety2Mismatch = new HashMap();
+	protected Map<BigDecimal, Integer> mapVariety2Order = new HashMap();
+	protected List<SnpsAllvarsPos> listPos = new ArrayList();
+	protected Map<Integer,BigDecimal> mapIdx2Pos = new HashMap();
+	protected List<SnpsStringAllvars> listVariantsString = new ArrayList();
 	protected String refnuc[];
 	protected String msgbox="";
-	protected Map<BigDecimal, Set<String>> mapPos2Alleleset;
+	protected Map<BigDecimal, Set<String>> mapPos2Alleleset= new HashMap();
 	
 
 	
@@ -176,7 +176,13 @@ public class VariantStringData {
 				listMergedVariants.add( mapVar2SnpStringAllvars.get(itSnpString.next() )  );
 			}			
 			
-		 	Collections.sort(listMergedVariants, new SnpsStringAllvarsImplSorter());
+			System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
+		 	
+			
+			if(this.hasIndel())
+				Collections.sort(listMergedVariants, new IndelStringAllvarsImplSorter());
+			else
+				Collections.sort(listMergedVariants, new SnpsStringAllvarsImplSorter());
 		 	
 
 			// merge pos
@@ -248,8 +254,8 @@ public class VariantStringData {
 			//		 listPos, mapMergedIndex2Pos, listMergedVariants);
 			// variantsmerged.setMapMergedIdx2SnpIdx(mapMergedIdx2SnpIdx);
 			 
-			 this.msgbox += " ... RESULT: " +  listMergedVariants.size() + " varieties x " + indelstringdata.getListPos().size() + 
-						" SNP, " +  snpstringdata.getListPos().size() + " INDEL positions";
+			 this.msgbox += " ... RESULT: " +  listMergedVariants.size() + " varieties x " + snpstringdata.getListPos().size()  + 
+						" SNP, "   + indelstringdata.getListPos().size() + " INDEL positions";
 			
 		} else if(indelstringdata!=null) {
 			 	msgbox += " ... RESULT: " +  indelstringdata.getListVariantsString().size() + " varieties x " + indelstringdata.getListPos().size() + " INDEL positions";
@@ -392,74 +398,110 @@ public class VariantStringData {
 			SnpsStringAllvars s1 = (SnpsStringAllvars)o1; 
 			SnpsStringAllvars s2 = (SnpsStringAllvars)o2;
 			int ret = -s1.getMismatch().compareTo(s2.getMismatch());
-			if(ret==0) {
-				//return s1.getVar().compareTo( s2.getVar());
-				if(s1 instanceof IndelsStringAllvars && s2 instanceof IndelsStringAllvars) {
-					IndelsStringAllvars is1 = (IndelsStringAllvars)s1; 
-					IndelsStringAllvars is2 = (IndelsStringAllvars)s2;
-					//if(is1.getMapPos2Indels().size()<is2.getMapPos2Indels().size()) ret = 1;
-					//else if(is1.getMapPos2Indels().size()>is2.getMapPos2Indels().size()) ret = -1;
-					
-					//int sumIns1 = 0;
-					//int sumIns2 = 0;
-					//int sumDel1 = 0;
-					//int sumDel2 = 0;
-					
-					Set setAlleles1 = new HashSet();
-					Set setAlleles2 = new HashSet();
-					Iterator<IndelsAllvars> itIndels1 = is1.getMapPos2Indels().values().iterator();
-					Iterator<IndelsAllvars> itIndels2 = is1.getMapPos2Indels().values().iterator();
-					while(itIndels1.hasNext()) {
-						IndelsAllvars indel = itIndels1.next();
-						setAlleles1.add( indel.getAllele1() );
-					}
-					while(itIndels2.hasNext()) {
-						IndelsAllvars indel = itIndels2.next();
-						setAlleles2.add( indel.getAllele1() );
-					}
-					Set allele1notin2 = new HashSet(setAlleles1);
-					allele1notin2.removeAll(setAlleles2);
-					Set allele2notin1 = new HashSet(setAlleles2);
-					allele2notin1.removeAll(setAlleles1);
-					Set uniques = new HashSet(allele1notin2);
-					uniques.addAll(allele2notin1);
-					if(allele1notin2.size()>allele2notin1.size())
-						ret = uniques.size();
-					else if(allele1notin2.size()<allele2notin1.size())
-						ret = -uniques.size();
-					else if(uniques.size()!=0) {
-						if(setAlleles1.size()>setAlleles2.size())
-							return setAlleles1.size();
-						else if(setAlleles1.size()<setAlleles2.size())
-							return -setAlleles2.size();
-						else ret = 0;
-					} else ret=0;
-				}
-			}
+//			if(ret==0) {
+//				//return s1.getVar().compareTo( s2.getVar());
+//				
+//				
+//				if(s1 instanceof IndelsStringAllvars && s2 instanceof IndelsStringAllvars) {
+//					IndelsStringAllvars is1 = (IndelsStringAllvars)s1; 
+//					IndelsStringAllvars is2 = (IndelsStringAllvars)s2;
+//					//if(is1.getMapPos2Indels().size()<is2.getMapPos2Indels().size()) ret = 1;
+//					//else if(is1.getMapPos2Indels().size()>is2.getMapPos2Indels().size()) ret = -1;
+//					
+//					//int sumIns1 = 0;
+//					//int sumIns2 = 0;
+//					//int sumDel1 = 0;
+//					//int sumDel2 = 0;
+//					
+//					Set setAlleles1 = new HashSet();
+//					Set setAlleles2 = new HashSet();
+//					Iterator<IndelsAllvars> itIndels1 = is1.getMapPos2Indels().values().iterator();
+//					Iterator<IndelsAllvars> itIndels2 = is1.getMapPos2Indels().values().iterator();
+//					while(itIndels1.hasNext()) {
+//						IndelsAllvars indel = itIndels1.next();
+//						setAlleles1.add( indel.getAllele1() );
+//					}
+//					while(itIndels2.hasNext()) {
+//						IndelsAllvars indel = itIndels2.next();
+//						setAlleles2.add( indel.getAllele1() );
+//					}
+//					Set allele1notin2 = new HashSet(setAlleles1);
+//					allele1notin2.removeAll(setAlleles2);
+//					Set allele2notin1 = new HashSet(setAlleles2);
+//					allele2notin1.removeAll(setAlleles1);
+//					
+//					if(allele2notin1.size() >  allele1notin2.size())
+//						return allele2notin1.size() +  allele1notin2.size();
+//					else if(allele2notin1.size() <  allele1notin2.size()) 
+//						return - allele2notin1.size() -  allele1notin2.size();
+//					else ret = 0;
+//					
+////					Set uniques = new HashSet(allele1notin2);
+////					uniques.addAll(allele2notin1);
+////					if(allele1notin2.size()>allele2notin1.size())
+////						ret = uniques.size();
+////					else if(allele1notin2.size()<allele2notin1.size())
+////						ret = -uniques.size();
+////					else if(uniques.size()!=0) {
+////						if(setAlleles1.size()>setAlleles2.size())
+////							return setAlleles1.size();
+////						else if(setAlleles1.size()<setAlleles2.size())
+////							return -setAlleles2.size();
+////						else ret = 0;
+////					} else ret=0;
+//				}
+//			}
 
+			if(ret!=0) return ret;
 			
-			if(ret==0)
+			Variety v1 =listitemsdao.getMapId2Variety().get(s1.getVar());
+			Variety v2 =listitemsdao.getMapId2Variety().get(s2.getVar());
+			if(v1.getSubpopulation()!=null && v2.getSubpopulation()!=null)
 			{
+				ret=v1.getSubpopulation().compareTo(v2.getSubpopulation());
+				if( ret!=0 )  return ret;
+			} 
 			
-				Variety v1 =listitemsdao.getMapId2Variety().get(s1.getVar());
-				Variety v2 =listitemsdao.getMapId2Variety().get(s2.getVar());
-				if(v1.getSubpopulation()!=null && v2.getSubpopulation()!=null)
-				{
-					ret=v1.getSubpopulation().compareTo(v2.getSubpopulation());
-					if( ret==0 ) {
-						if(v1.getCountry()!=null && v2.getCountry()!=null) {
-							ret = v1.getCountry().compareTo(v2.getCountry());
-							if(ret==0) return v1.getVarietyId().compareTo(v2.getVarietyId());
-							else return ret;
-						}
-					} else return ret;
-				} else if(v1.getCountry()!=null && v2.getCountry()!=null) {
-						ret = v1.getCountry().compareTo(v2.getCountry());
-						if(ret==0) return v1.getVarietyId().compareTo(v2.getVarietyId());
-						else return ret;
-				} return v1.getVarietyId().compareTo(v2.getVarietyId());
+			if(v1.getCountry()!=null && v2.getCountry()!=null) {
+					ret = v1.getCountry().compareTo(v2.getCountry());
+					if(ret!=0) return ret;
+			} 
+			return v1.getVarietyId().compareTo(v2.getVarietyId());
+		}
+	}
+	
+	
+	class IndelStringAllvarsImplSorter implements Comparator {
+		@Override
+		public int compare(Object o1, Object o2) {
+			// TODO Auto-generated method stub
+			SnpsStringAllvars s1 = (SnpsStringAllvars)o1; 
+			SnpsStringAllvars s2 = (SnpsStringAllvars)o2;
+			int ret = -s1.getMismatch().compareTo(s2.getMismatch());
+
+			if(ret!=0) return ret;
+			
+			Variety v1 =listitemsdao.getMapId2Variety().get(s1.getVar());
+			Variety v2 =listitemsdao.getMapId2Variety().get(s2.getVar());
+			return v1.getVarietyId().compareTo(v2.getVarietyId());
+			
+			/*
+			Variety v1 =listitemsdao.getMapId2Variety().get(s1.getVar());
+			Variety v2 =listitemsdao.getMapId2Variety().get(s2.getVar());
+			if(v1.getSubpopulation()!=null && v2.getSubpopulation()!=null)
+			{
+				ret=v1.getSubpopulation().compareTo(v2.getSubpopulation());
+				if( ret!=0 )  return ret;
+			} 
+			
+			if(v1.getCountry()!=null && v2.getCountry()!=null) {
+					ret = v1.getCountry().compareTo(v2.getCountry());
+					if(ret!=0) return ret;
+			} 
+			
+			return v1.getVarietyId().compareTo(v2.getVarietyId());
+			*/
 				
-			} else return ret;
 		}
 	}
 	

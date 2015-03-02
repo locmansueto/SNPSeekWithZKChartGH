@@ -253,6 +253,10 @@ public class QueryTranslatorImpl implements FilterTranslator {
 		// Transform the tree.
 		w.statement( hqlAst );
 
+		
+		//System.out.print("hibernate AST_LOG=" + AST_LOG.getClass().getCanonicalName()  + " package=" + log.getClass().getPackage().getSpecificationTitle() + "," + 
+		//		log.getClass().getPackage().getSpecificationVendor() + "," + log.getClass().getPackage().getSpecificationVersion() + "\n" );
+		
 		/*
 		if ( AST_LOG.isDebugEnabled() ) {
 			ASTPrinter printer = new ASTPrinter( SqlTokenTypes.class );
@@ -270,6 +274,9 @@ public class QueryTranslatorImpl implements FilterTranslator {
 		HqlParser parser = HqlParser.getInstance( hql );
 		parser.setFilter( filter );
 
+		//System.out.print("hibernate logclass=" + log.getClass().getCanonicalName() + " package=" + log.getClass().getPackage().getSpecificationTitle() + "," + 
+		//		log.getClass().getPackage().getSpecificationVendor() + "," + log.getClass().getPackage().getSpecificationVersion() + "\n" );
+		
 		if ( log.isDebugEnabled() ) {
 			log.debug( "parse() - HQL: " + hql );
 		}

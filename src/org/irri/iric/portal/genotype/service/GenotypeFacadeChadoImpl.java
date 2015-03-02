@@ -968,24 +968,24 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 		
 	}
 	
-
-@Override		
-public String getIndelAlleleString(IndelsAllvarsPos indelpos) {
-
-	if(indelpos==null) return "";
-	if(indelpos.getDellength()==0) {
-		if(indelpos.getInsString()==null || indelpos.getInsString().trim().isEmpty()) 
-			return "ref";
-		else return indelpos.getInsString();
-	} else {
-		if(indelpos.getInsString()!=null && !indelpos.getInsString().trim().isEmpty() ) {
-			if(indelpos.getInsString().trim().length()==1)
-				return "snp -> " + indelpos.getInsString();
-			else return "del " + indelpos.getDellength() + " -> " + indelpos.getInsString();
-		}
-		else return "del " + indelpos.getDellength();
-	}
-}
+//
+//@Override		
+//public String getIndelAlleleString(IndelsAllvarsPos indelpos) {
+//
+//	if(indelpos==null) return "";
+//	if(indelpos.getDellength()==0) {
+//		if(indelpos.getInsString()==null || indelpos.getInsString().trim().isEmpty()) 
+//			return "ref";
+//		else return indelpos.getInsString();
+//	} else {
+//		if(indelpos.getInsString()!=null && !indelpos.getInsString().trim().isEmpty() ) {
+//			if(indelpos.getInsString().trim().length()==1)
+//				return "snp -> " + indelpos.getInsString();
+//			else return "del " + indelpos.getDellength() + " -> " + indelpos.getInsString();
+//		}
+//		else return "del " + indelpos.getDellength();
+//	}
+//}
 
 @Override
 public String getIndelType(String allele) {
@@ -3241,229 +3241,6 @@ private VariantTable createGenotypeTable(List<SnpsStringAllvars> listSNPs) //, b
 //		}
 //	return allelesstr;
 //}
-
-
-
-@Override
-public void setCore(boolean isCore) {
-	// TODO Auto-generated method stub
-	
-}
-
-
-
-@Override
-public void limitVarieties(Set varieties) {
-	// TODO Auto-generated method stub
-	
-}
-
-
-
-@Override
-public List<Snps2Vars> getSNPinVarieties(String var1, String var2,
-		Integer startPos, Integer endPos, String chromosome,
-		snpQueryMode querymode, boolean b) {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public List<Snps2Vars> getSNPinVarieties(String var1, String var2,
-		String genename, Integer plusminusBp, snpQueryMode querymode) {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public List<SnpsAllvarsPos> getSnpsposlist() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public List<SnpsAllvarsRefMismatch> getListSNPAllVarsMismatches() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public List<SnpsAllvarsRefMismatch> getListSNPAllVarsMismatches(int firstRow,
-		int numRows) {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public Map<Integer, BigDecimal> getMapOrder2Variety() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public Map<BigDecimal, Integer> getMapVariety2Order() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public Map<BigDecimal, Integer> getMapVariety2Mismatch() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start,
-		Integer end, Integer chr) {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public List getSNPStringInAllVarieties(Set snpposlist, Integer chr) {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public List getSNPinVarieties(String var1, String var2, Set snpposlist,
-		String chr, snpQueryMode mode, boolean checked) {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public void setColorByNonsyn(boolean selected) {
-	// TODO Auto-generated method stub
-	
-}
-
-
-
-@Override
-public void setNonsynOnly(boolean selected) {
-	// TODO Auto-generated method stub
-	
-}
-
-
-
-@Override
-public void setMismatchOnly(boolean isMismatchOnly) {
-	// TODO Auto-generated method stub
-	
-}
-
-
-
-@Override
-public void setIncludeSNP(boolean includeSNP) {
-	// TODO Auto-generated method stub
-	
-}
-
-
-
-@Override
-public void setIncludeIndel(boolean includeIndel) {
-	// TODO Auto-generated method stub
-	
-}
-
-
-
-@Override
-public Map<BigDecimal, IndelsAllvarsPos> getMapIndelId2Indel() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public Map<Integer, BigDecimal> getMapIndelIdx2Pos() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public Map<Integer, Integer> getMapMergedIdx2SnpIdx() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public Map<Integer, BigDecimal> getMapMergedIdx2Pos() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
-public Map<BigDecimal, Set<String>> getMapPos2Allele() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-  
-// ************************************* old implementations  ************************************************	
-	
-
-//	// SNP query from the SNP_GENOTYPE table (old implementation)
-//	
-//	@Override
-//	public List<SnpsAllvarsRefMismatch> getListSNPAllVarsMismatches() {
-//		return listSNPAllVarsMismatches;
-//	}
-//
-//	@Override
-//	public List<SnpsAllvarsRefMismatch> getListSNPAllVarsMismatches(int firstRow, int numRows) {
-//		List newlist = new java.util.ArrayList();
-//		if(numRows==0) {
-//			//numRows=newlist.size();
-//			numRows = listSNPAllVarsMismatches.size() - firstRow  +1 ;
-//		}
-//
-//		for(int i=firstRow-1; i<firstRow-1+numRows && i<listSNPAllVarsMismatches.size() ; i++)
-//				newlist.add(listSNPAllVarsMismatches.get(i));
-//		
-//		AppContext.debug("created page with " + newlist.size() + " varieties");
-//		return newlist;
-//	}
-
-/*
-	@Override
-	public Map<Integer, Set<Character>> getMapIndex2NonsynAlleles() {
-		return mapIndex2NonsynAlleles;
-	}
-*/
 
 	
 	

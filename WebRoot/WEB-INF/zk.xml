@@ -12,6 +12,11 @@
 	
 -->
   
+ <!-- error-page>
+ <exception-type>java.lang.Throwable</exception-type>
+ <location>/_error.zul</location>
+</error-page -->
+
   <system-config>
     <disable-event-thread>false</disable-event-thread>
   </system-config>

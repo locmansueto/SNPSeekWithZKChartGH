@@ -156,6 +156,9 @@ public class IndelStringService implements VariantStringService {
 				}
 			}
 			
+			
+			if(mapVar2Indelstring.size()==0) return new VariantIndelStringData();
+			
 			String subseq = "";
 			try {
 				subseq = indelSequenceDAO.getSubSequence(BigDecimal.valueOf(chr+2), indelstringdao.getListPos().get(0).getPos().longValue() , end+100);
@@ -277,9 +280,9 @@ public class IndelStringService implements VariantStringService {
 								
 									Map<Integer,Character> mapPosidx2allele2 = indelstring.getMapPosIdx2Allele2();
 									if(mapPosidx2allele2!=null && mapPosidx2allele2.get(j)!=null) {
-										element = mapPosidx2allele2.get(j);
-										if(element!='0' && element!='.' && element!=' ' && element!='*') 
-											buff.append("/").append(element);
+										char element2 = mapPosidx2allele2.get(j);
+										if(element2!='0' && element2!='.' && element2!=' ' && element2!='*' && element2!=element) 
+											buff.append("/").append(element2);
 									}
 								}
 							}
@@ -300,9 +303,9 @@ public class IndelStringService implements VariantStringService {
 							buff.append(element);
 							Map<Integer,Character> mapPosidx2allele2 = snpstr.getMapPosIdx2Allele2();
 							if(mapPosidx2allele2!=null && mapPosidx2allele2.get(j)!=null) {
-								element = mapPosidx2allele2.get(j);
-								if(element!='0' && element!='.' && element!=' ' && element!='*') 
-									buff.append("/").append(  element );
+								char element2 = mapPosidx2allele2.get(j);
+								if(element2!='0' && element2!='.' && element2!=' ' && element2!='*' && element2!=element) 
+									buff.append("/").append(  element2 );
 							}
 						}
 					}
@@ -322,7 +325,7 @@ public class IndelStringService implements VariantStringService {
 	public static final int INDELTYPE_SUBSTITUTION=5;
 	
 	
-	public static final String INDEL_GAP= "-";
+	public static final String INDEL_GAP= "&#151;";
 	public static final String INDEL_REFCONSENSUS= "*";
 	
 public static String createGaps(int length) {
@@ -373,11 +376,15 @@ public static String[] createVarietyStringAligned(SnpsStringAllvars snpstr, Vari
 						if( varstringdata.getIndelstringdata().getSetPosGapRegion().contains(pos))
 						{
 							// insertion region
-							if(allele1Indelnucs!=null && allele1Indelnucs.length()>=insertOffset)
+							if(allele1Indelnucs!=null && allele1Indelnucs.length()>=insertOffset) {
 								buff.append( allele1Indelnucs.charAt(insertOffset-1));
+							
+								//AppContext.debug("i"+ allele1Indelnucs.charAt(insertOffset-1) + "(" + pos +")");
+							}
 							else {
 								allele1Indelnucs=null;
 								buff.append(INDEL_GAP);
+								//AppContext.debug("i-"+  "(" + pos +")");
 							}
 							if(allele2Indelnucs!=null && allele2Indelnucs.length()>=insertOffset)
 								buff.append("/").append( allele2Indelnucs.charAt(insertOffset-1));
@@ -391,8 +398,14 @@ public static String[] createVarietyStringAligned(SnpsStringAllvars snpstr, Vari
 							if(allele1Gapcount>0) {
 								buff.append(INDEL_GAP);
 								allele1Gapcount--;
+								
+								//AppContext.debug("d-"+  "(" + pos +")");
+								
 							}// else buff.append(INDEL_REFCONSENSUS);
-							 else buff.append(listpos.get(j).getRefnuc());
+							 else {
+								 buff.append(listpos.get(j).getRefnuc());
+								 //AppContext.debug("d" + listpos.get(j).getRefnuc() + "(" + pos +")");
+							 }
 							
 							if(allele2Gapcount!=null) {
 								if(allele2Gapcount>0) {
@@ -449,23 +462,34 @@ public static String[] createVarietyStringAligned(SnpsStringAllvars snpstr, Vari
 								//if(indelpos==null) throw new RuntimeException("cant find alleleid=" + alleleid);
 								if(alleleid!=null && indelpos!=null) {
 									
+									allele1Indelnucs = null;
+									allele1Gapcount = 0;
 									int indeltype = IndelStringService.getIndelType(indelpos);
 									switch (indeltype ) {
 										case INDELTYPE_INSERTION:
 											allele1Indelnucs = indelpos.getInsString()  ;
+											
 											buff.append(varstringdata.getIndelstringdata().getMapIndelpos2Refnuc().get(pos));
+											
+											//AppContext.debug("inserting " + allele1Indelnucs +" at " + pos);
+											
 											//buff.append(varstringdata.getIndelstringdata().getMapIndelIdx2Refnuc().get(j));
 											break;
 										case INDELTYPE_SNP: 
+											//AppContext.debug("snp  " +  indelpos.getInsString() +" at " + pos);
 											buff.append(indelpos.getInsString()); break;
 										case INDELTYPE_DELETION:
 											allele1Gapcount = indelpos.getDellength();
 											//buff.append(varstringdata.getIndelstringdata().getMapIndelIdx2Refnuc().get(j));
 											buff.append(varstringdata.getIndelstringdata().getMapIndelpos2Refnuc().get(pos));
+											
+											//AppContext.debug("deleting  " + allele1Gapcount +" at " + pos);
+											
 											break;
 										case INDELTYPE_REFERENCE: 
 											//buff.append(varstringdata.getIndelstringdata().getMapIndelIdx2Refnuc().get(j));
 											buff.append(varstringdata.getIndelstringdata().getMapIndelpos2Refnuc().get(pos));
+											//AppContext.debug("ref  " +  varstringdata.getIndelstringdata().getMapIndelpos2Refnuc().get(pos) +" at " + pos);
 											break;
 									
 											/*
@@ -532,9 +556,9 @@ public static String[] createVarietyStringAligned(SnpsStringAllvars snpstr, Vari
 											
 												Map<Integer,Character> mapPosidx2allele2 = indelstring.getMapPosIdx2Allele2();
 												if(mapPosidx2allele2!=null && mapPosidx2allele2.get(j)!=null) {
-													element = mapPosidx2allele2.get(j);
-													if(element!='0' && element!='.' && element!=' ' && element!='*') 
-														buff.append("/").append(element);
+													char element2 = mapPosidx2allele2.get(j);
+													if(element2!='0' && element2!='.' && element2!=' ' && element2!='*' && element2!=element) 
+														buff.append("/").append(element2);
 												}
 											}
 										}
@@ -572,9 +596,9 @@ public static String[] createVarietyStringAligned(SnpsStringAllvars snpstr, Vari
 									buff.append(element);
 									Map<Integer,Character> mapPosidx2allele2 = snpstr.getMapPosIdx2Allele2();
 									if(mapPosidx2allele2!=null && mapPosidx2allele2.get(j)!=null) {
-										element = mapPosidx2allele2.get(j);
-										if(element!='0' && element!='.' && element!=' ' && element!='*') 
-											buff.append("/").append(  element );
+										char element2 = mapPosidx2allele2.get(j);
+										if(element2!='0' && element2!='.' && element2!=' ' && element2!='*' && element2!=element) 
+											buff.append("/").append(  element2 );
 									}
 								}
 							}
@@ -592,9 +616,9 @@ public static String[] createVarietyStringAligned(SnpsStringAllvars snpstr, Vari
 								buff.append(element);
 								Map<Integer,Character> mapPosidx2allele2 = snpstr.getMapPosIdx2Allele2();
 								if(mapPosidx2allele2!=null && mapPosidx2allele2.get(j)!=null) {
-									element = mapPosidx2allele2.get(j);
-									if(element!='0' && element!='.' && element!=' ' && element!='*') 
-										buff.append("/").append(  element );
+									char element2 = mapPosidx2allele2.get(j);
+									if(element2!='0' && element2!='.' && element2!=' ' && element2!='*' && element2!=element) 
+										buff.append("/").append(  element2 );
 								}
 							}
 						}

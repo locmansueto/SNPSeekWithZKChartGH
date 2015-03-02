@@ -107,32 +107,6 @@ import org.forester.phylogeny.iterators.PhylogenyNodeIterator;
 public class CopyOfGenotypeFacadeChadoImpl implements GenotypeFacade {
 
 	@Override
-	public List<VariantStringData> queryGenotype(List listParams)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void downloadGenotypeGenome(GenotypeQueryParams params)
-			throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setCore(boolean isCore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void limitVarieties(Set varieties) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public List<String> getVarnames() {
 		// TODO Auto-generated method stub
 		return null;
@@ -175,58 +149,6 @@ public class CopyOfGenotypeFacadeChadoImpl implements GenotypeFacade {
 	}
 
 	@Override
-	public List<Snps2Vars> getSNPinVarieties(String var1, String var2,
-			Integer startPos, Integer endPos, String chromosome,
-			snpQueryMode querymode, boolean b) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Snps2Vars> getSNPinVarieties(String var1, String var2,
-			String genename, Integer plusminusBp, snpQueryMode querymode) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<SnpsAllvarsPos> getSnpsposlist() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<SnpsAllvarsRefMismatch> getListSNPAllVarsMismatches() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<SnpsAllvarsRefMismatch> getListSNPAllVarsMismatches(
-			int firstRow, int numRows) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<Integer, BigDecimal> getMapOrder2Variety() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<BigDecimal, Integer> getMapVariety2Order() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<BigDecimal, Integer> getMapVariety2Mismatch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public String[] constructPhylotree(String scale, String chr, int start,
 			int end, String requestid) {
 		// TODO Auto-generated method stub
@@ -240,93 +162,7 @@ public class CopyOfGenotypeFacadeChadoImpl implements GenotypeFacade {
 	}
 
 	@Override
-	public List<SnpsStringAllvars> getSNPStringInAllVarieties(Integer start,
-			Integer end, Integer chr) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List getSNPStringInAllVarieties(Set snpposlist, Integer chr) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Set checkSNPInChromosome(String chr, Set setSNP, BigDecimal type) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List getSNPinVarieties(String var1, String var2, Set snpposlist,
-			String chr, snpQueryMode mode, boolean checked) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setColorByNonsyn(boolean selected) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setNonsynOnly(boolean selected) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setMismatchOnly(boolean isMismatchOnly) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setIncludeSNP(boolean includeSNP) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setIncludeIndel(boolean includeIndel) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Map<BigDecimal, IndelsAllvarsPos> getMapIndelId2Indel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<Integer, BigDecimal> getMapIndelIdx2Pos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<Integer, Integer> getMapMergedIdx2SnpIdx() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<Integer, BigDecimal> getMapMergedIdx2Pos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<BigDecimal, Set<String>> getMapPos2Allele() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getIndelAlleleString(IndelsAllvarsPos indelpos) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -342,6 +178,20 @@ public class CopyOfGenotypeFacadeChadoImpl implements GenotypeFacade {
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<VariantStringData> queryGenotype(List listParams)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void downloadGenotypeGenome(GenotypeQueryParams params)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -365,6 +215,9 @@ public class CopyOfGenotypeFacadeChadoImpl implements GenotypeFacade {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
+	
 
 	
 	

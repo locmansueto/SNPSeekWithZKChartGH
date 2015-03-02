@@ -28,6 +28,10 @@
 				<class>org.irri.iric.portal.chado.domain.VSnpNonsynAllele</class>
 				<class>org.irri.iric.portal.chado.domain.VSnpInExon</class>
 				<class>org.irri.iric.portal.chado.domain.Feature</class>
+				<class>org.irri.iric.portal.chado.domain.VSnpSpliceacceptor</class>
+				<class>org.irri.iric.portal.chado.domain.VSnpSplicedonor</class>
+				
+				
 				
 				<class>org.irri.iric.portal.admin.domain.VOracleSessions</class>
 				

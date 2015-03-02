@@ -233,6 +233,18 @@ public class SnpcoreMismatchAlleles implements Serializable, SnpsStringAllvars {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Set getDonorPosset() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set getAcceptorPosset() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

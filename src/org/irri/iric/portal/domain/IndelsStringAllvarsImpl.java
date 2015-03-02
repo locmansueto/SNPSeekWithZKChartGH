@@ -139,6 +139,20 @@ public class IndelsStringAllvarsImpl implements IndelsStringAllvars {
 		this.snpstring = snpstring;
 	}
 
+
+	@Override
+	public Set getDonorPosset() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Set getAcceptorPosset() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 	

@@ -19,11 +19,15 @@ import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
 import org.irri.iric.portal.dao.SnpsHeteroAllvarsDAO;
 import org.irri.iric.portal.dao.SnpsInExonDAO;
 import org.irri.iric.portal.dao.SnpsNonsynAllvarsDAO;
+import org.irri.iric.portal.dao.SnpsSpliceAcceptorDAO;
+import org.irri.iric.portal.dao.SnpsSpliceDonorDAO;
 import org.irri.iric.portal.dao.SnpsStringDAO;
 import org.irri.iric.portal.domain.Snp;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsHeteroAllele2;
 import org.irri.iric.portal.domain.SnpsNonsynAllele;
+import org.irri.iric.portal.domain.SnpsSpliceAcceptor;
+import org.irri.iric.portal.domain.SnpsSpliceDonor;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
 import org.irri.iric.portal.domain.SnpsStringAllvarsImpl;
 import org.irri.iric.portal.domain.VariantSnpsStringData;
@@ -55,6 +59,13 @@ public class AllSnpsStringService implements VariantStringService {
 	
 	@Autowired
 	private SnpsInExonDAO snpsinexonDAO;
+	
+	
+	@Autowired
+	private SnpsSpliceAcceptorDAO snpsspliceacceptorDAO;
+	@Autowired
+	private SnpsSpliceDonorDAO snpssplicedonorDAO;
+	
 	
 	@Autowired
 	@Qualifier("H5SNPUniAllele1DAO")
@@ -115,10 +126,18 @@ public class AllSnpsStringService implements VariantStringService {
 			}
 		 
 			Map mapVarid2Snpsstr = snpstrdata.getMapVarid2Snpsstr();
+			if(mapVarid2Snpsstr==null)  {
+				mapVarid2Snpsstr = new HashMap();
+				//throw new RuntimeException("getSNPsString:  mapVarid2Snpsstr==null");
+				//return new VariantStringData();
+			}
+
 			Set setNonsynIdx=new HashSet();
 			Set sortedVarieties = new TreeSet(new SnpsStringAllvarsImplSorter());
 			
 			Map mapIndex2NonsynAlleles = snpstrdata.getMapIdx2NonsynAlleles();
+			
+			
 			
 		 	//Iterator<BigDecimal> itVar = mapVarid2Snpsstr.keySet().iterator();
 			Iterator itVar = mapVarid2Snpsstr.keySet().iterator();
@@ -139,12 +158,15 @@ public class AllSnpsStringService implements VariantStringService {
 				Set varNonsynIdx = new HashSet();
 				
 				double misCount = countVarpairMismatch(snpstrdata.getStrRef(), snpstr, true, null, (Map)snpstrdata.getMapVarid2SnpsAllele2str().get(var),  
-						(Map)snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx(), varNonsynIdx,  params.isbExcludeSynonymous() );
+						//(Map)snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx(), varNonsynIdx,  params.isbExcludeSynonymous() );
+						(Map)snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx(), varNonsynIdx,  params.isbNonsynPlusSpliceSnps() || params.isbNonsynSnps()); //  .isbExcludeSynonymous() );
 				setNonsynIdx.addAll(varNonsynIdx);
 				
 				if(!params.isbMismatchonly() || misCount>0) {
 					sortedVarieties.add( new SnpsStringAllvarsImpl(var,Long.valueOf(chr), snpstr, 
-							BigDecimal.valueOf(misCount) , (Map)snpstrdata.getMapVarid2SnpsAllele2str().get(var), varNonsynIdx) );
+							BigDecimal.valueOf(misCount) , (Map)snpstrdata.getMapVarid2SnpsAllele2str().get(var), varNonsynIdx, 
+							snpstrdata.setSnpSpliceDonorPos, snpstrdata.setSnpSpliceAcceptorPos
+							) );
 				} 
 			}
 			
@@ -175,7 +197,8 @@ public class AllSnpsStringService implements VariantStringService {
 			List listsortedVarieties = new ArrayList();
 			listsortedVarieties.addAll(sortedVarieties);
 			VariantStringData vardata = new VariantSnpsStringData(mapVariety2Mismatch, mapVariety2Order , snpstrdata.getListSnpsPos() ,  snpstrdata.getMapIdx2Pos(), listsortedVarieties , 
-					snpstrdata.getStrRef(), snpstrdata.getMapVarid2SnpsAllele2str(), snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx() , null, null);
+					snpstrdata.getStrRef(), snpstrdata.getMapVarid2SnpsAllele2str(), snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx() , null, null,
+					snpstrdata.setSnpSpliceDonorPos,  snpstrdata.setSnpSpliceAcceptorPos);
 			
 			
 			//AppContext.debug( listResult.size() + " sortedvarieties in list, "  + sortedVarieties.size() + " in set" );
@@ -204,8 +227,6 @@ public class AllSnpsStringService implements VariantStringService {
 			snpstrSnpsAllele2AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrAllsnpsAllele2AllvarsDAO, "H5SNPUniAllele2DAO");
 		}
 		    
-				
-		
 		
 		List<SnpsAllvarsPos> snpsposlist = null;
 		List listpos = null;
@@ -234,7 +255,7 @@ public class AllSnpsStringService implements VariantStringService {
 				snpsposlist  = snpstringallvarsposService.getSNPs(chr.toString(), start.intValue(), end.intValue(),  snptype, -1, -1);
 			}
 			
-			AppContext.debug("colvarids=" + colVarids.toString());
+			//AppContext.debug("colvarids=" + colVarids.toString());
 		}
 		
 		if(snpsposlist==null) throw new RuntimeException("snpsposlist==null");
@@ -300,10 +321,15 @@ public class AllSnpsStringService implements VariantStringService {
 			// get allele2 for heterozygous varieties
 			snpsheteroDAO = (SnpsHeteroAllvarsDAO)AppContext.checkBean(snpsheteroDAO, "SnpsHeteroAllvarsDAO");
 			
-			if(params.isbExcludeSynonymous() || params.isbGraySynonymous()) {
+			//if(params.isbExcludeSynonymous() || params.isbGraySynonymous()) {
+			//if(params.isbAllSnps() || params.isbHighlightNonsynSnps() || params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) { 				
+			if(true) {
 				snpsnonsynDAO = (SnpsNonsynAllvarsDAO) AppContext.checkBean(snpsnonsynDAO, "SnpsNonsynAllvarsDAO");
 				snpsinexonDAO = (SnpsInExonDAO) AppContext.checkBean(snpsinexonDAO, "SnpsInExonDAO");
 			}
+			
+			
+			
 		
 			Set heteroSnps = null;
 			Set nonsynAllele = null;
@@ -335,11 +361,15 @@ public class AllSnpsStringService implements VariantStringService {
 					AppContext.resetTimer("using readSNPString2 end");
 				}
 				
-				if(params.isbExcludeSynonymous() || params.isbGraySynonymous()) {
+				//if(params.isbExcludeSynonymous() || params.isbGraySynonymous()) {
+				//if(params.isbAllSnps() || params.isbHighlightNonsynSnps() || params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) {		
+				if(true) {					
 					nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleByChrPosIn(chr, listpos);
 					inexonSnps = snpsinexonDAO.getSnps(chr, listpos);
 					AppContext.resetTimer("to read nonsynonymous allele, inexon  from  database..");
 				}
+				
+				
 				
 			}
 			else {
@@ -369,13 +399,20 @@ public class AllSnpsStringService implements VariantStringService {
 				
 				AppContext.resetTimer("to read allele2 database..");
 				
-				if(params.isbExcludeSynonymous() || params.isbGraySynonymous()) {
+				//if(params.isbExcludeSynonymous() || params.isbGraySynonymous()) {
+				//if(params.isbAllSnps() || params.isbHighlightNonsynSnps() || params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) {
+				if(true) {					
 					nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleByChrPosBetween(chr, start.intValue(), end.intValue());
 					inexonSnps = snpsinexonDAO.getSnps(chr,start.intValue(), end.intValue()); 
 					AppContext.resetTimer("to read nonsynonymous allele, inexon  from  database..");
 				}
 			}
 
+			//Iterator itSnpstr = mapVarid2Snpsstr.values().iterator();
+			//while(itSnpstr.hasNext()) {
+			//	AppContext.debug(  itSnpstr.next().toString() );
+			//	break;
+			//}
 			
 			 
 			// filter varieties here
@@ -393,21 +430,30 @@ public class AllSnpsStringService implements VariantStringService {
 			
 			
 			// non-synonymous alleles for given table index
-			Map<Integer,Set<Character>> mapIdx2NonsynAlleles = new HashMap();
+			Map<Integer,Set<Character>> mapIdx2NonsynAlleles = new TreeMap();
 			
 			//mapIdx2NonsynAlleles = new HashMap();
 			Set<Integer> setSnpInExonTableIdx = null;
-			if(params.isbExcludeSynonymous() || params.isbGraySynonymous()) {
+			//if(params.isbExcludeSynonymous() || params.isbGraySynonymous()) {
+			//if(params.isbAllSnps() || params.isbHighlightNonsynSnps() || params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) {
+			if(true) {
 				
-				setSnpInExonTableIdx = new HashSet();
+				setSnpInExonTableIdx = new TreeSet();
 				Iterator<Snp> itInexon = inexonSnps.iterator();
-				while(itInexon.hasNext()) setSnpInExonTableIdx.add( mapSnpid2TableIdx.get( itInexon.next().getSnpFeatureId() ) );
+				while(itInexon.hasNext()) {
+					Integer tableidx =  mapSnpid2TableIdx.get( itInexon.next().getSnpFeatureId());
+					if(tableidx!=null)
+						setSnpInExonTableIdx.add( tableidx );
+				}
 				
 				Iterator<SnpsNonsynAllele> itNonsyn = nonsynAllele.iterator();
 				while(itNonsyn.hasNext()) {
 					SnpsNonsynAllele nonsynallele = itNonsyn.next();
 					
-					Set<Character> alleles =  mapIdx2NonsynAlleles.get( mapSnpid2TableIdx.get( nonsynallele.getSnp() )  );
+					Integer tableidx = mapSnpid2TableIdx.get( nonsynallele.getSnp());
+					if(tableidx==null) continue;
+					
+					Set<Character> alleles =  mapIdx2NonsynAlleles.get( tableidx  );
 					if(alleles==null) {
 						alleles = new HashSet();
 						mapIdx2NonsynAlleles.put( mapSnpid2TableIdx.get( nonsynallele.getSnp() )  , alleles);
@@ -454,9 +500,45 @@ public class AllSnpsStringService implements VariantStringService {
 			}; // else throw new RuntimeException("heteroSnps==null and mapVarid2Snpsstr_allele2==null ... no allele2 data");
 			
 			
+			// get splice variants
+			Set setSpliceAcceptorsPos = null;
+			Set setSpliceDonorsPos = null;
+			//if(params.isbColorSpliceSNP()) {
+			if(true) {
+				
+				Set setSpliceAcceptors= null;
+				Set setSpliceDonors= null;
+				
+				snpsspliceacceptorDAO = (SnpsSpliceAcceptorDAO)AppContext.checkBean(snpsspliceacceptorDAO, "SnpsSpliceAcceptorDAO");
+				snpssplicedonorDAO = (SnpsSpliceDonorDAO)AppContext.checkBean(snpssplicedonorDAO, "SnpsSpliceDonorDAO");
+				if(setPositions!=null && !setPositions.isEmpty()) {
+					setSpliceAcceptors = snpsspliceacceptorDAO.findSnpSpliceAcceptorByChrPosIn(chr, setPositions);
+					setSpliceDonors = snpssplicedonorDAO.findSnpSpliceDonorByChrPosIn(chr, setPositions);							
+				} else {
+					setSpliceAcceptors = snpsspliceacceptorDAO.findSnpSpliceAcceptorByChrPosBetween(chr, start.intValue(), end.intValue());  
+					setSpliceDonors = snpssplicedonorDAO.findSnpSpliceDonorByChrPosBetween(chr, start.intValue(), end.intValue());							
+				}
+				
+				setSpliceAcceptorsPos = new HashSet();
+				setSpliceDonorsPos = new HashSet();
+				Iterator<SnpsSpliceAcceptor>  itAcceptors = setSpliceAcceptors.iterator();
+				while(itAcceptors.hasNext()) {
+					SnpsSpliceAcceptor acc = itAcceptors.next();
+					setSpliceAcceptorsPos.add( acc.getPos());
+				}
+				Iterator<SnpsSpliceDonor>  itDonor = setSpliceDonors.iterator();
+				while(itDonor.hasNext()) {
+					SnpsSpliceDonor acc = itDonor.next();
+					setSpliceDonorsPos.add( acc.getPos());
+				}
+				
+			}
+			
+			
 			//VariantStringData vardata = new VariantStringData(snpsposlist, );
 
-			SNPsStringData snpstrdata = new  SNPsStringData(snpsposlist, mapIdx2Pos, strRef, mapVarid2Snpsstr, mapVarid2SnpsAllele2str, mapIdx2NonsynAlleles, setSnpInExonTableIdx);
+			SNPsStringData snpstrdata = new  SNPsStringData(snpsposlist, mapIdx2Pos, strRef, mapVarid2Snpsstr, mapVarid2SnpsAllele2str,
+					mapIdx2NonsynAlleles, setSnpInExonTableIdx, setSpliceDonorsPos,  setSpliceAcceptorsPos);
 			
 			return snpstrdata;
 
@@ -471,24 +553,26 @@ public class AllSnpsStringService implements VariantStringService {
 	 */
 	class SNPsStringData {
 		
-		private List<SnpsAllvarsPos> listSnpsPos;
-		private String  strRef;
-		private Map<BigDecimal,String>  mapVarid2Snpsstr;
-		private Map<BigDecimal, Map<Integer,Character>> mapVarid2SnpsAllele2str;
-		private Map<BigDecimal, Set<Character>> mapIdx2NonsynAlleles;
-		private Set<Integer> setSnpInExonTableIdx;
-		private Map<Integer,BigDecimal> mapIdx2Pos;
+		private List<SnpsAllvarsPos> listSnpsPos=new ArrayList();
+		private String  strRef="";
+		private Map<BigDecimal,String>  mapVarid2Snpsstr = new HashMap();
+		private Map<BigDecimal, Map<Integer,Character>> mapVarid2SnpsAllele2str= new HashMap();
+		private Map<BigDecimal, Set<Character>> mapIdx2NonsynAlleles= new HashMap();
+		private Set<Integer> setSnpInExonTableIdx=new HashSet();
+		private Map<Integer,BigDecimal> mapIdx2Pos= new HashMap();
+		private Set<BigDecimal> setSnpSpliceDonorPos=new HashSet();
+		private Set<BigDecimal> setSnpSpliceAcceptorPos=new HashSet();
+		
 		
 		
 		
 		public SNPsStringData() {
 			super();
 			// TODO Auto-generated constructor stub
-			strRef="";
 		}
 		public SNPsStringData(List listSnpsPos, Map mapIdx2Pos, String strRef, Map mapVarid2Snpsstr,
 				Map mapVarid2SnpsAllele2str, Map mapIdx2NonsynAlleles,
-				Set setSnpInExonTableIdx) {
+				Set setSnpInExonTableIdx, Set setSnpSpliceDonorPos,  Set setSnpSpliceAcceptorPos) {
 			super();
 			//if(strRef.length()==0) throw new RuntimeException("SNPsStringData: reference has zreo length");
 			//if(mapVarid2Snpsstr.size()==0) throw new RuntimeException("SNPsStringData: no variety");
@@ -501,6 +585,8 @@ public class AllSnpsStringService implements VariantStringService {
 			this.setSnpInExonTableIdx = setSnpInExonTableIdx;
 			this.listSnpsPos = listSnpsPos;
 			this.mapIdx2Pos = mapIdx2Pos;
+			this.setSnpSpliceAcceptorPos = setSnpSpliceAcceptorPos;
+			this.setSnpSpliceDonorPos = setSnpSpliceDonorPos;
 		}
 		public String getStrRef() {
 			return strRef;

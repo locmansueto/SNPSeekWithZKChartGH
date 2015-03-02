@@ -74,7 +74,15 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 		VariantStringData variantMerged = new VariantStringData();
 		
 		if(origdata.hasSnp()) {
-			variantMerged.setSnpstringdata( origdata.getSnpstringdata() );
+			//if(params.isbExcludeSynonymous())
+			if(params.isbNonsynSnps())
+				variantMerged.setSnpstringdata( origdata.getSnpstringdata().getNonsynSnps() );
+			else if(params.isbNonsynPlusSpliceSnps())
+				variantMerged.setSnpstringdata( origdata.getSnpstringdata().getNonsynPlusSpliceSnps() );
+			else variantMerged.setSnpstringdata( origdata.getSnpstringdata() );
+			
+			AppContext.debug("fillVariantTable:" + variantMerged.getSnpstringdata().getListPos().size() + " SNP positions" );
+			
 		}
 		if(origdata.hasIndel()) {
 			if(params.isbAlignIndels()) {
@@ -82,9 +90,13 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 			} else {
 				variantMerged.setIndelstringdata( origdata.getIndelstringdata());
 			}
+			AppContext.debug("fillVariantTable:" + variantMerged.getIndelstringdata().getListPos().size() + " Indel positions" );
 		}
 		
 		variantMerged.merge();
+		
+		AppContext.debug("fillVariantTable:" + variantMerged.getListPos().size() + " positions" );
+		
 		table.setVariantStringData( variantMerged, params);
 		table.setMessage(variantMerged.getMessage());
 		return table;
@@ -107,6 +119,8 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 		// TODO Auto-generated method stub
 			
 		Collection colVarIds =params.getColVarIds();
+		
+		
 		String sChr = params.getsChr();
 		Long lStart = params.getlStart();
 		Long lEnd = params.getlEnd();

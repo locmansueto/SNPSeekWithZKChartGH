@@ -29,6 +29,16 @@ public class VariantIndelStringData extends VariantStringData {
 	//private Map<Integer,String> mapIndelIdx2Refnuc;
 	private String sequence;
 	
+	
+	
+	
+	public VariantIndelStringData() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	public VariantIndelStringData(Map<BigDecimal, Double> mapVariety2Mismatch,
 			Map<BigDecimal, Integer> mapVariety2Order,
 			List<SnpsAllvarsPos> listPos, Map<Integer, BigDecimal> mapIdx2Pos,
@@ -58,7 +68,7 @@ public class VariantIndelStringData extends VariantStringData {
 		if(alignedVariantIndelStringData==null) {
 
 			
-			if(this.listPos.size()==0) return null;
+			if(this.listPos.size()==0) return new VariantIndelStringData();
 			
 			//mapIndelIdx2Refnuc = new HashMap();
 			mapIndelpos2Refnuc = new HashMap();

@@ -113,10 +113,15 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 			varnames[varcount]=mapVarid2Variety.get( snpstr.getVar() ).getName();
 			varids[varcount]= snpstr.getVar().longValue();
 			
-			if(params.isbAlignIndels())
-				allelestring[varcount] = IndelStringService.createVarietyStringAligned(snpstr, data);
-			else
+			if(params.isbIndel()) {
+				if(params.isbAlignIndels())
+					allelestring[varcount] = IndelStringService.createVarietyStringAligned(snpstr, data);
+				else
+					allelestring[varcount] = IndelStringService.createVarietyString(snpstr, data);
+			} else if (params.isbSNP()) {
 				allelestring[varcount] = IndelStringService.createVarietyString(snpstr, data);
+			}
+			
 			varcount++;
 		}
 		message = data.getMessage();

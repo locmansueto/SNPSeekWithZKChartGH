@@ -172,7 +172,6 @@ function doPosition() {
         import javax.servlet.http.HttpSession;
 
 		import org.irri.iric.portal.genotype.service.GenotypeFacade;
-		import org.irri.iric.portal.genotype.service.GenotypeFacadeLegacyImpl;
 	
 		import org.irri.iric.portal.admin.WorkspaceFacade;
 	
@@ -246,21 +245,24 @@ function doPosition() {
     <label id="labelScreenWidth" visible="false"/>
     <radiogroup id="snpcolor" />
     <radiogroup id="synonymoussnps" />
+    <radiogroup id="showsnps"/>
     
-    <hbox>
+    <hbox height="310px">
     
-    <grid width="1000px" height="300px">
+    <!--  grid width="1000px" height="305px">
     <rows>
-
-    <row>
+    <row -->
+    
+    <vbox width="1000px" height="305px">
 	<textbox id="msgbox" readonly="true" value="${msg}" width="790px"/>
-	</row>
-    <row>
-    <grid height="250px">
+	
+	<!--  /row>
+    <row -->
+    
+    <!--  grid height="240px" -->
+    <grid>
         <rows>
         
-        
-       		
             <row spans="1,5,1">
 
 
@@ -432,39 +434,69 @@ function doPosition() {
             		
             		<vbox>
 
+         			<hbox visible="true">
+          				<label value="Variant  " pre="true" style="font-weight:bold;"/>
+          				<label value="SNPs " pre="true" tooltip="popupSNP"/>
+			    		<checkbox id="checkboxSNP" checked="true" />
+			    		<!--  vbox width="20px"/>
+			    		<label id="labelSpliceSNP" value="Splice" pre="true" style="font-weight:bold;" visible="false"/>
+			    		<checkbox id="checkboxSpliceSNP" checked="true" tooltip="popupSplice" visible="false"/ -->
+			    		<vbox width="20px" visible="true"/>
+			    		<label value=" Indel " pre="true" tooltip="popupIndel"/>
+			    		<checkbox id="checkboxIndel" checked="false" />
+         			
+         			</hbox>
+
     				<hbox>
     					<label pre="true" value="SNP coloring  " style="font-weight:bold;"/>
-               	 		<radio id="radioColorMismatch" label="Reference mismatch" radiogroup="snpcolor"  selected="true" tooltip="popupSNPColoringMismatch"/>
-               	 		<vbox width="15px"/>
-         				<radio id="radioColorAllele" label="Nucleotide" radiogroup="snpcolor" tooltip="popupSNPColoringAllele"/>
-
-						<hbox width="50px"/>
-         				<div visible="false">
-         				<vbox width="20px"/>
-         				<label pre="true" value="Synonymous SNPs  " style="font-weight:bold;"/>
-         				<radio id="radioShowSyn" label="Include" radiogroup="synonymoussnps"  selected="true" tooltip="popupSynonymousShow"/>
-         				<radio id="radioGraySynonymous" label="Grayed" radiogroup="synonymoussnps" tooltip="popupSynonymousGray"/>
-			    		<radio id="radioNonsynOnly" label="Exclude" radiogroup="synonymoussnps" tooltip="popupSynonymousExclude" disabled="true"/>
-			    		<vbox width="30px"/>
-			    		</div>
-
+               	 		<radio id="radioColorMismatch" label="" radiogroup="snpcolor"  selected="true"/>
+               	 		<label value="Reference mismatch"  tooltip="popupSNPColoringMismatch"/>
+               	 		<vbox width="6px"/>
+         				<radio id="radioColorAllele" label="" radiogroup="snpcolor"/>
+         				<label value="Nucleotide" tooltip="popupSNPColoringAllele"/>
+						<hbox width="30px"/>
+						
+						<label pre="true" value="Core SNPs only " style="font-weight:bold;"  tooltip="popupCoreSNP"/>
+          				<checkbox id="checkboxCoreSNP" checked="false"/>
+          				<vbox width="30px"/>
+          				<label value="Mismatch only " pre="true" style="font-weight:bold;" tooltip="popupMatchOnly"/>
+			    		<checkbox id="checkboxMismatchOnly" checked="true" />
+						
+						
           				<label pre="true" value="Exact mismatch" style="font-weight:bold;"  visible="false"/>
           				<checkbox id="checkboxExactMismatch" checked="true" tooltip="popupExactMismatch" disabled="true"  visible="false"/>			    		
 			    		
          			</hbox>	  
           			<hbox>
-          				<label pre="true" value="Core SNPs only " style="font-weight:bold;"/>
-          				<checkbox id="checkboxCoreSNP" checked="false" tooltip="popupCoreSNP"/>
-          				<vbox width="40px"/>
-          				<label value="Mismatch only " pre="true" style="font-weight:bold;"/>
-			    		<checkbox id="checkboxMismatchOnly" checked="true" tooltip="popupMatchOnly"/>
-			    		<vbox width="40px"/>
-          				<label value="Variant:   SNP " pre="true" style="font-weight:bold;"/>
-			    		<checkbox id="checkboxSNP" checked="true" tooltip="popupSNP"/>
-			    		<label value="   Indel " pre="true" style="font-weight:bold;"/>
-			    		<checkbox id="checkboxIndel" checked="false" tooltip="popupIndel"/>
-			    		
-			    		
+
+         				<label pre="true" value="Include SNPs  " style="font-weight:bold;"/>
+         				<radio id="radioAllSnps" label="" radiogroup="showsnps"  selected="true" />
+         				<label  value="All"  tooltip="popupAllSnps"/>
+         				<vbox width="6px"/>
+			    		<radio id="radioNonsynHighlights" label="" radiogroup="showsnps" />
+			    		<label value="All, highlight Nonsynonymous" tooltip="popupAllNonsynHighlights" />
+			    		<vbox width="6px"/>
+         				<radio id="radioNonsynSnps" label="" radiogroup="showsnps" />
+         				<label value="Non-synonymous only" tooltip="popupNonsynSnps"/>
+         				<vbox width="6px"/>
+         				<radio id="radioNonsynSnpsPlusSplice" label="" radiogroup="showsnps" />
+         				<label value="Non-synonymous + splice site" tooltip="popupNonsynSnpsPlusSplice"/>
+						
+         				<div visible="false">
+         				<vbox width="20px"/>
+         				<label pre="true" value="Synonymous SNPs  " style="font-weight:bold;"/>
+         				<radio id="radioShowSyn" label="  Include " radiogroup="synonymoussnps"  selected="true" tooltip="popupSynonymousShow"/>
+         				<radio id="radioGraySynonymous" label=" Grayed " radiogroup="synonymoussnps" tooltip="popupSynonymousGray"/>
+			    		<radio id="radioNonsynOnly" label=" Exclude " radiogroup="synonymoussnps" tooltip="popupSynonymousExclude" />
+			    		<vbox width="30px"/>
+			    		</div>
+
+
+						<div visible="false">
+			    		<vbox width="20px"/>
+			    		<label value="SNP Splice variant as Nonsynonymous" pre="true" style="font-weight:bold;"/>
+			    		<checkbox id="checkboxSpliceSnps" checked="true" tooltip="popupSpliceVariant"/>
+			    		</div>
 			    		
           				<!--  vbox width="40px"/>
 	            		<label pre="true" value="Download  " style="font-weight:bold;"/>
@@ -472,6 +504,8 @@ function doPosition() {
 	            		<vbox width="50px"/>
 	    				<button id="buttonDownloadTab"  label="Tab" width="60px" height="30px"  autodisable="self"/ -->    
          			</hbox>	
+         			
+         			
     				</vbox>
 
     				
@@ -494,29 +528,13 @@ function doPosition() {
                </row -->
         </rows>
     </grid>
-    </row>
+    </vbox>
     
-    </rows></grid>
+    <!--  /row>
     
+    </rows></grid -->
 
-	<!--  tipBox height="280px" width="400px" desc="     SNP QUERY" 
-		details1= "  1. Select two varieties to compare OR "
-		details2= "						check All Varieties"
-		details3= "  2. Specify region(chromosome, start and end) "
-		details4= "             OR Gene LOC_Os (MSU locus name)" 
-		details5= "  3. Set options and click action button"
-		details6= "  Results"
-		details7= "   Table: Allele for Varieties x SNP positions"
-		details8= "   (Sorted by descending number of mismatches"
-		details9= "	   with the reference. Only varieties having "
-	   details10= "	   mismatch with reference are returned"
-	   details11= "   JBrowse: SNPs plot in genome"
-	   details12= "   Tree: Phylogenetic tree based on the number " 
-	   details13= "    of allele mismatches in the region, only "
-	   details14= "    the Phylotree topN distance pairs are used"
-		/ -->
-
-	<tipBox height="280px" width="400px" desc="     SNP QUERY" 
+	<tipBox height="305px" width="400px" desc="     SNP QUERY" 
 		details1= "  1. Select two varieties to compare; OR "
 		details2= "		Compare All Varieties, members of a Subpopulation"
 		details3= "     or My Variety List, with the Reference"
@@ -531,8 +549,7 @@ function doPosition() {
 	   details13= "    the Phylotree topN distance pairs are used"
 	   details14= "   PhyloJBrowse: SNPs in JBrowse having the varieties"
 	   details15= "    orderd using phylotree clustering result."
-	   
-		/>
+	/>
 
 	</hbox>
 	<separator bar="true"/>
@@ -576,7 +593,7 @@ function doPosition() {
   		<vbox width="10px"/>
 		<button id="buttonDownloadTab"  label="Tab" width="60px" height="30px"  autodisable="self"/>
 		<vbox width="10px"/>
-		<button id="buttonDownloadPlink"  label="Plink" width="60px" height="30px"  autodisable="self"/>
+		<button id="buttonDownloadPlink"  label="Plink" width="60px" height="30px"  autodisable="self"  tooltip="popupDownloadPlink" />
 		<vbox width="10px"/>
 	</hbox>
 
@@ -662,8 +679,23 @@ function doPosition() {
     	]]></zscript>
 		    	
 		<div id="divIndelLegend" visible="false">
-		<label value="Positions in blue are deletion and green are insertion regions. Dashes (-) represent gaps" />
+		<hbox>
+		<label value="Position color code: " style="font-weight:bold" pre="true"/>
+		<label value="deletion region, " style="color:blue"  pre="true"/>
+		<label value="insertion region " style="color:green"  pre="true"/>
+		</hbox>
 		</div>
+		
+		<hbox visible="true">
+		<label value="Allele color code: " style="font-weight:bold" pre="true"/>
+		<label value="mismatch " style="color:red"  pre="true"/>
+		<!-- label value="synonymous " style="color:lightgray;background:white"  pre="true"/ -->
+		
+		<label value="non-synonymous " style="color:red;background:black;font-weight:bold"  pre="true"/>
+		<label value="splice donor SNP " style="color:aqua"  pre="true"/>
+		<label value="splice acceptor SNP " style="color:chartreuse"  pre="true"/>
+		 <label value="gap - " pre="true"/>
+		</hbox>    	
 		    	
 		<hbox>
 		<grid id="gridBiglistheader" width="400px" visible="false"  style="overflow-x: hidden; overflow-y:hidden">
@@ -716,7 +748,7 @@ function doPosition() {
 <hbox width="80px"/>
 
 <div id="divNucleotide" visible="false">
-<label value="SNP Genotype Track color legend:     "  pre="true"/>
+<label value="SNP Genotype Track color code:     "  pre="true"/>
 <label value="A  " style="color:green" pre="true"/>
 <label value="T  " style="color:red" pre="true"/>
 <label value="G  " style="color:orange" pre="true"/>
@@ -725,7 +757,7 @@ function doPosition() {
 </div>
 
 <div id="divNucleotideIndels" visible="false">
-<label value="SNP Genotype Track color legend:     "  pre="true"/>
+<label value="SNP Genotype Track color code:     "  pre="true"/>
 <label value="insertion  " style="color:green" pre="true"/>
 <label value="snp/substitution   " style="color:red" pre="true"/>
 <label value="deletion  " style="color:blue" pre="true"/>
@@ -736,17 +768,20 @@ function doPosition() {
 
 
 <div id="divMismatch"  visible="false">
-<label value="SNP Genotype Track color legend:     "  pre="true"/>
-<label value="snp/substitution mismatch  " style="color:red" pre="true"/>
-<label value="allele match   " style="color:white;background:gray" pre="true"/>
+<label value="SNP Genotype Track color code:     "  pre="true"/>
+<label value="non-synonymous mismatch " style="color:red" pre="true"/>
+<!--  label value="allele match   " style="color:white;background:lightgray" pre="true"/ -->
 <label value="heterozygous   " style="color:yellow;background:gray" pre="true"/>
-<label value="insertion   " style="color:green" pre="true"/>
+<!-- label value="insertion   " style="color:green" pre="true"/>
 <label value="deletion   " style="color:blue" pre="true"/>
-<label value="reference   " style="color:black" pre="true"/>
+<label value="reference   " style="color:black" pre="true"/ -->
+<label value="splice donor SNP " style="color:aqua"  pre="true"/>
+<label value="splice acceptor SNP " style="color:chartreuse"  pre="true"/>
+
 </div>
 
-<div id="divBlackSyn"  visible="false">
-<label value="synonymous" style="color:darkgray" pre="true"/>
+<div id="divBlackSyn"  visible="true">
+<label value="synonymous mismatch " style="color:darkgray" pre="true"/>
 </div>
 
 </hbox>
@@ -987,7 +1022,7 @@ function doPosition() {
 </popup>
 <popup id="popupSynonymousExclude" width="300px">
         <html><![CDATA[
-		  Exclude varieties with no non-synonymous SNPs in the queried regions.
+		  Exclude non-synonymous SNPs and varieties with no non-synonymous SNPs in the queried regions.
         ]]></html>
 </popup>
 <popup id="popupSNP" width="300px">
@@ -995,6 +1030,14 @@ function doPosition() {
 		  Query SNPs.
         ]]></html>
 </popup>
+
+<popup id="popupSplice" width="300px">
+        <html><![CDATA[
+		  Highlight splice variant SNPs.
+        ]]></html>
+</popup>
+
+
 <popup id="popupAlignIndels" width="300px">
         <html><![CDATA[
 		  Show indels as sequence alignments.
@@ -1006,6 +1049,41 @@ function doPosition() {
 		  Query indels.
         ]]></html>
 </popup>
+
+
+<popup id="popupDownloadPlink" width="300px">
+        <html><![CDATA[
+		  Download Plink format. Disabled for Indels.
+        ]]></html>
+</popup>
+
+<popup id="popupAllSnps" width="300px">
+        <html><![CDATA[
+		  Show all SNPs.
+        ]]></html>
+</popup>
+<popup id="popupNonsynSnps" width="300px">
+        <html><![CDATA[
+		  Show non-synonymous SNPs only.
+        ]]></html>
+</popup>
+<popup id="popupNonsynSnpsPlusSplice" width="300px">
+        <html><![CDATA[
+		  Show non-synonymous and splice site SNPs.
+        ]]></html>
+</popup>
+<popup id="popupAllNonsynHighlights" width="300px">
+        <html><![CDATA[
+		Show all SNPs, highlight the non-synonymous.
+        ]]></html>
+</popup>
+<popup id="popupSpliceVariant" width="300px">
+        <html><![CDATA[
+		  Include SNPs in splice donor and acceptor sites in non-synonymous.
+        ]]></html>
+</popup>
+
+
 
 	<div id="tip" class="tooltip" visible="false" width="280px">
 		<div class="tooltip-anchor">

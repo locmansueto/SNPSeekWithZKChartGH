@@ -3,6 +3,8 @@ package org.irri.iric.portal;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -10,6 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Clob;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -54,14 +57,14 @@ public class AppContext {
 	private static final boolean isAWS = false;
 	private static final boolean isAWSdev = false;
 	private static final boolean isVMIRRI = false;
-	private static final boolean isPollux = false;
-	private static final boolean isLocalhost = true;
+	private static final boolean isPollux = true;
+	private static final boolean isLocalhost = false;
 	
 	/**
 	 * is development
 	 */
-	public static final boolean isDev = false;
-	public static final boolean isTest = false;
+	public static final boolean isDev =  false;
+	public static final boolean isTest = true;
 
 
 
@@ -318,7 +321,8 @@ public class AppContext {
     public static int getMaxlengthCore() {
     	if(isDev || isTest)
     		return 10000000;
-    	return 2000000;
+    	//return 2000000;
+    	return 1000000;
     }
     public static int getMaxlengthPairwise() {
     	return Integer.MAX_VALUE;
@@ -500,6 +504,40 @@ public class AppContext {
    
       return str.toString();
     }        
+    
+    
+    public static void logSystemStatus() {
+    
+    	Runtime runtime = Runtime.getRuntime();
+
+        NumberFormat format = NumberFormat.getInstance();
+
+        StringBuilder sb = new StringBuilder();
+        long maxMemory = runtime.maxMemory();
+        long allocatedMemory = runtime.totalMemory();
+        long freeMemory = runtime.freeMemory();
+
+        OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(  
+                OperatingSystemMXBean.class);  
+        
+        
+        sb.append("free memory kb: " + format.format(freeMemory / 1024) + ";");
+        sb.append("allocated memory kb: " + format.format(allocatedMemory / 1024) + ";");
+        sb.append("max memory kb: " + format.format(maxMemory / 1024) + ";");
+        sb.append("total free memory kb: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / 1024) + ";");
+        sb.append("system load average: " + osBean.getSystemLoadAverage() +";");
+        sb.append("avail processors: " + osBean.getAvailableProcessors() +";");
+        
+        
+        org.zkoss.zk.ui.util.Statistic zkmonitor = new  org.zkoss.zk.ui.util.Statistic();
+        sb.append("active desktops: " +  zkmonitor.getActiveDesktopCount() +";");
+        sb.append("active sessions: " +  zkmonitor.getActiveSessionCount() +";");
+        sb.append("active update: " +  zkmonitor.getActiveUpdateCount() +"\n");
+        
+        info( sb.toString() );
+    	
+    }
+    
   
     
     /**

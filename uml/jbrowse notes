@@ -20,4 +20,142 @@ bin/flatfile-to-json.pl --gff  --trackLabel snp3kcore  --trackType JBrowse/View/
              "Description": "Core SNP positions from the 3000 Rice Genome project"
          }
 
-         
+
+
+ 
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_chr_all_dj123.gff  --trackLabel alignmsu7vsdj123  --trackType JBrowse/View/Track/CanvasFeatures --type match  --key 'Nipponbare MSU7 vs DJ123 Alignment'   --metadata '{"description": "Aligments of Oryza sativa aus DJ123 with Nipponbare MSU7" }'
+ 
+ 
+ bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_chr_all_dj123.gff  --trackLabel matchmsu7vsdj123  --trackType JBrowse/View/Track/CanvasFeatures --type match,match_part  --key 'Nipponbare MSU7 vs DJ123 matches'   --metadata '{"description": "Matches of Oryza sativa aus DJ123 with Nipponbare MSU7" }'
+ 
+  "style": { "className": "generic_parent", "arrowheadClass": "arrowhead",  "subfeatureClasses": {"match_part": "match_part" } }
+  
+  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_ir64.gff  --trackLabel alignmsu7vsir6421v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Nipponbare MSU7 vs IR64-21 Alignment'  --metadata '{"description": "Alignment of IR64-21 with Nipponbare MSU7" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_9311.gff  --trackLabel alignmsu7vs9311v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Nipponbare MSU7 vs 9311 Alignment'  --metadata '{"description": "Alignment of 9311 with Nipponbare MSU7" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_kasalath.gff  --trackLabel alignmsu7vskasv1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Nipponbare MSU7 vs Kasalath Alignment'  --metadata '{"description": "Alignment of Kasalath with Nipponbare MSU7" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_dj123.gff  --trackLabel alignmsu7vsdj123v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Nipponbare MSU7 vs DJ123 Alignment'  --metadata '{"description": "Alignment of DJ123 with Nipponbare MSU7" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+
+
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/9311_dj123.gff  --out 9311v1  --trackLabel align9311v1vsdj123v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key '9311 vs DJ123 Alignment'  --metadata '{"description": "Alignment of DJ123 with 9311" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/9311_ir64.gff   --out 9311v1 --trackLabel align9311v1vsir6421v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key '9311 vs IR64-21 Alignment'  --metadata '{"description": "Alignment of IR64-21 with 9311" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/9311_kasalath.gff  --out 9311v1 --trackLabel align9311v1vskasv1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key '9311 vs Kasalath Alignment'  --metadata '{"description": "Alignment of Kasalath with 9311" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+
+ ir64_dj123.gff
+ ir64_kasalath.gff
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/ir64_dj123.gff  --out ir6421v1  --trackLabel alignir6421v1vsdj123v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'IR64-21 vs DJ123 Alignment'  --metadata '{"description": "Alignment of DJ123 with IR64-21" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/ir64_kasalath.gff  --out ir6421v1  --trackLabel alignir6421v1vskasv1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'IR64-21 vs Kasalath Alignment'  --metadata '{"description": "Alignment of Kasalath with IR64-21" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+
+
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/kasalath_dj123.gff  --out kasv1  --trackLabel alignkasv1vsdj123v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Kasalath vs DJ123 Alignment'  --metadata '{"description": "Alignment of DJ123 with Kasalath" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+
+bin/remove-track.pl --delete --dir data   --trackLabel alignmsu7vsir6421v1 --trackLabel alignmsu7vs9311v1 --trackLabel alignmsu7vskasv1 --trackLabel alignmsu7vsdj123v1
+bin/remove-track.pl --delete --dir 9311v1 --trackLabel align9311v1vsdj123v1  --trackLabel align9311v1vsir6421v1 --trackLabel align9311v1vskasv1
+bin/remove-track.pl --delete --dir ir6421v1 --trackLabel alignir6421v1vsdj123v1  --trackLabel alignir6421v1vskasv1 
+bin/remove-track.pl --delete --dir kasv1 --trackLabel alignkasv1vsdj123v1  
+
+reversed pair
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_ir64.gff  --trackLabel alignmsu7vsir6421v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Nipponbare MSU7 vs IR64-21 Alignment'  --metadata '{"description": "Alignment of IR64-21 with Nipponbare MSU7" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_9311.gff  --trackLabel alignmsu7vs9311v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Nipponbare MSU7 vs 9311 Alignment'  --metadata '{"description": "Alignment of 9311 with Nipponbare MSU7" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_kasalath.gff  --trackLabel alignmsu7vskasv1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Nipponbare MSU7 vs Kasalath Alignment'  --metadata '{"description": "Alignment of Kasalath with Nipponbare MSU7" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_dj123.gff  --trackLabel alignmsu7vsdj123v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Nipponbare MSU7 vs DJ123 Alignment'  --metadata '{"description": "Alignment of DJ123 with Nipponbare MSU7" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+
+
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/ir64_npb.gff  --out ir6421v1  --trackLabel alignir6421v1vsmsu7  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'IR64-21 Alignment vs Nipponbare MSU7'  --metadata '{"description": "Alignment of Nipponbare MSU7 with IR64-21" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/9311_npb.gff  --out 9311v1 --trackLabel align9311v1vsmsu7  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key '9311 vs Nipponbare MSU7 Alignment'  --metadata '{"description": "Alignment of Nipponbare MSU7 with 9311" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/kasalath_npb.gff  --out kasv1  --trackLabel alignkasv1vsmsu7  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Kasalath vs Nipponbare MSU7 Alignment'  --metadata '{"description": "Alignment of Nipponbare MSU7 with Kasalath" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/dj123_npb.gff  --out dj123v1 --trackLabel aligndj123v1vsmsu7  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'DJ123 vs Nipponbare MSU7 Alignment'  --metadata '{"description": "Alignment of Nipponbare MSU7 with DJ123" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/dj123_9311.gff  --out dj123v1  --trackLabel aligndj123v1vs9311v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'DJ123 vs 9311 Alignment'  --metadata '{"description": "Alignment of 9311 with DJ123" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/ir64_9311.gff   --out ir6421v1 --trackLabel alignir6421v1vs9311v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'IR64-21 vs 9311 Alignment'  --metadata '{"description": "Alignment of 9311 with IR64-21" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/kasalath_9311.gff  --out kasv1v1 --trackLabel alignkasv1vs9311v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Kasalath vs 9311 Alignment'  --metadata '{"description": "Alignment of 9311 with Kasalath" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/dj123_ir64.gff  --out dj123v1  --trackLabel aligndj123v1vsir6421v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'DJ123 vs IR64-21 vs Alignment'  --metadata '{"description": "Alignment of IR64-21 with DJ123" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/kasalath_ir64.gff  --out kasv1v1  --trackLabel alignkasv1vsir6421v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Kasalath vs IR64-21 Alignment'  --metadata '{"description": "Alignment of IR64-21 with Kasalath" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/dj123_kasalath.gff  --out dj123v1  --trackLabel aligndj123v1vskasv1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'DJ123 vs Kasalath Alignment'  --metadata '{"description": "Alignment of Kasalath with DJ123" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+
+
+  
+  // gapped match config
+  {
+  "maxFeatureSizeForUnderlyingRefSeq": 250000,
+  "maxFeatureScreenDensity": 0.5,
+  "maxHeight": 600,
+  "style": {
+    "arrowheadClass": "arrowhead",
+    "className": "match",
+    "_defaultHistScale": 4,
+    "_defaultLabelScale": 30,
+    "_defaultDescriptionScale": 120,
+    "minSubfeatureWidth": 6,
+    "maxDescriptionLength": 70,
+    "showLabels": true,
+    "label": "name,id",
+    "description": "note, description",
+    "centerChildrenVertically": true,
+    "showTooltips": true,
+    "connectorColor": "lightgray",
+    "subfeatureClasses": {
+      "match_part": "match_part"
+    }
+  },
+  "hooks": {},
+  "events": {},
+  "menuTemplate": [
+    {
+      "label": "View details",
+      "title": "{type} {name}",
+      "action": "contentDialog",
+      "iconClass": "dijitIconTask"
+    },
+    {
+      "iconClass": "dijitIconConnector"
+    },
+    {
+      "iconClass": "dijitIconFilter"
+    }
+  ],
+  "maxFeatureGlyphExpansion": 500,
+  "histograms": {
+    "description": "feature density",
+    "min": 0,
+    "height": 100,
+    "color": "goldenrod",
+    "clip_marker_color": "red"
+  },
+  "displayMode": "normal",
+  "key": "Nipponbare MSU7 vs DJ123 matches",
+  "storeClass": "JBrowse/Store/SeqFeature/NCList",
+  "trackType": "JBrowse/View/Track/HTMLFeatures",
+  "urlTemplate": "tracks/matchmsu7vsdj123/{refseq}/trackData.json",
+  "compress": 0,
+  "label": "matchmsu7vsdj123",
+  "metadata": {
+    "description": "Matches of Oryza sativa aus DJ123 with Nipponbare MSU7"
+  },
+  "type": "JBrowse/View/Track/HTMLFeatures",
+  "baseUrl": "http://pollux:8080/jbrowse-dev/data/"
+}
+
+
+ os.ir64.cshl.draft.1.0.scaffold.fa
+ 
+bin/prepare-refseqs.pl --fasta /home/lmansueto/multurefs/ir6421v1.fasta --out ir6421v1 --key 'IR64-21 Reference sequence' --seqType dna --trackLabel  'IR64-21 DNA'
+bin/prepare-refseqs.pl --fasta /home/lmansueto/multurefs/kasv1.fasta --out kasv1 --key 'Kasalath Reference sequence' --seqType dna --trackLabel  'Kasalath DNA'
+bin/prepare-refseqs.pl --fasta /home/lmansueto/multurefs/9311v1.fasta --out 9311v1 --key '9311 Reference sequence' --seqType dna --trackLabel  '9311 DNA'
+bin/prepare-refseqs.pl --fasta /home/lmansueto/multurefs/dj123v1.fasta --out dj123v1 --key 'DJ123 Reference sequence' --seqType dna --trackLabel  'DJ123 DNA'
+
+
+ --trackLabel <label>
+           The unique name of the sequence track, default ’DNA’.
+
+       --key <string>
+           The displayed name of the sequence track, defaults to ’Reference sequence’.
+
+       --seqType <string>
+           The Name of the alphabet used for these reference sequences, usually either ’dna’, ’rna’, or ’protein’.
+
+           
+bin/generate-names.pl --ir6421v1
+bin/generate-names.pl --kasv1
+bin/generate-names.pl --dj123v1
+bin/generate-names.pl --9311v1
+bin/generate-names.pl --data

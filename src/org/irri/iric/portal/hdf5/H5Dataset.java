@@ -161,7 +161,7 @@ public abstract class H5Dataset implements SnpsStringDAO {
 	}
 	
 	@Override
-	public Map readSNPString(Set colVarids, int chr,  int posIdxs[]) {
+	public Map readSNPString(Set<BigDecimal> colVarids, int chr,  int posIdxs[]) {
 		try {
 		// order varids based on file ordering for 1pass/smooth disk read
 		Set orderedVarids = new TreeSet(colVarids);
@@ -181,7 +181,7 @@ public abstract class H5Dataset implements SnpsStringDAO {
 	}
 
 	@Override
-	public Map readSNPString(Set colVarids, int chr,  int startIdx, int endIdx)  {
+	public Map readSNPString(Set<BigDecimal> colVarids, int chr,  int startIdx, int endIdx)  {
 		try {
 		Set orderedVarids = new TreeSet(colVarids);
 		Iterator<BigDecimal> itVarid = orderedVarids.iterator();
@@ -189,6 +189,7 @@ public abstract class H5Dataset implements SnpsStringDAO {
 		int varids[] = new int[orderedVarids.size()];
 		int icount = 0;
 		while(itVarid.hasNext()) {
+			
 			varids[icount]=itVarid.next().intValue();
 			icount++;
 		}

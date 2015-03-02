@@ -48,7 +48,8 @@ public class VariantTableRenderer implements MatrixRenderer, SNPRowRendererStyle
 		
 		this.mapVarId2Var=mapVarId2Var;
 		refnuc = data.getRefnuc();
-		graySynonymous = params.isbGraySynonymous();
+		//graySynonymous = params.isbGraySynonymous();
+		graySynonymous = params.isbHighlightNonsynSnps();
 		mapMergedIdx2Pos = data.getMapIdx2Pos();
 		if(data.hasSnp()) {
 			 if(data.hasIndel()) {

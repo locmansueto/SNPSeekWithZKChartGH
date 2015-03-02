@@ -30,7 +30,12 @@ public class Object2StringMatrixRenderer implements MatrixRenderer, SNPRowRender
 	
 	private int frozenCols = 3;
 		
-	
+	Map<Integer,Integer> mapTableIdx2SnpIdx;
+	Map<Integer,Set<Character>> mapTableIdx2NonsynAlleles;
+	Set<Integer> setSnpInExonTableIdx;
+	Set<BigDecimal> setDonorPos;
+	Set<BigDecimal> setAcceptorPos;
+	Map<Integer,BigDecimal> mapIdx2Pos;
 	
 	public Object2StringMatrixRenderer(VariantStringData data, Map mapVarId2Var, GenotypeQueryParams params) {
 		super();
@@ -45,6 +50,27 @@ public class Object2StringMatrixRenderer implements MatrixRenderer, SNPRowRender
 			BigDecimal var = itVar.next();
 			mapOrder2VarId.put( mapVar2Order.get(var) , var);
 		}
+		
+		if(params.isbSNP()) {
+			mapTableIdx2SnpIdx =  tabledata.getSnpstringdata().getMapMergedIdx2SnpIdx();
+			//if(params.isbGraySynonymous()) {
+			if(params.isbHighlightNonsynSnps() || params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) {
+				mapTableIdx2NonsynAlleles =   tabledata.getSnpstringdata().getMapIdx2NonsynAlleles();
+				setSnpInExonTableIdx = tabledata.getSnpstringdata().getSetSnpInExonTableIdx();
+				AppContext.debug( "mapTableIdx2NonsynAlleles=" + mapTableIdx2NonsynAlleles.size() + "; setSnpInExonTableIdx=" + setSnpInExonTableIdx.size());
+			}
+			
+			//if(params.isbColorSpliceSNP()) {
+			if(true) {
+				setDonorPos = tabledata.getSnpstringdata().getSetSnpSpliceDonorPos();
+				setAcceptorPos = tabledata.getSnpstringdata().getSetSnpSpliceAcceptorPos();
+				
+				AppContext.debug( "setDonorPos=" + setDonorPos.size() + "; setAcceptorPos=" + setAcceptorPos.size());
+			}
+		}
+		
+		mapIdx2Pos = data.getMapIdx2Pos();
+
 	}
 
 	@Override
@@ -59,20 +85,61 @@ public class Object2StringMatrixRenderer implements MatrixRenderer, SNPRowRender
 			//AppContext.debug(  ((List)data).get(colIndex).getClass() + "  j="+ colIndex + "   " +  ((List)data).get(colIndex));
 			//return  ((List)data).get(colIndex) .toString();
 			
-			String cellval = ((Object[])((List)data).get(colIndex))[colIndex-frozenCols].toString();
+			int tableidx=colIndex-frozenCols;
+			String cellval = ((Object[])((List)data).get(colIndex))[tableidx].toString();
 			//AppContext.debug( rowIndex + "," + colIndex + "  " + cellval);
 			
 			String indelposref="";
 			if(params.isbIndel() && params.isbAlignIndels() ) { // tabledata.hasIndel()) {
 				//if(tabledata.getIndelstringdata()!=null && tabledata.getIndelstringdata().getMapIndelpos2Refnuc()!=null)
-					indelposref=tabledata.getIndelstringdata().getMapIndelpos2Refnuc().get(   tabledata.getListPos().get(colIndex-frozenCols).getPos() );
+					indelposref=tabledata.getIndelstringdata().getMapIndelpos2Refnuc().get(   tabledata.getListPos().get(tableidx).getPos() );
 			}
+			
+			
+			if(mapTableIdx2NonsynAlleles!=null) {
+				if(!cellval.isEmpty()) {
+					Integer snpidx= mapTableIdx2SnpIdx.get(tableidx); 
+					if(snpidx!=null && setSnpInExonTableIdx.contains(snpidx)) {
+						//Set setnonsyn =  mapTableIdx2NonsynAlleles.get(BigDecimal.valueOf(snpidx.longValue()));
+						Set setnonsyn =  mapTableIdx2NonsynAlleles.get(snpidx);
+						if(setnonsyn==null) {
+							// synonymous
+						} else {
+							if(setnonsyn.contains(cellval.charAt(0))) {
+								return  "<div style=\"" + STYLE_NONSYNONYMOUS + "\">" +  cellval + "</div>";
+							} 
+						}
+						
+						/*
+						if(setnonsyn==null || !setnonsyn.contains(cellval.charAt(0))) {
+							// synonymous
+							//return  "<div style=\"" + STYLE_SYNONYMOUS + "\">" +  cellval + "</div>";
+						} else
+							return  "<div style=\"" + STYLE_NONSYNONYMOUS + "\">" +  cellval + "</div>";
+							*/
+					}
+				}
+			}
+			
 			
 			if(cellval.isEmpty())
 				return "";
-			else if(cellval.equals("*") || cellval.equals("-") || cellval.equals( tabledata.getListPos().get(colIndex-frozenCols).getRefnuc() ) || cellval.equals(indelposref))
+			else if(cellval.equals("*") || cellval.equals("-") || cellval.equals( tabledata.getListPos().get(tableidx).getRefnuc() ) || cellval.equals(indelposref))
 				 return  "<div style=\"text-align:center\">" +  cellval + "</div>";
-			else return  "<div style=\"text-align:center;color:red\">" +  cellval + "</div>";
+			else {
+				
+				//if(params.isbSNP() && params.isbColorSpliceSNP()) {
+				if(params.isbSNP()) {
+					if( setDonorPos.contains( mapIdx2Pos.get(tableidx) ) ) {
+						return  "<div style=\"" + STYLE_SPLICE_DONOR + "\">" +  cellval + "</div>";
+					}
+					if( setAcceptorPos.contains( mapIdx2Pos.get(tableidx))) {
+						return  "<div style=\"" + STYLE_SPLICE_ACCEPTOR + "\">" +  cellval + "</div>";
+					}
+				}
+				
+				return  "<div style=\"" + STYLE_MISMATCH + "\">" +  cellval + "</div>";
+			}
 			
 			
 		}

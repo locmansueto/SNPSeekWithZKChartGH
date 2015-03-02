@@ -37,18 +37,16 @@ enableTooltipster();
 
 <body>
 
-<h3>JavaScript Sequence Alignment Viewer (JSAV)</h3>
+<h4>JavaScript Sequence Alignment Viewer (JSAV)</h4>
 <p>JSAV is a JavaScript program to display and sort a sequence
   alignment. The sorting method chooses a representative sequence (one
   which is most similar to all the other sequences) placing that first
   in the list. To add to the sorted list, it iteratively chooses the
   sequences that are most similar to the last one in the list and, of
   those chooses the sequence most similar to the representative
-  sequence.<p> 
-  <p>Consensus sequence, sorting and export functions are at the page bottom. NOTE: The sequence positions are not contiguous but only for SNPs, insertion or deleted regions.
-  N represents missing nucleotide value, and dash (-) for gaps.</p>
-
-
+  sequence. <a href="http://www.bioinf.org.uk/software/jsav">JSAV site</a> site<p> 
+  <p>Consensus sequence, sorting and export functions are at the page bottom. <div style="color:red">NOTE: The sequence positions are not contiguous but only for SNPs, insertion or deleted regions.
+  N represents missing nucleotide value, and dash (-) for gaps.</div></p>
 
 <script type='text/javascript'>
 var MySeqs = [];

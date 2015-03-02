@@ -631,7 +631,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	
     	//Set snps = ;
 
-    	AppContext.displayCollection("setSNP", setSNP);
+    	//AppContext.displayCollection("setSNP", setSNP);
 
     	
     	Set<BigDecimal> setSNPDBPos = new HashSet();
@@ -640,7 +640,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     		setSNPDBPos.add( itSnpsDB.next().getPos() );
     	}
     	
-    	AppContext.displayCollection("setSNPDBPos", setSNPDBPos);
+    	//AppContext.displayCollection("setSNPDBPos", setSNPDBPos);
 
     	
     	Set<BigDecimal> setCoreSNPDBPos = new HashSet();
@@ -656,7 +656,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	final Set setMatched = new TreeSet(setSNP);
     	setMatched.retainAll(setSNPDBPos);
     	
-    	AppContext.displayCollection("setMatched", setMatched);
+    	//AppContext.displayCollection("setMatched", setMatched);
 
     	
     	if(setMatched.size()==0) {
@@ -668,14 +668,14 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	Set setMinus = new TreeSet(setSNP);
     	setMinus.removeAll( setSNPDBPos );
 
-    	AppContext.displayCollection("setMinus", setMinus);
+    	//AppContext.displayCollection("setMinus", setMinus);
 
     	
     	// list in snp universe not in core
 		Set setMatchedNotInCore = new TreeSet(setMatched);
 		setMatchedNotInCore.removeAll(setCoreSNPDBPos);
 		
-    	AppContext.displayCollection("setMatchedNotInCore", setMatchedNotInCore);
+    	//AppContext.displayCollection("setMatchedNotInCore", setMatchedNotInCore);
 
     	
     	if(setMinus.size()>0 || setMatchedNotInCore.size()>0) {

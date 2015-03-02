@@ -20,9 +20,11 @@ public class SnpsStringAllvarsImpl implements SnpsStringAllvars {
 	private Map<Integer, Character> mapPosIdx2Allele2;
 	private String allele2;
 	
+	private Set acceptorPosset;
+	private Set donorPosset;
 	
 	public SnpsStringAllvarsImpl(BigDecimal var, Long chr,  String varnuc,
-			BigDecimal mismatch, Map mapPosIdx2Allele2, Set nonsynIdxset) {
+			BigDecimal mismatch, Map mapPosIdx2Allele2, Set nonsynIdxset, Set donorPoset,  Set acceptorPosset) {
 		super();
 		this.var = var;
 		this.chr = chr;
@@ -31,6 +33,9 @@ public class SnpsStringAllvarsImpl implements SnpsStringAllvars {
 		//this.isnonsyn = isnonsyn;
 		this.nonsynIdxset = nonsynIdxset;
 		this.mapPosIdx2Allele2 = mapPosIdx2Allele2;
+		
+		this.acceptorPosset=acceptorPosset;
+		this.donorPosset = donorPosset;
 	}
 
 	@Override
@@ -95,6 +100,17 @@ public class SnpsStringAllvarsImpl implements SnpsStringAllvars {
 		return var.equals(o.getVar());
 	}
 
+	@Override
+	public Set getDonorPosset() {
+		// TODO Auto-generated method stub
+		return this.donorPosset;
+	}
+
+	@Override
+	public Set getAcceptorPosset() {
+		// TODO Auto-generated method stub
+		return this.acceptorPosset;
+	}
 
 	
 	

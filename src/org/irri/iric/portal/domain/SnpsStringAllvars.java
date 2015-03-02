@@ -9,5 +9,7 @@ public interface SnpsStringAllvars extends SnpsAllvarsRefMismatch, SnpsAllvars {
 	//public boolean[] getIsnonsyn();
 	public Map<Integer, Character> getMapPosIdx2Allele2();
 	public Set getNonsynIdxset();
+	public Set getDonorPosset();
+	public Set getAcceptorPosset();
 	
 }
