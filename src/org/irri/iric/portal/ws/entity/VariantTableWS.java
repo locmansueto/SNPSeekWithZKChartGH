@@ -1,5 +1,6 @@
 package org.irri.iric.portal.ws.entity;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import org.irri.iric.portal.domain.VariantStringData;
@@ -36,7 +37,7 @@ public class VariantTableWS implements org.irri.iric.portal.domain.VariantTableA
 	}
 
 	@Override
-	public Double[] getPosition() {
+	public BigDecimal[] getPosition() {
 		return table.getPosition();
 	}
 	

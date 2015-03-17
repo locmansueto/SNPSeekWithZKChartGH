@@ -44,7 +44,7 @@ public class ListboxPassport extends Listbox {
 					continue;
 				}
 				
-				System.out.println(value.toString());
+				//System.out.println(value.toString());
 				
 				listValues.add(value.getValue());
 				

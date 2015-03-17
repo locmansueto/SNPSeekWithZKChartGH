@@ -2,9 +2,11 @@ package org.irri.iric.portal.genotype.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.ListItemsDAO;
@@ -31,7 +33,8 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 	private Double varmismatch[];
 	private Long varids[];
 	
-	private Double posarr[];
+	//private Double posarr[];
+	private BigDecimal posarr[];
 	private String refnuc[];
 	
 	private VariantStringData data;
@@ -61,7 +64,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 	
 	public VariantAlignmentTableArraysImpl(ListItemsDAO lisitemdao,
 			String message, String[] varnames, String[][] allelestring,
-			Double[] varmismatch, Long[] varids, Double[] posarr,
+			Double[] varmismatch, Long[] varids, BigDecimal[] posarr,
 			String[] refnuc, VariantStringData data) {
 		super();
 		this.lisitemdao = lisitemdao;
@@ -84,13 +87,14 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 		this.data=data;
 
 		List<SnpsAllvarsPos> snpsposlist = data.getListPos();
-		posarr = new Double[snpsposlist.size()]; 
+		posarr = new BigDecimal[snpsposlist.size()]; 
 		refnuc = new String[snpsposlist.size()];
 		Iterator<SnpsAllvarsPos> itPos = snpsposlist.iterator();
 		int poscount = 0;
 		while(itPos.hasNext()) {
 			SnpsAllvarsPos posnuc=itPos.next();
-			posarr[poscount] = posnuc.getPos().doubleValue(); //.longValue();
+			//posarr[poscount] = posnuc.getPos().doubleValue(); //.longValue();
+			posarr[poscount] = posnuc.getPos(); //.doubleValue(); //.longValue();
 			refnuc[poscount] = posnuc.getRefnuc();
 			poscount++;
 		}
@@ -167,11 +171,11 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 		this.varids = varids;
 	}
 
-	private Double[] getPosarr() {
+	private BigDecimal[] getPosarr() {
 		return posarr;
 	}
 
-	public void setPosarr(Double[] posarr) {
+	public void setPosarr(BigDecimal[] posarr) {
 		this.posarr = posarr;
 	}
 	private String[] getRefnuc() {
@@ -187,7 +191,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 
 
 	@Override
-	public Double[] getPosition() {
+	public BigDecimal[] getPosition() {
 		return this.getPosarr();
 	}
 	
@@ -220,11 +224,57 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 	}
 
 	
-	public List getCompare2VarsList(String chromosome) {
+	public List getCompare2VarsList(String chromosome, GenotypeQueryParams params) {
 		List list = new ArrayList();
-		for(int ipos=0; ipos<this.posarr.length; ipos++) {
-			list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
-					this.allelestring[0][ipos], this.allelestring[1][ipos]} ); 
+		if(allelestring.length==2) {
+			
+			if(params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) {
+				
+
+				if(params.isbMismatchonly()) {
+					for(int ipos=0; ipos<this.posarr.length; ipos++) {
+						Set setNonsynAlleles = data.getSnpstringdata().getMapIdx2NonsynAlleles().get(ipos);
+						if(setNonsynAlleles==null) continue;
+						if(    (!allelestring[0][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[0][ipos].charAt(0))) || 
+								(!allelestring[1][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[1][ipos].charAt(0))) ) {
+							if(!allelestring[0][ipos].equals(allelestring[1][ipos])) {
+								list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
+										this.allelestring[0][ipos], this.allelestring[1][ipos]} );
+							}
+						}
+					}
+				}
+				else {
+						for(int ipos=0; ipos<this.posarr.length; ipos++) {
+							Set setNonsynAlleles = data.getSnpstringdata().getMapIdx2NonsynAlleles().get(ipos);
+							if(setNonsynAlleles==null) continue;
+							if((!allelestring[0][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[0][ipos].charAt(0))) || 
+									(!allelestring[1][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[1][ipos].charAt(0)))
+								) {
+								list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
+										this.allelestring[0][ipos], this.allelestring[1][ipos]} ); 
+							}
+						}
+					}
+				
+			} else {
+				if(params.isbMismatchonly()) {
+					for(int ipos=0; ipos<this.posarr.length; ipos++) {
+							if(!allelestring[0][ipos].equals(allelestring[1][ipos])) {
+								list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
+										this.allelestring[0][ipos], this.allelestring[1][ipos]} );
+							}
+						}
+				}
+				else {
+					for(int ipos=0; ipos<this.posarr.length; ipos++) {
+							list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
+									this.allelestring[0][ipos], this.allelestring[1][ipos]} );
+					}
+				}
+			}
+			
+			
 		}
 		return list;
 	}

@@ -1,0 +1,70 @@
+2015/03/06 12:45:19
+QUERY time:2015/03/06 12:45:19;locah host=10.151.142.81; ip-10-151-142-81.ap-southeast-1.compute.internal;;remote host=175.41.132.201; 175.41.132.201chr=1;start=1;end=28567663;snp=true;indel=false;iscore=false;mismatchonly=true;subpupulation=all indica;locus=null;varlist=1751
+TIMER: 0 ms (system),  0 ms (date) : getSNPsString start4
+VOracleSessionsDAO==null using getApplicationContext
+Cleaning onClose session null  null  id=DFCA09816951A88F3B1C5B046CA7A543 stostring=org.apache.catalina.session.StandardSessionFacade@28d9c021
+IRIC_Production==null using getApplicationContext
+getSession().cancelQuery() success
+VOracleSessionsDAO==null using getApplicationContext
+Cleaning onClose session null  null  id=683E29060DF7066DA96F617624413419 stostring=org.apache.catalina.session.StandardSessionFacade@6ddac16b
+IRIC_Production==null using getApplicationContext
+getSession().cancelQuery() success
+created GenotypeFacadeChadoImpl: org.irri.iric.portal.genotype.service.GenotypeFacadeChadoImpl@523c11da
+created WorkspaceFacadeSessionScopedImpl:org.irri.iric.portal.admin.WorkspaceFacadeSessionScopedImpl@1cc20cb9
+created UserSessionManager:org.irri.iric.portal.admin.UserSessionListsManager@7d1546f
+created SNPQueryController org.irri.iric.portal.genotype.zkui.SNPQueryController@100d4d12
+doBeforeComposeChildren:
+VOracleSessionsDAO==null using getApplicationContext
+Cleaning onClose session null  null  id=BD91B88A0B1551BEC33436D8D0B02C85 stostring=org.apache.catalina.session.StandardSessionFacade@265d22ab
+IRIC_Production==null using getApplicationContext
+getSession().cancelQuery() success
+1491248 snpposlist, pos between 1002-28567659  index between 1-1491248
+TIMER: 9829215 ms (system),  9829215 ms (date) :  to get position indexes from database..
+TIMER: 0 ms (system),  0 ms (date) : using readSNPString3 start
+pri:getting 1751 rows x #
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007fedaa230f73, pid=28837, tid=140658259187456
+#
+# JRE version: 7.0_25-b30
+# Java VM: OpenJDK 64-Bit Server VM (23.7-b01 mixed mode linux-amd64 compressed oops)
+# Problematic frame:
+# C  [libc.so.6+0x146f73]  __nss_hosts_lookup+0x14ed3
+#
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# An error report file with more information is saved as:
+# /usr/share/apache-tomcat-7.0.55/bin/hs_err_pid28837.log
+#
+# If you would like to submit a bug report, please include
+# instructions on how to reproduce the bug and visit:
+#   https://bugs.launchpad.net/ubuntu/+source/openjdk-7/
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+
+
+QUERY time:2015/03/12 03:43:25;locah host=10.151.142.81; ip-10-151-142-81.ap-southeast-1.compute.internal;;remote host=175.41.132.201; 175.41.132.201chr=6;                      start=23500000;end=23700000;snp=true;indel=false;iscore=false;mismatchonly=true;subpupulation=all indica;locus=null;varlist=1751
+VarietyFacade==null using getApplicationContext
+TIMER: 0 ms (system),  0 ms (date) : getSNPsString start4
+7006 snpposlist, pos between 23500003-23699931  index between 10227786-10234791
+TIMER: 50926 ms (system),  50926 ms (date) :  to get position indexes from database..
+TIMER: 0 ms (system),  0 ms (date) : using readSNPString3 start
+pri:getting 1751 rows x 7006 cols matrix
+pri:getting 1751 rows x 7006 cols matrix
+TIMER: 2349 ms (system),  2349 ms (date) : using readSNPString3 end
+TIMER: 0 ms (system),  0 ms (date) : to read allele2 database..
+ snpfeatureid between 10623500000 and 10623700000
+TIMER: 20051 ms (system),  20051 ms (date) : to read nonsynonymous allele, inexon  from  database..
+1235 non-synonymous alleles, 7006 nonsys alleles positions/idx
+ListItemsDAO==null using getApplicationContext
+fillVariantTable:7006 SNP positions
+fillVariantTable:7006 positions
+ListItemsDAO==null using getApplicationContext
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "http-bio-8080-Acceptor-0"
+Exception in thread "http-bio-8080-exec-93" java.lang.OutOfMemoryError: Java heap space
+
+
+set permsize :  -XX:PermSize=256m -XX:MaxPermSize=256m

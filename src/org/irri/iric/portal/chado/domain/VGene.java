@@ -236,6 +236,12 @@ public class VGene implements Serializable, Gene {
 		// TODO Auto-generated method stub
 		return this.getName();
 	}
+
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

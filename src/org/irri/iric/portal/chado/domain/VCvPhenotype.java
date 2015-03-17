@@ -144,6 +144,12 @@ public class VCvPhenotype implements Serializable, CvTerm {
 		return true;
 	}
 
+	@Override
+	public String getAccession() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 	

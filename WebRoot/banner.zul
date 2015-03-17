@@ -15,8 +15,9 @@
 		<menuitem src="/images/iric/home4.png" label="Home" href="index.zul"/>
 		<menu label="Search" src="/images/iric/query.png">
 			<menupopup>
-				<menuitem src="/images/iric/gene1.png" label="SNP and Genes" href="_snp.zul"/>
-				<menuitem src="/images/iric/var5.png" label="Variety" href="_variety.zul"/>
+				<menuitem src="/images/iric/gene1.png" label="SNPs" href="_snp.zul"/>
+				<menuitem src="/images/iric/var5.png" label="Varieties" href="_variety.zul"/>
+				<menuitem src="/images/iric/genelocus.png" label="Gene Loci" href="_locus.zul"/>
 			</menupopup>
 		</menu>			
 		<menu label="Browse" src="/images/iric/browse6.png">

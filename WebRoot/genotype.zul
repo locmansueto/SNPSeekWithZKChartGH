@@ -207,6 +207,14 @@ function doPosition() {
         listSNPlistNames.add("");
         listSNPlistNames.addAll( workspace.getSnpPositionListNames()  );
         listSNPlistNames.add("create new list...");
+        
+        java.util.List listLocuslistNames = new java.util.ArrayList(); // fac.getSNPinVarieties(100);
+        listLocuslistNames.add("");
+        listLocuslistNames.addAll( workspace.getLocusListNames()  );
+        listLocuslistNames.add("create new list...");
+        
+        
+        
          
         java.util.List listSNPs = new ArrayList();
 
@@ -334,7 +342,8 @@ function doPosition() {
 
             	<hbox>				            	
                 <label>Chromosome:</label>                
-			    <listbox id="selectChr" mold="select"  rows="1"> 
+			    <listbox id="selectChr" mold="select"  rows="1">
+			    <listitem label=""/> 
 			    <listitem label="1" selected="true"/>    
 			    <listitem label="2" />    
 			    <listitem label="3"/>    
@@ -370,20 +379,25 @@ function doPosition() {
             	<vbox>
             	<hbox>
             	<label>Gene locus:</label> 
-            	<combobox id="comboGene" autodrop="true" buttonVisible="false" width="150px"/>		
+            	<combobox id="comboGene" autodrop="true" buttonVisible="false" width="110px"/>		
 			    <zscript><![CDATA[
 			        ListModel geneComboModel= new SimpleListModel(genenames);
 			        comboGene.setModel(geneComboModel);
 			    ]]></zscript>		
-			    <label pre="true" value="(ex. loc_os01g01010)  " style="font-size:10px"/>
+			    <label pre="true" value="(ex. loc_os01g01010) " style="font-size:10px"/>
 				<label>My SNP List</label>
-				
-			    <!--  label pre="true" value="  (The region above is ignored if GENE is specified)" style="font-size:12px" / -->
-				 
 				<listbox id="listboxMySNPList" mold="select" tooltip="popupMySNPList"/>
 				    	<zscript><![CDATA[
 			    	    	listboxMySNPList.setModel(new SimpleListModel(listSNPlistNames));
 			   			]]></zscript>
+			   			<vbox width="10px"/>
+			   	<div visible="false">		
+				<label>My Locus List</label>
+				<listbox id="listboxMyLocusList" mold="select" tooltip="popupMyLocusList"/>
+				    	<zscript><![CDATA[
+			    	    	listboxMyLocusList.setModel(new SimpleListModel(listLocuslistNames));
+			   			]]></zscript>
+			   	</div>					    
 			   						    
 			    </hbox>
 			    <separator bar="true" style="color:green"/>
@@ -434,16 +448,16 @@ function doPosition() {
             		
             		<vbox>
 
-         			<hbox visible="true">
+         			<hbox visible="false">
           				<label value="Variant  " pre="true" style="font-weight:bold;"/>
           				<label value="SNPs " pre="true" tooltip="popupSNP"/>
 			    		<checkbox id="checkboxSNP" checked="true" />
 			    		<!--  vbox width="20px"/>
 			    		<label id="labelSpliceSNP" value="Splice" pre="true" style="font-weight:bold;" visible="false"/>
 			    		<checkbox id="checkboxSpliceSNP" checked="true" tooltip="popupSplice" visible="false"/ -->
-			    		<vbox width="20px" visible="true"/>
-			    		<label value=" Indel " pre="true" tooltip="popupIndel"/>
-			    		<checkbox id="checkboxIndel" checked="false" />
+			    		<vbox width="20px" />
+			    		<label value=" Indel " pre="true" tooltip="popupIndel" />
+			    		<checkbox id="checkboxIndel" checked="false"  />
          			
          			</hbox>
 
@@ -634,15 +648,6 @@ function doPosition() {
 			    ]]></zscript -->		
 	
 	
-	<listbox id="snpresult" fixedLayout="true" mold="paging" pageSize="100">
-		<listhead>
-			<listheader></listheader>
-			<listheader></listheader>
-			<listheader></listheader>
-			<listheader></listheader>
-			<listheader></listheader>			
-		</listhead>
-	</listbox>
 	
 	<paging id="snpallvarsresultpaging" visible="false"  />
 	<!--  custom-attributes org.zkoss.zul.grid.rod="true" org.zkoss.zul.grid.initrodsize="25"></custom-attributes -->
@@ -728,6 +733,19 @@ function doPosition() {
     		});
         	*/
     	]]></zscript>
+    	
+    	
+    	
+	<listbox id="snpresult" fixedLayout="true" mold="paging" pageSize="100">
+		<listhead>
+			<listheader></listheader>
+			<listheader></listheader>
+			<listheader></listheader>
+			<listheader></listheader>
+			<listheader></listheader>			
+		</listhead>
+	</listbox>
+	
     	
     </vbox>
 		
@@ -940,7 +958,8 @@ function doPosition() {
 
 <popup id="popupMatchOnly" width="300px">
         <html><![CDATA[
-            For 2-variety comparison: display only allele mismatches.<br/> 
+            For 2-variety comparison: display only allele mismatches<br/>
+        	between the two queried varieties. <br/>
             For all varieties: display only varieties with at <br/>
             least one mismatch with the reference.
         ]]></html>
@@ -973,8 +992,8 @@ function doPosition() {
 <popup id="popupMyList" width="300px">
         <html><![CDATA[
            Search only on varieties in your selected list.<br />
-           The list can be created from <b>Search > My List</b> in the menu 
-           or from the result table on <b>Search > variety</b> . 
+           The list can be created from <b>My Lists</b> in the menu 
+           or from the result of <b>Search > Varieties</b> . 
         ]]></html>
 </popup>        
         
@@ -984,6 +1003,16 @@ function doPosition() {
            The list can be created from <b>Search > My List</b> in the menu.
         ]]></html>
 </popup>        
+
+<popup id="popupMyLocusList" width="300px">
+        <html><![CDATA[
+           Get only alleles within the loci in the list.<br />
+           The list can be created from <b>My Lists</b> in the menu
+           or from the result of <b>Search > Gene loci</b>.
+        ]]></html>
+</popup>        
+
+
 
 
 <popup id="popupSNPColoringAllele" width="300px">

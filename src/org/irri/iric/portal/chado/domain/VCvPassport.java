@@ -143,4 +143,12 @@ public class VCvPassport implements Serializable, CvTerm {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String getAccession() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

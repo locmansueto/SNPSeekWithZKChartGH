@@ -130,9 +130,6 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	{
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.getVarietylistNames();
-		//Set restset = new HashSet();
-		//restset.add("my varlist 1");
-		//return restset;
 	}
 
 	@Override
@@ -156,6 +153,42 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	}
 
 
+	
+	
+	/*************************************************************/
+	
+	@Override
+	public Set getLocuslistNames()
+	{
+		UserSessionListsManager sessionmgr = getSessionManager();
+		return sessionmgr.getLocuslistNames();
+	}
+
+	@Override
+	public Set getLoci( String listname) {
+		UserSessionListsManager sessionmgr =  getSessionManager();
+		return sessionmgr.getLoci(listname);
+	}
+
+
+	@Override
+	public boolean addLocusList(String name, Set locuslist) {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		return sessionmgr.addLocusList(name, locuslist);
+	}
+
+	@Override
+	public void deleteLocusList(String listname) {
+		UserSessionListsManager sessionmgr = getSessionManager();
+		sessionmgr.deleteLocusList( listname); 
+	}
+	
+	
+	
+	/*************************************************************/
+	
+	
 	@Override
 	public Set getSnpPositions(Integer chromosome, String name) {
 		// TODO Auto-generated method stub
@@ -179,9 +212,16 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 		return sessionmgr.getSNPlistNames();
 	}
 
+	@Override
+	public Set getLocusListNames() {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		return sessionmgr.getLocuslistNames();
+	}
+
 
 	@Override
-	public void uploadLists(String mylist) {
+	public void uploadLists(String mylist) throws Exception {
 		 UserSessionListsManager sessionmgr = getSessionManager();
 		 sessionmgr.uploadList(mylist);
 	}

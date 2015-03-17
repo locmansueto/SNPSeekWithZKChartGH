@@ -102,6 +102,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 	private String strUserInput;
 	
     @Autowired
+    @Qualifier("WorkspaceFacade")
     private WorkspaceFacade workspace;
     
     @Wire
@@ -1370,7 +1371,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 					continue;
 				}
 				
-				AppContext.debug(value.toString());
+				//AppContext.debug(value.toString());
 				
 				listValues.add(value.getValue());
 				

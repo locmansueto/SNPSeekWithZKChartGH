@@ -53,4 +53,14 @@ public interface ListItemsDAO {
 	Gene getGeneFromName(String genename);
 
 	Integer getFeatureLength(String feature);
+	
+	// for multi-reference
+	List getOrganisms();
+	List getContigs(String organism);
+	Long getFeatureLength(String feature, String organism);
+
+	List getGOTermsWithLoci(String organism);
+	
+	
+	
 }

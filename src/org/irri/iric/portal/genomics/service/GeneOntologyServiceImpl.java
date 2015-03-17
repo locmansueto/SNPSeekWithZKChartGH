@@ -1,0 +1,114 @@
+package org.irri.iric.portal.genomics.service;
+
+
+import javax.xml.parsers.*;
+import javax.xml.xpath.*;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.MultipartPostMethod;
+import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.domain.Locus;
+import org.springframework.stereotype.Service;
+import org.w3c.dom.*;
+
+import java.io.*;
+import java.net.*;
+import java.util.Collection;
+import java.util.Iterator;
+
+@Service("GeneOntologyService")
+public class GeneOntologyServiceImpl implements GeneOntologyService{
+
+	@Override
+	public String queryGO(String q) throws Exception {
+		// TODO Auto-generated method stub
+
+		
+		  	//URL u=new URL("http://www.ebi.ac.uk/QuickGO/GTerm?id=GO:0003824&format=oboxml");
+			URL u=new URL("http://www.ebi.ac.uk/QuickGO/GSearch?q=" + q + "&format=oboxml");
+	        // Connect
+	        HttpURLConnection urlConnection = (HttpURLConnection) u.openConnection();
+
+	        // Parse an XML document from the connection
+	        InputStream inputStream = urlConnection.getInputStream();
+	        Document xml=DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
+	        inputStream.close();
+
+	        // XPath is here used to locate parts of an XML document
+	        XPath xpath=XPathFactory.newInstance().newXPath();
+
+	        //Locate the term name and print it out
+	        //System.out.println("Term name:"+xpath.compile("/obo/term/name").evaluate(xml));
+	        return "Term name:"+xpath.compile("/obo/term/name").evaluate(xml);
+		
+	}
+	
+
+	@Override
+	public String overRepresentationTest(String organism, Collection genelist, String enrichmentType)  throws Exception
+	{
+		String response = "";
+        try {
+
+//        	http://pantherdb.org/help/PANTHERhelp.jsp#IV.
+//        	Search via http post. The base URL is http://www.pantherdb.org/webservices/garuda/enrichment.jsp? The following parameters are required:
+//        		organism - Use PANTHER supported organism web service to determine list of suported organisms. The long name is used as a parameter.
+//        		geneList - Text file with one id and associated attributes per line. With entries from one of the following sources: (UniProt, Ensemble, RefSeq, EntrezGene, gene symbols).
+//        		enrichmentType - (function, process, cellular_location, protein_class, pathway)
+//        		The result will have folowing columns:
+//        		Id - Id for the associated enrichment type
+//        		Name - Name of associated id
+//        		GeneId
+//        		P-value
+            
+            HttpClient client = new HttpClient( );
+            MultipartPostMethod method = new MultipartPostMethod("http://pantherdb.org/webservices/garuda/enrichment.jsp?");
+
+            //Define name-value pairs to set into the QueryString
+            //method.addParameter("organism","Homo sapiens");
+            //method.addParameter("type", "enrichment");
+            //method.addParameter("enrichmentType", "process");       //"function", "process", "cellular_location", "protein_class", "pathway"
+            
+ 
+            
+            //method.addParameter("organism","ORYSJ");
+            method.addParameter("organism","Oryza sativa");
+             
+            method.addParameter("type", "enrichment");
+            method.addParameter("enrichmentType", enrichmentType);       //"function", "process", "cellular_location", "protein_class", "pathway"
+            
+            String filename = AppContext.getTempDir() + "genelist-" + AppContext.createTempFilename() + ".txt";
+            FileWriter fw = new FileWriter(filename);
+            Iterator<Locus> itGenes = genelist.iterator();
+            while(itGenes.hasNext()) {
+            	String locusname = itGenes.next().getUniquename() ; 
+            	fw.append(locusname + "\n");
+            	AppContext.debug(locusname+",");
+            }
+            fw.flush();
+            fw.close();
+            
+            File inputFile = new File(filename);
+            method.addPart(new FilePart("geneList", inputFile, "text/plain","ISO-8859-1" ));
+            
+            // PANTHER does not use the ID type
+            //method.addParameter("IdType", "UniProt");
+            
+            // Execute and print response
+            client.executeMethod( method );
+            response = method.getResponseBodyAsString( );
+            //System.out.println( response );
+            method.releaseConnection( );
+
+        }
+        catch( IOException e ){
+            e.printStackTrace();
+            throw e;
+        }
+        
+        return response;
+    }
+
+        
+}

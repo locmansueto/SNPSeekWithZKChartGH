@@ -19,6 +19,7 @@ window.Boot_progressbox = function (){}
 		import javax.servlet.http.HttpSession;
 		
 		import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
+		import org.irri.iric.portal.genomics.zkui.LocusListItemRenderer;
 		import org.irri.iric.portal.admin.zkui.SNPChrPositionListitemRenderer;
 		
 
@@ -54,6 +55,7 @@ window.Boot_progressbox = function (){}
     <hlayout>
       <radio id="radioVariety" label="Variety" selected="true"/>
       <radio id="radioSNP" label="SNP"/>
+      <radio id="radioLocus" label="Locus"/>
     </hlayout>
 </radiogroup>
 </hbox>
@@ -132,10 +134,23 @@ window.Boot_progressbox = function (){}
            <listheader label="CHR : POSITION" />
 </listhead>
 </listbox>
+<listbox id="listboxLocus" width="500px" height="300px" visible="false">
+<listhead sizable="true">
+           <listheader label="NAME" />
+           <listheader label="CONTIG" />
+           <listheader label="START" />
+           <listheader label="STOP" />
+           <listheader label="DESCRIPTION" />
+</listhead>
+</listbox>
+
+
+
 </vbox>
 			    <zscript><![CDATA[
 			        listboxPositions.setItemRenderer( new SNPChrPositionListitemRenderer());
 			        listboxVarieties.setItemRenderer( new VarietyListItemRenderer());
+			        listboxVarieties.setItemRenderer( new LocusListItemRenderer());
 			    ]]></zscript>
 			    
 
@@ -148,6 +163,10 @@ window.Boot_progressbox = function (){}
 <div id="divMsgVariety">
 <label pre="true" value="Type or paste variety Name, IRIS ID or Accessions here. One variety per line"/>
 </div>
+<div id="divMsgLocus">
+<label pre="true" value="Type or paste locus names. One locus per line"/>
+</div>
+
 <div id="divMsgSNP" visible="false">
 <vbox>
 <label pre="true" value="Set chromosome and SNP positions here, one position per line"/>
@@ -180,19 +199,28 @@ window.Boot_progressbox = function (){}
 
      <zscript>         
 	        String from=Executions.getCurrent().getParameter("from");
+	        String src=Executions.getCurrent().getParameter("src");
+	        if(src!=null) textboxFrom.setValue(src);
+	        
 	        if(from!=null) {
 	        	if(from.equals("variety")) {
 	        		Events.postEvent("onClick", radioVariety, null);
 	        		Events.postEvent("onClick", buttonCreate, null);
-	        		textboxFrom.setValue("variety");
 	        	}
 	        	else if(from.equals("snp")) {
 	        		Events.postEvent("onClick", radioSNP, null);
 	        		Events.postEvent("onClick", buttonCreate, null);
-	        		textboxFrom.setValue("snp");
 	        	}
+	        	else if(from.equals("locus")) {
+	        		Events.postEvent("onClick", radioLocus, null);
+	        		Events.postEvent("onClick", buttonCreate, null);
+	        	}
+	        	
 	        	buttonDownload.setDisabled(true);
 	        }
+	        
+	        	
+	        
 	 </zscript>
 
 

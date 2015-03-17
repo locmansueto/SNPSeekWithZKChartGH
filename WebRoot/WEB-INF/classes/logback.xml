@@ -9,13 +9,11 @@
 <!--                                                                -->
 <configuration>
   <logger name="org.skyway.spring.util" level="ERROR"/>
-  <logger name="org.hibernate" level="ERROR"/>
+  <logger name="org.hibernate" level="INFO"/>
   <logger name="org.springframework" level="ERROR"/>
-  <logger name="org.springframework" level="ERROR"/>
-  <logger name="org.hibernate" level="ERROR"/>
   <logger name="org.apache.commons" level="ERROR"/>
   <logger name="org.springframework.core" level="WARN"/>
   <logger name="org.springframework.beans" level="WARN"/>
-  <logger name="org.hibernate.loader.Loader" level="ERROR"/>
+  <logger name="org.hibernate.loader.Loader" level="INFO"/>
   <root level="ERROR"/>
 </configuration>

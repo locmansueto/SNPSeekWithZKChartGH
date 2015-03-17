@@ -31,6 +31,15 @@
 				<class>org.irri.iric.portal.chado.domain.VSnpSpliceacceptor</class>
 				<class>org.irri.iric.portal.chado.domain.VSnpSplicedonor</class>
 				
+				<class>org.irri.iric.portal.chado.domain.VLocusNotes</class>
+				<class>org.irri.iric.portal.chado.domain.Organism</class>
+				<class>org.irri.iric.portal.chado.domain.VScaffoldsOrganism</class>
+				<class>org.irri.iric.portal.chado.domain.VCvtermDbxref</class>
+				<class>org.irri.iric.portal.chado.domain.VLocusCvterm</class>
+				<class>org.irri.iric.portal.chado.domain.VGoOrganism</class>
+				
+				
+
 				
 				
 				<class>org.irri.iric.portal.admin.domain.VOracleSessions</class>

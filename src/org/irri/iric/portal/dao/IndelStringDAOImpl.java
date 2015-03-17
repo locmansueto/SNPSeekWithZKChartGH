@@ -157,7 +157,7 @@ public class IndelStringDAOImpl implements IndelStringDAO {
 		while(itVar.hasNext()) {
 			BigDecimal var = itVar.next();
 			
-			if(isMismatchOnly && mapVar2MismatchCount.get(var)==0) continue;
+			if( isMismatchOnly  && mapVar2MismatchCount.get(var)==0) continue;
 			
 			Map<BigDecimal, IndelsAllvars> mapPos2Indelallvars=  mapVar2AlleleCall.get(var);
 			sortedVarieties.add( new IndelsStringAllvarsImpl(var, mapPos2Indelallvars, BigDecimal.valueOf(mapVar2MismatchCount.get(var)), Long.valueOf(chr) ) );

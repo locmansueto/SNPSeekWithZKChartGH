@@ -55,22 +55,61 @@ bin/remove-track.pl --delete --dir ir6421v1 --trackLabel alignir6421v1vsdj123v1 
 bin/remove-track.pl --delete --dir kasv1 --trackLabel alignkasv1vsdj123v1  
 
 reversed pair
+./create_2refs_revaligngff.pl NPB_DJ123 npb dj123
+./create_2refs_revaligngff.pl NPB_9311 npb 9311
+./create_2refs_revaligngff.pl NPB_IR64 npb ir64
+./create_2refs_revaligngff.pl NPB_Kasalath npb kasalath
+./create_2refs_revaligngff.pl Kasalath_DJ123 kasalath dj123
+./create_2refs_revaligngff.pl 9311_DJ123 9311 dj123
+./create_2refs_revaligngff.pl 9311_IR64 9311 ir64
+./create_2refs_revaligngff.pl 9311_Kasalath 9311 kasalath
+./create_2refs_revaligngff.pl IR64_Kasalath ir64 kasalath
+./create_2refs_revaligngff.pl IR64_DJ123 ir64 dj123
+
+
+
+
+
+bin/  --dir path/to/data/dir
+           Path to the JBrowse data directory to operate on.
+
+       --trackLabel MyLabel
+           Track label(s) to delete.  This option may be specified multiple times to delete multiple tracks.
+
+       --delete, -D
+
+
+
 bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_ir64.gff  --trackLabel alignmsu7vsir6421v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Nipponbare MSU7 vs IR64-21 Alignment'  --metadata '{"description": "Alignment of IR64-21 with Nipponbare MSU7" }' --subfeatureClasses '{ "match_part": "match_part" }'  
 bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_9311.gff  --trackLabel alignmsu7vs9311v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Nipponbare MSU7 vs 9311 Alignment'  --metadata '{"description": "Alignment of 9311 with Nipponbare MSU7" }' --subfeatureClasses '{ "match_part": "match_part" }'  
 bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_kasalath.gff  --trackLabel alignmsu7vskasv1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Nipponbare MSU7 vs Kasalath Alignment'  --metadata '{"description": "Alignment of Kasalath with Nipponbare MSU7" }' --subfeatureClasses '{ "match_part": "match_part" }'  
 bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/npb_dj123.gff  --trackLabel alignmsu7vsdj123v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Nipponbare MSU7 vs DJ123 Alignment'  --metadata '{"description": "Alignment of DJ123 with Nipponbare MSU7" }' --subfeatureClasses '{ "match_part": "match_part" }'  
 
-
+//reveresed
 bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/ir64_npb.gff  --out ir6421v1  --trackLabel alignir6421v1vsmsu7  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'IR64-21 Alignment vs Nipponbare MSU7'  --metadata '{"description": "Alignment of Nipponbare MSU7 with IR64-21" }' --subfeatureClasses '{ "match_part": "match_part" }'  
 bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/9311_npb.gff  --out 9311v1 --trackLabel align9311v1vsmsu7  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key '9311 vs Nipponbare MSU7 Alignment'  --metadata '{"description": "Alignment of Nipponbare MSU7 with 9311" }' --subfeatureClasses '{ "match_part": "match_part" }'  
 bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/kasalath_npb.gff  --out kasv1  --trackLabel alignkasv1vsmsu7  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Kasalath vs Nipponbare MSU7 Alignment'  --metadata '{"description": "Alignment of Nipponbare MSU7 with Kasalath" }' --subfeatureClasses '{ "match_part": "match_part" }'  
 bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/dj123_npb.gff  --out dj123v1 --trackLabel aligndj123v1vsmsu7  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'DJ123 vs Nipponbare MSU7 Alignment'  --metadata '{"description": "Alignment of Nipponbare MSU7 with DJ123" }' --subfeatureClasses '{ "match_part": "match_part" }'  
 bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/dj123_9311.gff  --out dj123v1  --trackLabel aligndj123v1vs9311v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'DJ123 vs 9311 Alignment'  --metadata '{"description": "Alignment of 9311 with DJ123" }' --subfeatureClasses '{ "match_part": "match_part" }'  
 bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/ir64_9311.gff   --out ir6421v1 --trackLabel alignir6421v1vs9311v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'IR64-21 vs 9311 Alignment'  --metadata '{"description": "Alignment of 9311 with IR64-21" }' --subfeatureClasses '{ "match_part": "match_part" }'  
-bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/kasalath_9311.gff  --out kasv1v1 --trackLabel alignkasv1vs9311v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Kasalath vs 9311 Alignment'  --metadata '{"description": "Alignment of 9311 with Kasalath" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/kasalath_9311.gff  --out kasv1 --trackLabel alignkasv1vs9311v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Kasalath vs 9311 Alignment'  --metadata '{"description": "Alignment of 9311 with Kasalath" }' --subfeatureClasses '{ "match_part": "match_part" }'  
 bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/dj123_ir64.gff  --out dj123v1  --trackLabel aligndj123v1vsir6421v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'DJ123 vs IR64-21 vs Alignment'  --metadata '{"description": "Alignment of IR64-21 with DJ123" }' --subfeatureClasses '{ "match_part": "match_part" }'  
-bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/kasalath_ir64.gff  --out kasv1v1  --trackLabel alignkasv1vsir6421v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Kasalath vs IR64-21 Alignment'  --metadata '{"description": "Alignment of IR64-21 with Kasalath" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/kasalath_ir64.gff  --out kasv1  --trackLabel alignkasv1vsir6421v1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'Kasalath vs IR64-21 Alignment'  --metadata '{"description": "Alignment of IR64-21 with Kasalath" }' --subfeatureClasses '{ "match_part": "match_part" }'  
 bin/flatfile-to-json.pl --gff /home/lmansueto/multurefs/dj123_kasalath.gff  --out dj123v1  --trackLabel aligndj123v1vskasv1  --trackType JBrowse/View/Track/HTMLFeatures --className JBrowse/View/Track/HTMLFeatures --type match,match_part  --key 'DJ123 vs Kasalath Alignment'  --metadata '{"description": "Alignment of Kasalath with DJ123" }' --subfeatureClasses '{ "match_part": "match_part" }'  
+
+
+
+
+bin/remove-track.pl --delete --trackLabel  alignir6421v1vsmsu7 --dir ir6421v1
+bin/remove-track.pl --delete --trackLabel  align9311v1vsmsu7  --dir 9311v1
+bin/remove-track.pl --delete --trackLabel  alignkasv1vsmsu7  --dir kasv1
+bin/remove-track.pl --delete --trackLabel  aligndj123v1vsmsu7 --dir dj123v1
+bin/remove-track.pl --delete --trackLabel  aligndj123v1vs9311v1  --dir dj123v1
+bin/remove-track.pl --delete --trackLabel  alignir6421v1vs9311v1 --dir ir6421v1
+bin/remove-track.pl --delete --trackLabel  alignkasv1vs9311v1 --dir kasv1v1
+bin/remove-track.pl --delete --trackLabel  aligndj123v1vsir6421v1 --dir dj123v1
+bin/remove-track.pl --delete --trackLabel  alignkasv1vsir6421v1  --dir kasv1
+bin/remove-track.pl --delete --trackLabel  aligndj123v1vskasv1  --dir dj123v1
 
 
   

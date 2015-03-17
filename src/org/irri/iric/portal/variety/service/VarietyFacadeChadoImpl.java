@@ -287,7 +287,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItemsDAO"); 
 		Map<String,BigDecimal> phenotypeDefinitions = listitemsDAO.getPhenotypeDefinitions();
 		Set values = cvphenotypeQuanValuesDao.getUniqueValues(phenotypeDefinitions.get(definition));
-		System.out.println( definition + "  =>  " + phenotypeDefinitions.get(definition) + "   values=" + values.size() + " : " + values);
+		//System.out.println( definition + "  =>  " + phenotypeDefinitions.get(definition) + "   values=" + values.size() + " : " + values);
 		
 		int phenotype_type=ListItemsDAO.PHENOTYPETYPE_QUAN;
 		
@@ -295,7 +295,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 			
 			cvphenotypeQualValuesDao = (CvTermUniqueValuesDAO)AppContext.checkBean(cvphenotypeQualValuesDao, "VCvPhenotypeQualValuesDAO");
 			values = cvphenotypeQualValuesDao.getUniqueValues(phenotypeDefinitions.get(definition));
-			System.out.println( definition + "  =>  " + phenotypeDefinitions.get(definition) + "   values=" + values.size() + " : " + values);
+			//System.out.println( definition + "  =>  " + phenotypeDefinitions.get(definition) + "   values=" + values.size() + " : " + values);
 			phenotype_type=ListItemsDAO.PHENOTYPETYPE_QUAL;
 		}
 		
@@ -484,7 +484,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 				newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0] + "|" + irisid + "|" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
 			}
 			
-			AppContext.debug(newick);
+			//AppContext.debug(newick);
 			return newick;
 			
 		} catch(Exception ex)
@@ -643,7 +643,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 			}
 			
 		}
-		AppContext.debug(i + " varieties in MDS all");
+		//AppContext.debug(i + " varieties in MDS all");
 		
 		return xy;
 	}

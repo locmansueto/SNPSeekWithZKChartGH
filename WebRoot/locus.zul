@@ -1,0 +1,258 @@
+<?page title="Locus Query" contentType="text/html;charset=UTF-8"?>
+<?component name="tipBox" macroURI="tipBox.zul"?>
+
+<zk>
+
+
+<zscript>
+        import org.zkoss.zkplus.spring.SpringUtil;      
+		import org.irri.iric.portal.genomics.service.GenomicsFacade;
+		import org.irri.iric.portal.admin.WorkspaceFacade;
+		import org.irri.iric.portal.AppContext;
+		import org.irri.iric.portal.domain.Scaffold;
+		import java.util.Iterator;
+		
+		WorkspaceFacade workspace  = (WorkspaceFacade)SpringUtil.getBean("WorkspaceFacade");
+				
+		GenomicsFacade genomics = (GenomicsFacade)SpringUtil.getBean("GenomicsFacade");
+		List listOrgs = genomics.getOrganisms();
+		
+		List listGoterms = new ArrayList();
+		listGoterms.add("");
+		listGoterms.addAll(genomics.getGotermsByOrganism(AppContext.getDefaultOrganism()) );
+		
+		List listLocuslist = new ArrayList();
+		listLocuslist.add("");
+		listLocuslist.addAll( workspace.getLocuslistNames() );
+		listLocuslist.add("create new list...");
+		
+		List listContigs = new ArrayList();
+		listContigs.add("");
+		Iterator itContigs = genomics.getContigsByOrganism("rice").iterator();
+		while(itContigs.hasNext()) {
+			listContigs.add( ((Scaffold)itContigs.next()).getUniquename());
+		}
+		
+		
+</zscript>
+
+
+<window border="none" apply="org.irri.iric.portal.genomics.zkui.LocusQueryController">
+
+<hbox height="230px" >
+<grid id="gridQuery" width="100%" height="350px">
+
+<rows>
+    <row spans="4">
+	<textbox id="msgbox" readonly="true" value="${msg}" width="100%"/>
+	</row>
+   
+   
+<row spans="1,2" >
+<label value="Reference genome" style="font-size:14px;font-weight:bold;color:gray;"/>
+<listbox id="listboxOrganism" mold="select" disabled="true"/>
+    <zscript><![CDATA[			
+			        listboxOrganism.setModel(new SimpleListModel(listOrgs));
+			        listboxOrganism.setSelectedIndex(0);
+			        //listboxOrganism.setDisabled(true);
+			    ]]></zscript>
+</row>
+   
+<row spans="1,2,1">
+<label value="Gene function" style="font-size:14px;font-weight:bold;color:gray;"/>
+<textbox id="textboxGenefunction"/>
+<button id="searchGenefunctionButton" label="Search by function"   style="font-size:14px;font-weight:bold;color:gray;"
+  width="150px" height="30px"  autodisable="self"
+  />
+
+</row>
+
+<row spans="1,2,1">
+<label value="GO term" style="font-size:14px;font-weight:bold;color:gray;"/>
+<hbox>
+<!--  textbox id="textboxGOTerm" visible="false"/ -->
+<listbox id="listboxGOTerm" mold="select"/>
+    <zscript><![CDATA[			
+			        listboxGOTerm.setModel(new SimpleListModel(listGoterms));
+			        listboxGOTerm.setSelectedIndex(0);
+			    ]]></zscript>
+<vbox width="20px"/>		
+<checkbox id="checkboxIncludeDescendants" label="" visible="false"/>
+<label value="Include descendants" tooltip="popupDescendants"  visible="false"/>
+</hbox>			    
+ <button id="searchGOButton" label="Search by GO term"   style="font-size:14px;font-weight:bold;color:gray;"
+  width="150px" height="30px"  autodisable="self"
+  />
+
+</row>
+
+
+<row spans="1,2,1">
+<label value="Region" style="font-size:14px;font-weight:bold;color:gray;"/>
+<hbox>
+<label value="Contig " pre="true"/>
+<listbox id="listboxContig" mold="select"/>
+<label value="     Start " pre="true"/>
+<intbox id="intboxContigStart"/>
+<label value="     End " pre="true"/>
+<intbox id="intboxContigEnd"/>
+</hbox>
+<button id="searchRegionButton" label="Search by region"   style="font-size:14px;font-weight:bold;color:gray;"
+  width="150px" height="30px"  autodisable="self"
+  />
+ <zscript><![CDATA[			
+			        listboxContig.setModel(new SimpleListModel(listContigs));
+			        listboxContig.setSelectedIndex(0);
+			    ]]></zscript>
+
+</row>
+
+<row spans="1,2,1" visible="false">
+<label value="Sequence" style="font-size:14px;font-weight:bold;color:gray;"/>
+<vbox>
+<textbox id="textboxSequence" rows="5" cols="60"/>
+<hbox>
+<label value="Query type " pre="true"/>
+<listbox id="listboxBlastType" mold="select">
+<listitem label="blastn" selected="true"/>
+<listitem label="blastp" />
+<listitem label="blastx" />
+<listitem label="tblastn"/>
+<listitem label="tblastx"/>
+</listbox>
+<vbox width="20px"/>
+<label value="Database type " pre="true"/>
+<listbox id="listboxBlastDBType" mold="select">
+<listitem label="dna" selected="true"/>
+<listitem label="cds"/>
+<listitem label="cdna" />
+
+<!--  listitem label="pep" / -->
+</listbox>
+<vbox width="20px"/>
+<label value="Max Evalue" pre="true"/>
+<textbox id="textboxEvalue" value="10" width="50px"/>
+
+
+
+</hbox>
+<label id="labelBlastType" value="Search rice genome using a nucleotide query"/> 
+</vbox>
+<button id="searchByBlast" label="BLAST sequence"   style="font-size:14px;font-weight:bold;color:gray;"
+  width="150px" height="30px"  autodisable="self"
+  />
+
+</row>
+
+
+<row spans="1,2,1" visible="false">
+<label value="Analyze locus list" style="font-size:14px;font-weight:bold;color:gray;"/>
+<vbox>
+<hbox>
+<label value="My locus list  " pre="true"/>
+<listbox id="listboxMyLocusList" mold="select"/>
+  <zscript><![CDATA[			
+			        listboxMyLocusList.setModel(new SimpleListModel(listLocuslist));
+			        listboxMyLocusList.setSelectedIndex(0);
+			    ]]></zscript>
+</hbox>
+<hbox>
+<label value="PANTHER  " pre="true"/>
+<radiogroup id="radiogroupenrichment"/>
+<radio id="radioFunction" label="Function" radiogroup="radiogroupenrichment" selected="true"/><vbox width="10px"/>
+<radio id="radioProcess" label="Process" radiogroup="radiogroupenrichment" /><vbox width="10px"/>
+<radio id="radioLocation" label="Cell location" radiogroup="radiogroupenrichment" /><vbox width="10px"/>
+<radio id="radioProtein" label="Protein class" radiogroup="radiogroupenrichment" /><vbox width="10px"/>
+<radio id="radioPathway" label="Pathway" radiogroup="radiogroupenrichment" />
+</hbox>
+</vbox>
+
+ <button id="searchEnrichment" label="Enrich Gene List"   style="font-size:14px;font-weight:bold;color:gray;"
+  width="150px" height="30px"  autodisable="self"
+  />
+
+</row>
+
+
+
+
+<row spans="1,2" visible="false">
+<label value=""/>
+			<hbox >
+  		    <button id="searchButton" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
+			    	   width="100px" height="50px"  autodisable="self"
+			    	   xmlns:w="http://www.zkoss.org/2005/zk/client"			    	   			    	   
+			    	   w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();"
+			    	   />
+			    	   <vbox width="10px"/>	
+    		    <button id="resetButton" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;"
+			    	   width="75px" height="30px"  autodisable="self"
+			    	   />
+			</hbox>    	   	
+</row>
+			    	   
+</rows>
+</grid>
+
+<tipBox height="230px" width="400px" desc="    LOCUS QUERY"
+		details1= "  Select reference genome" 
+		details2= "  Type gene function OR"
+		details3= "      Select GO term OR"
+		details4= "      Contig and range"
+		details5= "" 
+		details6= "  Click corresponding Search button" 
+		details7= " "
+		details8= "   Result Table: List of loci matched"
+		/>
+</hbox>
+
+
+
+<hbox id="hboxAddtolist" visible="false">
+ 
+  <button id="buttonAddToList" label="Create List:"  autodisable="self" tooltip="popupCreateList"/>
+  <label value="   List Name  " pre="true"/>
+  <textbox id="txtboxListname" width="200px"/>
+</hbox>
+ <div visible="false">
+ <label value="Download:  " pre="true"/>
+ <button id="buttonDownloadCSV" label="CSV"/>
+ <hbox width="5px"/>
+ <button id="buttonDownloadTab" label="Tab"/>
+ <hbox width="25px"/>
+ </div>
+ 
+<grid id="gridLocus" width="100%"  visible="false">
+	        	<columns>
+                <column label="LOCUS" width="120px"/>
+                <column label="CONTIG" width="120px"/>
+                <column label="START"  width="100px"/>
+                <column label="STOP"  width="100px"/>
+                <column label="STRAND"  width="60px"/>
+                <column label="DESCRIPTION" />
+            	</columns>
+</grid>		
+
+<grid id="gridAlignment" width="100%" visible="false">
+	        	<columns>
+                <column label="QUERY" width="150px"/>
+                <column label="Q START" width="100px"/>
+                <column label="Q END"  width="100px"/>
+                <column label="SUBJECT"  width="150px"/>
+                <column label="S START"  width="100px"/>
+                <column label="S END"  width="100px" />
+                <column label="S STRAND"  width="100px" />
+                <column label="MATCHES"  width="150px" />
+                <column label="E VALUE"  width="100px" />
+            	</columns>
+</grid>		
+
+
+<popup id="popupDescendants" width="300px">
+        <html><![CDATA[
+          Include all descendants of the selected GO term.
+        ]]></html>
+</popup>
+
+</window>
+</zk>

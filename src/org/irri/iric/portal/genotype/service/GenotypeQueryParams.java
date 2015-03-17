@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import oracle.sql.DATE;
@@ -29,9 +30,13 @@ public class GenotypeQueryParams {
 	private Collection poslist;
 	private String sSubpopulation;
 	private String sLocus;
-	private boolean bGraySynonymous=false;
-	private boolean bExcludeSynonymous=false;
-	private boolean bColorSpliceSNP=false;
+	//private boolean bGraySynonymous=false;
+	//private boolean bExcludeSynonymous=false;
+	//private boolean bColorSpliceSNP=false;
+	private boolean bPairwiseComparison=false;
+	//private BigDecimal pairwiseVar1Id;
+	//private BigDecimal pairwiseVar2Id;
+	
 	private boolean bAlignIndels=true;
 	private String delimiter;
 	private String filename;
@@ -91,10 +96,19 @@ public class GenotypeQueryParams {
 		Date date = new Date();
 		System.out.println(dateFormat.format(date));
 		
-		AppContext.info("QUERY time:" + dateFormat.format(date) + ";locah host=" + Sessions.getCurrent().getLocalAddr() + "; " + Sessions.getCurrent().getLocalName() + ";" +
-		";remote host=" + Sessions.getCurrent().getRemoteAddr() + "; " + Sessions.getCurrent().getRemoteHost() + 
-		"chr=" + sChr +";start=" + lStart + ";end=" + lEnd + ";snp=" + bSNP + ";indel=" + bIndel + ";iscore=" + bCoreonly + ";mismatchonly=" + bMismatchonly + 
-		";subpupulation=" + sSubpopulation + ";locus=" + sLocus + posvarids );
+		if(Sessions.getCurrent()!=null) {
+			AppContext.info("QUERY time:" + dateFormat.format(date) + ";locah host=" + Sessions.getCurrent().getLocalAddr() + "; " + Sessions.getCurrent().getLocalName() + ";" +
+			";remote host=" + Sessions.getCurrent().getRemoteAddr() + "; " + Sessions.getCurrent().getRemoteHost() + 
+			";chr=" + sChr +";start=" + lStart + ";end=" + lEnd + ";snp=" + bSNP + ";indel=" + bIndel + ";iscore=" + bCoreonly + ";mismatchonly=" + bMismatchonly + 
+			";subpupulation=" + sSubpopulation + ";locus=" + sLocus + posvarids );
+		} else {
+			AppContext.info("QUERY time:" + dateFormat.format(date) + ";;;;;;" + 
+					"chr=" + sChr +";start=" + lStart + ";end=" + lEnd + ";snp=" + bSNP + ";indel=" + bIndel + ";iscore=" + bCoreonly + ";mismatchonly=" + bMismatchonly + 
+					";subpupulation=" + sSubpopulation + ";locus=" + sLocus + posvarids );
+		}
+		
+		
+		
 	}
 	
 	/*
@@ -110,6 +124,8 @@ public class GenotypeQueryParams {
 	public void setColors(boolean bColorByMismatch, boolean bColorByAllele) {
 		this.bColorByMismatch = bColorByMismatch;
 		this.bColorByAllele= bColorByAllele;
+		
+		AppContext.info("QUERY COLOR mismatch=" +   bColorByMismatch + ";allel=" + bColorByAllele);
 	}
 
 	public void setIncludedSnps(boolean bAllSnps, boolean bHighlightNonsynSnps, boolean bNonsynSnps, boolean bNonsynPlusSpliceSnps) {
@@ -118,6 +134,7 @@ public class GenotypeQueryParams {
 		this.bHighlightNonsynSnps=bHighlightNonsynSnps;
 		this.bNonsynSnps=bNonsynSnps;
 		this.bNonsynPlusSpliceSnps=bNonsynPlusSpliceSnps;
+		AppContext.info("QUERY SNP allsnp=" +   bAllSnps + ";highlightnonsyn=" + bHighlightNonsynSnps + ";nonsynonly=" + bNonsynSnps + ";nonsynplussplice" + bNonsynPlusSpliceSnps);
 	}
 	
 	
@@ -228,6 +245,39 @@ public class GenotypeQueryParams {
 
 
 
+	public boolean isbColorByMismatch() {
+		return bColorByMismatch;
+	}
+
+
+
+	public void setbColorByMismatch(boolean bColorByMismatch) {
+		this.bColorByMismatch = bColorByMismatch;
+	}
+
+
+
+	public boolean isbColorByAllele() {
+		return bColorByAllele;
+	}
+
+
+
+	public void setbColorByAllele(boolean bColorByAllele) {
+		this.bColorByAllele = bColorByAllele;
+	}
+
+
+	public void setPairwiseComparison(String name1, String name2) {
+		
+		AppContext.info("QUERY PAIRWISE var1=" + name1 + ";var2=" + name2);
+		this.bPairwiseComparison = true;
+		
+	}
+
+	public boolean isbPairwiseComparison() {
+		return bPairwiseComparison;
+	}
 	
 	
 	

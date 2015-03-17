@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -105,12 +106,14 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 	
 	@Override
 	public VariantStringData compare2VariantStrings(BigDecimal var1, BigDecimal var2, GenotypeQueryParams params)  throws Exception {
-		Set colVarIds = new HashSet();
+		//Set colVarIds = new HashSet();
+		Set colVarIds = new LinkedHashSet();
 		colVarIds.add(var1);
 		colVarIds.add(var2);
 		params.setColVarIds(colVarIds);
 		params.setsSubpopulation(null);
-		params.setbMismatchonly(false);
+		
+		//params.setbMismatchonly(false);
 		return queryVariantStringData(params);
 	}
 	
@@ -124,10 +127,10 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 		String sChr = params.getsChr();
 		Long lStart = params.getlStart();
 		Long lEnd = params.getlEnd();
-		boolean bSNP = params.isbSNP();
-		boolean bIndel = params.isbIndel();
+		//boolean bSNP = params.isbSNP();
+		//boolean bIndel = params.isbIndel();
 		boolean bCoreonly = params.isbCoreonly();
-		boolean bMismatchonly = params.isbMismatchonly();
+		//boolean bMismatchonly = params.isbMismatchonly();
 		Collection poslist = params.getPoslist();
 		String sSubpopulation = params.getsSubpopulation();
 		String sLocus = params.getsLocus();

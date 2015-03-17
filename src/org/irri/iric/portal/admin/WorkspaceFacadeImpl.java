@@ -130,6 +130,13 @@ public class WorkspaceFacadeImpl implements WorkspaceFacade {
 
 
 		@Override
+		public Set getLocusListNames() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		@Override
 		public String getMyListsCookie() {
 			// TODO Auto-generated method stub
 			return null;
@@ -138,6 +145,34 @@ public class WorkspaceFacadeImpl implements WorkspaceFacade {
 
 		@Override
 		public void setMyListsCookie(String mylist) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+		@Override
+		public Set getLocuslistNames() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		@Override
+		public Set getLoci(String listname) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		@Override
+		public boolean addLocusList(String name, Set varietylist) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+
+		@Override
+		public void deleteLocusList(String listname) {
 			// TODO Auto-generated method stub
 			
 		}

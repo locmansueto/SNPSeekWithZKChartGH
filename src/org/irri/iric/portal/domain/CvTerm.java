@@ -8,4 +8,6 @@ public interface CvTerm {
 	public String getName();
 	public String getDefinition();
 	
+	public String getAccession();
+	
 }

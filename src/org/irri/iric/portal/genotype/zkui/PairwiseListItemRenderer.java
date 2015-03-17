@@ -1,5 +1,13 @@
 package org.irri.iric.portal.genotype.zkui;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.Snps2Vars;
 import org.irri.iric.portal.domain.VariantStringData;
 import org.irri.iric.portal.genotype.service.GenotypeFacade;
@@ -14,15 +22,41 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 	private VariantStringData data;
 	private GenotypeQueryParams params;
 
-	private static String STYLE_INTERESTING = "font-weight:bold;color:red";
-	private static String STYLE_BORING = "";
+	//private static String STYLE_INTERESTING = "font-weight:bold;color:red";
+	//private static String STYLE_BORING = "";
 	private static int colorMode = COLOR_MISMATCH;
+	
+	private Map<BigDecimal,Set<Character>> mapPos2Nonsynalleles;
 	
 	public PairwiseListItemRenderer(VariantStringData data,
 			GenotypeQueryParams params) {
 		super();
 		this.data = data;
 		this.params = params;
+		
+		mapPos2Nonsynalleles = new HashMap();
+		
+		Iterator<Integer> itMergedIdx = data.getSnpstringdata().getMapMergedIdx2SnpIdx().keySet().iterator(); 
+		while(itMergedIdx.hasNext()) {
+			Integer idxMerged = itMergedIdx.next();
+			Integer idxSnp = data.getSnpstringdata().getMapMergedIdx2SnpIdx().get(idxMerged);
+			if(idxSnp==null) continue;
+		
+			
+			BigDecimal pos = data.getSnpstringdata().getMapIdx2Pos().get(idxSnp);
+			//BigDecimal pos = data.getMapIdx2Pos().get(idxMerged); 
+			if(pos==null) continue;
+
+			Set setNonsynAlleles = data.getSnpstringdata().getMapIdx2NonsynAlleles().get(idxSnp);
+			if(setNonsynAlleles==null) continue;
+			
+			mapPos2Nonsynalleles.put(pos, setNonsynAlleles);
+		}
+		
+		AppContext.debug("getMapIdx2NonsynAlleles(): " +   data.getSnpstringdata().getMapIdx2NonsynAlleles());
+		AppContext.debug("getMapMergedIdx2SnpIdx(): " +  data.getSnpstringdata().getMapMergedIdx2SnpIdx());
+		AppContext.debug("getMapIdx2Pos(): " +   data.getMapIdx2Pos());
+		AppContext.debug("mapPos2Nonsynalleles: " + mapPos2Nonsynalleles);
 	}
 
 	
@@ -36,19 +70,79 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 		//Snp2linesId  item = (Snp2linesId)value;
 		//Snps2Vars  item = (Snps2Vars)value;
 		
+		listitem.setStyle("align:center");
 	
 	        // keep value in listitem
 	        //listitem.setValue(data);
 		
 			Object obj[] = (Object[])value;
 			
+			String refnuc = (String)obj[2];
+			String var1nuc = (String)obj[3];
+			String var2nuc = (String)obj[4];
 		
 	        addListcell(listitem, obj[0].toString());
-	        addListcell(listitem, obj[1].toString());
+	        addListcell(listitem, obj[1].toString().replace(".00","").replace(".0",""));
 
-	        addListcell(listitem, (String)obj[2]);
-	        addListcell(listitem, (String)obj[3]);
-	        addListcell(listitem, (String)obj[4]);
+	        //BigDecimal pos = (Double)obj[1];
+	        //BigDecimal pos = BigDecimal.valueOf( (Double)obj[1] );
+	        BigDecimal pos = (BigDecimal)obj[1] ;
+	        Set setcharNonsyn =  mapPos2Nonsynalleles.get(pos);
+	        
+	        
+	        if(setcharNonsyn==null) setcharNonsyn=new HashSet();
+	        //AppContext.debug("nonsyn alleles at " + pos + " " + setcharNonsyn);
+
+	        if(params.isbHighlightNonsynSnps() || params.isbNonsynSnps() ||  params.isbNonsynPlusSpliceSnps()) {
+		        if(params.isbColorByMismatch()) {
+			        addListcell(listitem, refnuc);
+		        	if(var1nuc.equals(var2nuc)) {
+		        		if(!var2nuc.isEmpty() && setcharNonsyn.contains(var2nuc.charAt(0))) {
+			        		addListcell(listitem, var1nuc,STYLE_NONSYNONYMOUS);
+					        addListcell(listitem, var2nuc,STYLE_NONSYNONYMOUS);
+		        		} else {
+			        		addListcell(listitem, var1nuc);
+					        addListcell(listitem, var2nuc);
+		        		}
+		        	} else {
+		        		if(!var1nuc.isEmpty() &&setcharNonsyn.contains(var1nuc.charAt(0))) 
+		        			addListcell(listitem, var1nuc,STYLE_NONSYNONYMOUS);
+		        		else addListcell(listitem, var1nuc,STYLE_INTERESTING);
+		        		
+		        		if(!var2nuc.isEmpty() && setcharNonsyn.contains(var2nuc.charAt(0))) 
+		        			addListcell(listitem, var2nuc,STYLE_NONSYNONYMOUS);
+		        		else addListcell(listitem, var2nuc,STYLE_INTERESTING);
+		        	}
+		        } else if(params.isbColorByAllele()) {
+			        addListcell(listitem, refnuc, getColor(refnuc));
+			        
+			        if(!var1nuc.isEmpty() && setcharNonsyn.contains(var1nuc.charAt(0)))
+			        	addListcell(listitem, var1nuc, STYLE_NONSYNONYMOUS);
+			        else addListcell(listitem, var1nuc, getColor(var1nuc));
+		        	
+			        if(!var2nuc.isEmpty() && setcharNonsyn.contains(var2nuc.charAt(0)))
+			        	addListcell(listitem, var2nuc, STYLE_NONSYNONYMOUS);
+			        else addListcell(listitem, var2nuc, getColor(var2nuc));
+		        }
+	        	
+	        }
+	        else {
+		        if(params.isbColorByMismatch()) {
+			        addListcell(listitem, refnuc);
+		        	
+		        	if(var1nuc.equals(var2nuc)) {
+		        		addListcell(listitem, var1nuc);
+				        addListcell(listitem, var2nuc);
+		        	} else {
+				        addListcell(listitem, var1nuc,STYLE_INTERESTING);
+				        addListcell(listitem, var2nuc,STYLE_INTERESTING);
+		        	}
+		        } else if(params.isbColorByAllele()) {
+			        addListcell(listitem, refnuc, getColor(refnuc));
+		        	addListcell(listitem, var1nuc, getColor(var1nuc));
+		        	addListcell(listitem, var2nuc, getColor(var2nuc));
+		        }
+	        }
 	        
 	        
 //	        //if(querymode == GenotypeFacade.snpQueryMode.SNPQUERY_VARIETIES) {
@@ -261,10 +355,12 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 		}
 	
 	    private void addListcell (Listitem listitem, String value, String style) {
+	    	
+	    	
 	        Listcell lc = new Listcell ();
 	        Label lb = new Label(value);
 	        if(!style.isEmpty()) 
-	        	lb.setStyle(style);
+	        	lb.setStyle(style + ";text-align:center;align:center");
 	        lb.setParent(lc);
 	        lc.setParent(listitem);
 	    }

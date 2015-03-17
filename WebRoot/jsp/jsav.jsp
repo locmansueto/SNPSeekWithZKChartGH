@@ -5,6 +5,7 @@
 <%@ page import="org.irri.iric.portal.dao.ListItemsDAO" %>
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import="java.text.DecimalFormat" %> 
+<%@ page import="java.math.BigDecimal" %>
 
 <html lang="en">
 <head>
@@ -77,9 +78,9 @@ var MySeqs = [];
 			
 			DecimalFormat formatter = new DecimalFormat("#0.00");     
 			System.out.println(formatter.format(4.0));
-			Double[] pos = alignmentTable.getPosition();
+			BigDecimal[] pos = alignmentTable.getPosition();
 			for(int i=0; i<pos.length; i++) {
-				String strpos =  formatter.format(pos[i]).replace(".00", "");
+				String strpos =  formatter.format(pos[i].doubleValue()).replace(".00", "");
 				buffMapPos.append( "\""+ i + "\" : \"" + strpos + "\"");
 				if(i<pos.length-1) buffMapPos.append(",");
 			}

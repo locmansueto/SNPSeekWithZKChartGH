@@ -162,7 +162,7 @@ public class AllSnpsStringService implements VariantStringService {
 						(Map)snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx(), varNonsynIdx,  params.isbNonsynPlusSpliceSnps() || params.isbNonsynSnps()); //  .isbExcludeSynonymous() );
 				setNonsynIdx.addAll(varNonsynIdx);
 				
-				if(!params.isbMismatchonly() || misCount>0) {
+				if(!params.isbMismatchonly() || misCount>0 || params.isbPairwiseComparison() ) {
 					sortedVarieties.add( new SnpsStringAllvarsImpl(var,Long.valueOf(chr), snpstr, 
 							BigDecimal.valueOf(misCount) , (Map)snpstrdata.getMapVarid2SnpsAllele2str().get(var), varNonsynIdx, 
 							snpstrdata.setSnpSpliceDonorPos, snpstrdata.setSnpSpliceAcceptorPos

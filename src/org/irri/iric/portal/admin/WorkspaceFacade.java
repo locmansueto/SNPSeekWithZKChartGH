@@ -19,6 +19,9 @@ public interface WorkspaceFacade {
 	public Set getSnpPositionListNames(HttpSession nativeSession);
 	*/
 
+	
+	public Set getLocusListNames();
+	
 	public void queryIric();
 	
 	public Set getVarietylistNames() ;
@@ -36,12 +39,20 @@ public interface WorkspaceFacade {
 	String getMyLists();
 
 
-	void uploadLists(String mylist);
+	void uploadLists(String mylist) throws Exception;
 
 
 	String getMyListsCookie();
 
 	void setMyListsCookie(String mylist);
+
+	Set getLocuslistNames();
+
+	Set getLoci(String listname);
+
+	boolean addLocusList(String name, Set varietylist);
+
+	void deleteLocusList(String listname);
 	
 	
 	

@@ -62,6 +62,8 @@
     <servlet-name>auEngine</servlet-name>
     <url-pattern>/zkau/*</url-pattern>
   </servlet-mapping>
+  
+  
   <filter>
     <filter-name>springSecurityFilterChain</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -70,6 +72,24 @@
     <filter-name>springSecurityFilterChain</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  
+  <filter>
+    <filter-name>ConfigFilter</filter-name>
+    <filter-class>
+       org.irri.iric.portal.AppContextFilterConfig
+    </filter-class>
+    <init-param>
+        <param-name>test-param</param-name>
+        <param-value>This parameter is for testing.</param-value>
+    </init-param>
+	</filter>
+  <filter-mapping>
+    <filter-name>ConfigFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  
+  
   <welcome-file-list>
     <welcome-file>index.zul</welcome-file>
   </welcome-file-list>
@@ -87,4 +107,11 @@
     <servlet-name>JAX-RS Servlet</servlet-name>
     <url-pattern>/ws/*</url-pattern>
   </servlet-mapping>
+  
+  
+  
+  
+  
+  
+  
 </web-app>

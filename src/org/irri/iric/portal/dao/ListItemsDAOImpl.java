@@ -9,6 +9,9 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.chado.dao.VGoOrganismDAO;
+import org.irri.iric.portal.chado.dao.VLocusCvtermDAO;
+import org.irri.iric.portal.chado.domain.VGoOrganism;
 import org.irri.iric.portal.domain.CvTerm;
 import org.irri.iric.portal.domain.Gene;
 import org.irri.iric.portal.domain.Variety;
@@ -39,6 +42,24 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	@Autowired
 	@Qualifier("VCvPhenotypeDAO")
 	private CvTermDAO cvtermsPhenotypedao;
+
+	@Autowired
+	@Qualifier("ScaffoldDAO")
+	private ScaffoldDAO scaffolddao;
+
+	@Autowired
+	@Qualifier("OrganismDAO")
+	private OrganismDAO organismdao;
+
+	//@Autowired
+	//@Qualifier("VCvtermDbxrefDAO")
+	//private CvTermDAO cvtermlocusdao;
+	
+	//@Autowired
+	//private VLocusCvtermDAO cvtermlocusdao;
+	
+	@Autowired
+	private VGoOrganismDAO gotermorganismdao;
 	
 
 	private java.util.List<String> genenames;
@@ -73,6 +94,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 				ex.printStackTrace();
 			}
 		}
+		
 		
 		
 		lockVarietyReader = true;
@@ -142,7 +164,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 
 			if(mapId2Variety.containsKey(germ.getVarietyId())) continue;
 			
-			AppContext.debug(germ.getName() + "   " + germ.getVarietyId() + "  added");
+			//AppContext.debug(germ.getName() + "   " + germ.getVarietyId() + "  added");
 			
 			germcount++;
 			mapId2Variety.put(germ.getVarietyId(), germ);
@@ -383,8 +405,8 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 				passportDefinitions.put(term.getDefinition(), term.getCvTermId());
 			
 		}	
-		System.out.println("passportDefinitions");
-		System.out.println(passportDefinitions);
+		//System.out.println("passportDefinitions");
+		//System.out.println(passportDefinitions);
 		
 		List listCVPhenotype =  cvtermsPhenotypedao.getAllTerms();
 		phenotypeDefinitions = new TreeMap<String,BigDecimal>();
@@ -433,4 +455,37 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		
 		return chrLength.get(feature);
 	}
+
+	@Override
+	public List getOrganisms() {
+		// TODO Auto-generated method stub
+		organismdao = (OrganismDAO)AppContext.checkBean(organismdao, "OrganismDAO");
+		return organismdao.getOrganisms();
+	}
+
+	@Override
+	public List getContigs(String organism) {
+		// TODO Auto-generated method stub
+		scaffolddao = (ScaffoldDAO)AppContext.checkBean(scaffolddao, "ScaffoldDAO");
+		return scaffolddao.getScaffolds(organism);
+	}
+
+	@Override
+	public Long getFeatureLength(String feature, String organism) {
+		// TODO Auto-generated method stub
+		scaffolddao = (ScaffoldDAO)AppContext.checkBean(scaffolddao, "ScaffoldDAO");
+		return scaffolddao.getScaffoldLength(feature, organism);
+	}
+		
+	@Override
+	public List getGOTermsWithLoci(String organism) {
+		//cvtermlocusdao = (VLocusCvtermDAO)AppContext.checkBean(cvtermlocusdao, "VLocusCvtermDAO");
+		//return cvtermlocusdao.getAllTerms(organism);
+		
+		gotermorganismdao = (VGoOrganismDAO)AppContext.checkBean(gotermorganismdao, "VGoOrganismDAO");
+		return gotermorganismdao.getAllTermsByOrganism(organism);
+		
+		
+	}
+	
 }

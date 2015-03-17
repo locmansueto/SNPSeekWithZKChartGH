@@ -378,7 +378,7 @@ public class H5 implements java.io.Serializable {
         if (!isLibraryLoaded) {
 	        try {
 	        	String libpath = "lib-prod";
-	        	if(AppContext.isDev)
+	        	if(AppContext.isDev())
 	        		libpath = "lib-dev";
 	        	
 	        	if(AppContext.isWindows()) 
@@ -401,7 +401,7 @@ public class H5 implements java.io.Serializable {
         if (!isLibraryLoaded) {
 	        try {
 	        	String libpath = "lib-prod2";
-	        	if(AppContext.isDev)
+	        	if(AppContext.isDev())
 	        		libpath = "lib-dev2";
 	        	
 	        	if(AppContext.isWindows()) 

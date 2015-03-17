@@ -31,7 +31,8 @@ public class VariantStringData {
 	protected List<SnpsAllvarsPos> listPos = new ArrayList();
 	protected Map<Integer,BigDecimal> mapIdx2Pos = new HashMap();
 	protected List<SnpsStringAllvars> listVariantsString = new ArrayList();
-	protected String refnuc[];
+	//protected String refnuc[];
+	protected String refnuc;
 	protected String msgbox="";
 	protected Map<BigDecimal, Set<String>> mapPos2Alleleset= new HashMap();
 	
@@ -84,7 +85,8 @@ public class VariantStringData {
 		return listVariantsString;
 	}
 	
-	
+
+	/*
 	public String[] getRefnuc() {
 		if(refnuc==null) {
 			refnuc = new String[listPos.size()];
@@ -97,7 +99,22 @@ public class VariantStringData {
 		}
 		return refnuc;
 	}
-	
+	*/
+
+	public String getRefnuc() {
+		if(refnuc==null) {
+			StringBuffer buff = new StringBuffer();
+			Iterator<SnpsAllvarsPos> itlistPos = listPos.iterator();
+			while(itlistPos.hasNext()) {
+				String refnuc = itlistPos.next().getRefnuc() ;
+				if(refnuc.length()!=1) throw new RuntimeException("refnuc.length()!=1");
+				buff.append( refnuc );
+			}
+			refnuc = buff.toString();
+		}
+		return refnuc;
+	}
+
 
 	public VariantSnpsStringData getSnpstringdata() {
 		return snpstringdata;

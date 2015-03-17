@@ -27,7 +27,8 @@ public class VariantTableRenderer implements MatrixRenderer, SNPRowRendererStyle
 	private Set setHighlighColumns = null;
 	private int colorMode = COLOR_MISMATCH;	// 0
 	private boolean graySynonymous = false;
-	private String refnuc[]; 
+	//private String refnuc[]; 
+	private String refnuc;
 	private Map<BigDecimal, Variety> mapVarId2Var;
 	//private Map<Integer, BigDecimal> mapIdx2Pos;
 	private Map<BigDecimal, IndelsAllvarsPos> mapIndelId2Indels;
@@ -165,9 +166,9 @@ public class VariantTableRenderer implements MatrixRenderer, SNPRowRendererStyle
 		this.graySynonymous = graySynonymous;
 	}
 
-	public void setRefnuc(String[] refnuc) {
-		this.refnuc = refnuc;
-	}
+	//public void setRefnuc(String[] refnuc) {
+	//	this.refnuc = refnuc;
+	//}
 
 	public void setMapVarId2Var(Map<BigDecimal, Variety> mapVarId2Var) {
 		this.mapVarId2Var = mapVarId2Var;
@@ -318,7 +319,8 @@ public class VariantTableRenderer implements MatrixRenderer, SNPRowRendererStyle
 				}
 				
 				
-				if(refnuc[inj].equals(element) ) {
+				//if(refnuc[inj].equals(element) ) {
+				if(refnuc.substring(inj,inj+1).equals(element) ) {
 					newlabel = new Label(element);
 					//newlabel.setStyle("align:center");
 					if (element.contains("/")) {

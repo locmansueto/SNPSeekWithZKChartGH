@@ -1,0 +1,17 @@
+<Context>
+
+ <Parameter name="defaultorganism" value="rice" override="false"/>
+ <Parameter name="flatfilesdir" value="/home/lmansueto/iric-portal-files/" override="false"/>
+ <Parameter name="tempdir" value="/usr/share/apache-tomcat-7.0.42/webapps/iric-portal/tmp/" override="false"/>
+ <Parameter name="hostdirectory" value="iric-portal" override="false"/>
+ <Parameter name="hostname" value="http://pollux:8080" override="false"/>
+ <Parameter name="pathtolocalblast" value="/home/lmansueto/ncbi-blast/bin/" override="false"/>
+ <Parameter name="pathtolocalblastdata" value="/home/lmansueto/ncbi-blast/iric-portal/" override="false"/>
+ <Parameter name="webappdirectory" value="" override="false"/>
+         
+ <Parameter name="deployment" value="pollux" override="false"/> <!-- asti, aws, awsdev,vmirri,pollux,localhost -->
+ <Parameter name="deploymenttype" value="prod" override="false"/>  <!-- dev, test -->
+
+		 
+		 
+</Context>

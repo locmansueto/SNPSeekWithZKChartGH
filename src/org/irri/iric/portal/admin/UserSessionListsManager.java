@@ -13,8 +13,11 @@ import java.util.TreeMap;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.dao.VIricstockBasicprop2DAO;
+import org.irri.iric.portal.chado.dao.VLocusNotesDAO;
 import org.irri.iric.portal.chado.domain.VIricstockBasicprop2;
+import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.genomics.service.LocusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -28,9 +31,14 @@ public class UserSessionListsManager {
 	 */
 	private Map<String, Set> mapVarietyLists;
 	private Map<Integer, Map<String, Set>> mapSnpposLists;
+	private Map<String, Set> mapLocusLists;
 	
 	@Autowired
 	VIricstockBasicprop2DAO varietyprop2DAO;
+	
+	@Autowired
+	//VLocusNotesDAO locusnotesDAO;
+	LocusService locusService;
 	
 
 	public UserSessionListsManager() {
@@ -73,6 +81,49 @@ public class UserSessionListsManager {
 		mapVarietyLists.remove(listname);
 	}
 	
+	
+	/**
+	 * 
+	 * @param name
+	 * @param varietylist
+	 * @return
+	 */
+	
+	public boolean addLocusList(String name, Set locuslist) {
+		if(mapLocusLists==null) mapLocusLists=new LinkedHashMap();
+		if(mapLocusLists.containsKey(name)) return false;
+		
+		mapLocusLists.put(name,  locuslist);
+		AppContext.debug(name + " added with " + locuslist.size() + " loci");
+		return true;
+	}
+	
+	public Set getLocuslistNames() {
+		if(mapLocusLists==null) return new HashSet();
+		return mapLocusLists.keySet();
+	}
+	
+	public Set getLoci(String listname) {
+		if(mapLocusLists==null) return new HashSet();
+		
+		Set loclist = mapLocusLists.get(listname);
+		//valist AppContext.debug(listname + " retrieved with " + valist.size() + " varieties");
+		return loclist;
+	}
+	
+	public void deleteLocusList(String listname) {
+		if(mapLocusLists==null) return;
+		mapLocusLists.remove(listname);
+	}
+	
+	
+	/**
+	 * 
+	 * @param chromosome
+	 * @param name
+	 * @param poslist
+	 * @return
+	 */
 
 	public boolean addSNPList(Integer chromosome, String name, Set poslist) {
 		
@@ -127,7 +178,7 @@ public class UserSessionListsManager {
 
 
 	
-	public boolean uploadList(String list) {
+	public boolean uploadList(String list) throws Exception {
 		
 		String lines[] = list.split("\n");
 		int state=0;
@@ -140,6 +191,7 @@ public class UserSessionListsManager {
 				case 0:
 					if(l.startsWith("VARIETY LISTS:")) state=1;
 					else if(l.startsWith("SNP LISTS:")) state=2;
+					else if(l.startsWith("LOCUS LISTS:")) state=3;
 					break;
 				case 1:
 					if(l.startsWith("#VARLIST")) {
@@ -157,6 +209,12 @@ public class UserSessionListsManager {
 						listname = "";
 						setListMembers = null;
 						state=2;
+					} else if(l.startsWith("LOCUS LISTS:")) {
+						if(setListMembers!=null && !listname.isEmpty())
+							addVarietyList(listname, setListMembers);
+						listname = "";
+						setListMembers = null;
+						state=3;
 					}
 					break;
 				case 2:
@@ -166,11 +224,29 @@ public class UserSessionListsManager {
 						listname = l.split("\t")[2];
 						chr = l.split("\t")[1];
 						setListMembers = new LinkedHashSet();
+					} else if(l.startsWith("LOCUS LISTS:")) {
+						if(setListMembers!=null && !listname.isEmpty())
+							addSNPList(Integer.valueOf(chr) ,listname, setListMembers);
+						listname = "";
+						setListMembers = null;
+						state=3;
 					}
 					else if(l.startsWith("\t\t")) {
 						//buff.append("\t\t\t" + itPos.next() + "\n");
 						setListMembers.add( l.split("\t")[3] ); 
 					}
+					break;
+				case 3:
+					if(l.startsWith("#LOCUSLIST")) {
+						if(setListMembers!=null && !listname.isEmpty())
+							addLocusList(listname, setListMembers);
+						listname = l.split("\t")[1];
+						setListMembers = new LinkedHashSet();
+					}
+					else if(l.startsWith("\t\t")) {
+						//buff.append("\t\t" + loc.getUniquename() + "\t" + loc.getContig() + "\t" + loc.getFmin() + "\t" + loc.getFmax() + "\t" + loc.getStrand() + "\n");
+						setListMembers.add( locusService.getLocusByName( l.split("\t")[2]));
+					} 
 			}
 		}
 		
@@ -185,6 +261,10 @@ public class UserSessionListsManager {
 				if(setListMembers!=null && !listname.isEmpty())
 						addSNPList(Integer.valueOf(chr) ,listname, setListMembers);
 				break;
+			case 3:
+				if(setListMembers!=null && !listname.isEmpty())
+					addLocusList(listname, setListMembers);
+			break;
 		}
 		
 		return true;
@@ -280,6 +360,26 @@ public boolean uploadListCookie(String list) {
 			}
 			buff.append("\n");
 		}
+		
+		
+		itNames = getLocuslistNames().iterator();
+		if(itNames.hasNext())
+			buff.append("LOCUS LISTS:\tLIST NAMES:\tLOCI (ACCESSION, CONTIG, START, END, STRAND)\n");
+		
+		while(itNames.hasNext()) {
+			String name = itNames.next();
+			//buff.append("\t" + name + "\n");
+			buff.append("#LOCUSLIST\t" + name + "\n");
+			Iterator<Locus> itLoc =  getLoci(name).iterator();
+			while(itLoc.hasNext()) {
+				Locus loc = itLoc.next();
+				if(loc==null) continue;
+				buff.append("\t\t" + loc.getUniquename() + "\t" + loc.getContig() + "\t" + loc.getFmin() + "\t" + loc.getFmax() + "\t" + loc.getStrand() + "\n"); 
+			}
+			buff.append("\n");
+		}
+		
+		
 		
 		return buff.toString();
 		

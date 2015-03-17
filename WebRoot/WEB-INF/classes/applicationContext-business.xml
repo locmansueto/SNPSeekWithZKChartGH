@@ -38,6 +38,7 @@
 	
 	<context:component-scan base-package="org.irri.iric.portal.genotype.service"/>
 	<context:component-scan base-package="org.irri.iric.portal.variety.service"/>
+	<context:component-scan base-package="org.irri.iric.portal.genomics.service"/>
 	
 	
 	<!-- bean id="VarietyFacade" class="org.irri.iric.portal.variety.service.VarietyFacadeChadoImpl"  scope="session">
@@ -52,7 +53,18 @@
 	<bean id="WorkspaceFacade" class="org.irri.iric.portal.admin.WorkspaceFacadeSessionScopedImpl" scope="session">
 	 	<aop:scoped-proxy/>
 	</bean>
+	<bean id="GenomicsFacade" class="org.irri.iric.portal.genomics.service.GenomicsFacadeImpl" scope="session">
+	 	<aop:scoped-proxy/>
+	</bean>
 	
+
+
+<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+  <property name="corePoolSize" value="5" />
+  <property name="maxPoolSize" value="10" />
+  <property name="queueCapacity" value="25" />
+</bean>
+
 
 
    <!-- import resource="classpath:iric-security-context.xml"/ -->
@@ -69,6 +81,7 @@
 	<context:component-scan base-package="org.irri.iric.portal.genotype.zkui"/>
 	<context:component-scan base-package="org.irri.iric.portal.variety.zkui"/>
     <context:component-scan base-package="org.irri.iric.portal.admin.zkui"/>
+    <context:component-scan base-package="org.irri.iric.portal.genomics.zkui"/>
    
 
    <!-- for the phylotree generator in org.irri.iric.portal.variety.web.GermplasmController  -->

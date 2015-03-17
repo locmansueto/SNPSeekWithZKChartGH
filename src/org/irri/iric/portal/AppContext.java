@@ -1,7 +1,10 @@
 package org.irri.iric.portal;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
@@ -34,6 +37,12 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.zkoss.zkplus.spring.SpringUtil;
 
+
+
+import javax.servlet.FilterConfig;
+import javax.servlet.http.*;
+
+
 /**
  * This class provides application-wide access to the Spring ApplicationContext.
  * The ApplicationContext is injected by the class "ApplicationContextProvider".
@@ -54,19 +63,21 @@ public class AppContext {
 	/**
 	 * is Amazon Web Service compile?
 	 */
-	private static final boolean isAWS = false;
-	private static final boolean isAWSdev = false;
-	private static final boolean isVMIRRI = false;
-	private static final boolean isPollux = true;
-	private static final boolean isLocalhost = false;
+	static boolean isAWS = true;
+	static boolean isAWSdev = false;
+	static boolean isVMIRRI = false;
+	static boolean isPollux = false;
+	static boolean isASTI = false;
+	static boolean isLocalhost = false;
 	
 	/**
 	 * is development
 	 */
-	public static final boolean isDev =  false;
-	public static final boolean isTest = true;
+	static boolean isDev =  false;
+	static boolean isTest = false;
 
 
+	static boolean configloaded = false;
 
 	/**
 	 * using the Chado Schema?
@@ -76,19 +87,87 @@ public class AppContext {
 	
     private static ApplicationContext ctx;
     
+    
     /**
      * used for timing processes
      */
     private static long startTime=0;
     private static long startTimeDate=0;
     
+
     
-    public static boolean isWindows() {
-    	return isLocalhost;
+    
+    static String  defaultorganism;
+    static String  flatfilesdir;
+    static String  hostdirectory;
+    static String  tempdir;
+    static String  hostname;
+	 
+    static String  pathtolocalblast;
+    static String  pathtolocalblastdata;
+    static String  webappdirectory;
+    
+    
+    
+
+
+    
+    
+    public AppContext() {
+		super();
+		// TODO Auto-generated constructor stub
+		
+		
+		// load parameters from conf files
+		
+		//javax.servlet.FilterConfig()
+		
+		//FilterConfig
+		
+		//Servlet servlet = new Servlet();
+		//.getServletConfig().getInitParameter(parameterName) 
+	}
+    
+    public static boolean isAWS() {
+    	//
+    	//FilterConfig.getServletContext().getInitParameter("isAWS");
+    	return isAWS;
+    }
+    
+	public static boolean isAWSdev() {
+		return isAWSdev;
+	}
+	
+	public static boolean isVMIRRI() {
+		return isVMIRRI;
+	}
+	public static boolean isPollux() {
+		return isPollux;
+	}
+	public static boolean isASTI() {
+		return isASTI;
+	}
+	public static boolean isLocalhost() {
+		return isLocalhost;
+	}
+	
+	/**
+	 * is development
+	 */
+	public static boolean isDev() {
+		return isDev;
+	}
+	public static boolean isTest() {
+		return isTest;
+	}
+    
+
+	public static boolean isWindows() {
+    	return isLocalhost();
     }
     
     public static boolean isIRRILAN() {
-    	return isLocalhost || isPollux;
+    	return isLocalhost() || isPollux();
     }
     
 
@@ -138,12 +217,35 @@ public class AppContext {
     	startTimeDate = endTimeDate;
     }
     
+
+    public static String getWebappdiectory() {
+    	
+    	
+    	//also check: http://stackoverflow.com/questions/1521957/where-how-to-setup-configuration-resources-for-tomcat-war-files
+    	// http://archive.oreilly.com/pub/a/java/archive/tomcat-tips.html
+    		
+    	try {
+		    File catalinaBase = new File( System.getProperty( "catalina.base" ) ).getAbsoluteFile();
+		    File propertyFile = new File( catalinaBase, "webapps/" + getHostDirectory() + "strsproperties/strs.properties" );
+		    InputStream inputStream = new FileInputStream( propertyFile );
+		    
+		    
+    	} catch(Exception ex)
+    	{
+    		ex.printStackTrace();
+    	}
+    	return "";
+    }
+    
     
     public static String getTempDir() {
-    	if(isAWS || isAWSdev)
+    	
+    	if( tempdir!=null) return tempdir;    
+    	
+    	if(isAWS() || isAWSdev())
     		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
     		return "/usr/share/apache-tomcat-7.0.55/webapps/" + getHostDirectory() + "/tmp/";
-    	//else if(isAWSdev)
+    	//else if(isAWSdev())
     		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
     	//	return "/usr/share/apache-tomcat-7.0.55/webapps/" + getHostDirectory() + "/tmp/";
     	else  if(isVMIRRI)
@@ -154,7 +256,7 @@ public class AppContext {
     	else if(isPollux)
     		return  "/usr/share/apache-tomcat-7.0.42/webapps/" +  getHostDirectory() + "/tmp/";
     	
-    	return null;
+    	return "/usr/share/apache-tomcat/webapps/" + getHostDirectory() + "/tmp/";
     }
     
     /**
@@ -162,14 +264,19 @@ public class AppContext {
      * @return
      */
     public static String getHostname() {
-    	if(isAWS)
+    	
+    	if(hostname!=null) return hostname;
+    	
+    	if(isAWS())
     		return "http://oryzasnp.org";
-    	else if(isAWSdev)
+    	else if(isAWSdev())
     		return "http://54.255.100.88";
-    	else if(isVMIRRI)
+    	else if(isVMIRRI())
     		return "http://202.123.56.26:8080";
-    	else if(isPollux)
+    	else if(isPollux())
     		return "http://pollux:8080";
+    	else if(isASTI())
+    		return "http://202.90.159.240:8080";
     	else
     		return "http://172.29.4.26:8080"; 
     	//return "http://localhost";
@@ -177,10 +284,14 @@ public class AppContext {
     
     
     public static String getFlatfilesDir() {
-    	if(isLocalhost)
+    	if( flatfilesdir!=null) return flatfilesdir;    
+    	
+    	if(isLocalhost())
     		return "E:/My Document/Transfer/3kcore_alleles/";
-    	else if(isAWS || isAWSdev)
+    	else if(isAWS() || isAWSdev())
     		return "/data/lmansueto/iric-portal-files/";
+    	else if(isASTI())
+    		return "/home/iric/iric-portal-files/";
     	else
     		return "/home/lmansueto/iric-portal-files/";
     }
@@ -194,6 +305,7 @@ public class AppContext {
     		return "V";
     	else return "VL";
     	
+    	
     }
     
     /**
@@ -201,15 +313,17 @@ public class AppContext {
      * @return
      */
     public static String getHostDirectory() {
-    	if(isDev) {
-    		if(isAWS)
+    	if( hostdirectory!=null) return hostdirectory;    
+    	
+    	if(isDev()) {
+    		if(isAWS())
     			return "iric-portal-test";
-    		else if(isAWSdev)
+    		else if(isAWSdev())
     			return "iric-portal";
     		else
     			return "iric-portal-dev";
     	}
-    	else if(isTest) 
+    	else if(isTest()) 
     		return "iric-portal-test";
     	else 
     		return "iric-portal";
@@ -313,13 +427,13 @@ public class AppContext {
 
     public static int getMaxlengthUni() {
     	//return 100000;
-    	if(isDev|| isTest)
+    	if(isDev()|| isTest())
     		return 1000000;
     	else return 50000;
     }
 
     public static int getMaxlengthCore() {
-    	if(isDev || isTest)
+    	if(isDev() || isTest())
     		return 10000000;
     	//return 2000000;
     	return 1000000;
@@ -328,6 +442,11 @@ public class AppContext {
     	return Integer.MAX_VALUE;
     }
 
+    public static String getDefaultOrganism() {
+    	if(defaultorganism!=null) return defaultorganism;
+    	
+    	return "rice";
+    }
     
     /**
      * Message logger used by the webapp, for easy maintainance and change of loggers
@@ -613,5 +732,17 @@ public class AppContext {
     	
     	return obj;
     }
+    
+    public static String getPathToLocalBlast() {
+    	if( pathtolocalblast!=null) return pathtolocalblast;    
+    	
+    	return "/home/lmansueto/ncbi-blast/bin/";
+    }
+    public static String getPathToLocalBlastData() {
+    	if( pathtolocalblastdata!=null) return pathtolocalblastdata;    
+    	
+    	return "/home/lmansueto/ncbi-blast/iric-portal/";
+    }
+    
     
 } // .EOF
