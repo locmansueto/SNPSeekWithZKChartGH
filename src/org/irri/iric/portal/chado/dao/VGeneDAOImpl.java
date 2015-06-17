@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -300,18 +301,25 @@ public class VGeneDAOImpl extends AbstractJpaDao<VGene> implements VGeneDAO {
 	}
 
 	@Override
-	public Set findAllGene() {
+	public Set findAllGene(Integer organismId) {
 		// TODO Auto-generated method stub
-		return this.findAllVGenes();
+		//return this.findAllVGenes();
+		Query query = createNamedQuery("findVGeneByOrg", -1,-1, organismId);
+		return new LinkedHashSet<VGene>(query.getResultList());
 	}
 
 	@Override
-	public Gene findGeneByName(String name) {
+	public Gene findGeneByName(String name, Integer organismId) {
 		// TODO Auto-generated method stub
-		Set setGene  = this.findVGeneByName(name);
+		//Set setGene  = this.findVGeneByName(name);
+		Query query = createNamedQuery("findVGeneByNameOrg", -1,-1, name, organismId);
+		Set setGene = new LinkedHashSet<VGene>(query.getResultList());
+		
 		if(setGene.isEmpty()) return null;
 		if(setGene.size()>1) throw new RuntimeException("Multiple values of gene with name " + name);
 		return (Gene)setGene.iterator().next();
 		
 	}
+
+	
 }

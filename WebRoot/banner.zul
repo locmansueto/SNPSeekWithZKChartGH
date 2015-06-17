@@ -31,10 +31,76 @@
 				<menuitem src="/images/iric/tree1.png" label="Phylogenetic Tree" href="_variety.zul?irisid=alltree"/>
 				<menuitem src="/images/iric/mds_plot.png" label="MDS Plot" href="_variety.zul?irisid=allmds"/>
 
+<!--  base nippo 4143, 9311 4144, 1r64 4146, kasalath 3591, dj123 4153-->
+		<!-- menu label="Genome alignments" src="/images/iric/synteny.png">
+			<menupopup>
+				<menuitem label="Select Reference" disabled="true"/>
+				<menuseparator/>
+				<menu  src="/images/iric/var5.png" label="Nipponbarre vs.">
+					<menupopup>
+						<menuitem label="Select Alignment" disabled="true"/>
+						<menuseparator/>
+					
+						<menuitem  src="/images/iric/var5.png" label="DJ123" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&amp;run=21641-znnYkRUW"/>
+						<menuitem  src="/images/iric/var5.png" label="Kasalath" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&amp;run=37665-aKx0cjrR"/>
+						<menuitem  src="/images/iric/var5.png" label="93-11" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&amp;run=37668-Nvvq15gS"/>
+						<menuitem  src="/images/iric/var5.png" label="IR64-21" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&amp;run=37870-HIlpnZhn"/>
+					</menupopup>
+				</menu>
+				<menu  src="/images/iric/var5.png" label="93-11 vs.">
+					<menupopup>
+						<menuitem label="Select Alignment" disabled="true"/>
+						<menuseparator/>
+						<menuitem  src="/images/iric/var5.png" label="DJ123" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&amp;run=36169-RyFxrjyS"/>
+						<menuitem  src="/images/iric/var5.png" label="IR64-21" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&amp;run=36371-uPgcWnIQ"/>
+						<menuitem  src="/images/iric/var5.png" label="Kasalath" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&amp;run=37794-jmPy8pl6"/>
+						<menuitem  src="/images/iric/var5.png" label="Nipponbare" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&amp;run=37668-Nvvq15gS&amp;base=4144"/>
+
+					</menupopup>
+				</menu>
+				<menu  src="/images/iric/var5.png" label="IR64-21 vs.">
+					<menupopup>
+						<menuitem label="Select Alignment" disabled="true"/>
+						<menuseparator/>
+						<menuitem  src="/images/iric/var5.png"  label="Kasalath" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=35323-HjDgoi3o"/>
+						<menuitem src="/images/iric/var5.png"  label="DJ123" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=36564-IOIuXPnh"/>
+
+						<menuitem  src="/images/iric/var5.png" label="Nipponbare" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=37870-HIlpnZhn&amp;base=4146"/>
+						<menuitem  src="/images/iric/var5.png" label="93-11" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=36371-uPgcWnIQ&amp;base=4146"/>
+					</menupopup>
+				</menu>
+				<menu  src="/images/iric/var5.png" label="Kasalath vs.">
+					<menupopup>
+						<menuitem label="Select Alignment" disabled="true"/>
+						<menuseparator/>
+						<menuitem  src="/images/iric/var5.png" label="DJ123" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&amp;run=38038-R0ShkWBi"/>
+
+						<menuitem  src="/images/iric/var5.png" label="Nipponbare" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&amp;run=37665-aKx0cjrR&amp;base=3591"/>
+						<menuitem  src="/images/iric/var5.png" label="93-11" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&amp;run=37794-jmPy8pl6&amp;base=3591"/>
+						<menuitem  src="/images/iric/var5.png"  label="IR64-21" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&amp;run=35323-HjDgoi3o&amp;base=3591"/>
+
+					</menupopup>
+				</menu>
+
+				<menu  src="/images/iric/var5.png" label="DJ123 vs.">
+					<menupopup>
+						<menuitem label="Select Alignment" disabled="true"/>
+						<menuseparator/>
+						<menuitem  src="/images/iric/var5.png" label="Nipponbare" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=21641-znnYkRUW&amp;base=4153"/>
+						<menuitem  src="/images/iric/var5.png" label="93-11" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=36169-RyFxrjyS&amp;base=4153"/>
+						<menuitem src="/images/iric/var5.png"  label="IR64-21" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=36564-IOIuXPnh&amp;base=4153"/>
+						<menuitem  src="/images/iric/var5.png" label="Kasalath" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=38038-R0ShkWBi&amp;base=4153"/>
+
+					</menupopup>
+				</menu>
+			</menupopup>
+		</menu -->
+
 			</menupopup>
 		</menu>
 		<menuitem src="/images/iric/mylist.png" label="My Lists" href="_workspace.zul"/>
-		<menuitem src="/images/iric/download.png" label="Download" target="_blank" href="http://oryzasnp-atcg-irri-org.s3-website-ap-southeast-1.amazonaws.com"/>
+		<!--  menuitem src="/images/iric/download.png" label="Download" target="_blank" href="http://oryzasnp-atcg-irri-org.s3-website-ap-southeast-1.amazonaws.com"/ -->
+		<menuitem src="/images/iric/download.png" label="Download" href="_download.zul"/>
 		<menu label="Help" src="/images/iric/help.png">
 			<menupopup>
 				<menuitem src="/images/iric/users_manual.png" label="User's Manual" href="_help.zul"/>	

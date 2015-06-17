@@ -11,6 +11,7 @@ public interface VarietyByPhenotypeDAO {
 	List findVarietyByQuanPhenotypeGreaterThan(BigDecimal phen, double value);
 	List findVarietyByQuanPhenotypeEquals(BigDecimal phen, double value);
 	List findVarietyByQualPhenotypeEquals(BigDecimal phen, String value);
+	List findVarietyByPhenotype(BigDecimal phen);
 	
 
 }

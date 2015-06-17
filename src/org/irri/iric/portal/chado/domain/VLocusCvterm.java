@@ -1,18 +1,17 @@
 package org.irri.iric.portal.chado.domain;
 
 import java.io.Serializable;
-
 import java.lang.StringBuilder;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-
 import javax.xml.bind.annotation.*;
-
 import javax.persistence.*;
+
+import org.irri.iric.portal.domain.CvTerm;
+import org.irri.iric.portal.domain.Locus;
 
 /**
  */
@@ -43,7 +42,7 @@ import javax.persistence.*;
 @Table(schema = "IRIC", name = "V_LOCUS_CVTERM")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VLocusCvterm")
-public class VLocusCvterm implements Serializable {
+public class VLocusCvterm implements Serializable, Locus, CvTerm {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -81,7 +80,7 @@ public class VLocusCvterm implements Serializable {
 	@Column(name = "STRAND", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
-	BigDecimal strand;
+	Integer strand;
 	/**
 	 */
 
@@ -171,8 +170,8 @@ public class VLocusCvterm implements Serializable {
 
 	/**
 	 */
-	public BigDecimal getFmin() {
-		return this.fmin;
+	public Integer getFmin() {
+		return this.fmin.intValue();
 	}
 
 	/**
@@ -183,19 +182,19 @@ public class VLocusCvterm implements Serializable {
 
 	/**
 	 */
-	public BigDecimal getFmax() {
-		return this.fmax;
+	public Integer getFmax() {
+		return this.fmax.intValue();
 	}
 
 	/**
 	 */
-	public void setStrand(BigDecimal strand) {
+	public void setStrand(Integer strand) {
 		this.strand = strand;
 	}
 
 	/**
 	 */
-	public BigDecimal getStrand() {
+	public Integer getStrand() {
 		return this.strand;
 	}
 
@@ -307,8 +306,8 @@ public class VLocusCvterm implements Serializable {
 	public void copy(VLocusCvterm that) {
 		setFeatureId(that.getFeatureId());
 		setName(that.getName());
-		setFmin(that.getFmin());
-		setFmax(that.getFmax());
+		setFmin(BigDecimal.valueOf(that.getFmin()));
+		setFmax(BigDecimal.valueOf(that.getFmax()));
 		setStrand(that.getStrand());
 		setContigId(that.getContigId());
 		setContigName(that.getContigName());
@@ -369,4 +368,53 @@ public class VLocusCvterm implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String getUniquename() {
+		// TODO Auto-generated method stub
+		return this.getName();
+	}
+
+	@Override
+	public String getChr() {
+		// TODO Auto-generated method stub
+		return getContig();
+		/*
+		Integer chr = null;
+		try {
+			chr = Integer.valueOf( getContig().toUpperCase().replace("CHR",""));
+		} catch(Exception ex) {
+			
+		}
+		return chr;
+		*/
+	}
+
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		return this.getContigName();
+	}
+
+	@Override
+	public BigDecimal getCvTermId() {
+		// TODO Auto-generated method stub
+		return cvtermId;
+	}
+
+	@Override
+	public String getDefinition() {
+		// TODO Auto-generated method stub
+		return this.cvterm;
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return cvterm;
+	}
+	
+	
+	
+	
 }

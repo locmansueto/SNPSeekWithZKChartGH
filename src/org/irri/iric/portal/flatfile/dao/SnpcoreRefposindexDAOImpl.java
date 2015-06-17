@@ -8,9 +8,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 //import javassist.bytecode.Descriptor.Iterator;
+
 
 
 
@@ -291,6 +293,13 @@ public class SnpcoreRefposindexDAOImpl extends AbstractJpaDao<SnpcoreRefposindex
 		return query.getResultList();
 		
 	}
+//
+//	@Override
+//	public List getSNPsInChromosomes(Map<String, Collection> mapChr2Posset,
+//			BigDecimal type) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	
 }

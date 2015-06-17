@@ -30,6 +30,9 @@ window.Boot_progressbox = function (){}
        	listVarlistNames.addAll( workspace.getVarietylistNames(  ));
        	
 	
+		List listContigs =  new ArrayList();
+			listContigs.add("");listContigs.add("chr01");listContigs.add("chr02");listContigs.add("chr03");listContigs.add("chr04");listContigs.add("chr05");listContigs.add("chr06");
+		listContigs.add("chr07");listContigs.add("chr08");listContigs.add("chr09");listContigs.add("chr10");listContigs.add("chr11");listContigs.add("chr12");listContigs.add("ANY");
 	
 </zscript>
 
@@ -129,9 +132,9 @@ window.Boot_progressbox = function (){}
            <listheader label="COUNTRY" />
 </listhead>
 </listbox>
-<listbox id="listboxPositions" width="200px" height="300px" visible="false">
+<listbox id="listboxPositions" width="500px" height="300px" visible="false">
 <listhead sizable="true">
-           <listheader label="CHR : POSITION" />
+           <listheader id="listheaderPosition" label="CHR : POSITION" />
 </listhead>
 </listbox>
 <listbox id="listboxLocus" width="500px" height="300px" visible="false">
@@ -160,34 +163,40 @@ window.Boot_progressbox = function (){}
 <label value = "List name:"  style="font-size:14px;font-weight:bold;color:gray;"/>
 <textbox id="txtboxEditListname"/>
 </hbox>
-<div id="divMsgVariety">
+<div id="divMsgVariety" visible="true">
+<vbox>
 <label pre="true" value="Type or paste variety Name, IRIS ID or Accessions here. One variety per line"/>
+<a target="_blank" href="http://iric.irri.org/resources/3000-genomes-project" label="List of valid variety names."/>
+</vbox>
 </div>
-<div id="divMsgLocus">
+
+<div id="divMsgLocus"  visible="false">
 <label pre="true" value="Type or paste locus names. One locus per line"/>
 </div>
 
 <div id="divMsgSNP" visible="false">
 <vbox>
-<label pre="true" value="Set chromosome and SNP positions here, one position per line"/>
+<label id="labelMsgSNP" pre="true" value="Set chromosome and SNP positions here"/>
 <hbox>
 <label value="Chromosome"/>
 <vbox width="10px" />
-<listbox id="selectChromosome"  mold="select"  rows="1">
-<listitem label="1" selected="true"/>
-<listitem label="2"/>
-<listitem label="3"/>
-<listitem label="4"/>
-<listitem label="5"/>
-<listitem label="6"/>
-<listitem label="7"/>
-<listitem label="8"/>
-<listitem label="9"/>
-<listitem label="10"/>
-<listitem label="11"/>
-<listitem label="12"/>
-</listbox>
+<listbox id="selectChromosome"  mold="select"  rows="1"/>
+
+   <zscript><![CDATA[
+			        selectChromosome.setModel(new SimpleListModel(listContigs));
+			    ]]></zscript>
 </hbox>
+<checkbox id="checkboxVerifySNP" checked="false" label="  Verify if SNP exists in the database"  tooltip="popupVerifySNP" />
+<checkbox id="checkboxAutoconfirm" checked="true" label="  Autoconfirm (forced for >50 positions)"  tooltip="popupAutoconfirm"/>
+
+<div id="divSNPMoreData" visible="false">
+<vbox>
+<separator/>
+<checkbox id="checkboxSNPAlelle" checked="false" label="SNPs has allele column (for allele filtering)" /> 
+<checkbox id="checkboxSNPPValue" checked="false" label="SNPs has p-value column (from GWAS analysis)" />
+</vbox> 
+</div>
+<label id="labelMsgFormat" pre="true" value="" style="color:blue;font-weight:bold"/>
 </vbox>
 </div>
 
@@ -223,6 +232,17 @@ window.Boot_progressbox = function (){}
 	        
 	 </zscript>
 
+<popup id="popupVerifySNP" width="300px">
+        <html><![CDATA[
+		Check if SNP position exists in the data. 
+        ]]></html>
+</popup>
+
+<popup id="popupAutoconfirm" width="300px">
+        <html><![CDATA[
+		Don't ask for confirmation on the result of SNP verification.
+        ]]></html>
+</popup>
 
 </window>
 </zk>

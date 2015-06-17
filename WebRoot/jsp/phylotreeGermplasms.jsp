@@ -76,7 +76,7 @@
 				//										Integer.parseInt(request.getParameter("end")), topn, "");
 				
 				GenotypeQueryParams genotypeparams = new  GenotypeQueryParams(null, request.getParameter("chr"), Long.valueOf( request.getParameter("start") ),
-						Long.valueOf( request.getParameter("end") ), true, false, true, true, null, null, null, false);
+						Long.valueOf( request.getParameter("end") ), true, false, true, true, null, null, null, false, false);
 				PhylotreeQueryParams phyloparams = new PhylotreeQueryParams(genotypeparams, "topn", topn, -1, Double.valueOf( request.getParameter("scale") ));
 				newicknodes = genotype.constructPhylotree(phyloparams, "");
 

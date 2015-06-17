@@ -70,6 +70,8 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 		//Snp2linesId  item = (Snp2linesId)value;
 		//Snps2Vars  item = (Snps2Vars)value;
 		
+		
+		
 		listitem.setStyle("align:center");
 	
 	        // keep value in listitem
@@ -77,12 +79,60 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 		
 			Object obj[] = (Object[])value;
 			
-			String refnuc = (String)obj[2];
-			String var1nuc = (String)obj[3];
-			String var2nuc = (String)obj[4];
+			//String refnuc = (String)obj[2];
+			String var1nuc = "";
+			String var2nuc = "";
 		
-	        addListcell(listitem, obj[0].toString());
-	        addListcell(listitem, obj[1].toString().replace(".00","").replace(".0",""));
+			if(!params.isbShowNPBPositions()) {
+				// contigname
+				addListcell(listitem, ""); addListcell(listitem, ""); addListcell(listitem, "");
+				if( obj[0]==null)
+					addListcell(listitem, "");
+				else addListcell(listitem, obj[0].toString());
+		        
+		        // position
+				if(obj[1]==null)
+					addListcell(listitem,"");
+				else addListcell(listitem, obj[1].toString().replace(".00","").replace(".0",""));
+				
+		        String refnuc = (String)obj[2];
+		        if(refnuc==null) addListcell(listitem, "");
+		        else {
+		        	if(params.isbColorByMismatch()) 
+			        	addListcell(listitem, refnuc);
+			        else addListcell(listitem, refnuc, getColor(refnuc));
+		        }
+		        var1nuc = (String)obj[3];
+				var2nuc = (String)obj[4];
+			
+		        
+			} else {
+				// contigrefname
+				if(obj[0]==null || obj[1]==null)
+					addListcell(listitem,"");
+				else addListcell(listitem, obj[0].toString());
+		        // refposition
+				if(obj[1]==null) addListcell(listitem,"");
+				else addListcell(listitem, obj[1].toString().replace(".00","").replace(".0",""));
+		        String refnuc = (String)obj[2];
+		        if(refnuc==null) addListcell(listitem, "");
+		        else {
+			        if(params.isbColorByMismatch()) 
+			        	addListcell(listitem, refnuc);
+			        else addListcell(listitem, refnuc, getColor(refnuc));
+		        }
+		        // npb contig
+		        addListcell(listitem, obj[3].toString());
+		        // npb position
+		        addListcell(listitem, obj[4].toString().replace(".00","").replace(".0",""));
+		        refnuc = (String)obj[5];
+		        if(params.isbColorByMismatch()) 
+		        	addListcell(listitem, refnuc);
+		        else addListcell(listitem, refnuc, getColor(refnuc));
+		        var1nuc = (String)obj[6];
+				var2nuc = (String)obj[7];
+			
+			}
 
 	        //BigDecimal pos = (Double)obj[1];
 	        //BigDecimal pos = BigDecimal.valueOf( (Double)obj[1] );
@@ -95,7 +145,7 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 
 	        if(params.isbHighlightNonsynSnps() || params.isbNonsynSnps() ||  params.isbNonsynPlusSpliceSnps()) {
 		        if(params.isbColorByMismatch()) {
-			        addListcell(listitem, refnuc);
+			        //addListcell(listitem, refnuc);
 		        	if(var1nuc.equals(var2nuc)) {
 		        		if(!var2nuc.isEmpty() && setcharNonsyn.contains(var2nuc.charAt(0))) {
 			        		addListcell(listitem, var1nuc,STYLE_NONSYNONYMOUS);
@@ -114,7 +164,7 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 		        		else addListcell(listitem, var2nuc,STYLE_INTERESTING);
 		        	}
 		        } else if(params.isbColorByAllele()) {
-			        addListcell(listitem, refnuc, getColor(refnuc));
+			        //addListcell(listitem, refnuc, getColor(refnuc));
 			        
 			        if(!var1nuc.isEmpty() && setcharNonsyn.contains(var1nuc.charAt(0)))
 			        	addListcell(listitem, var1nuc, STYLE_NONSYNONYMOUS);
@@ -128,7 +178,7 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 	        }
 	        else {
 		        if(params.isbColorByMismatch()) {
-			        addListcell(listitem, refnuc);
+			        //addListcell(listitem, refnuc);
 		        	
 		        	if(var1nuc.equals(var2nuc)) {
 		        		addListcell(listitem, var1nuc);
@@ -138,7 +188,7 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 				        addListcell(listitem, var2nuc,STYLE_INTERESTING);
 		        	}
 		        } else if(params.isbColorByAllele()) {
-			        addListcell(listitem, refnuc, getColor(refnuc));
+			        //addListcell(listitem, refnuc, getColor(refnuc));
 		        	addListcell(listitem, var1nuc, getColor(var1nuc));
 		        	addListcell(listitem, var2nuc, getColor(var2nuc));
 		        }

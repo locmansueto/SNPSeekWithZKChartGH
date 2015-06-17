@@ -45,7 +45,7 @@ enableTooltipster();
   in the list. To add to the sorted list, it iteratively chooses the
   sequences that are most similar to the last one in the list and, of
   those chooses the sequence most similar to the representative
-  sequence. <a href="http://www.bioinf.org.uk/software/jsav">JSAV site</a> site<p> 
+  sequence. <a href="http://www.bioinf.org.uk/software/jsav">JSAV site</a><p> 
   <p>Consensus sequence, sorting and export functions are at the page bottom. <div style="color:red">NOTE: The sequence positions are not contiguous but only for SNPs, insertion or deleted regions.
   N represents missing nucleotide value, and dash (-) for gaps.</div></p>
 

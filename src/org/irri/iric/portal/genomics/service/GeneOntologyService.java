@@ -1,6 +1,7 @@
 package org.irri.iric.portal.genomics.service;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface GeneOntologyService {
 
@@ -13,4 +14,9 @@ public interface GeneOntologyService {
 	
 	public String queryGO(String q) throws Exception ; 
 	public String overRepresentationTest(String organism, Collection genelist, String enrichmentType) throws Exception;
+	
+	public List getCVtermAncestors(String cv, String term);
+	public List getCVtermDescendants(String cv, String term);
+	public List countLociInTerms(String organism, Collection genelist, String cv) throws Exception;
+	
 }

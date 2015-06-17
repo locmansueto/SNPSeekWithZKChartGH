@@ -107,6 +107,9 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	private ListItemsDAO listitemsDAO;
 	
 
+	@Autowired
+	private VarietyPropertiesService varpropservice;
+	
 	
 	// Class methods
 	// Methods with @Override annotation are implementations
@@ -189,6 +192,19 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		return varbypassportdao.findVarietyByPassportEquals(listitemsDAO.getPassportDefinitions().get(definition), value);
 	}
 	
+	
+	
+	
+	
+	
+	@Override
+	public List getVarietyByPassport(String sPassId) {
+		// TODO Auto-generated method stub
+		varbypassportdao = (VarietyByPassportDAO)AppContext.checkBean(varbypassportdao, "VIricstocksByPassportDAO");
+		//listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItemsDAO"); 
+		return varbypassportdao.findVarietyByPassport(sPassId);
+	}
+
 	@Override
 	public List getVarietyByPhenotype(String definition, String comparator,  String value, int phenotype_type) {
 		
@@ -212,6 +228,18 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		return null;
 	}
 	
+	
+	
+
+	@Override
+	public List getVarietyByPhenotype(String phenId) {
+		// TODO Auto-generated method stub
+		varbyphenotypedao = (VarietyByPhenotypeDAO)AppContext.checkBean(varbyphenotypedao, "VIricstocksByPhenotypeDAO");
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItemsDAO"); 
+		
+		return varbyphenotypedao.findVarietyByPhenotype(BigDecimal.valueOf(Long.valueOf(phenId)));
+				 
+	}
 
 	// User Interface Listbox Items query methods
 	@Override
@@ -646,6 +674,15 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		//AppContext.debug(i + " varieties in MDS all");
 		
 		return xy;
+	}
+
+	@Override
+	public Map getVarietyExternalURL(String name) {
+		// TODO Auto-generated method stub
+		
+		varpropservice = (VarietyPropertiesService)AppContext.checkBean(varpropservice, "VarietyPropertiesService");
+		
+		return varpropservice.getProperties(name);
 	}
 	
 

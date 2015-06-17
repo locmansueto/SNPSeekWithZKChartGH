@@ -40,4 +40,6 @@ public interface SnpsAllvars {
 	public String getVarnuc();
 
 	
+	public String getContig();
+	
 }

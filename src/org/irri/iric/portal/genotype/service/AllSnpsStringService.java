@@ -14,6 +14,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.dao.ListItemsDAO;
+import org.irri.iric.portal.dao.MultipleReferenceConverterDAO;
 import org.irri.iric.portal.dao.SnpsAllvarsDAO;
 import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
 import org.irri.iric.portal.dao.SnpsHeteroAllvarsDAO;
@@ -22,6 +24,9 @@ import org.irri.iric.portal.dao.SnpsNonsynAllvarsDAO;
 import org.irri.iric.portal.dao.SnpsSpliceAcceptorDAO;
 import org.irri.iric.portal.dao.SnpsSpliceDonorDAO;
 import org.irri.iric.portal.dao.SnpsStringDAO;
+import org.irri.iric.portal.domain.MultiReferenceLocus;
+import org.irri.iric.portal.domain.MultiReferenceLocusImpl;
+import org.irri.iric.portal.domain.Organism;
 import org.irri.iric.portal.domain.Snp;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsHeteroAllele2;
@@ -83,43 +88,165 @@ public class AllSnpsStringService implements VariantStringService {
 	@Qualifier("H5SNPCoreAllele2DAO")
 	private SnpsStringDAO snpstrCoresnpsAllele2AllvarsDAO;
 	
+	@Autowired
+	@Qualifier("MultipleReferenceConverterDAO")
+	//@Qualifier("MultipleReferenceConverterPrecompDAO")
+	private MultipleReferenceConverterDAO multiplerefconvertdao;
 	
+	
+	@Autowired
+	private ListItemsDAO listitemsdao; 
 	
 	@Override
 	public VariantStringData getVariantString(GenotypeQueryParams params, Collection colVarids, String chr, Long start, Long stop) {
 		// TODO Auto-generated method stub
-		return getSNPsString( params,  colVarids,  Integer.valueOf(chr),  BigDecimal.valueOf(start),  BigDecimal.valueOf(stop), null);
+		//return getSNPsString( params,  colVarids,  Integer.valueOf(chr),  BigDecimal.valueOf(start),  BigDecimal.valueOf(stop), null,null);
+		return null;
 	}
 
 	@Override
 	public VariantStringData getVariantString(GenotypeQueryParams params, String chr, Long start, Long stop) {
 		// TODO Auto-generated method stub
-		return getSNPsString( params,  null, Integer.valueOf(chr),  BigDecimal.valueOf(start),  BigDecimal.valueOf(stop), null);
+		//return getSNPsString( params,  null, Integer.valueOf(chr),  BigDecimal.valueOf(start),  BigDecimal.valueOf(stop), null,null);
+		return null;
 	}
 
+	
+	@Override
+	public VariantStringData getVariantString(GenotypeQueryParams params, Collection colLocus) {
+		// TODO Auto-generated method stub
+		//return getSNPsString( params,  null, null, null, null, null, colLocus);
+		return null;
+	}
+
+	
 	@Override
 	public VariantStringData getVariantString(GenotypeQueryParams params, Collection colVarids, String chr, Collection colSnppos) {
 		// TODO Auto-generated method stub
 
-		return getSNPsString( params,  colVarids, Integer.valueOf(chr),  null, null, colSnppos);
+		//return getSNPsString( params,  colVarids, Integer.valueOf(chr),  null, null, colSnppos, null);
+		return null;
 
 	}
 
 	@Override
 	public VariantStringData getVariantString(GenotypeQueryParams params, String chr, Collection colSnppos) {
 		// TODO Auto-generated method stub
-		return getSNPsString( params, null, Integer.valueOf(chr),  null, null, colSnppos);
+		//return getSNPsString( params, null, Integer.valueOf(chr),  null, null, colSnppos, null);
+		return null;
 	}
 
+	
+	//private VariantStringData convertReferencePositionsToAllReferences(VariantStringData variantstringdataNPB, MultiReferenceLocus npbMultirefLocus,  MultiReferenceLocus origMultiReferenceLocus , String toContig) {
+	private VariantStringData convertReferencePositionsToAllReferences(GenotypeQueryParams params, VariantStringData variantstringdata, MultiReferenceLocus npbMultirefLocus) throws Exception {
+		
+		// convert to other references except org in origMultiReferenceLocus
+		// if origMultiReferenceLocus==null, convert to all 4 others
+		
+		multiplerefconvertdao = (MultipleReferenceConverterDAO)AppContext.checkBean(multiplerefconvertdao, "MultipleReferenceConverterDAO");
+		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItemsDAO");
+		Iterator<Organism> itOrg = listitemsdao.getOrganisms().iterator();
+		while(itOrg.hasNext()) {
+			Organism org = itOrg.next();
 
+			if(org.getName().equals( params.getOrganism() )) continue; // selected organism already shown
+			
+			if(org.getName().equals( AppContext.getDefaultOrganism()) && params.isbShowNPBPositions() ) continue;
+			
+			//if(org.equals( AppContext.getDefaultOrganism()) && params.isbShowNPBPositions() 
+			//		( params.getOrganism().equals( AppContext.getDefaultOrganism()) || params.isbShowNPBPositions() ) ) continue; // nipponbare, or nipponbare already shown
+
+			
+			//MultiReferenceLocus locusQueried = new MultiReferenceLocusImpl(org.getName() params.getOrganism(), params.getsChr(), params.getlStart(), params.getlEnd(), 1L);
+			//MultiReferenceLocus locusNipponbare = multiplerefconvertdao.convertLocus( locusQueried ,  AppContext.getDefaultOrganism(),  null);
+			
+			
+			AppContext.debug("converting from " + npbMultirefLocus + " to organism " +  org.getName());
+
+			try {
+				MultiReferenceLocus locusThisOrg = multiplerefconvertdao.convertLocus( npbMultirefLocus ,  org.getName(),  null);
+				AppContext.debug("converting from " + npbMultirefLocus + " to " + locusThisOrg);
+				variantstringdata.setMessage(variantstringdata.getMessage() + "\n" + npbMultirefLocus + " aligned with " + locusThisOrg);
+				variantstringdata = multiplerefconvertdao.convertReferencePositions(variantstringdata, npbMultirefLocus, locusThisOrg, null, true);
+			} catch(Exception ex) {
+				//ex.getMessage()
+				ex.printStackTrace();
+				variantstringdata.setMessage(variantstringdata.getMessage() + "\n" + ex.getMessage()); 
+			}
+		}
+		
+		return variantstringdata;
+		
+	}
+
+	
+	@Override
+	public VariantStringData getSNPsString(GenotypeQueryParams params) throws Exception { //, boolean exactMismatch, int firstRow, int maxRows) {
+	
+		VariantStringData vardata = null;
+		MultiReferenceLocus locusNipponbare=null;
+		if(!params.getOrganism().equals( AppContext.getDefaultOrganism() )) {
+			// not nipponbare coordinate. convert coordinates
+			
+			multiplerefconvertdao = (MultipleReferenceConverterDAO)AppContext.checkBean(multiplerefconvertdao, "MultipleReferenceConverterDAO");
+			
+			MultiReferenceLocus locusQueried = new MultiReferenceLocusImpl(params.getOrganism(), params.getsChr(), params.getlStart(), params.getlEnd(), 1L);
+			locusNipponbare = multiplerefconvertdao.convertLocus( locusQueried ,  AppContext.getDefaultOrganism(),  null); 
+			MultiReferenceLocus origMultiReferenceLocus =  params.setNewPosition(locusNipponbare);
+			
+			VariantStringData variantstringdataNPB =  _getSNPsStringNipponbare(params);
+			
+			String toContig = null;
+			if(params.isLimitToQueryContig()) {
+				toContig = locusQueried.getContig();
+			}
+			
+			
+			variantstringdataNPB.setMessage( variantstringdataNPB.getMessage() + "\nSNP Query " + locusQueried + " aligned with " + locusNipponbare);
+			params.setNewPosition(origMultiReferenceLocus);
+			vardata = multiplerefconvertdao.convertReferencePositions(variantstringdataNPB, locusNipponbare, locusQueried, toContig, false);
+			
+			//return variantstringdataNPB;
+			
+		} else {
+			locusNipponbare =  new MultiReferenceLocusImpl(params.getOrganism(), params.getsChr(), params.getlStart(), params.getlEnd(), 1L);
+			vardata = _getSNPsStringNipponbare(params);
+		}
+		
+		
+		if(!params.isLocusList() && !params.isSNPList() && params.isbShowAllRefAlleles()) {
+			vardata = convertReferencePositionsToAllReferences(params, vardata, locusNipponbare);
+			AppContext.debug( "show other alllele refs = " + vardata.getMapOrg2MSU7Pos2ConvertedPos().keySet());
+		}
+		
+		
+		return vardata;
+		
+	}
+	
+	
 	//private List<SnpsStringAllvars> _getSNPsString(boolean isMismatchOnly, Integer chr, BigDecimal start,
-	private VariantStringData getSNPsString(GenotypeQueryParams params, Collection colVarids, Integer chr, BigDecimal start, BigDecimal end, Collection setPositions) { //, boolean exactMismatch, int firstRow, int maxRows) {
+	//private VariantStringData getSNPsString(GenotypeQueryParams params, Collection colVarids, Integer chr, BigDecimal start, BigDecimal end, Collection setPositions, Collection colLocus) { //, boolean exactMismatch, int firstRow, int maxRows) {
+	
+	//@Override
+	private VariantStringData _getSNPsStringNipponbare(GenotypeQueryParams params) { //, boolean exactMismatch, int firstRow, int maxRows) {
+	
+	//@Override
+	//public VariantStringData getSNPsString(GenotypeQueryParams params) throws Exception {	
 		// TODO Auto-generated method stub
+		
+		Collection colVarids=params.getColVarIds();
+		//Integer chr= Integer.valueOf( params.getsChr() );
+		String chr=  params.getsChr() ;
+		BigDecimal start=null; if(params.getlStart()!=null) start=BigDecimal.valueOf( params.getlStart() );
+		BigDecimal end=null; if(params.getlEnd()!=null) end=BigDecimal.valueOf(params.getlEnd());
+		Collection setPositions=params.getPoslist();
+		Collection colLocus=params.getColLoci();
 		
 	
 		
 		
-			SNPsStringData snpstrdata = getSNPsStringData(params, colVarids,  chr,  start,  end,  setPositions); 
+			SNPsStringData snpstrdata = getSNPsStringData(params, colVarids,  chr,  start,  end,  setPositions,  colLocus); 
 			if(snpstrdata==null)  {
 				throw new RuntimeException("getSNPsString:  snpstrdata==null");
 				//return new VariantStringData();
@@ -162,8 +289,8 @@ public class AllSnpsStringService implements VariantStringService {
 						(Map)snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx(), varNonsynIdx,  params.isbNonsynPlusSpliceSnps() || params.isbNonsynSnps()); //  .isbExcludeSynonymous() );
 				setNonsynIdx.addAll(varNonsynIdx);
 				
-				if(!params.isbMismatchonly() || misCount>0 || params.isbPairwiseComparison() ) {
-					sortedVarieties.add( new SnpsStringAllvarsImpl(var,Long.valueOf(chr), snpstr, 
+				if(!params.isbMismatchonly() || misCount>0 || params.isbPairwiseComparison() || params.hasLocusList() ) {
+					sortedVarieties.add( new SnpsStringAllvarsImpl(var,chr, snpstr, 
 							BigDecimal.valueOf(misCount) , (Map)snpstrdata.getMapVarid2SnpsAllele2str().get(var), varNonsynIdx, 
 							snpstrdata.setSnpSpliceDonorPos, snpstrdata.setSnpSpliceAcceptorPos
 							) );
@@ -208,7 +335,7 @@ public class AllSnpsStringService implements VariantStringService {
 	
 
 	//private List<SnpsStringAllvars> 
-	private SNPsStringData getSNPsStringData(GenotypeQueryParams params, Collection colVarids, Integer chr, BigDecimal start, BigDecimal end, Collection setPositions) { //, boolean exactMismatch, int firstRow, int maxRows) {
+	private SNPsStringData getSNPsStringData(GenotypeQueryParams params, Collection colVarids, String chr, BigDecimal start, BigDecimal end, Collection setPositions, Collection colLocus) { //, boolean exactMismatch, int firstRow, int maxRows) {
 		// TODO Auto-generated method stub
 
 		// get snp positions/index
@@ -232,6 +359,390 @@ public class AllSnpsStringService implements VariantStringService {
 		List listpos = null;
 		
 		if(colVarids==null || colVarids.isEmpty()) {
+//			if(colLocus!=null && !colLocus.isEmpty()) {
+//				AppContext.resetTimer("getSNPsString start5");
+//				snpsposlist  = snpstringallvarsposService.getSNPsInChromosome(colLocus, snptype);
+//						
+//			} else 
+			if( (setPositions!=null && !setPositions.isEmpty()) ) {
+				listpos = new ArrayList();
+				listpos.addAll(new TreeSet(setPositions));
+				AppContext.resetTimer("getSNPsString start1");
+				snpsposlist  = snpstringallvarsposService.getSNPsInChromosome(chr.toString(),  listpos, snptype);
+			}
+			else if( (colLocus!=null && !colLocus.isEmpty()) ) {
+				AppContext.resetTimer("getSNPsString start1b");
+				snpsposlist  = snpstringallvarsposService.getSNPsInChromosome(chr.toString(),  colLocus, snptype);
+			}
+			else {
+				AppContext.resetTimer("getSNPsString start2");
+				snpsposlist  = snpstringallvarsposService.getSNPs(chr.toString(), start.intValue(), end.intValue(),   snptype, -1, -1);
+			}
+		} else {
+//			if(colLocus!=null && !colLocus.isEmpty()) {
+//				AppContext.resetTimer("getSNPsString start6");
+//				snpsposlist  = snpstringallvarsposService.getSNPsInChromosome(colLocus, snptype);
+//				
+//			} else
+			if(setPositions!=null && !setPositions.isEmpty()) {
+				listpos = new ArrayList();
+				listpos.addAll(new TreeSet(setPositions));
+				AppContext.resetTimer("getSNPsString start3");
+				snpsposlist  = snpstringallvarsposService.getSNPsInChromosome( chr.toString(),  listpos, snptype);
+			}
+			else if(colLocus!=null && !colLocus.isEmpty()) {
+				AppContext.resetTimer("getSNPsString start3b");
+				snpsposlist  = snpstringallvarsposService.getSNPsInChromosome( chr.toString(),  colLocus, snptype);
+			}
+			else {
+				AppContext.resetTimer("getSNPsString start4");
+				//snpsposlist  = snpstringallvarsposService.getSNPs(colVarids, chr.toString(), start.intValue(), end.intValue(),  snptype, -1, -1);
+				snpsposlist  = snpstringallvarsposService.getSNPs(chr.toString(), start.intValue(), end.intValue(),  snptype, -1, -1);
+			}
+			
+			//AppContext.debug("colvarids=" + colVarids.toString());
+		}
+		
+		if(snpsposlist==null) throw new RuntimeException("snpsposlist==null");
+		
+		if(snpsposlist.isEmpty()) return new SNPsStringData();
+		
+		//if(snpsposlist.isEmpty()) return new SNPsStringData("",  new HashMap(), new HashMap(), new HashMap(), new HashSet());
+		//if(snpsposlist.isEmpty()) return new VariantStringData(); // SNPsStringData("",  new HashMap(), new HashMap(), new HashMap(), new HashSet());
+		
+		
+		
+		//Map mapVarid2Var = varietyfacade.getMapId2Variety();
+
+		
+
+		// get allele column indices from start to end positions
+		VSnpRefposindex startpos =  (VSnpRefposindex)snpsposlist.get(0);
+		VSnpRefposindex endpos =  (VSnpRefposindex)snpsposlist.get( snpsposlist.size()-1 );
+
+		// if recount
+		String strRef=null;
+		Map<Float,Map> mapMis2Vars = new TreeMap();
+		
+		int refLength=-1;
+		
+		AppContext.debug( snpsposlist.size() + " snpposlist, pos between " +startpos.getPos() +  "-" + endpos.getPos() + "  index between " + startpos.getAlleleIndex() + "-" + endpos.getAlleleIndex());
+		
+		
+			
+			int indxs[] = new int[snpsposlist.size()];
+			List<int[]> listStartStop = new ArrayList();
+			int indxscount = 0;
+			//Map<Long, Integer> mapPos2Idx = new HashMap();
+			//Map<BigDecimal, Integer> mapPos2Idx = new HashMap();
+			Map<Integer, BigDecimal> mapIdx2Pos = new HashMap();
+			//Map<Integer, BigDecimal> mapIdx2Cromosome = new HashMap();
+			Map<BigDecimal, Integer> mapSnpid2TableIdx = new HashMap();
+			Map<Integer, VSnpRefposindex> mapIdx2SnpRefposindex = new HashMap();
+			
+			Iterator itSnppos =snpsposlist.iterator();
+			StringBuffer buffRef = new StringBuffer();
+			
+			int previdx=-100;
+			int laststart=-100;
+			while(itSnppos.hasNext()) {
+				VSnpRefposindex snppos = (VSnpRefposindex)itSnppos.next(); 
+				buffRef.append( snppos.getRefnuc());
+				indxs[indxscount] =  snppos.getAlleleIndex().intValue();
+				//mapPos2Idx.put(snppos.getPos().longValue(), indxscount);
+				mapSnpid2TableIdx.put(snppos.getSnpFeatureId(), indxscount);
+				mapIdx2Pos.put(indxscount, snppos.getPos());
+				//mapIdx2Cromosome.put( indxscount, snppos.getChromosome());
+				mapIdx2SnpRefposindex.put(indxscount, snppos);
+				
+				if(indxs[indxscount]==(previdx+1)) {
+					previdx=indxs[indxscount];
+				} else {
+					if(laststart>=0 && previdx>=0) {
+						listStartStop.add(new int[]{laststart, previdx});
+					}
+					laststart=indxs[indxscount];
+					previdx=indxs[indxscount];
+				}
+				indxscount++;
+			}
+			listStartStop.add(new int[]{laststart, previdx});
+			
+			int intStartStopIdx[][] = new int[listStartStop.size()][2];
+			Iterator<int[]> itStartStop = listStartStop.iterator();
+			int sscount=0;
+			while(itStartStop.hasNext()) {
+				intStartStopIdx[sscount] = itStartStop.next();
+				AppContext.debug("idxrange " + intStartStopIdx[sscount][0] + "-" + intStartStopIdx[sscount][1]);
+				sscount++;
+			}
+			
+			strRef = buffRef.toString();
+			refLength = strRef.length();
+			
+			
+			String filename="";
+			String filename_allele2="";
+			
+			
+			Map  mapVarid2Snpsstr = null;
+			Map mapVarid2Snpsstr_allele2 = null;
+			
+			AppContext.resetTimer(" to get position indexes from database..");
+			
+			// get snpstring for each varieties
+			// get allele2 for heterozygous varieties
+			snpsheteroDAO = (SnpsHeteroAllvarsDAO)AppContext.checkBean(snpsheteroDAO, "SnpsHeteroAllvarsDAO");
+			
+			//if(params.isbExcludeSynonymous() || params.isbGraySynonymous()) {
+			//if(params.isbAllSnps() || params.isbHighlightNonsynSnps() || params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) { 				
+			if(true) {
+				snpsnonsynDAO = (SnpsNonsynAllvarsDAO) AppContext.checkBean(snpsnonsynDAO, "SnpsNonsynAllvarsDAO");
+				snpsinexonDAO = (SnpsInExonDAO) AppContext.checkBean(snpsinexonDAO, "SnpsInExonDAO");
+			}
+			
+			
+			
+		
+			Set heteroSnps = null;
+			Set nonsynAllele = null;
+			Set inexonSnps = null;
+			
+			// using hdf5
+			if(  (setPositions!=null && !setPositions.isEmpty())  || (colLocus!=null && !colLocus.isEmpty()) ) {
+				if(setPositions!=null && !setPositions.isEmpty()) {
+					if(colVarids!=null && !colVarids.isEmpty() ) {
+						AppContext.resetTimer("using readSNPString1 start");
+						mapVarid2Snpsstr = snpstrSnpsAllele1AllvarsDAO.readSNPString((Set)colVarids, chr, indxs);
+						mapVarid2Snpsstr_allele2= snpstrSnpsAllele2AllvarsDAO.readSNPString((Set)colVarids, chr,  indxs );
+						AppContext.resetTimer("using readSNPString1 end");
+					}
+					else {
+						AppContext.resetTimer("using readSNPString2 start");
+						mapVarid2Snpsstr = snpstrSnpsAllele1AllvarsDAO.readSNPString(chr,  indxs);
+						mapVarid2Snpsstr_allele2=  snpstrSnpsAllele2AllvarsDAO.readSNPString(chr,  indxs);
+						AppContext.resetTimer("using readSNPString2 end");
+					}
+				} else if(colLocus!=null && !colLocus.isEmpty()) {
+					if(colVarids!=null && !colVarids.isEmpty() ) {
+						AppContext.resetTimer("using readSNPString1b start");
+						mapVarid2Snpsstr = snpstrSnpsAllele1AllvarsDAO.readSNPString((Set)colVarids, chr, intStartStopIdx);
+						mapVarid2Snpsstr_allele2= snpstrSnpsAllele2AllvarsDAO.readSNPString((Set)colVarids, chr,  intStartStopIdx );
+						AppContext.resetTimer("using readSNPString1b end");
+					}
+					else {
+						AppContext.resetTimer("using readSNPString2b start");
+						mapVarid2Snpsstr = snpstrSnpsAllele1AllvarsDAO.readSNPString(chr,  intStartStopIdx);
+						mapVarid2Snpsstr_allele2=  snpstrSnpsAllele2AllvarsDAO.readSNPString(chr,  intStartStopIdx);
+						AppContext.resetTimer("using readSNPString2b end");
+					}
+				}
+				
+				if(true) {			
+					if(setPositions!=null && !setPositions.isEmpty()) {
+					nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleByChrPosIn(chr, listpos);
+					inexonSnps = snpsinexonDAO.getSnps(chr, listpos);
+					} 
+					else if(colLocus!=null && !colLocus.isEmpty()) {
+					nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleByChrPosIn(chr, colLocus);
+					inexonSnps = snpsinexonDAO.getSnps(chr, colLocus);
+					} 
+					AppContext.resetTimer("to read nonsynonymous allele, inexon  from  database..");
+				}
+			}
+			else {
+				if(colVarids!=null && !colVarids.isEmpty() )
+				{
+					AppContext.resetTimer("using readSNPString3 start");
+						mapVarid2Snpsstr = snpstrSnpsAllele1AllvarsDAO.readSNPString((Set)colVarids, chr, startpos.getAlleleIndex().intValue(), endpos.getAlleleIndex().intValue());
+						mapVarid2Snpsstr_allele2 = snpstrSnpsAllele2AllvarsDAO.readSNPString((Set)colVarids, chr, startpos.getAlleleIndex().intValue(), endpos.getAlleleIndex().intValue());
+					AppContext.resetTimer("using readSNPString3 end");
+				}
+				else {
+					AppContext.resetTimer("using readSNPString4 start");
+						mapVarid2Snpsstr = snpstrSnpsAllele1AllvarsDAO.readSNPString(chr,  startpos.getAlleleIndex().intValue(), endpos.getAlleleIndex().intValue());
+						mapVarid2Snpsstr_allele2 = snpstrSnpsAllele2AllvarsDAO.readSNPString(chr,  startpos.getAlleleIndex().intValue(), endpos.getAlleleIndex().intValue());
+				}
+				
+				AppContext.resetTimer("to read allele2 database..");
+				if(true) {					
+					nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleByChrPosBetween(chr, start.intValue(), end.intValue());
+					inexonSnps = snpsinexonDAO.getSnps(chr,start.intValue(), end.intValue()); 
+					AppContext.resetTimer("to read nonsynonymous allele, inexon  from  database..");
+				}
+			}
+
+			//Iterator itSnpstr = mapVarid2Snpsstr.values().iterator();
+			//while(itSnpstr.hasNext()) {
+			//	AppContext.debug(  itSnpstr.next().toString() );
+			//	break;
+			//}
+			
+			 
+			// filter varieties here
+			//if(datatype == SnpcoreRefposindexDAO.TYPE_3KALLSNP && colVarids!=null && !colVarids.isEmpty() && heteroSnps!=null) {
+			if( colVarids!=null && !colVarids.isEmpty() && heteroSnps!=null) {
+				Iterator<SnpsHeteroAllele2> itHetero = heteroSnps.iterator();
+				Set setNewAllele2 = new LinkedHashSet();
+				while(itHetero.hasNext()) {
+					SnpsHeteroAllele2 all2 =  itHetero.next();
+					if(colVarids.contains(all2.getVar()) )
+						setNewAllele2.add( all2 );
+				}
+				heteroSnps = setNewAllele2;	
+			}
+			
+			
+			// non-synonymous alleles for given table index
+			Map<Integer,Set<Character>> mapIdx2NonsynAlleles = new TreeMap();
+			
+			//mapIdx2NonsynAlleles = new HashMap();
+			Set<Integer> setSnpInExonTableIdx = null;
+			//if(params.isbExcludeSynonymous() || params.isbGraySynonymous()) {
+			//if(params.isbAllSnps() || params.isbHighlightNonsynSnps() || params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) {
+			if(true) {
+				
+				setSnpInExonTableIdx = new TreeSet();
+				Iterator<Snp> itInexon = inexonSnps.iterator();
+				while(itInexon.hasNext()) {
+					Integer tableidx =  mapSnpid2TableIdx.get( itInexon.next().getSnpFeatureId());
+					if(tableidx!=null)
+						setSnpInExonTableIdx.add( tableidx );
+				}
+				
+				Iterator<SnpsNonsynAllele> itNonsyn = nonsynAllele.iterator();
+				while(itNonsyn.hasNext()) {
+					SnpsNonsynAllele nonsynallele = itNonsyn.next();
+					
+					Integer tableidx = mapSnpid2TableIdx.get( nonsynallele.getSnp());
+					if(tableidx==null) continue;
+					
+					Set<Character> alleles =  mapIdx2NonsynAlleles.get( tableidx  );
+					if(alleles==null) {
+						alleles = new HashSet();
+						mapIdx2NonsynAlleles.put( mapSnpid2TableIdx.get( nonsynallele.getSnp() )  , alleles);
+					}
+					alleles.add( nonsynallele.getAllele() );
+				}
+			}
+			
+			if(nonsynAllele!=null) AppContext.debug( nonsynAllele.size() + " non-synonymous alleles, " + mapSnpid2TableIdx.size() + " nonsys alleles positions/idx");
+			
+
+			Map<BigDecimal,Map> mapVarid2SnpsAllele2str = new HashMap();
+			if(heteroSnps!=null) {
+				Iterator<SnpsHeteroAllele2> itSnp = heteroSnps.iterator();
+				while(itSnp.hasNext()) {
+					SnpsHeteroAllele2 snpallele2 = itSnp.next();
+					Map mapTableidx2Nuc = mapVarid2SnpsAllele2str.get( snpallele2.getVar() );
+					if(mapTableidx2Nuc==null) {
+						mapTableidx2Nuc = new HashMap();
+						mapVarid2SnpsAllele2str.put(snpallele2.getVar() , mapTableidx2Nuc);
+					}
+					mapTableidx2Nuc.put(mapSnpid2TableIdx.get( snpallele2.getSnp() )  , snpallele2.getNuc() );
+				}
+			} else if(mapVarid2Snpsstr_allele2!=null) {
+				
+				Iterator itVarid = mapVarid2Snpsstr_allele2.keySet().iterator();
+				while(itVarid.hasNext()) {
+					BigDecimal varid= (BigDecimal)itVarid.next();
+					
+					String allele2str = (String)mapVarid2Snpsstr_allele2.get( varid );
+					for(int iStr=0; iStr<allele2str.length(); iStr++) {
+						char allele2i =allele2str.charAt(iStr);
+						if(allele2i!='*' && allele2i!='0' && allele2i!='.' && allele2i!=' ') {
+					
+							Map mapTableidx2Nuc = mapVarid2SnpsAllele2str.get( varid );
+							if(mapTableidx2Nuc==null) {
+								mapTableidx2Nuc = new HashMap();
+								mapVarid2SnpsAllele2str.put(varid , mapTableidx2Nuc);
+							}
+							mapTableidx2Nuc.put( iStr, allele2i);
+						}
+					}
+				}
+			}; // else throw new RuntimeException("heteroSnps==null and mapVarid2Snpsstr_allele2==null ... no allele2 data");
+			
+			
+			// get splice variants
+			Set setSpliceAcceptorsPos = null;
+			Set setSpliceDonorsPos = null;
+			//if(params.isbColorSpliceSNP()) {
+			if(true) {
+				
+				Set setSpliceAcceptors= null;
+				Set setSpliceDonors= null;
+				
+				snpsspliceacceptorDAO = (SnpsSpliceAcceptorDAO)AppContext.checkBean(snpsspliceacceptorDAO, "SnpsSpliceAcceptorDAO");
+				snpssplicedonorDAO = (SnpsSpliceDonorDAO)AppContext.checkBean(snpssplicedonorDAO, "SnpsSpliceDonorDAO");
+				if(setPositions!=null && !setPositions.isEmpty()) {
+					setSpliceAcceptors = snpsspliceacceptorDAO.getSNPsIn(chr, setPositions);
+					setSpliceDonors = snpssplicedonorDAO.getSNPsIn(chr, setPositions);
+				}
+				else if(colLocus!=null && !colLocus.isEmpty()) {
+						setSpliceAcceptors = snpsspliceacceptorDAO.getSNPsIn(chr, colLocus);
+						setSpliceDonors = snpssplicedonorDAO.getSNPsIn(chr, colLocus);							
+				} else {
+					setSpliceAcceptors = snpsspliceacceptorDAO.getSNPsBetween(chr, start.intValue(), end.intValue());  
+					setSpliceDonors = snpssplicedonorDAO.getSNPsBetween(chr, start.intValue(), end.intValue());							
+				}
+				
+				setSpliceAcceptorsPos = new HashSet();
+				setSpliceDonorsPos = new HashSet();
+				Iterator<SnpsSpliceAcceptor>  itAcceptors = setSpliceAcceptors.iterator();
+				while(itAcceptors.hasNext()) {
+					SnpsSpliceAcceptor acc = itAcceptors.next();
+					setSpliceAcceptorsPos.add( acc.getPos());
+				}
+				Iterator<SnpsSpliceDonor>  itDonor = setSpliceDonors.iterator();
+				while(itDonor.hasNext()) {
+					SnpsSpliceDonor acc = itDonor.next();
+					setSpliceDonorsPos.add( acc.getPos());
+				}
+				
+			}
+			
+			
+			//VariantStringData vardata = new VariantStringData(snpsposlist, );
+
+			SNPsStringData snpstrdata = new  SNPsStringData(snpsposlist, mapIdx2Pos, strRef, mapVarid2Snpsstr, mapVarid2SnpsAllele2str,
+					mapIdx2NonsynAlleles, setSnpInExonTableIdx, setSpliceDonorsPos,  setSpliceAcceptorsPos);
+			
+			return snpstrdata;
+
+		
+	}
+	
+	
+	private SNPsStringData getSNPsStringDataBackup(GenotypeQueryParams params, Collection colVarids, String chr, BigDecimal start, BigDecimal end, Collection setPositions, Collection colLocus) { //, boolean exactMismatch, int firstRow, int maxRows) {
+		// TODO Auto-generated method stub
+
+		// get snp positions/index
+		snpstringallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpstringallvarsposService, "VSnpRefposindexDAO") ;
+		
+		SnpsStringDAO snpstrSnpsAllele1AllvarsDAO;
+		SnpsStringDAO snpstrSnpsAllele2AllvarsDAO;
+		BigDecimal snptype; 
+		if(params.isbCoreonly()) {
+			snpstrSnpsAllele1AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrCoresnpsAllele1AllvarsDAO, "H5SNPCoreAllele1DAO");
+			snpstrSnpsAllele2AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrCoresnpsAllele1AllvarsDAO, "H5SNPCoreAllele2DAO");
+			snptype=SnpcoreRefposindexDAO.TYPE_3KCORESNP;
+		} else {
+			snptype=SnpcoreRefposindexDAO.TYPE_3KALLSNP;
+			snpstrSnpsAllele1AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrAllsnpsAllele1AllvarsDAO, "H5SNPUniAllele1DAO");
+			snpstrSnpsAllele2AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrAllsnpsAllele2AllvarsDAO, "H5SNPUniAllele2DAO");
+		}
+		    
+		
+		List<SnpsAllvarsPos> snpsposlist = null;
+		List listpos = null;
+		
+		if(colVarids==null || colVarids.isEmpty()) {
+//			if(colLocus!=null && !colLocus.isEmpty()) {
+//				AppContext.resetTimer("getSNPsString start5");
+//				snpsposlist  = snpstringallvarsposService.getSNPsInChromosome(colLocus, snptype);
+//						
+//			} else 
 			if(setPositions!=null && !setPositions.isEmpty()) {
 				listpos = new ArrayList();
 				listpos.addAll(new TreeSet(setPositions));
@@ -243,6 +754,11 @@ public class AllSnpsStringService implements VariantStringService {
 				snpsposlist  = snpstringallvarsposService.getSNPs(chr.toString(), start.intValue(), end.intValue(),   snptype, -1, -1);
 			}
 		} else {
+//			if(colLocus!=null && !colLocus.isEmpty()) {
+//				AppContext.resetTimer("getSNPsString start6");
+//				snpsposlist  = snpstringallvarsposService.getSNPsInChromosome(colLocus, snptype);
+//				
+//			} else
 			if(setPositions!=null && !setPositions.isEmpty()) {
 				listpos = new ArrayList();
 				listpos.addAll(new TreeSet(setPositions));
@@ -512,11 +1028,11 @@ public class AllSnpsStringService implements VariantStringService {
 				snpsspliceacceptorDAO = (SnpsSpliceAcceptorDAO)AppContext.checkBean(snpsspliceacceptorDAO, "SnpsSpliceAcceptorDAO");
 				snpssplicedonorDAO = (SnpsSpliceDonorDAO)AppContext.checkBean(snpssplicedonorDAO, "SnpsSpliceDonorDAO");
 				if(setPositions!=null && !setPositions.isEmpty()) {
-					setSpliceAcceptors = snpsspliceacceptorDAO.findSnpSpliceAcceptorByChrPosIn(chr, setPositions);
-					setSpliceDonors = snpssplicedonorDAO.findSnpSpliceDonorByChrPosIn(chr, setPositions);							
+					setSpliceAcceptors = snpsspliceacceptorDAO.getSNPsIn(chr, setPositions);
+					setSpliceDonors = snpssplicedonorDAO.getSNPsIn(chr, setPositions);							
 				} else {
-					setSpliceAcceptors = snpsspliceacceptorDAO.findSnpSpliceAcceptorByChrPosBetween(chr, start.intValue(), end.intValue());  
-					setSpliceDonors = snpssplicedonorDAO.findSnpSpliceDonorByChrPosBetween(chr, start.intValue(), end.intValue());							
+					setSpliceAcceptors = snpsspliceacceptorDAO.getSNPsBetween(chr, start.intValue(), end.intValue());  
+					setSpliceDonors = snpssplicedonorDAO.getSNPsBetween(chr, start.intValue(), end.intValue());							
 				}
 				
 				setSpliceAcceptorsPos = new HashSet();
@@ -544,6 +1060,7 @@ public class AllSnpsStringService implements VariantStringService {
 
 		
 	}
+	
 	
 	/**
 	 * Contains nucleotide string sequences for each variety based on query criteria
@@ -610,7 +1127,21 @@ public class AllSnpsStringService implements VariantStringService {
 			return mapIdx2Pos;
 		}
 		
+		public SNPsStringData append(SNPsStringData rightdata) {
 		
+			
+			this.strRef = strRef;
+			this.mapVarid2Snpsstr = mapVarid2Snpsstr;
+			this.mapVarid2SnpsAllele2str = mapVarid2SnpsAllele2str;
+			this.mapIdx2NonsynAlleles = mapIdx2NonsynAlleles;
+			this.setSnpInExonTableIdx = setSnpInExonTableIdx;
+			this.listSnpsPos = listSnpsPos;
+			this.mapIdx2Pos = mapIdx2Pos;
+			this.setSnpSpliceAcceptorPos = setSnpSpliceAcceptorPos;
+			this.setSnpSpliceDonorPos = setSnpSpliceDonorPos;
+			
+			return this;
+		}
 		
 	}
 	
@@ -753,6 +1284,13 @@ public class AllSnpsStringService implements VariantStringService {
 				
 		return misCount;
 	}
+
+@Override
+public VariantStringData getVariantIndelsString(GenotypeQueryParams params)
+		throws Exception {
+	// TODO Auto-generated method stub
+	return null;
+}
   
 	
 

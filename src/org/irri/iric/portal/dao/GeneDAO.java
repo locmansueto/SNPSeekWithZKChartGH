@@ -10,13 +10,17 @@ public interface GeneDAO {
 	 * Get all genes
 	 * @return
 	 */
-	Set findAllGene();
+	//Set findAllGene();
 	
 	/**
 	 * Get Gene object with name
 	 * @param name
 	 * @return
 	 */
-	Gene findGeneByName(String name);
+	//Gene findGeneByName(String name);
+
+	Gene findGeneByName(String name, Integer organismId);
+
+	Set findAllGene(Integer organismId);
 	
 }

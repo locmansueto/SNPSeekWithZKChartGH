@@ -2,6 +2,7 @@ package org.irri.iric.portal.chado.dao;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -14,8 +15,10 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.Session;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.domain.VLocusCvterm;
+import org.irri.iric.portal.chado.domain.VLocusNotes;
 import org.irri.iric.portal.domain.Locus;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
@@ -553,11 +556,24 @@ public class VLocusCvtermDAOImpl extends AbstractJpaDao<VLocusCvterm> implements
 	}
 
 	@Override
-	public List<Locus> getLocusByDescription(String goterm) {
+	public List<Locus> getLocusByDescription(String goterm, String organism) {
 		// TODO Auto-generated method stub
-		List list=new ArrayList();
-		list.addAll( findVLocusCvtermByCvterm(goterm) );
-		return list;
+		
+		
+		String sql = "select f.feature_id, f.uniquename name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, cv.cvterm_id, db.accession, c.name cv_name, "
+		  + " dbms_lob.substr(fp.value,1000,1) || '; GOterm=' || cv.name  cvterm, f.organism_id, o.common_name " 
+		  + " from iric.feature f, iric.featureloc fl, iric.feature_cvterm fc, iric.cvterm cv , iric.feature fsrc, iric.organism o, iric.dbxref db, iric.cv c , IRIC.FEATUREPROP FP , iric.cvterm CV2 " 
+		+ " where fc.feature_id=f.feature_id and  fc.cvterm_id=cv.cvterm_id and fsrc.feature_id=fl.srcfeature_id and fl.feature_id=f.feature_id and f.organism_id=o.organism_id "
+		+ " and c.cv_id=cv.cv_id and c.name in('molecular_function','biological_process','cellular_component') "
+		+ " and cv.dbxref_id=db.dbxref_id AND FP.FEATURE_ID=F.FEATURE_ID AND FP.TYPE_ID=CV2.CVTERM_ID AND CV2.name='Note'" 
+		+ " and cv.name='" + goterm.replace("'", "''") + "'"
+		+ " and o.common_name='" + organism + "'"
+		+ " order by contig_name, fmin, fmax";
+		
+		//List list=new ArrayList();
+		//list.addAll( findVLocusCvtermByCvterm(goterm) );
+		//return list;
+		return executeSQL(sql);
 	}
 
 	@Override
@@ -582,6 +598,7 @@ public class VLocusCvtermDAOImpl extends AbstractJpaDao<VLocusCvterm> implements
 
 		return list;
 	}
+	
 
 	@Override
 	public List<Locus> getLocusByRegion(String contig, Long start, Long end,
@@ -589,7 +606,34 @@ public class VLocusCvtermDAOImpl extends AbstractJpaDao<VLocusCvterm> implements
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List getLocusByContigPositions(String contig, Collection posset,
+			String organism) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
+
+	private List<Locus> executeSQL(String sql) {
+		//System.out.println("executing :" + sql);
+		//log.info("executing :" + sql);
+		AppContext.debug("executing " + sql);
+		List listResult = getSession().createSQLQuery(sql).addEntity(VLocusCvterm.class).list();
+		AppContext.debug("result " + listResult.size() + " loci");
+		return listResult;
+	}
 	
+	private Session getSession() {
+		return entityManager.unwrap(Session.class);
+	}
+
+	@Override
+	public List getAllTerms(String cv, String organism) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 }

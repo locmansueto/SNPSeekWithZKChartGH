@@ -39,7 +39,7 @@ import org.irri.iric.portal.domain.Locus;
 @Table(schema = "IRIC", name = "V_LOCUS_NOTES")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VLocusNotes")
-public class VLocusNotes implements Serializable, Locus {
+public class VLocusNotes implements Serializable, Locus, Comparable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -314,6 +314,7 @@ public class VLocusNotes implements Serializable, Locus {
 
 	/**
 	 */
+	/*
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
@@ -326,6 +327,9 @@ public class VLocusNotes implements Serializable, Locus {
 			return false;
 		return true;
 	}
+	*/
+	
+	
 
 	@Override
 	public String getUniquename() {
@@ -334,8 +338,16 @@ public class VLocusNotes implements Serializable, Locus {
 	}
 
 	@Override
-	public Integer getChr() {
+	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
+		return compareTo(obj)==0;
+	}
+
+	@Override
+	public String getChr() {
+		// TODO Auto-generated method stub
+		return getContig();
+		/*
 		try {
 			return Integer.valueOf( this.getContig().toLowerCase().replace("chr0","").replace("chr","") );
 		} catch(Exception ex) {
@@ -343,12 +355,33 @@ public class VLocusNotes implements Serializable, Locus {
 			AppContext.debug("can't convert contig " + getContig() + " to chromosome");
 		}
 		return null;
+		*/
 	}
 
 	@Override
 	public String getContig() {
 		// TODO Auto-generated method stub
 		return this.contigName;
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return this.getNotes();
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		VLocusNotes l1=(VLocusNotes)this;
+		VLocusNotes l2=(VLocusNotes)o;
+		int ret = l1.getContig().compareTo(l2.getContig());
+		if(ret!=0) return ret;
+		ret = l1.getFmin().compareTo(l2.getFmin());
+		if(ret!=0) return ret;
+		ret = l1.getFmax().compareTo(l2.getFmax());
+		return ret;
+		
 	}
 	
 	

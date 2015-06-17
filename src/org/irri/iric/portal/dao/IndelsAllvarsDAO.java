@@ -14,15 +14,15 @@ public interface IndelsAllvarsDAO {
 
 	public Set<IndelsAllvars> getAllIndelCalls();
 
-	public Set findIndelAllvarsByChrPosBetween(Integer chr, BigDecimal start,
+	public Set findIndelAllvarsByChrPosBetween(String chr, BigDecimal start,
 			BigDecimal end);
 
-	public Set findIndelAllvarsByVarChrPosBetween(Collection varids, Integer chr, BigDecimal start,
+	public Set findIndelAllvarsByVarChrPosBetween(Collection varids, String chr, BigDecimal start,
 			BigDecimal end);
 
-	public Set findIndelAllvarsByVarChrPosIn(Collection varList, Integer chr,
+	public Set findIndelAllvarsByVarChrPosIn(Collection varList, String chr,
 			Collection posList);
 
-	public Set findIndelAllvarsByChrPosIn(Integer chr, Collection posList);
+	public Set findIndelAllvarsByChrPosIn(String chr, Collection posList);
 
 }

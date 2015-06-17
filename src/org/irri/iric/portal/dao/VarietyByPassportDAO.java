@@ -10,5 +10,7 @@ public interface VarietyByPassportDAO {
 
 	List findVIricstocksByPassportByTypeIdValueContaining(BigDecimal type_id,
 			String value);
+
+	List findVarietyByPassport(String sPassId);
 	
 }

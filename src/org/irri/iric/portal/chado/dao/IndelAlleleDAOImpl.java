@@ -17,8 +17,16 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.Session;
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.domain.IndelAllele;
+import org.irri.iric.portal.chado.domain.MismatchCount;
 import org.irri.iric.portal.domain.IndelsAllvars;
+import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.domain.MultiReferenceConversion;
+import org.irri.iric.portal.domain.MultiReferenceConversionImpl;
+import org.irri.iric.portal.domain.MultiReferencePositionImpl;
+import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
 import org.irri.iric.portal.flatfile.dao.SnpcoreRefposindexDAO;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
@@ -311,7 +319,7 @@ public class IndelAlleleDAOImpl extends AbstractJpaDao<IndelAllele> implements
 		if(type!=SnpcoreRefposindexDAO.TYPE_3KALLINDEL) throw new RuntimeException("type should be SnpcoreRefposindexDAO.TYPE_3KALLINDEL");
 		
 		List retlist = new ArrayList();
-		retlist.addAll( findIndelAlleleByChrPosBetween(Integer.valueOf(chromosome), startPos, endPos) );
+		retlist.addAll( findIndelAlleleByChrPosBetween(Integer.valueOf(AppContext.guessChrFromString(chromosome)), startPos, endPos) );
 		return retlist;
 	}
 
@@ -326,7 +334,7 @@ public class IndelAlleleDAOImpl extends AbstractJpaDao<IndelAllele> implements
 	@Override
 	public Map<BigDecimal,IndelAllele> getMapIndelId2Indels(String chromosome, Integer startPos, Integer endPos) {
 		// TODO Auto-generated method stub
-		Iterator<IndelAllele> itIndels =  findIndelAlleleByChrPosBetween(Integer.valueOf(chromosome), startPos, endPos).iterator();
+		Iterator<IndelAllele> itIndels =  findIndelAlleleByChrPosBetween(Integer.valueOf( AppContext.guessChrFromString(chromosome)), startPos, endPos).iterator();
 		
 		Map mapIndelid2Indels = new HashMap();
 		while(itIndels.hasNext()) {
@@ -336,25 +344,87 @@ public class IndelAlleleDAOImpl extends AbstractJpaDao<IndelAllele> implements
 		return mapIndelid2Indels;
 	}
 
+	
+
+	
+	private List<IndelAllele> executeSQL(String sql) {
+		AppContext.debug("executing :" + sql);
+		//log.info("executing :" + sql);
+		return  getSession().createSQLQuery(sql).addEntity(IndelAllele.class).list();
+	}
+	
+	private Session getSession() {
+		return entityManager.unwrap(Session.class);
+	}
+	
+	
 	@Override
 	public Map<BigDecimal,IndelAllele> getMapIndelId2Indels(String chromosome, Collection poslist) {
 		// TODO Auto-generated method stub
-			Iterator<IndelAllele> itIndels =  findIndelAlleleByChrPosIn(Integer.valueOf(chromosome), poslist).iterator();
-			
-			Map mapIndelid2Indels = new HashMap();
-			while(itIndels.hasNext()) {
-				IndelAllele indel = itIndels.next();
-				mapIndelid2Indels.put(indel.getIndelId(), indel);
+		
+		Iterator<IndelAllele> itIndels=null;
+		if(chromosome.toLowerCase().equals("any")) {
+			Map<String,Set<BigDecimal>> mapcontig2pos = MultiReferencePositionImpl.getMapContig2SNPPos(poslist);
+			Iterator<String> itCont = mapcontig2pos.keySet().iterator();
+			StringBuffer buff = new StringBuffer();
+			while(itCont.hasNext()) {
+				String cont=itCont.next();
+				Set pos = mapcontig2pos.get(cont);
+				buff.append(  " (SRC_FEATURE_ID=" + (Integer.valueOf(AppContext.guessChrFromString(cont))+2) + " and POS IN (" ); 
+				Iterator<BigDecimal> itPos = pos.iterator();
+				while(itPos.hasNext()) {
+					buff.append( itPos.next().longValue()-1 );
+					if(itPos.hasNext()) buff.append(",");
+				}
+				buff.append(")) ");
+				if(itCont.hasNext()) buff.append(" OR ");
 			}
-			return mapIndelid2Indels;
+			buff.append("");
+			String sql = "select * from iric.indel_allele where " + buff + " order by SRC_FEATURE_ID, POS";
+			itIndels=executeSQL(sql).iterator();
+		}
+		else if(chromosome.toLowerCase().equals("loci")) {
+			Map<String,Set<Locus>> mapcontig2locus =  MultiReferencePositionImpl.getMapContig2Loci(poslist);
+			
+			Iterator<String> itCont = mapcontig2locus.keySet().iterator();
+			StringBuffer buff = new StringBuffer();
+			while(itCont.hasNext()) {
+				String cont=itCont.next();
+				Set pos = mapcontig2locus.get(cont);
+				buff.append(  " (SRC_FEATURE_ID=" + (Integer.valueOf(AppContext.guessChrFromString(cont))+2) + " and (" ) ;  
+				Iterator<Locus> itPos = pos.iterator();
+				while(itPos.hasNext()) {
+					Locus loc = itPos.next();
+					buff.append(" (POS between " + (loc.getFmin().longValue()-1) + " and " + (loc.getFmax().longValue()-1) + ") ");
+					if(itPos.hasNext()) buff.append(" or ");
+				}
+				buff.append(")) ");
+				if(itCont.hasNext()) buff.append(" OR ");
+			}
+			buff.append("");
+			String sql = "select * from iric.indel_allele where " + buff + " order by SRC_FEATURE_ID, POS";
+			itIndels=executeSQL(sql).iterator();
+		} else {
+			itIndels =  findIndelAlleleByChrPosIn(Integer.valueOf(AppContext.guessChrFromString(chromosome)), poslist).iterator();
+		}
+		
+		Map mapIndelid2Indels = new HashMap();
+		while(itIndels.hasNext()) {
+			IndelAllele indel = itIndels.next();
+			mapIndelid2Indels.put(indel.getIndelId(), indel);
+		}
+		return mapIndelid2Indels;
+		
+		
 	}
 
+	/*
 	@Override
 	public Map getMapIndelId2IndelsByIndelId(Collection indelids) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+*/
 
 	@Override
 	public List getSNPsInChromosome(String chr, Collection posset,
@@ -365,7 +435,23 @@ public class IndelAlleleDAOImpl extends AbstractJpaDao<IndelAllele> implements
 		retlist.addAll(findIndelAlleleByChrPosIn(Integer.valueOf(chr)+2, posset) );
 		return  retlist;
 	}
-	
+//
+//	@Override
+//	public List getSNPsInChromosomes(Map<String, Collection> mapChr2Posset,
+//			BigDecimal type) {
+//		// TODO Auto-generated method stub
+//		
+//		List listSNPs = new ArrayList();
+//		Iterator<String> itchr=mapChr2Posset.keySet().iterator();
+//		while(itchr.hasNext()) {
+//			String chr = itchr.next();
+//			Collection colPos = mapChr2Posset.get(chr);
+//			listSNPs.addAll( getSNPsInChromosome(chr, colPos, type)); 
+//		}
+//		
+//		return listSNPs;
+//	}
+//	
 	
 	
 	

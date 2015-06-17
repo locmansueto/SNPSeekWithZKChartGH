@@ -4,5 +4,7 @@ import java.util.List;
 
 public interface CvTermDAO {
 
+		public List getAllTerms(String cv, String organism);
+		public List getAllTerms(String organism);
 		public List getAllTerms();
 }

@@ -20,7 +20,7 @@ public interface LocalAlignment {
 	public Long getQend();
 	public Long getSstart();
 	public Long getSend();
-	public Integer getSStrand();
+	public Integer getSstrand();
 	
 	public Double getRawScore();
 	public Long getAlignmentLength();

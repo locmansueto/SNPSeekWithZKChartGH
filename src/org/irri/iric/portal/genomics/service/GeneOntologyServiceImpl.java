@@ -8,7 +8,12 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.MultipartPostMethod;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.dao.CvTermLocusCountDAO;
+import org.irri.iric.portal.dao.CvTermPathDAO;
+import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.domain.Locus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.*;
 
@@ -16,10 +21,18 @@ import java.io.*;
 import java.net.*;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 @Service("GeneOntologyService")
 public class GeneOntologyServiceImpl implements GeneOntologyService{
 
+	@Autowired
+	private CvTermPathDAO cvtermpathDAO;
+	@Autowired
+	private  CvTermLocusCountDAO cvtermlocuscountdao;
+	@Autowired
+	private ListItemsDAO listitemsdao;
+	
 	@Override
 	public String queryGO(String q) throws Exception {
 		// TODO Auto-generated method stub
@@ -44,6 +57,14 @@ public class GeneOntologyServiceImpl implements GeneOntologyService{
 		
 	}
 	
+	@Override
+	public List countLociInTerms(String organism, Collection genelist, String cv)  throws Exception {
+	
+		 listitemsdao = (ListItemsDAO)AppContext.checkBean( listitemsdao,"ListItemsDAO");
+		 cvtermlocuscountdao = (CvTermLocusCountDAO)AppContext.checkBean( cvtermlocuscountdao,"CvTermLocusCountDAO");
+		 return cvtermlocuscountdao.getCvTermLocusCount( listitemsdao.getOrganismByName(organism).getOrganismId(), genelist, cv);
+		 
+	}
 
 	@Override
 	public String overRepresentationTest(String organism, Collection genelist, String enrichmentType)  throws Exception
@@ -110,5 +131,23 @@ public class GeneOntologyServiceImpl implements GeneOntologyService{
         return response;
     }
 
+
+	@Override
+	public List getCVtermAncestors(String cv, String term) {
+		// TODO Auto-generated method stub
+		cvtermpathDAO = (CvTermPathDAO)AppContext.checkBean(cvtermpathDAO, "CvTermPathDAO");
+		return cvtermpathDAO.getAncestors(cv, term);
+	}
+
+
+	@Override
+	public List getCVtermDescendants(String cv, String term) {
+		// TODO Auto-generated method stub
+		cvtermpathDAO = (CvTermPathDAO)AppContext.checkBean(cvtermpathDAO, "CvTermPathDAO");
+		return cvtermpathDAO.getDescendants(cv, term);
+	}
+
         
+	
+	
 }

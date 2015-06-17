@@ -159,6 +159,6 @@ public interface VGoOrganismDAO extends JpaDao<VGoOrganism>, CvTermDAO {
 	 */
 	public Set<VGoOrganism> findVGoOrganismByCvtermContaining(String cvterm_1, int startResult, int maxRows) throws DataAccessException;
 
-	List getAllTermsByOrganism(String organism);
+	//List getAllTermsByOrganism(String organism);
 
 }

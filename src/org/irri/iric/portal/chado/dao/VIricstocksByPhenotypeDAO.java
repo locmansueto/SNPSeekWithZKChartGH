@@ -31,13 +31,13 @@ public interface VIricstocksByPhenotypeDAO extends
 	 * JPQL Query - findVIricstocksByPhenotypeByPrimaryKey
 	 *
 	 */
-	public VIricstocksByPhenotype findVIricstocksByPhenotypeByPrimaryKey(Integer iricStockPhenotypeId) throws DataAccessException;
+	public VIricstocksByPhenotype findVIricstocksByPhenotypeByPrimaryKey(BigDecimal iricStockPhenotypeId) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstocksByPhenotypeByPrimaryKey
 	 *
 	 */
-	public VIricstocksByPhenotype findVIricstocksByPhenotypeByPrimaryKey(Integer iricStockPhenotypeId, int startResult, int maxRows) throws DataAccessException;
+	public VIricstocksByPhenotype findVIricstocksByPhenotypeByPrimaryKey(BigDecimal iricStockPhenotypeId, int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstocksByPhenotypeByOriCountry

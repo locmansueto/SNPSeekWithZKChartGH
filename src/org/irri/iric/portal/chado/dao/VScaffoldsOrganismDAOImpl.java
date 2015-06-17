@@ -1,5 +1,6 @@
 package org.irri.iric.portal.chado.dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.domain.VScaffoldsOrganism;
 import org.irri.iric.portal.domain.Scaffold;
 import org.skyway.spring.util.dao.AbstractJpaDao;
@@ -412,7 +414,27 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 	@Override
 	public Long getScaffoldLength(String scaffold, String organism) {
 		// TODO Auto-generated method stub
+		AppContext.debug("scafold=" + scaffold + ", organism=" + organism);
+		
 		Query query = createNamedQuery("findVScaffoldsOrganismByUniquenameCommonName", -1, -1, scaffold, organism);
+		return ((VScaffoldsOrganism)query.getResultList().get(0)).getSeqlen().longValue();
+	}
+
+	@Override
+	public List<Scaffold> getScaffolds(BigDecimal organism) {
+		// TODO Auto-generated method stub
+		List list = new ArrayList();
+		list.addAll(findVScaffoldsOrganismByOrganismId( organism));
+		return list;
+	}
+
+	@Override
+	public Long getScaffoldLength(String scaffold, BigDecimal organism) {
+		// TODO Auto-generated method stub
+		
+		AppContext.debug("scafold=" + scaffold + ", organism=" + organism);
+		
+		Query query = createNamedQuery("findVScaffoldsOrganismByUniquenameOrganismId", -1, -1, scaffold, organism);
 		return ((VScaffoldsOrganism)query.getResultList().get(0)).getSeqlen().longValue();
 	}
 	

@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -310,6 +311,19 @@ public class VSnpAllvarsPosDAOImpl extends AbstractJpaDao<VSnpAllvarsPos>
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+//	@Override
+//	public List getSNPsInChromosomes(Map<String, Collection> mapChr2Posset,
+//			BigDecimal type) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+//	@Override
+//	public List getSNPsInChromosome(Collection locuslist, BigDecimal type) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 
 	

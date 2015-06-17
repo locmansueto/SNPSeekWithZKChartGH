@@ -130,6 +130,13 @@ public class VariantTableSerialImpl implements VariantTable {
 	}
 
 
+	@Override
+	public String[] getContigs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 
 }

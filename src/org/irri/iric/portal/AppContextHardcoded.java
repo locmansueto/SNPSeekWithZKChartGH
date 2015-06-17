@@ -389,7 +389,7 @@ public class AppContextHardcoded {
     }
 
     public static String getDefaultOrganism() {
-    	return "rice";
+    	return "Japonica nipponbare";
     }
     
     /**

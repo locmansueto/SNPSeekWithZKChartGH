@@ -17,21 +17,18 @@
 		GenomicsFacade genomics = (GenomicsFacade)SpringUtil.getBean("GenomicsFacade");
 		List listOrgs = genomics.getOrganisms();
 		
-		List listGoterms = new ArrayList();
-		listGoterms.add("");
-		listGoterms.addAll(genomics.getGotermsByOrganism(AppContext.getDefaultOrganism()) );
 		
 		List listLocuslist = new ArrayList();
 		listLocuslist.add("");
 		listLocuslist.addAll( workspace.getLocuslistNames() );
 		listLocuslist.add("create new list...");
 		
-		List listContigs = new ArrayList();
-		listContigs.add("");
-		Iterator itContigs = genomics.getContigsByOrganism("rice").iterator();
-		while(itContigs.hasNext()) {
-			listContigs.add( ((Scaffold)itContigs.next()).getUniquename());
-		}
+		List listMySnps = new ArrayList();
+		listMySnps.add("");
+		listMySnps.addAll( workspace.getSnpPositionListNames());
+		listMySnps.add("create new list...");
+		
+		
 		
 		
 </zscript>
@@ -39,8 +36,8 @@
 
 <window border="none" apply="org.irri.iric.portal.genomics.zkui.LocusQueryController">
 
-<hbox height="230px" >
-<grid id="gridQuery" width="100%" height="350px">
+<hbox height="260px" >
+<grid id="gridQuery" width="100%" height="300px">
 
 <rows>
     <row spans="4">
@@ -48,101 +45,162 @@
 	</row>
    
    
-<row spans="1,2" >
+<row spans="4" >
+<hbox>
 <label value="Reference genome" style="font-size:14px;font-weight:bold;color:gray;"/>
-<listbox id="listboxOrganism" mold="select" disabled="true"/>
+<vbox width="20px"/>
+<listbox id="listboxOrganism" mold="select" disabled="false"/>
     <zscript><![CDATA[			
+					listOrgs.add("ALL");  
 			        listboxOrganism.setModel(new SimpleListModel(listOrgs));
 			        listboxOrganism.setSelectedIndex(0);
 			        //listboxOrganism.setDisabled(true);
 			    ]]></zscript>
+<vbox width="50px"/>			    
+<label value="Search by" style="font-size:14px;font-weight:bold;color:gray;"/>
+<vbox width="20px"/>
+<listbox id="listboxSearchby" mold="select">
+<listitem selected="true" label="Gene function"/>
+<listitem  label="Gene Ontology term"/>
+<listitem  label="Region"/>
+<listitem  label="Sequence"/>
+<listitem  label="My SNP List"/>
+</listbox>
+</hbox>
+</row>
+
+<row spans="4">
+<label value=" "/>
 </row>
    
-<row spans="1,2,1">
-<label value="Gene function" style="font-size:14px;font-weight:bold;color:gray;"/>
+<row spans="4" id="rowGeneFunction" visible="true">
+
+<!--  label value="Gene function" style="font-size:14px;font-weight:bold;color:gray;"/ -->
+<hbox>
 <textbox id="textboxGenefunction"/>
+<vbox width="20px"/>
 <button id="searchGenefunctionButton" label="Search by function"   style="font-size:14px;font-weight:bold;color:gray;"
   width="150px" height="30px"  autodisable="self"
   />
-
+</hbox>
 </row>
 
-<row spans="1,2,1">
-<label value="GO term" style="font-size:14px;font-weight:bold;color:gray;"/>
+<row spans="4" id="rowGoTerm" visible="false">
+<!--  label value="GO term" style="font-size:14px;font-weight:bold;color:gray;"/ -->
 <hbox>
-<!--  textbox id="textboxGOTerm" visible="false"/ -->
-<listbox id="listboxGOTerm" mold="select"/>
-    <zscript><![CDATA[			
+<vbox>
+<listbox id="listboxCV" mold="select">
+<listitem value="biological_process" selected="true" label="GO Biological process"/>
+<listitem value="cellular_component" label="GO Cellular component"/>
+<listitem value="molecular_function" label="GO Molecular function"/>
+</listbox>
+<listbox id="listboxGOTerm" mold="select" width="100%"/>
+    <!--  zscript><![CDATA[			
 			        listboxGOTerm.setModel(new SimpleListModel(listGoterms));
 			        listboxGOTerm.setSelectedIndex(0);
-			    ]]></zscript>
+			    ]]></zscript -->
+			    
+<hbox>
+<vbox>
+<label id="labelGOAncestors" value=""/>
+<listbox id="listboxGOAncestors" width="300px" height="100px"/>
+</vbox>
+<vbox width="50px"/>
+<vbox>
+<label id="labelGODescendants" value=""/>
+<listbox id="listboxGODescendants" width="300px" height="100px"/>
+</vbox>
+</hbox>			    
+</vbox>
 <vbox width="20px"/>		
 <checkbox id="checkboxIncludeDescendants" label="" visible="false"/>
 <label value="Include descendants" tooltip="popupDescendants"  visible="false"/>
-</hbox>			    
- <button id="searchGOButton" label="Search by GO term"   style="font-size:14px;font-weight:bold;color:gray;"
-  width="150px" height="30px"  autodisable="self"
-  />
+<vbox width="20px"/>
 
+ <button id="searchGOButton" label="Search by GO term"   style="font-size:14px;font-weight:bold;color:gray;"
+  width="150px" height="30px"  autodisable="self"/>
+  <hbox height="15px"/>
+</hbox>
 </row>
 
-
-<row spans="1,2,1">
-<label value="Region" style="font-size:14px;font-weight:bold;color:gray;"/>
+ 
+<row spans="4" id="rowRegion" visible="false">
+<!-- label value="Region" style="font-size:14px;font-weight:bold;color:gray;"/ -->
 <hbox>
 <label value="Contig " pre="true"/>
-<listbox id="listboxContig" mold="select"/>
+<custom-attributes org.zkoss.zul.listbox.rod="true"/>
+<!--  listbox id="listboxContig" mold="select"/ -->
+<combobox id="listboxContig"  buttonVisible="false"  readonly="false" autodrop="true"/> 
+<label id="labelChrExample" pre="true" value="(ex. chr01)" style="font-size:10px"/> 
 <label value="     Start " pre="true"/>
 <intbox id="intboxContigStart"/>
 <label value="     End " pre="true"/>
 <intbox id="intboxContigEnd"/>
-</hbox>
+<vbox width="20px"/>
 <button id="searchRegionButton" label="Search by region"   style="font-size:14px;font-weight:bold;color:gray;"
   width="150px" height="30px"  autodisable="self"
   />
- <zscript><![CDATA[			
-			        listboxContig.setModel(new SimpleListModel(listContigs));
-			        listboxContig.setSelectedIndex(0);
-			    ]]></zscript>
 
+ </hbox>
 </row>
 
-<row spans="1,2,1" visible="false">
-<label value="Sequence" style="font-size:14px;font-weight:bold;color:gray;"/>
+
+<row spans="4" id="rowMySnpList" visible="false">
+<hbox>
+<label value="My SNP List " pre="true"/>
+<listbox id="listboxMySNPList" mold="select" />
+ <zscript><![CDATA[			
+			        listboxMySNPList.setModel(new SimpleListModel(listMySnps));
+			        listboxMySNPList.setSelectedIndex(0);
+			    ]]></zscript>
+<vbox width="20px"/>
+<button id="searchMySnpListButton" label="Search SNP List"   style="font-size:14px;font-weight:bold;color:gray;"
+  width="150px" height="30px"  autodisable="self"
+  />
+</hbox>
+</row>
+
+
+<row spans="4" id="rowSequence" visible="false">
+<!--  label value="Sequence" style="font-size:14px;font-weight:bold;color:gray;"/ -->
+<hbox>
 <vbox>
-<textbox id="textboxSequence" rows="5" cols="60"/>
+<textbox id="textboxSequence" rows="7" cols="80"/>
+<label id="labelBlastType" value="Search rice genome using a nucleotide query"/>
 <hbox>
 <label value="Query type " pre="true"/>
 <listbox id="listboxBlastType" mold="select">
-<listitem label="blastn" selected="true"/>
+<listitem label="" selected="true"/>
+<listitem label="blastn"/>
 <listitem label="blastp" />
 <listitem label="blastx" />
 <listitem label="tblastn"/>
 <listitem label="tblastx"/>
 </listbox>
 <vbox width="20px"/>
+
 <label value="Database type " pre="true"/>
 <listbox id="listboxBlastDBType" mold="select">
-<listitem label="dna" selected="true"/>
+<listitem label="" selected="true"/>
+<listitem label="dna"/>
 <listitem label="cds"/>
 <listitem label="cdna" />
-
-<!--  listitem label="pep" / -->
+<listitem label="upstream3000" />
 </listbox>
 <vbox width="20px"/>
 <label value="Max Evalue" pre="true"/>
 <textbox id="textboxEvalue" value="10" width="50px"/>
-
-
-
 </hbox>
-<label id="labelBlastType" value="Search rice genome using a nucleotide query"/> 
+ 
 </vbox>
+<vbox width="20px"/>
 <button id="searchByBlast" label="BLAST sequence"   style="font-size:14px;font-weight:bold;color:gray;"
   width="150px" height="30px"  autodisable="self"
   />
-
+ </hbox>
+ 
 </row>
+
 
 
 <row spans="1,2,1" visible="false">
@@ -150,10 +208,10 @@
 <vbox>
 <hbox>
 <label value="My locus list  " pre="true"/>
-<listbox id="listboxMyLocusList" mold="select"/>
+<listbox id="listboxMyLocusList2" mold="select"/>
   <zscript><![CDATA[			
-			        listboxMyLocusList.setModel(new SimpleListModel(listLocuslist));
-			        listboxMyLocusList.setSelectedIndex(0);
+			        listboxMyLocusList2.setModel(new SimpleListModel(listLocuslist));
+			        listboxMyLocusList2.setSelectedIndex(0);
 			    ]]></zscript>
 </hbox>
 <hbox>
@@ -167,12 +225,33 @@
 </hbox>
 </vbox>
 
+
+
+
  <button id="searchEnrichment" label="Enrich Gene List"   style="font-size:14px;font-weight:bold;color:gray;"
   width="150px" height="30px"  autodisable="self"
   />
 
 </row>
 
+
+
+<row spans="4" id="rowCountGOTermLoci" visible="false">
+	
+<hbox>
+<label value="My locus list  " pre="true"/>
+<listbox id="listboxMyLocusList" mold="select"/>
+  <zscript><![CDATA[			
+			        listboxMyLocusList.setModel(new SimpleListModel(listLocuslist));
+			        listboxMyLocusList.setSelectedIndex(0);
+			    ]]></zscript>
+
+
+<vbox width="30px"/>
+  <button id="buttonCountGOTermLoci" label="Count Loci for GO Terms"   style="font-size:14px;font-weight:bold;color:gray;"
+  width="200px" height="30px"  autodisable="self" />
+  </hbox>
+</row>
 
 
 
@@ -194,15 +273,17 @@
 </rows>
 </grid>
 
-<tipBox height="230px" width="400px" desc="    LOCUS QUERY"
+<tipBox height="210px" width="400px" desc="    LOCUS QUERY"
 		details1= "  Select reference genome" 
-		details2= "  Type gene function OR"
-		details3= "      Select GO term OR"
-		details4= "      Contig and range"
-		details5= "" 
-		details6= "  Click corresponding Search button" 
-		details7= " "
-		details8= "   Result Table: List of loci matched"
+		details2= "  Select search criterion:"
+		details3= "     a. gene function"
+		details4= "     b. GO term"
+		details5= "     c. contig and region" 
+		details6= "     d. sequence" 
+		details7= "     e. SNP positions list"
+		details8= "  Click the Search Button "
+		details9= ""
+		details10= "  Result Table: List of matching loci"
 		/>
 </hbox>
 
@@ -222,30 +303,62 @@
  <hbox width="25px"/>
  </div>
  
-<grid id="gridLocus" width="100%"  visible="false">
+<grid id="gridLocus" width="100%"   mold="paging" pageSize="100" visible="false" >
 	        	<columns>
-                <column label="LOCUS" width="120px"/>
-                <column label="CONTIG" width="120px"/>
-                <column label="START"  width="100px"/>
-                <column label="STOP"  width="100px"/>
-                <column label="STRAND"  width="60px"/>
-                <column label="DESCRIPTION" />
+                <column label="LOCUS" width="180px"  sort="auto" />
+                <column label="CONTIG" width="120px"  sort="auto" />
+                <column label="START"  width="100px" sort="auto" />
+                <column label="STOP"  width="100px" sort="auto" />
+                <column label="STRAND"  width="60px" sort="auto" />
+                <column label="DESCRIPTION"  sort="auto" />
             	</columns>
 </grid>		
 
-<grid id="gridAlignment" width="100%" visible="false">
+
+<grid id="gridGOTerms" width="100%"   mold="paging" pageSize="100" visible="false" >
 	        	<columns>
-                <column label="QUERY" width="150px"/>
-                <column label="Q START" width="100px"/>
-                <column label="Q END"  width="100px"/>
-                <column label="SUBJECT"  width="150px"/>
-                <column label="S START"  width="100px"/>
-                <column label="S END"  width="100px" />
-                <column label="S STRAND"  width="100px" />
-                <column label="MATCHES"  width="150px" />
-                <column label="E VALUE"  width="100px" />
+                <column label="GO ACCESSION" width="120px"  sort="auto" />
+                <column label="GO TERM" width="400px"  sort="auto" />
+                <column label="LOCI COUNT"  width="100px" sort="auto" />
+                <column label="CV"  width="100px" sort="auto" />
             	</columns>
 </grid>		
+
+
+<grid id="gridAlignment"  mold="paging" pageSize="100" width="100%" visible="false">
+	        	<columns>
+                <column label="QUERY" width="150px"  sort="auto" />
+                <column label="Q START" width="100px"  sort="auto" />
+                <column label="Q END"  width="100px"  sort="auto" />
+                <column label="SUBJECT"  width="180px" sort="auto" />
+                <column label="S START"  width="100px" sort="auto" />
+                <column label="S END"  width="100px"  sort="auto" />
+                <column label="S STRAND"  width="100px"  sort="auto" />
+                <column label="MATCHES"  width="150px"  sort="auto" />
+                <column label="E VALUE"  width="100px"  sort="auto" />
+            	</columns>
+</grid>		
+
+<zscript>
+    gridAlignment.pagingChild.mold =  "os";
+	gridAlignment.pagingPosition = "both";
+    gridLocus.pagingChild.mold =  "os";
+	gridLocus.pagingPosition = "both";
+	
+	
+		         
+       String from=Executions.getCurrent().getParameter("from");
+       if(from!=null) { 
+			if(from.equals("snplist")) {
+       			listboxMySNPList.setSelectedIndex( listboxMySNPList.getItemCount()-2 );
+       			this.listboxSearchby.setSelectedIndex(4);
+       			//this.listboxSearchby.setSelectedItem( listboxSearchby.getItemAtIndex(4));
+       			this.rowMySnpList.setVisible(true);
+       		}
+       }
+		        
+	        
+</zscript>
 
 
 <popup id="popupDescendants" width="300px">

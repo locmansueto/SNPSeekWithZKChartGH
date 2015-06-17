@@ -221,4 +221,16 @@ public class VSnpAllvars implements Serializable, SnpsAllvars {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		if(getChr()>9)
+			return "chr" + getChr();
+		else 
+			return "chr0" + getChr();
+	}
+	
+	
+	
 }

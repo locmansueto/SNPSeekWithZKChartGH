@@ -329,6 +329,18 @@ public class VCvtermDbxrefDAOImpl extends AbstractJpaDao<VCvtermDbxref>
 		list.addAll(findAllVCvtermDbxrefs());
 		return list;
 	}
+
+	@Override
+	public List getAllTerms(String organism) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List getAllTerms(String cv, String organism) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

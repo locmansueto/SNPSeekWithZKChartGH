@@ -1,6 +1,7 @@
 package org.irri.iric.portal.chado.dao;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -92,9 +93,9 @@ public class VIricstocksByPhenotypeDAOImpl extends AbstractJpaDao<VIricstocksByP
 	 *
 	 */
 	@Transactional
-	public VIricstocksByPhenotype findVIricstocksByPhenotypeByPrimaryKey(Integer iricStockPhenotypeId) throws DataAccessException {
+	public VIricstocksByPhenotype findVIricstocksByPhenotypeByPrimaryKey(BigDecimal phen) throws DataAccessException {
 
-		return findVIricstocksByPhenotypeByPrimaryKey(iricStockPhenotypeId, -1, -1);
+		return findVIricstocksByPhenotypeByPrimaryKey(phen, -1, -1);
 	}
 
 	/**
@@ -103,9 +104,9 @@ public class VIricstocksByPhenotypeDAOImpl extends AbstractJpaDao<VIricstocksByP
 	 */
 
 	@Transactional
-	public VIricstocksByPhenotype findVIricstocksByPhenotypeByPrimaryKey(Integer iricStockPhenotypeId, int startResult, int maxRows) throws DataAccessException {
+	public VIricstocksByPhenotype findVIricstocksByPhenotypeByPrimaryKey(BigDecimal phen, int startResult, int maxRows) throws DataAccessException {
 		try {
-			Query query = createNamedQuery("findVIricstocksByPhenotypeByPrimaryKey", startResult, maxRows, iricStockPhenotypeId);
+			Query query = createNamedQuery("findVIricstocksByPhenotypeByPrimaryKey", startResult, maxRows, phen);
 			return (org.irri.iric.portal.chado.domain.VIricstocksByPhenotype) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
@@ -472,6 +473,16 @@ public class VIricstocksByPhenotypeDAOImpl extends AbstractJpaDao<VIricstocksByP
 		// TODO Auto-generated method stub
 		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQualEquals", -1, -1, phen, value);
 		return query.getResultList();
+	}
+
+	@Override
+	public List findVarietyByPhenotype(BigDecimal phen) {
+		// TODO Auto-generated method stub
+		
+		List listVars = new ArrayList();
+		listVars.addAll( findVIricstocksByPhenotypeByPhenotypeId(phen));
+		return listVars;
+		
 	}
 	
 	

@@ -39,6 +39,26 @@ public class CoreSnpsService implements VariantStringService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public VariantStringData getVariantString(GenotypeQueryParams params,
+			Collection colLocus) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public VariantStringData getSNPsString(GenotypeQueryParams params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public VariantStringData getVariantIndelsString(GenotypeQueryParams params)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 

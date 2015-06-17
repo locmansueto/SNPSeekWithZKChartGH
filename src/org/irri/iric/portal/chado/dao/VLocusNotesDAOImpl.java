@@ -3,10 +3,13 @@ package org.irri.iric.portal.chado.dao;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -17,9 +20,11 @@ import org.hibernate.Session;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.domain.VLocusNotes;
 import org.irri.iric.portal.chado.domain.VSnp2varsCountmismatch;
+import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.Snps2VarsCountmismatch;
 import org.skyway.spring.util.dao.AbstractJpaDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +39,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 		VLocusNotesDAO {
 
+	@Autowired
+	private ListItemsDAO listitemsdao;
+	
 	/**
 	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
 	 *
@@ -423,28 +431,46 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 	@Override
 	public List<Locus> getLocusByName(String name) {
 		// TODO Auto-generated method stub
+		
+		String sql = "select distinct f.feature_id, f.uniquename name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, dbms_lob.substr(f3.value,1000,1) notes, f.organism_id, o.common_name"
+				+ " from iric.featureloc fl, iric.feature fsrc, iric.organism o , iric.cvterm cvtype,  iric.feature f"
+				+ " left join ( select f2.feature_id, fp.value from iric.featureprop fp, iric.cvterm cv, iric.feature f2" 
+				         + " where fp.feature_id=f2.feature_id and  fp.type_id=cv.cvterm_id and cv.name='Note') f3"
+				         + " on f.feature_id=f3.feature_id" 
+				+ " where f.feature_id=fl.feature_id "
+				+ " and lower(f.name)='" + name.toLowerCase() + "'" 
+				+ " and fsrc.feature_id=fl.srcfeature_id and f.organism_id=o.organism_id "
+				+ " and cvtype.name='gene' and cvtype.cvterm_id=f.type_id "
+				+ " order by contig_name, fmin, fmax";
+
+		
+		         
+		/*         
 		String sql = "select f.feature_id, f.uniquename name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, dbms_lob.substr(fp.value,1000,1) notes, f.organism_id, o.common_name from iric.feature f, iric.featureloc fl, iric.featureprop fp, iric.cvterm cv , iric.feature fsrc, iric.organism o , iric.cvterm cvtype"
 				+ " where fp.feature_id=f.feature_id and  fp.type_id=cv.cvterm_id and f.feature_id=fl.feature_id "
 				+ " and lower(f.name)='" + name.toLowerCase() + "'" 
 				+ " and fsrc.feature_id=fl.srcfeature_id and f.organism_id=o.organism_id "
 				+ " and cv.name='Note' and cvtype.name='gene' and cvtype.cvterm_id=f.type_id "
 				+ " order by contig_name, fmin, fmax";
+				*/
+				
 		return executeSQL(sql);
 		//List listResult = executeSQL(sql);
 		//return (Locus)listResult.get(0); 
 	}
 
 	@Override
-	public List<Locus> getLocusByDescription(String description) {
+	public List<Locus> getLocusByDescription(String description, String organism) {
 		// TODO Auto-generated method stub
 		
 		List listresult = new ArrayList();
-		String sql = "select f.feature_id, f.uniquename name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, dbms_lob.substr(fp.value,1000,1) notes, f.organism_id, o.common_name from iric.feature f, iric.featureloc fl, iric.featureprop fp, iric.cvterm cv , iric.feature fsrc, iric.organism o , iric.cvterm cvtype"
+		String sql = "select distinct f.feature_id, f.uniquename name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, dbms_lob.substr(fp.value,1000,1) notes, f.organism_id, o.common_name from iric.feature f, iric.featureloc fl, iric.featureprop fp, iric.cvterm cv , iric.feature fsrc, iric.organism o , iric.cvterm cvtype"
 				+ " where fp.feature_id=f.feature_id and  fp.type_id=cv.cvterm_id and f.feature_id=fl.feature_id and "
 				+ " contains(fp.value,'" + description + "',1)>0 "
 		//		+ " lower(f.name) like '%" + description.toLowerCase() + "%' "
 				+ " and fsrc.feature_id=fl.srcfeature_id and f.organism_id=o.organism_id "
 				+ " and cv.name='Note' and cvtype.name='gene' and cvtype.cvterm_id=f.type_id "
+				+ " and  o.common_name='" + organism + "'"
 				+ " order by contig_name, fmin, fmax";
 		return executeSQL(sql);
 		
@@ -459,6 +485,73 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 
 	@Override
 	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism) {
+		// TODO Auto-generated method stub
+		
+		// use left join to include even without description
+		/*select f.feature_id, f.uniquename name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, dbms_lob.substr(f3.value,1000,1) notes, f.organism_id, o.common_name 
+		  from iric.featureloc fl,  iric.feature fsrc, iric.organism o, iric.cvterm cvtype, iric.feature f   
+		  left join ( select f2.feature_id, fp.value from iric.featureprop fp, iric.cvterm cv, iric.feature f2 
+		          where fp.feature_id=f2.feature_id and  fp.type_id=cv.cvterm_id and cv.name='Note') f3
+		         on f.feature_id=f3.feature_id 
+		  where f.feature_id=fl.feature_id  and ((fl.fmin>=20000 and fl.fmax<=40000)  or (fl.fmin<=20000 and fl.fmax>=40000)  or (fl.fmin<=20000 and fl.fmax>=20000)  or (fl.fmin<=40000 and fl.fmax>=40000)  )
+		  and lower(fsrc.uniquename)='chr01'  and fsrc.feature_id=fl.srcfeature_id and f.organism_id=o.organism_id 
+		  and cvtype.name='gene' and cvtype.cvterm_id=f.type_id  
+		  and o.common_name='Kasalath'  order by contig_name, fmin, fmax;
+		  */
+		
+		String sql = "select distinct f.feature_id, f.uniquename name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, dbms_lob.substr(f3.value,1000,1) notes, f.organism_id, o.common_name "
+		  + " from iric.featureloc fl,  iric.feature fsrc, iric.organism o, iric.cvterm cvtype, iric.feature f"   
+		  + " left join ( select f2.feature_id, fp.value from iric.featureprop fp, iric.cvterm cv, iric.feature f2" 
+		         + " where fp.feature_id=f2.feature_id and  fp.type_id=cv.cvterm_id and cv.name='Note') f3"
+		         + " on f.feature_id=f3.feature_id" 
+		  + " where f.feature_id=fl.feature_id "
+			+ " and ((fl.fmin>=" + start + " and fl.fmax<=" + end + ") "
+			+ " or (fl.fmin<=" + start + " and fl.fmax>=" + end +") "
+			+ " or (fl.fmin<=" + start + " and fl.fmax>=" + start +") "
+			+ " or (fl.fmin<=" + end + " and fl.fmax>=" + end +") "
+			+ " ) and lower(fsrc.uniquename)='" +  contig.toLowerCase() + "' "
+			+ " and fsrc.feature_id=fl.srcfeature_id and f.organism_id=o.organism_id "
+			+ " and cvtype.name='gene' and cvtype.cvterm_id=f.type_id "
+			+ " and o.common_name='" + organism + "' "
+			+ " order by contig_name, fmin, fmax";
+		         
+		  
+		/*
+		String sql = "select f.feature_id, f.uniquename name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, dbms_lob.substr(fp.value,1000,1) notes, f.organism_id, o.common_name from iric.feature f, iric.featureloc fl, iric.featureprop fp, iric.cvterm cv , iric.feature fsrc, iric.organism o, iric.cvterm cvtype "
+				+ " where fp.feature_id=f.feature_id and  fp.type_id=cv.cvterm_id and f.feature_id=fl.feature_id "
+				 
+				+ " and ((fl.fmin>=" + start + " and fl.fmax<=" + end + ") "
+					+ " or (fl.fmin<=" + start + " and fl.fmax>=" + end +") "
+					+ " or (fl.fmin<=" + start + " and fl.fmax>=" + start +") "
+					+ " or (fl.fmin<=" + end + " and fl.fmax>=" + end +") "
+				+ " ) and lower(fsrc.uniquename)='" +  contig.toLowerCase() + "' "
+				+ " and fsrc.feature_id=fl.srcfeature_id and f.organism_id=o.organism_id "
+				+ " and cv.name='Note' and cvtype.name='gene' and cvtype.cvterm_id=f.type_id "
+
+				+ " and o.common_name='" + organism + "' "
+				+ " order by contig_name, fmin, fmax";
+				*/
+		//AppContext.debug("sql query: " + sql);
+		return executeSQL(sql);
+	}
+
+	@Override
+	public List getLocusByContigPositions(String contig, Collection posset,
+			String organism) {
+		Set allset=new HashSet();
+		Set sets[] = AppContext.setSlicer(new HashSet(posset),500);
+		for(int iset=0; iset<sets.length; iset++) {
+			allset.addAll( _getLocusByContigPositions( contig,  sets[iset],  organism));
+		}
+		List listall=new ArrayList();
+		listall.addAll(allset);
+		return listall;
+	}
+
+	
+	private List _getLocusByContigPositions(String contig, Collection posset, String organism) {
+		
+		/*
 		// TODO Auto-generated method stub
 		String sql = "select f.feature_id, f.uniquename name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, dbms_lob.substr(fp.value,1000,1) notes, f.organism_id, o.common_name from iric.feature f, iric.featureloc fl, iric.featureprop fp, iric.cvterm cv , iric.feature fsrc, iric.organism o, iric.cvterm cvtype "
 				+ " where fp.feature_id=f.feature_id and  fp.type_id=cv.cvterm_id and f.feature_id=fl.feature_id "
@@ -475,7 +568,70 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 				+ " order by contig_name, fmin, fmax";
 		AppContext.debug("sql query: " + sql);
 		return executeSQL(sql);
+		*/
+		
+		/*
+		Set listLocus = new LinkedHashSet();
+		Set sortsetpos = new TreeSet(posset);
+		Iterator<BigDecimal> it=sortsetpos.iterator();
+		while(it.hasNext()) {
+			BigDecimal pos = it.next();
+			listLocus.addAll( getLocusByRegion( contig, pos.longValue(), pos.longValue(),  organism) );
+		}
+		List list = new ArrayList();
+		list.addAll(listLocus);
+		return list;
+		*/
+		
+		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItemsDAO");
+
+		StringBuffer sql = new StringBuffer();
+		sql.append(	"select distinct f.feature_id, f.uniquename name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, dbms_lob.substr(f3.value,1000,1) notes, f.organism_id, o.common_name "
+		  + " from iric.featureloc fl,  iric.feature fsrc, iric.organism o, iric.cvterm cvtype, ");
+		
+		  sql.append( "  (select distinct column_value pos from table(sys.odcinumberlist(" + AppContext.toCSV(posset)+ "))) postable, ");
+		
+		sql.append(" iric.feature f"   
+		  + " left join ( select f2.feature_id, fp.value from iric.featureprop fp, iric.cvterm cv, iric.feature f2" 
+		         + " where fp.feature_id=f2.feature_id and  fp.type_id=cv.cvterm_id and cv.name='Note') f3"
+		         + " on f.feature_id=f3.feature_id" 
+		  + " where f.feature_id=fl.feature_id ");
+		    
+		
+		/*
+			+ " and ((fl.fmin>=" + start + " and fl.fmax<=" + end + ") "
+			+ " or (fl.fmin<=" + start + " and fl.fmax>=" + end +") "
+			+ " or (fl.fmin<=" + start + " and fl.fmax>=" + start +") "
+			+ " or (fl.fmin<=" + end + " and fl.fmax>=" + end +") "
+			+ " )" ;
+			*/
+		
+
+			sql.append("  and lower(fsrc.uniquename)='" + contig.toLowerCase() + "' and postable.pos between fl.fmin and fl.fmax ");
+			
+			/*
+			Iterator<String> itPoslist = AppContext.setSlicerIds(new HashSet(posset)).iterator();
+			while(itPoslist.hasNext()) {
+				sql.append(" pos in (" + itPoslist.next() + ") ");
+				if(itPoslist.hasNext()) 
+					sql.append(" or ");
+			}
+			*/
+			
+			
+			sql.append(" and fsrc.feature_id=fl.srcfeature_id and f.organism_id=o.organism_id "
+			+ " and cvtype.name='gene' and cvtype.cvterm_id=f.type_id "
+			//+ " and o.common_name='" + organism + "' "
+			+ " and o.organism_id=" + listitemsdao.getOrganismByName(organism).getOrganismId() 
+			+ " order by contig_name, fmin, fmax");
+			
+		//AppContext.debug("sql query: " + sql);
+		return executeSQL(sql.toString());
+		
 	}
+	
+	
+	
 	
 	
 	

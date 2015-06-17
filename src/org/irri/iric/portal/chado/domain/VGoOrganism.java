@@ -22,6 +22,10 @@ import javax.persistence.*;
 		@NamedQuery(name = "findAllVGoOrganisms", query = "select myVGoOrganism from VGoOrganism myVGoOrganism"),
 		@NamedQuery(name = "findVGoOrganismByAccession", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.accession = ?1"),
 		@NamedQuery(name = "findVGoOrganismByAccessionContaining", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.accession like ?1"),
+		
+		@NamedQuery(name = "findVGoOrganismByCvCommonName", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where  myVGoOrganism.cvName = ?1 and myVGoOrganism.commonName = ?2"),
+		
+		
 		@NamedQuery(name = "findVGoOrganismByCommonName", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.commonName = ?1"),
 		@NamedQuery(name = "findVGoOrganismByCommonNameContaining", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.commonName like ?1"),
 		@NamedQuery(name = "findVGoOrganismByCvName", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvName = ?1"),
@@ -31,7 +35,8 @@ import javax.persistence.*;
 		@NamedQuery(name = "findVGoOrganismByCvtermId", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvtermId = ?1"),
 		@NamedQuery(name = "findVGoOrganismByOrganismId", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.organismId = ?1"),
 		@NamedQuery(name = "findVGoOrganismByPrimaryKey", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvtermId = ?1") })
-@Table(schema = "IRIC", name = "V_GO_ORGANISM")
+//@Table(schema = "IRIC", name = "V_GO_ORGANISM")
+@Table(schema = "IRIC", name = "V_GO_CVTERMPATH_ORGANISM")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VGoOrganism")
 public class VGoOrganism implements Serializable {

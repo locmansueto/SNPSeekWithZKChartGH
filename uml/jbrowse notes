@@ -198,3 +198,22 @@ bin/generate-names.pl --kasv1
 bin/generate-names.pl --dj123v1
 bin/generate-names.pl --9311v1
 bin/generate-names.pl --data
+
+
+
+check indel "Japonica nipponbare chr01 24378-25378 1" (two 24810 columns on alignIndels)
+
+
+
+bin/flatfile-to-json.pl --gff   --trackLabel 3kindels  --trackType  JBrowse/View/Track/Alignments2 --key '3k Genomes InDels'   --metadata '{"description": "Insertions and deletions for the 3k Genomes Project." }'
+
+
+
+// load genes of other reference genomes
+bin/flatfile-to-json.pl --out=9311v1  --gff  ~lmansueto/multurefs/sorted.9311.fa.Glean.gff.filtered.gff.9311v1.gff  --trackLabel 9311v1gff  --trackType  JBrowse/View/Track/CanvasFeatures  --key '9311 Gene Models (orig)'  --category 'Genes'  --metadata '{"description": "9311 gene models from original publication." }'
+bin/flatfile-to-json.pl --out=ir6421v1  --gff    --trackLabel ir6421v1gff  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'IR64-21 Gene Models (orig)'   --metadata '{"description": "IR64-21 gene models from original publication." }'
+bin/flatfile-to-json.pl --out=dj123v1  --gff ~lmansueto/multurefs/os.dj123.cshl.draft.1.0.maker.gff.dj123v1.gff   --trackLabel dj123v1gff  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'DJ123 Gene Models (orig)'   --metadata '{"description": "DJ123 gene models from original publication." }'
+
+bin/remove-track.pl --dir ir6421v1  --trackLabel ir6421v1rengff --delete
+bin/remove-track.pl --dir ir6421v1  --trackLabel ir6421v1gff --delete
+

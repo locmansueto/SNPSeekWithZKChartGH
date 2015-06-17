@@ -1,0 +1,17 @@
+<?page title="biglistbox popup" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Test popup"  apply="org.zkoss.bind.BindComposer"
+          viewModel="@id('vm') @init('org.irri.iric.portal.genotype.zkui.BiglistboxHeaderpopupViewModel')">
+          
+<vlayout width="300px">
+    <label value="${colIdx}" style="font-size: 14px; font-weight: bold;" />
+    <grid>
+        <rows>
+            <row>
+                Column index:
+                <label value="${colIdx}" />
+            </row>
+        </rows>
+    </grid>
+</vlayout>
+</zk>

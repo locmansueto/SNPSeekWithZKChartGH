@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+
+import org.irri.iric.portal.AppContext;
+
 //import ncsa.hdf.hdf5lib.HDF5Constants;
 import ncsa.hdf.object.Dataset;
 //import ncsa.hdf.object.Group;
@@ -82,7 +85,7 @@ public class H5ReadCharmatrix {
 		       // read the data of the subset
 		       byte[] dataRead = (byte[]) dataset.read();
 		       
-		       System.out.println(cols + " cols matrix");
+		       AppContext.debug(cols + " cols matrix");
 
 		       // print out the data values
 		       
@@ -93,11 +96,49 @@ public class H5ReadCharmatrix {
 			       	listVarString.put( BigDecimal.valueOf(i+1) , s );
 		       } 
 	        
-		} else if(input.listPosidx!=null) {
+		} else if(input.listStartEndPosidx!=null) {
+			
+			Map<BigDecimal,StringBuffer> mapVarid2Strbuff=new LinkedHashMap();
+			
+			for(int iposrange=0; iposrange<input.listStartEndPosidx.length; iposrange++) {
+				
+		        start[DIM_POSITION] = input.listStartEndPosidx[iposrange][0] -1;
+		        n_dim_position = input.listStartEndPosidx[iposrange][1] - input.listStartEndPosidx[iposrange][0] + 1 ;
+		        sizes[DIM_POSITION] = n_dim_position;
+		        
+			       int cols = (int)n_dim_position;
+			       // read the data of the subset
+			       byte[] dataRead = (byte[]) dataset.read();
+			       
+			       AppContext.debug( "locus " + iposrange + ", " + cols + " cols matrix");
+
+			       // print out the data values
+			       
+			       for (int i = 0; i < rows ; i++) {
+			    	   if(setVarsIds!=null && !setVarsIds.contains(i+1)) continue;
+				       	String s = new String( java.util.Arrays.copyOfRange(dataRead, i * cols, i * cols+ cols ) );
+				       	//AppContext.debug(s);
+				       	StringBuffer buff = mapVarid2Strbuff.get(BigDecimal.valueOf(i+1));
+				       	//listVarString.put( BigDecimal.valueOf(i+1) , s );
+				       	if(buff==null) {
+				       		buff = new StringBuffer();
+				       		mapVarid2Strbuff.put( BigDecimal.valueOf(i+1) , buff);
+				       	}
+				       	buff.append(s);
+			       } 
+			}
+			for(int i=0; i<rows; i++) {
+				listVarString.put( BigDecimal.valueOf(i+1) , mapVarid2Strbuff.get(BigDecimal.valueOf(i+1)).toString());
+			}
+			
+			AppContext.debug(mapVarid2Strbuff.get(BigDecimal.valueOf(1)).length() + " cols matrix");
+			
+		}
+		else if(input.listPosidx!=null) {
 
   	        Map<BigDecimal,StringBuffer> mapVarStringBuff = new HashMap();
 
-		    System.out.println(input.listPosidx.length + " cols matrix");
+		    AppContext.debug(input.listPosidx.length + " cols matrix");
 		       
 			for(int ipos=0; ipos<input.listPosidx.length; ipos++) {
 		        start[DIM_POSITION] = input.listPosidx[ipos]-1;
@@ -137,7 +178,7 @@ public class H5ReadCharmatrix {
        return new OutputMatrix(listVarString);
 	}
    
-   
+   /*
    public  OutputMatrix read(H5Dataset hfdata, InputParams input) throws Exception  {
 		
 	   Dataset dataset = hfdata.getDataset();
@@ -189,7 +230,7 @@ public class H5ReadCharmatrix {
 		       // read the data of the subset
 		       byte[] dataRead = (byte[]) dataset.read();
 		       
-		       System.out.println(cols + " cols matrix");
+		       AppContext.debug(cols + " cols matrix");
 
 		       // print out the data values
 		       
@@ -204,7 +245,7 @@ public class H5ReadCharmatrix {
 
   	        Map<BigDecimal,StringBuffer> mapVarStringBuff = new HashMap();
 
-		    System.out.println(input.listPosidx.size() + " cols matrix");
+		    AppContext.debug(input.listPosidx.size() + " cols matrix");
 		       
 			for(int ipos=0; ipos<input.listPosidx.size(); ipos++) {
 		        start[DIM_POSITION] = input.listPosidx.get(ipos).intValue()-1;
@@ -243,6 +284,7 @@ public class H5ReadCharmatrix {
        
        return new OutputMatrix(listVarString);
 	}
+	*/
 
    public   OutputMatrix readOld(H5Dataset hfdata, InputParams input) throws Exception {
 	   	Dataset dataset = hfdata.getDataset();
@@ -303,9 +345,9 @@ public class H5ReadCharmatrix {
 		while(itParams.hasNext()) {
 			try {
 				Object param = itParams.next();
-				if(param instanceof InputParams)
-					outputs.add( read(hfdata, (InputParams)itParams.next()));
-				else if (param instanceof InputParamsIdxs )
+				//if(param instanceof InputParams)
+				//	outputs.add( read(hfdata, (InputParams)itParams.next()));
+				//else if (param instanceof InputParamsIdxs )
 					outputs.add( read(hfdata, (InputParamsIdxs)itParams.next()));
 				
 			} catch(Exception ex)

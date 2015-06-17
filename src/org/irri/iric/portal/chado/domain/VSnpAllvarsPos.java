@@ -169,4 +169,13 @@ public class VSnpAllvarsPos implements Serializable, SnpsAllvarsPos {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		return this.chr;
+	}
+	
+	
+	
 }

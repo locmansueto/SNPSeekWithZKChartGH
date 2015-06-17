@@ -1,6 +1,9 @@
 package org.irri.iric.portal.dao;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -14,6 +17,8 @@ import org.irri.iric.portal.chado.dao.VLocusCvtermDAO;
 import org.irri.iric.portal.chado.domain.VGoOrganism;
 import org.irri.iric.portal.domain.CvTerm;
 import org.irri.iric.portal.domain.Gene;
+import org.irri.iric.portal.domain.Organism;
+import org.irri.iric.portal.domain.Scaffold;
 import org.irri.iric.portal.domain.Variety;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -62,7 +67,11 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	private VGoOrganismDAO gotermorganismdao;
 	
 
-	private java.util.List<String> genenames;
+	private Map<String,List> mapOrganismScaffolds = new HashMap();
+	private Map<String,List> mapCVOrg2Cvterms = new HashMap();
+	
+	//private java.util.List<String> genenames;
+	private Map<String,Collection> mapOrg2Loci = new HashMap();
 	
 	private java.util.List germnames;
 	private java.util.List countries;
@@ -78,6 +87,9 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	
 	public static boolean lockGenenameReader = false;
 	public static boolean lockVarietyReader = false;
+	
+	
+	private Map<String,Organism> mapOrgname2Org;
 	
 	/**
 	 * Generate all variety name lists
@@ -205,6 +217,13 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	public List<String> getGenenames() {
 		// TODO Auto-generated method stub
 		
+		return getGenenames(AppContext.getDefaultOrganism());
+	}
+	
+	@Override
+	public List<String> getGenenames(String organism) {
+		// TODO Auto-generated method stub
+		
 		while(lockGenenameReader) {
 			try {
 			 Thread.sleep(5000); 
@@ -213,31 +232,53 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			}
 		}
 		
+		
+		Collection genenames = mapOrg2Loci.get(organism);
+
 		if(genenames==null || genenames.size()==0) {
-			
 			lockGenenameReader = true;
 
 			genenames = new java.util.ArrayList();
 			geneDAO = (GeneDAO)AppContext.checkBean(geneDAO, "GeneDAO");
 				
-			java.util.Iterator<Gene> it = geneDAO.findAllGene().iterator();
+			java.util.Iterator<Gene> it = geneDAO.findAllGene(getOrganismByName(organism).getOrganismId().intValue()).iterator();
 		    while(it.hasNext()) {
 		    	Gene gene = it.next();
 		    	//String genename = gene.getUniquename();
 		    	//genenames.add(genename.toUpperCase());
 		    	genenames.add( gene.getUniquename().toLowerCase());
 		    }
-		    
+		    mapOrg2Loci.put(organism , genenames);
+			
+			/*
+			genenames = new java.util.ArrayList();
+			geneDAO = (GeneDAO)AppContext.checkBean(geneDAO, "GeneDAO");
+				
+			java.util.Iterator<Gene> it = geneDAO.findAllGene(getOrganismByName(organism).getOrganismId().intValue()).iterator();
+		    while(it.hasNext()) {
+		    	Gene gene = it.next();
+		    	//String genename = gene.getUniquename();
+		    	//genenames.add(genename.toUpperCase());
+		    	genenames.add( gene.getUniquename().toLowerCase());
+		    }
+		    */
+			
 		    lockGenenameReader = false;
 		}
-		return genenames;
+		
+		AppContext.debug(genenames.size() + " loci for " + organism);
+		
+		return (List)genenames;
 	}
 	
+	
+	
 	@Override
-	public Gene getGeneFromName(String  genename) {
+	public Gene findGeneFromName(String  genename, String organism) {
 		geneDAO = (GeneDAO)AppContext.checkBean(geneDAO, "GeneDAO");
-		return geneDAO.findGeneByName(genename);
+		return geneDAO.findGeneByName(genename, getOrganismByName(organism).getOrganismId().intValue());
 	}
+
 	
 	@Override
 	public Map getIrisId2Variety() {
@@ -435,57 +476,107 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	}
 
 	
-	@Override
-	public Integer getFeatureLength(String feature) {
-		// TODO Auto-generated method stub
-		
-		java.util.Map<String,Integer> chrLength = new java.util.HashMap<String,Integer>();		
-		chrLength.put("1", 43270923);
-		chrLength.put("2", 35937250);
-		chrLength.put("3",36413819);
-		chrLength.put("4",35502694);
-		chrLength.put("5",29958434);
-		chrLength.put("6",31248787);
-		chrLength.put("7",29697621);
-		chrLength.put("8",28443022);
-		chrLength.put("9",23012720);
-		chrLength.put("10",23207287);
-		chrLength.put("11",29021106);
-		chrLength.put("12",27531856);
-		
-		return chrLength.get(feature);
-	}
+//	@Override
+//	public Integer getFeatureLength(String feature) {
+//		// TODO Auto-generated method stub
+//		
+//		/*
+//		java.util.Map<String,Integer> chrLength = new java.util.HashMap<String,Integer>();		
+//		chrLength.put("1", 43270923);
+//		chrLength.put("2", 35937250);
+//		chrLength.put("3",36413819);
+//		chrLength.put("4",35502694);
+//		chrLength.put("5",29958434);
+//		chrLength.put("6",31248787);
+//		chrLength.put("7",29697621);
+//		chrLength.put("8",28443022);
+//		chrLength.put("9",23012720);
+//		chrLength.put("10",23207287);
+//		chrLength.put("11",29021106);
+//		chrLength.put("12",27531856);
+//		
+//		return chrLength.get(feature);
+//		*/
+//		
+//		return getFeatureLength(feature, AppContext.getDefaultOrganism()).intValue();
+//	}
+
 
 	@Override
-	public List getOrganisms() {
+	public List getOrganisms() throws Exception {
 		// TODO Auto-generated method stub
 		organismdao = (OrganismDAO)AppContext.checkBean(organismdao, "OrganismDAO");
-		return organismdao.getOrganisms();
+		List listOrganisms =  organismdao.getOrganisms();
+		Iterator<Organism> itOrg = listOrganisms.iterator();
+		mapOrgname2Org = new HashMap();
+		while(itOrg.hasNext()) {
+			Organism org = itOrg.next();
+			mapOrgname2Org.put( org.getName(),org);
+		}
+		
+		
+		return listOrganisms;
 	}
 
 	@Override
 	public List getContigs(String organism) {
 		// TODO Auto-generated method stub
-		scaffolddao = (ScaffoldDAO)AppContext.checkBean(scaffolddao, "ScaffoldDAO");
-		return scaffolddao.getScaffolds(organism);
+		
+		if(!mapOrganismScaffolds.containsKey(organism)) {
+			
+			scaffolddao = (ScaffoldDAO)AppContext.checkBean(scaffolddao, "ScaffoldDAO");
+			Iterator<Scaffold> it = scaffolddao.getScaffolds( getOrganismByName(organism).getOrganismId() ).iterator(); 
+			List contignames = new ArrayList();
+			while(it.hasNext()) {
+				contignames.add( it.next().getName()); 
+			}
+			mapOrganismScaffolds.put(organism, contignames);
+		}
+		List list = mapOrganismScaffolds.get(organism);
+		AppContext.debug(list.size() + " contigs for " + organism);
+		return list;
 	}
 
 	@Override
 	public Long getFeatureLength(String feature, String organism) {
 		// TODO Auto-generated method stub
 		scaffolddao = (ScaffoldDAO)AppContext.checkBean(scaffolddao, "ScaffoldDAO");
-		return scaffolddao.getScaffoldLength(feature, organism);
+		return scaffolddao.getScaffoldLength(feature,  getOrganismByName(organism).getOrganismId() );
 	}
 		
 	@Override
-	public List getGOTermsWithLoci(String organism) {
+	public List getGOTermsWithLoci(String cv, String organism) {
 		//cvtermlocusdao = (VLocusCvtermDAO)AppContext.checkBean(cvtermlocusdao, "VLocusCvtermDAO");
 		//return cvtermlocusdao.getAllTerms(organism);
 		
-		gotermorganismdao = (VGoOrganismDAO)AppContext.checkBean(gotermorganismdao, "VGoOrganismDAO");
-		return gotermorganismdao.getAllTermsByOrganism(organism);
+		List cvterms  = mapCVOrg2Cvterms.get(cv + "-" + organism);
+		if(cvterms==null) {
+			gotermorganismdao = (VGoOrganismDAO)AppContext.checkBean(gotermorganismdao, "VGoOrganismDAO");
+			cvterms = gotermorganismdao.getAllTerms(cv, organism);
+			mapCVOrg2Cvterms.put(cv + "-" + organism, cvterms);
+		}
+		return cvterms;
 		
 		
 	}
+	
+	@Override
+	public Organism getOrganismByName(String name)   {
+
+
+		try {
+			if(mapOrgname2Org==null) {
+				getOrganisms();
+			}
+			return mapOrgname2Org.get(name);
+		} catch(Exception ex) {
+			
+			AppContext.debug( ex.getMessage() );
+			ex.printStackTrace();
+			
+			return null;
+		} 
+	}
+	
 	
 }

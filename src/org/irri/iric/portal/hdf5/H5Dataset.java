@@ -1,6 +1,7 @@
 package org.irri.iric.portal.hdf5;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.TreeSet;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.SnpsStringDAO;
+import org.irri.iric.portal.domain.Locus;
 
 import ncsa.hdf.hdf5lib.HDF5Constants;
 import ncsa.hdf.object.Dataset;
@@ -141,7 +143,7 @@ public abstract class H5Dataset implements SnpsStringDAO {
 	
 
 	@Override
-	public Map readSNPString(int chr,  int startIdx,  int endIdx) {
+	public Map readSNPString(String chr,  int startIdx,  int endIdx) {
 		try {
 		return matrixReader.read( this , new InputParamsIdxs(startIdx,endIdx)).getMapVar2String() ;
 		} catch (Exception ex) {
@@ -151,7 +153,7 @@ public abstract class H5Dataset implements SnpsStringDAO {
 	}
 	
 	@Override
-	public Map readSNPString(int chr,  int posIdxs[])  {
+	public Map readSNPString(String chr,  int posIdxs[])  {
 		try {
 		return matrixReader.read( this , new InputParamsIdxs(posIdxs)).getMapVar2String() ;
 	} catch (Exception ex) {
@@ -161,7 +163,7 @@ public abstract class H5Dataset implements SnpsStringDAO {
 	}
 	
 	@Override
-	public Map readSNPString(Set<BigDecimal> colVarids, int chr,  int posIdxs[]) {
+	public Map readSNPString(Set<BigDecimal> colVarids, String chr,  int posIdxs[]) {
 		try {
 		// order varids based on file ordering for 1pass/smooth disk read
 		Set orderedVarids = new TreeSet(colVarids);
@@ -181,7 +183,7 @@ public abstract class H5Dataset implements SnpsStringDAO {
 	}
 
 	@Override
-	public Map readSNPString(Set<BigDecimal> colVarids, int chr,  int startIdx, int endIdx)  {
+	public Map readSNPString(Set<BigDecimal> colVarids, String chr,  int startIdx, int endIdx)  {
 		try {
 		Set orderedVarids = new TreeSet(colVarids);
 		Iterator<BigDecimal> itVarid = orderedVarids.iterator();
@@ -199,5 +201,46 @@ public abstract class H5Dataset implements SnpsStringDAO {
 	}
 	return  null;
 	}
+
+	@Override
+	public Map readSNPString(Set colVarids, String chr, int posidxstartend[][]) {
+		// TODO Auto-generated method stub
+		try {
+			// order varids based on file ordering for 1pass/smooth disk read
+			Set orderedVarids = new TreeSet(colVarids);
+			Iterator<BigDecimal> itVarid = orderedVarids.iterator();
+			
+			int varids[] = new int[orderedVarids.size()];
+			int icount = 0;
+			while(itVarid.hasNext()) {
+				varids[icount]=itVarid.next().intValue();
+				icount++;
+			}
+			return matrixReader.read( this , new InputParamsIdxs(posidxstartend, varids)).getMapVar2String() ;
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return  null;
+
+	}
+
+	@Override
+	public Map readSNPString(String chr, int posidxstartend[][]) {
+		// TODO Auto-generated method stub
+		try {
+			// order varids based on file ordering for 1pass/smooth disk read
+			return matrixReader.read( this , new InputParamsIdxs(posidxstartend)).getMapVar2String() ;
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return  null;
+	}
+	
+	
+	
+	
+	
 	
 }

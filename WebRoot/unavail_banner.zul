@@ -1,0 +1,26 @@
+<?page title="banner" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native">
+
+
+<div style="background-color:white">
+<hbox height="10px" width="100%"/>
+<hbox align="center" pack="center" height="100%" width="100%">
+<a target="_blank" href="http://iric.irri.org" image="/images/iric/iric_logo.png"/>
+<vbox width="20px"/>
+<vbox align="stretch" height="80px">
+	<label pre="true" value="           Rice SNP-Seek Database            " width="80%" 
+	style="color:green;background-color:white;font-weight:bold;font-family:arial;font-size:30px" />
+	<label pre="true" value=" SITE IS TEMPORARILY UNAVAILABLE        " width="80%" 
+	style="color:red;background-color:white;font-weight:bold;font-family:arial;font-size:30px" />
+</vbox>
+</hbox>
+</div>
+
+<div style="background-color:green;color:green">
+<vbox height="20px" width="100%">
+</vbox>
+</div>
+
+
+</zk>
+			

@@ -122,6 +122,7 @@ public interface VarietyFacade {
 	 */
 	public List getVarietyByPhenotype(String definition, String comparator,
 			String value, int phenotype_type);
+	public List getVarietyByPhenotype(String phenId);
 	
 	
 	
@@ -226,6 +227,11 @@ public interface VarietyFacade {
 	 */
 	public double[][] constructMDSPlot(List<BigDecimal> germplasms, String scale, boolean showAll);
 	public double[][] constructMDSPlot(String ids, String scale,  boolean showAll);
+
+	public List getVarietyByPassport(String sPassId);
+	
+	public Map getVarietyExternalURL(String name);
+	
 	
 	
 }

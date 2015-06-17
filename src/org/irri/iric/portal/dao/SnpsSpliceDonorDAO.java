@@ -7,7 +7,9 @@ import org.irri.iric.portal.domain.SnpsSpliceDonor;
 import org.springframework.dao.DataAccessException;
 
 public interface SnpsSpliceDonorDAO {
-	public Set<SnpsSpliceDonor> findSnpSpliceDonorByChrPosBetween(Integer chr, Integer start, Integer end) throws DataAccessException;
-	public Set<SnpsSpliceDonor> findSnpSpliceDonorByChrPosIn(Integer chr, Collection listpos)  throws DataAccessException;
+	//public Set<SnpsSpliceDonor> findSnpSpliceDonorByChrPosBetween(String chr, Integer start, Integer end) throws DataAccessException;
+	//public Set<SnpsSpliceDonor> findSnpSpliceDonorByChrPosIn(String chr, Collection listpos)  throws DataAccessException;
+	public Set<SnpsSpliceDonor> getSNPsBetween(String chr, Integer start, Integer end) throws DataAccessException;
+	public Set<SnpsSpliceDonor> getSNPsIn(String chr, Collection listpos)  throws DataAccessException;
 
 }

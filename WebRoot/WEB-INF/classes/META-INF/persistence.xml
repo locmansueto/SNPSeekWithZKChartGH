@@ -37,9 +37,12 @@
 				<class>org.irri.iric.portal.chado.domain.VCvtermDbxref</class>
 				<class>org.irri.iric.portal.chado.domain.VLocusCvterm</class>
 				<class>org.irri.iric.portal.chado.domain.VGoOrganism</class>
+				<class>org.irri.iric.portal.chado.domain.VConvertRefposition</class>
+				<class>org.irri.iric.portal.chado.domain.VLocusCvtermCvtermpath</class>
+				<class>org.irri.iric.portal.chado.domain.VGoCvtermpath</class>
+				<class>org.irri.iric.portal.chado.domain.VConvertRefposPrecomp</class>
+				<class>org.irri.iric.portal.chado.domain.VCvtermLocuscount</class>
 				
-				
-
 				
 				
 				<class>org.irri.iric.portal.admin.domain.VOracleSessions</class>

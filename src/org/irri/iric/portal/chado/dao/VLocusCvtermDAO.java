@@ -268,6 +268,6 @@ public interface VLocusCvtermDAO extends JpaDao<VLocusCvterm>, LocusDAO, CvTermD
 	 */
 	public Set<VLocusCvterm> findVLocusCvtermByCvtermContaining(String cvterm_1, int startResult, int maxRows) throws DataAccessException;
 
-	List getAllTerms(String organism);
+	//List getAllTerms(String organism);
 
 }

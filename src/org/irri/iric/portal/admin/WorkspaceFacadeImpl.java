@@ -45,7 +45,7 @@ public class WorkspaceFacadeImpl implements WorkspaceFacade {
 			
 			System.out.println("in queryIric..." );
 			SNPUni3kVarietiesAllele1DAO snpuniDAO = new SNPUni3kVarietiesAllele1DAO();
-		  	Map mapVar2Str =  snpuniDAO.readSNPString(1,  1000, 1100);
+		  	Map mapVar2Str =  snpuniDAO.readSNPString("1",  1000, 1100);
 		  	Iterator itVar = mapVar2Str.keySet().iterator();
 		  	while(itVar.hasNext()) {
 		  		Object var = itVar.next();
@@ -87,14 +87,14 @@ public class WorkspaceFacadeImpl implements WorkspaceFacade {
 		}
 
 
-		@Override
+		//@Override
 		public Set getSnpPositions(Integer chr, String trim) {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 
-		@Override
+		//@Override
 		public boolean addSnpPositionList(Integer chr, String trim, Set setMatched) {
 			// TODO Auto-generated method stub
 			return false;
@@ -178,7 +178,56 @@ public class WorkspaceFacadeImpl implements WorkspaceFacade {
 		}
 
 
-		
+		@Override
+		public Set getSnpPositions(String contig, String name) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		@Override
+		public boolean addSnpPositionList(String contig, String name,
+				Set poslist, boolean hasAllele, boolean hasPvalue) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+
+		@Override
+		public boolean SNPListhasAllele(String listname) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+
+		@Override
+		public boolean SNPListhasPvalue(String listname) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+
+		@Override
+		public void deleteSNPList(String chromosome, String listname) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+		@Override
+		public Set getSnpPositionAlleleListNames() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		@Override
+		public Set getSnpPositionPvalueListNames() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
 		
 		
 	

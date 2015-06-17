@@ -2,7 +2,10 @@ package org.irri.iric.portal.genomics.zkui;
 
 import java.util.Map;
 
+import org.irri.iric.portal.chado.domain.VLocusCvterm;
+import org.irri.iric.portal.chado.domain.VLocusCvtermCvtermpath;
 import org.irri.iric.portal.chado.domain.VLocusNotes;
+import org.irri.iric.portal.domain.CvTerm;
 import org.irri.iric.portal.domain.Locus;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
@@ -26,16 +29,49 @@ public class LocusGridRenderer implements  RowRenderer{
 	public void render(Row row, Object data, int index) throws Exception {
 		// TODO Auto-generated method stub
 		
-			VLocusNotes locus = (VLocusNotes)data;
+			//VLocusNotes locus = (VLocusNotes)data;
+			
 		
 			//row.setAlign("center");
-			
+
+			Locus locus = (Locus)data;
 			new Label(locus.getUniquename()).setParent(row);
 			new Label(locus.getContig()).setParent(row);
 			new Label(locus.getFmin().toString()).setParent(row);
 			new Label(locus.getFmax().toString()).setParent(row);
 			new Label(locus.getStrand().toString()).setParent(row);
-			new Label( locus.getNotes() ).setParent(row);
+			new Label(locus.getDescription()).setParent(row);
+			
+			/*
+			if(data instanceof VLocusCvtermCvtermpath ) {
+				CvTerm cvterm = (CvTerm)data;
+				new Label( cvterm.getDefinition());
+			}
+			*/
+			
+
+		
+		/*
+			if(data instanceof VLocusNotes) {
+				VLocusNotes locus = (VLocusNotes)data;
+				new Label(locus.getUniquename()).setParent(row);
+				new Label(locus.getContig()).setParent(row);
+				new Label(locus.getFmin().toString()).setParent(row);
+				new Label(locus.getFmax().toString()).setParent(row);
+				new Label(locus.getStrand().toString()).setParent(row);
+				new Label( locus.getNotes() ).setParent(row);
+			}
+			else if(data instanceof VLocusCvterm) {
+				VLocusCvterm locus = (VLocusCvterm)data;
+
+				new Label(locus.getUniquename()).setParent(row);
+				new Label(locus.getContig()).setParent(row);
+				new Label(locus.getFmin().toString()).setParent(row);
+				new Label(locus.getFmax().toString()).setParent(row);
+				new Label(locus.getStrand().toString()).setParent(row);
+				new Label( locus.getCvterm()).setParent(row);
+			}
+			*/
 			
 			/*
 			if(mapUniquename2Description!=null) {

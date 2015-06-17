@@ -16,6 +16,8 @@ import org.irri.iric.portal.chado.dao.VIricstockBasicprop2DAO;
 import org.irri.iric.portal.chado.dao.VLocusNotesDAO;
 import org.irri.iric.portal.chado.domain.VIricstockBasicprop2;
 import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.domain.MultiReferencePositionImpl;
+import org.irri.iric.portal.domain.MultiReferencePositionImplAllelePvalue;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.genomics.service.LocusService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +32,11 @@ public class UserSessionListsManager {
 	 * Stores a map of name 2 variety list
 	 */
 	private Map<String, Set> mapVarietyLists;
-	private Map<Integer, Map<String, Set>> mapSnpposLists;
+	private Map<String, Map<String, Set>> mapSnpposLists;
 	private Map<String, Set> mapLocusLists;
+	
+	private Set setPoslistWithAllele=new LinkedHashSet();
+	private Set setPoslistWithPvalue=new LinkedHashSet();
 	
 	@Autowired
 	VIricstockBasicprop2DAO varietyprop2DAO;
@@ -122,21 +127,29 @@ public class UserSessionListsManager {
 	 * @param chromosome
 	 * @param name
 	 * @param poslist
+	 * @param hasPvalue 
+	 * @param hasAllele 
 	 * @return
 	 */
 
-	public boolean addSNPList(Integer chromosome, String name, Set poslist) {
+	//public boolean addSNPList(String contig, String name, Set poslist) {
+	//	return addSNPList(contig, name, poslist, false, false);
+	//}
+	
+	public boolean addSNPList(String contig, String name, Set poslist, boolean hasAllele, boolean hasPvalue) {
 		
 		if(mapSnpposLists==null) mapSnpposLists = new TreeMap();
 		
-		Map mapName2List = mapSnpposLists.get(chromosome);
+		Map mapName2List = mapSnpposLists.get(contig);
 		if(mapName2List==null) {
 			mapName2List = new LinkedHashMap();
-			mapSnpposLists.put( chromosome , mapName2List );
+			mapSnpposLists.put( contig , mapName2List );
 		}
 		if(mapName2List.containsKey(name)) return false;
 		mapName2List.put(name,  poslist);
-		AppContext.debug(name + " added to chromosome " + chromosome + " with " + poslist.size() + " snp positions");
+		AppContext.debug(name + " added to chromosome " + contig + " with " + poslist.size() + " snp positions");
+		if(hasAllele) setPoslistWithAllele.add(name);
+		if(hasPvalue) setPoslistWithPvalue.add(name);
 		return true;
 	}
 	
@@ -149,13 +162,23 @@ public class UserSessionListsManager {
 			Object chr = itChr.next();
 			Iterator itNames = ((Map)mapSnpposLists.get(chr)).keySet().iterator();
 			while(itNames.hasNext()) {
-				returnset.add("CHR " + chr + ": " + itNames.next());
+				//returnset.add("CHR " + chr + ": " + itNames.next());
+				returnset.add(chr + ": " + itNames.next());
 			}
 		}
 		return returnset;
 	}
 	
-	public Set getSNPs(Integer chromosome, String listname) {
+	public Set getSNPlistAlleleNames() {
+		return this.setPoslistWithAllele;
+	}	
+
+	public Set getSNPlistPvalueNames() {
+		return this.setPoslistWithPvalue;
+	}	
+
+	
+	public Set getSNPs(String chromosome, String listname) {
 		Set returnset = new LinkedHashSet();
 		if(mapSnpposLists==null) return returnset;
 		Map name2List = mapSnpposLists.get(chromosome);
@@ -163,13 +186,20 @@ public class UserSessionListsManager {
 		Set namelist = (Set)name2List.get(listname);
 		if(namelist==null)  return returnset;
 		return namelist;
-		
 	}
 	
-	public void deleteSNPList(Integer chromosome, String listname) {
-		if(mapVarietyLists==null) return;
-		mapVarietyLists.remove(listname);
+	public boolean SNPhasAllele(String name) {
+		return this.setPoslistWithAllele.contains(name);
+	}
+	public boolean SNPhasPvalue(String name) {
+		return this.setPoslistWithPvalue.contains(name);
+	}
+	
+	public void deleteSNPList(String chromosome, String listname) {
 
+		this.setPoslistWithAllele.remove(listname);
+		this.setPoslistWithPvalue.remove(listname);
+		
 		if(mapSnpposLists==null) return;
 		Map name2List = mapSnpposLists.get(chromosome);
 		if(name2List==null) return;
@@ -184,9 +214,13 @@ public class UserSessionListsManager {
 		int state=0;
 		String listname = "";
 		String chr = "";
+		boolean hasAllele = false;
+		boolean hasPvalue = false;
+		
 		Set setListMembers = null;
 		for(int i=0; i<lines.length; i++ ) {
 			String l=lines[i];
+			if(l.isEmpty()) continue;
 			switch (state) {
 				case 0:
 					if(l.startsWith("VARIETY LISTS:")) state=1;
@@ -220,20 +254,40 @@ public class UserSessionListsManager {
 				case 2:
 					if(l.startsWith("#SNPLIST")) {
 						if(setListMembers!=null && !listname.isEmpty())
-							addSNPList(Integer.valueOf(chr) ,listname, setListMembers);
+							addSNPList(chr ,listname, setListMembers, hasAllele, hasPvalue);
 						listname = l.split("\t")[2];
 						chr = l.split("\t")[1];
+						hasAllele = Boolean.valueOf( l.split("\t")[3] );
+						hasPvalue = Boolean.valueOf( l.split("\t")[4] );
 						setListMembers = new LinkedHashSet();
+						
+						//AppContext.debug("parsing snp list " + listname);
+						
 					} else if(l.startsWith("LOCUS LISTS:")) {
 						if(setListMembers!=null && !listname.isEmpty())
-							addSNPList(Integer.valueOf(chr) ,listname, setListMembers);
+							addSNPList(chr ,listname, setListMembers, hasAllele, hasPvalue);
 						listname = "";
 						setListMembers = null;
 						state=3;
 					}
 					else if(l.startsWith("\t\t")) {
 						//buff.append("\t\t\t" + itPos.next() + "\n");
-						setListMembers.add( l.split("\t")[3] ); 
+						
+						String pos = l.split("\t")[3];
+						try{
+							setListMembers.add( BigDecimal.valueOf(Long.valueOf(pos)) );
+						} catch (Exception ex) {
+							//AppContext.debug("parsing " + pos);
+							if(pos.startsWith("(")) {
+								if(hasAllele || hasPvalue) {
+									setListMembers.add(new MultiReferencePositionImplAllelePvalue(pos));
+								}
+								else 
+									setListMembers.add(new MultiReferencePositionImpl(pos));
+							}
+						}
+						
+						//setListMembers.add( l.split("\t")[3] ); 
 					}
 					break;
 				case 3:
@@ -259,7 +313,7 @@ public class UserSessionListsManager {
 				break;
 			case 2:
 				if(setListMembers!=null && !listname.isEmpty())
-						addSNPList(Integer.valueOf(chr) ,listname, setListMembers);
+						addSNPList(chr ,listname, setListMembers, hasAllele, hasPvalue);
 				break;
 			case 3:
 				if(setListMembers!=null && !listname.isEmpty())
@@ -272,7 +326,7 @@ public class UserSessionListsManager {
 	
 	
 public boolean uploadListCookie(String list) {
-		
+		/*
 		String lines[] = list.split("\n");
 		for(int i=0; i<lines.length; i++ ) {
 			String l=lines[i];
@@ -293,9 +347,10 @@ public boolean uploadListCookie(String list) {
 				for(int ipos=0; ipos<pos.length; ipos++) {
 					setListMembers.add( pos[ipos] );
 				}
-				addSNPList(Integer.valueOf(cols[1]) ,cols[2].trim(), setListMembers);
+				addSNPList(cols[1] ,cols[2].trim(), setListMembers, hasAllele, hasPvalue);
 			}
 		}
+		*/
 		
 		return true;
 	}
@@ -304,19 +359,22 @@ public boolean uploadListCookie(String list) {
 	public String downloadLists() {
 		// TODO Auto-generated method stub
 		StringBuffer buff = new StringBuffer();
+		Map<BigDecimal, VIricstockBasicprop2> mapVarid2Var2 = null;
 		
-		varietyprop2DAO = (VIricstockBasicprop2DAO)AppContext.checkBean( varietyprop2DAO, "VIricstockBasicprop2DAO");
-		Iterator<VIricstockBasicprop2> itVars = varietyprop2DAO.findAllVariety().iterator();
-		Map<BigDecimal, VIricstockBasicprop2> mapVarid2Var2 = new HashMap();
-		while(itVars.hasNext()) {
-			VIricstockBasicprop2 var = itVars.next();
-			mapVarid2Var2.put(var.getVarietyId(), var);
-		}
 		
 		Iterator<String> itNames = getVarietylistNames().iterator();
 		
-		if(itNames.hasNext())
+		if(itNames.hasNext()) {
+			varietyprop2DAO = (VIricstockBasicprop2DAO)AppContext.checkBean( varietyprop2DAO, "VIricstockBasicprop2DAO");
+			Iterator<VIricstockBasicprop2> itVars = varietyprop2DAO.findAllVariety().iterator();
+			mapVarid2Var2 = new HashMap();
+			while(itVars.hasNext()) {
+				VIricstockBasicprop2 var = itVars.next();
+				mapVarid2Var2.put(var.getVarietyId(), var);
+			}
+			
 			buff.append("VARIETY LISTS:\tLIST NAMES:\tVARIETIES (ID, NAME:ACCESSION, IRIS ID, BOX CODE, SUBPOPULATION, COUNTRY)\n");
+		}
 		
 		while(itNames.hasNext()) {
 			String name = itNames.next();
@@ -350,11 +408,13 @@ public boolean uploadListCookie(String list) {
 		
 		while(itNames.hasNext()) {
 			String names[] = itNames.next().split(":");
-			Integer chr = Integer.valueOf(names[0].replace("CHR","").trim());
+			//Integer chr = Integer.valueOf(names[0].replace("CHR","").trim());
+			String chr = names[0].trim();
 			String listname = names[1].trim();
 			Iterator<BigDecimal> itPos =  getSNPs( chr, listname).iterator();
 			//buff.append("\t" + chr + "\t" + listname + "\n");
-			buff.append("#SNPLIST\t" + chr + "\t" + listname + "\n");
+			//buff.append("#SNPLIST\t" + chr + "\t" + listname + "\n");
+			buff.append("#SNPLIST\t" + chr + "\t" + listname + "\t" + SNPhasAllele(listname) + "\t" + SNPhasPvalue(listname) + "\n");
 			while(itPos.hasNext()) {
 				buff.append("\t\t\t" + itPos.next() + "\n");
 			}
@@ -417,7 +477,8 @@ public boolean uploadListCookie(String list) {
 		
 		while(itNames.hasNext()) {
 			String names[] = itNames.next().split(":");
-			Integer chr = Integer.valueOf(names[0].replace("CHR","").trim());
+			//Integer chr = Integer.valueOf(names[0].replace("CHR","").trim());
+			String chr = names[0].trim();
 			String listname = names[1].trim();
 			Iterator<BigDecimal> itPos =  getSNPs( chr, listname).iterator();
 			//buff.append("\t" + chr + "\t" + listname + "\n");

@@ -30,6 +30,8 @@ public interface VariantTable {
 	 */
 	//public VariantTable review(GenotypeQueryParams params );
 	void setVariantStringData(VariantStringData data, GenotypeQueryParams params) throws Exception;
+
+	public String[] getContigs();
 	
 	
 //	public Long[] getPosition();

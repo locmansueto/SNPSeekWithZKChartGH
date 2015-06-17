@@ -9,7 +9,9 @@ import org.springframework.dao.DataAccessException;
 
 public interface SnpsSpliceAcceptorDAO {
 
-	public Set<SnpsSpliceAcceptor> findSnpSpliceAcceptorByChrPosBetween(Integer chr, Integer start, Integer end) throws DataAccessException;
-	public Set<SnpsSpliceAcceptor> findSnpSpliceAcceptorByChrPosIn(Integer chr, Collection listpos)  throws DataAccessException;
+	//public Set<SnpsSpliceAcceptor> findSnpSpliceAcceptorByChrPosBetween(String chr, Integer start, Integer end) throws DataAccessException;
+	//public Set<SnpsSpliceAcceptor> findSnpSpliceAcceptorByChrPosIn(String chr, Collection listpos)  throws DataAccessException;
+	public Set<SnpsSpliceAcceptor> getSNPsBetween(String chr, Integer start, Integer end) throws DataAccessException;
+	public Set<SnpsSpliceAcceptor> getSNPsIn(String chr, Collection listpos)  throws DataAccessException;
 
 }

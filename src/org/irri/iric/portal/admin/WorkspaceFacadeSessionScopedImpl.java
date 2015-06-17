@@ -190,7 +190,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	
 	
 	@Override
-	public Set getSnpPositions(Integer chromosome, String name) {
+	public Set getSnpPositions(String chromosome, String name) {
 		// TODO Auto-generated method stub
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.getSNPs(chromosome, name);
@@ -198,10 +198,31 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
 
 	@Override
-	public boolean addSnpPositionList(Integer chromosome, String name, Set poslist) {
+	//public boolean addSnpPositionList(Integer chromosome, String name, Set poslist) {
+	public boolean addSnpPositionList(String contig, String name, Set poslist, boolean hasAllele, boolean hasPvalue) {
 		// TODO Auto-generated method stub
 		UserSessionListsManager sessionmgr = getSessionManager();
-		return sessionmgr.addSNPList(chromosome, name, poslist);
+		return sessionmgr.addSNPList(contig, name, poslist, hasAllele, hasPvalue);
+	}
+	
+	
+	
+
+
+	@Override
+	public boolean SNPListhasAllele(String listname) {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		return sessionmgr.SNPhasAllele(listname);
+
+	}
+
+
+	@Override
+	public boolean SNPListhasPvalue(String listname) {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		return sessionmgr.SNPhasPvalue(listname);
 	}
 
 
@@ -212,6 +233,19 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 		return sessionmgr.getSNPlistNames();
 	}
 
+	@Override
+	public Set getSnpPositionAlleleListNames() {
+		UserSessionListsManager sessionmgr = getSessionManager();
+		return sessionmgr.getSNPlistAlleleNames();
+	}
+
+	@Override
+	public Set getSnpPositionPvalueListNames() {
+		UserSessionListsManager sessionmgr = getSessionManager();
+		return sessionmgr.getSNPlistPvalueNames();
+	}
+
+	
 	@Override
 	public Set getLocusListNames() {
 		// TODO Auto-generated method stub
@@ -277,6 +311,14 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public void deleteSNPList(String chromosome, String listname) {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		sessionmgr.deleteSNPList(chromosome, listname);  
 	}
 	
 	

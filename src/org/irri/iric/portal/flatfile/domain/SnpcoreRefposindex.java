@@ -232,6 +232,15 @@ public class SnpcoreRefposindex implements Serializable,  SnpsAllvarsPos {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		if(getChromosome().intValue()>9)
+		 return "chr" + getChromosome();
+		else 
+		 return "chr0" + getChromosome();
+	}
 	
 	
 	

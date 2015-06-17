@@ -238,6 +238,18 @@ public class VCvPhenotypeDAOImpl extends AbstractJpaDao<VCvPhenotype> implements
 		// TODO Auto-generated method stub
 		return this.findAllVCvPhenotypes();
 	}
+
+	@Override
+	public List getAllTerms(String organism) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List getAllTerms(String cv, String organism) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

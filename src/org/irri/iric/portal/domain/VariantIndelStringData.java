@@ -35,6 +35,12 @@ public class VariantIndelStringData extends VariantStringData {
 	public VariantIndelStringData() {
 		super();
 		// TODO Auto-generated constructor stub
+		setPosGapRegion = new HashSet();
+		setPosDeletionRegion = new HashSet();
+		listPos = new ArrayList();
+		listVariantsString = new ArrayList();
+		setGapIdx = new HashSet();
+		sequence = "";
 	}
 
 
@@ -190,8 +196,11 @@ public class VariantIndelStringData extends VariantStringData {
 			//alignedVariantIndelStringData.setMapIndelIdx2Refnuc(mapIndelIdx2Refnuc);
 			alignedVariantIndelStringData.setMapIndelpos2Refnuc(mapIndelpos2Refnuc);
 			alignedVariantIndelStringData.setSequence(sequence);
+			//alignedVariantIndelStringData.setMessage(msgbox);
+			//alignedVariantIndelStringData.setMapMSU7Pos2ConvertedPos(mapMSU7Pos2ConvertedPos);
 					
 		}
+		
 		return alignedVariantIndelStringData;
 	}
 

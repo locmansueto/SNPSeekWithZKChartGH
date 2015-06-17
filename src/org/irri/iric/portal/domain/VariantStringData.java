@@ -36,13 +36,63 @@ public class VariantStringData {
 	protected String msgbox="";
 	protected Map<BigDecimal, Set<String>> mapPos2Alleleset= new HashMap();
 	
+	
+	private Map<BigDecimal, MultiReferencePosition> mapMSU7Pos2ConvertedPos;
+	private Map<String, Map<BigDecimal, MultiReferencePosition>> mapOrg2MSU7Pos2ConvertedPos;
+	
+	private String npbContig;
 
 	
 	private VariantSnpsStringData snpstringdata;
 	private VariantIndelStringData indelstringdata;
 	
 	
-	 public boolean hasIndel() {
+
+	
+
+	public void setMapMSU7Pos2ConvertedPos(
+			Map<BigDecimal, MultiReferencePosition> mapMSU7Pos2ConvertedPos, String npbContig) {
+		this.mapMSU7Pos2ConvertedPos = mapMSU7Pos2ConvertedPos;
+		this.npbContig=npbContig;
+	}
+	
+	public Map<BigDecimal, MultiReferencePosition> getMapMSU7Pos2ConvertedPos() {
+		return mapMSU7Pos2ConvertedPos;
+	}
+	
+	
+	public Map<String, Map<BigDecimal, MultiReferencePosition>> getMapOrg2MSU7Pos2ConvertedPos() {
+		return mapOrg2MSU7Pos2ConvertedPos;
+	}
+
+	
+	public void addMapOrg2MSU7PosConverterPos(String orgname, Map mapMSU7Pos2ConvertedPos, String npbcontig) {
+	
+		if(this.npbContig==null)  this.npbContig = npbcontig;
+		else if(!npbcontig.equals(this.npbContig)) throw new RuntimeException("NPB contig " + npbcontig + " did not match from previous conversion " + this.npbContig);
+			
+		if(mapOrg2MSU7Pos2ConvertedPos==null) mapOrg2MSU7Pos2ConvertedPos=new HashMap();
+		mapOrg2MSU7Pos2ConvertedPos.put(orgname, mapMSU7Pos2ConvertedPos);
+	}
+	
+	/*
+	public void setMapOrg2MSU7Pos2ConvertedPos(
+			Map<String, Map<BigDecimal, MultiReferencePosition>> mapOrg2MSU7Pos2ConvertedPos) {
+		this.mapOrg2MSU7Pos2ConvertedPos = mapOrg2MSU7Pos2ConvertedPos;
+	}
+	*/
+	
+	
+
+	public String getNpbContig() {
+		return npbContig;
+	}
+
+	public boolean isNipponbareReference() {
+		return (mapMSU7Pos2ConvertedPos==null);
+	}
+
+	public boolean hasIndel() {
 		 return indelstringdata!=null;
 	 }
 	
@@ -151,7 +201,9 @@ public class VariantStringData {
 	}
 		
 
-	
+	/**
+	 * merge SNPs and Indels
+	 */
 	public void merge() {
 		// merge
 		//VariantStringData variantsmerged = null;
@@ -271,11 +323,52 @@ public class VariantStringData {
 			//		 listPos, mapMergedIndex2Pos, listMergedVariants);
 			// variantsmerged.setMapMergedIdx2SnpIdx(mapMergedIdx2SnpIdx);
 			 
-			 this.msgbox += " ... RESULT: " +  listMergedVariants.size() + " varieties x " + snpstringdata.getListPos().size()  + 
-						" SNP, "   + indelstringdata.getListPos().size() + " INDEL positions";
+			
+			if(!snpstringdata.isNipponbareReference() || !indelstringdata.isNipponbareReference()) {
+				this.mapMSU7Pos2ConvertedPos=new HashMap();
+				if(!snpstringdata.isNipponbareReference()) 
+					mapMSU7Pos2ConvertedPos.putAll(snpstringdata.getMapMSU7Pos2ConvertedPos());
+				if(!indelstringdata.isNipponbareReference()) 
+					mapMSU7Pos2ConvertedPos.putAll(indelstringdata.getMapMSU7Pos2ConvertedPos());
+			}
+			
+			if(snpstringdata.getMapOrg2MSU7Pos2ConvertedPos()!=null || indelstringdata.getMapOrg2MSU7Pos2ConvertedPos()!=null ) {
+				this.mapOrg2MSU7Pos2ConvertedPos= new HashMap();
+				if(snpstringdata.getMapOrg2MSU7Pos2ConvertedPos()!=null && indelstringdata.getMapOrg2MSU7Pos2ConvertedPos()!=null) {
+					this.mapOrg2MSU7Pos2ConvertedPos.putAll( snpstringdata.getMapOrg2MSU7Pos2ConvertedPos() );
+					Map<String, Map<BigDecimal,MultiReferencePosition>> mapOrg2posMapIndel = indelstringdata.getMapOrg2MSU7Pos2ConvertedPos();
+					
+					Iterator<String> itOrg = mapOrg2posMapIndel.keySet().iterator();
+					Map mapNewOrgs = new HashMap();
+					while(itOrg.hasNext()) {
+						String orgname=itOrg.next();
+						Map mapPos = mapOrg2MSU7Pos2ConvertedPos.get(orgname);
+						if(mapPos==null) {
+							mapOrg2MSU7Pos2ConvertedPos.put( orgname, mapOrg2posMapIndel.get(orgname));
+						} else {
+							mapPos.putAll( mapOrg2posMapIndel.get(orgname) );
+						}
+					}
+					
+				}
+				else if(snpstringdata.getMapOrg2MSU7Pos2ConvertedPos()!=null)
+					this.mapOrg2MSU7Pos2ConvertedPos.putAll( snpstringdata.getMapOrg2MSU7Pos2ConvertedPos() );
+				else if( indelstringdata.getMapOrg2MSU7Pos2ConvertedPos()!=null)
+					this.mapOrg2MSU7Pos2ConvertedPos.putAll( indelstringdata.getMapOrg2MSU7Pos2ConvertedPos() );
+			}
+			
+			this.msgbox += " ... RESULT: " +  listMergedVariants.size() + " varieties x " + snpstringdata.getListPos().size()  + 
+					" SNP, "   + indelstringdata.getListPos().size() + " INDEL positions\n";
+			
+			if(!snpstringdata.msgbox.isEmpty())
+			 this.msgbox += snpstringdata.msgbox.trim()  + "\n";
+			
+			if(!indelstringdata.msgbox.isEmpty())
+				this.msgbox += indelstringdata.msgbox.trim() + "\n" ;
+			
 			
 		} else if(indelstringdata!=null) {
-			 	msgbox += " ... RESULT: " +  indelstringdata.getListVariantsString().size() + " varieties x " + indelstringdata.getListPos().size() + " INDEL positions";
+			 	msgbox += " ... RESULT: " +  indelstringdata.getListVariantsString().size() + " varieties x " + indelstringdata.getListPos().size() + " INDEL positions\n";
 			 
 				this.mapVariety2Mismatch = indelstringdata.mapVariety2Mismatch;
 				this.mapVariety2Order= indelstringdata.mapVariety2Order;
@@ -285,10 +378,13 @@ public class VariantStringData {
 				this.msgbox += indelstringdata.msgbox;
 				this.refnuc = indelstringdata.refnuc;
 				this.mapPos2Alleleset = indelstringdata.mapPos2Alleleset;
+				this.mapMSU7Pos2ConvertedPos = indelstringdata.getMapMSU7Pos2ConvertedPos(); // .mapMSU7Pos2ConvertedPos;
+				this.npbContig = indelstringdata.getNpbContig();
+				this.mapOrg2MSU7Pos2ConvertedPos = indelstringdata.getMapOrg2MSU7Pos2ConvertedPos();
 			
 		} else if(snpstringdata!=null) {
 
-			 msgbox += " ... RESULT: " +  snpstringdata.getListVariantsString().size() + " varieties x "  + snpstringdata.getListPos().size() + " SNPS positions";
+			 msgbox += " ... RESULT: " +  snpstringdata.getListVariantsString().size() + " varieties x "  + snpstringdata.getListPos().size() + " SNPS positions\n";
 				this.mapVariety2Mismatch = snpstringdata.mapVariety2Mismatch;
 				this.mapVariety2Order= snpstringdata.mapVariety2Order;
 				this.mapIdx2Pos= snpstringdata.mapIdx2Pos;
@@ -297,6 +393,9 @@ public class VariantStringData {
 				this.mapPos2Alleleset = snpstringdata.getMapPos2Alleleset();
 				this.msgbox += snpstringdata.msgbox;
 				this.refnuc = snpstringdata.refnuc;
+				this.mapMSU7Pos2ConvertedPos = snpstringdata.getMapMSU7Pos2ConvertedPos(); // .mapMSU7Pos2ConvertedPos;
+				this.npbContig = snpstringdata.getNpbContig();
+				this.mapOrg2MSU7Pos2ConvertedPos = snpstringdata.getMapOrg2MSU7Pos2ConvertedPos();
 				
 				Map mapMergedIdx2SnpIdx=new HashMap();
 				for(int i=0; i<listPos.size(); i++)

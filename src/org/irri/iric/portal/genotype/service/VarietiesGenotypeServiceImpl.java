@@ -17,10 +17,13 @@ import java.util.TreeSet;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.IndelStringDAOImpl;
 import org.irri.iric.portal.dao.ListItemsDAO;
+import org.irri.iric.portal.dao.MultipleReferenceConverterDAO;
 import org.irri.iric.portal.domain.Gene;
 import org.irri.iric.portal.domain.IndelsAllvars;
 import org.irri.iric.portal.domain.IndelsAllvarsPos;
 import org.irri.iric.portal.domain.IndelsStringAllvars;
+import org.irri.iric.portal.domain.MultiReferenceLocus;
+import org.irri.iric.portal.domain.MultiReferenceLocusImpl;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
 import org.irri.iric.portal.domain.VariantIndelStringData;
@@ -50,6 +53,13 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 	@Autowired
 	@Qualifier("IndelService")
 	VariantStringService indelsService;
+	
+	//@Autowired
+	//@Qualifier("MultipleReferenceConverterDAO")
+	//@Qualifier("MultipleReferenceConverterPrecompDAO")
+	//private MultipleReferenceConverterDAO multiplerefconvertdao;
+	
+	
 	
 	//protected abstract List<SnpsStringAllvars> getVariantsStringInAllVarieties(GenotypeQueryParams params); 
 	private VariantStringService getCoreSNPService() 
@@ -81,25 +91,37 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 			else if(params.isbNonsynPlusSpliceSnps())
 				variantMerged.setSnpstringdata( origdata.getSnpstringdata().getNonsynPlusSpliceSnps() );
 			else variantMerged.setSnpstringdata( origdata.getSnpstringdata() );
-			
-			AppContext.debug("fillVariantTable:" + variantMerged.getSnpstringdata().getListPos().size() + " SNP positions" );
-			
+			AppContext.debug("SNP fillVariantTable:" + variantMerged.getSnpstringdata().getListPos().size() + " SNP positions" );
 		}
+		
 		if(origdata.hasIndel()) {
 			if(params.isbAlignIndels()) {
-				variantMerged.setIndelstringdata( origdata.getIndelstringdata().getAlignedIndels()  );
+				VariantIndelStringData indeldata =  origdata.getIndelstringdata().getAlignedIndels() ;
+				indeldata.setMapMSU7Pos2ConvertedPos( origdata.getIndelstringdata().getMapMSU7Pos2ConvertedPos(), origdata.getIndelstringdata().getNpbContig() );
+				indeldata.setMessage( origdata.getIndelstringdata().getMessage() );
+				variantMerged.setIndelstringdata( indeldata );
+				//variantMerged.setMapMSU7Pos2ConvertedPos(origdata.getIndelstringdata().getMapMSU7Pos2ConvertedPos());
+				AppContext.debug("origdata.getIndelstringdata().getMapMSU7Pos2ConvertedPos()=" + origdata.getIndelstringdata().getMapMSU7Pos2ConvertedPos());
 			} else {
 				variantMerged.setIndelstringdata( origdata.getIndelstringdata());
 			}
-			AppContext.debug("fillVariantTable:" + variantMerged.getIndelstringdata().getListPos().size() + " Indel positions" );
+			AppContext.debug("Indel fillVariantTable:" + variantMerged.getIndelstringdata().getListPos().size() + " Indel positions" );
 		}
 		
+		
+		//variantMerged.setMapMSU7Pos2ConvertedPos(origdata.getMapMSU7Pos2ConvertedPos());
 		variantMerged.merge();
 		
-		AppContext.debug("fillVariantTable:" + variantMerged.getListPos().size() + " positions" );
+		//AppContext.debug("fillVariantTable variantMerged.getMapMSU7Pos2ConvertedPos()=" + variantMerged.getMapMSU7Pos2ConvertedPos().size() + ": " +   variantMerged.getMapMSU7Pos2ConvertedPos() );
+		
+		//AppContext.debug("fillVariantTable variantMerged.getListPos():" + variantMerged.getListPos().size() + ": "+ variantMerged.getListPos() );
 		
 		table.setVariantStringData( variantMerged, params);
+		
+		//AppContext.debug("fillVariantTable:  table.getVariantStringData().getMapMSU7Pos2ConvertedPos()=" + table.getVariantStringData().getMapMSU7Pos2ConvertedPos() );
+		
 		table.setMessage(variantMerged.getMessage());
+		//table.setMessage(origdata.getMessage());
 		return table;
 	}
 	
@@ -117,10 +139,107 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 		return queryVariantStringData(params);
 	}
 	
+	
+	private VariantStringData queryVariantStringDataNipponbare( GenotypeQueryParams params) throws Exception {
+
+		
+		VariantStringData variantssnps = null;
+		if(params.isbSNP()) {
+			variantssnps =  getAllSNPService().getSNPsString(params);
+		}
+		
+		
+		
+		VariantStringData variantsindels = null;
+		if(params.isbIndel() && !params.isSNPList() ) {
+				variantsindels=  getIndelsService().getVariantIndelsString(params);
+				/*
+				if(params.getColVarIds()!=null && !params.getColVarIds().isEmpty()) {
+					if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
+						variantsindels= getIndelsService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getPoslist()) ;
+					}
+					else {
+						variantsindels=  getIndelsService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getlStart(), params.getlEnd()) ;
+					}
+				} else {
+					if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
+						variantsindels=  getIndelsService().getVariantString(params, params.getsChr(), params.getPoslist()) ;
+					}
+					else {
+						variantsindels=  getIndelsService().getVariantString(params,  params.getsChr(), params.getlStart(), params.getlEnd()) ;
+					}
+				}
+				*/
+				
+				//if(params.isbAlignIndels()) {
+				//	// expand indel positions to align
+				//	variantsindels = ((VariantIndelStringData)variantsindels).getAlignedIndels();
+				//}
+		}
+		
+		VariantStringData variantMerged = new VariantStringData();
+		
+		variantMerged.setSnpstringdata( (VariantSnpsStringData)variantssnps);
+		variantMerged.setIndelstringdata( (VariantIndelStringData)variantsindels );
+		variantMerged.merge();
+		
+		return variantMerged;
+		
+	}
+	
+//	private VariantStringData queryVariantStringDataAllRefs( GenotypeQueryParams params) throws Exception {
+//		
+//		
+//		
+//		
+//		if(!params.getOrganism().equals( AppContext.getDefaultOrganism() )) {
+//			// not nipponbare coordinate. convert coordinates
+//			
+//			multiplerefconvertdao = (MultipleReferenceConverterDAO)AppContext.checkBean(multiplerefconvertdao, "MultipleReferenceConverterDAO");
+//			
+//			MultiReferenceLocus locusQueried = new MultiReferenceLocusImpl(params.getOrganism(), params.getsChr(), params.getlStart(), params.getlEnd(), 1L);
+//			
+//			MultiReferenceLocus locusNipponbare = multiplerefconvertdao.convertLocus( locusQueried ,  AppContext.getDefaultOrganism(),  null); 
+//			MultiReferenceLocus origMultiReferenceLocus =  params.setNewPosition(locusNipponbare);
+//			
+//			VariantStringData variantstringdataNPB =  queryVariantStringDataNipponbare(params);
+//			
+//			String toContig = null;
+//			if(params.isLimitToQueryContig()) {
+//				toContig = locusQueried.getContig();
+//			}
+//			
+//			
+//			
+//			variantstringdataNPB.setMessage( variantstringdataNPB.getMessage() + "\nQuery " + locusQueried + " aligned with " + locusNipponbare);
+//			
+//			AppContext.debug( variantstringdataNPB.toString() );
+//			AppContext.debug( variantstringdataNPB.getMessage() );
+//			
+//			VariantStringData convertedSNPPositions = multiplerefconvertdao.convertReferencePositions(variantstringdataNPB, locusNipponbare, locusQueried, toContig);
+//			params.setNewPosition( origMultiReferenceLocus );
+//			
+//			AppContext.debug( convertedSNPPositions.toString() );
+//			AppContext.debug("convertedSNPPositions msg=" +  convertedSNPPositions.getMessage() );
+//			
+//			return  convertedSNPPositions;
+//			
+//			
+//			
+//			//return variantstringdataNPB;
+//			
+//		} else {
+//			return queryVariantStringDataNipponbare(params);
+//		}		
+//		
+//	}
+	
 	@Override
 	public VariantStringData queryVariantStringData( GenotypeQueryParams params) throws Exception {
 		// TODO Auto-generated method stub
 			
+		listitemsdao =  (ListItemsDAO)AppContext.checkBean( listitemsdao,"ListItemsDAO");
+	
 		Collection colVarIds =params.getColVarIds();
 		
 		
@@ -132,6 +251,7 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 		boolean bCoreonly = params.isbCoreonly();
 		//boolean bMismatchonly = params.isbMismatchonly();
 		Collection poslist = params.getPoslist();
+		Collection locuslist = params.getColLoci();
 		String sSubpopulation = params.getsSubpopulation();
 		String sLocus = params.getsLocus();
 				
@@ -143,11 +263,11 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 		if(sLocus!=null) genename = sLocus.toUpperCase();
 				
 		String msgbox = "";
-		if(poslist==null) {
+		if(poslist==null && locuslist==null) {
 
 			if( !genename.isEmpty() )
 			{
-				Gene gene2 =  listitemsdao.getGeneFromName( genename);
+				Gene gene2 =  listitemsdao.findGeneFromName(genename, params.getOrganism());
 				lStart = Long.valueOf(gene2.getFmin()) ;	
 				lEnd =  Long.valueOf(gene2.getFmax());	
 				//selectChr.setSelectedIndex( gene2.getChr()-1 );
@@ -162,19 +282,19 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 			}
 			else msgbox="SEARCHING: in chromosome " + sChr + " [" + lStart +  "-" + lEnd +  "]" ;
 			
-			int chrlen = listitemsdao.getFeatureLength( sChr );
-			if(lEnd> chrlen  ||lStart> chrlen)
-			{
-				throw new Exception("Positions should be less than length");
-			} 
-			if(lEnd<1  || lStart<1)
-			{
-				throw new Exception("Positions should be positive integer");
-			}   				
-			if(lEnd<lStart)
-			{
-				throw new Exception("End should be greater than or equal to start");
-			}  
+				int chrlen = listitemsdao.getFeatureLength( sChr,  params.getOrganism() ).intValue();
+				if(lEnd> chrlen  ||lStart> chrlen)
+				{
+					throw new Exception("Positions should be less than length");
+				} 
+				if(lEnd<1  || lStart<1)
+				{
+					throw new Exception("Positions should be positive integer");
+				}   				
+				if(lEnd<lStart)
+				{
+					throw new Exception("End should be greater than or equal to start");
+				}
 			
 
 			int maxlength = -1;
@@ -199,8 +319,15 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 			}   
 			
 		}
-		else 
-			msgbox="SEARCHING: in chromosome " + sChr + ", " + poslist.size() + " SNPs";
+		else{
+			if(poslist!=null && locuslist!=null)
+				msgbox="SEARCHING: in chromosome " + sChr + " " + poslist.size() + " SNPs, " + locuslist.size() + " loci";
+			else if(poslist!=null)
+				msgbox="SEARCHING: in chromosome " + sChr + " " + poslist.size() + " SNPs";
+			if(locuslist!=null)
+				msgbox="SEARCHING: in " + locuslist.size() + " loci";
+		}
+			
 			
 		Set setVarieties = null; 
 		if(colVarIds==null) {
@@ -217,7 +344,7 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 		}
 
 				
-				AppContext.startTimer();
+				
 
 
 				// if length > maxlengthUni, change to core
@@ -226,85 +353,103 @@ public class VarietiesGenotypeServiceImpl implements VarietiesGenotypeService {
 
 				
 				
-			VariantStringData variantssnps = null;
-			if(params.isbSNP()) {
-				
-				if(params.isbCoreonly()) {
-					if(params.getColVarIds()!=null && !params.getColVarIds().isEmpty()) {
-						if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
-							variantssnps =  getCoreSNPService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getPoslist());
-						}
-						else {
-							variantssnps = getCoreSNPService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getlStart(), params.getlEnd()) ;
-						}
-					} else {
-						if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
-							variantssnps =   getCoreSNPService().getVariantString(params, params.getsChr(), params.getPoslist());
-						}
-						else {
-							variantssnps =  getCoreSNPService().getVariantString(params, params.getsChr(), params.getlStart(), params.getlEnd());
-						}
-					}
-				} else {
-					if(params.getColVarIds()!=null && !params.getColVarIds().isEmpty()) {
-						if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
-							variantssnps =   getAllSNPService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getPoslist()) ;
-						}
-						else {
-							variantssnps =   getAllSNPService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getlStart(), params.getlEnd()) ;
-						}
-					} else {
-						if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
-							variantssnps =  getAllSNPService().getVariantString(params, params.getsChr(), params.getPoslist());
-						}
-						else {
-							variantssnps =   getAllSNPService().getVariantString(params, params.getsChr(), params.getlStart(), params.getlEnd()) ;
-						}
-					}
-				}
-			}
-			
-			
-			
-			VariantStringData variantsindels = null;
-			if(params.isbIndel()) {
-					if(params.getColVarIds()!=null && !params.getColVarIds().isEmpty()) {
-						if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
-							variantsindels= getIndelsService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getPoslist()) ;
-						}
-						else {
-							variantsindels=  getIndelsService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getlStart(), params.getlEnd()) ;
-						}
-					} else {
-						if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
-							variantsindels=  getIndelsService().getVariantString(params, params.getsChr(), params.getPoslist()) ;
-						}
-						else {
-							variantsindels=  getIndelsService().getVariantString(params,  params.getsChr(), params.getlStart(), params.getlEnd()) ;
-						}
-					}
-					
-					//if(params.isbAlignIndels()) {
-					//	// expand indel positions to align
-					//	variantsindels = ((VariantIndelStringData)variantsindels).getAlignedIndels();
-					//}
-			}
-			
-			VariantStringData variantMerged = new VariantStringData();
-			
-			variantMerged.setSnpstringdata( (VariantSnpsStringData)variantssnps);
-			variantMerged.setIndelstringdata( (VariantIndelStringData)variantsindels );
-
-			
-			//if(variantMerged.getListPos()==null) throw new RuntimeException("variantMerged.getListPos()==null");
-			//if(variantssnps!=null && variantssnps.getListPos()==null) throw new RuntimeException("variantssnps.getListPos()==null");
-			//if(variantsindels!=null && variantsindels.getListPos()==null) throw new RuntimeException("variantsindels.getListPos()==null");
-			//if(variantMerged.getListVariantsString()==null)  throw new RuntimeException("variantMerged.getListVariantsString()==null");
-			variantMerged.merge();
-			variantMerged.setMessage(msgbox + variantMerged.getMessage());
+//			VariantStringData variantssnps = null;
+//			if(params.isbSNP()) {
+//				
+//				variantssnps =  getAllSNPService().getSNPsString(params);
+//				
+//				/*
+//				if(params.isbCoreonly()) {
+//					if(params.getColVarIds()!=null && !params.getColVarIds().isEmpty()) {
+//						if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
+//							variantssnps =  getCoreSNPService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getPoslist());
+//						}
+//						else {
+//							variantssnps = getCoreSNPService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getlStart(), params.getlEnd()) ;
+//						}
+//					} else {
+//						if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
+//							variantssnps =   getCoreSNPService().getVariantString(params, params.getsChr(), params.getPoslist());
+//						}
+//						else {
+//							variantssnps =  getCoreSNPService().getVariantString(params, params.getsChr(), params.getlStart(), params.getlEnd());
+//						}
+//					}
+//				} else {
+//					if(params.getColVarIds()!=null && !params.getColVarIds().isEmpty()) {
+//						if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
+//							variantssnps =   getAllSNPService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getPoslist()) ;
+//						}
+//						else {
+//							variantssnps =   getAllSNPService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getlStart(), params.getlEnd()) ;
+//						}
+//					} else {
+//						if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
+//							variantssnps =  getAllSNPService().getVariantString(params, params.getsChr(), params.getPoslist());
+//						}
+//						else {
+//							variantssnps =   getAllSNPService().getVariantString(params, params.getsChr(), params.getlStart(), params.getlEnd()) ;
+//						}
+//					}
+//				}
+//				*/
+//			}
+//			
+//			
+//			
+//			VariantStringData variantsindels = null;
+//			if(params.isbIndel()) {
+//					if(params.getColVarIds()!=null && !params.getColVarIds().isEmpty()) {
+//						if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
+//							variantsindels= getIndelsService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getPoslist()) ;
+//						}
+//						else {
+//							variantsindels=  getIndelsService().getVariantString(params, params.getColVarIds(), params.getsChr(), params.getlStart(), params.getlEnd()) ;
+//						}
+//					} else {
+//						if(params.getPoslist()!=null && !params.getPoslist().isEmpty()) {
+//							variantsindels=  getIndelsService().getVariantString(params, params.getsChr(), params.getPoslist()) ;
+//						}
+//						else {
+//							variantsindels=  getIndelsService().getVariantString(params,  params.getsChr(), params.getlStart(), params.getlEnd()) ;
+//						}
+//					}
+//					
+//					//if(params.isbAlignIndels()) {
+//					//	// expand indel positions to align
+//					//	variantsindels = ((VariantIndelStringData)variantsindels).getAlignedIndels();
+//					//}
+//			}
+//			
+//			VariantStringData variantMerged = new VariantStringData();
+//			
+//			variantMerged.setSnpstringdata( (VariantSnpsStringData)variantssnps);
+//			variantMerged.setIndelstringdata( (VariantIndelStringData)variantsindels );
+//
+//			
+//			//if(variantMerged.getListPos()==null) throw new RuntimeException("variantMerged.getListPos()==null");
+//			//if(variantssnps!=null && variantssnps.getListPos()==null) throw new RuntimeException("variantssnps.getListPos()==null");
+//			//if(variantsindels!=null && variantsindels.getListPos()==null) throw new RuntimeException("variantsindels.getListPos()==null");
+//			//if(variantMerged.getListVariantsString()==null)  throw new RuntimeException("variantMerged.getListVariantsString()==null");
+//			variantMerged.merge();
+//			variantMerged.setMessage(msgbox + variantMerged.getMessage());
+//		
+//			
+//			return variantMerged;
 		
+		
+		AppContext.startTimer();
+		
+			//VariantStringData variantMerged = queryVariantStringDataAllRefs(params);
+			VariantStringData variantMerged = queryVariantStringDataNipponbare(params);
+			variantMerged.setMessage(msgbox + variantMerged.getMessage());
 			
+			AppContext.debug("queryVariantStringData msg=" +  variantMerged.getMessage() );
+			
+		AppContext.resetTimer("queryVariantstring");
+		
 			return variantMerged;
+		
 					
 		}
 	

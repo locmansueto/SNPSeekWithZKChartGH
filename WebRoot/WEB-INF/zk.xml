@@ -21,6 +21,8 @@
     <disable-event-thread>false</disable-event-thread>
   </system-config>
 
+
+
 	
 	<!-- session-config>	
 	    <session-timeout>1800</session-timeout>    
@@ -115,5 +117,6 @@
 </library-property -->
 
 
-
+	<custom-attributes org.zkoss.zul.listbox.initRodSize="30"/>
+	
 </zk>

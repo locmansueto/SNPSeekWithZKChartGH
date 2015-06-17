@@ -4,8 +4,9 @@ import java.util.List;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.LocalAlignmentDAO;
-import org.irri.iric.portal.domain.LocusLocalAlignment;
+import org.irri.iric.portal.domain.LocalAlignmentImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 public class LocalAlignmentBLASTServiceImpl implements LocalAlignmentService {
 	
 	@Autowired
+	//@Qualifier("LocalAlignmentDAORemoteBlast")
+	@Qualifier("LocalAlignmentDAO")
 	private LocalAlignmentDAO localblastdao;
 
 	@Override

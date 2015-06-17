@@ -6,6 +6,7 @@
 <?init class="org.zkoss.zk.ui.util.Composition"
         arg0="/template.zul"?>
 <zk>
-      <include self="@define(content)" src="http://oryzasnp-atcg-irri-org.s3-website-ap-southeast-1.amazonaws.com"/>
-	
+
+      <!--  include self="@define(content)" src="http://oryzasnp-atcg-irri-org.s3-website-ap-southeast-1.amazonaws.com"/ -->
+      <include self="@define(content)" src="download.zul"/>
 </zk>

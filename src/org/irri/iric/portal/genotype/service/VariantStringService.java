@@ -15,11 +15,14 @@ public interface VariantStringService {
 //	List<SnpsStringAllvars> getVariantString(Collection colVarids, String chr, Collection colSnppos);
 //	List<SnpsStringAllvars> getVariantString(String chr, Collection colSnppos);
 	
-	VariantStringData getVariantString(GenotypeQueryParams params, Collection colVarids, String chr, Long start, Long stop);
-	VariantStringData getVariantString(GenotypeQueryParams params, String chr, Long start, Long stop);
-	VariantStringData getVariantString(GenotypeQueryParams params, Collection colVarids, String chr, Collection colSnppos);
-	VariantStringData getVariantString(GenotypeQueryParams params, String chr, Collection colSnppos);	
+	VariantStringData getVariantString(GenotypeQueryParams params, Collection colVarids, String chr, Long start, Long stop) throws Exception;
+	VariantStringData getVariantString(GenotypeQueryParams params, String chr, Long start, Long stop) throws Exception;
+	VariantStringData getVariantString(GenotypeQueryParams params, Collection colVarids, String chr, Collection colSnppos) throws Exception;
+	VariantStringData getVariantString(GenotypeQueryParams params, String chr, Collection colSnppos) throws Exception;	
 //	SnpsAllvarsPosDAO getVariantPositionsDAO();
 //	SnpsAllvarsDAO getVariantCallsDAO();
+	VariantStringData getVariantString(GenotypeQueryParams params, Collection colLocus);
+	VariantStringData getSNPsString(GenotypeQueryParams params) throws Exception;
+	VariantStringData getVariantIndelsString(GenotypeQueryParams params) throws Exception;
 	
 }

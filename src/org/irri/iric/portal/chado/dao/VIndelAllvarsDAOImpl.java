@@ -1,10 +1,13 @@
 package org.irri.iric.portal.chado.dao;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -12,8 +15,14 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.Session;
+import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.chado.domain.VConvertRefposPrecomp;
 import org.irri.iric.portal.chado.domain.VIndelAllvars;
 import org.irri.iric.portal.domain.IndelsAllvars;
+import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.domain.MultiReferencePosition;
+//import org.irri.iric.portal.domain.MultiReferenceConversion;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -266,37 +275,131 @@ public class VIndelAllvarsDAOImpl extends AbstractJpaDao<VIndelAllvars>
 	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set findIndelAllvarsByChrPosBetween(Integer chr, BigDecimal start,
-			BigDecimal end) {
+	public Set findIndelAllvarsByChrPosBetween(String chr, BigDecimal start, BigDecimal end) {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIndelAllvarsByChrPosBetween", -1, -1, BigDecimal.valueOf(chr+2), start, end );
+		chr=AppContext.guessChrFromString(chr);
+		Query query = createNamedQuery("findVIndelAllvarsByChrPosBetween", -1, -1,  BigDecimal.valueOf(Long.valueOf(chr)+2), start, end );
 		return new LinkedHashSet<VIndelAllvars>(query.getResultList());
+	}
+
+	@Override
+	public Set findIndelAllvarsByVarChrPosBetween(Collection varids, String chr, BigDecimal start, BigDecimal end) {
+		// TODO Auto-generated method stub
+		chr=AppContext.guessChrFromString(chr);
+		Query query = createNamedQuery("findVIndelAllvarsByVarChrPosBetween", -1, -1, BigDecimal.valueOf(Long.valueOf(chr)+2), start, end, varids );
+		return new LinkedHashSet<VIndelAllvars>(query.getResultList());
+	}
+
+	@Override
+	public Set findIndelAllvarsByVarChrPosIn(Collection varList, String chr, Collection posList) {
+		if(chr.toLowerCase().equals("loci")) {
+			
+			StringBuffer buffVar = new StringBuffer();
+			Iterator<String> itList = AppContext.setSlicerIds((Set)varList).iterator();
+			buffVar.append(" ( ");
+			while(itList.hasNext()) {
+				 buffVar.append(  " var in (" +  itList.next() + ") ");
+				 if(itList.hasNext()) buffVar.append(" or ");
+			}
+			buffVar.append(")");
+			
+			String sql="select * from iric.V_INDEL_ALLVARS where " + buffVar.toString() + " and (";
+			Iterator<Locus> itLoc =  posList.iterator();
+			while(itLoc.hasNext()) {
+				Locus loc =  itLoc.next();
+				sql += "( partition_id=" + ( Integer.valueOf(AppContext.guessChrFromString(loc.getContig()))+2) + " and pos between " + loc.getFmin() + " and " + loc.getFmax() + ") ";
+				if(itLoc.hasNext())
+					sql+= " or ";
+			}
+			sql +=")";
+			return new LinkedHashSet<VIndelAllvars>(executeSQL(sql));
+		}
+		else if(chr.toLowerCase().equals("any")) {
+			AppContext.debug("snp list not supported for indel.");
+			StringBuffer buffVar = new StringBuffer();
+			Iterator<String> itList = AppContext.setSlicerIds((Set)varList).iterator();
+			buffVar.append(" ( ");
+			while(itList.hasNext()) {
+				 buffVar.append(  " var in (" +  itList.next() + ") ");
+				 if(itList.hasNext()) buffVar.append(" or ");
+			}
+			buffVar.append(")");
+			String sql="select * from iric.V_INDEL_ALLVARS where " + buffVar.toString() + " and (";
+			Iterator<MultiReferencePosition> itLoc =  posList.iterator();
+			while(itLoc.hasNext()) {
+				MultiReferencePosition loc =  itLoc.next();
+				sql += "( partition_id=" + (Integer.valueOf( AppContext.guessChrFromString(loc.getContig()))+2) + " and pos=" + loc.getPosition() + ") ";
+				if(itLoc.hasNext())
+					sql+= " or ";
+			}
+			sql +=")";
+			return new LinkedHashSet<VIndelAllvars>(executeSQL(sql));
+		}
+		else {
+			chr=AppContext.guessChrFromString(chr);
+			Query query = createNamedQuery("findVIndelAllvarsByVarChrPosIn", -1, -1, BigDecimal.valueOf(Long.valueOf(chr)+2), varList, posList );
+			return new LinkedHashSet<VIndelAllvars>(query.getResultList());
+		}
+	}
+
+	@Override
+	public Set findIndelAllvarsByChrPosIn(String chr, Collection posList) {
+		// TODO Auto-generated method stub
+		
+		if(chr.toLowerCase().equals("loci")) {
+			
+			String sql="select * from iric.V_INDEL_ALLVARS where (";
+			Iterator<Locus> itLoc =  posList.iterator();
+			while(itLoc.hasNext()) {
+				Locus loc =  itLoc.next();
+				sql += "( partition_id=" + ( Integer.valueOf(AppContext.guessChrFromString(loc.getContig()))+2) + " and pos between " + loc.getFmin() + " and " + loc.getFmax() + ") ";
+				if(itLoc.hasNext())
+					sql+= " or ";
+			}
+			sql +=")";
+			return new LinkedHashSet<VIndelAllvars>(executeSQL(sql));
+		}
+		else if(chr.toLowerCase().equals("any")) {
+			AppContext.debug("snp list not supported for indel.");
+			String sql="select * from iric.V_INDEL_ALLVARS where (";
+			Iterator<MultiReferencePosition> itLoc =  posList.iterator();
+			while(itLoc.hasNext()) {
+				MultiReferencePosition loc =  itLoc.next();
+				sql += "( partition_id=" + ( Integer.valueOf(AppContext.guessChrFromString(loc.getContig()))+2) + " and pos=" + loc.getPosition() + ") ";
+				if(itLoc.hasNext())
+					sql+= " or ";
+			}
+			sql +=")";
+			return new LinkedHashSet<VIndelAllvars>(executeSQL(sql));
+		}
+		else {
+			chr=AppContext.guessChrFromString(chr);
+			Query query = createNamedQuery("findVIndelAllvarsByChrPosIn", -1, -1, BigDecimal.valueOf(Long.valueOf(chr)+2), posList );
+			return new LinkedHashSet<VIndelAllvars>(query.getResultList());
+		}	
+		
 		
 	}
-
-	@Override
-	public Set findIndelAllvarsByVarChrPosBetween(Collection varids,
-			Integer chr, BigDecimal start, BigDecimal end) {
-		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIndelAllvarsByVarChrPosBetween", -1, -1, BigDecimal.valueOf(chr+2), start, end, varids );
-		return new LinkedHashSet<VIndelAllvars>(query.getResultList());
-	}
-
-	@Override
-	public Set findIndelAllvarsByVarChrPosIn(Collection varList, Integer chr,
-			Collection posList) {
-		Query query = createNamedQuery("findVIndelAllvarsByVarChrPosIn", -1, -1, BigDecimal.valueOf(chr+2), varList, posList );
-		return new LinkedHashSet<VIndelAllvars>(query.getResultList());
-	}
-
-	@Override
-	public Set findIndelAllvarsByChrPosIn(Integer chr, Collection posList) {
-		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIndelAllvarsByChrPosIn", -1, -1, BigDecimal.valueOf(chr+2), posList );
-		return new LinkedHashSet<VIndelAllvars>(query.getResultList());
-	}
 	
 	
+
+	private List<VIndelAllvars> executeSQL(String sql) {
+		//System.out.println("executing :" + sql);
+		//log.info("executing :" + sql);
+		AppContext.debug("executing " + sql);
+		try { 
+			List listResult = getSession().createSQLQuery(sql).addEntity(VIndelAllvars.class).list();
+			//AppContext.debug("result " + listResult.size() + " VConvertRefpositions");
+			return listResult;
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			return new ArrayList();
+		}
+	}
+	
+	private Session getSession() {
+		return entityManager.unwrap(Session.class);
+	}
 	
 	
 	

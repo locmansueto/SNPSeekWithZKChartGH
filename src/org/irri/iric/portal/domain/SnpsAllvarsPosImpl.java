@@ -6,7 +6,8 @@ public class SnpsAllvarsPosImpl implements SnpsAllvarsPos {
 
 	private BigDecimal pos;
 	private String refnuc;
-	
+
+	private String contig;
 	
 	
 	
@@ -32,6 +33,17 @@ public class SnpsAllvarsPosImpl implements SnpsAllvarsPos {
 	public void setRefnuc(String refnuc) {
 		// TODO Auto-generated method stub
 		this.refnuc=refnuc;
+	}
+
+	@Override
+	public String toString() {
+		return "[pos=" + pos + ", nuc=" + refnuc + "]";
+	}
+
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		return contig;
 	}
 
 	

@@ -247,6 +247,12 @@ public class IndelAllele implements Serializable, IndelsAllvarsPos {
 		// TODO Auto-generated method stub
 	//	 this.refnuc=refnuc;
 	}
+
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

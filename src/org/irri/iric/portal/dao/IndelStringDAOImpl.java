@@ -51,7 +51,7 @@ public class IndelStringDAOImpl implements IndelStringDAO {
 		this.isMismatchOnly = isMismatchOnly;
 	}
 
-	private Map readIndelsAllvars(Integer chr, BigDecimal start, BigDecimal end, Collection varList, Collection posList) {
+	private Map readIndelsAllvars(String chr, BigDecimal start, BigDecimal end, Collection varList, Collection posList) {
 		
 		//private Map<BigDecimal, Map<BigDecimal, IndelsAllvars>> mapVar2AlleleCall;
 		Map<BigDecimal, Map<BigDecimal, IndelsAllvars>> mapVar2AlleleCall;
@@ -75,10 +75,10 @@ public class IndelStringDAOImpl implements IndelStringDAO {
 			mapAlleleId2Indel = indelsAllvarsPosDAO.getMapIndelId2Indels(chr.toString(), posList);
 			if(varList!=null && varList.size()<10)
 			{
-				AppContext.debug("getting indelcallsbyvar in " + chr + " [" + start + "-" + end + "]");
+				AppContext.debug("getting indelcallsbyvar in " + chr  + "  " + posList.size());
 				setSnps = indelsAllvarsDAO.findIndelAllvarsByVarChrPosIn(varList, chr, posList);
 			} else {
-				AppContext.debug("getting indelcalls in " + chr + " [" + start + "-" + end + "]");
+				AppContext.debug("getting indelcalls in " + chr  + "  " + posList.size());
 				setSnps = indelsAllvarsDAO.findIndelAllvarsByChrPosIn( chr,  posList);
 			}
 			
@@ -160,7 +160,8 @@ public class IndelStringDAOImpl implements IndelStringDAO {
 			if( isMismatchOnly  && mapVar2MismatchCount.get(var)==0) continue;
 			
 			Map<BigDecimal, IndelsAllvars> mapPos2Indelallvars=  mapVar2AlleleCall.get(var);
-			sortedVarieties.add( new IndelsStringAllvarsImpl(var, mapPos2Indelallvars, BigDecimal.valueOf(mapVar2MismatchCount.get(var)), Long.valueOf(chr) ) );
+			//sortedVarieties.add( new IndelsStringAllvarsImpl(var, mapPos2Indelallvars, BigDecimal.valueOf(mapVar2MismatchCount.get(var)), Long.valueOf(AppContext.guessChrFromString(chr) ) ));
+			sortedVarieties.add( new IndelsStringAllvarsImpl(var, mapPos2Indelallvars, BigDecimal.valueOf(mapVar2MismatchCount.get(var)), null ));
 			
 			mapVariety2Mismatch.put(var, Double.valueOf(mapVar2MismatchCount.get(var)));
 		}
@@ -228,40 +229,72 @@ public class IndelStringDAOImpl implements IndelStringDAO {
 	// use positions instead on index
 	
 	@Override
-	public Map readSNPString(int chr, int startIdx, int endIdx) {
+	public Map readSNPString(String chr, int startIdx, int endIdx) {
 		// TODO Auto-generated method stub
-		return readIndelsAllvars(Integer.valueOf(chr), BigDecimal.valueOf( startIdx) ,
+		return readIndelsAllvars(chr, BigDecimal.valueOf( startIdx) ,
 				BigDecimal.valueOf(endIdx), null, null);
 	}
 
 	@Override
-	public Map readSNPString(int chr, int[] posIdxs) {
+	public Map readSNPString(String chr, int[] posIdxs) {
 		// TODO Auto-generated method stub
 		List<BigDecimal> listpos = new ArrayList();
 		for(int i=0; i<posIdxs.length; i++)
 			listpos.add( BigDecimal.valueOf(posIdxs[i]));
-		return readIndelsAllvars(Integer.valueOf(chr), null, null, null, listpos);
+		return readIndelsAllvars(chr, null, null, null, listpos);
+	}
+
+
+	@Override
+	public Map readSNPString(Set colVarids, String chr, Collection colpos) {
+		// TODO Auto-generated method stub
+		return readIndelsAllvars(chr, null, null, colVarids, colpos);
+	}
+	
+	
+	
+	
+
+	@Override
+	public Map readSNPString(String chr, Collection colpos) {
+		// TODO Auto-generated method stub
+		return readIndelsAllvars(chr, null, null, null, colpos);
 	}
 
 	@Override
-	public Map readSNPString(Set colVarids, int chr, int[] posIdxs) {
+	public Map readSNPString(Set colVarids, String chr, int[] posIdxs) {
 		// TODO Auto-generated method stub
 		List<BigDecimal> listpos = new ArrayList();
 		for(int i=0; i<posIdxs.length; i++)
 			listpos.add( BigDecimal.valueOf(posIdxs[i]));
 		
-		return readIndelsAllvars(Integer.valueOf(chr), null, null, colVarids, listpos);
+		return readIndelsAllvars(chr, null, null, colVarids, listpos);
 	}
 
+	
+	
 	@Override
-	public Map readSNPString(Set colVarids, int chr, int startIdx, int endIdx) {
+	public Map readSNPString(Set colVarids, String chr, int startIdx, int endIdx) {
 		// TODO Auto-generated method stub
-		return readIndelsAllvars(Integer.valueOf(chr), BigDecimal.valueOf(startIdx) ,
+		return readIndelsAllvars(chr, BigDecimal.valueOf(startIdx) ,
 				 BigDecimal.valueOf(endIdx), colVarids, null);
 	}
 	
 	
+
+	@Override
+	public Map readSNPString(Set colVarids, String chr, int[][] posidxstartend) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map readSNPString(String chr, int[][] posidxstartend) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
+
 
 	public Map<BigDecimal, IndelsAllvarsPos> getMapAlleleId2Indel() {
 		return mapAlleleId2Indel;
@@ -290,7 +323,6 @@ public class IndelStringDAOImpl implements IndelStringDAO {
 	public List<SnpsAllvarsPos> getListPos() {
 		return listPos;
 	}
-	
 
 	
 	

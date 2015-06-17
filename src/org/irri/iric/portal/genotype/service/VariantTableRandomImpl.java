@@ -29,6 +29,12 @@ public class VariantTableRandomImpl implements VariantTable {
 		return null;
 	}
 
+	@Override
+	public String[] getContigs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 }

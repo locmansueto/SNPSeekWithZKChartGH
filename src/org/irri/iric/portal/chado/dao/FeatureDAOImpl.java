@@ -454,7 +454,7 @@ public class FeatureDAOImpl extends AbstractJpaDao<Feature> implements
 	
 	private List<Feature> executeSQL(String sql) {
 		//System.out.println("executing :" + sql);
-		//log.info("executing :" + sql);
+		AppContext.debug("executing :" + sql);
 		
 		return getSession().createSQLQuery(sql).addEntity(  Feature.class ).list();
 		
@@ -473,14 +473,15 @@ public class FeatureDAOImpl extends AbstractJpaDao<Feature> implements
 	}
 
 	@Override
-	public String getSubSequence(String featurename, long start, long stop) throws Exception {
+	public String getSubSequence(String featurename, long start, long stop, int organismId) throws Exception {
 		// TODO Auto-generated method stub
 		
 
 		String sql = "select feature_id, dbxref_id, organism_id, name, "
 				+ "substr(residues," + start +", " + (stop-start+1) + ") residues, "  
 				+ " seqlen, md5checksum, type_id, is_analysis, is_obsolete, timeaccessioned, timelastmodified, uniquename "
-				+ " from iric.feature where upper(name)= '" + featurename.toUpperCase() + "'";
+				+ " from iric.feature where upper(uniquename)= '" + featurename.toUpperCase() + "'"
+				+ " and organism_id=" + organismId;
 		List listFeature=executeSQL(sql);
 
 		if(listFeature.size()==0) throw new RuntimeException("Empty feature with name " + featurename);
@@ -490,6 +491,7 @@ public class FeatureDAOImpl extends AbstractJpaDao<Feature> implements
 		
 	}
 
+	/*
 	@Override
 	public String getSubSequence(BigDecimal featureid, long start, long stop)
 			throws Exception {
@@ -505,7 +507,7 @@ public class FeatureDAOImpl extends AbstractJpaDao<Feature> implements
 		Feature feature = (Feature)listFeature.get(0);
 		return  AppContext.clobStringConversion(feature.getResidues());
 	}
-	
+	*/
 	
 	
 }

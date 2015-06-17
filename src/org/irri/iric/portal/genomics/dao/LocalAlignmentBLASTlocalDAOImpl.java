@@ -1,4 +1,4 @@
-package org.irri.iric.portal.genomics.service;
+package org.irri.iric.portal.genomics.dao;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,7 +14,8 @@ import java.util.List;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.SystemCommandExecutor;
 import org.irri.iric.portal.dao.LocalAlignmentDAO;
-import org.irri.iric.portal.domain.LocusLocalAlignment;
+import org.irri.iric.portal.domain.LocalAlignmentImpl;
+import org.irri.iric.portal.genomics.service.LocalAlignmentQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Repository;
@@ -85,6 +86,14 @@ public class LocalAlignmentBLASTlocalDAOImpl implements LocalAlignmentDAO {
 		  Process process = pb.start();
 		  int exitValue = process.waitFor();
 		  AppContext.debug("exitValue=" + exitValue);
+		  
+		  int len;
+		  if ((len = process.getErrorStream().available()) > 0) {
+		    byte[] buf = new byte[len]; 
+		    process.getErrorStream().read(buf); 
+		    AppContext.debug("Command error:\t\""+new String(buf)+"\""); 
+		  }
+		  
 		  
 		/*
 		   List<String> commands = new ArrayList<String>();
@@ -172,7 +181,7 @@ public class LocalAlignmentBLASTlocalDAOImpl implements LocalAlignmentDAO {
 				else
 					intstrand = 0;
 				
-				listAlign.add( new LocusLocalAlignment(alignment[0], alignment[1], Double.valueOf(alignment[2]),
+				listAlign.add( new LocalAlignmentImpl(alignment[0], alignment[1], Double.valueOf(alignment[2]),
 								Long.valueOf(alignment[3]), Long.valueOf(alignment[4]), Long.valueOf(alignment[5]), Long.valueOf(alignment[6])  , intstrand , Double.valueOf(alignment[11] ),
 								Long.valueOf(alignment[12]), Double.valueOf( alignment[10] ), Long.valueOf(alignment[9]),
 								Long.valueOf(alignment[8]))

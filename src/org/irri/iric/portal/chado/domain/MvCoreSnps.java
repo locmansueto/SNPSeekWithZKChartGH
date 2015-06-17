@@ -212,6 +212,12 @@ public class MvCoreSnps implements Serializable, SnpsAllvarsPos {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

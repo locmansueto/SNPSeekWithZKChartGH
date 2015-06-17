@@ -29,9 +29,15 @@ public interface WorkspaceFacade {
 	public boolean addVarietyList(String name, Set setVarieties);
 	public void deleteVarietyList(String listname);
 	
-	public Set getSnpPositions(Integer chromosome, String name);
+	//public Set getSnpPositions(Integer chromosome, String name);
+	public Set getSnpPositions(String contig, String name);
 	public Set getSnpPositionListNames();
-	boolean addSnpPositionList(Integer chromosome, String name, Set poslist);
+	public Set getSnpPositionAlleleListNames();
+	public Set getSnpPositionPvalueListNames();
+	
+	//boolean addSnpPositionList(Integer chromosome, String name, Set poslist);
+	//boolean addSnpPositionList(String contig, String name, Set poslist);
+	boolean addSnpPositionList(String contig, String name, Set poslist, boolean hasAllele, boolean hasPvalue);
 
 	public void downloadLists();
 
@@ -53,6 +59,16 @@ public interface WorkspaceFacade {
 	boolean addLocusList(String name, Set varietylist);
 
 	void deleteLocusList(String listname);
+	//void deleteSNPList(String listname);
+
+	public boolean SNPListhasAllele(String listname);
+	public boolean SNPListhasPvalue(String listname);
+
+	void deleteSNPList(String chromosome, String listname);
+
+	
+	
+	
 	
 	
 	

@@ -29,7 +29,7 @@ public class SNPUni3kVarietiesAllele2DAO extends H5Dataset  {
 	 public static void main(String[] argv)
 	    {
 		  	SNPUni3kVarietiesAllele2DAO snpuniDAO = new SNPUni3kVarietiesAllele2DAO();
-		  	Map mapVar2Str =  snpuniDAO.readSNPString(1,  1000, 1100);
+		  	Map mapVar2Str =  snpuniDAO.readSNPString("1",  1000, 1100);
 		  	Iterator itVar = mapVar2Str.keySet().iterator();
 		  	while(itVar.hasNext()) {
 		  		Object var = itVar.next();

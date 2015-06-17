@@ -1,11 +1,13 @@
 package org.irri.iric.portal.dao;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.irri.iric.portal.domain.Gene;
+import org.irri.iric.portal.domain.Organism;
 import org.irri.iric.portal.domain.Variety;
 
 public interface ListItemsDAO {
@@ -50,16 +52,22 @@ public interface ListItemsDAO {
 
 	Map<String, BigDecimal> getPassportDefinitions();
 
-	Gene getGeneFromName(String genename);
+	Gene findGeneFromName(String genename, String organism);
 
-	Integer getFeatureLength(String feature);
+	//Integer getFeatureLength(String feature);
 	
 	// for multi-reference
-	List getOrganisms();
+	List getOrganisms() throws Exception;
 	List getContigs(String organism);
 	Long getFeatureLength(String feature, String organism);
 
-	List getGOTermsWithLoci(String organism);
+	List getGOTermsWithLoci(String cv, String organism);
+
+	public Collection getGenenames(String organism);
+
+	public Organism getOrganismByName(String name);
+
+
 	
 	
 	

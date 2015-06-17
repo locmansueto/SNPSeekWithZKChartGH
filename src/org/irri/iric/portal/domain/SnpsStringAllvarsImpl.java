@@ -4,13 +4,16 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
 
+import org.irri.iric.portal.AppContext;
 import org.springframework.stereotype.Component;
 
 //@Component("SnpsStringAllvarsImpl")
 public class SnpsStringAllvarsImpl implements SnpsStringAllvars {
 
 	private BigDecimal var;
+	//private Long chr;
 	private Long chr;
+	private String contig;
 	private BigDecimal pos;
 	private String refnuc;
 	private String varnuc;
@@ -23,11 +26,17 @@ public class SnpsStringAllvarsImpl implements SnpsStringAllvars {
 	private Set acceptorPosset;
 	private Set donorPosset;
 	
-	public SnpsStringAllvarsImpl(BigDecimal var, Long chr,  String varnuc,
+	public SnpsStringAllvarsImpl(BigDecimal var, String chr,  String varnuc,
 			BigDecimal mismatch, Map mapPosIdx2Allele2, Set nonsynIdxset, Set donorPoset,  Set acceptorPosset) {
 		super();
 		this.var = var;
-		this.chr = chr;
+		try {
+			this.chr = Long.valueOf(AppContext.guessChrFromString(chr));
+		} catch(Exception ex) {
+			
+		}
+		this.contig=chr;
+		
 		this.varnuc = varnuc;
 		this.mismatch = mismatch;
 		//this.isnonsyn = isnonsyn;
@@ -110,6 +119,12 @@ public class SnpsStringAllvarsImpl implements SnpsStringAllvars {
 	public Set getAcceptorPosset() {
 		// TODO Auto-generated method stub
 		return this.acceptorPosset;
+	}
+
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		return this.contig;
 	}
 
 	

@@ -8,13 +8,21 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.Session;
+import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.chado.domain.MismatchCount;
+import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.domain.MultiReferencePositionImpl;
+import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
 import org.irri.iric.portal.flatfile.domain.VSnpRefposindex;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
@@ -286,21 +294,118 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex>
 	}
 
 	@Override
-	public List getSNPs(String chromosome, Integer startPos, Integer endPos,
+	public List getSNPs(String chr, Integer startPos, Integer endPos,
 			BigDecimal type, int firstRow, int maxRows) {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVSnpRefposindexByChrPosBetween", firstRow, maxRows, BigDecimal.valueOf(Long.valueOf(chromosome)), BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), type);
-		return query.getResultList();
+		BigDecimal bdChr=null;
+		try {
+			chr = chr.toUpperCase().replace("CHR0","").replace("CHR","");
+			bdChr = BigDecimal.valueOf(Long.valueOf(chr));
+			Query query = createNamedQuery("findVSnpRefposindexByChrPosBetween", firstRow, maxRows, bdChr, BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), type);
+			return query.getResultList();
+		} catch ( Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ArrayList();
 	}
 
 	@Override
 	public List getSNPsInChromosome(String chr, Collection posset, BigDecimal type) {
+		Set slicedset[] = AppContext.setSlicer(new HashSet(posset));
+		List listPresent = new ArrayList();
+		for(int iset=0; iset<slicedset.length; iset++) {
+			listPresent.addAll( _getSNPsInChromosome(chr, slicedset[iset],  type) );
+		}
+		return listPresent;
+	}
+	
+	
+	
+	private List _getSNPsInChromosome(String chr, Collection posset, BigDecimal type) {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVSnpRefposindexByChrPosIn", -1, -1, BigDecimal.valueOf(Long.valueOf(chr)),  posset, type);
-		return query.getResultList();
+		BigDecimal bdChr=null;
+		if(chr.toLowerCase().equals("any")) {
+			
+			AppContext.debug("checking " + posset.size() + " snp positions");
+			Map mapChr2Pos = MultiReferencePositionImpl.getMapContig2SNPPos(posset);
+			String sql = "select SNP_FEATURE_ID, TYPE_ID , CHROMOSOME, POSITION , REFCALL , ALLELE_INDEX from IRIC.V_SNP_REFPOSINDEX WHERE 1=1 and (";
+			Iterator<String> itContig= mapChr2Pos.keySet().iterator();
+			while(itContig.hasNext()) {
+				String contigstr = itContig.next();
+				String contig = contigstr.toUpperCase().replace("CHR0","").replace("CHR","");
+				Collection setPos = (Collection)mapChr2Pos.get(contigstr);
+				sql+= "( chromosome=" + contig + " and position in (" + setPos.toString().replace("[", "").replace("]", "") + ")) ";
+				if(itContig.hasNext()) 
+					sql += " or ";
+			};
+			
+			sql += ") and TYPE_ID=" + type + " order by CHROMOSOME, POSITION";
+			return executeSQL(sql);
+		}
+		else if(chr.toLowerCase().equals("loci")) {
+			
+			AppContext.debug("checking " + posset.size() + " loci");
+			Map mapChr2Pos = MultiReferencePositionImpl.getMapContig2Loci(posset);
+			String sql = "select SNP_FEATURE_ID, TYPE_ID , CHROMOSOME, POSITION , REFCALL , ALLELE_INDEX from IRIC.V_SNP_REFPOSINDEX WHERE 1=1 and (";
+			Iterator<String> itContig= mapChr2Pos.keySet().iterator();
+			while(itContig.hasNext()) {
+				String contigstr = itContig.next();
+				String contig = contigstr.toUpperCase().replace("CHR0","").replace("CHR","");
+				Collection<Locus> setLocus = (Collection)mapChr2Pos.get(contigstr);
+				Iterator<Locus> itLocus=setLocus.iterator();
+				while(itLocus.hasNext()) {
+					Locus loc=itLocus.next();
+					sql+= "( chromosome=" + contig + " and position between " + loc.getFmin() + " and " + loc.getFmax() + ") ";
+					if(itContig.hasNext()) 
+						sql += " or ";
+				}
+			};
+			
+			sql += ") and TYPE_ID=" + type + " order by CHROMOSOME, POSITION";
+			return executeSQL(sql);
+		}
+		else {
+			AppContext.debug("checking " + posset.size() + " snp positions");
+			try {
+				chr = chr.toUpperCase().replace("CHR0","").replace("CHR","");
+				bdChr = BigDecimal.valueOf(Long.valueOf(chr));
+				Query query = createNamedQuery("findVSnpRefposindexByChrPosIn", -1, -1, bdChr ,  posset, type);
+				return query.getResultList();
+			} catch ( Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		
+		return new ArrayList();
 	}
 
+//	@Override
+//	public List getSNPsInChromosome(Collection locuslist, BigDecimal type) {
+//		// TODO Auto-generated method stub
+//
+//		String sql = "select * from IRIC.V_SNP_REFPOSINDEX where type_id=" + type.intValue() + " and (";
+//		Iterator<Locus> itLocus = locuslist.iterator();
+//		while(itLocus.hasNext()) {
+//			Locus loc = itLocus.next();
+//			sql += " (chromosome=" + loc.getChr() + " and position>=" + loc.getFmin() + " and position<=" + loc.getFmax() + ") "; 
+//			if(itLocus.hasNext()) sql+=" or ";
+//		}
+//		sql += ")";
+//		
+//		return executeSQL(sql);
+//	}
+
 	
+
+	private List executeSQL(String sql) {
+		AppContext.debug("executing :" + sql);
+		//log.info("executing :" + sql);
+		return  getSession().createSQLQuery(sql).addEntity(VSnpRefposindex.class).list();
+	}
+	
+	private Session getSession() {
+		return entityManager.unwrap(Session.class);
+	}
 	
 	
 	/*
@@ -330,7 +435,24 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex>
 	}
 	 */
 	
-	
-	
+	/*
+	@Override
+	public List getSNPsInChromosomes(Map<String, Collection> mapChr2Posset,
+			BigDecimal type) {
+		// TODO Auto-generated method stub
+		
+		List listSNPs = new ArrayList();
+		Set setSNPs = new TreeSet();
+		Iterator<String> itchr=mapChr2Posset.keySet().iterator();
+		while(itchr.hasNext()) {
+			String chr = itchr.next();
+			Collection colPos = mapChr2Posset.get(chr);
+			setSNPs.addAll(getSNPsInChromosome(chr, colPos, type));
+			//listSNPs.addAll( getSNPsInChromosome(chr, colPos, type)); 
+		}
+		listSNPs.addAll(setSNPs);
+		return listSNPs;
+	}
+	*/
 	
 }

@@ -219,4 +219,6 @@ public interface FeatureDAO extends JpaDao<Feature>,  SequenceDAO {
 	 */
 	public Set<Feature> findFeatureBySeqlen(BigDecimal seqlen, int startResult, int maxRows) throws DataAccessException;
 
+	
+
 }

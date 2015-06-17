@@ -3,6 +3,7 @@ package org.irri.iric.portal.dao;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface SnpsAllvarsPosDAO {
@@ -25,5 +26,9 @@ public interface SnpsAllvarsPosDAO {
 	//public Set getSNPsInChromosome(String chr, Set posset, BigDecimal type);
 
 	public List getSNPsInChromosome(String chr, Collection posset, BigDecimal type);
+	
+	//public List getSNPsInChromosome(Collection locuslist, BigDecimal type);
+	
+	//public List getSNPsInChromosomes(Map<String,Collection> mapChr2Posset, BigDecimal type);
 
 }

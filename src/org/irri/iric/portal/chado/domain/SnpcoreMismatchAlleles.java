@@ -245,6 +245,12 @@ public class SnpcoreMismatchAlleles implements Serializable, SnpsStringAllvars {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

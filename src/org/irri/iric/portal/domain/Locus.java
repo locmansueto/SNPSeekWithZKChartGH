@@ -14,7 +14,7 @@ public interface Locus {
 	 * Chromosome name
 	 * @return
 	 */
-	public Integer getChr();
+	public String getChr();
 	
 	/**
 	 * Locus start position
@@ -31,5 +31,6 @@ public interface Locus {
 	public Integer getStrand();
 	
 	public String getContig();
+	public String getDescription();
 	
 }

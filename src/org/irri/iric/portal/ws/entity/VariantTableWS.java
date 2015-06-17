@@ -81,6 +81,12 @@ public class VariantTableWS implements org.irri.iric.portal.domain.VariantTableA
 		return null;
 	}
 
+	@Override
+	public String[] getContigs() {
+		// TODO Auto-generated method stub
+		return table.getContigs();
+	}
+
 	
 	
 }

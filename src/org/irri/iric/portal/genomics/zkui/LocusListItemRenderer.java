@@ -26,11 +26,13 @@ public class LocusListItemRenderer implements ListitemRenderer {
         addListcell(listitem, item.getContig());
         addListcell(listitem, item.getFmin().toString());
         addListcell(listitem, item.getFmax().toString());
-        //addListcell(listitem, item. .getFmax().toString());
+        addListcell(listitem, item.getDescription());
         
+        /*
         if( item instanceof VLocusNotes) {
         	addListcell(listitem, ((VLocusNotes)item).getNotes());
         }
+        */
 	}
 
 	

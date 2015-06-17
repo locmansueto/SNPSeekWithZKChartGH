@@ -1,10 +1,13 @@
 package org.irri.iric.portal.chado.dao;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -14,6 +17,10 @@ import javax.persistence.Query;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.domain.VSnpInExon;
 import org.irri.iric.portal.dao.SnpsInExonDAO;
+import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.domain.MultiReferencePosition;
+//import org.irri.iric.portal.domain.MultiReferenceConversion;
+import org.irri.iric.portal.domain.SnpsNonsynAllele;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -148,22 +155,70 @@ public class VSnpInExonDAOImpl extends AbstractJpaDao<VSnpInExon> implements
 	}
 	
 	@Override
-	public Set getSnps(Integer chr, Integer start, Integer end) {
+	public Set getSnps(String chr, Integer start, Integer end) {
 		try {
 			Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdBetween", -1, -1, AppContext.convertRegion2Snpfeatureid(chr, start) , AppContext.convertRegion2Snpfeatureid(chr, end) );
 			return  new LinkedHashSet<VSnpInExon>(query.getResultList());
 		} catch (NoResultException nre) {
+			nre.printStackTrace();
 			return null;
 		}
 		
 	}
 	
 	@Override
-	public Set getSnps(Integer chr, Collection poslist) {
+	public Set getSnps(String chr, Collection poslist) {
 		try {
-			Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1, AppContext.convertRegion2Snpfeatureid(chr, poslist) );
-			return new LinkedHashSet<VSnpInExon>(query.getResultList());
+ 
+			if(chr.toLowerCase().equals("any")) {
+				Set setSnpfeatureid= new TreeSet();
+				Iterator<MultiReferencePosition> it = poslist.iterator();
+				StringBuffer buff = new StringBuffer();
+				while(it.hasNext()) {
+					MultiReferencePosition pos = it.next();
+					BigDecimal snpfearueid = AppContext.convertRegion2Snpfeatureid( pos.getContig(),  pos.getPosition().longValue()) ;
+					setSnpfeatureid.add( snpfearueid);
+					buff.append(snpfearueid + ", " );
+				}
+				//AppContext.debug(" snpfeatureid in " + buff);
+				
+				Set setAll = new HashSet();
+				Set sets[] = AppContext.setSlicer(setSnpfeatureid);
+				for(int iset=0; iset<sets.length; iset++) {
+					Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
+					setAll.addAll(query.getResultList());
+				}
+				return setAll;
+				
+				//Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
+				//return new HashSet<SnpsNonsynAllele>(query.getResultList());
+			}
+			else if(chr.toLowerCase().equals("loci")) {
+				Iterator<Locus> it = poslist.iterator();
+				//StringBuffer buff = new StringBuffer();
+				Set setPos = new TreeSet();
+				while(it.hasNext()) {
+					Locus loc=it.next();
+					setPos.addAll( getSnps(loc.getContig(),  loc.getFmin(),  loc.getFmax()) ); 
+				}
+				return setPos;
+			}
+			else  {
+				//Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1, AppContext.convertRegion2Snpfeatureid(chr, poslist) );
+				//return new LinkedHashSet<VSnpInExon>(query.getResultList());
+				
+				Set setAll = new HashSet();
+				Set sets[] = AppContext.setSlicer(new HashSet(poslist));
+				for(int iset=0; iset<sets.length; iset++) {
+					//Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
+					Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1, AppContext.convertRegion2Snpfeatureid(chr, sets[iset]) );
+					setAll.addAll(query.getResultList());
+				}
+				return setAll;
+			}
+					
 		} catch (NoResultException nre) {
+			nre.printStackTrace();
 			return null;
 		}
 		

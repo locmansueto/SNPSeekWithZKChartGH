@@ -2,7 +2,7 @@ package org.irri.iric.portal.genomics.zkui;
 
 import org.irri.iric.portal.chado.domain.VLocusNotes;
 import org.irri.iric.portal.domain.LocalAlignment;
-import org.irri.iric.portal.domain.LocusLocalAlignment;
+import org.irri.iric.portal.domain.LocalAlignmentImpl;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
@@ -29,8 +29,8 @@ public class LocusBlastresultGridRenderer  implements  RowRenderer{
 		new Label(locus.getSend().toString()).setParent(row);
 		
 		String sstrand = "N/A";
-		if(locus.getSStrand()!=0)
-			sstrand=locus.getSStrand().toString();
+		if(locus.getSstrand()!=0)
+			sstrand=locus.getSstrand().toString();
 		new Label(sstrand).setParent(row);
 		new Label( locus.getMatches() + "/" + locus.getAlignmentLength() + " (" + locus.getPercentMatches() + "%)").setParent(row);;
 		new Label(locus.getEvalue().toString()).setParent(row);

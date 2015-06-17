@@ -31,7 +31,7 @@ import org.irri.iric.portal.domain.SnpsNonsynAllele;
 @Table(schema = "IRIC", name = "V_SNP_NONSYN_ALLELE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VSnpNonsynAllele")
-public class VSnpNonsynAllele implements Serializable, SnpsNonsynAllele {
+public class VSnpNonsynAllele implements Serializable, SnpsNonsynAllele, Comparable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -116,6 +116,7 @@ public class VSnpNonsynAllele implements Serializable, SnpsNonsynAllele {
 
 	/**
 	 */
+	/*
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
@@ -132,6 +133,9 @@ public class VSnpNonsynAllele implements Serializable, SnpsNonsynAllele {
 			return false;
 		return true;
 	}
+	*/
+	
+	
 
 	@Override
 	public BigDecimal getSnp() {
@@ -140,9 +144,21 @@ public class VSnpNonsynAllele implements Serializable, SnpsNonsynAllele {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return compareTo(obj)==0;
+	}
+
+	@Override
 	public char getAllele() {
 		// TODO Auto-generated method stub
 		return this.getNonSynAllele().charAt(0)  ;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return this.snpFeatureId.compareTo( ((VSnpNonsynAllele)o).snpFeatureId );
 	}
 	
 	

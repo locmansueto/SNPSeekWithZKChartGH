@@ -1,0 +1,42 @@
+chado notes
+
+
+// create transitive closures for these ontologies
+lmansueto@vm-irriportal:~/chado_installs/chado-1.23$ bin/make_cvtermpath.pl $USER $DBNAME 'cellular_component' | psql -q $DBNAME
+select cv_id from cv where name = 'cellular_component' at bin/make_cvtermpath.pl line 43.
+lmansueto@vm-irriportal:~/chado_installs/chado-1.23$ bin/make_cvtermpath.pl $USER $DBNAME 'molecular_function' | psql -q $DBNAME
+select cv_id from cv where name = 'molecular_function' at bin/make_cvtermpath.pl line 43.
+lmansueto@vm-irriportal:~/chado_installs/chado-1.23$ bin/make_cvtermpath.pl $USER $DBNAME 'biological_process' | psql -q $DBNAME
+select cv_id from cv where name = 'biological_process' at bin/make_cvtermpath.pl line 43.
+lmansueto@vm-irriportal:~/chado_installs/chado-1.23$ bin/make_cvtermpath.pl $USER $DBNAME 'sequence' | psql -q $DBNAME
+select cv_id from cv where name = 'sequence' at bin/make_cvtermpath.pl line 43.
+lmansueto@vm-irriportal:~/chado_installs/chado-1.23$ bin/make_cvtermpath.pl $USER $DBNAME 'plant_anatomy' | psql -q $DBNAME
+select cv_id from cv where name = 'plant_anatomy' at bin/make_cvtermpath.pl line 43.
+
+
+
+
+
+
+           9 | O.sativa                       | Oryza          | sativa                   | rice            |
+          10 | S.cerevisiae                   | Saccharomyces  | cerevisiae               | yeast           |
+          11 | X.laevis                       | Xenopus        | laevis                   | frog            |
+          12 | D.discoideum                   | Dictyostelium  | discoideum               | dicty           |
+          13 | O.sativa spp indica cv IR64-21 | Oryza          | sativa indica cv IR64-21 | IR64-21         |
+          14 | O.sativa spp indica cv 93-11   | Oryza          | sativa indica cv 93-11   | 93-11           |
+          15 | O.sativa spp aus cv DJ123      | Oryza          | sativa aus DJ123         | DJ123           |
+          16 | O.sativa spp aus cv Kasalath   | Oryza          | sativa aus Kasalath      | Kasalath        |
+
+
+
+9311.fa.Glean.gff.filtered.gff.sorted.renamed.gff
+os.dj123.cshl.draft.1.0.maker.gff.sorted.renamed.gff
+os.ir64.cshl.draft.1.0.maker.gff.sorted.renamed.gff
+kasalath_RAP.gff.sorted.renamed.gff
+
+../chado-1.23/load/bin/gmod_bulk_load_gff3.pl  --gfffile os.ir64.cshl.draft.1.0.maker.gff.sorted.renamed.gff  --organism 'IR64-21'  --dbname iric2 --dbuser lmansueto  --dbpass lmansueto@1RRi --nosequence  --save_tmpfiles
+../chado-1.23/load/bin/gmod_bulk_load_gff3.pl  --gfffile 9311.fa.Glean.gff.filtered.gff.sorted.renamed.gff  --organism '93-11'  --dbname iric2 --dbuser lmansueto  --dbpass lmansueto@1RRi --nosequence  --save_tmpfiles
+../chado-1.23/load/bin/gmod_bulk_load_gff3.pl  --gfffile os.dj123.cshl.draft.1.0.maker.gff.sorted.renamed.gff  --organism 'DJ123'  --dbname iric2 --dbuser lmansueto  --dbpass lmansueto@1RRi --nosequence  --save_tmpfiles
+../chado-1.23/load/bin/gmod_bulk_load_gff3.pl  --gfffile kasalath_RAP.gff.sorted.renamed.gff  --organism 'Kasalath'  --dbname iric2 --dbuser lmansueto  --dbpass lmansueto@1RRi --nosequence  --save_tmpfiles
+
+kasalath_RAP.gff.sorted.wgenes.gff.renamed.gff

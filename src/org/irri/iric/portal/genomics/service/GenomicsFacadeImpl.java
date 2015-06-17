@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.ListItemsDAO;
+import org.irri.iric.portal.domain.CvTermLocusCount;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.Organism;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +40,43 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	@Override
 	public List<Locus> getLociByDescription(String description) {
 		// TODO Auto-generated method stub
-		locusService = (LocusService)AppContext.checkBean(locusService, "LocusService");
-		return locusService.getLocusByNotes(description, AppContext.getDefaultOrganism());
+		return getLociByDescription(description, AppContext.getDefaultOrganism());
 	}
 	
 	@Override
-	public List<String> getGotermsByOrganism(String organism) {
-		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItemsDAO");
-		return listitemsdao.getGOTermsWithLoci(organism);
+	public List<Locus> getLociByDescription(String description, String organism) {
+		// TODO Auto-generated method stub
+		locusService = (LocusService)AppContext.checkBean(locusService, "LocusService");
+		return locusService.getLocusByNotes(description,organism);
 	}
+	
+	
+	@Override
+	public List<String> getGotermsByOrganism(String cv, String organism) {
+		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItemsDAO");
+		return listitemsdao.getGOTermsWithLoci(cv, organism);
+	}
+	
+	
+	
+	
+
+	@Override
+	public List<String> getCVtermAncestors(String cv, String cvterm) {
+		// TODO Auto-generated method stub
+		goService = (GeneOntologyService)AppContext.checkBean(goService, "GeneOntologyService");
+		return goService.getCVtermAncestors(cv, cvterm);
+	}
+
+	@Override
+	public List<String> getCVtermDescendants(String cv, String cvterm) {
+		// TODO Auto-generated method stub
+		goService = (GeneOntologyService)AppContext.checkBean(goService, "GeneOntologyService");
+		return goService.getCVtermDescendants(cv, cvterm);
+	}
+	
+	
+	
 
 	@Override
 	public List getContigsByOrganism(String organism) {
@@ -61,6 +91,17 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	}
 
 	
+	
+	
+	
+	@Override
+	public List getLociByContigPositions(String contig, Collection posset,
+			String organism) {
+		// TODO Auto-generated method stub
+		locusService = (LocusService)AppContext.checkBean(locusService, "LocusService");
+		return locusService.getLocusByContigPositions( contig,  posset,  organism);
+	}
+
 	@Override
 	public List getLociByGOTerm(String goterm, String organism) {
 		// TODO Auto-generated method stub
@@ -82,18 +123,20 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	
 		localalignmentService = (LocalAlignmentService)AppContext.checkBean(localalignmentService, "LocalAlignmentService" );
 		//String queryseq, String dbname, String querytype
-		String dbname = "msu";
+		String dbname = "msu7";
 		
-		if(organism.toLowerCase().equals("rice")) dbname = "msu7";
+		if(organism.toLowerCase().equals(AppContext.getDefaultOrganism().toLowerCase())) dbname = "msu7";
 		else if(organism.toLowerCase().equals("ir64-21")) dbname = "ir6421v1";
 		else if(organism.toLowerCase().equals("93-11")) dbname = "9311v1";
 		else if(organism.toLowerCase().equals("dj123")) dbname = "dj123v1";
-		else if(organism.toLowerCase().equals("kasalath")) dbname = "kasv1";
+		else if(organism.toLowerCase().equals("kasalath")) dbname = "kasrapv1";
+		else if(organism.toLowerCase().equals("all")) dbname = "allosav1";
 		
 		if(dbtype.equals("dna")) dbname+="dna";  
 		else if(dbtype.equals("cdna")) dbname+="cdna";
 		else if(dbtype.equals("cds")) dbname+="cds";
 		else if(dbtype.equals("pep")) dbname+="pep";
+		else if(dbtype.equals("upstream3000")) dbname+="up3k";
 			
 		LocalAlignmentQuery query = new LocalAlignmentQuery(sequence, dbname, querytype);
 		query.setEvalue(evalue);
@@ -103,10 +146,11 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	
 	
 	@Override
-	public List getOrganisms() {
+	public List getOrganisms() throws Exception {
 		// TODO Auto-generated method stub
 		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItemsDAO");
-		Iterator<Organism> itOrgs = listitemsdao.getOrganisms().iterator();
+		Collection orgs = listitemsdao.getOrganisms();
+		Iterator<Organism> itOrgs = orgs.iterator();
 		List listNames= new ArrayList();
 		while(itOrgs.hasNext()) {
 		listNames.add(itOrgs.next().getName());
@@ -127,4 +171,14 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 		goService = (GeneOntologyService)AppContext.checkBean(goService, "GeneOntologyService");
 		return goService.overRepresentationTest(organism, genelist, enrichmentType);
 	}
+
+	@Override
+	public List<CvTermLocusCount> getGOTermLociCounts(String organism, Set loci, String cv)  throws Exception {
+		// TODO Auto-generated method stub
+		goService = (GeneOntologyService)AppContext.checkBean(goService, "GeneOntologyService");
+		return goService.countLociInTerms(organism, loci, cv);
+	}
+	
+	
+	
 }

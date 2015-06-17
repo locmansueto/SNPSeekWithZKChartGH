@@ -133,6 +133,9 @@ public class VariantTableArraysImpl implements VariantTable {
 		this.varmismatch = varmismatch;
 	}
 
+	
+	
+	
 
 	public Long[] getPosition() {
 		return this.getPosarr();
@@ -160,6 +163,15 @@ public class VariantTableArraysImpl implements VariantTable {
 		return data;
 	}
 
+
+	@Override
+	public String[] getContigs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	
 	
 /*
 	private String getIndelAlleleString(IndelsAllvarsPos indelpos) {

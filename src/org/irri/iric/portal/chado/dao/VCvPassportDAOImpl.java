@@ -239,6 +239,18 @@ public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements
 		// TODO Auto-generated method stub
 		return this.findAllVCvPassports();
 	}
+
+	@Override
+	public List getAllTerms(String organism) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List getAllTerms(String cv, String organism) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

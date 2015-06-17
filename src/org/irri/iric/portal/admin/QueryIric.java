@@ -166,7 +166,7 @@ public void createSNPFile() {
 		
 	System.out.println("in createSNPFile..." );
 	SNPUni3kVarietiesAllele1DAO snpuniDAO = new SNPUni3kVarietiesAllele1DAO();
-  	Map mapVar2Str =  snpuniDAO.readSNPString(1,  1000, 1100);
+  	Map mapVar2Str =  snpuniDAO.readSNPString("1",  1000, 1100);
   	Iterator itVar = mapVar2Str.keySet().iterator();
   	while(itVar.hasNext()) {
   		Object var = itVar.next();

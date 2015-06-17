@@ -130,11 +130,11 @@ public class CopyOfGenotypeFacadeChadoImpl implements GenotypeFacade {
 		return null;
 	}
 
-	@Override
-	public Integer getFeatureLength(String feature) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Integer getFeatureLength(String feature) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public Set getVarietiesForSubpopulation(String subpopulation) {
@@ -143,7 +143,7 @@ public class CopyOfGenotypeFacadeChadoImpl implements GenotypeFacade {
 	}
 
 	@Override
-	public Gene getGeneFromName(String name) {
+	public Gene getGeneFromName(String name, String organism) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -181,13 +181,6 @@ public class CopyOfGenotypeFacadeChadoImpl implements GenotypeFacade {
 	}
 
 	@Override
-	public List<VariantStringData> queryGenotype(List listParams)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void downloadGenotypeGenome(GenotypeQueryParams params)
 			throws Exception {
 		// TODO Auto-generated method stub
@@ -212,6 +205,37 @@ public class CopyOfGenotypeFacadeChadoImpl implements GenotypeFacade {
 	@Override
 	public String[] constructPhylotree(PhylotreeQueryParams params,
 			String requestid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List getReferenceGenomes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List getContigsForReference(String reference) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getFeatureLength(String feature, String organism) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+//
+//	@Override
+//	public Set checkSNPsInChromosomes(Map<String, Collection> mapChr2Posset,
+//			BigDecimal type) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+	@Override
+	public Collection getLociForReference(String organism) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -4892,6 +4916,9 @@ public class CopyOfGenotypeFacadeChadoImpl implements GenotypeFacade {
 //	
 //	
 //	
+//	
+	
+	
 //	
 	
 }

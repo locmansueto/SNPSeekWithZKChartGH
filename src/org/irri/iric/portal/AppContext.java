@@ -63,12 +63,12 @@ public class AppContext {
 	/**
 	 * is Amazon Web Service compile?
 	 */
-	static boolean isAWS = true;
+	static boolean isAWS = false;
 	static boolean isAWSdev = false;
 	static boolean isVMIRRI = false;
-	static boolean isPollux = false;
+	static boolean isPollux =false;
 	static boolean isASTI = false;
-	static boolean isLocalhost = false;
+	static boolean isLocalhost = true;
 	
 	/**
 	 * is development
@@ -94,9 +94,6 @@ public class AppContext {
     private static long startTime=0;
     private static long startTimeDate=0;
     
-
-    
-    
     static String  defaultorganism;
     static String  flatfilesdir;
     static String  hostdirectory;
@@ -108,24 +105,9 @@ public class AppContext {
     static String  webappdirectory;
     
     
-    
-
-
-    
-    
     public AppContext() {
 		super();
 		// TODO Auto-generated constructor stub
-		
-		
-		// load parameters from conf files
-		
-		//javax.servlet.FilterConfig()
-		
-		//FilterConfig
-		
-		//Servlet servlet = new Servlet();
-		//.getServletConfig().getInitParameter(parameterName) 
 	}
     
     public static boolean isAWS() {
@@ -167,7 +149,7 @@ public class AppContext {
     }
     
     public static boolean isIRRILAN() {
-    	return isLocalhost() || isPollux();
+    	return isLocalhost() || isPollux() || isVMIRRI();
     }
     
 
@@ -362,7 +344,41 @@ public class AppContext {
      * @param vars
      * @return
      */
+    public static Set[] setSlicer(Set vars, int size) {
+    		int nSlices = vars.size()/size + 1; 
+    		Set slicedsets[] = new HashSet[nSlices];
+    		for(int iset=0; iset<nSlices; iset++) {
+    			slicedsets[iset] = new HashSet(); 
+    		}
+			Iterator it=vars.iterator();
+			
+			int icount=0;
+			while(it.hasNext()) {
+				slicedsets[icount/size].add(it.next()); 
+				icount++;
+			}
+			return slicedsets;
+    }
+    
+    
     public static Set[] setSlicer(Set vars) {
+    	if(vars.size()>3000) {
+    		int nSlices = vars.size()/1000 + 1; 
+    		Set slicedsets[] = new HashSet[nSlices];
+    		for(int iset=0; iset<nSlices; iset++) {
+    			slicedsets[iset] = new HashSet(); 
+    		}
+			Iterator it=vars.iterator();
+			
+			int icount=0;
+			while(it.hasNext()) {
+				slicedsets[icount/1000].add(it.next()); 
+				icount++;
+			}
+			return slicedsets;
+    	}
+    	
+    	
 	    if(vars.size()>2000)
 		{	
 			java.util.Set set1 = new HashSet();
@@ -393,6 +409,8 @@ public class AppContext {
 		} else
 			return new Set[] {vars};
     }
+
+    
     
     public static List setSlicerIds(Set varIds) {
     	List<String> listVaridSets= new ArrayList();
@@ -413,6 +431,44 @@ public class AppContext {
 			
 		}
 		return listVaridSets;
+    }
+    
+    public static List setStringSlicer(Set varIds, boolean isQuoted, boolean toUpper) {
+    	List<String> listVaridSets= new ArrayList();
+		if(varIds!=null && !varIds.isEmpty()) {
+			// create varids list
+			Set[] sets = AppContext.setSlicer(varIds);
+			
+			for(int iset=0; iset<sets.length; iset++) {
+				
+				StringBuffer buff = new StringBuffer();
+				Iterator<String>  itSet = sets[iset].iterator();
+				while(itSet.hasNext()) {
+					String s = itSet.next();
+					if(toUpper) s= s.toUpperCase();
+					if(isQuoted)
+						buff.append("'" +  s + "'" );
+					else
+						buff.append( s );
+					if(itSet.hasNext()) buff.append(",");
+				}
+				listVaridSets.add( buff.toString() );
+			}
+			
+		}
+		return listVaridSets;
+    }
+
+    
+    public static String toCSV(Collection col) {
+		StringBuffer buff = new StringBuffer();
+		Iterator itSet = col.iterator();
+		while(itSet.hasNext()) {
+			buff.append( itSet.next() );
+			if(itSet.hasNext()) buff.append(",");
+		}
+		return  buff.toString();
+    	
     }
     
     
@@ -445,7 +501,9 @@ public class AppContext {
     public static String getDefaultOrganism() {
     	if(defaultorganism!=null) return defaultorganism;
     	
-    	return "rice";
+    	//return "rice";
+    	return "Japonica nipponbare";
+    	//return "Japonica Nipponbare";
     }
     
     /**
@@ -507,6 +565,14 @@ public class AppContext {
     	return convertRegion2Snpfeatureid( chr, pos);
     }
 
+    public static String guessChrFromString(String chr) {
+    	return chr.toUpperCase().replace("CHR0", "").replace("CHR", "");
+    }
+    
+    public static BigDecimal convertRegion2Snpfeatureid(String chr, Long pos) {
+    	chr=guessChrFromString(chr);
+    	return  convertRegion2Snpfeatureid(Integer.valueOf(chr), pos); 
+    }
     
     public static BigDecimal convertRegion2Snpfeatureid(Integer chr, Long pos) {
     	try {
@@ -516,6 +582,10 @@ public class AppContext {
     		AppContext.debug("convertRegion2Snpfeatureid chr=" + chr  + "  pos=" + pos);
     		throw new RuntimeException("convertRegion2Snpfeatureid error"); 
     	}
+    }
+    public static BigDecimal convertRegion2Snpfeatureid(String chr, Integer pos) {
+    	chr=guessChrFromString(chr);
+    	return  convertRegion2Snpfeatureid(Integer.valueOf(chr), pos);
     }
     public static BigDecimal convertRegion2Snpfeatureid(Integer chr, Integer pos) {
     	try {
@@ -527,6 +597,11 @@ public class AppContext {
     	}
     	
     }
+    
+    public static BigDecimal convertRegion2Snpfeatureid(String chr, BigDecimal pos) {
+    	chr=guessChrFromString(chr);
+    	return convertRegion2Snpfeatureid(Integer.valueOf(chr), pos) ;
+    }
     public static BigDecimal convertRegion2Snpfeatureid(Integer chr, BigDecimal pos) {
     	try {
     	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos.longValue())  ));
@@ -537,6 +612,12 @@ public class AppContext {
     	}
     }
     	
+    public static Collection convertRegion2Snpfeatureid(String chr, Collection poslist) {
+
+	    	chr=guessChrFromString(chr);
+	    	return convertRegion2Snpfeatureid(Integer.valueOf(chr), poslist);
+
+    }
     public static Collection convertRegion2Snpfeatureid(Integer chr, Collection poslist) {
     	Set snpfeatureidSet = new TreeSet();
     	Iterator<BigDecimal> it = poslist.iterator();
@@ -565,7 +646,12 @@ public class AppContext {
     	return newlist;
     }
     
-    
+    /**
+     * Replace every occurrence of mapReplace.key in instr with mapReplace.value
+     * @param instr
+     * @param mapReplace
+     * @return
+     */
     public static String replaceString(String instr, Map<String,String> mapReplace) {
     	Iterator<String> itRep = mapReplace.keySet().iterator();
     	while(itRep.hasNext()) {
@@ -735,13 +821,42 @@ public class AppContext {
     
     public static String getPathToLocalBlast() {
     	if( pathtolocalblast!=null) return pathtolocalblast;    
-    	
-    	return "/home/lmansueto/ncbi-blast/bin/";
+
+    	if(isAWS() || isAWSdev())
+    		return "/home/ubuntu/lmansueto/ncbi-blast/bin/";
+    	else
+    		return "/home/lmansueto/ncbi-blast/bin/";
     }
     public static String getPathToLocalBlastData() {
     	if( pathtolocalblastdata!=null) return pathtolocalblastdata;    
-    	
-    	return "/home/lmansueto/ncbi-blast/iric-portal/";
+    	if(isAWS() || isAWSdev())
+    		return "/home/ubuntu/lmansueto/ncbi-blast/iric-portal/";
+    	else	
+    		return "/home/lmansueto/ncbi-blast/iric-portal/";
+    }
+    
+    public static String getBlastServer() {
+    	if(isLocalhost() || isPollux())
+    		return "http://pollux:8080/iric-portal-dev";
+    	else if(isAWS()) {
+    		return "http://oryzasnp.org/iric-portal";
+    	}
+    	return "";
+    }
+    
+    
+    public static String getFastqcURL() {
+    	return "http://oryzasnp.org/3kfastqc/";
+    }
+    public static String getFastqURL() {
+    	return "http://www.ncbi.nlm.nih.gov/biosample/?term=";
+    }
+    
+    public static String getBamURL() {
+    	return "";
+    }
+    public static String getVcfURL() {
+    	return "";
     }
     
     

@@ -1,6 +1,7 @@
 package org.irri.iric.portal.chado.dao;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -429,6 +430,15 @@ public class VIricstocksByPassportDAOImpl extends AbstractJpaDao<VIricstocksByPa
 		// TODO Auto-generated method stub
 		Query query = createNamedQuery("findVIricstocksByPassportByTypeIdValueContaining", -1, -1 , type_id, value);
 		return query.getResultList();
+	}
+
+	@Override
+	public List findVarietyByPassport(String sPassId) {
+		// TODO Auto-generated method stub
+		
+		List listvars = new ArrayList();
+		listvars.addAll( findVIricstocksByPassportByTypeId(BigDecimal.valueOf(Long.valueOf(sPassId))) );
+		return listvars;
 	}
 	
 	

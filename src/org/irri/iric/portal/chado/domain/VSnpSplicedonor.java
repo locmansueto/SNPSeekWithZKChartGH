@@ -37,7 +37,7 @@ import org.irri.iric.portal.domain.SnpsSpliceDonor;
 @Table(schema = "IRIC", name = "V_SNP_SPLICEDONOR")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VSnpSplicedonor")
-public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor {
+public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor, Comparable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -209,6 +209,16 @@ public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor {
 	}
 	
 	
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		VSnpSplicedonor acc=(VSnpSplicedonor)o;
+		int ret = this.getChr().compareTo( acc.getChr() );
+		if(ret==0)
+			ret = this.getPosition().compareTo( acc.getPosition() );
+		return ret;
+	}
 	
 	
 }

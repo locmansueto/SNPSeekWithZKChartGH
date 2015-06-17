@@ -1,0 +1,8 @@
+<?page title="error" contentType="text/html;charset=UTF-8"?>
+<zk>
+
+<window title="Error ${requestScope['javax.servlet.error.status_code']}">
+    Cause: ${requestScope['javax.servlet.error.message']}    
+</window>
+
+</zk>

@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -15,6 +16,9 @@ import javax.persistence.Query;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.domain.VSnpNonsynAllele;
+import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.domain.MultiReferencePosition;
+//import org.irri.iric.portal.domain.MultiReferenceConversion;
 import org.irri.iric.portal.domain.SnpsNonsynAllele;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
@@ -184,7 +188,7 @@ public class VSnpNonsynAlleleDAOImpl extends AbstractJpaDao<VSnpNonsynAllele>
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<SnpsNonsynAllele> findSnpNonsynAlleleByChrPosBetween(Integer chr, Integer start, Integer end) throws DataAccessException {
+	public Set<SnpsNonsynAllele> findSnpNonsynAlleleByChrPosBetween(String chr, Integer start, Integer end) throws DataAccessException {
 		System.out.println(" snpfeatureid between " + AppContext.convertRegion2Snpfeatureid( chr,  Long.valueOf(start)) + " and " + AppContext.convertRegion2Snpfeatureid( chr, Long.valueOf(end)) );
 		Query query = createNamedQuery("findVSnpNonsynAlleleBySnpFeatureIdBetween", -1, -1, AppContext.convertRegion2Snpfeatureid( chr,  Long.valueOf(start)), AppContext.convertRegion2Snpfeatureid( chr, Long.valueOf(end)));
 		return new HashSet<SnpsNonsynAllele>(query.getResultList());
@@ -192,19 +196,61 @@ public class VSnpNonsynAlleleDAOImpl extends AbstractJpaDao<VSnpNonsynAllele>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<SnpsNonsynAllele> findSnpNonsynAlleleByChrPosIn(Integer chr, Collection poslist) throws DataAccessException {
+	public Set<SnpsNonsynAllele> findSnpNonsynAlleleByChrPosIn(String chr, Collection poslist) throws DataAccessException {
 		Set setSnpfeatureid = new HashSet();
-		Iterator<BigDecimal> it = poslist.iterator();
-		StringBuffer buff = new StringBuffer();
-		while(it.hasNext()) {
-			BigDecimal snpfearueid = AppContext.convertRegion2Snpfeatureid( chr,  it.next().longValue()) ;
-			setSnpfeatureid.add( snpfearueid);
-			buff.append(snpfearueid + ", " );
+		
+		if(chr.toLowerCase().equals("any")) {
+			Iterator<MultiReferencePosition> it = poslist.iterator();
+			StringBuffer buff = new StringBuffer();
+			while(it.hasNext()) {
+				MultiReferencePosition pos = it.next();
+				BigDecimal snpfearueid = AppContext.convertRegion2Snpfeatureid( pos.getContig(),  pos.getPosition().longValue()) ;
+				setSnpfeatureid.add( snpfearueid);
+				buff.append(snpfearueid + ", " );
+			}
+			//AppContext.debug(" snpfeatureid in " + buff);
+			
+			Set setAll = new HashSet();
+			Set sets[] = AppContext.setSlicer(setSnpfeatureid);
+			for(int iset=0; iset<sets.length; iset++) {
+				Query query = createNamedQuery("findVSnpNonsynAlleleBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
+				setAll.addAll(query.getResultList());
+			}
+			//return new HashSet<SnpsNonsynAllele>(query.getResultList());
+			return setAll;
+		}
+		else if(chr.toLowerCase().equals("loci")) {
+			Iterator<Locus> it = poslist.iterator();
+			//StringBuffer buff = new StringBuffer();
+			Set setPos = new TreeSet();
+			while(it.hasNext()) {
+				Locus loc=it.next();
+				setPos.addAll(  findSnpNonsynAlleleByChrPosBetween(loc.getContig(),  loc.getFmin(),  loc.getFmax()) ); 
+			}
+			return setPos;
+		}
+		else {
+			Iterator<BigDecimal> it = poslist.iterator();
+			StringBuffer buff = new StringBuffer();
+			while(it.hasNext()) {
+				BigDecimal snpfearueid = AppContext.convertRegion2Snpfeatureid( chr,  it.next().longValue()) ;
+				setSnpfeatureid.add( snpfearueid);
+				buff.append(snpfearueid + ", " );
+			}
+			//System.out.println(" snpfeatureid in " + buff);
+			//Query query = createNamedQuery("findVSnpNonsynAlleleBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
+			//return new HashSet<SnpsNonsynAllele>(query.getResultList());
+			
+			Set setAll = new HashSet();
+			Set sets[] = AppContext.setSlicer(setSnpfeatureid);
+			for(int iset=0; iset<sets.length; iset++) {
+				Query query = createNamedQuery("findVSnpNonsynAlleleBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
+				setAll.addAll(query.getResultList());
+			}
+			//return new HashSet<SnpsNonsynAllele>(query.getResultList());
+			return setAll;
 		}
 		
-		System.out.println(" snpfeatureid in " + buff);
-		Query query = createNamedQuery("findVSnpNonsynAlleleBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
-		return new HashSet<SnpsNonsynAllele>(query.getResultList());
 	}
 	
 	

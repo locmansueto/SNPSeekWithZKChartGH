@@ -24,6 +24,10 @@ import org.irri.iric.portal.domain.Gene;
 		@NamedQuery(name = "findVGeneByGeneId", query = "select myVGene from VGene myVGene where myVGene.geneId = ?1"),
 		@NamedQuery(name = "findVGeneByName", query = "select myVGene from VGene myVGene where upper(myVGene.name) = upper(?1)"),
 		@NamedQuery(name = "findVGeneByNameContaining", query = "select myVGene from VGene myVGene where upper(myVGene.name) like upper(?1)"),
+		
+		@NamedQuery(name = "findVGeneByNameOrg", query = "select myVGene from VGene myVGene where upper(myVGene.name) = upper(?1) and myVGene.organismId=?2"),
+		@NamedQuery(name = "findVGeneByOrg", query = "select myVGene from VGene myVGene where myVGene.organismId= ?1"),
+		
 		@NamedQuery(name = "findVGeneByPhase", query = "select myVGene from VGene myVGene where myVGene.phase = ?1"),
 		@NamedQuery(name = "findVGeneByPrimaryKey", query = "select myVGene from VGene myVGene where myVGene.geneId = ?1"),
 		@NamedQuery(name = "findVGeneByStrand", query = "select myVGene from VGene myVGene where myVGene.strand = ?1") })
@@ -54,7 +58,7 @@ public class VGene implements Serializable, Gene {
 	@Column(name = "CHR", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
-	Integer chr;
+	String chr;
 	/**
 	 */
 
@@ -84,6 +88,13 @@ public class VGene implements Serializable, Gene {
 	@XmlElement
 	Integer phase;
 
+	
+	@Column(name = "ORGANISM_ID", precision = 10)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	Integer organismId;
+
+	
 	/**
 	 */
 	public void setGeneId(Integer geneId) {
@@ -110,13 +121,13 @@ public class VGene implements Serializable, Gene {
 
 	/**
 	 */
-	public void setChr(Integer chr) {
+	public void setChr(String chr) {
 		this.chr = chr;
 	}
 
 	/**
 	 */
-	public Integer getChr() {
+	public String getChr() {
 		return this.chr;
 	}
 
@@ -166,6 +177,19 @@ public class VGene implements Serializable, Gene {
 	 */
 	public Integer getPhase() {
 		return this.phase;
+	}
+
+	
+	
+	
+	
+	
+	public Integer getOrganismId() {
+		return organismId;
+	}
+
+	public void setOrganismId(Integer organismId) {
+		this.organismId = organismId;
 	}
 
 	/**
@@ -239,6 +263,20 @@ public class VGene implements Serializable, Gene {
 
 	@Override
 	public String getContig() {
+		// TODO Auto-generated method stub
+		try {
+			Integer chrnum = Integer.valueOf(chr);
+			if(chrnum>9)
+				return "chr0" + chrnum;
+			else return "chr" + chrnum;
+		} catch (Exception ex) {
+			//ex.printStackTrace();
+		}
+		return chr;
+	}
+
+	@Override
+	public String getDescription() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -37,17 +37,9 @@ enableTooltipster();
 <!-- END -->
 
 
-
-
-
-
-
-
-
 <zk xmlns:h="native"  xmlns:w="http://www.zkoss.org/2005/zk/client">
 
     <style>
-    
         .z-loading {
             background-color:#808080;
             border:1px outset #A0A0A0;
@@ -78,30 +70,62 @@ enableTooltipster();
             background-image: url(${c:encodeURL('~./zk/img/progress3.gif')}); 
         }
         
-        .vertical { 
-	   	 -webkit-writing-mode:vertical-rl; 
-	   	 -ms-writing-mode:tb-rl; 
-	   	 writing-mode:vertical-rl; 
+        .vertical {
+		   -moz-transform: rotate(-90deg) translate(0, 100%);
+		   -moz-transform-origin: 0% 100%;
+		   -o-transform: rotate(-90deg) translate(0, 100%);
+		   -o-transform-origin: 0% 100%;
+		   -webkit-transform: rotate(-90deg) translate(0, 100%);
+		   -webkit-transform-origin: 0% 100%;
+		   transform: rotate(-90deg) translate(0, 100%);
+		   transform-origin: 0% 100%;
+		   
+			writing-mode: bt-rl;
+			filter: flipV flipH;
+		   
+		   width:20px;
+    	   height:90px;
+    	   vertical-align: middle;
+    	   text-align:center;
+    	   display:block;
+    	   /* white-space:nowrap; */
+		}
+
+
+        .vertical5 { 
+	   	 -webkit-writing-mode:vertical-lr; 
+	   	 -ms-writing-mode:tb-lr; 
+	   	 writing-mode:vertical-lr; 
 	   	 width:20px;
     	 height:80px;
-    	 
+    	 text-align:center;
+    	 filter: flipV flipH;
+	 	}
+
+        .vertical2 { 
+	   	 -webkit-writing-mode:vertical-lr; 
+	   	 -ms-writing-mode:tb-lr; 
+	   	 writing-mode:vertical-lr; 
+	   	 width:20px;
+    	 height:80px;
     	 text-align:center;
 	 	}
 
- .vertical2 {
-    writing-mode:tb-rl;
-    -webkit-transform:rotate(90deg);
-    -moz-transform:rotate(90deg);
-    -o-transform: rotate(90deg);
-    -ms-transform:rotate(90deg);
-    white-space:nowrap;
-    display:block;
-    bottom:0;
-    width:20px;
-    height:80px;
-}
-
-	
+		 .vertical3 {
+		    -webkit-transform:rotate(-90deg);
+		    -moz-transform:rotate(-90deg);
+		    -o-transform: rotate(-90deg);
+		    -ms-transform:rotate(-90deg);
+		    transform: rotate(-90deg);
+		    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+		    
+		    white-space:nowrap;
+		    display:block;
+		    bottom:0;
+		    width:20px;
+		    height:80px;
+		    text-align:center;
+		}
  
     </style>
     
@@ -109,7 +133,7 @@ enableTooltipster();
 
 
 .z-grid-row {
-    height: 32px;
+    height: 31px;
     overflow: hidden;
     background: #F7F7F7;
 }
@@ -134,7 +158,7 @@ enableTooltipster();
 
 
 <style src="/css/demo.css.dsp"/>
-<script><![CDATA[
+<!--  script><![CDATA[
 jq(document).click(function (evt) {
 	if (!jq.isAncestor(zk.Widget.$('$myComp').$n('body'), evt.target)
 		 && !jq.isAncestor(jq('$tip')[0], evt.target))
@@ -164,39 +188,28 @@ function doPosition() {
 	n.offset({top: y, left: x});
 	n.hide().fadeIn(400);
 }
-]]></script>
+]]></script -->
 
 
 <zscript>
         import org.zkoss.zkplus.spring.SpringUtil;      
         import javax.servlet.http.HttpSession;
-
 		import org.irri.iric.portal.genotype.service.GenotypeFacade;
-	
 		import org.irri.iric.portal.admin.WorkspaceFacade;
-	
-
 		import org.springframework.beans.factory.annotation.Autowired;
 		import org.irri.iric.portal.genotype.zkui.FakerMatrixModel;
-
 		import org.irri.iric.portal.AppContext;
 		
-
-        
-        //  org.irri.iric.portal.genotype.service.GenotypeFacade fac  = new  org.irri.iric.portal.genotype.service.GenotypeFacadeImpl();       
-       
-       	//org.irri.iric.portal.genotype.service.GenotypeFacade genotype = SpringUtil.getBean("GenotypeFacadeLegacy");
        	
         GenotypeFacade genotype = SpringUtil.getBean("GenotypeFacade");
         java.util.List genenames = genotype.getGenenames();   
         java.util.List varnames = genotype.getVarnames();
         java.util.List chr = genotype.getChromosomes();
-        
         java.util.List subpopulations = genotype.getSubpopulations();
+        java.util.List listReference = genotype.getReferenceGenomes();
+        java.util.List listContigs = genotype.getContigsForReference(AppContext.getDefaultOrganism());
         
         WorkspaceFacade workspace = SpringUtil.getBean("WorkspaceFacade");
-        //WorkspaceFacade workspace = (WorkspaceFacade)AppContext.checkBeanSpringUtil.getBean("WorkspaceFacade");
-        
        	List listVarlistNames = new ArrayList();
        	listVarlistNames.add("");
        	listVarlistNames.addAll( workspace.getVarietylistNames());
@@ -208,14 +221,17 @@ function doPosition() {
         listSNPlistNames.addAll( workspace.getSnpPositionListNames()  );
         listSNPlistNames.add("create new list...");
         
+        java.util.List listSNPlistAlleleNames = new java.util.ArrayList(); // fac.getSNPinVarieties(100);
+        listSNPlistAlleleNames.add("");
+        listSNPlistAlleleNames.addAll( workspace.getSnpPositionAlleleListNames()  );
+        listSNPlistAlleleNames.add("create new list...");
+        
+        
         java.util.List listLocuslistNames = new java.util.ArrayList(); // fac.getSNPinVarieties(100);
         listLocuslistNames.add("");
         listLocuslistNames.addAll( workspace.getLocusListNames()  );
         listLocuslistNames.add("create new list...");
         
-        
-        
-         
         java.util.List listSNPs = new ArrayList();
 
 		Set setgenenames=new HashSet();
@@ -231,16 +247,6 @@ function doPosition() {
 		subpopulationstmp=null;
         varnames = AppContext.createUniqueUpperLowerStrings( varnames, true, false);
         
-        //String msg ="Select varieties, then set chromosome region or gene locus";
-
-
-        //void onClientInfo(ClientInfoEvent evt) {
-        //    int screenHeight = evt.getDesktopHeight();
-        //    int screenWidth = evt.getDesktopWidth();
-        //    
-        //    labelScreenWidth.setValue(screenWidth);
-        //}
-
 		String jbrowsestart = AppContext.getHostname() + "/jbrowse-dev";
            
 </zscript>
@@ -257,59 +263,41 @@ function doPosition() {
     
     <hbox height="310px">
     
-    <!--  grid width="1000px" height="305px">
-    <rows>
-    <row -->
     
     <vbox width="1000px" height="305px">
-	<textbox id="msgbox" readonly="true" value="${msg}" width="790px"/>
+	<textbox id="msgbox" readonly="true" value="${msg}" width="999px" rows="2"/>
 	
-	<!--  /row>
-    <row -->
     
     <!--  grid height="240px" -->
     <grid>
         <rows>
-        
             <row spans="1,5,1">
 
-
-                <!-- label value="Search:" style="font-size:14px;font-weight:bold;color:gray;" />
-    			    <listbox id="selectQueryMode"  mold="select"  rows="1">
-			     	<listitem label="Alleles between the two varieties" selected = "true" />
-			     	<listitem label="Alleles with the reference Nipponbare" />
-			    		     	
-			     	<listitem label="All varieties having mismatch with reference" />			     	
-			     </listbox -->
-			     
 			    <label value="Compare Varieties:" style="font-size:14px;font-weight:bold;color:gray;" /> 
 			     
 			    <vbox>
 			    <hbox>             
-			    <label value="pairwise:    " pre="true" style="font-weight:bold"/>
-
-			    <combobox id="comboVar1" autodrop="true" buttonVisible="false" width="150px"/>
-			     <label pre="true" value="(ex. loto)" style="font-size:10px"/>
+				    <label value="pairwise:    " pre="true" style="font-weight:bold"/>
 	
-			    <zscript><![CDATA[
-			        ListModel var1ComboModel= new SimpleListModel(varnames);
-			        comboVar1.setModel(var1ComboModel);
-			    ]]></zscript>
-			    <vbox width="20px"/>
-			    <combobox id="comboVar2" autodrop="true" buttonVisible="false" width="150px"/>
-			    <zscript><![CDATA[
-			        ListModel var2ComboModel= new SimpleListModel(varnames);
-			        comboVar2.setModel(var2ComboModel);
-			    ]]></zscript>
-			    <vbox width="20px"/>
-			    
+				    <combobox id="comboVar1" autodrop="true" buttonVisible="false" width="150px"/>
+				     <label pre="true" value="(ex. loto)" style="font-size:10px"/>
+		
+				    <zscript><![CDATA[
+				        ListModel var1ComboModel= new SimpleListModel(varnames);
+				        comboVar1.setModel(var1ComboModel);
+				    ]]></zscript>
+				    <vbox width="20px"/>
+				    <combobox id="comboVar2" autodrop="true" buttonVisible="false" width="150px"/>
+				    <zscript><![CDATA[
+				        ListModel var2ComboModel= new SimpleListModel(varnames);
+				        comboVar2.setModel(var2ComboModel);
+				    ]]></zscript>
+				    <vbox width="20px"/>
 			    </hbox>
 				<hbox>
 				 	
  			 	    <label value="multiple: " pre="true" style="font-weight:bold"/>
 			   		<label value="Subpopulation"/>	
-				    
-				    <!--  combobox id="comboSubpopulation" width="150px"  buttonVisible="true" / -->
 				    
 				    <listbox id="listboxSubpopulation" width="150px" mold="select"/>
 				    	<zscript><![CDATA[
@@ -331,20 +319,39 @@ function doPosition() {
 				<separator bar="true" style="color:green"/>
 				</vbox>
 				
-				<!--  label / -->
-
-			     
- 
             </row>
             <row spans="1,5,1">
             	<label value="Region:" style="font-size:14px;font-weight:bold;color:gray;" />
             	
+				<vbox>
+            	<hbox visible="false">				            
+            	<label>Reference:</label>
+            	<listbox id="listboxReference" mold="select" rows="1"/>
+            		<zscript><![CDATA[
+			    	    	listboxReference.setModel(new SimpleListModel(listReference));
+			    	    	listboxReference.setSelectedIndex(0);
+			   			]]></zscript>
 
-            	<hbox>				            	
-                <label>Chromosome:</label>                
-			    <listbox id="selectChr" mold="select"  rows="1">
-			    <listitem label=""/> 
-			    <listitem label="1" selected="true"/>    
+            	<vbox width="10px"/>
+           		<label pre="true">Show all reference alleles</label>
+           		<checkbox id="checkboxShowAllRefAlleles" />
+			   			
+            	<vbox width="10px"/>
+            	
+            	<div id="divShowNPBPositions" visible="false">
+            		<hbox>
+            		<label pre="true">Show Nipponbare positions</label>
+            		<checkbox id="checkboxShowNPBPosition" />
+            		</hbox>
+            	</div>	
+            	
+            	</hbox>
+            	
+            	<hbox>
+                <label id="labelChr" value="Chromosome"/>                
+			    <combobox id="selectChr"  buttonVisible="false"  readonly="false" autodrop="true" width="120px"> <!--  fulfill="onOpen" -->
+			    <!-- listitem label=""/> 
+			    <!listitem label="1" selected="true"/>    
 			    <listitem label="2" />    
 			    <listitem label="3"/>    
 			    <listitem label="4"/>    
@@ -356,96 +363,92 @@ function doPosition() {
 			    <listitem label="10"/>    
 			    <listitem label="11"/>    
 			    <listitem label="12"/>
-			    <listitem label="whole genome"/>    
-				</listbox>
-				 <hbox width="15px"/>
-                 <label>Start:</label>
-                <intbox id="intStart" width="70px"
-                    constraint="no negative" />
-                <hbox width="15px"/>
-                <label id="labelLength" value="End: (length 43270923 bp)"/> 
-                <intbox id="intStop"  width="70px"
-                     constraint="no negative" />   
-                </hbox> 
-           
-				<button id="resetButton" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;"
-			    	   width="75px" height="30px"  autodisable="self"/>
-				            
+			    <listitem label="whole genome"/ -->
+				</combobox>
+				<label id="labelChrExample" pre="true" value="(ex. chr01)" style="font-size:10px"/>
+				
+            		<zscript><![CDATA[
+							if(listContigs!=null && !listContigs.isEmpty()) {
+								List listConts = new ArrayList();
+								listConts.add("");
+								listConts.addAll(listContigs);
+								selectChr.setModel(new SimpleListModel(listConts));
+								//selectChr.setModel(new ListModelList(listConts));
+								//selectChr.setSelectedIndex(0);
+							}
+			   			]]></zscript>
+				
+				
+				
+				<hbox width="5px"/>
+	                <label>Start:</label>
+	                <intbox id="intStart" width="70px" constraint="no negative" />
+	                <hbox width="3px"/>
+	                <label value="End:"/>
+	                <!-- label id="labelLength" value="End: (length 43270923 bp)"/ --> 
+	                <intbox id="intStop"  width="70px" constraint="no negative" />
+	                <label id="labelLength" value=""  style="font-size:10px"/>   
+                </hbox>
                 
-            </row>
-            <row spans="1,5,1">
-            	
-            	<label value="" style="font-size:14px;font-weight:bold;color:gray;" />
-            	<vbox>
+                
             	<hbox>
-            	<label>Gene locus:</label> 
-            	<combobox id="comboGene" autodrop="true" buttonVisible="false" width="110px"/>		
-			    <zscript><![CDATA[
-			        ListModel geneComboModel= new SimpleListModel(genenames);
-			        comboGene.setModel(geneComboModel);
-			    ]]></zscript>		
-			    <label pre="true" value="(ex. loc_os01g01010) " style="font-size:10px"/>
-				<label>My SNP List</label>
-				<listbox id="listboxMySNPList" mold="select" tooltip="popupMySNPList"/>
-				    	<zscript><![CDATA[
-			    	    	listboxMySNPList.setModel(new SimpleListModel(listSNPlistNames));
-			   			]]></zscript>
-			   			<vbox width="10px"/>
-			   	<div visible="false">		
-				<label>My Locus List</label>
-				<listbox id="listboxMyLocusList" mold="select" tooltip="popupMyLocusList"/>
-				    	<zscript><![CDATA[
-			    	    	listboxMyLocusList.setModel(new SimpleListModel(listLocuslistNames));
-			   			]]></zscript>
-			   	</div>					    
-			   						    
+	            	<label>Gene locus:</label> 
+	            	<!--  combobox id="comboGene" autodrop="true" buttonVisible="false" width="120px"/ -->		
+	            	<custom-attributes org.zkoss.zul.listbox.rod="true"/>
+	            	<combobox id="comboGene"  buttonVisible="false"  readonly="false" width="150px" autodrop="true"  fulfill="onOpen"/> <!--  autodrop="true" -->
+				    <zscript><![CDATA[
+				        //ListModel geneComboModel= new ListModelList(genenames);
+				        ListModel geneComboModel= new SimpleListModel(genenames);
+				        comboGene.setModel(geneComboModel);
+				    ]]></zscript>		
+				    <label id="labelLocusExample" pre="true" value="(ex. loc_os01g01010) " style="font-size:10px"/>
+				    
+					<label>SNP List</label>
+					<listbox id="listboxMySNPList" mold="select" tooltip="popupMySNPList"  width="100px" />
+					    	<zscript><![CDATA[
+				    	    	listboxMySNPList.setModel(new SimpleListModel(listSNPlistNames));
+				   			]]></zscript>
+				   			<vbox width="10px"/>
+				   	<div visible="true">		
+					<label>Locus List</label>
+					<listbox id="listboxMyLocusList" mold="select" tooltip="popupMyLocusList" width="100px"   />
+					    	<zscript><![CDATA[
+				    	    	listboxMyLocusList.setModel(new SimpleListModel(listLocuslistNames));
+				   			]]></zscript>
+				   	</div>
+				   						    
 			    </hbox>
 			    <separator bar="true" style="color:green"/>
 			    </vbox>
-
-				<vbox id="buttonsDownloadNodisplay" visible="false">
-				<label value="Download" style="font-size:14px;font-weight:bold;color:gray;"/>
+			    
+			    	   
 				<hbox>
-				<button id="buttonDownloadNoDisplayCSV" label="CSV"   style="font-size:14px;font-weight:bold;color:gray;"
-			    	   width="50px" height="15px"  autodisable="self"/>
-				<button id="buttonDownloadNoDisplayTab" label="Tab"   style="font-size:14px;font-weight:bold;color:gray;"
-			    	   width="50px" height="15px"  autodisable="self"/>
-			     </hbox>
-			     
-			    <hbox>
-			    <div visible="false">
-				<button id="buttonDownloadNoDisplayPlink" label="Tab"   style="font-size:14px;font-weight:bold;color:gray;"
-			    	   width="50px" height="15px"  autodisable="self"/>
-				<button id="buttonDownloadNoDisplayHapmap" label="Tab"   style="font-size:14px;font-weight:bold;color:gray;"
-			    	   width="50px" height="15px"  autodisable="self"/>
-			    </div>
+					<vbox id="buttonsDownloadNodisplay" visible="false">
+					<label value="Download" style="font-size:14px;font-weight:bold;color:gray;"/>
+					<hbox>
+					<button id="buttonDownloadNoDisplayCSV" label="CSV"   style="font-size:14px;font-weight:bold;color:gray;"
+				    	   width="50px" height="15px"  autodisable="self"/>
+					<button id="buttonDownloadNoDisplayTab" label="Tab"   style="font-size:14px;font-weight:bold;color:gray;"
+				    	   width="50px" height="15px"  autodisable="self"/>
+				     </hbox>
+				     
+				    <hbox>
+				    <div visible="false">
+					<button id="buttonDownloadNoDisplayPlink" label="Tab"   style="font-size:14px;font-weight:bold;color:gray;"
+				    	   width="50px" height="15px"  autodisable="self"/>
+					<button id="buttonDownloadNoDisplayHapmap" label="Tab"   style="font-size:14px;font-weight:bold;color:gray;"
+				    	   width="50px" height="15px"  autodisable="self"/>
+				    </div>
+					</hbox>
+					</vbox>
+					<button id="resetButton" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;" width="75px" height="30px"  autodisable="self"/>
 				</hbox>
-				</vbox>
+				
                         	    
             </row>
             
-            <!--  row spans="1,5,1">
-            	<label value="Allele:" style="font-size:14px;font-weight:bold;color:gray;" />
-             	<hbox>
-                <label>Position:</label>
-                <intbox id="intAllelePos" width="70px"
-                    constraint="no negative" />
-                <hbox width="15px"/>
-                <label>Allele:</label>
-                <listbox id="selectAllele" mold="select"  rows="1">
-                <listitem label="" selected="true"/>
-                <listitem label="A"/>
-                <listitem label="T"/>
-                <listitem label="G"/>
-                <listitem label="C"/>
-                </listbox>
-             	</hbox>
-            </row -->
-            
-            
             <row spans="1,5,1">
             		<label value="Options:" style="font-size:14px;font-weight:bold;color:gray;" />
-            		
             		<vbox>
 
          			<hbox visible="false">
@@ -475,7 +478,6 @@ function doPosition() {
           				<vbox width="30px"/>
           				<label value="Mismatch only " pre="true" style="font-weight:bold;" tooltip="popupMatchOnly"/>
 			    		<checkbox id="checkboxMismatchOnly" checked="true" />
-						
 						
           				<label pre="true" value="Exact mismatch" style="font-weight:bold;"  visible="false"/>
           				<checkbox id="checkboxExactMismatch" checked="true" tooltip="popupExactMismatch" disabled="true"  visible="false"/>			    		
@@ -522,7 +524,6 @@ function doPosition() {
          			
     				</vbox>
 
-    				
             		<button id="searchButton" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
 			    	   width="100px" height="50px"  autodisable="self"
 			    	   xmlns:w="http://www.zkoss.org/2005/zk/client"			    	   			    	   
@@ -530,23 +531,10 @@ function doPosition() {
 			    	/>
 
             </row>
-               <!--  row spans="1,6">
-               		<label value="Display options" style="font-size:10px;font-weight:bold;color:gray;" />
-               		<grid>
-               		<rows>
-               		<row>
-               		
-               		</row>
-               		</rows>
-               		</grid>
-               </row -->
         </rows>
     </grid>
     </vbox>
     
-    <!--  /row>
-    
-    </rows></grid -->
 
 	<tipBox height="305px" width="400px" desc="     SNP QUERY" 
 		details1= "  1. Select two varieties to compare; OR "
@@ -579,143 +567,182 @@ function doPosition() {
             <!--  tab id="tabBiglist" label="BigTable" visible="true"/ -->
             <tab id="tabJbrowse" label="JBrowse" visible="false"/>  
             <tab id="tabMSA" label="Alignment"  visible="false"/>  
+            <tab id="tabVista" label="Compare genomes" visible="false"/>  
+            <tab id="tabVistaRev" label="Compare rev genomes" visible="false"/>
+            <tab id="tabVistaNPB" label="Compare Genomes" visible="false"/>  
             <tab id="tabPhylo" label="Phylotree" visible="false"/>  
             <tab id="tabJBrowsePhylo" label="PhyloJBrowse" visible="false"/>  
         </tabs>  
         <tabpanels>  
     <tabpanel id="tabpanelTable"> <!--    vflex="1" style="overflow:auto" -->  
     
-  	<vbox>
+    <vbox>
+    <div id="divTablePanel" visible="false">
     
     <!-- listbox id="snpallvarsresult"  visible="false" fixedLayout="true" mold="select"   width="1450px"-->
 	<!--  div style="overflow:auto;position:relative" -->  
-	
 	<!--  div style="border: none; overflow-x:auto; overflow-y:auto;position:relative" -->
 	<hbox>
+		<hbox id="divAlignIndels" visible="false">
+			<label value="Align indels  " pre="true" style="font-weight:bold" />
+			<checkbox id="checkboxAlignIndels" checked="true" tooltip="popupAlignIndels"/>
+			<vbox width="50px" />
+		</hbox>		
 	
-
-	<hbox id="divAlignIndels" visible="false">
-	<label value="Align indels  " pre="true" style="font-weight:bold" />
-	<checkbox id="checkboxAlignIndels" checked="true" tooltip="popupAlignIndels"/>
-	<vbox width="100px" />
-	<separator orient="vertical"  bar="true" style="color:green"/>
-	</hbox>		
+		<hbox id="hboxDownload" visible="false">
+			<label pre="true" value="Download  "  style="font-weight:bold;"/>
+			<button id="buttonDownloadCsv"  label="CSV" width="60px" height="30px"  autodisable="self"/>
+	  		<vbox width="10px"/>
+			<button id="buttonDownloadTab"  label="Tab" width="60px" height="30px"  autodisable="self"/>
+			<vbox width="10px"/>
+			<button id="buttonDownloadPlink"  label="Plink" width="60px" height="30px"  autodisable="self"  tooltip="popupDownloadPlink" />
+			<vbox width="10px"/>
+		</hbox>
 	
-	<hbox id="hboxDownload" visible="false">
-		<label pre="true" value="Download  "  style="font-weight:bold;"/>
-		<button id="buttonDownloadCsv"  label="CSV" width="60px" height="30px"  autodisable="self"/>
-  		<vbox width="10px"/>
-		<button id="buttonDownloadTab"  label="Tab" width="60px" height="30px"  autodisable="self"/>
-		<vbox width="10px"/>
-		<button id="buttonDownloadPlink"  label="Plink" width="60px" height="30px"  autodisable="self"  tooltip="popupDownloadPlink" />
-		<vbox width="10px"/>
+		
+		<hbox id="hboxFilterAllele" visible="false">
+			<hbox>
+				<button id="buttonCreateVarlist" label="Create List"/>
+				<label pre="true" value="   List Name  "/>
+				<textbox id="textboxVarlistName"/>
+				<vbox width="40px"/>
+			</hbox>
+			<vbox width="100px"/>
+		
+			<vbox>
+				<hbox>
+					<label value="Allele Filters" style="font-weight:bold;"/>
+					<vbox width="20px"/>
+					<label>Position:</label>
+					<listbox id="listboxPosition"  mold="select"  rows="1" />
+					<hbox width="15px"/>
+					<label>Allele:</label>
+					<listbox id="listboxAllele" mold="select" rows="1"/>
+					<hbox width="15px"/>
+					<button id="buttonFilterAllele" label="Add Filter"/>
+					<button id="buttonClearFilterAllele" label="Clear All Filters"/>
+				</hbox>
+		
+				<hbox visible="false">
+					<label value="Sort by SNP list alleles" style="font-weight:bold;"/>
+					<vbox width="20px"/>
+					<listbox id="listboxSNPListAlleles" mold="select" rows="1"/>
+					
+								<zscript><![CDATA[
+											listboxSNPListAlleles.setModel(new SimpleListModel(listSNPlistAlleleNames));
+							   			]]></zscript>
+							   			
+					
+					<hbox width="15px"/>
+					<button id="buttonSNPSorter" label="Sort SNPs"/>
+					<hbox width="15px"/>
+					<checkbox id="checkboxSNPSorterMismatchonly" label=" Exclude no single match" visible="false"/>
+				</hbox>		
+				<hbox>
+					<label value="Active filters" style="font-weight:bold;"/>
+					<label id="labelFilterResult" />
+				</hbox>
+			</vbox>													
+		</hbox>
 	</hbox>
-
 	
-	<hbox id="hboxFilterAllele" visible="false">
-	<hbox>
-		<button id="buttonCreateVarlist" label="Create List"/>
-		<label pre="true" value="   List Name  "/>
-		<textbox id="textboxVarlistName" />
-		<vbox width="40px"/>
-	</hbox>
-	<vbox width="150px"/>
-	<label value="Allele Filters" style="font-weight:bold;"/>
-	<vbox width="20px"/>
-	<vbox id="vboxFilterAllele">
-	<hbox>
-	<label>Position:</label>
-	<listbox id="listboxPosition"  mold="select"  rows="1" />
-	<hbox width="15px"/>
-	<label>Allele:</label>
-	<listbox id="listboxAllele" mold="select" rows="1"/>
-	<hbox width="15px"/>
-	<button id="buttonFilterAllele" label="Apply Filter"/>
-	<button id="buttonAddFilterAllele" label="Add Filter"/>
-	
-	<hbox width="15px"/>
-	<button id="buttonAddAlleleConstraint" label="Add" tooltip="popupAddFilter" visible="false"/>
-	<label id="labelFilterResult" />
-	</hbox>
-	</vbox>
-	</hbox>
-	</hbox>
-	
-	 <!--  zscript><![CDATA[
-			        List listAllele= new ArrayList();
-			        listAllele.add("");listAllele.add("A");listAllele.add("T");listAllele.add("G");listAllele.add("C");
-			        listboxAllele.setModel(new SimpleListModel(listAllele));
-			    ]]></zscript -->		
-	
-	
-	
-	<paging id="snpallvarsresultpaging" visible="false"  />
-	<!--  custom-attributes org.zkoss.zul.grid.rod="true" org.zkoss.zul.grid.initrodsize="25"></custom-attributes -->
-	<grid id="snpallvarsresult"  sizedByContent="true" visible="false" mold="paging" width="1200px"   />  <!-- style="overflow:auto" hflex="min"   style="overflow:scroll;" width="100%" -->
-	
-	<!--  frozen rows="2" start="1"/>
-	</grid -->
-	
-	
-	
-	             
-	
-	    <zscript><![CDATA[
-        	snpallvarsresult.pagingPosition = "both";
-        	snpallvarsresult.pagingChild.mold = "os";
-    	]]></zscript>
-    	
-		<biglistbox id="myComp" visible="false" hflex="min" vflex="0" xmlns:w="client" w:onScroll="jq('$tip').fadeOut();">
-			<!-- Template example
-			<template name="heads">
-				<html><![CDATA[
-					<div class="images_${matrixInfo[0]%28}" title="x=${matrixInfo[0]},y=${matrixInfo[1]}">${each[matrixInfo[0]]}</div>
-				]]></html>
-			</template>
-			<template name="rows">
-				<html><![CDATA[
-					<div class="images_${matrixInfo[0]%28}" title="x=${matrixInfo[0]},y=${matrixInfo[1]}">${each[matrixInfo[0]]}</div>
-				]]></html>
-			</template> -->
-		</biglistbox>    	
-    	
-	    <zscript><![CDATA[
-        	myComp.setModel(new FakerMatrixModel(0,0));
-    	]]></zscript>
-		    	
 		<div id="divIndelLegend" visible="false">
 		<hbox>
-		<label value="Position color code: " style="font-weight:bold" pre="true"/>
-		<label value="deletion region, " style="color:blue"  pre="true"/>
-		<label value="insertion region " style="color:green"  pre="true"/>
+			<label value="Position color code: " style="font-weight:bold" pre="true"/>
+			<label value="deletion region, " style="color:blue"  pre="true"/>
+			<label value="insertion region " style="color:green"  pre="true"/>
 		</hbox>
 		</div>
 		
 		<hbox visible="true">
-		<label value="Allele color code: " style="font-weight:bold" pre="true"/>
-		<label value="mismatch " style="color:red"  pre="true"/>
-		<!-- label value="synonymous " style="color:lightgray;background:white"  pre="true"/ -->
-		
-		<label value="non-synonymous " style="color:red;background:black;font-weight:bold"  pre="true"/>
-		<label value="splice donor SNP " style="color:aqua"  pre="true"/>
-		<label value="splice acceptor SNP " style="color:chartreuse"  pre="true"/>
-		 <label value="gap - " pre="true"/>
+			<label value="Allele color code: " style="font-weight:bold" pre="true"/>
+			<label value="mismatch " style="color:red"  pre="true"/>
+			<!-- label value="synonymous " style="color:lightgray;background:white"  pre="true"/ -->
+			
+			<label value="non-synonymous " style="color:red;background:black;font-weight:bold"  pre="true"/>
+			<label value="splice donor SNP " style="color:aqua"  pre="true"/>
+			<label value="splice acceptor SNP " style="color:chartreuse"  pre="true"/>
+			 <label value="gap - " pre="true"/>
 		</hbox>    	
 		    	
 		<hbox>
-		<grid id="gridBiglistheader" width="400px" visible="false"  style="overflow-x: hidden; overflow-y:hidden">
-		<auxhead height="95px">
-            <auxheader label="Variety name"/>
-            <auxheader label="IRIS ID"/>
-            <auxheader label="Mismatch"/>
-        </auxhead>
-        <columns>
-            <column width="250px">Reference</column>
-            <column width="100px"></column>
-            <column width="50px"></column>
-        </columns>
-		</grid>
-		<biglistbox id="biglistboxArray" visible="false" hflex="min" vflex="0" xmlns:w="client" w:onScroll="jq('$tip').fadeOut();"/>
+			<grid id="gridBiglistheader" width="400px" height="800px" visible="false"  style="overflow-x: hidden; overflow-y:hidden">
+				<auxhead id="auxhead1Header" height="97px" visible="false">
+		            <auxheader id="auxheader11Header" label="Variety name"     sclass="word-wrap" />
+		            <auxheader label=""/>
+		            <auxheader label=""/>
+		            <auxheader label=""/>
+		        </auxhead>
+				<auxhead id="auxhead2Header" height="32px" visible="false">
+		            <auxheader id="auxheader21Header" label="Alleles"     sclass="word-wrap" />
+		            <auxheader label=""/>
+		            <auxheader label=""/>
+		            <auxheader label=""/>
+		        </auxhead>
+				<auxhead height="97px" visible="true">
+		            <auxheader id="auxheader3Header" label="Nipponbare positions"    sclass="word-wrap" />
+		            <auxheader label="IRIS ID"/>
+		            <auxheader label="Subpopulation"/>
+		            <auxheader label="Mismatch"/>
+		        </auxhead>
+		        <columns>
+		            <column  id="column4Header" label="Nipponbare"   width="300px"  />
+		            <column width="100px" ></column>
+		            <column width="50px"  ></column>
+		            <column width="50px"  ></column>
+		        </columns>
+		        <auxhead id="auxheadAlleles1" height="32px" visible="false">
+		            <auxheader id="auxheaderAlleles1" label=""     sclass="word-wrap" />
+		            <auxheader label=""/>
+		            <auxheader label=""/>
+		            <auxheader label=""/>
+		        </auxhead>
+		        <auxhead id="auxheadAlleles2" height="32px" visible="false">
+		            <auxheader id="auxheaderAlleles2" label=""     sclass="word-wrap"  />
+		            <auxheader label=""/>
+		            <auxheader label=""/>
+		            <auxheader label=""/>
+		        </auxhead>
+		        <auxhead id="auxheadAlleles3" height="32px" visible="false">
+		            <auxheader id="auxheaderAlleles3" label=""     sclass="word-wrap" />
+		            <auxheader label=""/>
+		            <auxheader label=""/>
+		            <auxheader label=""/>
+		        </auxhead>
+		        <auxhead id="auxheadAlleles4" height="32px" visible="false">
+		            <auxheader id="auxheaderAlleles4" label=""     sclass="word-wrap" />
+		            <auxheader label=""/>
+		            <auxheader label=""/>
+		            <auxheader label=""/>
+		        </auxhead>
+			</grid>
+			
+			<biglistbox id="biglistboxArray" height="800px"  visible="false" width="90%" hflex="0" vflex="0" xmlns:w="client" w:onScroll="jq('$tip').fadeOut();"/>
+			<!--  biglistbox id="biglistboxArray" visible="false" hflex="1" vflex="0" / -->
+		</hbox>
+		
+		<hbox>
+			<vbox width="200px">
+			<!--  checkbox id="checkboxShowAlleleFrequency" label="Show allele frequency"/>
+			<checkbox id="checkboxShowAlleleCount" label="Show allele count"/>
+			<checkbox id="checkboxMajorAlleles" label="Show major alleles"/>
+			<checkbox id="checkboxMinorAlleles" label="Show minor alleles"/>
+			<checkbox id="checkbox3rdAlleles" label="Show 3rd alleles"/ -->
+			
+			<radiogroup id="radiogroupAllelefreqcount"/>
+			<radiogroup id="radiogroupMajorminor"/>
+			<hbox height="30px"/>
+			<radio id="radioShowAlleleFrequency" label="Show allele frequency" radiogroup="radiogroupAllelefreqcount" selected="true"/>
+			<radio id="radioShowAlleleCount" label="Show allele count" radiogroup="radiogroupAllelefreqcount"/>
+			<radio id="radioShowGenotypeFrequency" label="Show genotype frequency" radiogroup="radiogroupAllelefreqcount"/>
+			<radio id="radioShowGenotypeCount" label="Show genotype count" radiogroup="radiogroupAllelefreqcount"/>
+			<hbox height="10px"/>
+			<radio id="radioMajorAlleles" label="Major alleles" radiogroup="radiogroupMajorminor" selected="true"/>
+			<radio id="radioMinorAlleles" label="Minor alleles" radiogroup="radiogroupMajorminor"/>
+			<radio id="radio3rdAlleles" label="3rd alleles" radiogroup="radiogroupMajorminor"/>
+			</vbox>
+			
+			<charts id="chartAlleleFrequency" type="line"  title="Allele frequency" width="1000" height= "400" zoomType="xy" />
 		</hbox>		
 		
 		
@@ -735,92 +762,133 @@ function doPosition() {
     	]]></zscript>
     	
     	
+    	</div>
     	
-	<listbox id="snpresult" fixedLayout="true" mold="paging" pageSize="100">
-		<listhead>
-			<listheader></listheader>
-			<listheader></listheader>
-			<listheader></listheader>
-			<listheader></listheader>
-			<listheader></listheader>			
-		</listhead>
-	</listbox>
+		<listbox id="listboxSnpresult" fixedLayout="true" mold="paging" pageSize="100" visible="false">
+			 <auxhead id="auxheadMultirefPairwise" visible="false">
+		        <auxheader id="auxheaderMultirefPairwise" label="" colspan="3" />
+		        <auxheader label="NIPPONBARE" colspan="3" />
+		        <auxheader label="COMPARE VARIETIES" colspan="2" />
+		    </auxhead>
+			<listhead>
+				<listheader id="listheader1MultirefPairwise" visible="false">CONTIG</listheader>
+				<listheader id="listheader2MultirefPairwise" visible="false">POSITION</listheader>
+				<listheader id="listheader3MultirefPairwise" visible="false">ALLELE</listheader>
+				<listheader>CONTIG</listheader>
+				<listheader>POSITION</listheader>
+				<listheader>ALLELE</listheader>
+				<listheader id="listheaderVar1MultirefPairwise"></listheader>
+				<listheader id="listheaderVar2MultirefPairwise"></listheader>			
+			</listhead>
+		</listbox>
 	
     	
     </vbox>
-		
-    		           
-            </tabpanel>  
-            <!--  tabpanel>
-            
+
+</tabpanel>  
 
             
-            </tabpanel -->
-            
-            <tabpanel id="second"> 
- 
-<vbox>
-<hbox>
-<label id="msgJbrowse"  visible="false" style="font-family: arial;font-size:16px" />
+<tabpanel id="second"> 
+	 
+	<vbox>
+	<hbox>
+	<label id="msgJbrowse"  visible="false" style="font-family: arial;font-size:16px" />
+	
+	<hbox width="80px"/>
+	
+	<div id="divNucleotide" visible="false">
+	<label value="SNP Genotype Track color code:     "  pre="true"/>
+	<label value="A  " style="color:green" pre="true"/>
+	<label value="T  " style="color:red" pre="true"/>
+	<label value="G  " style="color:orange" pre="true"/>
+	<label value="C  " style="color:blue" pre="true"/>
+	<label value="heterozygous   " style="color:yellow;background:gray" pre="true"/>
+	</div>
+	
+	<div id="divNucleotideIndels" visible="false">
+	<label value="SNP Genotype Track color code:     "  pre="true"/>
+	<label value="insertion  " style="color:green" pre="true"/>
+	<label value="snp/substitution   " style="color:red" pre="true"/>
+	<label value="deletion  " style="color:blue" pre="true"/>
+	<label value="heterozygous   " style="color:yellow;background:gray" pre="true"/>
+	<label value="reference   " style="color:black" pre="true"/>
+	</div>
+	
+	
+	<div id="divMismatch"  visible="false">
+	<label value="SNP Genotype Track color code:     "  pre="true"/>
+	<label value="non-synonymous mismatch " style="color:red" pre="true"/>
+	<!--  label value="allele match   " style="color:white;background:lightgray" pre="true"/ -->
+	<label value="heterozygous   " style="color:yellow;background:gray" pre="true"/>
+	<!-- label value="insertion   " style="color:green" pre="true"/>
+	<label value="deletion   " style="color:blue" pre="true"/>
+	<label value="reference   " style="color:black" pre="true"/ -->
+	<label value="splice donor SNP " style="color:aqua"  pre="true"/>
+	<label value="splice acceptor SNP " style="color:chartreuse"  pre="true"/>
+	
+	</div>
+	
+	<div id="divBlackSyn"  visible="true">
+	<label value="synonymous mismatch " style="color:darkgray" pre="true"/>
+	</div>
+	
+	</hbox>
+	
+	
+	<iframe id= "iframeJbrowse"  align="left" visible="true" style="width:95%;height:3000px;border:0px inset;" src="${jbrowsestart}" />
+	</vbox>
 
-<hbox width="80px"/>
-
-<div id="divNucleotide" visible="false">
-<label value="SNP Genotype Track color code:     "  pre="true"/>
-<label value="A  " style="color:green" pre="true"/>
-<label value="T  " style="color:red" pre="true"/>
-<label value="G  " style="color:orange" pre="true"/>
-<label value="C  " style="color:blue" pre="true"/>
-<label value="heterozygous   " style="color:yellow;background:gray" pre="true"/>
-</div>
-
-<div id="divNucleotideIndels" visible="false">
-<label value="SNP Genotype Track color code:     "  pre="true"/>
-<label value="insertion  " style="color:green" pre="true"/>
-<label value="snp/substitution   " style="color:red" pre="true"/>
-<label value="deletion  " style="color:blue" pre="true"/>
-<label value="heterozygous   " style="color:yellow;background:gray" pre="true"/>
-<label value="deletion   " style="color:blue" pre="true"/>
-<label value="reference   " style="color:black" pre="true"/>
-</div>
-
-
-<div id="divMismatch"  visible="false">
-<label value="SNP Genotype Track color code:     "  pre="true"/>
-<label value="non-synonymous mismatch " style="color:red" pre="true"/>
-<!--  label value="allele match   " style="color:white;background:lightgray" pre="true"/ -->
-<label value="heterozygous   " style="color:yellow;background:gray" pre="true"/>
-<!-- label value="insertion   " style="color:green" pre="true"/>
-<label value="deletion   " style="color:blue" pre="true"/>
-<label value="reference   " style="color:black" pre="true"/ -->
-<label value="splice donor SNP " style="color:aqua"  pre="true"/>
-<label value="splice acceptor SNP " style="color:chartreuse"  pre="true"/>
-
-</div>
-
-<div id="divBlackSyn"  visible="true">
-<label value="synonymous mismatch " style="color:darkgray" pre="true"/>
-</div>
-
-</hbox>
-
-
-<iframe id= "iframeJbrowse"  align="left" visible="true" style="width:95%;height:3000px;border:0px inset;" src="${jbrowsestart}" />
-</vbox>
- 
-                
-            </tabpanel>
+  </tabpanel>
+  
+  
             
   <tabpanel id="tabpanelAlignment"> 
-  
   <iframe id= "iframeAlignment"  align="left" visible="true" style="width:95%;height:800px;border:0px inset;" src="/jsp/jsav.jsp" />
-  
+  </tabpanel>
+            
+            
+  <tabpanel id="tabpanelVista"> 
+  <iframe id= "iframeVista"  align="left" visible="true" style="width:95%;height:800px;border:0px inset;" />
+  </tabpanel>
+            
+  <tabpanel id="tabpanelVistaRev"> 
+  <iframe id= "iframeVistaRev"  align="left" visible="true" style="width:95%;height:800px;border:0px inset;" />
+  </tabpanel>
+            
+  <tabpanel id="tabpanelVistaNPB">
+  	 <vbox width="100%">
+  	  <hbox height="15px"/>
+	  <tabbox width="100%">   
+	        <tabs>
+	            <tab id="tabNPBvsIR6421" label="Nipponbarre vs IR64-21" selected="true"/>
+	            <tab id="tabNPBvs9311" label="Nipponbarre vs 93-11"/>
+	            <tab id="tabNPBvsDJ123" label="Nipponbarre vs DJ123"/>
+	            <tab id="tabNPBvsKasalath" label="Nipponbarre vs Kasalath"/>
+	        </tabs>  
+	        <tabpanels>
+	        <tabpanel>
+	        	<iframe id="iframeNPBvsIR6421" align="left" visible="true" style="width:95%;height:800px;border:0px inset;" />
+	        </tabpanel>
+	        <tabpanel>
+	        	<iframe id="iframeNPBvs9311" align="left" visible="true" style="width:95%;height:800px;border:0px inset;" />
+	        </tabpanel>
+	        <tabpanel>
+	        	<iframe id="iframeNPBvsDJ123" align="left" visible="true" style="width:95%;height:800px;border:0px inset;" />
+	        </tabpanel>
+	        <tabpanel>
+	        	<iframe id="iframeNPBvsKasalath" align="left" visible="true" style="width:95%;height:800px;border:0px inset;" />
+	        </tabpanel>
+	        
+	        </tabpanels>
+	  </tabbox>  
+    </vbox>
   
   </tabpanel>
+            
+            
                
                
-            <tabpanel> <!--  vflex="1" style="overflow:auto" -->
-<!--  div style="overflow:auto;position:relative" --> 
+<tabpanel> 
 	
 	<script type="text/javascript">
 	<![CDATA[
@@ -836,111 +904,75 @@ function doPosition() {
 	</zscript>
 
 <vbox>
-<hbox>
-    	<label pre="true" value="Phylotree topN  " style="font-weight:bold;"  visible="false"/>
-    	<listbox id="selectPhyloTopN" mold="select"  rows="1" tooltip="popupTopN" visible="false"> 
-    					<listitem label="20" />    
-    					<listitem label="50"/>    
-    					<listitem label="100"/>    
-  			<listitem label="200"/>    
-  			<listitem label="500" />
-  			<listitem label="all" selected="true"/>
-  		</listbox>
-  		
-    	<label pre="true" value="Minimum pair mismatch  " style="font-weight:bold;"  visible="false"/>
-    	<listbox id="selectPhyloMindist" mold="select"  rows="1" tooltip="popupMindist" visible="false"> 
-    					<listitem label="0" />    
-    					<listitem label="1" selected="true" />    
-    					<listitem label="2"/>
-    					<listitem label="3"/>    
-  						<listitem label="5"/>    
-  						<listitem label="10" />
-  		</listbox>
-  		<intbox id="intPhyloMindist" value="2" visible="false"/>
-  		<label value="Phylogenetic tree construction takes about 5 minutes."/>
-  		<vbox width="10px"/>
-  		<button id="buttonRenderTree" label="Compute tree"/>
-
-  		
-  		
-</hbox>
-<hbox height="10px"/>
-
-<label value="The tree is constructed by Neighbor-Joining based on the number of allele mismatches between varieties within the region." style="font-family: arial;font-size:12px" />
-<iframe id="iframePhylotree" style="height:1200px;width:1500px"
-	 xmlns:ca="http://www.zkoss.org/2005/zk/client/attribute" ca:onload="chartLoaded(this)">
-      <attribute name="onCreate">
-  			Clients.showBusy(self,"Computing Tree ...");
-  		</attribute>
-  		<attribute name="onChartLoaded">
-  			Clients.clearBusy(self);
-  		</attribute>
-  	</iframe> 
+	<hbox>
+	    	<label pre="true" value="Phylotree topN  " style="font-weight:bold;"  visible="false"/>
+	    	<listbox id="selectPhyloTopN" mold="select"  rows="1" tooltip="popupTopN" visible="false"> 
+	    					<listitem label="20" />    
+	    					<listitem label="50"/>    
+	    					<listitem label="100"/>    
+	  			<listitem label="200"/>    
+	  			<listitem label="500" />
+	  			<listitem label="all" selected="true"/>
+	  		</listbox>
+	  		
+	    	<label pre="true" value="Minimum pair mismatch  " style="font-weight:bold;"  visible="false"/>
+	    	<listbox id="selectPhyloMindist" mold="select"  rows="1" tooltip="popupMindist" visible="false"> 
+	    					<listitem label="0" />    
+	    					<listitem label="1" selected="true" />    
+	    					<listitem label="2"/>
+	    					<listitem label="3"/>    
+	  						<listitem label="5"/>    
+	  						<listitem label="10" />
+	  		</listbox>
+	  		<intbox id="intPhyloMindist" value="2" visible="false"/>
+	  		<label value="Phylogenetic tree construction takes about 5 minutes."/>
+	  		<vbox width="10px"/>
+	  		<button id="buttonRenderTree" label="Compute tree"/>
+	</hbox>
+	<hbox height="10px"/>
+	
+	<label value="The tree is constructed by Neighbor-Joining based on the number of allele mismatches between varieties within the region." style="font-family: arial;font-size:12px" />
+	<iframe id="iframePhylotree" style="height:1200px;width:1500px"
+		 xmlns:ca="http://www.zkoss.org/2005/zk/client/attribute" ca:onload="chartLoaded(this)">
+	      <attribute name="onCreate">
+	  			Clients.showBusy(self,"Computing Tree ...");
+	  		</attribute>
+	  		<attribute name="onChartLoaded">
+	  			Clients.clearBusy(self);
+	  		</attribute>
+	 </iframe> 
 </vbox>
+</tabpanel>
 
-            </tabpanel>
+
+<tabpanel id="fourth"> 
+ 	<vbox>
+	<label id="msgJbrowsePhylo"  visible="false" style="font-family: arial;font-size:12px" />
+	<iframe id= "iframeJbrowsePhylo"  align="left" visible="false" style="width:1500px;height:3000px;border:0px inset;" src="${jbrowsestart}" />
+	</vbox>
+</tabpanel>             
             
-   <tabpanel id="fourth"> 
- 
-<vbox>
-<label id="msgJbrowsePhylo"  visible="false" style="font-family: arial;font-size:12px" />
-<iframe id= "iframeJbrowsePhylo"  align="left" visible="false" style="width:1500px;height:3000px;border:0px inset;" src="${jbrowsestart}" />
-</vbox>
- 
-                
-            </tabpanel>             
-            
-            
-        </tabpanels> 
-    </tabbox> 
+</tabpanels> 
+</tabbox> 
         
                       
-
-
 		<zscript><![CDATA[
-	        snpresult.pagingChild.mold =  "os";
-	        snpresult.pagingPosition = "both";
+	        listboxSnpresult.pagingChild.mold =  "os";
+	        listboxSnpresult.pagingPosition = "both";
 
 	        import org.irri.iric.portal.genotype.zkui.SNPListItemRenderer;
 	       
 	        ListModel snpListModel= new SimpleListModel(listSNPs);
 	        SNPListItemRenderer rend =  new SNPListItemRenderer();
 	        rend.setVar1(""); rend.setVar2(""); rend.setVarref("NIPPONBARE");
-	        snpresult.setItemRenderer(rend );
-	        snpresult.setModel(snpListModel);
+	        listboxSnpresult.setItemRenderer(rend );
+	        listboxSnpresult.setModel(snpListModel);
 	    ]]></zscript>
 			    
-    
-				<!--  zscript><![CDATA[
-
-			        import org.irri.iric.portal.genotype.zkui.SNPAllvarsListItemRenderer;
-			        snpallvarsresult.setItemRenderer(new SNPAllvarsListItemRenderer() );
-			        snpallvarsresult.setModel(new SimpleListModel(new java.util.ArrayList()));
-			    ]]></zscript -->
-
-				<!--  zscript><![CDATA[
-
-			        import org.irri.iric.portal.genotype.zkui.SNPAllvarsRowRenderer;
-			        snpallvarsresult.setRowRenderer(new SNPAllvarsRowRenderer() );
-			        snpallvarsresult.setModel(   new SimpleListModel(new String[0][0]) );
-
-			     ]]></zscript -->
-
-				<zscript><![CDATA[
-
-			        import org.irri.iric.portal.genotype.zkui.SNPStringAllvarsRowRenderer;
-			        snpallvarsresult.setRowRenderer(new SNPStringAllvarsRowRenderer() );
-			        snpallvarsresult.setModel(   new SimpleListModel(new java.util.ArrayList()) );
-
-
-					
-			     ]]></zscript>
-			    
-			    
-			    
-			<zscript>         
-		        String from=Executions.getCurrent().getParameter("from");
-		        if(from!=null) { 
+		<zscript>         
+	        String from=Executions.getCurrent().getParameter("from");
+	        if(from!=null) { 
+		        try {
 		        	if(from.equals("varietylist")) {
 		        		listboxMyVarieties.setSelectedIndex( listboxMyVarieties.getItemCount() - 2 ); 
 		        		listboxSubpopulation.setSelectedIndex(0);
@@ -948,12 +980,14 @@ function doPosition() {
 		        	}
 		        	else if(from.equals("snplist")) {
 		        		listboxMySNPList.setSelectedIndex( listboxMySNPList.getItemCount()-2 );
-		        		listboxSubpopulation.setSelectedIndex(0);
+		        		listboxSubpopulation.setSelectedIndex(1);
 		        		checkboxAllvarieties.setChecked(false);
 		        	}
+		        } catch(Exception ex) {
+		        ex.printStackTrace();	
 		        }
-		        
-	        </zscript>
+	        }
+        </zscript>
 			    
 
 <popup id="popupMatchOnly" width="300px">
@@ -1129,8 +1163,6 @@ function doPosition() {
 
 
 </window>
-
-<!--  include src="/footer.zul"/ -->
 
 
 </zk>

@@ -361,6 +361,12 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 		return data;
 	}
 
+	@Override
+	public String[] getContigs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 }

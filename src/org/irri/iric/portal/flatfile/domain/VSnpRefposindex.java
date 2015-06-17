@@ -35,7 +35,7 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 @Table(schema = "IRIC", name = "V_SNP_REFPOSINDEX")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/flatfile/domain", name = "VSnpRefposindex")
-public class VSnpRefposindex implements Serializable , SnpsAllvarsPos {
+public class VSnpRefposindex implements Serializable , SnpsAllvarsPos, Comparable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -204,6 +204,7 @@ public class VSnpRefposindex implements Serializable , SnpsAllvarsPos {
 
 	/**
 	 */
+	/*
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
@@ -220,6 +221,10 @@ public class VSnpRefposindex implements Serializable , SnpsAllvarsPos {
 			return false;
 		return true;
 	}
+	*/
+	
+	
+	
 
 	@Override
 	public BigDecimal getPos() {
@@ -237,6 +242,31 @@ public class VSnpRefposindex implements Serializable , SnpsAllvarsPos {
 	public void setRefnuc(String refnuc) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		VSnpRefposindex pos=(VSnpRefposindex)o;
+		int ret=this.getChromosome().compareTo(pos.getChromosome());
+		if(ret==0)
+			ret=this.getPosition().compareTo(pos.getPosition());
+		return ret;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return compareTo(obj)==0;
+	}
+
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		if(getChromosome().intValue()>9)
+			return "chr" + getChromosome();
+		else
+			return "chr0" + getChromosome();
 	}
 	
 	

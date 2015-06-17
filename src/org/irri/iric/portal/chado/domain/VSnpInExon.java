@@ -31,7 +31,7 @@ import org.irri.iric.portal.domain.Snp;
 @Table(schema = "IRIC", name = "V_SNP_IN_EXON")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VSnpInExon")
-public class VSnpInExon implements Serializable, Snp {
+public class VSnpInExon implements Serializable, Snp, Comparable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -93,6 +93,7 @@ public class VSnpInExon implements Serializable, Snp {
 
 	/**
 	 */
+	/*
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
@@ -105,4 +106,24 @@ public class VSnpInExon implements Serializable, Snp {
 			return false;
 		return true;
 	}
+	*/
+	
+	
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		
+		return this.getSnpFeatureId().compareTo( ((VSnpInExon)o).getSnpFeatureId());
+
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return compareTo(obj)==0;
+	}
+	
+	
+	
 }

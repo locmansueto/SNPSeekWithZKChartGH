@@ -27,7 +27,8 @@
 
 	<!-- ******************************************************************** -->
 	<!-- Scan for dao layer annotated beans -->
-	<!-- ******************************************************************** -->
+	
+	<context:component-scan base-package="org.irri.iric.portal.genomics.dao" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.flatfile.dao" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.admin.dao" scoped-proxy="interfaces" />
 	<!--  context:component-scan base-package="org.irri.iric.portal.admin" scoped-proxy="interfaces" / -->
@@ -43,7 +44,7 @@
 	<!-- ******************************************************************** -->
 	<!-- PropertyConfigurer for the DAO -->
 	<!-- ******************************************************************** -->
-	<context:property-placeholder location="classpath:iric_prod_crud-dao.properties"  />		
+	<context:property-placeholder location="classpath:iric_prod_crud-dao.properties,classpath:swagger.properties"  />		
 	
 	<!-- ******************************************************************** -->
 	<!-- Setup the transaction manager -->
@@ -59,7 +60,7 @@
 			
 
 				<!-- IRRI local -->
-				<!--  bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
+				<!--- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
 					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 					<property name="username" value="iricguest"/>
 					<property name="password" value="iricguest"/>
