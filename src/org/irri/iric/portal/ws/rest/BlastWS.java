@@ -18,7 +18,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONException;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.LocalAlignmentDAO;
-import org.irri.iric.portal.genomics.service.LocalAlignmentQuery;
+import org.irri.iric.portal.genomics.LocalAlignmentQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;

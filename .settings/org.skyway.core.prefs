@@ -1,5 +1,5 @@
 #org.skyway.core settings
-#Tue Oct 14 15:28:42 SGT 2014
+#Wed Jul 01 18:52:39 SGT 2015
 version=12.0.0.qualifier
 default.top.level.package=org.irri.iric.portal.genotype
 customization.specification=

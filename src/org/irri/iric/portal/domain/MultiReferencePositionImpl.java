@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.irri.iric.portal.AppContext;
+
 public class MultiReferencePositionImpl implements MultiReferencePosition, Comparable  {
 
 	protected String organism;
@@ -124,7 +126,11 @@ public class MultiReferencePositionImpl implements MultiReferencePosition, Compa
 		
 	}
 	
-	
+	@Override
+	public Long getChr() {
+		// TODO Auto-generated method stub
+		return Long.valueOf(AppContext.guessChrFromString(contig)); 
+	} 
 	
 	/**
 	 * Convert Collection<MultiReferencePosition> to TreeMap<String, TreeSet> mapChr2Pos

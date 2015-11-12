@@ -31,7 +31,7 @@ import org.irri.iric.portal.domain.Variety;
 		@NamedQuery(name = "findVIricstockBasicpropByOriCountrySubpopulation", query = "select myVIricstockBasicprop from VIricstockBasicprop myVIricstockBasicprop where upper(myVIricstockBasicprop.oriCountry) = upper(?1) and upper(myVIricstockBasicprop.subpopulation) = upper(?2)  order by myVIricstockBasicprop.name") })
 
 
-@Table(schema = "IRIC", name = "V_IRICSTOCK_BASICPROP")
+@Table(schema = "IRIC", name = "V_IRICSTOCK_BASICPROP_3024")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockBasicprop")
 public class VIricstockBasicprop implements Serializable, Variety {

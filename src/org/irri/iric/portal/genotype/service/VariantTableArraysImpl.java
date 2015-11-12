@@ -11,11 +11,12 @@ import org.irri.iric.portal.domain.IndelsAllvarsPos;
 import org.irri.iric.portal.domain.IndelsStringAllvars;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
-import org.irri.iric.portal.domain.VariantIndelStringData;
-import org.irri.iric.portal.domain.VariantSnpsStringData;
-import org.irri.iric.portal.domain.VariantStringData;
-import org.irri.iric.portal.domain.VariantTable;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.genotype.GenotypeQueryParams;
+import org.irri.iric.portal.genotype.VariantIndelStringData;
+import org.irri.iric.portal.genotype.VariantSnpsStringData;
+import org.irri.iric.portal.genotype.VariantStringData;
+import org.irri.iric.portal.genotype.VariantTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class VariantTableArraysImpl implements VariantTable {
@@ -51,7 +52,7 @@ public class VariantTableArraysImpl implements VariantTable {
 			poscount++;
 		}
 		
-		lisitemdao = (ListItemsDAO)AppContext.checkBean(lisitemdao, "ListItemsDAO");
+		lisitemdao = (ListItemsDAO)AppContext.checkBean(lisitemdao, "ListItems");
 		
 		Map<BigDecimal, Variety> mapVarid2Variety = lisitemdao.getMapId2Variety();
 		List listTable= data.getListVariantsString();
@@ -69,7 +70,7 @@ public class VariantTableArraysImpl implements VariantTable {
 			varnames[varcount]=mapVarid2Variety.get( snpstr.getVar() ).getName();
 			varids[varcount]= snpstr.getVar().longValue();
 			
-			allelestring[varcount] = IndelStringService.createVarietyString(snpstr,data);
+			allelestring[varcount] = IndelStringHDF5nRDBMSHybridService.createVarietyString(snpstr,data);
 			varcount++;
 		}
 		message = data.getMessage();

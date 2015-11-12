@@ -13,8 +13,8 @@ import javax.servlet.http.HttpSession;
 
 import org.hibernate.Session;
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.admin.dao.VOracleSessionsDAO;
-import org.irri.iric.portal.admin.domain.VOracleSessions;
+//import org.irri.iric.portal.admin.dao.VOracleSessionsDAO;
+//import org.irri.iric.portal.admin.domain.VOracleSessions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.util.SessionCleanup;
@@ -27,8 +27,8 @@ public class ZKSessionCleaner implements SessionCleanup {
 	@PersistenceContext(unitName = "IRIC_Production")
 	private EntityManager entityManager;
 
-	@Autowired
-	private VOracleSessionsDAO oraclesessionDao;
+	//@Autowired
+	//private VOracleSessionsDAO oraclesessionDao;
 	
 	
 	@Override
@@ -42,12 +42,15 @@ public class ZKSessionCleaner implements SessionCleanup {
 		
 		//((HttpSession)Sessions.getCurrent().getNativeSession())
 		
+		
+		/*
 		oraclesessionDao = (VOracleSessionsDAO)AppContext.checkBean(oraclesessionDao, "VOracleSessionsDAO");
 		Iterator<VOracleSessions> itOracleSession =  oraclesessionDao.findVOracleSessionsByAction( zksession.getNativeSession( ).toString()).iterator();
 		while(itOracleSession.hasNext()) {
 			VOracleSessions orasession = itOracleSession.next();
 			System.out.println("Killing Oracle process: " +  orasession.getSid() + "," + orasession.getSerial_() + "," + orasession.getUsername() + "," +  orasession.getProgram() );
 		}
+		*/
 		
 		
 		//((HttpSession)Sessions.getCurrent().getNativeSession()).removeAttribute("manager");

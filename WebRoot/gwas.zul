@@ -1,0 +1,26 @@
+<?page title="GWAS" contentType="text/html;charset=UTF-8"?>
+<zk>
+
+<zscript>
+    import org.zkoss.zkplus.spring.SpringUtil;      
+ 	import org.irri.iric.portal.gwas.service.GwasFacade;
+</zscript>
+
+<window border="none" apply="org.irri.iric.portal.gwas.zkui.GwasDisplayController"  onClientInfo="onClientInfo(event)">
+
+<hbox>
+<label value="Select trait   " pre="true"/> 
+<listbox id="listboxTrait" mold="select">
+<listitem/>
+<listitem label="Grain width"/>
+<listitem label="Grain length"/>
+</listbox>
+<vbox width="50px"/>
+<button id="buttonResetzoom" label="Reset Zoom"/>
+
+</hbox>
+<hbox height="100px"/>
+<charts id="chartManhattan" type="line"  title="Manhattan plot" width="1000" height= "600" zoomType="x" />
+
+</window>
+</zk>

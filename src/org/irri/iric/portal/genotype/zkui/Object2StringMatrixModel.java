@@ -1,4 +1,4 @@
-/* FakerMatrixModel.java
+/* Copied from FakerMatrixModel.java
 
 {{IS_NOTE
 	Purpose:
@@ -13,7 +13,6 @@ Copyright (C) 2012 Potix Corporation. All Rights Reserved.
  */
 package org.irri.iric.portal.genotype.zkui;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.AbstractList;
@@ -24,27 +23,19 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.ListItemsDAO;
-import org.irri.iric.portal.domain.MultiReferenceConversion;
 import org.irri.iric.portal.domain.MultiReferencePosition;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
-import org.irri.iric.portal.domain.SnpsStringAllvars;
-import org.irri.iric.portal.domain.VariantStringData;
-import org.irri.iric.portal.domain.VariantTable;
 import org.irri.iric.portal.domain.Variety;
-import org.irri.iric.portal.genotype.service.GenotypeQueryParams;
+import org.irri.iric.portal.genotype.GenotypeQueryParams;
+import org.irri.iric.portal.genotype.VariantTable;
 import org.irri.iric.portal.genotype.service.VariantAlignmentTableArraysImpl;
 import org.irri.iric.portal.genotype.service.VariantTableArraysImpl;
-import org.irri.iric.portal.genotype.service.VariantTableRandomImpl;
-import org.irri.iric.portal.genotype.zkui.SNPQueryController.Object2StringMatrixComparatorProvider2.Object2StringComparator;
+import org.irri.iric.portal.genotype.zkui.SNPQueryController.Object2StringMatrixComparatorProvider.Object2StringComparator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-//import org.zkoss.addon.MatrixModel;
 import org.zkoss.lang.Objects;
 import org.zkoss.zkmax.zul.MatrixModel;
 import org.zkoss.zul.AbstractListModel;
@@ -60,7 +51,7 @@ import org.zkoss.zul.ext.Sortable;
  */
 //@Component("Object2StringMatrixModel")
 //@Scope("prototype")
-public class Object2StringMatrixModel<Head extends List, Row extends List, Cell, Header> extends
+public class Object2StringMatrixModel<Head extends  List, Row extends List, Cell, Header> extends
 		AbstractListModel<Row> implements MatrixModel<Row, Head, Cell, Header>, Sortable , ListModelExt {
 	
 	private int frozenCols=4;
@@ -70,14 +61,14 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 	private Map<BigDecimal,Variety> mapVarid2Variety;
 	private Grid gridHeader;
 	private int biglistboxRows, lastY;
+	private Map<BigDecimal, Object> mapVarid2Phenotype;
+	private String sPhenotype;
 	
 	private Map<BigDecimal, MultiReferencePosition> mapMSU7Pos2ConvertedPos;
 	
 	private List<String> listOtherRefs;
 	private Map<String, Map<BigDecimal, MultiReferencePosition>> mapOrg2MSU7Pos2ConvertedPos;
 
-	
-	
 	@Autowired
 	private ListItemsDAO listitemdao;
 	
@@ -196,7 +187,7 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 			Object[] obj = itMatrix.next();
 			//AppContext.debug(   obj[0] + " " + obj[1] + " " + obj[2] + " " +   obj[col].toString());
 		}
-		AppContext.debug("sorted by column = " + col + ", sortDir=" + _sortDir);
+		//AppContext.debug("sorted by column = " + col + ", sortDir=" + _sortDir);
 		_rowCache = new HashMap<String, List<String>>();
 		
 		//ListDataEvent.
@@ -232,13 +223,8 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 	}
 
 	
-	
-	//public Object2StringMatrixModel() {
-	//	super();
-	//	// TODO Auto-generated constructor stub
-	//}
 
-	public Object2StringMatrixModel(VariantTable data, GenotypeQueryParams params, Map mapVarid2Variety, Grid gridHeader) {
+	public Object2StringMatrixModel(VariantTable data, GenotypeQueryParams params, Map mapVarid2Variety, Grid gridHeader, Map mapVarid2Phenotype, String sPhenotype) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.data=data;
@@ -246,6 +232,12 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 		this.mapVarid2Variety=mapVarid2Variety;
 		this.gridHeader=gridHeader;
 		mapMSU7Pos2ConvertedPos = data.getVariantStringData().getMapMSU7Pos2ConvertedPos();
+		this.mapVarid2Phenotype=mapVarid2Phenotype;
+		this.sPhenotype=sPhenotype;
+		
+		if(mapVarid2Phenotype!=null) { frozenCols++;
+			sPhenotype = sPhenotype.substring(0, 15);
+		}
 		
 		mapOrg2MSU7Pos2ConvertedPos=data.getVariantStringData().getMapOrg2MSU7Pos2ConvertedPos();
 		if(mapOrg2MSU7Pos2ConvertedPos!=null) {
@@ -253,48 +245,51 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 			listOtherRefs.addAll( mapOrg2MSU7Pos2ConvertedPos.keySet()  );
 			AppContext.debug( "other refalleles: " + listOtherRefs);
 		}
+		
+		
 
 		
 		AppContext.debug("Object2StringMatrixModel getMapMSU7Pos2ConvertedPos="  + mapMSU7Pos2ConvertedPos  );
 		 _Object2StringMatrixModel();
 	}
 	
+	public Object2StringMatrixModel(VariantTable data, GenotypeQueryParams params, Map mapVarid2Variety, Grid gridHeader) {
+		this( data,  params,  mapVarid2Variety,  gridHeader, null,null);
+	}
+	
 	
 	private void  _Object2StringMatrixModel() {
 		
-		Map<Integer,BigDecimal> mapOrder2Variety = new HashMap();
 		Map<BigDecimal,Number> mapVar2Mismatch = data.getVariantStringData().getMapVariety2Mismatch();
 
-		/*
-		Map<BigDecimal,Integer> mapVar2Order =  data.getVariantStringData().getMapVariety2Order();
-		Iterator<BigDecimal> itVar2Order = mapVar2Order.keySet().iterator();
-		while(itVar2Order.hasNext()) {
-			BigDecimal varid = itVar2Order.next();
-			mapOrder2Variety.put( mapVar2Order.get(varid) , varid);
-		}
-		*/
-		
 		if(data instanceof VariantAlignmentTableArraysImpl) {
 			VariantAlignmentTableArraysImpl tabledata = (VariantAlignmentTableArraysImpl)data;
 			_colSize = tabledata.getPosition().length+frozenCols;
 			_rowSize = tabledata.getVarid().length;
 			List listStrArray = new ArrayList();
-			Object objtable[][] = tabledata.getVaralleles(); 
-			for(int i=0; i<objtable.length; i++) {
-				
-				//List collist = new ArrayList();
-				//for(int j = 0; j<objtable[i].length; j++)
-				//	collist.add(objtable[i][j]);
-				//listStrArray.add( collist );	
-				
-				
-				//listStrArray.add( objtable[i] );
-				
-				//BigDecimal varid = mapOrder2Variety.get(i);
-				
-				BigDecimal varid = BigDecimal.valueOf(tabledata.getVarid()[i]);
-				Variety var = this.mapVarid2Variety.get(varid);
-				listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid).toString() }, objtable[i] ));
+			Object objtable[][] = tabledata.getVaralleles();
+			
+			if(this.mapVarid2Phenotype!=null) { 
+				for(int i=0; i<objtable.length; i++) {
+					
+			
+					BigDecimal varid = BigDecimal.valueOf(tabledata.getVarid()[i]);
+					Variety var = this.mapVarid2Variety.get(varid);
+					Object phen=mapVarid2Phenotype.get(var.getVarietyId());
+					
+					if(phen!=null)
+						listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid), phen }, objtable[i] ));
+					else listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid) ,""}, objtable[i] ));
+				}
+			}
+			else { 
+				for(int i=0; i<objtable.length; i++) {
+						
+					BigDecimal varid = BigDecimal.valueOf(tabledata.getVarid()[i]);
+					
+					Variety var = this.mapVarid2Variety.get(varid);
+					listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid) }, objtable[i] ));
+				}
 			}
 			_listSnpString = listStrArray;
 			
@@ -305,20 +300,27 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 				_rowSize = tabledata.getVarid().length;
 				List listStrArray = new ArrayList();
 				Object objtable[][] = tabledata.getVaralleles(); 
-				for(int i=0; i<objtable.length; i++) {
-					//listStrArray.add( objtable[i] );
-					
-					//BigDecimal varid = mapOrder2Variety.get(i);
-					//Variety var = this.mapVarid2Variety.get(tabledata.getVarid()[i]);
-					
-					BigDecimal varid = BigDecimal.valueOf(tabledata.getVarid()[i]);
-					Variety var = this.mapVarid2Variety.get(varid);	
-					listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid).toString() }, objtable[i] ));
-					
-					//List collist = new ArrayList();
-					//for(int j = 0; j<objtable[i].length; j++)
-					//	collist.add(objtable[i][j]);
-					//listStrArray.add( collist );
+				
+				if(this.mapVarid2Phenotype!=null) {
+					for(int i=0; i<objtable.length; i++) {
+						BigDecimal varid = BigDecimal.valueOf(tabledata.getVarid()[i]);
+						Variety var = this.mapVarid2Variety.get(varid);	
+						Object phen = mapVarid2Phenotype.get(var.getVarietyId());
+						
+						if(phen!=null )
+							listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid), phen},  objtable[i] ));
+						else listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid), "" }, objtable[i] ));
+					}
+				}
+				else {
+					for(int i=0; i<objtable.length; i++) {
+						
+						BigDecimal varid = BigDecimal.valueOf(tabledata.getVarid()[i]);
+						Variety var = this.mapVarid2Variety.get(varid);	
+						
+						listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid)}, objtable[i] ));
+	
+					}
 				}
 				_listSnpString = listStrArray;
 		}
@@ -328,10 +330,7 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 		_headerData = new FakerKeyList<String>( _colSize, 0, new Fun() {
 			@Override
 			public Object apply(int index) {
-				//return "Header x = " + index;
-				//
-				
-			
+
 					if(index>=frozenCols) {
 						
 						SnpsAllvarsPos snppos = data.getVariantStringData().getListPos().get(index-frozenCols);
@@ -391,14 +390,20 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 						
 						
 					}
+					
 					else if(index==3)
 						return "Mismatch";
 					else if(index==2)
 						return "Subpopulation";
 					else if(index==1)
 						return "IRIS ID";
-					else //if(index==0)
+					else if(index==0)
 						return "Variety";
+					else if(mapVarid2Phenotype!=null && index==4)
+						return sPhenotype;
+					else return "";
+
+					
 			}});
 		_headerData2 = new FakerKeyList<String>( _colSize, 1, new Fun() {
 			@Override
@@ -450,8 +455,11 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 							return "Subpopulation";
 						else if(index==1)
 							return "IRIS ID";
-						else //if(index==0)
+						else if(index==0)
 							return "Variety";
+						else if(mapVarid2Phenotype!=null && index==4)
+							return sPhenotype;
+						else return "";
 				}});
 			_headerData4 = new FakerKeyList<String>( _colSize, 3, new Fun() {
 				@Override
@@ -595,32 +603,16 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 	public Row getElementAt(int index) {
 		
 		final int rowIndex = index;  // _listSnpString already reversed in sort();
-		
-		//final int rowIndex = _sortDir ? index : getSize() - index - 1; // handle the sorting
 		final String key = String.valueOf(rowIndex);
 		List<String> value = _rowCache.get(key);
-		
-		//AppContext.debug("getrow = " + rowIndex);
-		
+
 		if (value == null) {
 			value = new FakerKeyList<String>(_colSize, rowIndex, new Fun() {
 				@Override
 				public Object apply(int index) {
 					
 					return _listSnpString.get(rowIndex);
-					
-					//return "y = " + rowIndex;
-					//return _listSnpString.get(rowIndex).getVarnuc();
-					/*
-					List<String> extlist = new ArrayList();
-					SnpsStringAllvars snpstr = _listSnpString.get(rowIndex);
-					extlist.add(snpstr.getVar().toString());
-					extlist.add(snpstr.getMismatch().toString());
-					extlist.add(snpstr.getVarnuc());
-					return extlist;
-					*/
-					//return _listSnpString.get(rowIndex).getVarnuc();
-					
+
 				}});
 			_rowCache.put(key, value);
 		}
@@ -658,16 +650,6 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 	@Override
 	public Head getHeadAt(int rowIndex) {
 		
-		/*
-		if(rowIndex==0)
-			return (Head) _headerData;
-		else if(rowIndex==1) 
-			return (Head) _headerData2;
-		else if(rowIndex==2) 
-			return (Head) _headerData3;
-		else 
-			return (Head) _headerData4;
-			*/
 		
 		if(params.isbShowAllRefAlleles()) {
 			if(rowIndex==0)
@@ -741,7 +723,7 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 	
 	public List getRowHeaderList(int nRows, int firstRow) {
 		// TODO Auto-generated method stub
-		listitemdao = (ListItemsDAO)AppContext.checkBean(listitemdao,"ListItemsDAO");
+		listitemdao = (ListItemsDAO)AppContext.checkBean(listitemdao,"ListItems");
 		//Map<BigDecimal,Variety> mapVarId2Var = listitemsdao.getMapId2Variety();
 		Map<String,Variety> mapVarname2Var = listitemdao.getMapVarname2Variety();
 		List list = new ArrayList();
@@ -751,12 +733,21 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 			lastIdx=getSize();
 		}
 		
-		for(int i=firstRow; i<lastIdx; i++) {
-			Object[] rowarr = (Object[])_listSnpString.get(i);
-			Variety var = mapVarname2Var.get( rowarr[0].toString() );
-			//list.add( new Object[]{varnames[i], var.getIrisId(), var.getSubpopulation(), varmismatch[i] });
-			list.add( new Object[]{var.getName() , var.getIrisId(), var.getSubpopulation(), rowarr[3] });
-			//AppContext.debug(var.getName() + " " + var.getIrisId() + " " + var.getSubpopulation() + " " +rowarr[2]);
+		if(this.mapVarid2Phenotype==null) {
+			for(int i=firstRow; i<lastIdx; i++) {
+				Object[] rowarr = (Object[])_listSnpString.get(i);
+				Variety var = mapVarname2Var.get( rowarr[0].toString() );
+				list.add( new Object[]{var.getName() , var.getIrisId(), var.getSubpopulation(), rowarr[3] });
+			}
+		} else {
+			for(int i=firstRow; i<lastIdx; i++) {
+				Object[] rowarr = (Object[])_listSnpString.get(i);
+				Variety var = mapVarname2Var.get( rowarr[0].toString() );
+				Object phen=mapVarid2Phenotype.get(var.getVarietyId());
+				if(phen!=null)
+					list.add( new Object[]{var.getName() , var.getIrisId(), var.getSubpopulation(), rowarr[3], phen });
+				else list.add( new Object[]{var.getName() , var.getIrisId(), var.getSubpopulation(),rowarr[3],  "" });
+			}
 		}
 		
 		return list;
@@ -773,12 +764,14 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 		}
 		return listHeads;
 	}
+}
 
+// PAST CODE TERAINED
 	
 	/*
 	public List getRowHeaderList(Long[] varid, int nRows, int firstRow) {
 		
-		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao,"ListItemsDAO");
+		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao,"ListItems");
 		Map<BigDecimal,Variety> mapVarId2Var = listitemsdao.getMapId2Variety();
 		
 		int lastIdx=firstRow + nRows;
@@ -822,5 +815,3 @@ public class Object2StringMatrixModel<Head extends List, Row extends List, Cell,
 //	}
 
 	
-	
-}

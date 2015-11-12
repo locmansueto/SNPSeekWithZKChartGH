@@ -1,6 +1,6 @@
 package org.irri.iric.portal.genomics.zkui;
 
-import org.irri.iric.portal.chado.domain.VLocusNotes;
+//import org.irri.iric.portal.chado.domain.VLocusNotes;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.Variety;
 import org.zkoss.zul.Label;

@@ -6,8 +6,8 @@ import javax.persistence.EntityManager;
 import  javax.persistence.Query;
 
 import org.hibernate.Session;
-import org.irri.iric.portal.chado.domain.MismatchCount;
-import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
+//import org.irri.iric.portal.chado.domain.MismatchCount;
+
 
 public class DAOLongQueryProcessor {
 

@@ -1,5 +1,6 @@
 package org.irri.iric.portal.chado.dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -331,17 +332,23 @@ public class VCvtermDbxrefDAOImpl extends AbstractJpaDao<VCvtermDbxref>
 	}
 
 	@Override
-	public List getAllTerms(String organism) {
+	public List getAllTerms(BigDecimal cvByName, BigDecimal organismByName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public List getAllTerms(String cv, String organism) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+//	@Override
+//	public List getAllTerms(String organism) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List getAllTerms(String cv, String organism) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//	
 	
 	
 	

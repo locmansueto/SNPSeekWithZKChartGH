@@ -1,6 +1,12 @@
 <?page title="banner" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:h="native">
 
+<zscript>
+        import org.irri.iric.portal.AppContext;      
+        String paramstr=AppContext.getJBrowseDefaulttracks();
+        //DNA,msu7gff,snp3k
+</zscript>        
+
 
 <div style="background-color:white">
 <hbox height="10px" width="100%"/>
@@ -22,7 +28,7 @@
 		</menu>			
 		<menu label="Browse" src="/images/iric/browse6.png">
 			<menupopup>
-				<menuitem src="/images/iric/genome1.png" label="Genome" href="_jbrowse.zul?tracks=DNA,msu7gff,snp3k"/>
+				<menuitem src="/images/iric/genome1.png" label="Genome" href="_jbrowse.zul?tracks=${paramstr}"/>
 				<!-- menuitem src="/images/iric/tree1.png" label="Tree (static)" href="_phylotree.zul"/ -->
 				<!--  menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Tree (dynamic)" href="_phylotreedyn.zul"/ -->
 				
@@ -30,8 +36,9 @@
 				<!--  menuitem src="/images/iric/tree1.png" label="Phylogenetic Tree (dynamic)" href="_phylotreedyn.zul"/ -->
 				<menuitem src="/images/iric/tree1.png" label="Phylogenetic Tree" href="_variety.zul?irisid=alltree"/>
 				<menuitem src="/images/iric/mds_plot.png" label="MDS Plot" href="_variety.zul?irisid=allmds"/>
+				<!--  menuitem src="/images/iric/mds_plot.png" label="GWAS Plots" href="_gwas.zul"/ -->
 
-<!--  base nippo 4143, 9311 4144, 1r64 4146, kasalath 3591, dj123 4153-->
+<!--  base nippo 4143, 9311 4144, 1r64 4146, kasalath 3591, dj123 4153 -->
 		<!-- menu label="Genome alignments" src="/images/iric/synteny.png">
 			<menupopup>
 				<menuitem label="Select Reference" disabled="true"/>

@@ -28,7 +28,7 @@ import org.irri.iric.portal.domain.Variety;
 		@NamedQuery(name = "findVIricstockBoxcodeByOrganismId", query = "select myVIricstockBoxcode from VIricstockBoxcode myVIricstockBoxcode where myVIricstockBoxcode.organismId = ?1"),
 		@NamedQuery(name = "findVIricstockBoxcodeByPrimaryKey", query = "select myVIricstockBoxcode from VIricstockBoxcode myVIricstockBoxcode where myVIricstockBoxcode.iricStockId = ?1"),
 		@NamedQuery(name = "findVIricstockBoxcodeByTypeId", query = "select myVIricstockBoxcode from VIricstockBoxcode myVIricstockBoxcode where myVIricstockBoxcode.typeId = ?1") })
-@Table(schema = "IRIC", name = "V_IRICSTOCK_BOXCODE")
+@Table(schema = "IRIC", name = "V_IRICSTOCK_BOXCODE_3024")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockBoxcode")
 public class VIricstockBoxcode implements Serializable, Variety {

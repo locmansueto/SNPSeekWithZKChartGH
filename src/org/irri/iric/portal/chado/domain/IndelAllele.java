@@ -229,7 +229,7 @@ public class IndelAllele implements Serializable, IndelsAllvarsPos {
 	}
 
 	@Override
-	public Integer getDellength() {
+	public Integer getMaxDellength() {
 		// TODO Auto-generated method stub
 		return this.delLen;
 	}
@@ -252,6 +252,57 @@ public class IndelAllele implements Serializable, IndelsAllvarsPos {
 	public String getContig() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public BigDecimal getAlleleIndex() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BigDecimal getSnpFeatureId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getMaxInsLength() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getDellength() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BigDecimal getPosition() {
+		// TODO Auto-generated method stub
+		return this.pos;
+	}
+
+	@Override
+	public String getRefcall() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	@Override
+	public Long getChr() {
+		// TODO Auto-generated method stub
+		if(srcFeatureId.intValue()<15) return srcFeatureId.longValue()-2 ;
+		return null;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		//return 0;
+		throw new RuntimeException("Unexpected IndelAllele.compareTo()");
 	}
 	
 	

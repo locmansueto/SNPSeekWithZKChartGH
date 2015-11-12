@@ -14,6 +14,7 @@ import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.*;
 import javax.persistence.*;
 
+import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
 
 /**
@@ -163,17 +164,17 @@ public class SnpcoreMismatchAlleles implements Serializable, SnpsStringAllvars {
 		return null;
 	}
 
-	@Override
-	public BigDecimal getPos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getRefnuc() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public BigDecimal getPos() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public String getRefnuc() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public String getVarnuc() {
@@ -223,13 +224,13 @@ public class SnpcoreMismatchAlleles implements Serializable, SnpsStringAllvars {
 
 
 	@Override
-	public Set getNonsynIdxset() {
+	public Set getNonsynPosset() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<Integer, Character> getMapPosIdx2Allele2() {
+	public Map<Position, Character> getMapPos2Allele2() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -3,11 +3,12 @@ package org.irri.iric.portal.ws.entity;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import org.irri.iric.portal.domain.VariantStringData;
-import org.irri.iric.portal.domain.VariantTableArray;
-import org.irri.iric.portal.genotype.service.GenotypeQueryParams;
+import org.irri.iric.portal.domain.Position;
+import org.irri.iric.portal.genotype.GenotypeQueryParams;
+import org.irri.iric.portal.genotype.VariantStringData;
+import org.irri.iric.portal.genotype.VariantTableArray;
 
-public class VariantTableWS implements org.irri.iric.portal.domain.VariantTableArray  {
+public class VariantTableWS implements org.irri.iric.portal.genotype.VariantTableArray  {
 
 //	private String message;
 //	private Long position[];
@@ -37,7 +38,7 @@ public class VariantTableWS implements org.irri.iric.portal.domain.VariantTableA
 	}
 
 	@Override
-	public BigDecimal[] getPosition() {
+	public Position[] getPosition() {
 		return table.getPosition();
 	}
 	

@@ -10,6 +10,9 @@ public class SnpsAllvarsPosSorter implements Comparator {
 		// TODO Auto-generated method stub
 		SnpsAllvarsPos pos1 = (SnpsAllvarsPos)o1;
 		SnpsAllvarsPos pos2 = (SnpsAllvarsPos)o2;
-		return pos1.getPos().compareTo(pos2.getPos());
+		int ret=pos1.getContig().compareTo(pos2.getContig());
+		if(ret!=0) return ret;
+		ret = pos1.getPos().compareTo(pos2.getPos());
+		return ret;
 	}
 }

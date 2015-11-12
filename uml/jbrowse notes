@@ -6,6 +6,16 @@ bin/flatfile-to-json.pl --gff  --trackLabel indel3kpoint  --trackType JBrowse/Vi
 
 bin/flatfile-to-json.pl --gff  --trackLabel snp3kcore  --trackType JBrowse/View/Track/CanvasFeatures --type snp  --key '3k Genomes Core SNP'   --metadata '{"description": "Core SNP positions from the 3000 Rice Genome project" }'
 
+// load OsNippo genes
+bin/flatfile-to-json.pl  --gff  ~lmansueto/osnippo/genetrans_OsNippo.gff  --trackLabel osnippov1gff  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'OsNippo Merged Gene Models'  --category 'Genes'  --metadata '{"description": "Gene models merged from MSU7, RAP representative, RAP predicted and Fgenesh++." }'
+
+bin/flatfile-to-json.pl  --gff  ~lmansueto/osnippo/raprep_locuscds.gff  --type gene,mRNA,CDS,polyA_site,three_prime_UTR,five_prime_UTR,stop_codon,start_codon,TSS --trackLabel raprepv1gff  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'RAP-representative Gene Models'   --metadata '{"description": "RAP-representative Gene Models." }'
+
+// load trait genes
+ --nameAttributes "name,alias,id"
+ bin/flatfile-to-json.pl  --gff  ~lmansueto/osnippo/tr --nameAttributes "ID,Description,Note"  --type gene --trackLabel oryzabasetraitgenesv1  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'Oryzabase trait-associated genes' --metadata '{"description": "Trait-associated genes from Oryzabase.org" }'
+ 
+
  "style" : {
             "className" : "feature"
          },
@@ -216,4 +226,19 @@ bin/flatfile-to-json.pl --out=dj123v1  --gff ~lmansueto/multurefs/os.dj123.cshl.
 
 bin/remove-track.pl --dir ir6421v1  --trackLabel ir6421v1rengff --delete
 bin/remove-track.pl --dir ir6421v1  --trackLabel ir6421v1gff --delete
+
+
+
+
+// NEW SETS FOR NEW JBROWSE
+
+bin/flatfile-to-json.pl   --gff /home/lmansueto/jbrowse/JBrowse-1.11.6-dev/loaded_gff/all_rep.gff   --trackLabel raprepv1gff  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'RAP Representative Genes'   --metadata '{"description": "RAP representative gene models." }' --maxLookback 500000
+bin/flatfile-to-json.pl   --gff /home/lmansueto/jbrowse/JBrowse-1.11.6-dev/loaded_gff/all_pred.gff   --trackLabel rappredv1gff  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'RAP Predicted Genes'   --metadata '{"description": "RAP predicted gene models." }' --maxLookback 500000
+bin/flatfile-to-json.pl   --gff /home/lmansueto/jbrowse/JBrowse-1.11.6-dev/loaded_gff/msu7_all.gff3   --trackLabel msu7gff  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'MSUv7 Genes'   --metadata '{"description": "MSU7 gene models." }' --maxLookback 500000
+bin/flatfile-to-json.pl   --gff /home/lmansueto/jbrowse/JBrowse-1.11.6-dev/loaded_gff/all_fgeneshuniqueids.gff3  --trackLabel fgeneshv1gff  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'FGenesh++ Genes'   --metadata '{"description": "FGenesh++ gene models (local annotation)." }' --maxLookback 500000
+bin/flatfile-to-json.pl --gff loaded_gff/3kSNP_POS.gff  --trackLabel snp3k  --trackType JBrowse/View/Track/CanvasFeatures --type snp  --key '3k Genomes All SNPs'   --metadata '{"description": "All SNP positions from the 3000 Rice Genome project" }'
+bin/flatfile-to-json.pl --gff loaded_gff/3kcoresnps.gff  --trackLabel snp3kcore  --trackType JBrowse/View/Track/CanvasFeatures --type snp  --key '3k Genomes Core SNPs'   --metadata '{"description": "Core SNP positions from the 3000 Rice Genome project" }'
+ 
+
+bin/flatfile-to-json.pl  --gff  ~lmansueto/osnippo/tr --nameAttributes "ID,Name,Note"  --type gene --trackLabel oryzabasetraitgenesv1  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'Oryzabase trait-associated genes' --metadata '{"description": "Trait-associated genes from Oryzabase.org" }'
 

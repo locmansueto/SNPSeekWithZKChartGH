@@ -1,0 +1,32 @@
+<?page title="Module" contentType="text/html;charset=UTF-8"?>
+<zk>
+
+<zscript>
+    import org.zkoss.zkplus.spring.SpringUtil;      
+ 	import org.irri.iric.portal.blank_module.BlankModuleFacade;
+ 	
+ 	BlankModuleFacade module = (BlankModuleFacade)SpringUtil.getBean("BlankModuleFacade"); 
+ 	
+ 	List options = module.getOptions();
+ 	
+</zscript>
+
+<window border="none" apply="org.irri.iric.portal.blank_module.zkui.BlankModuleController">
+
+<!--  INSERT YOUR UI COMPONENTS HERE -->
+<hbox>
+<vbox width="300px"/>
+<label value="Select population: " />
+<vbox width="50px"/>
+<listbox id="listboxOptions" mold="select"/>
+<vbox width="100px"/>
+<button id="buttonStart" style="font-size:14px;font-weight:bold;color:gray;" label="Start" />
+</hbox>
+
+<zscript><![CDATA[
+ 	    	listboxOptions.setModel(new SimpleListModel(options));
+ 	    	listboxOptions.setSelectedIndex(0);
+			]]></zscript>
+			   			
+</window>
+</zk>

@@ -1,7 +1,8 @@
 package org.irri.iric.portal.genotype.service;
 
-import org.irri.iric.portal.domain.VariantStringData;
-import org.irri.iric.portal.domain.VariantTable;
+import org.irri.iric.portal.genotype.GenotypeQueryParams;
+import org.irri.iric.portal.genotype.VariantStringData;
+import org.irri.iric.portal.genotype.VariantTable;
 
 public class VariantTableRandomImpl implements VariantTable {
 

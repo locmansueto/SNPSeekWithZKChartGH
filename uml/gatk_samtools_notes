@@ -1,0 +1,6 @@
+gatk, samtools notes
+
+// create reference sequence dictionary 
+java -jar /home/lmansueto/jbrowse/JBrowse-1.11.6-dev/picard-tools-1.137/picard-tools-1.137/picard.jar CreateSequenceDictionary R=/home/lmansueto/multurefs/IRGSP-1.0_genome.fasta O=Japonica_nipponbare.dict
+
+//samtools faidx /home/lmansueto/multurefs/IRGSP-1.0_genome.fasta

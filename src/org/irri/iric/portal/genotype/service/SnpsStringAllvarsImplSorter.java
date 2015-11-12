@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author lmansueto
  *
  */
-class  SnpsStringAllvarsImplSorter implements Comparator {
+public class  SnpsStringAllvarsImplSorter implements Comparator {
 	@Autowired
 	private ListItemsDAO listitemsdao;
 
@@ -29,7 +29,7 @@ class  SnpsStringAllvarsImplSorter implements Comparator {
 	public SnpsStringAllvarsImplSorter() {
 		super();
 		// TODO Auto-generated constructor stub
-		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItemsDAO");
+		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItems");
 	}
 
 

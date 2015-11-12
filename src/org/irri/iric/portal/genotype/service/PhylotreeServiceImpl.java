@@ -3,19 +3,13 @@ package org.irri.iric.portal.genotype.service;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.biojava3.phylo.TreeConstructor;
-import org.codehaus.jackson.map.ser.StdSerializers.NumberSerializer;
 import org.forester.evoinference.matrix.distance.BasicSymmetricalDistanceMatrix;
 import org.forester.io.parsers.PhylogenyParser;
 import org.forester.io.parsers.util.ParserUtils;
@@ -27,13 +21,10 @@ import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.Snps2VarsCountMismatchDAO;
 import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
 import org.irri.iric.portal.domain.Snps2VarsCountmismatch;
-import org.irri.iric.portal.domain.Snps2VarsCountmismatchImpl;
-import org.irri.iric.portal.domain.VariantStringData;
 import org.irri.iric.portal.domain.Variety;
-import org.irri.iric.portal.flatfile.dao.SnpcoreRefposindexDAO;
-import org.irri.iric.portal.genotype.service.GenotypeFacadeChadoImpl.SNPsStringData;
-import org.irri.iric.portal.genotype.service.GenotypeFacadeChadoImpl.SnpsString2VarsImplSorter;
-import org.irri.iric.portal.variety.service.VarietyFacade;
+import org.irri.iric.portal.genotype.PhylotreeQueryParams;
+import org.irri.iric.portal.genotype.PhylotreeService;
+import org.irri.iric.portal.variety.VarietyFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -41,11 +32,10 @@ import org.springframework.stereotype.Service;
 @Service("PhylotreeService")
 public class PhylotreeServiceImpl implements PhylotreeService {
 	
-	public static String PHYLOTREE_METHOD_TOPN="topn";
-	public static String PHYLOTREE_METHOD_MINDIST="mindist";
+
 	
-	@Autowired
-	@Qualifier("SnpsString2VarsCountMismatchDAO")
+	//@Autowired
+	//@Qualifier("SnpsString2VarsCountMismatchDAO")
 	Snps2VarsCountMismatchDAO snpcount2linesService;
 	
 	@Autowired
@@ -57,14 +47,14 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 	VarietyFacade varietyfacade;
 	
 	
-	private Map<BigDecimal,Integer> mapVariety2PhyloOrder;
+	//private Map<BigDecimal,Integer> mapVariety2PhyloOrder;
 	
 
 	
 	// ************************************* Methods for Phylogenetic tree construction ********************************************************************************	
 
 		@Override
-		public String[] constructPhylotree(PhylotreeQueryParams params, String requestid) {
+		public Object[] constructPhylotree(PhylotreeQueryParams params, String requestid) {
 			
 			
 			if(params.getMethod().equals(PHYLOTREE_METHOD_TOPN))
@@ -78,18 +68,25 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 
 
 		@Override
-		public String[] constructPhylotree(String scale, String chr, int start, int end, String requestid) {
+		public Object[] constructPhylotree(String scale, String chr, int start, int end, String requestid) {
 			return constructPhylotreeTopN(scale, chr, start, end, -1, requestid, null, false);
 		}	
 
 
 
-		private String[] constructPhylotreeTopN(String scale, String chr, int start, int end, int topN,  String requestid, Set limitVarIds, boolean isCore) {
+		private Object[] constructPhylotreeTopN(String scale, String chr, int start, int end, int topN,  String requestid, Set limitVarIds, boolean isCore) {
+			
+			int varids=0;
+			if(limitVarIds!=null) varids=limitVarIds.size();
+			
+			AppContext.debug("constructPhylotreeTopN: scale=" + scale + ", chr=" + chr + ", start="+ start +", end=" + end + ", topN=" + topN + ", limitVarIds=" + varids + ", core=" + isCore);
+			AppContext.startTimer();
+			//return new String[]{};
 			
 			//snpcount2linesService = (Snps2VarsCountMismatchDAO)AppContext.checkBean(snpcount2linesService, "Snps2VarsCountMismatchDAO");
 			snpcount2linesService = (Snps2VarsCountMismatchDAO)AppContext.checkBean(snpcount2linesService, "SnpsString2VarsCountMismatchDAO");
 			
-			mapVariety2PhyloOrder = null;
+			//mapVariety2PhyloOrder = null;
 			
 			List<Snps2VarsCountmismatch>  mismatches = null;
 			
@@ -128,28 +125,34 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 				AppContext.resetTimer(" all distance calc");
 			}
 			
+	
+			
 			int snps = -1;
 			//List snps = null;
 			snpstringallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpstringallvarsposService, "VSnpRefposindexDAO") ; 
-			if(isCore) {
+			//if(isCore) {
+			if(false) {
 				//snpcoreallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpcoreallvarsposService, "MvCoreSnpsDAO") ; 
 				//snps = snpcoreallvarsposService.getSNPs(chr, start, end, null ).size();
 				
-				snps = snpstringallvarsposService.getSNPs(chr, start, end,  SnpcoreRefposindexDAO.TYPE_3KCORESNP  ).size();
+				
+				snps = snpstringallvarsposService.getSNPs(chr, start, end,  SnpsAllvarsPosDAO.TYPE_3KCORESNP  ).size();
 				
 				 
 			 }
 			 else {
-				snps = snpstringallvarsposService.getSNPs(chr, start, end,  SnpcoreRefposindexDAO.TYPE_3KALLSNP   ).size();
+				snps = snpstringallvarsposService.getSNPs(chr, start, end,  SnpsAllvarsPosDAO.TYPE_3KALLSNP   ).size();
 				 //snpallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpallvarsposService, "SnpsAllvarsPosDAO") ; 
 				 // snps = snpallvarsposService.getSNPs(chr, start, end ,null ).size();
 			 }
 			 
 			 
-			 if(snps==0) return new String[] {"", "0","0"};
+			AppContext.debug(mismatches.size() + " mismatch pairs, " + snps + " snp pos");
+			
+			 if(snps==0) return new Object[] {"", 0,0,null};
 			
 			//germplasms
-			AppContext.debug(mismatches.size() + " mismatch pairs");
+			
 			
 			java.util.Map<BigDecimal, Integer> mapName2Row = new java.util.HashMap<BigDecimal, Integer>();
 			
@@ -186,6 +189,7 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 
 			AppContext.debug("symdistmatrix done");
 			
+			
 			double distscale = 1.0; 
 			
 			java.util.Iterator<Snps2VarsCountmismatch>  itdist2 = mismatches.iterator();		
@@ -215,6 +219,7 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 				}
 			}
 			
+			AppContext.resetTimer("distmatrix construction");
 			AppContext.debug(symdistmatrix.getSize() + " symdistmatrix ready");
 			
 			try {
@@ -228,6 +233,8 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 
 					AppContext.debug("process done");
 				String newick = tree.getNewickString(false, true);
+				
+			
 				
 				
 				Map<BigDecimal,Variety> mapId2Variety = varietyfacade.getMapId2Variety();
@@ -248,8 +255,12 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 				}
 				//AppContext.debug(newick);
 				
-				return new String[] {newick, Integer.toString(symdistmatrix.getSize()), Integer.toString( mismatches.size()) };
+				AppContext.resetTimer("phylotree construction");
 				
+				Map mapVariety2Order = this.sortByPhylogeny( tree.getP() );
+				 
+				//return new String[] {newick, Integer.toString(symdistmatrix.getSize()), Integer.toString( mismatches.size()) };
+				return new Object[] {newick, symdistmatrix.getSize(), mismatches.size(), mapVariety2Order};
 				
 			} catch(Exception ex)
 			{
@@ -1296,24 +1307,83 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 //		
 //	}
 //			
+	
+		private Map<BigDecimal,Integer> sortByPhylogeny(Phylogeny phy) {
+			varietyfacade = (VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade");
+		    Map<String,Variety> varname2var = varietyfacade.getMapVarname2Variety();
+	        Map<String,Variety> irisid2var = varietyfacade.getIrisId2Variety();
+	        
+	        Map mapVariety2PhyloOrder = new HashMap<BigDecimal,Integer>(); 
+	        
+	        int leafcount = 0;
+	        for(PhylogenyNodeIterator it = phy.iteratorPostorder(); it.hasNext(); ) {
+	        	PhylogenyNode node = it.next();
+	        	if(node.isExternal()) {
+	        		
+	        		mapVariety2PhyloOrder.put(BigDecimal.valueOf( Long.valueOf(node.getName().replace("varid_",""))) , leafcount);
+	        		leafcount++; 
+	        		/*
+	        		String[] nodenames = node.getName().split("\\|");
+	        		if(nodenames.length!=3) AppContext.debug("Invalid nodename " +  node.getName());
+	        		
+	        		if(nodenames.length>1 &&  !nodenames[1].isEmpty() ){
+	        			Variety varNode =   irisid2var.get(nodenames[1].replace("_"," ").toUpperCase() );  //varietyfacade.getGermplasmByIrisId(nodenames[1].replace("_"," "));
+	        			if(varNode!=null) {
+	        				mapVariety2PhyloOrder.put( varNode.getVarietyId() , leafcount);
+	        				leafcount++; 
+	        			} else
+	        			{
+	        				AppContext.debug("cant resolve irisid " + nodenames[1]);
+	        			}				        			
+	        		}
+	        		else if(!nodenames[0].isEmpty())
+	        		{
+	        			Variety varNode =  varname2var.get(nodenames[0].replace("_"," ").replace("//",""));
+	        			if(varNode!=null) {
+	        				mapVariety2PhyloOrder.put(  varNode.getVarietyId() , leafcount);
+	        				leafcount++;
+	        			} else
+	        			{
+	        				AppContext.debug("cant resolve variety name " + nodenames[0] );
+	        			}
+	        		}
+	        		*/
+	        	}
+	        }
+	        
+	        return mapVariety2PhyloOrder;
+		}
+	
 		@Override
 		public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile)
 		{
+			 return orderVarietiesFromPhylotree(tmpfile, null);
+		}
+	
+		@Override
+		public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile, String newick)
+		{
 
-			if(mapVariety2PhyloOrder!=null) return mapVariety2PhyloOrder;
+			//if(mapVariety2PhyloOrder!=null) return mapVariety2PhyloOrder;
 			
-			    mapVariety2PhyloOrder = new HashMap<BigDecimal,Integer>(); 
+			Map<BigDecimal,Integer>    mapVariety2PhyloOrder = new HashMap<BigDecimal,Integer>(); 
 
-			    String treefilename = AppContext.getTempDir() + "/" + tmpfile + "newick";
+			    	String treefilename = AppContext.getTempDir() + tmpfile + ".newick";
+			    	AppContext.debug("Openning file:" + treefilename);
 			        File treefile = new File( treefilename );
 			        PhylogenyParser parser = null;
 			        try {
-			            parser = ParserUtils.createParserDependingOnFileType( treefile, true );
-			        	//parser = ParserUtils.createParserDependingOnSuffix( treefilename, false );
-
 			            Phylogeny[] phys = null;
-
-			            phys = PhylogenyMethods.readPhylogenies( parser, treefile );
+			        	if(newick==null) {
+				            parser = ParserUtils.createParserDependingOnFileType( treefile, true );
+				        	//parser = ParserUtils.createParserDependingOnSuffix( treefilename, false );
+				            phys = PhylogenyMethods.readPhylogenies( parser, treefile );
+			        	} else {
+			        		//parser = ParserUtils.
+			        		
+			        		//PhylogenyMethods.
+			        		
+			        	}
 
 			        
 				        AppContext.debug("Newick postorder listing:");
@@ -1323,36 +1393,39 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 				        int leafcount = 0;
 				        for(int iphy=0; iphy<phys.length; iphy++)
 				        {
-					        for(PhylogenyNodeIterator it = phys[iphy].iteratorPostorder(); it.hasNext(); ) {
-					        	PhylogenyNode node = it.next();
-					        	if(node.isExternal()) {
-					        		
-					        		String[] nodenames = node.getName().split("\\|");
-					        		if(nodenames.length!=3) AppContext.debug("Invalid nodename " +  node.getName());
-					        		
-					        		if(nodenames.length>1 &&  !nodenames[1].isEmpty() ){
-					        			Variety varNode =   irisid2var.get(nodenames[1].replace("_"," ").toUpperCase() );  //varietyfacade.getGermplasmByIrisId(nodenames[1].replace("_"," "));
-					        			if(varNode!=null) {
-					        				mapVariety2PhyloOrder.put( varNode.getVarietyId() , leafcount);
-					        				leafcount++; 
-					        			} else
-					        			{
-					        				AppContext.debug("cant resolve irisid " + nodenames[1]);
-					        			}				        			
-					        		}
-					        		else if(!nodenames[0].isEmpty())
-					        		{
-					        			Variety varNode =  varname2var.get(nodenames[0].replace("_"," ").replace("//",""));
-					        			if(varNode!=null) {
-					        				mapVariety2PhyloOrder.put(  varNode.getVarietyId() , leafcount);
-					        				leafcount++;
-					        			} else
-					        			{
-					        				AppContext.debug("cant resolve variety name " + nodenames[0] );
-					        			}
-					        		}
-					        	}
-					        }
+				        	
+				        	mapVariety2PhyloOrder.putAll(sortByPhylogeny(phys[iphy]));
+				        	
+//					        for(PhylogenyNodeIterator it = phys[iphy].iteratorPostorder(); it.hasNext(); ) {
+//					        	PhylogenyNode node = it.next();
+//					        	if(node.isExternal()) {
+//					        		
+//					        		String[] nodenames = node.getName().split("\\|");
+//					        		if(nodenames.length!=3) AppContext.debug("Invalid nodename " +  node.getName());
+//					        		
+//					        		if(nodenames.length>1 &&  !nodenames[1].isEmpty() ){
+//					        			Variety varNode =   irisid2var.get(nodenames[1].replace("_"," ").toUpperCase() );  //varietyfacade.getGermplasmByIrisId(nodenames[1].replace("_"," "));
+//					        			if(varNode!=null) {
+//					        				mapVariety2PhyloOrder.put( varNode.getVarietyId() , leafcount);
+//					        				leafcount++; 
+//					        			} else
+//					        			{
+//					        				AppContext.debug("cant resolve irisid " + nodenames[1]);
+//					        			}				        			
+//					        		}
+//					        		else if(!nodenames[0].isEmpty())
+//					        		{
+//					        			Variety varNode =  varname2var.get(nodenames[0].replace("_"," ").replace("//",""));
+//					        			if(varNode!=null) {
+//					        				mapVariety2PhyloOrder.put(  varNode.getVarietyId() , leafcount);
+//					        				leafcount++;
+//					        			} else
+//					        			{
+//					        				AppContext.debug("cant resolve variety name " + nodenames[0] );
+//					        			}
+//					        		}
+//					        	}
+//					        }
 				        }
 				        
 				        // Display of the tree(s) with Archaeopteryx.													

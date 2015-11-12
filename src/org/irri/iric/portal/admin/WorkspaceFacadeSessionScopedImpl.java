@@ -3,36 +3,24 @@ package org.irri.iric.portal.admin;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.domain.SnpsStringAllvars;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
-import org.zkoss.zul.Fileupload;
 import org.springframework.context.annotation.ScopedProxyMode;
 
 @Service("WorkspaceFacade")
-//@Scope("prototype")
 @Scope(value="session",  proxyMode = ScopedProxyMode.INTERFACES)
 public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
-	//@Autowired
-	
-	//private QueryIric queryiric;
-
 	@Autowired
 	private UserSessionListsManager sessionmgr;
-
 
 	public WorkspaceFacadeSessionScopedImpl() {
 		super();

@@ -1,7 +1,9 @@
 package org.irri.iric.portal.variety.zkui;
 
 
-import org.irri.iric.portal.chado.domain.VIricstockPassport;
+//import org.irri.iric.portal.chado.domain.VIricstockPassport;
+import org.irri.iric.portal.domain.CvTerm;
+import org.irri.iric.portal.domain.Passport;
 import org.irri.iric.portal.domain.Variety;
 //import org.irri.iric.portal.genotype.views.Snp2linesId;
 import org.zkoss.zk.ui.Component;
@@ -26,7 +28,8 @@ public class PassportListItemRenderer implements ListitemRenderer {
 	@Override
 	public void render(Listitem listitem, Object value, int index) throws Exception {
 		// TODO Auto-generated method stub
-			VIricstockPassport  item = (VIricstockPassport)value;
+			//VIricstockPassport  item = (VIricstockPassport)value;
+			Passport   item = (Passport)value;
 		
 	
 	        // keep value in listitem

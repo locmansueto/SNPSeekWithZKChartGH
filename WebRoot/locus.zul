@@ -3,10 +3,11 @@
 
 <zk>
 
+<!--  *********************   INITIALIZE DISPLAY VARIABLES  *********************************************************************************** -->
 
 <zscript>
         import org.zkoss.zkplus.spring.SpringUtil;      
-		import org.irri.iric.portal.genomics.service.GenomicsFacade;
+		import org.irri.iric.portal.genomics.GenomicsFacade;
 		import org.irri.iric.portal.admin.WorkspaceFacade;
 		import org.irri.iric.portal.AppContext;
 		import org.irri.iric.portal.domain.Scaffold;
@@ -43,12 +44,14 @@
     <row spans="4">
 	<textbox id="msgbox" readonly="true" value="${msg}" width="100%"/>
 	</row>
-   
-   
+
+
+<!--  *********************   GENE LOCI QUERY OPTIONS  *********************************************************************************** -->
+      
 <row spans="4" >
 <hbox>
-<label value="Reference genome" style="font-size:14px;font-weight:bold;color:gray;"/>
-<vbox width="20px"/>
+<label value="Reference genome:" style="font-size:14px;font-weight:bold;color:gray;"/>
+<vbox width="10px"/>
 <listbox id="listboxOrganism" mold="select" disabled="false"/>
     <zscript><![CDATA[			
 					listOrgs.add("ALL");  
@@ -56,35 +59,50 @@
 			        listboxOrganism.setSelectedIndex(0);
 			        //listboxOrganism.setDisabled(true);
 			    ]]></zscript>
-<vbox width="50px"/>			    
-<label value="Search by" style="font-size:14px;font-weight:bold;color:gray;"/>
-<vbox width="20px"/>
+<vbox width="30px"/>			    
+<label value="Search by:" style="font-size:14px;font-weight:bold;color:gray;"/>
+<vbox width="10px"/>
 <listbox id="listboxSearchby" mold="select">
 <listitem selected="true" label="Gene function"/>
 <listitem  label="Gene Ontology term"/>
+<!--  listitem  label="Plant and Trait Ontology term"/ -->
+<listitem  label="Trait"/>
 <listitem  label="Region"/>
 <listitem  label="Sequence"/>
 <listitem  label="My SNP List"/>
 </listbox>
+
+<vbox width="30px"/>			    
+<label value="Gene model:" style="font-size:14px;font-weight:bold;color:gray;"/>
+<vbox width="10px"/>
+<listbox id="listboxAnnotation" mold="select">
+<listitem  value="msu7" label="MSU7" selected="true"/>
+<listitem  value="rap" label="RAP"/>
+<listitem  value="iric" label="Merged MSU7,RAP,FGenesh (by IRIC)"/>
+<!--  listitem  value="all" label="All"/ -->
+</listbox>
 </hbox>
 </row>
+
 
 <row spans="4">
 <label value=" "/>
 </row>
    
+<!--  *********************   QUERY BY GENE FUNCTION  *********************************************************************************** -->   
 <row spans="4" id="rowGeneFunction" visible="true">
 
 <!--  label value="Gene function" style="font-size:14px;font-weight:bold;color:gray;"/ -->
 <hbox>
-<textbox id="textboxGenefunction"/>
+<textbox id="textboxGenefunction" width="300px" />
 <vbox width="20px"/>
 <button id="searchGenefunctionButton" label="Search by function"   style="font-size:14px;font-weight:bold;color:gray;"
-  width="150px" height="30px"  autodisable="self"
+  width="30px" height="30px"  autodisable="self"
   />
 </hbox>
 </row>
 
+<!--  *********************   QUERY BY GENE ONTOLOGY TERM  *********************************************************************************** -->
 <row spans="4" id="rowGoTerm" visible="false">
 <!--  label value="GO term" style="font-size:14px;font-weight:bold;color:gray;"/ -->
 <hbox>
@@ -95,10 +113,6 @@
 <listitem value="molecular_function" label="GO Molecular function"/>
 </listbox>
 <listbox id="listboxGOTerm" mold="select" width="100%"/>
-    <!--  zscript><![CDATA[			
-			        listboxGOTerm.setModel(new SimpleListModel(listGoterms));
-			        listboxGOTerm.setSelectedIndex(0);
-			    ]]></zscript -->
 			    
 <hbox>
 <vbox>
@@ -123,6 +137,46 @@
 </hbox>
 </row>
 
+<!--  *********************   QUERY BY TRAITS, TO, PO  *********************************************************************************** -->
+
+<row spans="4" id="rowPatoTerm" visible="false">
+<!--  label value="GO term" style="font-size:14px;font-weight:bold;color:gray;"/ -->
+<hbox>
+<vbox>
+<listbox id="listboxCVPato" mold="select">
+<!--  listitem value="plant_anatomy" label="PO Plant Anatomy"/>
+<listitem value="plant_trait_ontology" selected="true" label="TO Trait Ontology"/>
+<listitem value="rice_trait" label="Crop Ontology (Rice trait)"/>
+<listitem value="quality" label="PATO Quality Ontology"/ -->
+<listitem value="qtaro_gene_traits" label="Q-TARO Traits"/>
+<listitem value="plant_trait_ontology" label="TO Plant Trait Ontology (from Oryzabase)"/>
+<listitem value="plant_anatomy" label="PO Plant Anatomy (from Oryzabase)"/>
+<listitem value="plant_structure_development_stage" label="PO Development Stage (from Oryzabase)"/>
+</listbox>
+<listbox id="listboxPatoTerm" mold="select" width="100%"/>
+			    
+<hbox>
+<vbox>
+<label id="labelPatoAncestors" value=""/>
+<listbox id="listboxPatoAncestors" width="300px" height="100px"/>
+</vbox>
+<vbox width="50px"/>
+<vbox>
+<label id="labelPatoDescendants" value=""/>
+<listbox id="listboxPatoDescendants" width="300px" height="100px"/>
+</vbox>
+</hbox>			    
+</vbox>
+<vbox width="20px"/>		
+
+ <button id="searchPatoButton" label="Search PATO term"   style="font-size:14px;font-weight:bold;color:gray;"
+  width="150px" height="30px"  autodisable="self"/>
+  <hbox height="15px"/>
+</hbox>
+</row>
+ 
+ 
+ <!--  *********************   QUERY BY REGION  *********************************************************************************** -->
  
 <row spans="4" id="rowRegion" visible="false">
 <!-- label value="Region" style="font-size:14px;font-weight:bold;color:gray;"/ -->
@@ -144,6 +198,7 @@
  </hbox>
 </row>
 
+<!--  *********************   QUERY FROM SNP LIST  *********************************************************************************** -->
 
 <row spans="4" id="rowMySnpList" visible="false">
 <hbox>
@@ -160,7 +215,7 @@
 </hbox>
 </row>
 
-
+<!--  *********************   QUERY BY SEQUENCE (BLAST) *********************************************************************************** -->
 <row spans="4" id="rowSequence" visible="false">
 <!--  label value="Sequence" style="font-size:14px;font-weight:bold;color:gray;"/ -->
 <hbox>
@@ -234,8 +289,6 @@
 
 </row>
 
-
-
 <row spans="4" id="rowCountGOTermLoci" visible="false">
 	
 <hbox>
@@ -254,8 +307,7 @@
 </row>
 
 
-
-<row spans="1,2" visible="false">
+<!--  row spans="1,2" visible="false">
 <label value=""/>
 			<hbox >
   		    <button id="searchButton" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
@@ -268,7 +320,7 @@
 			    	   width="75px" height="30px"  autodisable="self"
 			    	   />
 			</hbox>    	   	
-</row>
+</row -->
 			    	   
 </rows>
 </grid>
@@ -303,6 +355,9 @@
  <hbox width="25px"/>
  </div>
  
+ 
+ <!--  *********************   GENE LOCUS QUERY RESULTS DISPLAY  *********************************************************************************** -->
+ 
 <grid id="gridLocus" width="100%"   mold="paging" pageSize="100" visible="false" >
 	        	<columns>
                 <column label="LOCUS" width="180px"  sort="auto" />
@@ -310,6 +365,9 @@
                 <column label="START"  width="100px" sort="auto" />
                 <column label="STOP"  width="100px" sort="auto" />
                 <column label="STRAND"  width="60px" sort="auto" />
+                
+                <column label="OVERLAPS FROM ALL GENE MODELS"  width="300px" sort="auto" />
+                
                 <column label="DESCRIPTION"  sort="auto" />
             	</columns>
 </grid>		
@@ -324,6 +382,7 @@
             	</columns>
 </grid>		
 
+<!--  *********************   GENE LOCUS ALIGNMENT RESULTS DISPLAY  *********************************************************************************** -->
 
 <grid id="gridAlignment"  mold="paging" pageSize="100" width="100%" visible="false">
 	        	<columns>

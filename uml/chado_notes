@@ -40,3 +40,17 @@ kasalath_RAP.gff.sorted.renamed.gff
 ../chado-1.23/load/bin/gmod_bulk_load_gff3.pl  --gfffile kasalath_RAP.gff.sorted.renamed.gff  --organism 'Kasalath'  --dbname iric2 --dbuser lmansueto  --dbpass lmansueto@1RRi --nosequence  --save_tmpfiles
 
 kasalath_RAP.gff.sorted.wgenes.gff.renamed.gff
+
+--recreate_cache 
+  --save_tmpfiles 
+  --noload
+  
+../chado-1.23/load/bin/gmod_bulk_load_gff3.pl  --gfffile kasalath_RAP.gff.sorted.renamed.gff  --organism 'Kasalath'  --dbname iric2 --dbuser lmansueto  --dbpass lmansueto@1RRi --nosequence  --save_tmpfiles
+
+--ontology 'PO=plant_anatomy,TO=plant_trait_ontology'
+
+
+../../chado-1.23/load/bin/gmod_bulk_load_gff3.pl --gfffile OsNippo_4chado_2.gff  --organism 'rice' --save_tmpfiles --recreate_cache  --ontology 'PO=quality,TO=quality'  --noload --remove_lock
+
+--update goterms
+gmod_load_cvterms.pl -s GO -u -o load_cvterms.loadmsg.txt go.obo

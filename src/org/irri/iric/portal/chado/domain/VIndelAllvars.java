@@ -231,11 +231,11 @@ public class VIndelAllvars implements Serializable, IndelsAllvars {
 		return this.partitionId.longValue()-2;
 	}
 
-	@Override
-	public String getRefnuc() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public String getRefnuc() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public String getVarnuc() {
@@ -262,6 +262,28 @@ public class VIndelAllvars implements Serializable, IndelsAllvars {
 			return "chr" +  getChr();
 		else 
 			return "chr0" +  getChr();
+	}
+
+	@Override
+	public BigDecimal getPosition() {
+		// TODO Auto-generated method stub
+		return this.pos;
+	}
+
+	@Override
+	public String getRefcall() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		
+		VIndelAllvars obj=(VIndelAllvars)o;
+		int ret=this.getContig().compareTo(obj.getContig());
+		if(ret==0) this.getPosition().compareTo(obj.getPosition());
+		return ret;
 	}
 	
 	

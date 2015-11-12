@@ -39,6 +39,8 @@ enableTooltipster();
 
 <zk xmlns:h="native"  xmlns:w="http://www.zkoss.org/2005/zk/client">
 
+  <!--  *********************   DEFINE CUSTOMIZED DISPLAY PROPERTIES  *********************************************************************************** -->
+
     <style>
         .z-loading {
             background-color:#808080;
@@ -127,6 +129,12 @@ enableTooltipster();
 		    text-align:center;
 		}
  
+ 
+        /* Cell Height and Font */ .mylist .z-listfooter-cnt, .mylist
+        .z-listcell-cnt,.mylist .z-listheader-cnt { font-size: 6px;
+        font-family: "Tahoma", verdana, arial, sans-serif; height: 8px;
+        }
+        
     </style>
     
 <!--  style>
@@ -192,14 +200,17 @@ function doPosition() {
 
 
 <zscript>
+
+// ************************   Initialization of variables used for display ************************************
+
         import org.zkoss.zkplus.spring.SpringUtil;      
         import javax.servlet.http.HttpSession;
-		import org.irri.iric.portal.genotype.service.GenotypeFacade;
+		import org.irri.iric.portal.genotype.GenotypeFacade;
 		import org.irri.iric.portal.admin.WorkspaceFacade;
 		import org.springframework.beans.factory.annotation.Autowired;
 		import org.irri.iric.portal.genotype.zkui.FakerMatrixModel;
 		import org.irri.iric.portal.AppContext;
-		
+		import org.irri.iric.portal.variety.VarietyFacade;
        	
         GenotypeFacade genotype = SpringUtil.getBean("GenotypeFacade");
         java.util.List genenames = genotype.getGenenames();   
@@ -247,7 +258,16 @@ function doPosition() {
 		subpopulationstmp=null;
         varnames = AppContext.createUniqueUpperLowerStrings( varnames, true, false);
         
-		String jbrowsestart = AppContext.getHostname() + "/jbrowse-dev";
+
+		VarietyFacade variety = (VarietyFacade)SpringUtil.getBean("VarietyFacade");        
+        Set setPhenotype = variety.getPhenotypeDefinitions().keySet();
+                
+        java.util.List listPhenotype = new java.util.ArrayList();
+        listPhenotype.add("");
+        listPhenotype.addAll( setPhenotype );
+        
+        
+		String jbrowsestart = AppContext.getHostname() + "/" + AppContext.getJbrowseDir();
            
 </zscript>
 
@@ -259,18 +279,24 @@ function doPosition() {
     <label id="labelScreenWidth" visible="false"/>
     <radiogroup id="snpcolor" />
     <radiogroup id="synonymoussnps" />
-    <radiogroup id="showsnps"/>
+    <radiogroup id="radiogroupShowsnps"/>
     
     <hbox height="310px">
     
     
     <vbox width="1000px" height="305px">
+    
+    <!--  MESSAGE BOX  -->
 	<textbox id="msgbox" readonly="true" value="${msg}" width="999px" rows="2"/>
 	
+    
     
     <!--  grid height="240px" -->
     <grid>
         <rows>
+        
+        	<!--  *********************   VARIETY SELECTION  ************************************* -->
+        
             <row spans="1,5,1">
 
 			    <label value="Compare Varieties:" style="font-size:14px;font-weight:bold;color:gray;" /> 
@@ -319,14 +345,21 @@ function doPosition() {
 				<separator bar="true" style="color:green"/>
 				</vbox>
 				
+				<label value=""/>
             </row>
+            
+            
             <row spans="1,5,1">
             	<label value="Region:" style="font-size:14px;font-weight:bold;color:gray;" />
             	
 				<vbox>
+				
+				<!--  *********************   REFERENCE GENOME SELECTION  ************************************* -->
+				
+				
             	<hbox visible="false">				            
             	<label>Reference:</label>
-            	<listbox id="listboxReference" mold="select" rows="1"/>
+            	<listbox id="listboxReference" mold="select" rows="1" disabled="false"/>
             		<zscript><![CDATA[
 			    	    	listboxReference.setModel(new SimpleListModel(listReference));
 			    	    	listboxReference.setSelectedIndex(0);
@@ -347,23 +380,12 @@ function doPosition() {
             	
             	</hbox>
             	
+            	<!--  *********************   CHROMOSOME REGION SELECTION  ************************************* -->
+            	
+            	
             	<hbox>
                 <label id="labelChr" value="Chromosome"/>                
 			    <combobox id="selectChr"  buttonVisible="false"  readonly="false" autodrop="true" width="120px"> <!--  fulfill="onOpen" -->
-			    <!-- listitem label=""/> 
-			    <!listitem label="1" selected="true"/>    
-			    <listitem label="2" />    
-			    <listitem label="3"/>    
-			    <listitem label="4"/>    
-			    <listitem label="5"/>    
-			    <listitem label="6"/>    
-			    <listitem label="7"/>    
-			    <listitem label="8"/>    
-			    <listitem label="9"/>    
-			    <listitem label="10"/>    
-			    <listitem label="11"/>    
-			    <listitem label="12"/>
-			    <listitem label="whole genome"/ -->
 				</combobox>
 				<label id="labelChrExample" pre="true" value="(ex. chr01)" style="font-size:10px"/>
 				
@@ -372,6 +394,7 @@ function doPosition() {
 								List listConts = new ArrayList();
 								listConts.add("");
 								listConts.addAll(listContigs);
+								listConts.add("whole genome");
 								selectChr.setModel(new SimpleListModel(listConts));
 								//selectChr.setModel(new ListModelList(listConts));
 								//selectChr.setSelectedIndex(0);
@@ -393,7 +416,6 @@ function doPosition() {
                 
             	<hbox>
 	            	<label>Gene locus:</label> 
-	            	<!--  combobox id="comboGene" autodrop="true" buttonVisible="false" width="120px"/ -->		
 	            	<custom-attributes org.zkoss.zul.listbox.rod="true"/>
 	            	<combobox id="comboGene"  buttonVisible="false"  readonly="false" width="150px" autodrop="true"  fulfill="onOpen"/> <!--  autodrop="true" -->
 				    <zscript><![CDATA[
@@ -421,8 +443,13 @@ function doPosition() {
 			    <separator bar="true" style="color:green"/>
 			    </vbox>
 			    
+			    
+			    
 			    	   
 				<hbox>
+				
+					<!--  *********************   DOWNLOAD WITH NO DISPLAY BUTTONS  (DISABLED)  ************************************* -->
+				
 					<vbox id="buttonsDownloadNodisplay" visible="false">
 					<label value="Download" style="font-size:14px;font-weight:bold;color:gray;"/>
 					<hbox>
@@ -441,26 +468,43 @@ function doPosition() {
 				    </div>
 					</hbox>
 					</vbox>
-					<button id="resetButton" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;" width="75px" height="30px"  autodisable="self"/>
+					<button id="buttonReset" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;" width="75px" height="30px"  autodisable="self"/>
 				</hbox>
-				
-                        	    
             </row>
             
             <row spans="1,5,1">
+            
+            	<!--  *********************   SNP/INDELS QUERY OPTIONS  ************************************* -->
+            	
             		<label value="Options:" style="font-size:14px;font-weight:bold;color:gray;" />
             		<vbox>
 
-         			<hbox visible="false">
+         			<hbox>
+         				<div visible="true">
           				<label value="Variant  " pre="true" style="font-weight:bold;"/>
-          				<label value="SNPs " pre="true" tooltip="popupSNP"/>
-			    		<checkbox id="checkboxSNP" checked="true" />
+          				<label value="SNPs " pre="true" tooltip="popupSNP" visible="false"/>
+			    		<checkbox id="checkboxSNP" checked="true"  visible="false"/>
 			    		<!--  vbox width="20px"/>
 			    		<label id="labelSpliceSNP" value="Splice" pre="true" style="font-weight:bold;" visible="false"/>
 			    		<checkbox id="checkboxSpliceSNP" checked="true" tooltip="popupSplice" visible="false"/ -->
-			    		<vbox width="20px" />
-			    		<label value=" Indel " pre="true" tooltip="popupIndel" />
+			    		<vbox width="20px" visible="false"/>
+			    		<label value=" Include Indels " pre="true" tooltip="popupIndel" />
 			    		<checkbox id="checkboxIndel" checked="false"  />
+			    		<div id="divHeteroindels" visible="false">
+			    		<vbox width="20px" visible="false"/>
+			    		<label value=" Consider heterozygous Indels " pre="true" tooltip="popupHeteroIndels" />
+			    		<checkbox id="checkboxHeteroindels" checked="false"  />
+			    		</div>
+			    		
+			    		</div>
+			    		
+			    		<div visible="true">
+          				<label value="        Show phenotype  " pre="true" style="font-weight:bold;"/>
+						<listbox id="listboxPhenotype" mold="select" width="200px"   />
+					    	<zscript><![CDATA[
+				    	    	listboxPhenotype.setModel(new SimpleListModel(listPhenotype));
+				   			]]></zscript>
+						</div>
          			
          			</hbox>
 
@@ -473,8 +517,11 @@ function doPosition() {
          				<label value="Nucleotide" tooltip="popupSNPColoringAllele"/>
 						<hbox width="30px"/>
 						
+						
 						<label pre="true" value="Core SNPs only " style="font-weight:bold;"  tooltip="popupCoreSNP"/>
-          				<checkbox id="checkboxCoreSNP" checked="false"/>
+          				<checkbox id="checkboxCoreSNP" checked="false"  disabled="false" />
+          				
+          				
           				<vbox width="30px"/>
           				<label value="Mismatch only " pre="true" style="font-weight:bold;" tooltip="popupMatchOnly"/>
 			    		<checkbox id="checkboxMismatchOnly" checked="true" />
@@ -486,17 +533,21 @@ function doPosition() {
           			<hbox>
 
          				<label pre="true" value="Include SNPs  " style="font-weight:bold;"/>
-         				<radio id="radioAllSnps" label="" radiogroup="showsnps"  selected="true" />
+         				<radio id="radioAllSnps" label="" radiogroup="radiogroupShowsnps"  selected="true" disabled="false" />
          				<label  value="All"  tooltip="popupAllSnps"/>
          				<vbox width="6px"/>
-			    		<radio id="radioNonsynHighlights" label="" radiogroup="showsnps" />
+			    		<radio id="radioNonsynHighlights" label="" radiogroup="radiogroupShowsnps"  disabled="false" />
 			    		<label value="All, highlight Nonsynonymous" tooltip="popupAllNonsynHighlights" />
+			    		<div visible="false">
 			    		<vbox width="6px"/>
-         				<radio id="radioNonsynSnps" label="" radiogroup="showsnps" />
+         				<radio id="radioNonsynSnps" label="" radiogroup="radiogroupShowsnps"  disabled="false" />
          				<label value="Non-synonymous only" tooltip="popupNonsynSnps"/>
+         				</div>
          				<vbox width="6px"/>
-         				<radio id="radioNonsynSnpsPlusSplice" label="" radiogroup="showsnps" />
-         				<label value="Non-synonymous + splice site" tooltip="popupNonsynSnpsPlusSplice"/>
+         				<radio id="radioNonsynSnpsPlusSplice" label="" radiogroup="radiogroupShowsnps"  disabled="false" />
+         				<label value="Non-synonymous only" tooltip="popupNonsynSnpsPlusSplice"/>
+         				
+         				
 						
          				<div visible="false">
          				<vbox width="20px"/>
@@ -507,28 +558,32 @@ function doPosition() {
 			    		<vbox width="30px"/>
 			    		</div>
 
-
 						<div visible="false">
 			    		<vbox width="20px"/>
 			    		<label value="SNP Splice variant as Nonsynonymous" pre="true" style="font-weight:bold;"/>
 			    		<checkbox id="checkboxSpliceSnps" checked="true" tooltip="popupSpliceVariant"/>
 			    		</div>
-			    		
-          				<!--  vbox width="40px"/>
-	            		<label pre="true" value="Download  " style="font-weight:bold;"/>
-	            		<button id="buttonDownloadCsv"  label="CSV" width="60px" height="30px"  autodisable="self"/>
-	            		<vbox width="50px"/>
-	    				<button id="buttonDownloadTab"  label="Tab" width="60px" height="30px"  autodisable="self"/ -->    
+          			
          			</hbox>	
          			
          			
     				</vbox>
 
-            		<button id="searchButton" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
+				<!--  *********************   DOWNLOAD BUTTONS ************************************* -->
+
+					<vbox>
+            		<button id="buttonSearch" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
 			    	   width="100px" height="50px"  autodisable="self"
 			    	   xmlns:w="http://www.zkoss.org/2005/zk/client"			    	   			    	   
 			    	   w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();"
 			    	/>
+			    	<hbox height="5px"/>
+            		<button id="buttonDownloadFasta" label="FASTA"   style="font-size:16px;font-weight:bold;color:gray;" visible="false" 
+			    	   width="100px" height="30px"  autodisable="self"
+			    	   xmlns:w="http://www.zkoss.org/2005/zk/client"			    	   			    	   
+			    	   w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();"
+			    	/>
+			    	</vbox>
 
             </row>
         </rows>
@@ -539,7 +594,7 @@ function doPosition() {
 	<tipBox height="305px" width="400px" desc="     SNP QUERY" 
 		details1= "  1. Select two varieties to compare; OR "
 		details2= "		Compare All Varieties, members of a Subpopulation"
-		details3= "     or My Variety List, with the Reference"
+		details3= "     or Variety List, with the Reference"
 		details4= "  2. Specify region(chromosome, start and end) "
 		details5= "             OR Gene LOC_Os (MSU locus name)" 
 		details6= "  3. Set options and click action button"
@@ -547,10 +602,9 @@ function doPosition() {
 		details8= "   Table: Allele for Varieties x SNP positions"
 	   details10= "   JBrowse: SNPs plot in genome"
 	   details11= "   Tree: Phylogenetic tree based on the number " 
-	   details12= "    of allele mismatches in the region, only "
-	   details13= "    the Phylotree topN distance pairs are used"
-	   details14= "   PhyloJBrowse: SNPs in JBrowse having the varieties"
-	   details15= "    orderd using phylotree clustering result."
+	   details12= "    of allele mismatches in the region"
+	   details13= "   PhyloJBrowse: SNPs in JBrowse with varieties"
+	   details14= "    ordered using phylotree clustering result."
 	/>
 
 	</hbox>
@@ -564,6 +618,7 @@ function doPosition() {
    <tabbox id="tabboxDisplay"> <!-- width="100%" -->  
         <tabs>  
             <tab id="tabTable" label="Table" selected="true"/>  
+            <tab id="tabTableLarge" label="Overview" visible="false"/>
             <!--  tab id="tabBiglist" label="BigTable" visible="true"/ -->
             <tab id="tabJbrowse" label="JBrowse" visible="false"/>  
             <tab id="tabMSA" label="Alignment"  visible="false"/>  
@@ -573,7 +628,10 @@ function doPosition() {
             <tab id="tabPhylo" label="Phylotree" visible="false"/>  
             <tab id="tabJBrowsePhylo" label="PhyloJBrowse" visible="false"/>  
         </tabs>  
-        <tabpanels>  
+        <tabpanels>
+        
+    <!--  *********************   DISPLAY GENOTYPE MATRIX TAB  *********************************************************************************** -->
+          
     <tabpanel id="tabpanelTable"> <!--    vflex="1" style="overflow:auto" -->  
     
     <vbox>
@@ -672,9 +730,11 @@ function doPosition() {
 		            <auxheader label=""/>
 		            <auxheader label=""/>
 		            <auxheader label=""/>
+		            <auxheader label=""/>
 		        </auxhead>
 				<auxhead id="auxhead2Header" height="32px" visible="false">
 		            <auxheader id="auxheader21Header" label="Alleles"     sclass="word-wrap" />
+		            <auxheader label=""/>
 		            <auxheader label=""/>
 		            <auxheader label=""/>
 		            <auxheader label=""/>
@@ -684,15 +744,18 @@ function doPosition() {
 		            <auxheader label="IRIS ID"/>
 		            <auxheader label="Subpopulation"/>
 		            <auxheader label="Mismatch"/>
+		            <auxheader id="auxheader3Phenotype" label=""/>
 		        </auxhead>
 		        <columns>
 		            <column  id="column4Header" label="Nipponbare"   width="300px"  />
 		            <column width="100px" ></column>
 		            <column width="50px"  ></column>
 		            <column width="50px"  ></column>
+		            <column width="50px" visible="false"></column>
 		        </columns>
 		        <auxhead id="auxheadAlleles1" height="32px" visible="false">
 		            <auxheader id="auxheaderAlleles1" label=""     sclass="word-wrap" />
+		            <auxheader label=""/>
 		            <auxheader label=""/>
 		            <auxheader label=""/>
 		            <auxheader label=""/>
@@ -702,9 +765,11 @@ function doPosition() {
 		            <auxheader label=""/>
 		            <auxheader label=""/>
 		            <auxheader label=""/>
+		            <auxheader label=""/>
 		        </auxhead>
 		        <auxhead id="auxheadAlleles3" height="32px" visible="false">
 		            <auxheader id="auxheaderAlleles3" label=""     sclass="word-wrap" />
+		            <auxheader label=""/>
 		            <auxheader label=""/>
 		            <auxheader label=""/>
 		            <auxheader label=""/>
@@ -714,12 +779,17 @@ function doPosition() {
 		            <auxheader label=""/>
 		            <auxheader label=""/>
 		            <auxheader label=""/>
+		            <auxheader label=""/>
 		        </auxhead>
 			</grid>
 			
 			<biglistbox id="biglistboxArray" height="800px"  visible="false" width="90%" hflex="0" vflex="0" xmlns:w="client" w:onScroll="jq('$tip').fadeOut();"/>
 			<!--  biglistbox id="biglistboxArray" visible="false" hflex="1" vflex="0" / -->
 		</hbox>
+		
+		
+		<!--  *********************   DISPLAY ALLELE FREQUENCY PLOT *********************************************************************************** -->
+		
 		
 		<hbox>
 			<vbox width="200px">
@@ -740,6 +810,8 @@ function doPosition() {
 			<radio id="radioMajorAlleles" label="Major alleles" radiogroup="radiogroupMajorminor" selected="true"/>
 			<radio id="radioMinorAlleles" label="Minor alleles" radiogroup="radiogroupMajorminor"/>
 			<radio id="radio3rdAlleles" label="3rd alleles" radiogroup="radiogroupMajorminor"/>
+			<hbox height="10px"/>
+			<button id="buttonResetzoom" label="Reset Zoom" visible="false"/>
 			</vbox>
 			
 			<charts id="chartAlleleFrequency" type="line"  title="Allele frequency" width="1000" height= "400" zoomType="xy" />
@@ -764,31 +836,51 @@ function doPosition() {
     	
     	</div>
     	
-		<listbox id="listboxSnpresult" fixedLayout="true" mold="paging" pageSize="100" visible="false">
+    	<div id="divPairwise" visible="false">
+    	
+    	<!--  *********************   DISPLAY PAIRWAISE VARIETY COMPARISON TABLE  *********************************************************************************** -->
+    	
+    	
+    	<hbox>
+			<label pre="true" value="Download  "  style="font-weight:bold;"/>
+			<button id="buttonDownloadPairwiseCsv"  label="CSV" width="60px" height="30px"  autodisable="self"/>
+	  		<vbox width="10px"/>
+			<button id="buttonDownloadPairwiseTab"  label="Tab" width="60px" height="30px"  autodisable="self"/>
+		</hbox>
+    	<hbox height="10px"/>
+    	
+		<listbox id="listboxSnpresult" fixedLayout="true" mold="paging" pageSize="100" >
 			 <auxhead id="auxheadMultirefPairwise" visible="false">
 		        <auxheader id="auxheaderMultirefPairwise" label="" colspan="3" />
 		        <auxheader label="NIPPONBARE" colspan="3" />
 		        <auxheader label="COMPARE VARIETIES" colspan="2" />
 		    </auxhead>
 			<listhead>
-				<listheader id="listheader1MultirefPairwise" visible="false">CONTIG</listheader>
-				<listheader id="listheader2MultirefPairwise" visible="false">POSITION</listheader>
-				<listheader id="listheader3MultirefPairwise" visible="false">ALLELE</listheader>
-				<listheader>CONTIG</listheader>
-				<listheader>POSITION</listheader>
-				<listheader>ALLELE</listheader>
+				<listheader id="listheader1MultirefPairwise" visible="false" label="CONTIG"/>
+				<listheader id="listheader2MultirefPairwise" visible="false" label="POSITION"/>
+				<listheader id="listheader3MultirefPairwise" visible="false" label="REFERENCE"/>
+				<listheader label="CONTIG"/>
+				<listheader label="POSITION"/>
+				<listheader label="NPB REFERENCE"/>
 				<listheader id="listheaderVar1MultirefPairwise"></listheader>
 				<listheader id="listheaderVar2MultirefPairwise"></listheader>			
 			</listhead>
 		</listbox>
-	
+		</div>
     	
     </vbox>
 
 </tabpanel>  
 
+    <tabpanel id="tabpanelTableLarge">
+    <biglistbox id="biglistboxArrayLarge" height="800px" sclass="mylist" visible="false" width="90%" hflex="0" vflex="0" xmlns:w="client" w:onScroll="jq('$tip').fadeOut();"/>
+    </tabpanel>
             
 <tabpanel id="second"> 
+	 
+	 
+	 <!--  *********************   DISPLAY JBROWSE TAB *********************************************************************************** -->
+	 
 	 
 	<vbox>
 	<hbox>
@@ -841,12 +933,14 @@ function doPosition() {
   </tabpanel>
   
   
-            
+  <!--  *********************   DISPLAY ALIGNMENT TAB  *********************************************************************************** -->
+           
   <tabpanel id="tabpanelAlignment"> 
-  <iframe id= "iframeAlignment"  align="left" visible="true" style="width:95%;height:800px;border:0px inset;" src="/jsp/jsav.jsp" />
+    <iframe id= "iframeAlignment"  align="left" visible="true" style="width:95%;height:800px;border:0px inset;" src="/jsp/jsav.jsp" />
   </tabpanel>
+
             
-            
+  <!--  *********************   DISPLAY GENOME COMPARISON (VISTA) TAB  *********************************************************************************** -->
   <tabpanel id="tabpanelVista"> 
   <iframe id= "iframeVista"  align="left" visible="true" style="width:95%;height:800px;border:0px inset;" />
   </tabpanel>
@@ -887,6 +981,7 @@ function doPosition() {
             
             
                
+  <!--  *********************   DISPLAY PHYLOGENETIC TREE TAB  *********************************************************************************** -->
                
 <tabpanel> 
 	
@@ -928,6 +1023,8 @@ function doPosition() {
 	  		<label value="Phylogenetic tree construction takes about 5 minutes."/>
 	  		<vbox width="10px"/>
 	  		<button id="buttonRenderTree" label="Compute tree"/>
+	  		<vbox width="10px"/>
+	  		<button id="buttonDownloadNewick" label="Download Newick" visible="false"/>
 	</hbox>
 	<hbox height="10px"/>
 	
@@ -944,6 +1041,7 @@ function doPosition() {
 </vbox>
 </tabpanel>
 
+ <!--  *********************   DISPLAY JBROWSE WITH PHYLOGENITIC CLUSTERING TAB  *********************************************************************************** -->
 
 <tabpanel id="fourth"> 
  	<vbox>
@@ -955,18 +1053,14 @@ function doPosition() {
 </tabpanels> 
 </tabbox> 
         
+        <!--  *********************   DISPLAY INITIALIZATIONS  *********************************************************************************** -->
+        
                       
 		<zscript><![CDATA[
 	        listboxSnpresult.pagingChild.mold =  "os";
 	        listboxSnpresult.pagingPosition = "both";
-
-	        import org.irri.iric.portal.genotype.zkui.SNPListItemRenderer;
-	       
-	        ListModel snpListModel= new SimpleListModel(listSNPs);
-	        SNPListItemRenderer rend =  new SNPListItemRenderer();
-	        rend.setVar1(""); rend.setVar2(""); rend.setVarref("NIPPONBARE");
-	        listboxSnpresult.setItemRenderer(rend );
-	        listboxSnpresult.setModel(snpListModel);
+		buttonDownloadFasta.setVisible(AppContext.isIRRILAN());
+		
 	    ]]></zscript>
 			    
 		<zscript>         
@@ -987,8 +1081,12 @@ function doPosition() {
 		        ex.printStackTrace();	
 		        }
 	        }
+	        
+	        
         </zscript>
 			    
+
+ <!--  *********************   POPUP DEFINITIONS *********************************************************************************** -->
 
 <popup id="popupMatchOnly" width="300px">
         <html><![CDATA[
@@ -1109,7 +1207,7 @@ function doPosition() {
 
 <popup id="popupIndel" width="300px">
         <html><![CDATA[
-		  Query indels.
+		  Query SNPs and indels.
         ]]></html>
 </popup>
 
@@ -1146,6 +1244,25 @@ function doPosition() {
         ]]></html>
 </popup>
 
+<popup id="popupSearch" width="300px">
+        <html><![CDATA[
+		  Displays the variant table.
+        ]]></html>
+</popup>
+
+<popup id="popupHeteroIndels" width="300px">
+        <html><![CDATA[
+		  If checked, will consider heterozygous indels. Otherwise will use only allele1 only.
+        ]]></html>
+</popup>
+
+
+
+<popup id="popupDownloadFasta" width="300px">
+        <html><![CDATA[
+			Downloads the Fasta file of alternate sequence without displaying the table.
+        ]]></html>
+</popup>
 
 
 	<div id="tip" class="tooltip" visible="false" width="280px">

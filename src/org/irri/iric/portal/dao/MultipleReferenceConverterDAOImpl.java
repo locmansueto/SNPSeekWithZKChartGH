@@ -10,14 +10,16 @@ import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.MultiReferenceLocus;
 import org.irri.iric.portal.domain.MultiReferenceConversion;
 import org.irri.iric.portal.domain.Organism;
-import org.irri.iric.portal.domain.VariantStringData;
+import org.irri.iric.portal.genotype.VariantStringData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository("MultipleReferenceConverterDAOImpl")
 public class MultipleReferenceConverterDAOImpl implements MultipleReferenceConverterDAO {
 
 	@Autowired
+	@Qualifier("OrganismDAO")
 	private OrganismDAO organismdao;
 	
 	private Map<String,BigDecimal> mapOrgname2Id=null;

@@ -15,7 +15,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.irri.iric.portal.domain.LocalAlignmentImpl;
 
 
-import org.irri.iric.portal.genomics.service.LocalAlignmentQuery;
+import org.irri.iric.portal.genomics.LocalAlignmentQuery;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;

@@ -13,9 +13,9 @@ import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.domain.LocalAlignment;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.LocalAlignmentImpl;
-import org.irri.iric.portal.genomics.service.GeneOntologyService;
-import org.irri.iric.portal.genomics.service.GenomicsFacade;
-import org.irri.iric.portal.genotype.service.GenotypeFacade;
+import org.irri.iric.portal.genomics.GeneOntologyService;
+import org.irri.iric.portal.genomics.GenomicsFacade;
+import org.irri.iric.portal.genotype.GenotypeFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -52,6 +52,8 @@ public class LocusQueryController extends SelectorComposer<Window> {
 	@Qualifier("WorkspaceFacade")
 	private WorkspaceFacade workspace;
 	    
+	@Wire 
+	private Listbox listboxAnnotation;
 	  
 	@Wire
 	Label labelChrExample;
@@ -85,9 +87,14 @@ public class LocusQueryController extends SelectorComposer<Window> {
 	
 	@Wire
 	private Listbox listboxGOTerm;
+	@Wire
+	private Listbox listboxPatoTerm;
+	
 	
 	@Wire
 	private Listbox listboxCV;
+	@Wire
+	private Listbox listboxCVPato;
 	
 	@Wire
 	private Listbox listboxGOAncestors;
@@ -97,6 +104,16 @@ public class LocusQueryController extends SelectorComposer<Window> {
 	private Label labelGOAncestors;
 	@Wire
 	private Label labelGODescendants;
+
+	@Wire
+	private Listbox listboxPatoAncestors;
+	@Wire
+	private Listbox listboxPatoDescendants;
+	@Wire
+	private Label labelPatoAncestors;
+	@Wire
+	private Label labelPatoDescendants;
+
 	
 	@Wire
 	private Listbox listboxMyLocusList;
@@ -105,6 +122,8 @@ public class LocusQueryController extends SelectorComposer<Window> {
 	private Button searchGenefunctionButton;
 	@Wire
 	private Button searchGOButton;
+	@Wire
+	private Button searchPatoButton;
 	
 	@Wire
 	private Hbox hboxAddtolist;
@@ -162,11 +181,17 @@ public class LocusQueryController extends SelectorComposer<Window> {
 	@Wire
 	private Row rowGoTerm;
 	@Wire
+	private Row rowPatoTerm;
+	@Wire
 	private Row rowRegion;
 	@Wire
 	private Row rowSequence;
 	@Wire
 	private Row rowMySnpList;
+	
+	@Wire
+	private Row rowNPBannotation;
+	
 	@Wire
 	private Button searchMySnpListButton;
 	@Wire
@@ -182,6 +207,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 		rowSequence.setVisible(false);
 		rowMySnpList.setVisible(false);
 		rowCountGOTermLoci.setVisible(false);
+		rowPatoTerm.setVisible(false);
 		String searchby = listboxSearchby.getSelectedItem().getLabel();
 		
 		if(searchby.isEmpty()) return;
@@ -199,11 +225,13 @@ public class LocusQueryController extends SelectorComposer<Window> {
 				
 				List listGoterms = new ArrayList();
 				listGoterms.add("");
-				listGoterms.addAll(genomics.getGotermsByOrganism("biological_process",AppContext.getDefaultOrganism()) );
+				//listGoterms.addAll(genomics.getGotermsByOrganism("biological_process",AppContext.getDefaultOrganism()) );
+				listGoterms.addAll(genomics.getGotermsByOrganism("biological_process", this.listboxOrganism.getSelectedItem().getLabel())); // AppContext.getDefaultOrganism()) );
 
 				listboxGOTerm.setModel(new SimpleListModel(listGoterms));
 				listboxGOTerm.setSelectedIndex(0);
 				rowGoTerm.setVisible(true);
+				
 				
 				workspace  = (WorkspaceFacade)AppContext.checkBean(workspace, "WorkspaceFacade");
 				List listNew = new ArrayList();
@@ -213,7 +241,38 @@ public class LocusQueryController extends SelectorComposer<Window> {
 		    	this.listboxMyLocusList.setModel(new SimpleListModel(listNew ));
 		    	listboxMyLocusList.setSelectedIndex(0);
 		    	
-				rowCountGOTermLoci.setVisible(true);
+				//rowCountGOTermLoci.setVisible(true);
+			}
+			/*
+			else if(searchby.equals("Plant and Trait Ontology term")) {
+				
+				genomics = (GenomicsFacade)AppContext.checkBean(genomics, "GenomicsFacade");
+				
+				listboxCVPato.setSelectedIndex(1);
+				
+				List listPatoterms = new ArrayList();
+				listPatoterms.add("");
+				listPatoterms.addAll(genomics.getPatotermsByOrganism("plant_trait_ontology",AppContext.getDefaultOrganism()) );
+
+				listboxPatoTerm.setModel(new SimpleListModel(listPatoterms));
+				listboxPatoTerm.setSelectedIndex(0);
+				rowPatoTerm.setVisible(true);
+				
+			}*/
+			else if(searchby.equals("Trait")) {
+				
+				genomics = (GenomicsFacade)AppContext.checkBean(genomics, "GenomicsFacade");
+				
+				listboxCVPato.setSelectedIndex(0);
+				
+				List listPatoterms = new ArrayList();
+				listPatoterms.add("");
+				listPatoterms.addAll(genomics.getPatotermsByOrganism("qtaro_gene_traits",listboxOrganism.getSelectedItem().getLabel())); //AppContext.getDefaultOrganism()) );
+
+				listboxPatoTerm.setModel(new SimpleListModel(listPatoterms));
+				listboxPatoTerm.setSelectedIndex(0);
+				rowPatoTerm.setVisible(true);
+				
 			}
 			else if(searchby.equals("Region")) {
 				
@@ -305,7 +364,8 @@ public class LocusQueryController extends SelectorComposer<Window> {
 	public void onselectCV() {
 		List listGoterms = new ArrayList();
 		listGoterms.add("");
-		listGoterms.addAll(genomics.getGotermsByOrganism((String)listboxCV.getSelectedItem().getValue(),AppContext.getDefaultOrganism()) );
+		//listGoterms.addAll(genomics.getGotermsByOrganism((String)listboxCV.getSelectedItem().getValue(),AppContext.getDefaultOrganism()) );
+		listGoterms.addAll(genomics.getGotermsByOrganism((String)listboxCV.getSelectedItem().getValue(), this.listboxOrganism.getSelectedItem().getLabel()));
 
 		listboxGOTerm.setModel(new SimpleListModel(listGoterms));
 		listboxGOTerm.setSelectedIndex(0);
@@ -317,17 +377,73 @@ public class LocusQueryController extends SelectorComposer<Window> {
 	
 	@Listen("onSelect= #listboxGOTerm")
 	public void onselectGOterm() {
-		List listGotermsA = new ArrayList();
-		listGotermsA.addAll(genomics.getCVtermAncestors((String)listboxCV.getSelectedItem().getValue(), listboxGOTerm.getSelectedItem().getLabel() ));
-		listboxGOAncestors.setModel(new SimpleListModel(listGotermsA));
-		labelGOAncestors.setValue(listGotermsA.size() +  " ancestors");
-		List listGotermsD = new ArrayList();
-		listGotermsD.addAll(genomics.getCVtermDescendants((String)listboxCV.getSelectedItem().getValue(), listboxGOTerm.getSelectedItem().getLabel() ));
-		listboxGODescendants.setModel(new SimpleListModel(listGotermsD));
-		labelGODescendants.setValue(listGotermsD.size() +  " descendants");
+		
+		return;
+		
+		/*
+		try {
+			List listGotermsA = new ArrayList();
+			listGotermsA.addAll(genomics.getCVtermAncestors((String)listboxCV.getSelectedItem().getValue(), listboxGOTerm.getSelectedItem().getLabel() ));
+			listboxGOAncestors.setModel(new SimpleListModel(listGotermsA));
+			labelGOAncestors.setValue(listGotermsA.size() +  " ancestors");
+			List listGotermsD = new ArrayList();
+			listGotermsD.addAll(genomics.getCVtermDescendants((String)listboxCV.getSelectedItem().getValue(), listboxGOTerm.getSelectedItem().getLabel() ));
+			listboxGODescendants.setModel(new SimpleListModel(listGotermsD));
+			labelGODescendants.setValue(listGotermsD.size() +  " descendants");
+		
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		*/
 
 	}
 	
+	
+	
+	
+	@Listen("onSelect= #listboxCVPato")
+	public void onselectCVPato() {
+		
+		String cv=(String)listboxCVPato.getSelectedItem().getValue();
+		
+		List listPatoterms = new ArrayList();
+		listPatoterms.add("");
+		//listGoterms.addAll(genomics.getGotermsByOrganism((String)listboxCV.getSelectedItem().getValue(),AppContext.getDefaultOrganism()) );
+		listPatoterms.addAll(genomics.getPatotermsByOrganism( cv, this.listboxOrganism.getSelectedItem().getLabel()));
+
+		listboxPatoTerm.setModel(new SimpleListModel(listPatoterms));
+		listboxPatoTerm.setSelectedIndex(0);
+		listboxPatoDescendants.setModel(new SimpleListModel(new ArrayList()));
+		listboxPatoAncestors.setModel(new SimpleListModel(new ArrayList()));
+		labelPatoAncestors.setValue("");
+		labelPatoDescendants.setValue("");
+		
+		if(cv.startsWith("qtaro")) {
+			listboxAnnotation.setSelectedIndex(0);
+		} else listboxAnnotation.setSelectedIndex(2);
+	}
+	
+	@Listen("onSelect= #listboxPatoTerm")
+	public void onselectPatoterm() {
+		
+		/*
+		try {
+			List listGotermsA = new ArrayList();
+			listGotermsA.addAll(genomics.getCVtermAncestors((String)listboxCVPato.getSelectedItem().getValue(), listboxPatoTerm.getSelectedItem().getLabel() ));
+			listboxPatoAncestors.setModel(new SimpleListModel(listGotermsA));
+			labelPatoAncestors.setValue(listGotermsA.size() +  " ancestors");
+			List listGotermsD = new ArrayList();
+			listGotermsD.addAll(genomics.getCVtermDescendants((String)listboxCVPato.getSelectedItem().getValue(), listboxPatoTerm.getSelectedItem().getLabel() ));
+			listboxPatoDescendants.setModel(new SimpleListModel(listGotermsD));
+			labelPatoDescendants.setValue(listGotermsD.size() +  " descendants");
+		
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		*/
+
+	}	
 	
 	
 	@Listen("onSelect = #listboxOrganism")    
@@ -338,6 +454,8 @@ public class LocusQueryController extends SelectorComposer<Window> {
 		rowMySnpList.setVisible(false);
 		rowGeneFunction.setVisible(false);
 		rowSequence.setVisible(false);
+		rowNPBannotation.setVisible(false);
+		rowPatoTerm.setVisible(false);
 
 		String selorg = listboxOrganism.getSelectedItem().getLabel();
 		if( selorg.equalsIgnoreCase("ALL")) {
@@ -354,6 +472,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 			this.searchGenefunctionButton.setDisabled(false);
 			
 			labelChrExample.setValue("");
+			this.listboxAnnotation.setVisible(false);
 		}
 		else if( selorg.equals(AppContext.getDefaultOrganism()) ) {
 
@@ -361,6 +480,8 @@ public class LocusQueryController extends SelectorComposer<Window> {
 			//listSearch.add("");
 			listSearch.add("Gene function");
 			listSearch.add("Gene Ontology term");
+			//listSearch.add("Plant and Trait Ontology term");
+			listSearch.add("Trait");
 			listSearch.add("Region");
 			listSearch.add("Sequence");
 			listSearch.add("My SNP List");
@@ -372,11 +493,16 @@ public class LocusQueryController extends SelectorComposer<Window> {
 			
 			labelChrExample.setValue("(ex. chr01)" );
 			
+			//rowNPBannotation.setVisible(true);
+			this.listboxAnnotation.setVisible(true);
+			
+			
 		} else {
 			List listSearch = new ArrayList();
 			//listSearch.add("");
 			listSearch.add("Gene function");
 			this.searchGenefunctionButton.setDisabled(true);
+			//listSearch.add("Plant and Trait Ontology term");
 			listSearch.add("Gene Ontology term");
 			listSearch.add("Region");
 			listSearch.add("Sequence");
@@ -395,7 +521,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 				//labelChrExample.setValue("(ex. " + listContigs.get(1).toString().toLowerCase() + ") " );
 				labelChrExample.setValue("(ex. scaffold...)" );
 
-			
+			this.listboxAnnotation.setVisible(false);
 		}
 
 		/*
@@ -507,7 +633,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 			
 			//locusresult=new ArrayList();
 				locusresult = genomics.getLociByRegion(listboxContig.getValue().trim() , Long.valueOf(intboxContigStart.getValue()), Long.valueOf(intboxContigEnd.getValue()), 
-						this.listboxOrganism.getSelectedItem().getLabel());
+						this.listboxOrganism.getSelectedItem().getLabel() , (String)this.listboxAnnotation.getSelectedItem().getValue() );
 			gridLocus.setRowRenderer(new LocusGridRenderer());
 			gridLocus.setModel( new SimpleListModel( locusresult ));
 			
@@ -522,7 +648,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 			
 			} catch(Exception ex) {
 				ex.printStackTrace();
-				Messagebox.show( ex.getMessage(), "onlclickSearchFunction Exception", Messagebox.OK, Messagebox.ERROR );
+				Messagebox.show( ex.getMessage(), "searchByRegion Exception", Messagebox.OK, Messagebox.ERROR );
 			}
 	}
 	
@@ -555,7 +681,8 @@ public class LocusQueryController extends SelectorComposer<Window> {
 			
 				locusresult = genomics.getLociByContigPositions(contigname[0].trim() ,
 						colPos, 
-						this.listboxOrganism.getSelectedItem().getLabel());
+						this.listboxOrganism.getSelectedItem().getLabel(), 
+						(String)this.listboxAnnotation.getSelectedItem().getValue());
 			gridLocus.setRowRenderer(new LocusGridRenderer());
 			gridLocus.setModel( new SimpleListModel( locusresult ));
 			
@@ -757,7 +884,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 	}
 
 	@Listen("onClick =#buttonAddToList") 
-	public void onlclickAddtolist() {
+	public void onclickAddtolist() {
 		// add to locus list
 	
 		try {
@@ -814,7 +941,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 	}
 	
 	@Listen("onClick =#searchGenefunctionButton") 
-	public void onlclickSearchGenefunction() { 
+	public void onclickSearchGenefunction() { 
 		initResults();
 		try {
 		genomics = (GenomicsFacade)AppContext.checkBean(genomics, "GenomicsFacade");
@@ -822,7 +949,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 		locusresult=new ArrayList();
 		if(textboxGenefunction.getValue()!=null && !textboxGenefunction.getValue().isEmpty()) {
 			//locusresult = genomics.getLociByDescription( textboxGenefunction.getValue() );
-			locusresult = genomics.getLociByDescription( textboxGenefunction.getValue(), listboxOrganism.getSelectedItem().getLabel() );
+			locusresult = genomics.getLociByDescription( textboxGenefunction.getValue(), listboxOrganism.getSelectedItem().getLabel() , (String)listboxAnnotation.getSelectedItem().getValue());
 		}
 		gridLocus.setRowRenderer(new LocusGridRenderer());
 		gridLocus.setModel( new SimpleListModel( locusresult ));
@@ -850,7 +977,8 @@ public class LocusQueryController extends SelectorComposer<Window> {
 			locusresult=new ArrayList();
 			
 			if(this.listboxGOTerm.getSelectedIndex()>0) {
-				locusresult = genomics.getLociByGOTerm( listboxGOTerm.getSelectedItem().getLabel(), this.listboxOrganism.getSelectedItem().getLabel() );
+				locusresult = genomics.getLociByCvTerm( listboxGOTerm.getSelectedItem().getLabel(), this.listboxOrganism.getSelectedItem().getLabel(), (String)listboxCV.getSelectedItem().getValue(),
+						(String)listboxAnnotation.getSelectedItem().getValue());
 			}
 
 			if(locusresult.size()>0) hboxAddtolist.setVisible(true);
@@ -868,6 +996,51 @@ public class LocusQueryController extends SelectorComposer<Window> {
 			Messagebox.show( ex.getMessage(), "onclickSearchGO Exception", Messagebox.OK, Messagebox.ERROR );
 		}
 	}
+
+	@Listen("onClick =#searchPatoButton") 
+	public void onclickSearchPato() { 
+		initResults();
+		try {
+			genomics = (GenomicsFacade)AppContext.checkBean(genomics, "GenomicsFacade");
+			
+			locusresult=new ArrayList();
+			
+			if(this.listboxPatoTerm.getSelectedIndex()>0) {
+				locusresult = genomics.getLociByCvTerm(listboxPatoTerm.getSelectedItem().getLabel(), this.listboxOrganism.getSelectedItem().getLabel(), (String)this.listboxCVPato.getSelectedItem().getValue() ,
+						(String)listboxAnnotation.getSelectedItem().getValue());
+			}
+
+			if(locusresult.size()>0) hboxAddtolist.setVisible(true);
+			else hboxAddtolist.setVisible(false);
+			
+			String prefixDesc="";
+			if(listboxCVPato.getSelectedItem().getLabel().startsWith("Q-TARO")) prefixDesc=null;
+			/*
+			if(listboxCVPato.getSelectedItem().getLabel().startsWith("TO")) prefixDesc="TO:";
+			else if(listboxCVPato.getSelectedItem().getLabel().startsWith("PO")) prefixDesc="PO:";
+			else if(listboxCVPato.getSelectedItem().getLabel().startsWith("CO")) prefixDesc="CO:";
+			else if(listboxCVPato.getSelectedItem().getLabel().startsWith("PATO")) prefixDesc="PATO:";
+			else if(listboxCVPato.getSelectedItem().getLabel().startsWith("Q-TARO")) prefixDesc="";
+			*/
+				
+			
+			gridLocus.setRowRenderer(new LocusGridRenderer(prefixDesc));
+			gridLocus.setModel( new SimpleListModel( locusresult ));
+
+			this.msgbox.setValue("Search by PATO term '" + listboxPatoTerm.getSelectedItem().getLabel() + "' ... RESULT:" + locusresult.size() + " loci");
+			
+			gridLocus.setVisible(true);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			Messagebox.show( ex.getMessage(), "onclickSearchPato Exception", Messagebox.OK, Messagebox.ERROR );
+		}
+	}
+	
+
+	
+	
+	
 
 	@Listen("onClick =#buttonCountGOTermLoci") 
 	public void onclickCountGOTerm() {

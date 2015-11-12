@@ -21,20 +21,18 @@ import javax.servlet.http.HttpSession;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.admin.WorkspaceFacade;
+import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.MultiReferencePosition;
 import org.irri.iric.portal.domain.MultiReferencePositionImpl;
 import org.irri.iric.portal.domain.MultiReferencePositionImplAllelePvalue;
-//import org.irri.iric.portal.domain.MultiReferenceConversion;
-//import org.irri.iric.portal.domain.MultiReferenceConversionImpl;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.Variety;
-import org.irri.iric.portal.flatfile.dao.SnpcoreRefposindexDAO;
-import org.irri.iric.portal.genomics.service.GenomicsFacade;
+import org.irri.iric.portal.genomics.GenomicsFacade;
 import org.irri.iric.portal.genomics.zkui.LocusListItemRenderer;
-import org.irri.iric.portal.genotype.service.GenotypeFacade;
+import org.irri.iric.portal.genotype.GenotypeFacade;
 import org.irri.iric.portal.hdf5.dao.SNPUni3kVarietiesAllele1DAO;
-import org.irri.iric.portal.variety.service.VarietyFacade;
+import org.irri.iric.portal.variety.VarietyFacade;
 import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
 import org.irri.iric.portal.zk.CookieController;
 import org.irri.iric.portal.zk.SessionController;
@@ -970,17 +968,22 @@ public class WorkspaceController  extends SelectorComposer<Component> {
         		if(hasAllele || hasPvalue) {
 	        		if(this.checkboxVerifySNP.isChecked()) {
 		        		
-			        	Iterator<SnpsAllvarsPos> itSnpsDB = genotype.checkSNPInChromosome(chr, setSNP,  SnpcoreRefposindexDAO.TYPE_3KALLSNP ).iterator();
+	        			
+	        			
+			        	Iterator<SnpsAllvarsPos> itSnpsDB = genotype.checkSNPInChromosome(chr, setSNP,  SnpsAllvarsPosDAO.TYPE_3KALLSNP ).iterator();
 			        	while(itSnpsDB.hasNext()) {
 			        		BigDecimal ipos= itSnpsDB.next().getPos();
 			        		setSNPDBPos.add(  new  MultiReferencePositionImplAllelePvalue(organism, chr, ipos, mapPos2Allele.get(ipos), mapPos2Pvalue.get(ipos)));
 			        	}
-			        	Iterator<SnpsAllvarsPos> itCoreSnpsDB = genotype.checkSNPInChromosome(chr, setSNP,  SnpcoreRefposindexDAO.TYPE_3KCORESNP ).iterator();
+			        	
+			        	
+			        	Iterator<SnpsAllvarsPos> itCoreSnpsDB = genotype.checkSNPInChromosome(chr, setSNP,  SnpsAllvarsPosDAO.TYPE_3KCORESNP ).iterator();
 			        	while(itCoreSnpsDB.hasNext()) {
 			        		BigDecimal ipos= itCoreSnpsDB.next().getPos();
 			        		setCoreSNPDBPos.add(  new  MultiReferencePositionImplAllelePvalue(organism, chr, ipos, mapPos2Allele.get(ipos), mapPos2Pvalue.get(ipos)));
-
 			        	}
+			        	
+			        	
 			        	Iterator<BigDecimal> itPos = setSNP.iterator();
 			        	while(itPos.hasNext()) {
 			        		BigDecimal ipos= itPos.next();
@@ -998,11 +1001,11 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 	        	else {
 	        		if(this.checkboxVerifySNP.isChecked()) {
 	        		
-			        	Iterator<SnpsAllvarsPos> itSnpsDB = genotype.checkSNPInChromosome(chr, setSNP,  SnpcoreRefposindexDAO.TYPE_3KALLSNP ).iterator();
+			        	Iterator<SnpsAllvarsPos> itSnpsDB = genotype.checkSNPInChromosome(chr, setSNP,  SnpsAllvarsPosDAO.TYPE_3KALLSNP ).iterator();
 			        	while(itSnpsDB.hasNext()) {
 			        		setSNPDBPos.add(  new  MultiReferencePositionImpl(organism, chr, itSnpsDB.next().getPos()));
 			        	}
-			        	Iterator<SnpsAllvarsPos> itCoreSnpsDB = genotype.checkSNPInChromosome(chr, setSNP,  SnpcoreRefposindexDAO.TYPE_3KCORESNP ).iterator();
+			        	Iterator<SnpsAllvarsPos> itCoreSnpsDB = genotype.checkSNPInChromosome(chr, setSNP,  SnpsAllvarsPosDAO.TYPE_3KCORESNP ).iterator();
 			        	while(itCoreSnpsDB.hasNext()) {
 			        		setCoreSNPDBPos.add(  new  MultiReferencePositionImpl(organism, chr, itCoreSnpsDB.next().getPos()));
 			        	}
@@ -1042,7 +1045,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
         	}
         	
         	Set<BigDecimal> setSNPDBPos = new HashSet();
-        	Iterator<SnpsAllvarsPos> itSnpsDB = genotype.checkSNPInChromosome(selectChromosome.getSelectedItem().getLabel(), setSNP,  SnpcoreRefposindexDAO.TYPE_3KALLSNP ).iterator();
+        	Iterator<SnpsAllvarsPos> itSnpsDB = genotype.checkSNPInChromosome(selectChromosome.getSelectedItem().getLabel(), setSNP,  SnpsAllvarsPosDAO.TYPE_3KALLSNP ).iterator();
         	while(itSnpsDB.hasNext()) {
         		setSNPDBPos.add( itSnpsDB.next().getPos() );
         	}
@@ -1051,7 +1054,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 
         	
         	Set<BigDecimal> setCoreSNPDBPos = new HashSet();
-        	Iterator<SnpsAllvarsPos> itCoreSnpsDB = genotype.checkSNPInChromosome(selectChromosome.getSelectedItem().getLabel(), setSNP, SnpcoreRefposindexDAO.TYPE_3KCORESNP ).iterator();
+        	Iterator<SnpsAllvarsPos> itCoreSnpsDB = genotype.checkSNPInChromosome(selectChromosome.getSelectedItem().getLabel(), setSNP, SnpsAllvarsPosDAO.TYPE_3KCORESNP ).iterator();
         	while(itCoreSnpsDB.hasNext()) {
         		setCoreSNPDBPos.add( itCoreSnpsDB.next().getPos() );
         	}
@@ -1573,7 +1576,8 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     	
     	
     	isMsgboxEventSuccess = false;
-    	genomics =  (GenomicsFacade)AppContext.checkBean(genomics , "GenomicsFacade");
+    	//genomics =  (GenomicsFacade)AppContext.checkBean(genomics , "GenomicsFacade");
+    	genotype =  (GenotypeFacade)AppContext.checkBean(genomics , "GenotypeFacade");
     	workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
     	
     	Set setReadNames = new HashSet();
@@ -1594,16 +1598,16 @@ public class WorkspaceController  extends SelectorComposer<Component> {
     		setReadNames.add(locusstr);
     		
     		try {
-    			locus = genomics.getLocusByName(locusstr);
+    			locus = genotype.getGeneFromName(locusstr, AppContext.getDefaultOrganism()); // genomics.getLocusByName(locusstr);
 	    		if(locus==null) 
 	    			listNoMatch.add(locusstr);
 	    		else
 	    			setMatched.add(locus);
     		
-            } catch (InvocationTargetException e) {
+            //} catch (InvocationTargetException e) {
                 // Answer:
-                e.getCause().printStackTrace();
-                Messagebox.show(e.getCause().getMessage(), "LOCUS QUERY InvocationTargetException", Messagebox.OK,  Messagebox.EXCLAMATION);
+            //    e.getCause().printStackTrace();
+            //    Messagebox.show(e.getCause().getMessage(), "LOCUS QUERY InvocationTargetException", Messagebox.OK,  Messagebox.EXCLAMATION);
     		} catch(Exception ex) {
     			ex.printStackTrace();
     			Messagebox.show(ex.getMessage(), "LOCUS QUERY EXCEPTION", Messagebox.OK,  Messagebox.EXCLAMATION);

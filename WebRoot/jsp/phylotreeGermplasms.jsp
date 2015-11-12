@@ -1,14 +1,19 @@
-<%@ page import="org.irri.iric.portal.variety.service.VarietyFacade" %>
-<%@ page import="org.irri.iric.portal.genotype.service.GenotypeFacade" %>
-<%@ page import="org.irri.iric.portal.genotype.service.PhylotreeQueryParams" %>
-<%@ page import="org.irri.iric.portal.genotype.service.GenotypeQueryParams" %>
+<%@ page import="org.irri.iric.portal.variety.VarietyFacade" %>
+<%@ page import="org.irri.iric.portal.genotype.GenotypeFacade" %>
+<%@ page import="org.irri.iric.portal.genotype.PhylotreeQueryParams" %>
+<%@ page import="org.irri.iric.portal.genotype.GenotypeQueryParams" %>
 
 <%@ page import="org.irri.iric.portal.AppContext" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.math.BigDecimal" %>
 <%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.Enumeration" %>
+
 <%@ page import="org.irri.iric.portal.domain.Variety" %>
+
+
+
 <html>
 <head>
 	
@@ -34,6 +39,10 @@
 		
 		Object[] newicknodes = null;
 
+				
+		session.removeAttribute("phyloorder");
+		session.removeAttribute("newick");
+					
 		if(request.getParameter("varid")!=null) {
 			
 		
@@ -66,7 +75,7 @@
 				if(request.getParameter("topn")!=null) {
 					topn = Integer.parseInt(request.getParameter("topn"));
 				}
-				
+
 				
 				System.out.println("jsp: constructing tree");
 				//newicknodes = genotype.constructPhylotreeMindist(request.getParameter("scale") , request.getParameter("chr") ,Integer.parseInt(request.getParameter("start")) ,
@@ -84,18 +93,28 @@
 				
 				if(!newick.isEmpty()) {
 				
-					nvars = Integer.valueOf( (String)newicknodes[1] );
-					pairs = Long.valueOf( (String)newicknodes[2]  );
+					//nvars = Integer.valueOf( (String)newicknodes[1] );
+					//pairs = Long.valueOf( (String)newicknodes[2]  );
 					
+					nvars =Integer.valueOf(newicknodes[1].toString());
+					pairs =Integer.valueOf(newicknodes[2].toString());
+					
+					session.setAttribute("phyloorder",newicknodes[3]);
+					 
+					
+					/*
 					if(request.getParameter("tmpfile")!=null) {
-						java.io.File file = new java.io.File(AppContext.getTempDir() + request.getParameter("tmpfile") + ".newick");	
+						String newickfile=AppContext.getTempDir() + request.getParameter("tmpfile") + ".newick";
+						AppContext.debug("writing " + newickfile);
+						java.io.File file = new java.io.File(newickfile);	
 						java.io.FileWriter fw = new java.io.FileWriter(file.getAbsoluteFile());
 						java.io.BufferedWriter bw = new java.io.BufferedWriter(fw);
 						bw.write(newick);
 						bw.flush();
 						fw.close();
-						System.out.println("jsp: newick file available");
 					}
+					*/
+					System.out.println("jsp: newick file available");
 				}
 				
 			
@@ -115,7 +134,13 @@
 		
 		//newick=newick.replace("-","");
 		
-
+		session.setAttribute("newick",newick);
+		
+		StringBuffer buffnames=new StringBuffer();
+		for (Enumeration<String> e = session.getAttributeNames(); e.hasMoreElements();)
+			buffnames.append(e.nextElement() + ", ");
+		AppContext.debug("session attribute names: " + buffnames);
+		
 	%>
 
     window.onload = function(){
@@ -197,7 +222,7 @@ else
 
 
 <%
-	if(newicknodes!=null && newicknodes.length>3) {
+	if(newicknodes!=null && newicknodes.length>4) {
 		
 		VarietyFacade varietyfacade = (VarietyFacade)request.getSession().getAttribute("VarietyFacade");
 		varietyfacade =  (VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade");
@@ -205,8 +230,8 @@ else
 
 		
 		out.println("<br/><br/><br/>Node Groups Members<br/></br>");
-		Map<BigDecimal,Set<BigDecimal>> mapGroup2Varset = (Map)newicknodes[3];
-		Map<BigDecimal,String> mapGroup2Name = (Map)newicknodes[4];
+		Map<BigDecimal,Set<BigDecimal>> mapGroup2Varset = (Map)newicknodes[4];
+		Map<BigDecimal,String> mapGroup2Name = (Map)newicknodes[5];
 		Iterator<BigDecimal> itGroup = mapGroup2Varset.keySet().iterator();
 		while(itGroup.hasNext()) {
 			BigDecimal grp = itGroup.next();

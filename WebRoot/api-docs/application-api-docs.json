@@ -1,4 +1,4 @@
-{"swaggerVersion":"1.2","apiVersion":"1.0","basePath":"http://oryzasnp.org/iric-portal/ws","resourcePath":"",
+{"swaggerVersion":"1.2","apiVersion":"1.0","basePath":"http://172.29.4.215:8080/iric-portal/ws","resourcePath":"",
 "apis":[
 
 {"path":"/variety","description":"API's to query variety related data","operations":[{"nickname":"GET - getVarieties","method":"GET","summary":"All varieties", "notes":"Gets all variety objects", "type":"string","produces":["application/json"]}]},

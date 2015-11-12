@@ -7,31 +7,31 @@ import java.math.BigDecimal;
  * @author lmansueto
  *
  */
-public interface SnpsAllvars {
+public interface SnpsAllvars extends Position {
 	
 	/**
 	 * Variety Id
 	 * @return
 	 */
 	public BigDecimal getVar();
+//	
+//	/**
+//	 * Chromosome
+//	 * @return
+//	 */
+//	public Long getChr();
+//	
+//	/**
+//	 * Position
+//	 * @return
+//	 */
+//	public BigDecimal getPos();
 	
-	/**
-	 * Chromosome
-	 * @return
-	 */
-	public Long getChr();
-	
-	/**
-	 * Position
-	 * @return
-	 */
-	public BigDecimal getPos();
-	
-	/**
-	 * Reference base
-	 * @return
-	 */
-	public String getRefnuc();
+//	/**
+//	 * Reference base
+//	 * @return
+//	 */
+//	public String getRefnuc();
 	
 	/**
 	 * Variety allele at the position
@@ -40,6 +40,6 @@ public interface SnpsAllvars {
 	public String getVarnuc();
 
 	
-	public String getContig();
+//	public String getContig();
 	
 }

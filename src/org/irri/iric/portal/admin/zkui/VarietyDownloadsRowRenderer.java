@@ -34,15 +34,17 @@ public class VarietyDownloadsRowRenderer implements RowRenderer {
 		// TODO Auto-generated method stub
 	
 		Variety var = (Variety)data;
+		/*
 		Checkbox chkbox = new Checkbox();
 		listchecks.add(index, chkbox );
 		chkbox.setParent(row);
+		*/
 		
 		Label lblName = new Label();
 		lblName.setValue( var.getName());
 		lblName.setParent(row);
 		
-		listNames.add(index, var.getName() );
+		//listNames.add(index, var.getName() );
 		
 		lblName = new Label();
 		lblName.setValue( var.getIrisId() );
@@ -52,15 +54,24 @@ public class VarietyDownloadsRowRenderer implements RowRenderer {
 		createdownloadLinks(AppContext.getFastqURL() + var.getIrisId() + ".html", AppContext.getFastqURL() + var.getIrisId() + ".html", 
 				AppContext.getFastqURL() + var.getIrisId() + ".html").setParent(row );
 				*/
+		String sra= (String)mapIris2SRA.get(var.getIrisId().replace(" ", "_"));
+		if(sra==null) sra="";
+		String ers= (String)mapIris2ERS.get(var.getIrisId().replace(" ", "_"));
+		if(ers==null) ers="";
 		
-		createFastQdownloadLinks("http://www.ncbi.nlm.nih.gov/sra?LinkName=biosample_sra&from_uid=" + mapIris2SRA.get(var.getIrisId().replace(" ", "_")), 
-				"http://www.ebi.ac.uk/ena/data/view/" +  mapIris2ERS.get(var.getIrisId().replace(" ", "_")) ).setParent(row);
+		createFastQdownloadLinks("http://www.ncbi.nlm.nih.gov/sra?LinkName=biosample_sra&from_uid=" + sra, 
+				"http://www.ebi.ac.uk/ena/data/view/" + ers).setParent(row);
 
+		createdownloadLinks(AppContext.getBamURL(var.getIrisId())).setParent(row );
+		createdownloadLinks(AppContext.getVcfURL(var.getIrisId())).setParent(row );
+
+		/*
 		createdownloadLinks(AppContext.getBamURL() + var.getIrisId() + ".html", AppContext.getBamURL() + var.getIrisId().replace(" ", "_") + ".html", 
 				AppContext.getBamURL() + var.getIrisId().replace(" ", "_") + ".html").setParent(row );
 
 		createdownloadLinks(AppContext.getVcfURL() + var.getIrisId() + ".html", AppContext.getVcfURL() + var.getIrisId().replace(" ", "_") + ".html", 
 				AppContext.getVcfURL() + var.getIrisId().replace(" ", "_") + ".html").setParent(row );
+				*/
 
 		/*
 		Hbox hboxButtons = new Hbox();
@@ -103,7 +114,8 @@ public class VarietyDownloadsRowRenderer implements RowRenderer {
 		*/
 		
 	}
-	private Hbox createdownloadLinks(String href1, String href2, String href3) {
+	//private Hbox createdownloadLinks(String href1, String href2, String href3) {
+	private Hbox createdownloadLinks(String href1) {
 		Hbox hboxButtons = new Hbox();
 		
 		Button butt = new Button();
@@ -119,6 +131,7 @@ public class VarietyDownloadsRowRenderer implements RowRenderer {
 		hboxPadd1.setWidth("10px");
 		hboxButtons.appendChild(hboxPadd1);
 		
+		/*
 		butt = new Button();
 		butt.setHeight("30px");
 		butt.setWidth("55px");
@@ -140,6 +153,7 @@ public class VarietyDownloadsRowRenderer implements RowRenderer {
 		butt.setHref( href3 );
 		butt.setTarget("_rawdownload");
 		butt.setParent(hboxButtons);
+		*/
 		return hboxButtons;
 	}
 	

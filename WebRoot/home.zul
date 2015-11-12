@@ -8,6 +8,13 @@ window.Boot_progressbox = function (){}
 <?component name="newProduct" macroURI="includedMacro.zul"?>
 
 <zk  xmlns:h="native">
+
+<zscript>
+        import org.irri.iric.portal.AppContext;      
+        String paramstr=AppContext.getJBrowseDefaulttracks();
+        //DNA,msu7gff,snp3k
+</zscript>      
+
 <div align="center">
 
 <vbox align="center" pack="center" height="100%" style="background-color:white">
@@ -47,7 +54,7 @@ To cite this resource: <h:a target="_blank" href="http://nar.oxfordjournals.org/
 				<panel width="20px"  border="none"/>
 
 				<newProduct title="JBROWSE" img="/images/iric/zxc.png" desc="JBrowse"
-					details="Rice Genome Browser" href="_jbrowse.zul"/>
+					details="Rice Genome Browser" href="_jbrowse.zul?tracks=${paramstr}"/>
 				<panel width="20px"  border="none"/>
 
 				<newProduct title="HELP" img="/images/iric/help5.png" desc="Help"

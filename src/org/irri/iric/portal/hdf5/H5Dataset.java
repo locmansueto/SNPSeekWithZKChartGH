@@ -1,7 +1,6 @@
 package org.irri.iric.portal.hdf5;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -9,9 +8,6 @@ import java.util.TreeSet;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.SnpsStringDAO;
-import org.irri.iric.portal.domain.Locus;
-
-import ncsa.hdf.hdf5lib.HDF5Constants;
 import ncsa.hdf.object.Dataset;
 import ncsa.hdf.object.Group;
 import ncsa.hdf.object.h5.*;
@@ -21,15 +17,16 @@ import ncsa.hdf.object.h5.*;
 
 public abstract class H5Dataset implements SnpsStringDAO {
 	
-	private String filename;
+	protected String filename;
 	private Dataset dataset;
 	private H5File h5file;
-	private H5ReadCharmatrix matrixReader;
+	private H5ReadMatrix matrixReader;
 	
 	/*
+	 * Code to manually laod hdf5 library if not found in the system
+	 * 
 	static {
 		AppContext.debug("java.library.path=" + System.getProperty("java.library.path"));
-		
 	    try {
 	    	
 	    	
@@ -59,47 +56,18 @@ public abstract class H5Dataset implements SnpsStringDAO {
 	  
 	public H5Dataset(String filename) {
 		super();
-		
-		
 		this.filename = filename;
 		matrixReader = new H5ReadCharmatrix();
+		
+		//AppContext.debug( filename + " loaded");
 	}
-/*
-	public Dataset getDataset4() throws Exception {
-		if(dataset==null) { 
-				
-			FileFormat fileFormat = FileFormat.getFileFormat(FileFormat.FILE_TYPE_HDF5);
-		
-		     if (fileFormat == null) {
-		         System.err.println("Cannot find HDF5 FileFormat.");
-		         return null;
-		     }
-		
-		     // open the file with read and write access
-		     FileFormat testFile = fileFormat.createInstance(filename, FileFormat.READ);
-		
-		     if (testFile == null) {
-		         System.err.println("Failed to open file: " + filename);
-		         return null;
-		     }
-		
-		     // open the file and retrieve the file structure
-		     testFile.open();
-		     Group root = (Group) ((javax.swing.tree.DefaultMutableTreeNode) testFile.getRootNode()).getUserObject();
-		     dataset = (Dataset) root.getMemberList().get(0);
-		     long[] maxdims = dataset.getMaxDims();
-		        if(maxdims!=null) {
-			        StringBuffer buff = new StringBuffer();
-			        for(int idim=0; idim< maxdims.length; idim++ ) {
-			        	buff.append("hdf5 file " + filename + " dim[" + idim + "]=" + maxdims[idim] + ",");
-			        }
-			        AppContext.debug( buff.toString());
-		        }
-		}
-		return dataset;
+
+	public H5Dataset(String filename, H5ReadMatrix reader) {
+		super();
+		this.filename = filename;
+		matrixReader = reader;
 	}
-     */
-	
+
 	public Dataset getDataset() throws Exception {
 		if(dataset==null) { 
 				
@@ -109,6 +77,8 @@ public abstract class H5Dataset implements SnpsStringDAO {
 			//h5file = new H5File( filename); //, HDF5Constants.H5F_ACC_RDONLY);
 			//h5file = new H5File( filename, H5File.READ ); //, HDF5Constants.H5F_ACC_RDONLY);
 	
+			AppContext.debug( filename + " loaded");
+			
 			// open file and retrieve the file structure
 	        h5file.open();
 	        Group  root =  (Group) ((javax.swing.tree.DefaultMutableTreeNode) h5file.getRootNode()).getUserObject();
@@ -120,7 +90,8 @@ public abstract class H5Dataset implements SnpsStringDAO {
 		        for(int idim=0; idim< maxdims.length; idim++ ) {
 		        	buff.append("hdf5 file " + filename + " dim[" + idim + "]=" + maxdims[idim] + ",");
 		        }
-		        System.out.println(buff.toString());
+		        //System.out.println(buff.toString());
+		        AppContext.debug(buff.toString());
 	        }
 		}
 		return dataset;

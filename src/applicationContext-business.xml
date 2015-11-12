@@ -17,7 +17,9 @@
                    http://www.springframework.org/schema/security/spring-security-3.0.xsd   
     http://www.springframework.org/schema/aop 
     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd" > 
+    
+    <!-- default-autowire-candidates="*Postges" -->
 	
 	
 	<bean id="contextApplicationContextProvider" class="org.irri.iric.portal.ApplicationContextProvider"></bean>
@@ -38,6 +40,8 @@
    <!-- import resource="classpath:iric-dao-context.xml"/ -->
    <!-- import resource="classpath:dev_crud_maker-dao-context.xml"/ -->
    <import resource="classpath:iric_prod_crud-dao-context.xml"/>
+   
+   <import resource="classpath:misc-dao-context.xml"/>
 	
 	
 	<!--  DAO and domains generated using HibernateTools from Views are in this package -->

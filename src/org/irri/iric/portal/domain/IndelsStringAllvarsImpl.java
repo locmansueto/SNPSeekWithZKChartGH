@@ -13,25 +13,31 @@ import org.irri.iric.portal.dao.IndelsAllvarsDAO;
 public class IndelsStringAllvarsImpl implements IndelsStringAllvars {
 
 	private BigDecimal mismatch;
-	private Map<BigDecimal, IndelsAllvars> mapPos2IndelCalls;
+	private Map<Position, IndelsAllvars> mapPos2IndelCalls;
 	private BigDecimal var;
 	//private String varnuc;
 	//private Map mapPosidx2Allele2;
 	private Long chr;
+	private String contig;
 
 	private SnpsStringAllvars snpstring;
 	
-	public IndelsStringAllvarsImpl(BigDecimal var, Map mapPos2IndelCalls, BigDecimal mismatch, Long chr) {
+	public IndelsStringAllvarsImpl(BigDecimal var, Map<Position, IndelsAllvars> mapPos2IndelCalls, BigDecimal mismatch,  String contig) {
 		super();
 		this.var = var;
 		this.mismatch = mismatch;
 		this.mapPos2IndelCalls = mapPos2IndelCalls;
-		this.chr = chr;
+		
+		try {
+			this.chr = Long.valueOf(contig);
+		} catch(Exception ex) {
+			this.contig = contig;	
+		}
 	}
 
 	
 	@Override
-	public BigDecimal getAllele1(BigDecimal pos) {
+	public BigDecimal getAllele1(Position pos) {
 		// TODO Auto-generated method stub
 		IndelsAllvars indel = mapPos2IndelCalls.get(pos);
 		if(indel!=null) return indel.getAllele1();
@@ -39,7 +45,7 @@ public class IndelsStringAllvarsImpl implements IndelsStringAllvars {
 	}
 
 	@Override
-	public BigDecimal getAllele2(BigDecimal pos) {
+	public BigDecimal getAllele2(Position pos) {
 		// TODO Auto-generated method stub
 		IndelsAllvars indel = mapPos2IndelCalls.get(pos);
 		if(indel!=null) return indel.getAllele2();
@@ -54,20 +60,20 @@ public class IndelsStringAllvarsImpl implements IndelsStringAllvars {
 		
 		return this.chr;
 	}
-
-	@Override
-	public BigDecimal getPos() {
-		// TODO Auto-generated method stub
-		if(snpstring==null) return null;
-		return snpstring.getPos();
-	}
-
-	@Override
-	public String getRefnuc() {
-		// TODO Auto-generated method stub
-		if(snpstring==null) return null;
-		return snpstring.getRefnuc();
-	}
+//
+//	@Override
+//	public BigDecimal getPosition() {
+//		// TODO Auto-generated method stub
+//		if(snpstring==null) return null;
+//		return snpstring.getPosition();
+//	}
+//
+//	@Override
+//	public String getRefcall() {
+//		// TODO Auto-generated method stub
+//		if(snpstring==null) return null;
+//		return snpstring.getRefcall();
+//	}
 
 	@Override
 	public String getVarnuc() {
@@ -89,12 +95,14 @@ public class IndelsStringAllvarsImpl implements IndelsStringAllvars {
 		return snpstring.getMismatch().add(mismatch);
 	}
 
+	/*
 	@Override
 	public Map<Integer, Character> getMapPosIdx2Allele2() {
 		// TODO Auto-generated method stub
 		if(snpstring==null) return null;
 		return snpstring.getMapPosIdx2Allele2();
 	}
+	
 
 	@Override
 	public Set getNonsynIdxset() {
@@ -102,11 +110,13 @@ public class IndelsStringAllvarsImpl implements IndelsStringAllvars {
 		if(snpstring==null) return null;
 		return snpstring.getNonsynIdxset();
 	}
+	*/
 
 
 	@Override
-	public Map<BigDecimal, IndelsAllvars> getMapPos2Indels() {
+	public Map<Position, IndelsAllvars> getMapPos2Indels() {
 		// TODO Auto-generated method stub
+		
 		return mapPos2IndelCalls;
 	}
 
@@ -143,25 +153,58 @@ public class IndelsStringAllvarsImpl implements IndelsStringAllvars {
 	@Override
 	public Set getDonorPosset() {
 		// TODO Auto-generated method stub
-		return null;
+		if(snpstring==null) return null;
+		return  snpstring.getDonorPosset() ;
 	}
 
 
 	@Override
 	public Set getAcceptorPosset() {
 		// TODO Auto-generated method stub
-		return null;
+		if(snpstring==null) return null;
+		return snpstring.getAcceptorPosset();
+	}
+	
+	
+
+
+	@Override
+	public Map<Position, Character> getMapPos2Allele2() {
+		// TODO Auto-generated method stub
+		if(snpstring==null) return null;
+		return snpstring.getMapPos2Allele2();
+	}
+
+
+	@Override
+	public Set getNonsynPosset() {
+		// TODO Auto-generated method stub
+		if(snpstring==null) return null;
+		return snpstring.getNonsynPosset();
 	}
 
 
 	@Override
 	public String getContig() {
 		// TODO Auto-generated method stub
+		if(chr==null) return contig;
 		if(getChr()>9)
 			return "chr" + getChr();
 		else 
 			return "chr0" + getChr();
 	}
+
+
+	
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return var.toString() + ", " + getContig() + " " + getChr() + " " + mapPos2IndelCalls;
+	}
+
+
+	
 
 	
 	

@@ -1,0 +1,10 @@
+-- count table rows
+for TABLE in $(psql iric6 -c "\dt" | awk '{print $3}'); do \
+psql iric6 -c "select '$TABLE', count(*) from $TABLE;" | grep -A1 "\-\-\-\-" | tail -1; done
+
+
+for TABLE in $(psql iric7 -c "\dt" | awk '{print $3}'); do \
+psql iric7 -c "select '$TABLE', count(*) from $TABLE;" | grep -A1 "\-\-\-\-" | tail -1; done
+
+for TABLE in $(psql iric7 -c "\dt" | awk '{print $3}'); do \
+psql iric7 -c "select '$TABLE', max("$TABLE"_ID) from $TABLE;" | grep -A1 "\-\-\-\-" | tail -1; done

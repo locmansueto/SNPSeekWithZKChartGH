@@ -16,10 +16,8 @@ import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.chado.domain.MismatchCount;
 import org.irri.iric.portal.chado.domain.VCvtermLocuscount;
 import org.irri.iric.portal.domain.Locus;
-import org.irri.iric.portal.domain.SnpsAllvarsRefMismatch;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;

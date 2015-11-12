@@ -15,7 +15,7 @@ import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.SystemCommandExecutor;
 import org.irri.iric.portal.dao.LocalAlignmentDAO;
 import org.irri.iric.portal.domain.LocalAlignmentImpl;
-import org.irri.iric.portal.genomics.service.LocalAlignmentQuery;
+import org.irri.iric.portal.genomics.LocalAlignmentQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Repository;

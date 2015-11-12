@@ -1,11 +1,12 @@
-<%@ page import="org.irri.iric.portal.domain.VariantStringData" %>
-<%@ page import="org.irri.iric.portal.domain.VariantTable" %>
+<%@ page import="org.irri.iric.portal.genotype.VariantStringData" %>
+<%@ page import="org.irri.iric.portal.genotype.VariantTable" %>
+<%@ page import="org.irri.iric.portal.domain.Position" %>
 <%@ page import="org.irri.iric.portal.genotype.service.VariantTableArraysImpl" %>
 <%@ page import="org.irri.iric.portal.genotype.service.VariantAlignmentTableArraysImpl" %>
 <%@ page import="org.irri.iric.portal.dao.ListItemsDAO" %>
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import="java.text.DecimalFormat" %> 
-<%@ page import="java.math.BigDecimal" %>
+<!-- %@ page import="java.math.BigDecimal" % -->
 
 <html lang="en">
 <head>
@@ -78,9 +79,9 @@ var MySeqs = [];
 			
 			DecimalFormat formatter = new DecimalFormat("#0.00");     
 			System.out.println(formatter.format(4.0));
-			BigDecimal[] pos = alignmentTable.getPosition();
+			Position[] pos = alignmentTable.getPosition();
 			for(int i=0; i<pos.length; i++) {
-				String strpos =  formatter.format(pos[i].doubleValue()).replace(".00", "");
+				String strpos =  formatter.format(pos[i].getPosition().doubleValue()).replace(".00", "");
 				buffMapPos.append( "\""+ i + "\" : \"" + strpos + "\"");
 				if(i<pos.length-1) buffMapPos.append(",");
 			}

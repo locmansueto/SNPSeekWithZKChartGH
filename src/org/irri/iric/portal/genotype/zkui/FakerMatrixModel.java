@@ -21,11 +21,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
-import org.irri.iric.portal.domain.VariantStringData;
-import org.irri.iric.portal.domain.VariantTable;
-import org.irri.iric.portal.genotype.service.GenotypeQueryParams;
+import org.irri.iric.portal.genotype.GenotypeQueryParams;
+import org.irri.iric.portal.genotype.VariantStringData;
+import org.irri.iric.portal.genotype.VariantTable;
 import org.irri.iric.portal.genotype.service.VariantTableRandomImpl;
 //import org.zkoss.addon.MatrixModel;
 import org.zkoss.lang.Objects;
@@ -44,7 +45,8 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 	private int frozenCols=3;
 	private VariantStringData data;
 	private String message;
-	private Set<Integer> setGapIdx;
+	private Set<Position> setGapPos;
+	private Map<Integer,Position> mapIdx2Pos;
 	private Map<Integer,String> mapDeletionIdx2Refnuc;
 	
 	// a rendering function
@@ -158,7 +160,10 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 		super();
 		// TODO Auto-generated constructor stub
 		this.data=data;
-		if(data.hasIndel()) setGapIdx = data.getIndelstringdata().getSetGapIdx();
+		if(data.hasIndel()) setGapPos = data.getIndelstringdata().getSetPosGapRegion(); // .getSetGapIdx();
+		
+		mapIdx2Pos=data.getMapIdx2Pos();
+		
 		 _FakerMatrixModel(data.getListVariantsString(), data.getListPos());
 	}
 
@@ -320,10 +325,11 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 	@Override
 	public Cell getCellAt(Row rowData, int columnIndex) {
 		
-		if(setGapIdx==null)
+		if(setGapPos==null)
 			return (Cell) rowData.get(columnIndex);
 		else {
-			if(setGapIdx.contains(columnIndex)) return (Cell)"-";
+			//if(setGapIdx.contains(columnIndex)) return (Cell)"-";
+			if(setGapPos.contains(columnIndex)) return (Cell)"-";
 		}
 		return (Cell)"";
 	}
@@ -338,8 +344,8 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params) {
 		// TODO Auto-generated method stub
 		this.data=data;
-		if(data.hasIndel()) setGapIdx = data.getIndelstringdata().getSetGapIdx();
-
+		if(data.hasIndel()) setGapPos = data.getIndelstringdata().getSetPosGapRegion(); // .getSetGapPos();
+		mapIdx2Pos=data.getMapIdx2Pos();
 		 _FakerMatrixModel(data.getListVariantsString(), data.getListPos());
 	}
 

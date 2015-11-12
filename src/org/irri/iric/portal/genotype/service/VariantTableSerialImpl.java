@@ -9,9 +9,10 @@ import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
-import org.irri.iric.portal.domain.VariantStringData;
-import org.irri.iric.portal.domain.VariantTable;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.genotype.GenotypeQueryParams;
+import org.irri.iric.portal.genotype.VariantStringData;
+import org.irri.iric.portal.genotype.VariantTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class VariantTableSerialImpl implements VariantTable {
@@ -68,7 +69,7 @@ public class VariantTableSerialImpl implements VariantTable {
 		
 		
 		
-		listitemdao = (ListItemsDAO)AppContext.checkBean(listitemdao, "ListItemsDAO");
+		listitemdao = (ListItemsDAO)AppContext.checkBean(listitemdao, "ListItems");
 		Map<BigDecimal, Variety> mapVarid2Variety = listitemdao.getMapId2Variety();
 		List listTable= data.getListVariantsString();
 	
@@ -82,7 +83,7 @@ public class VariantTableSerialImpl implements VariantTable {
 				buff1.append( mapVarid2Variety.get( snpstr.getVar() ).getName()).append(delimiter);
 				buff1.append(snpstr.getMismatch()).append(delimiter);
 			}
-			String allstr[]= IndelStringService.createVarietyString(snpstr,data);
+			String allstr[]= IndelStringHDF5nRDBMSHybridService.createVarietyString(snpstr,data);
 			for(int j=0;j<allstr.length;j++)
 			{
 				if(splitAllele2) {

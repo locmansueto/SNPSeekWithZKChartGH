@@ -2,11 +2,9 @@ package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
 
-public interface MultiReferencePosition {
+public interface MultiReferencePosition extends Position {
 
 	String getOrganism();
-	String getContig();
-	BigDecimal getPosition();
-	String getRefcall();
+
 
 }

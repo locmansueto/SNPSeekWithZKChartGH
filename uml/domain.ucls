@@ -1,0 +1,1021 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <interface id="1" language="java" name="org.irri.iric.portal.domain.LocalAlignment" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/LocalAlignment.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1077" y="233"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="2" language="java" name="org.irri.iric.portal.domain.VarietyPlusPlus" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/VarietyPlusPlus.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="105" y="1408"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="3" language="java" name="org.irri.iric.portal.domain.Phenotype" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Phenotype.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="597" y="1054"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="4" language="java" name="org.irri.iric.portal.domain.Passport" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Passport.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="308" y="922"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="5" language="java" name="org.irri.iric.portal.domain.MultiReferenceLocus" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/MultiReferenceLocus.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="856" y="278"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="6" language="java" name="org.irri.iric.portal.domain.Variety" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Variety.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="105" y="1009"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="7" language="java" name="org.irri.iric.portal.domain.SnpsAllvarsPos" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsAllvarsPos.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1570" y="1082"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="8" language="java" name="org.irri.iric.portal.domain.LocusLocalAlignment" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/LocusLocalAlignment.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="856" y="93"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="9" language="java" name="org.irri.iric.portal.domain.CvTermLocusCount" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/CvTermLocusCount.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="964" y="648"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="10" language="java" name="org.irri.iric.portal.domain.Position" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Position.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1569" y="860"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="11" language="java" name="org.irri.iric.portal.domain.IndelsAllvarsPos" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/IndelsAllvarsPos.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1570" y="1288"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="12" language="java" name="org.irri.iric.portal.domain.IndelsStringAllvars" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/IndelsStringAllvars.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1584" y="666"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="13" language="java" name="org.irri.iric.portal.domain.Cv" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Cv.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-168" y="341"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="14" language="java" name="org.irri.iric.portal.domain.SnpsStringAllvars" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsStringAllvars.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1584" y="433"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="15" language="java" name="org.irri.iric.portal.domain.SnpsNonsynAllele" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsNonsynAllele.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2063" y="1089"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="16" language="java" name="org.irri.iric.portal.domain.Locus" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Locus.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="579" y="189"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="17" language="java" name="org.irri.iric.portal.domain.MultiReferencePosition" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/MultiReferencePosition.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1801" y="935"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="18" language="java" name="org.irri.iric.portal.domain.SnpsSpliceDonor" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsSpliceDonor.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2271" y="1311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="19" language="java" name="org.irri.iric.portal.domain.Sequence" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Sequence.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="88" y="75"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="20" language="java" name="org.irri.iric.portal.domain.IndelsAllvarsStr" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/IndelsAllvarsStr.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1395" y="1307"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="21" language="java" name="org.irri.iric.portal.domain.Gene" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Gene.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="857" y="382"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="22" language="java" name="org.irri.iric.portal.domain.VarietyPlus" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/VarietyPlus.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="105" y="1185"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="23" language="java" name="org.irri.iric.portal.domain.SnpsSynAllele" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsSynAllele.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2271" y="1079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="24" language="java" name="org.irri.iric.portal.domain.MultiReferenceConversion" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/MultiReferenceConversion.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1029" y="1084"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="25" language="java" name="org.irri.iric.portal.domain.Organism" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Organism.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-138" y="71"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="26" language="java" name="org.irri.iric.portal.domain.Scaffold" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Scaffold.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="53" y="328"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="27" language="java" name="org.irri.iric.portal.domain.SnpsAllvars" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsAllvars.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1395" y="978"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="28" language="java" name="org.irri.iric.portal.domain.VarietyDistance" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/VarietyDistance.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="411" y="1059"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="29" language="java" name="org.irri.iric.portal.domain.CvTerm" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/CvTerm.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="312" y="359"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="30" language="java" name="org.irri.iric.portal.domain.Snps2VarsCountmismatch" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Snps2VarsCountmismatch.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1842" y="1335"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="31" language="java" name="org.irri.iric.portal.domain.SnpsSpliceAcceptor" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsSpliceAcceptor.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2063" y="1328"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="32" language="java" name="org.irri.iric.portal.domain.IndelsAllvars" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/IndelsAllvars.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1395" y="1155"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="33" language="java" name="org.irri.iric.portal.domain.MergedLoci" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/MergedLoci.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="579" y="442"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="34" language="java" name="org.irri.iric.portal.domain.Snp" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Snp.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2271" y="892"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="35" language="java" name="org.irri.iric.portal.domain.CvTermUniqueValues" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/CvTermUniqueValues.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-119" y="629"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="36" language="java" name="org.irri.iric.portal.chado.oracle.domain.Feature" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/Feature.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="89" y="191"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="37" language="java" name="org.irri.iric.portal.chado.domain.VCvtermLocuscount" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/domain/VCvtermLocuscount.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="965" y="793"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="38" language="java" name="org.irri.iric.portal.chado.oracle.domain.VIricstockDistance" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VIricstockDistance.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="411" y="1196"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="39" language="java" name="org.irri.iric.portal.domain.Snps2VarsCountmismatchImpl" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Snps2VarsCountmismatchImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1845" y="1451"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="40" language="java" name="org.irri.iric.portal.chado.oracle.domain.Cv" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/Cv.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-166" y="454"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="41" language="java" name="org.irri.iric.portal.chado.oracle.domain.VSnpInExon" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VSnpInExon.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2271" y="993"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="42" language="java" name="org.irri.iric.portal.chado.oracle.domain.VIricstockPhenotype" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VIricstockPhenotype.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="597" y="1193"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="43" language="java" name="org.irri.iric.portal.chado.oracle.domain.VScaffoldsOrganism" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VScaffoldsOrganism.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="54" y="449"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="44" language="java" name="org.irri.iric.portal.chado.oracle.domain.VSnpSplicedonor" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VSnpSplicedonor.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2271" y="1436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="45" language="java" name="org.irri.iric.portal.chado.oracle.domain.VSnpSynallelePos" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VSnpSynallelePos.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2271" y="1191"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="46" language="java" name="org.irri.iric.portal.chado.oracle.domain.VSnpNonsynallelePos" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VSnpNonsynallelePos.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2063" y="1195"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="47" language="java" name="org.irri.iric.portal.chado.oracle.domain.Organism" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/Organism.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-137" y="178"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="48" language="java" name="org.irri.iric.portal.chado.oracle.domain.VSnpSpliceacceptor" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VSnpSpliceacceptor.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2063" y="1437"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="49" language="java" name="org.irri.iric.portal.chado.oracle.domain.VGoCvtermpath" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VGoCvtermpath.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="196" y="639"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="50" language="java" name="org.irri.iric.portal.chado.oracle.domain.VIricstockPassportValues" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VIricstockPassportValues.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="196" y="731"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="51" language="java" name="org.irri.iric.portal.chado.oracle.domain.VIricstockPhenotypeQualval" 
+    project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VIricstockPhenotypeQualval.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-16" y="730"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="52" language="java" name="org.irri.iric.portal.chado.oracle.domain.VIricstockPhenotypeQuanval" 
+    project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VIricstockPhenotypeQuanval.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-119" y="806"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="53" language="java" name="org.irri.iric.portal.chado.oracle.domain.VLocusCvtermCvtermpath" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VLocusCvtermCvtermpath.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="312" y="189"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="54" language="java" name="org.irri.iric.portal.chado.oracle.domain.VLocusCvtermpathIric" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VLocusCvtermpathIric.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="609" y="714"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="55" language="java" name="org.irri.iric.portal.chado.oracle.domain.VLocusCvtermpathMsu7" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VLocusCvtermpathMsu7.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="534" y="795"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="56" language="java" name="org.irri.iric.portal.chado.oracle.domain.VLocusCvtermpathRap" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VLocusCvtermpathRap.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="408" y="714"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="57" language="java" name="org.irri.iric.portal.chado.oracle.domain.VLocusMergedNotes" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VLocusMergedNotes.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="788" y="714"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="58" language="java" name="org.irri.iric.portal.chado.oracle.domain.VGene" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VGene.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="857" y="468"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="59" language="java" name="org.irri.iric.portal.chado.oracle.domain.VLocusNotes" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VLocusNotes.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="788" y="621"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="60" language="java" name="org.irri.iric.portal.domain.LocalAlignmentImpl" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/LocalAlignmentImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1076" y="438"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="61" language="java" name="org.irri.iric.portal.ws.entity.LocusLocalAlignmentWS" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/ws/entity/LocusLocalAlignmentWS.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1221" y="548"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="62" language="java" name="org.irri.iric.portal.domain.IndelsAllvarsStrImpl" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/IndelsAllvarsStrImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1395" y="1440"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="63" language="java" name="org.irri.iric.portal.chado.oracle.domain.VIndelRefposindex" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VIndelRefposindex.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1570" y="1445"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="64" language="java" name="org.irri.iric.portal.chado.oracle.domain.VSnpRefposindex" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VSnpRefposindex.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1806" y="1081"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="65" language="java" name="org.irri.iric.portal.domain.VarietyPlusPlusImpl" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/VarietyPlusPlusImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="390" y="1407"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="66" language="java" name="org.irri.iric.portal.chado.oracle.domain.VIricstocksByPhenotype" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VIricstocksByPhenotype.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="218" y="1293"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="67" language="java" name="org.irri.iric.portal.chado.oracle.domain.VIricstocksByPassport" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VIricstocksByPassport.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="8" y="1299"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="68" language="java" name="org.irri.iric.portal.domain.IndelsStringAllvarsImpl" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/IndelsStringAllvarsImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1230" y="802"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="69" language="java" name="org.irri.iric.portal.domain.SnpsStringAllvarsImpl" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsStringAllvarsImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1835" y="729"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="70" language="java" name="org.irri.iric.portal.chado.oracle.domain.VIricstockPassport" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/chado/oracle/domain/VIricstockPassport.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="535" y="922"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="71" language="java" name="org.irri.iric.portal.chado.domain.VConvertRefposPrecomp" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/domain/VConvertRefposPrecomp.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="909" y="1252"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="72" language="java" name="org.irri.iric.portal.chado.domain.VConvertRefposition" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/chado/domain/VConvertRefposition.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1103" y="1252"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="73" language="java" name="org.irri.iric.portal.domain.MultiReferencePositionImpl" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/MultiReferencePositionImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2022" y="935"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="74" language="java" name="org.irri.iric.portal.domain.PositionImpl" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/PositionImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1778" y="856"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <note id="75">    
+    <position height="77" width="253" x="1452" y="225"/>    
+    <text><![CDATA[Variant domain models]]>
+    </text>  
+  </note>  
+  <note id="76">    
+    <position height="44" width="166" x="496" y="12"/>    
+    <text><![CDATA[Loci domain models]]>
+    </text>  
+  </note>  
+  <note id="77">    
+    <position height="65" width="161" x="-24" y="507"/>    
+    <text><![CDATA[Ontology domain models]]>
+    </text>  
+  </note>  
+  <note id="78">    
+    <position height="64" width="189" x="31" y="803"/>    
+    <text><![CDATA[Variety domain models]]>
+    </text>  
+  </note>  
+  <realization id="79">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="35"/>  
+  </realization>  
+  <realization id="80">    
+    <end type="SOURCE" refId="63"/>    
+    <end type="TARGET" refId="11"/>  
+  </realization>  
+  <generalization id="81">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="14"/>  
+  </generalization>  
+  <realization id="82">    
+    <end type="SOURCE" refId="67"/>    
+    <end type="TARGET" refId="22"/>  
+  </realization>  
+  <realization id="83">    
+    <end type="SOURCE" refId="37"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <generalization id="84">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="16"/>  
+  </generalization>  
+  <realization id="85">    
+    <end type="SOURCE" refId="47"/>    
+    <end type="TARGET" refId="25"/>  
+  </realization>  
+  <realization id="86">    
+    <end type="SOURCE" refId="43"/>    
+    <end type="TARGET" refId="26"/>  
+  </realization>  
+  <association id="87">    
+    <end type="SOURCE" refId="68" navigable="false" variant="ASSOCIATION">      
+      <attribute id="88" name="mapPos2IndelCalls">        
+        <position height="0" width="0" x="-394" y="-195"/>      
+      </attribute>      
+      <multiplicity id="89" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-394" y="-195"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="32" navigable="true" variant="ASSOCIATION"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="90">    
+    <end type="SOURCE" refId="40"/>    
+    <end type="TARGET" refId="13"/>  
+  </realization>  
+  <realization id="91">    
+    <end type="SOURCE" refId="59"/>    
+    <end type="TARGET" refId="5"/>  
+  </realization>  
+  <realization id="92">    
+    <end type="SOURCE" refId="56"/>    
+    <end type="TARGET" refId="29"/>  
+  </realization>  
+  <generalization id="93">    
+    <end type="SOURCE" refId="33"/>    
+    <end type="TARGET" refId="16"/>  
+  </generalization>  
+  <realization id="94">    
+    <end type="SOURCE" refId="72"/>    
+    <end type="TARGET" refId="24"/>  
+  </realization>  
+  <realization id="95">    
+    <end type="SOURCE" refId="54"/>    
+    <end type="TARGET" refId="29"/>  
+  </realization>  
+  <realization id="96">    
+    <end type="SOURCE" refId="64"/>    
+    <end type="TARGET" refId="7"/>  
+  </realization>  
+  <realization id="97">    
+    <end type="SOURCE" refId="62"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <realization id="98">    
+    <end type="SOURCE" refId="55"/>    
+    <end type="TARGET" refId="29"/>  
+  </realization>  
+  <generalization id="99">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <realization id="100">    
+    <end type="SOURCE" refId="51"/>    
+    <end type="TARGET" refId="35"/>  
+  </realization>  
+  <realization id="101">    
+    <end type="SOURCE" refId="41"/>    
+    <end type="TARGET" refId="34"/>  
+  </realization>  
+  <realization id="102">    
+    <end type="SOURCE" refId="68"/>    
+    <end type="TARGET" refId="12"/>  
+  </realization>  
+  <realization id="103">    
+    <end type="SOURCE" refId="65"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <realization id="104">    
+    <end type="SOURCE" refId="53"/>    
+    <end type="TARGET" refId="16"/>  
+  </realization>  
+  <realization id="105">    
+    <end type="SOURCE" refId="70"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <realization id="106">    
+    <end type="SOURCE" refId="54"/>    
+    <end type="TARGET" refId="33"/>  
+  </realization>  
+  <realization id="107">    
+    <end type="SOURCE" refId="36"/>    
+    <end type="TARGET" refId="19"/>  
+  </realization>  
+  <generalization id="108">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="109">    
+    <end type="SOURCE" refId="65" navigable="false" variant="ASSOCIATION">      
+      <attribute id="110" name="varplus">        
+        <position height="0" width="0" x="-2126" y="866"/>      
+      </attribute>      
+      <multiplicity id="111" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2126" y="866"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true" variant="ASSOCIATION"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="112">    
+    <end type="SOURCE" refId="57"/>    
+    <end type="TARGET" refId="33"/>  
+  </realization>  
+  <realization id="113">    
+    <end type="SOURCE" refId="44"/>    
+    <end type="TARGET" refId="18"/>  
+  </realization>  
+  <generalization id="114">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="32"/>  
+  </generalization>  
+  <generalization id="115">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <realization id="116">    
+    <end type="SOURCE" refId="66"/>    
+    <end type="TARGET" refId="22"/>  
+  </realization>  
+  <realization id="117">    
+    <end type="SOURCE" refId="73"/>    
+    <end type="TARGET" refId="17"/>  
+  </realization>  
+  <association id="118">    
+    <end type="SOURCE" refId="61" navigable="false" variant="ASSOCIATION">      
+      <attribute id="119" name="localalignment">        
+        <position height="0" width="0" x="347" y="-684"/>      
+      </attribute>      
+      <multiplicity id="120" minimum="0" maximum="1">        
+        <position height="0" width="0" x="347" y="-684"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="60" navigable="true" variant="ASSOCIATION"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="121">    
+    <end type="SOURCE" refId="42"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <realization id="122">    
+    <end type="SOURCE" refId="53"/>    
+    <end type="TARGET" refId="29"/>  
+  </realization>  
+  <realization id="123">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="28"/>  
+  </realization>  
+  <realization id="124">    
+    <end type="SOURCE" refId="52"/>    
+    <end type="TARGET" refId="35"/>  
+  </realization>  
+  <realization id="125">    
+    <end type="SOURCE" refId="46"/>    
+    <end type="TARGET" refId="15"/>  
+  </realization>  
+  <generalization id="126">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="127">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="128">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <realization id="129">    
+    <end type="SOURCE" refId="49"/>    
+    <end type="TARGET" refId="35"/>  
+  </realization>  
+  <realization id="130">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="30"/>  
+  </realization>  
+  <generalization id="131">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="22"/>  
+  </generalization>  
+  <realization id="132">    
+    <end type="SOURCE" refId="58"/>    
+    <end type="TARGET" refId="21"/>  
+  </realization>  
+  <generalization id="133">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="16"/>  
+  </generalization>  
+  <realization id="134">    
+    <end type="SOURCE" refId="74"/>    
+    <end type="TARGET" refId="10"/>  
+  </realization>  
+  <generalization id="135">    
+    <end type="SOURCE" refId="32"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <realization id="136">    
+    <end type="SOURCE" refId="69"/>    
+    <end type="TARGET" refId="14"/>  
+  </realization>  
+  <realization id="137">    
+    <end type="SOURCE" refId="45"/>    
+    <end type="TARGET" refId="23"/>  
+  </realization>  
+  <realization id="138">    
+    <end type="SOURCE" refId="56"/>    
+    <end type="TARGET" refId="33"/>  
+  </realization>  
+  <realization id="139">    
+    <end type="SOURCE" refId="48"/>    
+    <end type="TARGET" refId="31"/>  
+  </realization>  
+  <realization id="140">    
+    <end type="SOURCE" refId="61"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <realization id="141">    
+    <end type="SOURCE" refId="55"/>    
+    <end type="TARGET" refId="33"/>  
+  </realization>  
+  <realization id="142">    
+    <end type="SOURCE" refId="60"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <association id="143">    
+    <end type="SOURCE" refId="68" navigable="false" variant="ASSOCIATION">      
+      <attribute id="144" name="snpstring">        
+        <position height="0" width="0" x="-276" y="150"/>      
+      </attribute>      
+      <multiplicity id="145" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-276" y="150"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true" variant="ASSOCIATION"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="146">    
+    <end type="SOURCE" refId="71"/>    
+    <end type="TARGET" refId="24"/>  
+  </realization>  
+  <generalization id="147">    
+    <end type="SOURCE" refId="57"/>    
+    <end type="TARGET" refId="59"/>  
+  </generalization>  
+  <association id="148">    
+    <end type="SOURCE" refId="69" navigable="false" variant="ASSOCIATION">      
+      <attribute id="149" name="nonsynPosset">        
+        <position height="18" width="77" x="1650" y="778"/>      
+      </attribute>      
+      <multiplicity id="150" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-408" y="-147"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true" variant="ASSOCIATION"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="151">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false" static="false"/>    
+    <operations public="false" package="false" protected="false" private="false" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

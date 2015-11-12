@@ -17,7 +17,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONException;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.ListItemsDAO;
-import org.irri.iric.portal.variety.service.VarietyFacade;
+import org.irri.iric.portal.variety.VarietyFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -250,21 +250,21 @@ public class VarietyWS {
 		  }
 	  }  
 	  
-	  @GET
-	  @Path("/passports/{passid}")
-	  @Produces("application/json")
-	  public Response getPassport4AllVarieties(@PathParam("passid") String sPassId) throws JSONException {
-			
-		  try {
-			List vars =  variety.getVarietyByPassport( sPassId);
-			
-			ObjectMapper mapper = new ObjectMapper();
-			return Response.status(200).entity( AppContext.replaceString(mapper.writeValueAsString(vars), mapVarReplace )).build();
-		  } catch(Exception ex)
-		  {
-			  throw new JSONException(ex);
-		  }
-	  }
+//	  @GET
+//	  @Path("/passports/{passid}")
+//	  @Produces("application/json")
+//	  public Response getPassport4AllVarieties(@PathParam("passid") String sPassId) throws JSONException {
+//			
+//		  try {
+//			List vars =  variety.getVarietyByPassport( sPassId);
+//			
+//			ObjectMapper mapper = new ObjectMapper();
+//			return Response.status(200).entity( AppContext.replaceString(mapper.writeValueAsString(vars), mapVarReplace )).build();
+//		  } catch(Exception ex)
+//		  {
+//			  throw new JSONException(ex);
+//		  }
+//	  }
 
 	
 }

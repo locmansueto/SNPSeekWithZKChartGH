@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.CvTermUniqueValues;
-import org.irri.iric.portal.variety.service.VarietyFacade;
+import org.irri.iric.portal.variety.VarietyFacade;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.SimpleListModel;
 

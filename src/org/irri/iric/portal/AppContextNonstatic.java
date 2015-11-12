@@ -1,7 +1,7 @@
 package org.irri.iric.portal;
 
 import javax.servlet.*;
-import org.apache.catalina.core.ApplicationFilterConfig;
+//import org.apache.catalina.core.ApplicationFilterConfig;
 
 public class AppContextNonstatic {
 

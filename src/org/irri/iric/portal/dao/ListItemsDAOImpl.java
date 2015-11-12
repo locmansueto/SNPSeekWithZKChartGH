@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.chado.dao.VGoOrganismDAO;
-import org.irri.iric.portal.chado.dao.VLocusCvtermDAO;
-import org.irri.iric.portal.chado.domain.VGoOrganism;
+import org.irri.iric.portal.domain.Cv;
+//import org.irri.iric.portal.chado.oracle.dao.VGoOrganismDAO;
 import org.irri.iric.portal.domain.CvTerm;
 import org.irri.iric.portal.domain.Gene;
 import org.irri.iric.portal.domain.Organism;
@@ -22,12 +22,17 @@ import org.irri.iric.portal.domain.Scaffold;
 import org.irri.iric.portal.domain.Variety;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-@Service("ListItemsDAO")
+//@Service(value={"ListItemsDAO","ListItemsDAOPostges"})
+@Service("ListItems")
 public class ListItemsDAOImpl implements  ListItemsDAO {
 
+	@Autowired
+	private CvDAO cvDAO; 
+
+	
 	@Autowired
 	private GeneDAO geneDAO; 
 	@Autowired
@@ -35,25 +40,27 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	//@Qualifier("VarietyBasicprop2DAO")
 	private VarietyDAO germdao;
 
+	/*
 	@Autowired
 	@Qualifier("IricStockDAO")
 	//@Qualifier("VIricstockBoxcodeDAO")
 	private VarietyDAO iricstockdao;
+	*/
 	
-	@Autowired
-	@Qualifier("VCvPassportDAO")
+	//@Autowired
+	//@Qualifier("VCvPassportDAOPostges")
 	private CvTermDAO cvtermsPassportdao;
 	
-	@Autowired
-	@Qualifier("VCvPhenotypeDAO")
+	//@Autowired
+	//@Qualifier("VCvPhenotypeDAOPostges")
 	private CvTermDAO cvtermsPhenotypedao;
 
 	@Autowired
-	@Qualifier("ScaffoldDAO")
+	//@Qualifier("ScaffoldDAO")
 	private ScaffoldDAO scaffolddao;
 
 	@Autowired
-	@Qualifier("OrganismDAO")
+	//@Qualifier("OrganismDAO")
 	private OrganismDAO organismdao;
 
 	//@Autowired
@@ -63,10 +70,18 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	//@Autowired
 	//private VLocusCvtermDAO cvtermlocusdao;
 	
-	@Autowired
-	private VGoOrganismDAO gotermorganismdao;
+	//@Autowired
+	//@Qualifier("VGoOrganismDAOPostges")
+	private CvTermDAO gotermorganismdao;
+	//private VGoOrganismDAO gotermorganismdao;
 	
+	
+	//@Autowired
+	//@Qualifier("VPatoOrganismDAOPostges")
+	private CvTermDAO patotermorganismdao;
 
+	
+	
 	private Map<String,List> mapOrganismScaffolds = new HashMap();
 	private Map<String,List> mapCVOrg2Cvterms = new HashMap();
 	
@@ -89,7 +104,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	public static boolean lockVarietyReader = false;
 	
 	
-	private Map<String,Organism> mapOrgname2Org;
+	//private Map<String,Organism> mapOrgname2Org;
 	
 	/**
 	 * Generate all variety name lists
@@ -165,32 +180,37 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 			germnames.add( germ.getName().toUpperCase() );		
 	
 		}
+		/*
+		if(germnames.size()<3000) {
 		
-		setvars = iricstockdao.findAllVariety();
-		AppContext.info(setvars.size() + " vars from iricstock");
-		itgerm =  setvars.iterator();
-		while( itgerm.hasNext() )	
-		{
-			Variety germ = itgerm.next();
-			if(germ==null) throw new RuntimeException("germ==null");
-
-			if(mapId2Variety.containsKey(germ.getVarietyId())) continue;
-			
-			//AppContext.debug(germ.getName() + "   " + germ.getVarietyId() + "  added");
-			
-			germcount++;
-			mapId2Variety.put(germ.getVarietyId(), germ);
-			
-			if(germ.getName()==null)
-				{
-					AppContext.debug("germ..getVarnameOfGenStockSrc()==null");
-					continue;					
-				}
-
-			mapVarname2Variety.put(germ.getName().toUpperCase(), germ);
-			//germnames.add( germ.getName().toLowerCase() );
-			germnames.add( germ.getName().toUpperCase() );		
-		}	
+			setvars = iricstockdao.findAllVariety();
+			AppContext.info(setvars.size() + " vars from iricstock");
+			itgerm =  setvars.iterator();
+			while( itgerm.hasNext() )	
+			{
+				Variety germ = itgerm.next();
+				if(germ==null) throw new RuntimeException("germ==null");
+	
+				if(mapId2Variety.containsKey(germ.getVarietyId())) continue;
+				
+				//AppContext.debug(germ.getName() + "   " + germ.getVarietyId() + "  added");
+				
+				germcount++;
+				mapId2Variety.put(germ.getVarietyId(), germ);
+				
+				if(germ.getName()==null)
+					{
+						AppContext.debug("germ..getVarnameOfGenStockSrc()==null");
+						continue;					
+					}
+	
+				mapVarname2Variety.put(germ.getName().toUpperCase(), germ);
+				//germnames.add( germ.getName().toLowerCase() );
+				germnames.add( germ.getName().toUpperCase() );		
+			}	
+		
+		}
+		*/
 		
 		AppContext.info(mapId2Variety.size() + " variety Ids;  " + germnames.size()/2 + "  names");
 		
@@ -321,7 +341,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		
 		Variety var =  germdao.findVarietyByNameLike(name);
 		if(var==null) {
-			var = iricstockdao.findVarietyByNameLike(name);
+			//var = iricstockdao.findVarietyByNameLike(name);
 		}
 		return var;	
 	}
@@ -331,7 +351,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	
 		Variety var = germdao.findVarietyByName(name);
 		if(var==null) {
-			var= iricstockdao.findVarietyByName(name);
+			//var= iricstockdao.findVarietyByName(name);
 		}
 		return var;
 	}
@@ -360,18 +380,33 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		if(subpopulation.toUpperCase().equals("ALL INDICA"))
 		{
 			Set allvar = new LinkedHashSet();
+			/*
 			allvar.addAll( germdao.findAllVarietyBySubpopulation("ind1")) ;	
 			allvar.addAll( germdao.findAllVarietyBySubpopulation("ind2")) ;
 			allvar.addAll( germdao.findAllVarietyBySubpopulation("ind3")) ;
 			allvar.addAll( germdao.findAllVarietyBySubpopulation("indx")) ;
+			*/
+			
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("ind1A")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("ind1B")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("ind2")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("ind3")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("indx")) ;
+			
 			return allvar;
 		}
 		else if(subpopulation.toUpperCase().equals("ALL JAPONICA")) {
 			Set allvar = new LinkedHashSet();
+			/*
 			allvar.addAll( germdao.findAllVarietyBySubpopulation("temp")) ;	
 			allvar.addAll( germdao.findAllVarietyBySubpopulation("trop")) ;
 			allvar.addAll( germdao.findAllVarietyBySubpopulation("temp/trop")) ;
 			allvar.addAll( germdao.findAllVarietyBySubpopulation("trop/temp")) ;
+			*/
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("temp")) ;	
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("trop1")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("trop2")) ;
+			allvar.addAll( germdao.findAllVarietyBySubpopulation("japx")) ;
 			return allvar;
 		}
 		else
@@ -506,16 +541,9 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	public List getOrganisms() throws Exception {
 		// TODO Auto-generated method stub
 		organismdao = (OrganismDAO)AppContext.checkBean(organismdao, "OrganismDAO");
-		List listOrganisms =  organismdao.getOrganisms();
-		Iterator<Organism> itOrg = listOrganisms.iterator();
-		mapOrgname2Org = new HashMap();
-		while(itOrg.hasNext()) {
-			Organism org = itOrg.next();
-			mapOrgname2Org.put( org.getName(),org);
-		}
+		Map mapOrgname2Org=organismdao.getMapName2Organism();
 		
-		
-		return listOrganisms;
+		return new ArrayList(mapOrgname2Org.values());
 	}
 
 	@Override
@@ -543,6 +571,18 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		scaffolddao = (ScaffoldDAO)AppContext.checkBean(scaffolddao, "ScaffoldDAO");
 		return scaffolddao.getScaffoldLength(feature,  getOrganismByName(organism).getOrganismId() );
 	}
+	
+	private List createCvtermMap(List cvterms) {
+		//Map mapCvid2Term=new LinkedHashMap();
+		List terms=new ArrayList();
+		Iterator<CvTerm> itCvterm=cvterms.iterator();
+		while(itCvterm.hasNext()) {
+			CvTerm cvterm=itCvterm.next();
+			//mapCvid2Term.put( cvterm.getCvTermId(), cvterm.getName());
+			terms.add(cvterm.getName());
+		}
+		return terms;
+	}
 		
 	@Override
 	public List getGOTermsWithLoci(String cv, String organism) {
@@ -551,32 +591,66 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		
 		List cvterms  = mapCVOrg2Cvterms.get(cv + "-" + organism);
 		if(cvterms==null) {
-			gotermorganismdao = (VGoOrganismDAO)AppContext.checkBean(gotermorganismdao, "VGoOrganismDAO");
-			cvterms = gotermorganismdao.getAllTerms(cv, organism);
+			gotermorganismdao = (CvTermDAO)AppContext.checkBean(gotermorganismdao, "VGoOrganismDAO");
+			//cvterms = gotermorganismdao.getAllTerms(cv, organism);
+			cvterms=createCvtermMap(  gotermorganismdao.getAllTerms( this.getCvByName(cv).getCvId(), this.getOrganismByName(organism).getOrganismId()) );
 			mapCVOrg2Cvterms.put(cv + "-" + organism, cvterms);
 		}
+		AppContext.debug("getting cv terms " +  cv + " for " +  organism);
+		
 		return cvterms;
+	}
+	
+	
+	@Override
+	public List<String> getPATOTermsWithLoci(String cv, String organism) {
+		// TODO Auto-generated method stub
+		List cvterms  = mapCVOrg2Cvterms.get(cv + "-" + organism);
+		if(cvterms==null) {
+			patotermorganismdao = (CvTermDAO)AppContext.checkBean(patotermorganismdao, "VPatoOrganismDAO");
+			//cvterms = patotermorganismdao.getAllTerms(cv, organism);
+			AppContext.debug("get cvid for " + cv);
+			if(patotermorganismdao==null) AppContext.debug("patotermorganismdao==null");
+			if(getCvByName(cv)==null) AppContext.debug("getCvByName(cv)==null");
+			List allterms = patotermorganismdao.getAllTerms( this.getCvByName(cv).getCvId(), this.getOrganismByName(organism).getOrganismId());
+			if(allterms==null) AppContext.debug("allterms==null");
+			
+			cvterms = createCvtermMap( allterms );
+			mapCVOrg2Cvterms.put(cv + "-" + organism, cvterms);
+		}
 		
+		AppContext.debug("getting cv terms " +  cv + " for " +  organism);
 		
+		return cvterms;
+	}
+
+	@Override
+	public Organism getOrganismByName(String name)   {
+		
+		organismdao = (OrganismDAO)AppContext.checkBean(organismdao, "OrganismDAO");
+		Map<String, Organism> mapOrg = organismdao.getMapName2Organism();
+		AppContext.debug("getting organism " + name + " from " + mapOrg);
+		
+		return mapOrg.get(name);
 	}
 	
 	@Override
-	public Organism getOrganismByName(String name)   {
+	public Organism getOrganismById(Integer id)   {
+		
+		organismdao = (OrganismDAO)AppContext.checkBean(organismdao, "OrganismDAO");
+		return organismdao.getOrganismByID(id);
+	}
 
-
-		try {
-			if(mapOrgname2Org==null) {
-				getOrganisms();
-			}
-			return mapOrgname2Org.get(name);
-		} catch(Exception ex) {
-			
-			AppContext.debug( ex.getMessage() );
-			ex.printStackTrace();
-			
-			return null;
-		} 
+	@Override
+	public Cv getCvByName(String cv) {
+		// TODO Auto-generated method stub
+		cvDAO = (CvDAO)AppContext.checkBean(cvDAO, "CvDAO");
+		return cvDAO.getMapName2Cv().get(cv);
 	}
 	
+	
+	
+	
+
 	
 }

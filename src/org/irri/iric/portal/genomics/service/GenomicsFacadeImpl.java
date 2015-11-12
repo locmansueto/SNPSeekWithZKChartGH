@@ -8,10 +8,19 @@ import java.util.Set;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.ListItemsDAO;
+import org.irri.iric.portal.dao.VariantSequenceDAO;
 import org.irri.iric.portal.domain.CvTermLocusCount;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.Organism;
+import org.irri.iric.portal.genomics.GeneOntologyService;
+import org.irri.iric.portal.genomics.GenomicsFacade;
+import org.irri.iric.portal.genomics.LocalAlignmentQuery;
+import org.irri.iric.portal.genomics.LocalAlignmentService;
+import org.irri.iric.portal.genomics.LocusService;
+import org.irri.iric.portal.genomics.OntologyService;
+import org.irri.iric.portal.genomics.VariantSequenceQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service("GenomicsFacade")
@@ -20,7 +29,18 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	@Autowired
 	private LocusService locusService;
 	@Autowired
-	private GeneOntologyService goService;
+	@Qualifier("GeneOntologyService")
+	private OntologyService goService;
+	
+	@Autowired
+	@Qualifier("PATOntologyService")
+	private OntologyService patoService;
+	
+	@Autowired
+	private VariantSequenceDAO variantsequenceService;
+
+
+	
 	@Autowired
 	private LocalAlignmentService localalignmentService;
 	
@@ -49,30 +69,64 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 		locusService = (LocusService)AppContext.checkBean(locusService, "LocusService");
 		return locusService.getLocusByNotes(description,organism);
 	}
+
+
+	@Override
+	public List<Locus> getLociByRegion(String contig, Long start, Long end,
+			String organism, String genemodel) {
+		// TODO Auto-generated method stub
+		locusService = (LocusService)AppContext.checkBean(locusService, "LocusService");
+		return locusService.getLocusByRegion(contig, start, end,organism, genemodel);
+	}
+
+	@Override
+	public List<Locus> getLociByDescription(String description,
+			String organism, String genemodel) {
+		// TODO Auto-generated method stub
+		locusService = (LocusService)AppContext.checkBean(locusService, "LocusService");
+		return locusService.getLocusByNotes(description,organism, genemodel);
+	}
 	
 	
 	@Override
 	public List<String> getGotermsByOrganism(String cv, String organism) {
-		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItemsDAO");
+		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItems");
 		return listitemsdao.getGOTermsWithLoci(cv, organism);
 	}
 	
+	@Override
+	public List<String> getPatotermsByOrganism(String cv, String organism) {
+		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItems");
+		return listitemsdao.getPATOTermsWithLoci(cv, organism);
+	}
 	
 	
-	
-
 	@Override
 	public List<String> getCVtermAncestors(String cv, String cvterm) {
 		// TODO Auto-generated method stub
-		goService = (GeneOntologyService)AppContext.checkBean(goService, "GeneOntologyService");
-		return goService.getCVtermAncestors(cv, cvterm);
+		if(cv.equals("molecular_function") || cv.equals("biological_process") || cv.equals("cellular_component")) { 
+			goService = (OntologyService)AppContext.checkBean(goService, "GeneOntologyService");
+			return goService.getCVtermAncestors(cv, cvterm);
+		} else {
+			patoService = (OntologyService)AppContext.checkBean(patoService, "PATOntologyService");
+			return patoService.getCVtermAncestors(cv, cvterm);
+	
+		}
 	}
 
 	@Override
 	public List<String> getCVtermDescendants(String cv, String cvterm) {
 		// TODO Auto-generated method stub
-		goService = (GeneOntologyService)AppContext.checkBean(goService, "GeneOntologyService");
-		return goService.getCVtermDescendants(cv, cvterm);
+		
+		if(cv.equals("molecular_function") || cv.equals("biological_process") || cv.equals("cellular_component")) { 
+			goService = (OntologyService)AppContext.checkBean(goService, "GeneOntologyService");
+			return goService.getCVtermDescendants(cv, cvterm);
+		} else {
+			patoService = (OntologyService)AppContext.checkBean(patoService, "PATOntologyService");
+			return patoService.getCVtermDescendants(cv, cvterm);
+
+		}
+			
 	}
 	
 	
@@ -80,7 +134,7 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 
 	@Override
 	public List getContigsByOrganism(String organism) {
-		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItemsDAO");
+		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItems");
 		return listitemsdao.getContigs(organism);
 	}
 
@@ -103,13 +157,12 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	}
 
 	@Override
-	public List getLociByGOTerm(String goterm, String organism) {
+	public List getLociByCvTerm(String goterm, String organism, String cvname, String genemodel) {
 		// TODO Auto-generated method stub
 		locusService = (LocusService)AppContext.checkBean(locusService, "LocusService");
-		return locusService.getLocusByGOTerm(goterm, organism);
+		return locusService.getLocusByCvTerm(goterm, organism, cvname, genemodel);
 	}
-
-
+	
 	@Override
 	public List getLociFromAlignment(Collection alignments) throws Exception {
 		locusService = (LocusService)AppContext.checkBean(locusService, "LocusService");
@@ -148,7 +201,7 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	@Override
 	public List getOrganisms() throws Exception {
 		// TODO Auto-generated method stub
-		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItemsDAO");
+		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItems");
 		Collection orgs = listitemsdao.getOrganisms();
 		Iterator<Organism> itOrgs = orgs.iterator();
 		List listNames= new ArrayList();
@@ -162,9 +215,18 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	
 	@Override
 	public String queryGO(String term) throws Exception {
-		goService = (GeneOntologyService)AppContext.checkBean(goService, "GeneOntologyService");
-		return goService.queryGO(term);
+		goService = (OntologyService)AppContext.checkBean(goService, "GeneOntologyService");
+		return goService.queryAccession(term);
 	}
+	
+	@Override
+	public String queryPATO(String term) throws Exception {
+		patoService = (OntologyService)AppContext.checkBean(patoService, "PATOntologyService");
+		return patoService.queryAccession(term);
+	}
+
+	
+	
 	
 	@Override
 	public String overRepresentationTest(String organism, Collection genelist, String enrichmentType)  throws Exception {
@@ -179,6 +241,21 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 		return goService.countLociInTerms(organism, loci, cv);
 	}
 	
+	@Override
+	public String createVariantsFasta(VariantSequenceQuery query) throws Exception {
+		
+		variantsequenceService = (VariantSequenceDAO)AppContext.checkBean(variantsequenceService, "VariantSeuqenceService");
+		return variantsequenceService.getFile(query);
+
+	}
+
+	@Override
+	public List<Locus> getLociByContigPositions(String contig, Collection colPos,
+			String org, String genemodel) {
+		// TODO Auto-generated method stub
+		locusService = (LocusService)AppContext.checkBean(locusService, "LocusService");
+		return locusService.getLocusByContigPositions( contig,  colPos,  org, genemodel);
+	}
 	
 	
 }

@@ -218,6 +218,24 @@ public class MvCoreSnps implements Serializable, SnpsAllvarsPos {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public BigDecimal getAlleleIndex() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Long getChr() {
+		// TODO Auto-generated method stub
+		return this.srcfeatureId.longValue() -2;
+	}
 	
 	
 	

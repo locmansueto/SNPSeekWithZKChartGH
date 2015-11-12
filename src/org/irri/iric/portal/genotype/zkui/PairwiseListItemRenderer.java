@@ -8,10 +8,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.domain.Snps2Vars;
-import org.irri.iric.portal.domain.VariantStringData;
-import org.irri.iric.portal.genotype.service.GenotypeFacade;
-import org.irri.iric.portal.genotype.service.GenotypeQueryParams;
+import org.irri.iric.portal.domain.Position;
+import org.irri.iric.portal.domain.SnpsAllvarsPos;
+import org.irri.iric.portal.genotype.GenotypeFacade;
+import org.irri.iric.portal.genotype.GenotypeQueryParams;
+import org.irri.iric.portal.genotype.VariantStringData;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -26,7 +27,7 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 	//private static String STYLE_BORING = "";
 	private static int colorMode = COLOR_MISMATCH;
 	
-	private Map<BigDecimal,Set<Character>> mapPos2Nonsynalleles;
+	private Map<Position,Set<Character>> mapPos2Nonsynalleles;
 	
 	public PairwiseListItemRenderer(VariantStringData data,
 			GenotypeQueryParams params) {
@@ -34,29 +35,8 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 		this.data = data;
 		this.params = params;
 		
-		mapPos2Nonsynalleles = new HashMap();
+		mapPos2Nonsynalleles = data.getSnpstringdata().getMapPos2NonsynAlleles();
 		
-		Iterator<Integer> itMergedIdx = data.getSnpstringdata().getMapMergedIdx2SnpIdx().keySet().iterator(); 
-		while(itMergedIdx.hasNext()) {
-			Integer idxMerged = itMergedIdx.next();
-			Integer idxSnp = data.getSnpstringdata().getMapMergedIdx2SnpIdx().get(idxMerged);
-			if(idxSnp==null) continue;
-		
-			
-			BigDecimal pos = data.getSnpstringdata().getMapIdx2Pos().get(idxSnp);
-			//BigDecimal pos = data.getMapIdx2Pos().get(idxMerged); 
-			if(pos==null) continue;
-
-			Set setNonsynAlleles = data.getSnpstringdata().getMapIdx2NonsynAlleles().get(idxSnp);
-			if(setNonsynAlleles==null) continue;
-			
-			mapPos2Nonsynalleles.put(pos, setNonsynAlleles);
-		}
-		
-		AppContext.debug("getMapIdx2NonsynAlleles(): " +   data.getSnpstringdata().getMapIdx2NonsynAlleles());
-		AppContext.debug("getMapMergedIdx2SnpIdx(): " +  data.getSnpstringdata().getMapMergedIdx2SnpIdx());
-		AppContext.debug("getMapIdx2Pos(): " +   data.getMapIdx2Pos());
-		AppContext.debug("mapPos2Nonsynalleles: " + mapPos2Nonsynalleles);
 	}
 
 	
@@ -84,6 +64,7 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 			String var2nuc = "";
 		
 			if(!params.isbShowNPBPositions()) {
+				/*
 				// contigname
 				addListcell(listitem, ""); addListcell(listitem, ""); addListcell(listitem, "");
 				if( obj[0]==null)
@@ -94,6 +75,19 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 				if(obj[1]==null)
 					addListcell(listitem,"");
 				else addListcell(listitem, obj[1].toString().replace(".00","").replace(".0",""));
+				*/
+				
+				addListcell(listitem, ""); addListcell(listitem, ""); addListcell(listitem, "");
+				String contig=((Position)obj[1]).getContig();
+				try{
+					int chr=Integer.valueOf(contig);
+					if(chr<10) contig="chr0" + chr;
+					else contig="chr" + chr;
+				} catch (Exception ex) {};
+				
+				addListcell( listitem, contig);
+				addListcell( listitem,  ((Position)obj[1]).getPosition().toString().replace(".00",""));
+				
 				
 		        String refnuc = (String)obj[2];
 		        if(refnuc==null) addListcell(listitem, "");
@@ -107,13 +101,16 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 			
 		        
 			} else {
+				
 				// contigrefname
 				if(obj[0]==null || obj[1]==null)
 					addListcell(listitem,"");
 				else addListcell(listitem, obj[0].toString());
 		        // refposition
 				if(obj[1]==null) addListcell(listitem,"");
-				else addListcell(listitem, obj[1].toString().replace(".00","").replace(".0",""));
+				else addListcell(listitem, obj[1].toString().replace(".00",""));
+				
+				
 		        String refnuc = (String)obj[2];
 		        if(refnuc==null) addListcell(listitem, "");
 		        else {
@@ -121,10 +118,24 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 			        	addListcell(listitem, refnuc);
 			        else addListcell(listitem, refnuc, getColor(refnuc));
 		        }
+		        
+		        /*
 		        // npb contig
 		        addListcell(listitem, obj[3].toString());
 		        // npb position
 		        addListcell(listitem, obj[4].toString().replace(".00","").replace(".0",""));
+		        */
+		        
+				String contig=((Position)obj[4]).getContig();
+				try{
+					int chr=Integer.valueOf(contig);
+					if(chr<10) contig="chr0" + chr;
+					else contig="chr" + chr;
+				} catch (Exception ex) {};
+				addListcell( listitem, contig);
+				addListcell( listitem,  ((Position)obj[4]).getPosition().toString().replace(".00","") );
+		        
+		        
 		        refnuc = (String)obj[5];
 		        if(params.isbColorByMismatch()) 
 		        	addListcell(listitem, refnuc);
@@ -136,7 +147,10 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 
 	        //BigDecimal pos = (Double)obj[1];
 	        //BigDecimal pos = BigDecimal.valueOf( (Double)obj[1] );
-	        BigDecimal pos = (BigDecimal)obj[1] ;
+			
+	        //BigDecimal pos = (BigDecimal)obj[1] ;
+	        //Set setcharNonsyn =  mapPos2Nonsynalleles.get(pos);
+	        Position pos = (Position)obj[1] ;
 	        Set setcharNonsyn =  mapPos2Nonsynalleles.get(pos);
 	        
 	        

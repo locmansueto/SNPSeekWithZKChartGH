@@ -5,14 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.net.URL;
-import java.net.URLConnection;
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.text.NumberFormat;
@@ -25,18 +20,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
-import oracle.sql.DATE;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
-//import org.irri.iric.portal.genotype.service.GenotypeFacade;
-//import org.irri.iric.portal.genotype.service.GenotypeFacadeImpl;
-//import org.irri.iric.portal.genotype.views.Snp2linesHome;
 import org.springframework.context.ApplicationContext;
 import org.zkoss.zkplus.spring.SpringUtil;
-
 
 
 import javax.servlet.FilterConfig;
@@ -46,37 +36,62 @@ import javax.servlet.http.*;
 /**
  * This class provides application-wide access to the Spring ApplicationContext.
  * The ApplicationContext is injected by the class "ApplicationContextProvider".
- *
- * @author Siegfried Bolz
+ * 
+ * Used to define global parameters, 
+ * will be updated from *.xml file later 
+ * 
  */
 
 public class AppContext {
 
 	private static final Log log = LogFactory.getLog(AppContext.class);
+	
+	private static ApplicationContext ctx;
+
+	/**
+	 * random number generator 
+	 */
 	private static final java.util.Random  rand = new   java.util.Random();
 	
-	/**
-	 * directory to write temporary files in server, should be cleaned by cronjob regularly
-	 */
-	//private static String tempdir = "../webapps/iric-portal/tmp/";
 	
+	//static String suffixDAOBean = "Postges";
+	static String suffixDAOBean = "";
+	
+	//*******  TARGET WEBSERVER
 	/**
 	 * is Amazon Web Service compile?
 	 */
 	static boolean isAWS = false;
 	static boolean isAWSdev = false;
+	
+	/**
+	 * is IRRI-VM machine 172.29.4.26
+	 */
 	static boolean isVMIRRI = false;
-	static boolean isPollux =false;
+	
+	/**
+	 * is Pollux 172.29.4.215
+	 */
+	static boolean isPollux = false;
 	static boolean isASTI = false;
 	static boolean isLocalhost = true;
 	
+	
+	//******* COMPILATION TYPE
 	/**
-	 * is development
+	 * is development version
 	 */
 	static boolean isDev =  false;
+	
+	/**
+	 * is test version
+	 */
 	static boolean isTest = false;
 
 
+	/**
+	 * config from XML file has been loaded
+	 */
 	static boolean configloaded = false;
 
 	/**
@@ -84,9 +99,6 @@ public class AppContext {
 	 */
 	private static final boolean isChado = true;
 	
-	
-    private static ApplicationContext ctx;
-    
     
     /**
      * used for timing processes
@@ -104,57 +116,124 @@ public class AppContext {
     static String  pathtolocalblastdata;
     static String  webappdirectory;
     
+    public static Pattern patRemoveZeroes = Pattern.compile("\\.?0*");
+    
     
     public AppContext() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
     
+    /**
+     * Ignore heterozygous Indels
+     * @return
+     */
+    public static boolean isIgnoreHeteroIndels() {
+    	return false;
+    }
+    
+    /**
+     * SNP data set to use
+     * @return
+     */
+    public static String getSNPSet() {
+						    	//return SnpsAllvarsPosDAO.DATASET_SNPINDELV2;
+						    	//return SnpsAllvarsPosDAO.DATASET_SNPINDELV1;
+    	return "SNP v2 IUPAC"; //SnpsAllvarsPosDAO.DATASET_SNPINDELV2_IUPAC;
+    }
+    
+    /**
+     * Use DAO beans with given suffix
+     * @return
+     */
+    public static String getDAOBeanSuffix() {
+    	return suffixDAOBean;
+    }
+    
+
+    /**
+     * Launch in AWS
+     * @return
+     */
     public static boolean isAWS() {
-    	//
-    	//FilterConfig.getServletContext().getInitParameter("isAWS");
     	return isAWS;
     }
     
+    /**
+     * Launch in AWS-dev
+     * @return
+     */
 	public static boolean isAWSdev() {
 		return isAWSdev;
 	}
 	
+    /**
+     * Launch in IRRI VM
+     * @return
+     */
 	public static boolean isVMIRRI() {
 		return isVMIRRI;
 	}
+	
+    /**
+     * Launch in Pollux
+     * @return
+     */
 	public static boolean isPollux() {
 		return isPollux;
 	}
+	
+	/**
+	 * Launced in ASTI
+	 * @return
+	 */
 	public static boolean isASTI() {
 		return isASTI;
 	}
+	
+	/**
+	 * localhost
+	 * @return
+	 */
 	public static boolean isLocalhost() {
 		return isLocalhost;
 	}
 	
 	/**
-	 * is development
+	 * is development version
 	 */
 	public static boolean isDev() {
 		return isDev;
 	}
+
+	/**
+	 * is test version
+	 * @return
+	 */
 	public static boolean isTest() {
 		return isTest;
 	}
     
 
+	/**
+	 * server is windows
+	 * @return
+	 */
 	public static boolean isWindows() {
     	return isLocalhost();
     }
     
+	/**
+	 * server in IRRI LAN
+	 * @return
+	 */
     public static boolean isIRRILAN() {
     	return isLocalhost() || isPollux() || isVMIRRI();
     }
     
 
     /**
-     * get a temporary file name
+     * generate a temporary file name
      * @return
      */
     public static String createTempFilename() {
@@ -193,13 +272,16 @@ public class AppContext {
     public static void resetTimer(String report) {
     	long endTime  = System.currentTimeMillis();  	
     	long endTimeDate  = new Date().getTime();  
-    	//System.out.println(endTime- startTime + " ms " + report);
     	debug( "TIMER: " + (endTime- startTime) + " ms (system),  " + ( endTimeDate-startTimeDate) + " ms (date) : " + report);
     	startTime=endTime;
     	startTimeDate = endTimeDate;
     }
     
 
+    /**
+     * webapp directory
+     * @return
+     */
     public static String getWebappdiectory() {
     	
     	
@@ -219,26 +301,30 @@ public class AppContext {
     	return "";
     }
     
-    
+    /**
+     * directory to write temp files (using server file system)
+     * @return
+     */
+
     public static String getTempDir() {
     	
     	if( tempdir!=null) return tempdir;    
     	
     	if(isAWS() || isAWSdev())
     		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
-    		return "/usr/share/apache-tomcat-7.0.55/webapps/" + getHostDirectory() + "/tmp/";
+    		return "/usr/share/apache-tomcat-7.0.55/webapps/temp/";
     	//else if(isAWSdev())
     		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
     	//	return "/usr/share/apache-tomcat-7.0.55/webapps/" + getHostDirectory() + "/tmp/";
     	else  if(isVMIRRI)
     		// vm-iric-portal
-    		return "/opt/tomcat7/webapps/" +  getHostDirectory() + "/tmp/";
+    		return "/opt/tomcat7/webapps/temp/";
     	else if(isLocalhost)
-    		return "E:/MyEclipse for Spring 2014/plugins/com.genuitec.eclipse.easie.tomcat7.myeclipse_11.5.0.me201310302042/tomcat/bin/iric-portal/tmp/";
+    		return "E:/MyEclipse for Spring 2014/plugins/com.genuitec.eclipse.easie.tomcat7.myeclipse_11.5.0.me201310302042/tomcat/bin/temp/";
     	else if(isPollux)
-    		return  "/usr/share/apache-tomcat-7.0.42/webapps/" +  getHostDirectory() + "/tmp/";
+    		return  "/usr/share/apache-tomcat-7.0.42/webapps/temp/";
     	
-    	return "/usr/share/apache-tomcat/webapps/" + getHostDirectory() + "/tmp/";
+    	return "/usr/share/apache-tomcat/webapps/temp/";
     }
     
     /**
@@ -256,7 +342,8 @@ public class AppContext {
     	else if(isVMIRRI())
     		return "http://202.123.56.26:8080";
     	else if(isPollux())
-    		return "http://pollux:8080";
+    		//return "http://pollux:8080";
+    		return "http://172.29.4.215:8080";
     	else if(isASTI())
     		return "http://202.90.159.240:8080";
     	else
@@ -264,7 +351,10 @@ public class AppContext {
     	//return "http://localhost";
     }
     
-    
+    /**
+     * directory of SNP-Seek related files in the server (using server file system) 
+     * @return
+     */
     public static String getFlatfilesDir() {
     	if( flatfilesdir!=null) return flatfilesdir;    
     	
@@ -274,7 +364,7 @@ public class AppContext {
     		return "/data/lmansueto/iric-portal-files/";
     	else if(isASTI())
     		return "/home/iric/iric-portal-files/";
-    	else
+    	else http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=2456312
     		return "/home/lmansueto/iric-portal-files/";
     }
     
@@ -286,12 +376,10 @@ public class AppContext {
     	if(isChado)
     		return "V";
     	else return "VL";
-    	
-    	
     }
     
     /**
-     * directory of webapp in host
+     * directory of webapp folder in host
      * @return
      */
     public static String getHostDirectory() {
@@ -309,15 +397,6 @@ public class AppContext {
     		return "iric-portal-test";
     	else 
     		return "iric-portal";
-    }
-    
-    /**
-     * fetch only SNP-Genotypes which having mismatch with the reference
-     * else fetch all
-     * @return
-     */
-    public static boolean isSNPAllvarsFetchMismatchOnly() {
-    	return true;
     }
     
     
@@ -409,8 +488,6 @@ public class AppContext {
 		} else
 			return new Set[] {vars};
     }
-
-    
     
     public static List setSlicerIds(Set varIds) {
     	List<String> listVaridSets= new ArrayList();
@@ -460,6 +537,11 @@ public class AppContext {
     }
 
     
+    /**
+     * Convert collection to csv
+     * @param col
+     * @return
+     */
     public static String toCSV(Collection col) {
 		StringBuffer buff = new StringBuffer();
 		Iterator itSet = col.iterator();
@@ -481,23 +563,39 @@ public class AppContext {
     }
     
 
+    /**
+     * Maximum region length in SNP Universe query
+     * @return
+     */
     public static int getMaxlengthUni() {
-    	//return 100000;
     	if(isDev()|| isTest())
     		return 1000000;
     	else return 50000;
     }
 
+    /**
+     * Maximum region length in Core SNPs query
+     * @return
+     */
     public static int getMaxlengthCore() {
     	if(isDev() || isTest())
     		return 10000000;
     	//return 2000000;
     	return 1000000;
     }
+    
+    /**
+     * Maximum region length in variety comparison SNPs query
+     * @return
+     */
     public static int getMaxlengthPairwise() {
     	return Integer.MAX_VALUE;
     }
 
+    /**
+     * Default organism
+     * @return
+     */
     public static String getDefaultOrganism() {
     	if(defaultorganism!=null) return defaultorganism;
     	
@@ -507,7 +605,7 @@ public class AppContext {
     }
     
     /**
-     * Message logger used by the webapp, for easy maintainance and change of loggers
+     * Message logger used by the webapp, for easy maintenance and change of loggers
      * @param msg
      */
     public static void logger(StringBuffer msg) {
@@ -551,83 +649,27 @@ public class AppContext {
     	while(it.hasNext()) { buff.append(it.next());
     	if(it.hasNext()) buff.append(",");
     	}
-    	
     	logger( buff );
     }
     
-    public static BigDecimal convertRegion2Indelalleleid(Integer chr, Long pos) {
-    	return convertRegion2Snpfeatureid( chr, pos);
-    }
-    public static BigDecimal convertRegion2Indelalleleid(Integer chr, BigDecimal pos) {
-    	return convertRegion2Snpfeatureid( chr, pos);
-    }
-    public static BigDecimal convertRegion2Indelalleleid(Integer chr, Integer pos) {
-    	return convertRegion2Snpfeatureid( chr, pos);
-    }
 
+    /**
+     * Guess the chromosome number from contig name
+     * @param chr
+     * @return
+     */
     public static String guessChrFromString(String chr) {
     	return chr.toUpperCase().replace("CHR0", "").replace("CHR", "");
     }
-    
-    public static BigDecimal convertRegion2Snpfeatureid(String chr, Long pos) {
-    	chr=guessChrFromString(chr);
-    	return  convertRegion2Snpfeatureid(Integer.valueOf(chr), pos); 
-    }
-    
-    public static BigDecimal convertRegion2Snpfeatureid(Integer chr, Long pos) {
-    	try {
-    	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos)  ));
-    	} catch (Exception ex) {
-    		ex.printStackTrace();
-    		AppContext.debug("convertRegion2Snpfeatureid chr=" + chr  + "  pos=" + pos);
-    		throw new RuntimeException("convertRegion2Snpfeatureid error"); 
-    	}
-    }
-    public static BigDecimal convertRegion2Snpfeatureid(String chr, Integer pos) {
-    	chr=guessChrFromString(chr);
-    	return  convertRegion2Snpfeatureid(Integer.valueOf(chr), pos);
-    }
-    public static BigDecimal convertRegion2Snpfeatureid(Integer chr, Integer pos) {
-    	try {
-    	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos)  ));
-    	} catch (Exception ex) {
-    		ex.printStackTrace();
-    		AppContext.debug("convertRegion2Snpfeatureid chr=" + chr  + "  pos=" + pos);
-    		throw new RuntimeException("convertRegion2Snpfeatureid error"); 
-    	}
-    	
-    }
-    
-    public static BigDecimal convertRegion2Snpfeatureid(String chr, BigDecimal pos) {
-    	chr=guessChrFromString(chr);
-    	return convertRegion2Snpfeatureid(Integer.valueOf(chr), pos) ;
-    }
-    public static BigDecimal convertRegion2Snpfeatureid(Integer chr, BigDecimal pos) {
-    	try {
-    	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos.longValue())  ));
-    	} catch (Exception ex) {
-    		ex.printStackTrace();
-    		AppContext.debug("convertRegion2Snpfeatureid chr=" + chr  + "  pos=" + pos);
-    		throw new RuntimeException("convertRegion2Snpfeatureid error"); 
-    	}
-    }
-    	
-    public static Collection convertRegion2Snpfeatureid(String chr, Collection poslist) {
 
-	    	chr=guessChrFromString(chr);
-	    	return convertRegion2Snpfeatureid(Integer.valueOf(chr), poslist);
 
-    }
-    public static Collection convertRegion2Snpfeatureid(Integer chr, Collection poslist) {
-    	Set snpfeatureidSet = new TreeSet();
-    	Iterator<BigDecimal> it = poslist.iterator();
-    	while(it.hasNext()) {
-    		snpfeatureidSet.add(  convertRegion2Snpfeatureid(chr, it.next())) ;
-    	}
-    	return snpfeatureidSet;
-    }
-    
-    
+    /**
+     * Generate list of uppercase, lowercase, blanks for use in UI listboxes
+     * @param col initial list
+     * @param upperlower create uppercase and lower case
+     * @param addBlank  add blank in first line
+     * @return
+     */
     public static List createUniqueUpperLowerStrings(Collection col, boolean upperlower, boolean addBlank) {
     	
     	List newlist = new ArrayList(); 
@@ -661,31 +703,6 @@ public class AppContext {
     	return instr;
     }
     
-    
-    public static void sentHttpPostRequest(String url, String args) throws IOException {
-    	
-        URLConnection connection = new URL(url).openConnection();
-        
-        // by default, connection with enable input, but won't enable output
-        connection.setDoOutput(true);
-        //connection.setDoInput(true);
-        OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-        out.write(args);
-        out.flush();
-        out.close();
-        /*
-         * If the page has respond, uncomment these statements the retrieve the respond data
-        InputStream is = connection.getInputStream();
-        FileOutputStream fos = new FileOutputStream("respond.txt");
-        byte[] buffer = new byte[1024];
-        for (int length; (length = is.read(buffer)) > 0;) {
-            fos.write(buffer, 0, length);
-        }
-        fos.close();
-        is.close();
-        */
-    }
-    
     /**
      * Convert SQL CLOB field to string
      * @param clb
@@ -700,17 +717,16 @@ public class AppContext {
             
       StringBuffer str = new StringBuffer();
       String strng;
-              
-    
       BufferedReader bufferRead = new BufferedReader(clb.getCharacterStream());
-   
       while ((strng=bufferRead .readLine())!=null)
        str.append(strng);
-   
       return str.toString();
     }        
     
     
+    /**
+     * Log the webserver status
+     */
     public static void logSystemStatus() {
     
     	Runtime runtime = Runtime.getRuntime();
@@ -757,6 +773,7 @@ public class AppContext {
      */
     public static Object checkBean(Object obj, String name ) 
     {
+    	if(name.endsWith("DAO")) name = name +  suffixDAOBean;
     	
     	if (obj==null) {
     		log.debug(name + "==null using static");
@@ -819,6 +836,10 @@ public class AppContext {
     	return obj;
     }
     
+    /**
+     * Path to BLAST program
+     * @return
+     */
     public static String getPathToLocalBlast() {
     	if( pathtolocalblast!=null) return pathtolocalblast;    
 
@@ -827,6 +848,20 @@ public class AppContext {
     	else
     		return "/home/lmansueto/ncbi-blast/bin/";
     }
+
+    /**
+     * Path to VCF2Fasta converter program
+     * @return
+     */
+    public static String getPathToVCF2FastaGenerator() {
+    	return  getFlatfilesDir() + "getvcfseq/getSeqVCFaws.pl";
+    	
+    }
+    
+    /**
+     * Path to BLAST database
+     * @return
+     */
     public static String getPathToLocalBlastData() {
     	if( pathtolocalblastdata!=null) return pathtolocalblastdata;    
     	if(isAWS() || isAWSdev())
@@ -835,6 +870,10 @@ public class AppContext {
     		return "/home/lmansueto/ncbi-blast/iric-portal/";
     }
     
+    /**
+     * Path to BLAST server
+     * @return
+     */
     public static String getBlastServer() {
     	if(isLocalhost() || isPollux())
     		return "http://pollux:8080/iric-portal-dev";
@@ -852,12 +891,227 @@ public class AppContext {
     	return "http://www.ncbi.nlm.nih.gov/biosample/?term=";
     }
     
-    public static String getBamURL() {
-    	return "";
+    public static String getBamURL(String boxcode) {
+    	return "https://s3.amazonaws.com/3kricegenome/Nipponbare/" + boxcode.trim().replace(" ","_") + ".realigned.bam";
     }
-    public static String getVcfURL() {
-    	return "";
+    public static String getVcfURL(String boxcode) {
+    	return "https://s3.amazonaws.com/3kricegenome/Nipponbare/" + boxcode.trim().replace(" ","_") + ".snp.vcf.gz";
     }
     
+    /**
+     * JBrowse host directory
+     * @return
+     */
+    public static String getJbrowseDir() {
+    	return "jbrowse-dev2";
+    }
+
+    public static String getJbrowseContigSuffix() {
+    	return "";
+    }
+
+    /**
+     * Display array of strings
+     * @param allelesstr
+     */
+	public static void displayStringArray(String allelesstr[]) {
+		StringBuffer b=new StringBuffer();
+		for(int i=0; i<allelesstr.length; i++) b.append(allelesstr[i]).append(", ");
+		debug(b.toString());
+	}
+	
+    /**
+     * Default JBrowse tracks in genome browser
+     * @return
+     */
+    public static String getJBrowseDefaulttracks() {
+    	return "DNA,msu7gff,msu7snpsv2,msu7indelsv2";
+    }
+
+	/**
+	 * Wait until file exists
+	 * @param string
+	 */
+	public static void waitForFile(String string) {
+		// TODO Auto-generated method stub
+		File newfile=new File(string);
+		while(!newfile.exists() && newfile.length()>0) {
+			try {
+				Thread.sleep(5000);
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		AppContext.debug("file " + string + " ready");
+	}
+
+	/**
+	 * get IUPAC symbol for nucleotides
+	 * @param alleles
+	 * @return
+	 */
+	public static String getIUPAC(String alleles) {
+		if(!alleles.contains("/")) {
+			if(alleles.length()==1) 
+				return alleles;
+			else if(alleles.length()==0)
+				return "N";
+			else throw new RuntimeException("Invalid Allele " + alleles);
+		}
+		if(alleles.equals("A/G") || alleles.equals("G/A")) return "R";
+		else if(alleles.equals("A/T") || alleles.equals("T/A")) return "W";
+		else if(alleles.equals("A/C") || alleles.equals("C/A")) return "M";
+		else if(alleles.equals("C/G") || alleles.equals("G/C")) return "S";
+		else if(alleles.equals("C/T") || alleles.equals("T/C")) return "Y";
+		else if(alleles.equals("G/T") || alleles.equals("T/G")) return "K";
+		else {
+			//AppContext.debug( "Invalid Allele " + alleles + " , using ?" );
+			//throw new RuntimeException("Invalid Allele " + alleles);
+			return "?";
+		}
+	}
+	
+	
+	/**
+	 * get nucleotide values for IUPAC symbol
+	 * @param alleles
+	 * @return
+	 */
+	public static String getNucsFromIUPAC(String alleles) {
+		if(alleles.equals("R")) return "AG";
+		else if(alleles.equals("W")) return "AT";
+		else if(alleles.equals("M")) return "AC";
+		else if(alleles.equals("S")) return "CG";
+		else if(alleles.equals("Y")) return "CT";
+		else if(alleles.equals("K")) return "GT";
+		else if(alleles.equals("N")) return "N";
+		else return alleles;
+	}
+	public static String getNucsFromIUPAC(char alleles) {
+		return   getNucsFromIUPAC(String.valueOf(alleles));
+	}	
+
     
-} // .EOF
+
+
+
+
+// ****  conversion of region to snp_feature_id: TO BE REMOVED SOON AND REPLACED WITH QUERY TO snp_featureloc  table  **************
+
+public static BigDecimal convertRegion2Indelalleleid(Integer chr, Long pos) {
+	return convertRegion2Snpfeatureid( chr, pos);
+}
+public static BigDecimal convertRegion2Indelalleleid(Integer chr, BigDecimal pos) {
+	return convertRegion2Snpfeatureid( chr, pos);
+}
+public static BigDecimal convertRegion2Indelalleleid(Integer chr, Integer pos) {
+	return convertRegion2Snpfeatureid( chr, pos);
+}
+
+public static BigDecimal convertRegion2Snpfeatureid(String chr, Long pos) {
+	chr=guessChrFromString(chr);
+	return  convertRegion2Snpfeatureid(Integer.valueOf(chr), pos); 
+}
+
+public static BigDecimal convertRegion2Snpfeatureid(Integer chr, Long pos) {
+	
+	throw new RuntimeException("Dont use convertRegion2Snpfeatureid! Integer chr, Long pos");
+	/*
+	try {
+		
+	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos)  ));
+	} catch (Exception ex) {
+		ex.printStackTrace();
+		AppContext.debug("convertRegion2Snpfeatureid chr=" + chr  + "  pos=" + pos);
+		throw new RuntimeException("convertRegion2Snpfeatureid error"); 
+	}
+	*/
+}
+public static BigDecimal convertRegion2Snpfeatureid(String chr, Integer pos) {
+	chr=guessChrFromString(chr);
+	return  convertRegion2Snpfeatureid(Integer.valueOf(chr), pos);
+}
+public static BigDecimal convertRegion2Snpfeatureid(Integer chr, Integer pos) {
+	throw new RuntimeException("Dont use convertRegion2Snpfeatureid! Integer chr, Integer pos");
+	/*
+	try {
+	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos)  ));
+	} catch (Exception ex) {
+		ex.printStackTrace();
+		AppContext.debug("convertRegion2Snpfeatureid chr=" + chr  + "  pos=" + pos);
+		throw new RuntimeException("convertRegion2Snpfeatureid error"); 
+	}
+	*/
+	
+}
+
+public static BigDecimal convertRegion2Snpfeatureid(String chr, BigDecimal pos) {
+	chr=guessChrFromString(chr);
+	return convertRegion2Snpfeatureid(Integer.valueOf(chr), pos) ;
+}
+public static BigDecimal convertRegion2Snpfeatureid(Integer chr, BigDecimal pos) {
+	throw new RuntimeException("Dont use convertRegion2Snpfeatureid! Integer chr, BigDecimal pos");
+	/*
+	try {
+	return BigDecimal.valueOf( Long.valueOf(  "1" + String.format("%02d" ,chr) +  String.format("%08d" , pos.longValue())  ));
+	} catch (Exception ex) {
+		ex.printStackTrace();
+		AppContext.debug("convertRegion2Snpfeatureid chr=" + chr  + "  pos=" + pos);
+		throw new RuntimeException("convertRegion2Snpfeatureid error"); 
+	}
+	*/
+}
+	
+public static Collection convertRegion2Snpfeatureid(String chr, Collection poslist) {
+
+  	chr=guessChrFromString(chr);
+  	return convertRegion2Snpfeatureid(Integer.valueOf(chr), poslist);
+
+}
+public static Collection convertRegion2Snpfeatureid(Integer chr, Collection poslist) {
+	Set snpfeatureidSet = new TreeSet();
+	Iterator<BigDecimal> it = poslist.iterator();
+	while(it.hasNext()) {
+		snpfeatureidSet.add(  convertRegion2Snpfeatureid(chr, it.next())) ;
+	}
+	return snpfeatureidSet;
+}
+
+public static Collection convertRegion2SnpfeatureidLongcol(Integer chr, Collection poslist) {
+	Set snpfeatureidSet = new TreeSet();
+	Iterator<BigDecimal> it = poslist.iterator();
+	while(it.hasNext()) {
+		snpfeatureidSet.add(  convertRegion2Snpfeatureid(chr, it.next()).longValue()) ;
+	}
+	return snpfeatureidSet;
+}
+
+//*************  PAST CODES RETAINED
+//
+//public static void sentHttpPostRequest(String url, String args) throws IOException {
+//	
+//  URLConnection connection = new URL(url).openConnection();
+//  
+//  // by default, connection with enable input, but won't enable output
+//  connection.setDoOutput(true);
+//  //connection.setDoInput(true);
+//  OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+//  out.write(args);
+//  out.flush();
+//  out.close();
+//  /*
+//   * If the page has respond, uncomment these statements the retrieve the respond data
+//  InputStream is = connection.getInputStream();
+//  FileOutputStream fos = new FileOutputStream("respond.txt");
+//  byte[] buffer = new byte[1024];
+//  for (int length; (length = is.read(buffer)) > 0;) {
+//      fos.write(buffer, 0, length);
+//  }
+//  fos.close();
+//  is.close();
+//  */
+//}
+//
+	
+	
+}

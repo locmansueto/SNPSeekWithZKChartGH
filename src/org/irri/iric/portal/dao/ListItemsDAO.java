@@ -6,15 +6,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.irri.iric.portal.domain.Cv;
 import org.irri.iric.portal.domain.Gene;
 import org.irri.iric.portal.domain.Organism;
 import org.irri.iric.portal.domain.Variety;
 
+/**
+ * Cache frequently used lists of objects, the list is queried from the database on first use.
+ * This class is used by the VarietyFacade, GenomicsFacade and GenotypeFacade implementations
+ * 
+ * @author LMansueto
+ *
+ */
 public interface ListItemsDAO {
 	
 	public static final int PHENOTYPETYPE_NONE=0;
 	public static final int PHENOTYPETYPE_QUAL=1;
 	public static final int PHENOTYPETYPE_QUAN=2;
+	
+	// Variety 
 	
 	public List<String> getGenenames();
 
@@ -29,8 +39,6 @@ public interface ListItemsDAO {
 	Variety getGermplasmByNameLike(String name);
 
 	Variety getGermplasmByName(String name);
-
-//	List getGermplasmsByNameOrIrisid(String names);
 
 	Set getGermplasmByCountry(String country);
 
@@ -67,7 +75,11 @@ public interface ListItemsDAO {
 
 	public Organism getOrganismByName(String name);
 
+	public List<String> getPATOTermsWithLoci(String cv, String organism);
 
+	public Organism getOrganismById(Integer id);
+
+	public Cv getCvByName(String cv);
 	
 	
 	

@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.CvTermUniqueValues;
-import org.irri.iric.portal.variety.service.VarietyFacade;
+import org.irri.iric.portal.variety.VarietyFacade;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.zkoss.zul.Listbox;
@@ -56,7 +56,8 @@ public class ListboxPhenotype extends Listbox {
 					continue;
 				}
 				
-				System.out.println(value.toString());
+				//System.out.println(value.toString());
+				
 				
 				listValues.add(value.getValue());
 				

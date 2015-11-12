@@ -31,6 +31,6 @@
 	        	
         </zscript>
       
-      <iframe id="iframejbrowse" src="${jbrowsestart}/jbrowse-dev${paramstr}" width="100%" height="100%"/>
-      <!--  iframe id="iframejbrowse" src="${jbrowsestart}/jbrowse-dev?tracks=DNA,msu7gff,snp3k" width="100%" height="100%"/ -->
+      <iframe id="iframejbrowse" src="${jbrowsestart}/jbrowse-dev2${paramstr}" width="100%" height="100%"/>
+      <!--  iframe id="iframejbrowse" src="${jbrowsestart}/jbrowse-dev2?tracks=DNA,msu7gff,snp3k" width="100%" height="100%"/ -->
 </zk>

@@ -15,33 +15,49 @@ import org.irri.iric.portal.domain.IndelsAllvarsPos;
 import org.irri.iric.portal.domain.IndelsStringAllvars;
 //import org.irri.iric.portal.domain.MultiReferenceConversion;
 import org.irri.iric.portal.domain.MultiReferencePosition;
+import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
-import org.irri.iric.portal.domain.VariantIndelStringData;
-import org.irri.iric.portal.domain.VariantSnpsStringData;
-import org.irri.iric.portal.domain.VariantStringData;
-import org.irri.iric.portal.domain.VariantTable;
-import org.irri.iric.portal.domain.VariantTableArray;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.genotype.GenotypeQueryParams;
+import org.irri.iric.portal.genotype.VariantIndelStringData;
+import org.irri.iric.portal.genotype.VariantSnpsStringData;
+import org.irri.iric.portal.genotype.VariantStringData;
+import org.irri.iric.portal.genotype.VariantTable;
+import org.irri.iric.portal.genotype.VariantTableArray;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import bsh.This;
+
+/**
+ * display variants as variant table (variety x position)
+ * @author LMansueto
+ *
+ */
 public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 
 	@Autowired
 	private ListItemsDAO lisitemdao;
 	
+	// message
 	private String message;
+	// variety names
 	private String varnames[];
+	// allele table
 	private String allelestring[][];
+	// mismatches
 	private Double varmismatch[];
+	// variety IDs
 	private Long varids[];
+	// all reference genome allelles
 	private String allrefalleles[][];
+	// all reference genome names
 	private String allrefallelesnames[];
-	
-	//private Double posarr[];
-	private BigDecimal posarr[];
+	// position array
+	private Position posarr[];
+	// reference allele (NP)
 	private String refnuc[];
-	
+	// contig array
 	private String contigarr[];
 	
 	
@@ -74,7 +90,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 	
 	public VariantAlignmentTableArraysImpl(ListItemsDAO lisitemdao,
 			String message, String[] varnames, String[][] allelestring,
-			Double[] varmismatch, Long[] varids, BigDecimal[] posarr,
+			Double[] varmismatch, Long[] varids, Position[] posarr,
 			String[] refnuc, VariantStringData data) {
 		super();
 		this.lisitemdao = lisitemdao;
@@ -97,20 +113,18 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 		this.data=data;
 
 		List<SnpsAllvarsPos> snpsposlist = data.getListPos();
-		posarr = new BigDecimal[snpsposlist.size()]; 
+		posarr = new Position[snpsposlist.size()]; 
 		refnuc = new String[snpsposlist.size()];
 		if(params.isLocusList() || params.isSNPList()) {
 			contigarr =  new String[snpsposlist.size()];
 		}
-		
-		
 		
 		Iterator<SnpsAllvarsPos> itPos = snpsposlist.iterator();
 		int poscount = 0;
 		while(itPos.hasNext()) {
 			SnpsAllvarsPos posnuc=itPos.next();
 			//posarr[poscount] = posnuc.getPos().doubleValue(); //.longValue();
-			posarr[poscount] = posnuc.getPos(); //.doubleValue(); //.longValue();
+			posarr[poscount] = posnuc; //posnuc.getPos(); //.doubleValue(); //.longValue();
 			refnuc[poscount] = posnuc.getRefnuc();
 			
 			if(contigarr!=null) {
@@ -120,7 +134,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 			poscount++;
 		}
 		
-		lisitemdao = (ListItemsDAO)AppContext.checkBean(lisitemdao, "ListItemsDAO");
+		lisitemdao = (ListItemsDAO)AppContext.checkBean(lisitemdao, "ListItems");
 		
 		Map<BigDecimal, Variety> mapVarid2Variety = lisitemdao.getMapId2Variety();
 		List listTable= data.getListVariantsString();
@@ -138,17 +152,23 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 			varnames[varcount]=mapVarid2Variety.get( snpstr.getVar() ).getName();
 			varids[varcount]= snpstr.getVar().longValue();
 			
+			//AppContext.debug( snpstr.getClass() + " " +  snpstr.toString() );
+			
 			if(params.isbIndel()) {
 				if(params.isbAlignIndels())
-					allelestring[varcount] = IndelStringService.createVarietyStringAligned(snpstr, data);
+					allelestring[varcount] = IndelStringHDF5nRDBMSHybridService.createVarietyStringAligned(snpstr, data);
 				else
-					allelestring[varcount] = IndelStringService.createVarietyString(snpstr, data);
+					allelestring[varcount] = IndelStringHDF5nRDBMSHybridService.createVarietyString(snpstr, data);
 			} else if (params.isbSNP()) {
-				allelestring[varcount] = IndelStringService.createVarietyString(snpstr, data);
+				allelestring[varcount] = IndelStringHDF5nRDBMSHybridService.createVarietyString(snpstr, data);
 			}
 			
 			varcount++;
 		}
+		
+
+		AppContext.debug(varcount + " varieties aligned into table");
+		
 		message = data.getMessage();
 		
 		AppContext.debug( message);
@@ -166,7 +186,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 			itPos = snpsposlist.iterator();
 			
 			int newref_poscount = 0;
-			BigDecimal newref_posarr[] = new BigDecimal[convertedTableSize]; 
+			Position newref_posarr[] = new Position[convertedTableSize]; 
 			String newref_refnuc[] = new String[convertedTableSize];
 			
 			Set setRemoveIdx = new HashSet();
@@ -179,7 +199,8 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 				
 				if(newpos!=null) {
 					//posarr[poscount] = posnuc.getPos().doubleValue(); //.longValue();
-					newref_posarr[newref_poscount] =  newpos.getPosition() ;
+					//newref_posarr[newref_poscount] =  newpos.getPosition() ;
+					newref_posarr[newref_poscount] =  newpos; //.getPosition() ;
 					newref_refnuc[newref_poscount] =  newpos.getRefcall();  //posnuc.getRefnuc();
 					//contigarr[newref_poscount] = newpos.getToContig();
 					newref_poscount++;
@@ -305,6 +326,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 		this.varids = varids;
 	}
 
+	/*
 	private BigDecimal[] getPosarr() {
 		return posarr;
 	}
@@ -312,6 +334,17 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 	public void setPosarr(BigDecimal[] posarr) {
 		this.posarr = posarr;
 	}
+	*/
+
+	private Position[] getPosarr() {
+		return posarr;
+	}
+
+	public void setPosarr(Position[] posarr) {
+		this.posarr = posarr;
+	}
+
+	
 	private String[] getRefnuc() {
 		return refnuc;
 	}
@@ -325,14 +358,14 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 
 	
 	
-	public BigDecimal[] getPositionNPB() {
+	public Position[] getPositionNPB() {
 		
 		List listpos = data.getListPos();
-		BigDecimal[] posNPB = new BigDecimal[listpos.size()];
+		Position[] posNPB = new Position[listpos.size()];
 		Iterator<SnpsAllvarsPos> itPos=listpos.iterator();
 		int icount=0;
 		while(itPos.hasNext()) {
-			posNPB[icount] = itPos.next().getPos();
+			posNPB[icount] = itPos.next(); //.getPos();
 			icount++;
 		}
 		return posNPB;
@@ -358,7 +391,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 	}
 	
 	@Override
-	public BigDecimal[] getPosition() {
+	public Position[] getPosition() {
 		return this.getPosarr();
 	}
 	
@@ -400,12 +433,17 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 				npbContig = getVariantStringData().getNpbContig();
 			}
 			
+			VariantSnpsStringData snpdata= data.getSnpstringdata();
+			
 			if(params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) {
 				
 
 				if(params.isbMismatchonly()) {
 					for(int ipos=0; ipos<this.posarr.length; ipos++) {
-						Set setNonsynAlleles = data.getSnpstringdata().getMapIdx2NonsynAlleles().get(ipos);
+						//Set setNonsynAlleles = data.getSnpstringdata().getMapIdx2NonsynAlleles().get(ipos);
+						
+						Set setNonsynAlleles = snpdata.getMapPos2NonsynAlleles().get( snpdata.getListPos().get(ipos));
+						
 						if(setNonsynAlleles==null) continue;
 						if(    (!allelestring[0][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[0][ipos].charAt(0))) || 
 								(!allelestring[1][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[1][ipos].charAt(0))) ) {
@@ -423,7 +461,9 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 				}
 				else {
 						for(int ipos=0; ipos<this.posarr.length; ipos++) {
-							Set setNonsynAlleles = data.getSnpstringdata().getMapIdx2NonsynAlleles().get(ipos);
+							//Set setNonsynAlleles = data.getSnpstringdata().getMapIdx2NonsynAlleles().get(ipos);
+							Set setNonsynAlleles = snpdata.getMapPos2NonsynAlleles().get( snpdata.getListPos().get(ipos));
+							
 							if(setNonsynAlleles==null) continue;
 							if((!allelestring[0][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[0][ipos].charAt(0))) || 
 									(!allelestring[1][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[1][ipos].charAt(0)))
@@ -470,6 +510,89 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 		}
 		return list;
 	}
+}
+
+// ******************* PAST CODES RETAINED *****************************************
+//
+//	public List getCompare2VarsListIdx(String chromosome, GenotypeQueryParams params) {
+//		List list = new ArrayList();
+//		if(allelestring.length==2) {
+//			
+//			String npbContig="";
+//			if(params.isbShowNPBPositions()) {
+//				npbContig = getVariantStringData().getNpbContig();
+//			}
+//			
+//			if(params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) {
+//				
+//
+//				if(params.isbMismatchonly()) {
+//					for(int ipos=0; ipos<this.posarr.length; ipos++) {
+//						Set setNonsynAlleles = data.getSnpstringdata().getMapIdx2NonsynAlleles().get(ipos);
+//						if(setNonsynAlleles==null) continue;
+//						if(    (!allelestring[0][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[0][ipos].charAt(0))) || 
+//								(!allelestring[1][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[1][ipos].charAt(0))) ) {
+//							if(!allelestring[0][ipos].equals(allelestring[1][ipos])) {
+//								if(params.isbShowNPBPositions()) {
+//									SnpsAllvarsPos snppos = data.getListPos().get(ipos);
+//									list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPos(), snppos.getRefnuc(), 
+//											this.allelestring[0][ipos], this.allelestring[1][ipos]} );
+//								}
+//								else list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
+//										this.allelestring[0][ipos], this.allelestring[1][ipos]} );
+//							}
+//						}
+//					}
+//				}
+//				else {
+//						for(int ipos=0; ipos<this.posarr.length; ipos++) {
+//							Set setNonsynAlleles = data.getSnpstringdata().getMapIdx2NonsynAlleles().get(ipos);
+//							if(setNonsynAlleles==null) continue;
+//							if((!allelestring[0][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[0][ipos].charAt(0))) || 
+//									(!allelestring[1][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[1][ipos].charAt(0)))
+//								) {
+//								if(params.isbShowNPBPositions()) {
+//									SnpsAllvarsPos snppos = data.getListPos().get(ipos);
+//									list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPos(), snppos.getRefnuc(), 
+//											this.allelestring[0][ipos], this.allelestring[1][ipos]} );
+//								}
+//								else list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
+//										this.allelestring[0][ipos], this.allelestring[1][ipos]} );
+//							}
+//						}
+//					}
+//				
+//			} else {
+//				if(params.isbMismatchonly()) {
+//					for(int ipos=0; ipos<this.posarr.length; ipos++) {
+//							if(!allelestring[0][ipos].equals(allelestring[1][ipos])) {
+//								if(params.isbShowNPBPositions()) {
+//									SnpsAllvarsPos snppos = data.getListPos().get(ipos);
+//									list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPos(), snppos.getRefnuc(), 
+//											this.allelestring[0][ipos], this.allelestring[1][ipos]} );
+//								}
+//								else list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
+//										this.allelestring[0][ipos], this.allelestring[1][ipos]} );
+//							}
+//						}
+//				}
+//				else {
+//					for(int ipos=0; ipos<this.posarr.length; ipos++) {
+//						if(params.isbShowNPBPositions()) {
+//							SnpsAllvarsPos snppos = data.getListPos().get(ipos);
+//							list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPos(), snppos.getRefnuc(), 
+//									this.allelestring[0][ipos], this.allelestring[1][ipos]} );
+//						}
+//						else list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
+//								this.allelestring[0][ipos], this.allelestring[1][ipos]} );
+//					}
+//				}
+//			}
+//			
+//			
+//		}
+//		return list;
+//	}
 
 	/*
 	public List getRowHeaderList() {
@@ -503,7 +626,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 	/*
 	public List getRowHeaderList(Long[] varid, int nRows, int firstRow) {
 		
-		lisitemdao  = (ListItemsDAO)AppContext.checkBean(lisitemdao,"ListItemsDAO");
+		lisitemdao  = (ListItemsDAO)AppContext.checkBean(lisitemdao,"ListItems");
 		Map<BigDecimal,Variety> mapVarId2Var = lisitemdao.getMapId2Variety();
 		
 		int lastIdx=firstRow + nRows;
@@ -540,6 +663,4 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 	}
 	*/
 	
-	
-	
-}
+

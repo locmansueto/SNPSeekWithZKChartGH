@@ -12,7 +12,9 @@ import org.irri.iric.portal.dao.CvTermLocusCountDAO;
 import org.irri.iric.portal.dao.CvTermPathDAO;
 import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.genomics.GeneOntologyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.*;
@@ -27,6 +29,7 @@ import java.util.List;
 public class GeneOntologyServiceImpl implements GeneOntologyService{
 
 	@Autowired
+	//@Qualifier("CvTermPathDAO")
 	private CvTermPathDAO cvtermpathDAO;
 	@Autowired
 	private  CvTermLocusCountDAO cvtermlocuscountdao;
@@ -34,7 +37,7 @@ public class GeneOntologyServiceImpl implements GeneOntologyService{
 	private ListItemsDAO listitemsdao;
 	
 	@Override
-	public String queryGO(String q) throws Exception {
+	public String queryAccession(String q) throws Exception {
 		// TODO Auto-generated method stub
 
 		
@@ -60,7 +63,7 @@ public class GeneOntologyServiceImpl implements GeneOntologyService{
 	@Override
 	public List countLociInTerms(String organism, Collection genelist, String cv)  throws Exception {
 	
-		 listitemsdao = (ListItemsDAO)AppContext.checkBean( listitemsdao,"ListItemsDAO");
+		 listitemsdao = (ListItemsDAO)AppContext.checkBean( listitemsdao,"ListItems");
 		 cvtermlocuscountdao = (CvTermLocusCountDAO)AppContext.checkBean( cvtermlocuscountdao,"CvTermLocusCountDAO");
 		 return cvtermlocuscountdao.getCvTermLocusCount( listitemsdao.getOrganismByName(organism).getOrganismId(), genelist, cv);
 		 

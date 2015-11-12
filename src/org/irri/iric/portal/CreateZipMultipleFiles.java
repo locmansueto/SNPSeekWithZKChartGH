@@ -6,6 +6,9 @@ This Java example shows how create zip file containing multiple files
 using Java ZipOutputStream class.
 */
 
+import java.util.Iterator;
+import java.util.List;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,9 +28,26 @@ public class CreateZipMultipleFiles {
 		this.zipFile = zipFile;
 		this.sourceFiles = sourceFiles;
 	}
+	
+	public CreateZipMultipleFiles(String zipFile, List listFiles) {
+		super();
+		sourceFiles = new String[listFiles.size()];
+		this.zipFile = zipFile;
+		
+		Iterator<String> itFilename = listFiles.iterator();
+		int icount=0;
+		while(itFilename.hasNext()) {
+			sourceFiles[icount] = itFilename.next();
+			icount++;
+		}
+	}
 
 
-	public void create()
+	public void create() {
+		create(false);
+	}
+	
+	public void create(boolean includePath)
 	{
 		try
         {
@@ -68,7 +88,16 @@ public class CreateZipMultipleFiles {
                          * of the entry data.
                          */
 
-                        zout.putNextEntry(new ZipEntry(sourceFiles[i]));
+                        if(includePath) {
+                        	zout.putNextEntry(new ZipEntry(sourceFiles[i]));
+                        }
+                        else { 
+                        	File addfile=new File(sourceFiles[i]);
+                        	zout.putNextEntry(new ZipEntry(addfile.getName()));
+                        }
+                        
+                        
+                        //zout.putNextEntry(new ZipEntry(sourceFiles[i]));
 
                         /*
                          * After creating entry in the zip file, actually

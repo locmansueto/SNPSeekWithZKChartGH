@@ -19,15 +19,16 @@ public class SnpsStringAllvarsImpl implements SnpsStringAllvars {
 	private String varnuc;
 	private BigDecimal mismatch;
 	//private boolean isnonsyn[];
-	private Set nonsynIdxset;
-	private Map<Integer, Character> mapPosIdx2Allele2;
+	//private Set nonsynIdxset;
+	private Set<Position> nonsynPosset;
+	private Map<Position, Character> mapPos2Allele2;
 	private String allele2;
 	
 	private Set acceptorPosset;
 	private Set donorPosset;
 	
 	public SnpsStringAllvarsImpl(BigDecimal var, String chr,  String varnuc,
-			BigDecimal mismatch, Map mapPosIdx2Allele2, Set nonsynIdxset, Set donorPoset,  Set acceptorPosset) {
+			BigDecimal mismatch, Map mapPos2Allele2, Set nonsynPosset, Set donorPoset,  Set acceptorPosset) {
 		super();
 		this.var = var;
 		try {
@@ -40,8 +41,10 @@ public class SnpsStringAllvarsImpl implements SnpsStringAllvars {
 		this.varnuc = varnuc;
 		this.mismatch = mismatch;
 		//this.isnonsyn = isnonsyn;
-		this.nonsynIdxset = nonsynIdxset;
-		this.mapPosIdx2Allele2 = mapPosIdx2Allele2;
+		//this.nonsynIdxset = nonsynIdxset;
+		this.nonsynPosset = nonsynPosset;
+		//this.mapPosIdx2Allele2 = mapPosIdx2Allele2;
+		this.mapPos2Allele2 = mapPos2Allele2;
 		
 		this.acceptorPosset=acceptorPosset;
 		this.donorPosset = donorPosset;
@@ -53,17 +56,17 @@ public class SnpsStringAllvarsImpl implements SnpsStringAllvars {
 		return chr;
 	}
 
-	@Override
-	public BigDecimal getPos() {
-		// TODO Auto-generated method stub
-		return pos;
-	}
-
-	@Override
-	public String getRefnuc() {
-		// TODO Auto-generated method stub
-		return refnuc;
-	}
+//	@Override
+//	public BigDecimal getPosition() {
+//		// TODO Auto-generated method stub
+//		return pos;
+//	}
+//
+//	@Override
+//	public String getRefcall() {
+//		// TODO Auto-generated method stub
+//		return refnuc;
+//	}
 
 	@Override
 	public String getVarnuc() {
@@ -93,13 +96,13 @@ public class SnpsStringAllvarsImpl implements SnpsStringAllvars {
 	
 
 	@Override
-	public Map<Integer, Character> getMapPosIdx2Allele2() {
-		return mapPosIdx2Allele2;
+	public Map<Position, Character> getMapPos2Allele2() {
+		return mapPos2Allele2;
 	}
 
 	@Override
-	public Set getNonsynIdxset() {
-		return nonsynIdxset;
+	public Set getNonsynPosset() {
+		return nonsynPosset;
 	}
 
 	@Override
@@ -126,6 +129,7 @@ public class SnpsStringAllvarsImpl implements SnpsStringAllvars {
 		// TODO Auto-generated method stub
 		return this.contig;
 	}
+
 
 	
 	

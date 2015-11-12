@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  * @author lmansueto
  *
  */
-public interface SnpsAllvarsPos {
+public interface SnpsAllvarsPos extends Position {
 
 	
 		/**
@@ -25,4 +25,8 @@ public interface SnpsAllvarsPos {
 		public void setRefnuc(String refnuc);
 		
 		public String getContig();
+		
+		public BigDecimal getAlleleIndex();
+		
+		public BigDecimal getSnpFeatureId();
 }

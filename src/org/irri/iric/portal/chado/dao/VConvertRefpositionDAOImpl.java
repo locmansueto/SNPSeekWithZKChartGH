@@ -21,7 +21,6 @@ import javax.persistence.Query;
 import org.hibernate.Session;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.domain.VConvertRefposition;
-import org.irri.iric.portal.chado.domain.VLocusCvterm;
 import org.irri.iric.portal.dao.OrganismDAO;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.MultiReferenceLocus;
@@ -31,10 +30,11 @@ import org.irri.iric.portal.domain.MultiReferenceConversionImpl;
 import org.irri.iric.portal.domain.Organism;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsAllvarsPosImpl;
-import org.irri.iric.portal.domain.VariantIndelStringData;
-import org.irri.iric.portal.domain.VariantStringData;
+import org.irri.iric.portal.genotype.VariantIndelStringData;
+import org.irri.iric.portal.genotype.VariantStringData;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -451,12 +451,12 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 			String toReference, String toContig)  throws Exception {
 		// TODO Auto-generated method stub
 
-		List listConv = queryConversion( getOrganismId( fromLocus.getOrganism() ) , fromLocus.getContig(), fromLocus.getStart(), getOrganismId( toReference ), toContig);
-		if(listConv.size()==0) throw new RuntimeException("No reference coordinate conversion at start (" + fromLocus.getStart() + ") to " + toReference + " found");
+		List listConv = queryConversion( getOrganismId( fromLocus.getOrganism() ) , fromLocus.getContig(), BigDecimal.valueOf(fromLocus.getFmin()), getOrganismId( toReference ), toContig);
+		if(listConv.size()==0) throw new RuntimeException("No reference coordinate conversion at start (" + fromLocus.getFmin() + ") to " + toReference + " found");
 		//if(listConv.size()>1) throw new RuntimeException("Multiple (" + listConv.size() + ") reference coordinate conversions at start to " + toReference + " found. (overlapped)");
 		VConvertRefposition mindiff_VConvertRefposition = null;
 		if(listConv.size()>1) {
-			AppContext.debug("Multiple " + listConv + " reference coordinate conversions at start (" + fromLocus.getStart() + ") ... will use lowest");
+			AppContext.debug("Multiple " + listConv + " reference coordinate conversions at start (" + fromLocus.getFmin() + ") ... will use lowest");
 			/*
 			long mindiff = Long.MAX_VALUE;
 			Iterator<VConvertRefposition> itConv = listConv.iterator();
@@ -478,13 +478,13 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 
 		AppContext.debug("coversionStart:" + coversionStart);
 		
-		List listConv2 = queryConversion( getOrganismId( fromLocus.getOrganism() ) , fromLocus.getContig(), fromLocus.getEnd(), getOrganismId( toReference ), toContig);
-		if(listConv2.size()==0) throw new RuntimeException("No reference coordinate conversion at end (" + fromLocus.getEnd() + ") to " + toReference + " found");
+		List listConv2 = queryConversion( getOrganismId( fromLocus.getOrganism() ) , fromLocus.getContig(), BigDecimal.valueOf(fromLocus.getFmax()), getOrganismId( toReference ), toContig);
+		if(listConv2.size()==0) throw new RuntimeException("No reference coordinate conversion at end (" + fromLocus.getFmax() + ") to " + toReference + " found");
 		//if(listConv2.size()>1) throw new RuntimeException("Multiple (" + listConv2.size() + ") reference coordinate conversions at end to " + toReference + " found. (overlapped)");
 		
 		mindiff_VConvertRefposition = null;
 		if(listConv2.size()>1) {
-			AppContext.debug("Multiple " + listConv2 + " reference coordinate conversions at end (" + fromLocus.getEnd() + ") ... will use largest");
+			AppContext.debug("Multiple " + listConv2 + " reference coordinate conversions at end (" + fromLocus.getFmax() + ") ... will use largest");
 			/*
 			long mindiff = Long.MAX_VALUE;
 			Iterator<VConvertRefposition> itConv2 = listConv2.iterator();
@@ -534,7 +534,7 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 			
 			AppContext.debug("creating locus 3");
 
-			toLocus = new MultiReferenceLocusImpl( toReference, coversionStart.getToContig(), coversionStart.getToPosition().longValue() , coversionEnd.getToPosition().longValue(), strand );
+			toLocus = new MultiReferenceLocusImpl( toReference, coversionStart.getToContig(), coversionStart.getToPosition().intValue() , coversionEnd.getToPosition().intValue(), strand.intValue() );
 			AppContext.debug("convert locus:" + fromLocus + " to " + toLocus );
 		
 		//} catch( InvocationTargetException ex) {
@@ -561,10 +561,10 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 			variantstringdataNPB = ((VariantIndelStringData)variantstringdataNPB).getAlignedIndels();
 		}
 		
-		double prevPos = origMultiReferenceLocus.getStart().doubleValue();
+		double prevPos = origMultiReferenceLocus.getFmin().doubleValue();
 		
 		if(npbMultirefLocus.getStrand()<0)
-			prevPos = origMultiReferenceLocus.getEnd().doubleValue();
+			prevPos = origMultiReferenceLocus.getFmax().doubleValue();
 		
 		StringBuffer strMessage=new StringBuffer();
 		
@@ -590,7 +590,7 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 						VConvertRefposition conv = itConv.next();
 						if(!conv.getToContig().equals( toContig )) continue;
 						
-						if(conv.getToPosition().longValue() <= origMultiReferenceLocus.getEnd()  && conv.getToPosition().longValue() >= origMultiReferenceLocus.getStart()) {
+						if(conv.getToPosition().longValue() <= origMultiReferenceLocus.getFmax().longValue()  && conv.getToPosition().longValue() >= origMultiReferenceLocus.getFmin().longValue()) {
 							// include
 							//filteredList.add(conv);
 						
@@ -624,7 +624,7 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 						VConvertRefposition conv = itConv.next();
 						if(!conv.getToContig().equals( toContig )) continue;
 						
-						if(conv.getToPosition().longValue() <= origMultiReferenceLocus.getEnd()  &&  conv.getToPosition().longValue() >= origMultiReferenceLocus.getStart()) {
+						if(conv.getToPosition().longValue() <= origMultiReferenceLocus.getFmax().longValue()  &&  conv.getToPosition().longValue() >= origMultiReferenceLocus.getFmin().longValue()) {
 							// include
 							//AppContext.debug("SNP, anchor point or deletion region:"  + snppos.getPos() + " to " + conv.getToPosition());
 							filteredList.add(conv);
@@ -726,9 +726,11 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 
 
 	@Autowired
+	//@Qualifier("OrganismDAO")
+	//@Qualifier("OrganismDAOPostges")
 	private OrganismDAO organismdao;
 	
-	private Map<String,BigDecimal> mapOrgname2Id=null;
+	//private Map<String,BigDecimal> mapOrgname2Id=null;
 
 	
 	private BigDecimal getOrganismId(String organism) {
@@ -736,6 +738,9 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 		try{
 			orgid = BigDecimal.valueOf( Long.valueOf(organism) );
 		} catch (Exception ex) {
+			
+			return organismdao.getMapName2Organism().get(organism).getOrganismId();
+			/*
 			if(mapOrgname2Id==null) {
 				mapOrgname2Id = new HashMap();
 				organismdao = (OrganismDAO)AppContext.checkBean(organismdao, "OrganismDAO");
@@ -746,6 +751,7 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 				}
 			}
 			return mapOrgname2Id.get(organism);
+			*/
 		}
 		return orgid;
 	}

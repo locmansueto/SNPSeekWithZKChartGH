@@ -3,7 +3,7 @@
 
 <?component name="tipBox" macroURI="tipBox.zul"?>
 
-
+<!--  *********************   DEFINE CUSTOMIZED DISPLAY PROPERTIES  *********************************************************************************** -->
 
 <zk xmlns:h="native">
 
@@ -58,8 +58,11 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 
 
 <zscript>
+
+<!--  *********************   INITIALIZE DISPLAY VARIABLES  *********************************************************************************** -->
+
         import org.zkoss.zkplus.spring.SpringUtil;      
-		import org.irri.iric.portal.variety.service.VarietyFacade;
+		import org.irri.iric.portal.variety.VarietyFacade;
 		import org.irri.iric.portal.admin.WorkspaceFacade;
 		import org.springframework.beans.factory.annotation.Autowired;
 		import org.irri.iric.portal.AppContext;
@@ -110,10 +113,12 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 
 <rows>
 
+<!--  *********************   MESSAGEBOX  *********************************************************************************** -->
     <row spans="4">
 		<textbox id="msgbox" readonly="true" value="${msg}" width="100%"/>
 	</row>
    
+<!--  *********************   VARIETY QUERY OPTIONS  *********************************************************************************** -->   
 	<row spans="1,3">
 		<label value="Variety name" style="font-size:14px;font-weight:bold;color:gray;"/>
 		
@@ -211,18 +216,18 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
         </zscript>
         
 	 		<hbox>
-	 		    <button id="searchButton" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
+	 		    <button id="buttonSearch" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
 	    	   width="100px" height="50px"  autodisable="self"
 	    	   xmlns:w="http://www.zkoss.org/2005/zk/client"			    	   			    	   
 	    	   w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();"
 	    	   />
 	    	   <vbox width="10px"/>	
-	 		    <button id="resetButton" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;"
+	 		    <button id="buttonReset" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;"
 	    	   width="75px" height="30px"  autodisable="self"
 	    	   />	
 		
 	 		    <button id="showallButton" label="Show All"   style="font-size:14px;font-weight:bold;color:gray;"
-	    	   width="75px" height="30px"  autodisable="self" visible="false"
+	    	   width="75px" height="30px"  autodisable="self" visible="true"
 	    	   />	
 	    	    <vbox width="10px"/>
 	    	</hbox>
@@ -266,7 +271,11 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 <separator bar="true"/>
     
                                            
- <vbox>                
+ <vbox>
+ 
+ <!--  *********************   VARIETY INFORMATION DISPLAY  *********************************************************************************** -->
+ 
+                 
  	<grid id="gridGermplasm" visible="false" width="100%"  >
 	        	<columns>
                 <column label="PASSPORT DATA"/>
@@ -293,6 +302,9 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		<button id="buttonDownloadBAM" label="BAM" target="_rawdownload"/><vbox width="15px"/>
 		<button id="buttonDownloadVCF" label="VCF" target="_rawdownload"/>
 		</hbox>
+		
+		<!--  *********************   PASSPORT INFORMATION DISPLAY  *********************************************************************************** -->
+		
 		<a target="_blank" href="/passport_dict.pdf" label="Passport data dictionary"/>
 		<listbox id="listboxGermPassport">
 			<listhead>
@@ -311,6 +323,7 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		</vbox>
 		</cell>
 		
+		<!--  *********************   PHENOTYPE INFORMATION DISPLAY  *********************************************************************************** -->
 		
 		
 		<cell align="left" valign="top">
@@ -348,6 +361,10 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
         </tabs>  
         <tabpanels>  
             <tabpanel>
+            
+		<!--  *********************   VARIETY QUERY LIST RESULT DISPLAY  *********************************************************************************** -->
+            
+            
 				 <vbox>
 				 <hbox id="hboxAddtolist" visible="false">
 				 <label value="Download:  " pre="true"/>
@@ -379,6 +396,10 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
             </tabpanel>
 
             <tabpanel>  
+            
+          <!--  *********************   VARIETY QUERY LIST PHYLOGENETIC TREE DISPLAY  *********************************************************************************** -->
+            
+            
 				<!--  div style="overflow:auto;position:relative" --> 
 				<vbox> 
 				<label value="The tree is constructed using  Neighbor-Joining method based on 400,000 core SNPs" style="font-family: arial;font-size:12px" />
@@ -456,6 +477,10 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
   
 
 		 <tabpanel>
+		 
+		  <!--  *********************   VARIETY QUERY MDS PLOT DISPLAY  *********************************************************************************** -->
+		 
+		 
 		        <vbox>
 		        <label value = "Drag area to zoom."/>
 		        <checkbox id="checkboxShowMDSLabel" label = "Show variety names" checked="true" visible="false"/>
@@ -467,6 +492,10 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
          </tabpanels>
     </tabbox>
 </vbox>
+	
+	
+	  <!--  *********************   INITIALIZATIONS OF DISPLAY COMPONENTS  *********************************************************************************** -->
+	
 	
 		<zscript><![CDATA[
 	        varietyresult.pagingChild.mold =  "os";
@@ -496,7 +525,7 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 	        	else
 	        	{
 			        comboVarname.setValue(varname.toUpperCase());
-		        	Events.postEvent("onClick", searchButton, null);        	
+		        	Events.postEvent("onClick", buttonSearch, null);        	
 	        	}
 	        }
 	        else {
@@ -527,7 +556,7 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 				}	        	
 	        	else {
 		        	comboIrisId.setValue(varid);
-		        	Events.postEvent("onClick", searchButton, null);
+		        	Events.postEvent("onClick", buttonSearch, null);
 		        }
 	        }
 	        
@@ -535,6 +564,7 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 	        
         </zscript>
 
+  <!--  *********************   POPUP DEFINITIONS  *********************************************************************************** -->
 
 
 <popup id="popupAddPhenotype" width="300px">

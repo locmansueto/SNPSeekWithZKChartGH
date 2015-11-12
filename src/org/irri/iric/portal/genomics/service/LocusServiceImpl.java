@@ -12,10 +12,15 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.dao.CvDAO;
+import org.irri.iric.portal.dao.CvTermDAO;
+import org.irri.iric.portal.dao.LocusCvTermDAO;
 import org.irri.iric.portal.dao.LocusDAO;
+import org.irri.iric.portal.dao.OrganismDAO;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.LocalAlignmentImpl;
 import org.irri.iric.portal.domain.MultiReferencePositionImpl;
+import org.irri.iric.portal.genomics.LocusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -24,37 +29,92 @@ import org.springframework.stereotype.Service;
 public class LocusServiceImpl implements LocusService {
 
 	@Autowired
-	@Qualifier("VLocusNotesDAO")
+	private OrganismDAO orgdao;
+
+	@Autowired
+	private CvDAO cvdao;
+
+	
+	@Autowired
+	@Qualifier("LocusNotesDAO")
 	private LocusDAO locusnotesDAO;
 	
 	@Autowired
-	@Qualifier("VLocusCvtermCvtermpathDAO")
-	private LocusDAO locuscvtermDAO;
+	@Qualifier("LocusCvtermCvtermpathDAO")
+	//@Qualifier("VLocusCvtermDAO")
+	private LocusCvTermDAO locuscvtermDAO;
+	//private CvTermDAO locuscvtermDAO;
 
+	@Autowired
+	@Qualifier("VLocusCvtermpathIricDAO")
+	//@Qualifier("VLocusCvtermDAO")
+	private LocusCvTermDAO locusiriccvtermDAO;
+	
+	@Autowired
+	@Qualifier("VLocusCvtermpathMsu7DAO")
+	private LocusCvTermDAO locusmsu7cvtermDAO;
+	
+	@Autowired
+	@Qualifier("VLocusCvtermpathRapDAO")
+	private LocusCvTermDAO locusrapcvtermDAO;
+
+	
+	//@Autowired
+	//@Qualifier("VLocusCvtermDAO")
+	//private LocusDAO locuspatotermDAO;
+	
+	
+	
 	@Override
 	public List getLocusByNotes(String note, String organism) {
 		// TODO Auto-generated method stub
-		locusnotesDAO = (LocusDAO)AppContext.checkBean(locusnotesDAO,"VLocusNotesDAO");
+		locusnotesDAO = (LocusDAO)AppContext.checkBean(locusnotesDAO,"LocusNotesDAO");
 		return locusnotesDAO.getLocusByDescription(note,organism);
 	}
 
+
 	@Override
-	public List getLocusByGODefinition(String godef, String organism) {
+	public List getLocusByCvTerm(String goterm, String organism, String cvname) {
 		// TODO Auto-generated method stub
-		return null;
+		AppContext.debug("getting locus for " + goterm + "  "  + organism );
+		//locuscvtermDAO = (LocusDAO)AppContext.checkBean(locuscvtermDAO,"VLocusCvtermCvtermpathDAO");
+		locuscvtermDAO = (LocusCvTermDAO)AppContext.checkBean(locuscvtermDAO,"LocusCvtermCvtermpathDAO");
+		//locuscvtermDAO = (LocusCvTermDAO)AppContext.checkBean(locuscvtermDAO,"LocusCvtermDAO");
+		return locuscvtermDAO.getLocusByDescription(goterm, orgdao.getMapName2Organism().get(organism).getOrganismId().intValue(), 
+				cvdao.getMapName2Cv().get(cvname).getCvId().intValue());
 	}
 
 	@Override
-	public List getLocusByGOTerm(String goterm, String organism) {
+	public List getLocusByCvTerm(String goterm, String organism, String cvname, String genemodel) {
 		// TODO Auto-generated method stub
-		locuscvtermDAO = (LocusDAO)AppContext.checkBean(locuscvtermDAO,"VLocusCvtermCvtermpathDAO");
-		return locuscvtermDAO.getLocusByDescription(goterm,organism);
+		AppContext.debug("getting locus for " + goterm + "  "  + organism + " " + genemodel);
+		//locuscvtermDAO = (LocusDAO)AppContext.checkBean(locuscvtermDAO,"VLocusCvtermCvtermpathDAO");
+		
+		if(genemodel.equals(LocusCvTermDAO.GENEMODEL_ALL))
+			return getLocusByCvTerm( goterm, organism, cvname);
+
+		
+		LocusCvTermDAO locusgenemodelcvtermDAO=null;
+		
+		if(genemodel.equals(LocusCvTermDAO.GENEMODEL_IRIC))
+			locusgenemodelcvtermDAO = (LocusCvTermDAO)AppContext.checkBean(locusiriccvtermDAO,"VLocusCvtermpathIricDAO");
+		else if(genemodel.equals(LocusCvTermDAO.GENEMODEL_MSU7))
+			locusgenemodelcvtermDAO = (LocusCvTermDAO)AppContext.checkBean(locusmsu7cvtermDAO,"VLocusCvtermpathMsu7DAO");
+		if(genemodel.equals(LocusCvTermDAO.GENEMODEL_RAP))
+			locusgenemodelcvtermDAO = (LocusCvTermDAO)AppContext.checkBean(locusrapcvtermDAO,"VLocusCvtermpathRapDAO");
+		
+		//locuscvtermDAO = (LocusCvTermDAO)AppContext.checkBean(locuscvtermDAO,"LocusCvtermDAO");
+		return locusgenemodelcvtermDAO.getLocusByDescription(goterm, orgdao.getMapName2Organism().get(organism).getOrganismId().intValue(), 
+				cvdao.getMapName2Cv().get(cvname).getCvId().intValue());
 	}
+
+	
+	
 
 	@Override
 	public Locus getLocusByName(String name) throws Exception {
 		// TODO Auto-generated method stub
-		locusnotesDAO = (LocusDAO)AppContext.checkBean(locusnotesDAO,"VLocusNotesDAO");
+		locusnotesDAO = (LocusDAO)AppContext.checkBean(locusnotesDAO,"LocusNotesDAO");
 		List listlocus = locusnotesDAO.getLocusByName(name);
 		
 		if(listlocus.size()==0) return null;
@@ -92,9 +152,13 @@ public class LocusServiceImpl implements LocusService {
 	
 	@Override
 	public List<Locus> getLocusByRegion( String contig,  Long start, Long end,  String organism) {
-		locusnotesDAO = (LocusDAO)AppContext.checkBean(locusnotesDAO,"VLocusNotesDAO");
+		locusnotesDAO = (LocusDAO)AppContext.checkBean(locusnotesDAO,"LocusNotesDAO");
 		return locusnotesDAO.getLocusByRegion(contig, start, end, organism);
 	}
+	
+	
+	
+	
 	/*
 	private Map getMapContig2SNPPos(Collection<MultiReferencePosition> posset) {
 		Iterator<MultiReferencePosition> itMultiPos = posset.iterator();
@@ -113,11 +177,29 @@ public class LocusServiceImpl implements LocusService {
 	*/
 
 	@Override
+	public List<Locus> getLocusByRegion(String contig, Long start, Long end,
+			String organism, String genemodel) {
+		// TODO Auto-generated method stub
+		locusnotesDAO = (LocusDAO)AppContext.checkBean(locusnotesDAO,"LocusNotesDAO");
+		return locusnotesDAO.getLocusByRegion(contig, start, end, organism, genemodel);
+	}
+
+
+	@Override
+	public List<Locus> getLocusByNotes(String description, String organism,
+			String genemodel) {
+		// TODO Auto-generated method stub
+		locusnotesDAO = (LocusDAO)AppContext.checkBean(locusnotesDAO,"LocusNotesDAO");
+		return locusnotesDAO.getLocusByDescription(description,organism, genemodel);
+	}
+
+
+	@Override
 	public List getLocusByContigPositions(String contig, Collection posset,
-			String organism) {
+			String organism, String genemodel) {
 		// TODO Auto-generated method stub
 		
-		locusnotesDAO = (LocusDAO)AppContext.checkBean(locusnotesDAO,"VLocusNotesDAO");
+		locusnotesDAO = (LocusDAO)AppContext.checkBean(locusnotesDAO,"LocusNotesDAO");
 		
 		if(contig.toLowerCase().equals("any")) {
 			List listLoci = new ArrayList();
@@ -125,14 +207,22 @@ public class LocusServiceImpl implements LocusService {
 			Iterator<String> itChr = mapChr2Pos.keySet().iterator();
 			while(itChr.hasNext()) {
 				String chr = itChr.next();
-				listLoci.addAll( locusnotesDAO.getLocusByContigPositions(chr, mapChr2Pos.get(chr) ,  organism) );
+				listLoci.addAll( locusnotesDAO.getLocusByContigPositions(chr, mapChr2Pos.get(chr) ,  organism, genemodel) );
 			}
 			return listLoci;
 			
 		} else {
 			
-			return locusnotesDAO.getLocusByContigPositions(contig, posset,  organism);
+			return locusnotesDAO.getLocusByContigPositions(contig, posset,  organism, genemodel);
 		}
+	}
+
+
+	@Override
+	public List getLocusByContigPositions(String contig, Collection posset,
+			String organism) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

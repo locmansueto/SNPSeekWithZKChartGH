@@ -6,21 +6,19 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.chado.dao.VIricstockBasicprop2DAO;
-import org.irri.iric.portal.chado.dao.VLocusNotesDAO;
-import org.irri.iric.portal.chado.domain.VIricstockBasicprop2;
+import org.irri.iric.portal.dao.VarietyDAO;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.MultiReferencePositionImpl;
 import org.irri.iric.portal.domain.MultiReferencePositionImplAllelePvalue;
 import org.irri.iric.portal.domain.Variety;
-import org.irri.iric.portal.genomics.service.LocusService;
+import org.irri.iric.portal.genomics.LocusService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -39,11 +37,13 @@ public class UserSessionListsManager {
 	private Set setPoslistWithPvalue=new LinkedHashSet();
 	
 	@Autowired
-	VIricstockBasicprop2DAO varietyprop2DAO;
+	//VIricstockBasicprop2DAO varietyprop2DAO;
+	@Qualifier("VarietyDAO")
+	private VarietyDAO varietyprop2DAO;
 	
 	@Autowired
 	//VLocusNotesDAO locusnotesDAO;
-	LocusService locusService;
+	private LocusService locusService;
 	
 
 	public UserSessionListsManager() {
@@ -207,7 +207,12 @@ public class UserSessionListsManager {
 	}
 
 
-	
+	/**
+	 * Recreate list from list file 
+	 * @param list
+	 * @return
+	 * @throws Exception
+	 */
 	public boolean uploadList(String list) throws Exception {
 		
 		String lines[] = list.split("\n");
@@ -356,20 +361,24 @@ public boolean uploadListCookie(String list) {
 	}
 	
 
+/**
+ * Convert list to ASCII text
+ * @return
+ */
 	public String downloadLists() {
 		// TODO Auto-generated method stub
 		StringBuffer buff = new StringBuffer();
-		Map<BigDecimal, VIricstockBasicprop2> mapVarid2Var2 = null;
+		Map<BigDecimal, Variety> mapVarid2Var2 = null;
 		
 		
 		Iterator<String> itNames = getVarietylistNames().iterator();
 		
 		if(itNames.hasNext()) {
-			varietyprop2DAO = (VIricstockBasicprop2DAO)AppContext.checkBean( varietyprop2DAO, "VIricstockBasicprop2DAO");
-			Iterator<VIricstockBasicprop2> itVars = varietyprop2DAO.findAllVariety().iterator();
+			varietyprop2DAO = (VarietyDAO)AppContext.checkBean( varietyprop2DAO, "VarietyDAO");
+			Iterator<Variety> itVars = varietyprop2DAO.findAllVariety().iterator();
 			mapVarid2Var2 = new HashMap();
 			while(itVars.hasNext()) {
-				VIricstockBasicprop2 var = itVars.next();
+				Variety var = itVars.next();
 				mapVarid2Var2.put(var.getVarietyId(), var);
 			}
 			
@@ -393,7 +402,7 @@ public boolean uploadListCookie(String list) {
 				if(var.getSubpopulation()!=null) subpop=var.getSubpopulation();
 				
 				
-				VIricstockBasicprop2 var2 = mapVarid2Var2.get(var.getVarietyId()); 
+				Variety var2 = mapVarid2Var2.get(var.getVarietyId()); 
 				if( var2!=null && var2.getBoxCode()!=null) boxcode = var2.getBoxCode();
 				buff.append("\t\t" + var.getVarietyId() +  "\t" + var.getName() + "\t" + irisid + "\t" + boxcode + "\t" +subpop + "\t" + country + "\n");
 			}
@@ -445,15 +454,20 @@ public boolean uploadListCookie(String list) {
 		
 	}
 
+
+/**
+ * Convert list to ASCII text (compact version)
+ * @return
+ */
 	public String downloadListsCookie() {
 		// TODO Auto-generated method stub
 		StringBuffer buff = new StringBuffer();
 		
-		varietyprop2DAO = (VIricstockBasicprop2DAO)AppContext.checkBean( varietyprop2DAO, "VIricstockBasicprop2DAO");
-		Iterator<VIricstockBasicprop2> itVars = varietyprop2DAO.findAllVariety().iterator();
-		Map<BigDecimal, VIricstockBasicprop2> mapVarid2Var2 = new HashMap();
+		varietyprop2DAO = (VarietyDAO)AppContext.checkBean( varietyprop2DAO, "VarietyDAO");
+		Iterator<Variety> itVars = varietyprop2DAO.findAllVariety().iterator();
+		Map<BigDecimal, Variety> mapVarid2Var2 = new HashMap();
 		while(itVars.hasNext()) {
-			VIricstockBasicprop2 var = itVars.next();
+			Variety var = itVars.next();
 			mapVarid2Var2.put(var.getVarietyId(), var);
 		}
 		

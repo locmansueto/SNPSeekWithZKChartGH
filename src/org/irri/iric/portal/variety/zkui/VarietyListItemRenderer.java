@@ -1,14 +1,16 @@
 package org.irri.iric.portal.variety.zkui;
 
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Iterator;
 
 
 
+
 //import org.irri.iric.portal.chado.domain.VIricStockBoxcode;
-import org.irri.iric.portal.chado.domain.VIricstockBasicprop2;
-import org.irri.iric.portal.chado.domain.VIricstockBoxcode;
+//import org.irri.iric.portal.chado.domain.VIricstockBasicprop2;
+//import org.irri.iric.portal.chado.domain.VIricstockBoxcode;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.domain.VarietyPlus;
 import org.irri.iric.portal.domain.VarietyPlusPlus;
@@ -49,8 +51,13 @@ public class VarietyListItemRenderer implements ListitemRenderer {
 	        
 	        addListcell(listitem, item.getName());
 	        
-	        if( (item.getIrisId()==null || item.getIrisId().isEmpty()) && item instanceof VIricstockBoxcode ) {
-	        	VIricstockBoxcode varprop2 = (VIricstockBoxcode)item;
+	        //if( (item.getIrisId()==null || item.getIrisId().isEmpty()) && item instanceof VIricstockBoxcode ) {
+	        //	VIricstockBoxcode varprop2 = (VIricstockBoxcode)item;
+	        //	addListcell(listitem, varprop2.getBoxCode());
+	        //}
+	        if( (item.getIrisId()==null || item.getIrisId().isEmpty()) && item instanceof Variety ) {
+	        	 
+	        	Variety  varprop2 = (Variety)item;
 	        	addListcell(listitem, varprop2.getBoxCode());
 	        }
 	        else
@@ -63,11 +70,21 @@ public class VarietyListItemRenderer implements ListitemRenderer {
 		        if(item instanceof VarietyPlusPlus) {
 		        	Iterator itValues = ((VarietyPlusPlus)item).getValueMap().values().iterator();
 		        	while(itValues.hasNext()) {
-		        		addListcell(listitem,  itValues.next().toString() );
+		        		Object val=itValues.next();
+		        		String strval=null; 
+		        		if(val instanceof BigDecimal || val instanceof Double || val instanceof Float)
+		        			strval = String.format("%.3f", val).replaceAll("\\.?0+$","");
+		        		else val.toString();
+		        		addListcell(listitem,  strval );
 		        	}
 		        }
 		        else if(item instanceof VarietyPlus ) {
-		        	addListcell(listitem, ((VarietyPlus)item).getValue().toString() );
+	        		Object val=((VarietyPlus)item).getValue();
+	        		String strval=null; 
+	        		if(val instanceof BigDecimal || val instanceof Double || val instanceof Float)
+	        			strval = String.format("%.3f", val);
+	        		else val.toString();
+	        		addListcell(listitem, strval );
 		        }
 	        }
 	       

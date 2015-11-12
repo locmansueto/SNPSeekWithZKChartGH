@@ -2,7 +2,7 @@ package org.irri.iric.portal.dao;
 
 import org.irri.iric.portal.domain.MultiReferenceLocus;
 import org.irri.iric.portal.domain.MultiReferenceConversion;
-import org.irri.iric.portal.domain.VariantStringData;
+import org.irri.iric.portal.genotype.VariantStringData;
 
 public interface MultipleReferenceConverterDAO {
 

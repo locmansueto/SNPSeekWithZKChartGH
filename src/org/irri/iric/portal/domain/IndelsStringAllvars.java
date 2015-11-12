@@ -6,9 +6,9 @@ import java.util.Set;
 
 public interface IndelsStringAllvars extends SnpsStringAllvars {  //SnpsAllvarsRefMismatch, IndelsAllvars {
 
-	public BigDecimal getAllele1(BigDecimal pos);
-	public BigDecimal getAllele2(BigDecimal pos);
-	public Map<BigDecimal, IndelsAllvars> getMapPos2Indels();
+	public BigDecimal getAllele1(Position pos);
+	public BigDecimal getAllele2(Position pos);
+	public Map<Position, IndelsAllvars> getMapPos2Indels();
 	
 	// for update in merging
 	//public void setVarnuc(String varnuc);

@@ -9,19 +9,19 @@ public class InputParamsIdxs {
 
 	
 	public InputParamsIdxs(int listPosidx[]) {
-		this('\0', '\0', listPosidx, null,null);
+		this(-1, -1, listPosidx, null,null);
 	}
 	
 	public InputParamsIdxs(int listPosidx[], int listVaridx[]) {
-		this('\0','\0', listPosidx, listVaridx,null);
+		this(-1,-1, listPosidx, listVaridx,null);
 	}
 
 	public InputParamsIdxs(int listStartEndPosidx[][]) {
-		this('\0', '\0', null, null,listStartEndPosidx);
+		this(-1, -1, null, null,listStartEndPosidx);
 	}
 	
 	public InputParamsIdxs(int listStartEndPosidx[][], int listVaridx[]) {
-		this('\0','\0', null, listVaridx, listStartEndPosidx);
+		this(-1,-1, null, listVaridx, listStartEndPosidx);
 	}
 
 	
