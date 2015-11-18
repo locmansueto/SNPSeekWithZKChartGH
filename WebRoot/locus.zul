@@ -68,7 +68,7 @@
 <!--  listitem  label="Plant and Trait Ontology term"/ -->
 <listitem  label="Trait"/>
 <listitem  label="Region"/>
-<listitem  label="Sequence"/>
+<listitem  id="listitemSequence" label="Sequence"/>
 <listitem  label="My SNP List"/>
 </listbox>
 
@@ -94,10 +94,11 @@
 
 <!--  label value="Gene function" style="font-size:14px;font-weight:bold;color:gray;"/ -->
 <hbox>
+<vbox width="100px"/>
 <textbox id="textboxGenefunction" width="300px" />
 <vbox width="20px"/>
 <button id="searchGenefunctionButton" label="Search by function"   style="font-size:14px;font-weight:bold;color:gray;"
-  width="30px" height="30px"  autodisable="self"
+  width="200px" height="30px"  autodisable="self"
   />
 </hbox>
 </row>
@@ -366,7 +367,7 @@
                 <column label="STOP"  width="100px" sort="auto" />
                 <column label="STRAND"  width="60px" sort="auto" />
                 
-                <column label="OVERLAPS FROM ALL GENE MODELS"  width="300px" sort="auto" />
+                <column label="OVERLAPPING GENE MODELS"  width="300px" sort="auto" />
                 
                 <column label="DESCRIPTION"  sort="auto" />
             	</columns>
@@ -405,6 +406,7 @@
 	gridLocus.pagingPosition = "both";
 	
 	
+	listitemSequence.setVisible( !AppContext.isUsingsharedData() );
 		         
        String from=Executions.getCurrent().getParameter("from");
        if(from!=null) { 
@@ -415,6 +417,8 @@
        			this.rowMySnpList.setVisible(true);
        		}
        }
+       
+       
 		        
 	        
 </zscript>

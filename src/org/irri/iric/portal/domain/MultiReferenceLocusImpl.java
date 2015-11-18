@@ -1,5 +1,10 @@
 package org.irri.iric.portal.domain;
 
+/**
+ * Implementation of MultiReferenceLocus
+ * @author LMansueto
+ *
+ */
 public class MultiReferenceLocusImpl implements  MultiReferenceLocus {
 	
 	private String organism;

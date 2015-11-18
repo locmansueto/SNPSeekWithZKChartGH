@@ -1,17 +1,17 @@
 package org.iric.portal.remoteserver;
 
-import java.util.Collection;
+
 import java.util.List;
 
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.FormParam;
+
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
+
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.codehaus.jettison.json.JSONException;
+
 import org.irri.iric.portal.domain.LocalAlignmentImpl;
 
 

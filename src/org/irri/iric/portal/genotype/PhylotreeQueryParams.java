@@ -1,6 +1,6 @@
 package org.irri.iric.portal.genotype;
 
-import java.util.Collection;
+
 
 /**
  * Phylogenetic tree construction parameters

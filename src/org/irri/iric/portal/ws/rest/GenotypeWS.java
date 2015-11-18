@@ -1,24 +1,24 @@
 package org.irri.iric.portal.ws.rest;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+
+
+
+
+
+
 import java.math.BigDecimal;
-import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
-import javax.ws.rs.Consumes;
+
+
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -27,35 +27,35 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
+
 import javax.ws.rs.core.Response;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
+
+
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jettison.json.JSONArray;
+
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.CreateZipMultipleFiles;
-import org.irri.iric.portal.admin.WorkspaceFacade;
-import org.irri.iric.portal.domain.Gene;
-import org.irri.iric.portal.domain.IndelsAllvarsPos;
-import org.irri.iric.portal.domain.IndelsStringAllvars;
-import org.irri.iric.portal.domain.SnpsAllvarsPos;
-import org.irri.iric.portal.domain.SnpsStringAllvars;
-import org.irri.iric.portal.domain.Variety;
+
+
+
+
+
+
+
+
 import org.irri.iric.portal.genotype.GenotypeFacade;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantStringData;
 import org.irri.iric.portal.genotype.VariantTable;
 import org.irri.iric.portal.genotype.VariantTableArray;
 import org.irri.iric.portal.genotype.service.VariantAlignmentTableArraysImpl;
-import org.irri.iric.portal.genotype.service.VariantTableArraysImpl;
-import org.irri.iric.portal.genotype.zkui.FakerMatrixModel;
-import org.irri.iric.portal.genotype.zkui.Object2StringMatrixModel;
-import org.irri.iric.portal.genotype.zkui.Object2StringMatrixRenderer;
-import org.irri.iric.portal.genotype.zkui.PairwiseListItemRenderer;
+
+
+
+
+
 //import org.irri.iric.portal.genotype.zkui.SNPAllvarsRowRenderer;
 //import org.irri.iric.portal.genotype.zkui.SNPListItemRenderer;
 //import org.irri.iric.portal.genotype.zkui.SNPMatrixRenderer;
@@ -65,18 +65,18 @@ import org.irri.iric.portal.ws.entity.VariantTableWS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zkmax.zul.MatrixModel;
-import org.zkoss.zul.Auxhead;
-import org.zkoss.zul.Auxheader;
-import org.zkoss.zul.Column;
-import org.zkoss.zul.Columns;
-import org.zkoss.zul.Filedownload;
-import org.zkoss.zul.Listheader;
-import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.SimpleListModel;
 
-import com.sun.jersey.spi.resource.Singleton;
+
+
+
+
+
+
+
+
+
+
+
 
 @Controller("GenotypeWebService")
 @Path("/genotype")

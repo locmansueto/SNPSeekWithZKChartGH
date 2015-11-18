@@ -14,32 +14,12 @@ public interface SnpsAllvars extends Position {
 	 * @return
 	 */
 	public BigDecimal getVar();
-//	
-//	/**
-//	 * Chromosome
-//	 * @return
-//	 */
-//	public Long getChr();
-//	
-//	/**
-//	 * Position
-//	 * @return
-//	 */
-//	public BigDecimal getPos();
-	
-//	/**
-//	 * Reference base
-//	 * @return
-//	 */
-//	public String getRefnuc();
-	
+
 	/**
 	 * Variety allele at the position
 	 * @return
 	 */
 	public String getVarnuc();
 
-	
-//	public String getContig();
 	
 }

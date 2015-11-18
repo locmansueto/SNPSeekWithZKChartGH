@@ -1,7 +1,7 @@
 package org.irri.iric.portal.chado.oracle.dao;
 
 import java.math.BigDecimal;
-import java.util.List;
+
 import java.util.Set;
 
 import org.irri.iric.portal.chado.oracle.domain.VGoOrganism;

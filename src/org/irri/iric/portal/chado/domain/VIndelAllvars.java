@@ -1,16 +1,16 @@
 package org.irri.iric.portal.chado.domain;
 
 import java.io.Serializable;
-import java.lang.StringBuilder;
+
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
+
+
+
 
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Query;
+
 import javax.xml.bind.annotation.*;
 import javax.persistence.*;
 

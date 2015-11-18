@@ -8,12 +8,12 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+
+
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.CvDAO;
-import org.irri.iric.portal.dao.CvTermDAO;
+
 import org.irri.iric.portal.dao.LocusCvTermDAO;
 import org.irri.iric.portal.dao.LocusDAO;
 import org.irri.iric.portal.dao.OrganismDAO;

@@ -1,9 +1,9 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
-import java.lang.StringBuilder;
+
 import java.math.BigDecimal;
-import java.util.List;
+
 
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -11,7 +11,7 @@ import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.*;
 import javax.persistence.*;
 
-import org.irri.iric.portal.domain.Phenotype;
+
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.domain.VarietyPlus;
 

@@ -5,6 +5,11 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Implementation of VarietyPlusPlus
+ * @author LMansueto
+ *
+ */
 public class VarietyPlusPlusImpl  implements VarietyPlusPlus  {
 	
 	private Variety varplus;

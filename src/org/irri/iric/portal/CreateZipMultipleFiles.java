@@ -13,7 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
+
 import java.util.zip.ZipOutputStream;
 
 public class CreateZipMultipleFiles {

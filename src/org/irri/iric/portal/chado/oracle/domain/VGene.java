@@ -1,8 +1,8 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
-import java.lang.StringBuilder;
-import java.math.BigDecimal;
+
+
 
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;

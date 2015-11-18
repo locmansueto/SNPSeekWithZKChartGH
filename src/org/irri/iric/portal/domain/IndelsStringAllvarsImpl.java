@@ -1,14 +1,14 @@
 package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
+
+
+
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
-import org.irri.iric.portal.dao.IndelsAllvarsDAO;
+
+
 
 public class IndelsStringAllvarsImpl implements IndelsStringAllvars {
 

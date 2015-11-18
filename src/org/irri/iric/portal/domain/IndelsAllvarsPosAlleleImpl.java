@@ -4,6 +4,11 @@ import java.math.BigDecimal;
 
 import org.irri.iric.portal.AppContext;
 
+/**
+ * Implementation for IndelsAllvarsPos
+ * @author LMansueto
+ *
+ */
 public class IndelsAllvarsPosAlleleImpl implements IndelsAllvarsPos {
 
 	private BigDecimal pos;
@@ -76,15 +81,15 @@ public class IndelsAllvarsPosAlleleImpl implements IndelsAllvarsPos {
 		return maxdellength;
 	}
 	
-	@Override
-	public Integer getDellength() {
-		// TODO Auto-generated method stub
-		try {
-			int dellen=Integer.valueOf(insString);
-			return dellen;
-		} catch(Exception ex) {}
-		return 0;
-	}
+//	@Override
+//	public Integer getDellength() {
+//		// TODO Auto-generated method stub
+//		try {
+//			int dellen=Integer.valueOf(insString);
+//			return dellen;
+//		} catch(Exception ex) {}
+//		return 0;
+//	}
 
 
 	@Override

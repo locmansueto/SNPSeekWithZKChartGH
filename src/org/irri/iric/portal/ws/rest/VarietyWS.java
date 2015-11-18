@@ -16,14 +16,14 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONException;
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.dao.ListItemsDAO;
+
 import org.irri.iric.portal.variety.VarietyFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 
 
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 
 

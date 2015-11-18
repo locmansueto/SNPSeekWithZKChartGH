@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.irri.iric.portal.chado.oracle.domain.VGoCvtermpath;
 import org.irri.iric.portal.dao.CvTermPathDAO;
-import org.irri.iric.portal.dao.CvTermUniqueValuesDAO;
+
 import org.skyway.spring.util.dao.JpaDao;
 import org.springframework.dao.DataAccessException;
 

@@ -5,7 +5,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.irri.iric.portal.AppContext;
-import org.springframework.stereotype.Component;
+
+
+/**
+ * Implementation of SnpsStringAllvars
+ * @author LMansueto
+ *
+ */
 
 //@Component("SnpsStringAllvarsImpl")
 public class SnpsStringAllvarsImpl implements SnpsStringAllvars {

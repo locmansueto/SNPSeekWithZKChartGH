@@ -11,7 +11,7 @@ import java.util.Set;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.domain.Gene;
-import org.irri.iric.portal.genotype.GenotypeFacade;
+
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantIndelStringData;
 import org.irri.iric.portal.genotype.VariantSnpsStringData;

@@ -1,17 +1,17 @@
 package org.irri.iric.portal.genomics.dao;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+
+
 import java.util.List;
-import java.util.Set;
+
 
 import org.iric.portal.remoteserver.LocalClient;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.LocalAlignmentDAO;
 import org.irri.iric.portal.genomics.LocalAlignmentQuery;
-import org.irri.iric.portal.genomics.LocalAlignmentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+
+
+
 import org.springframework.stereotype.Repository;
 
 @Repository("LocalAlignmentDAORemoteBlast")

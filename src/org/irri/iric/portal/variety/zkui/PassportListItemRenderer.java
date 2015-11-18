@@ -2,15 +2,15 @@ package org.irri.iric.portal.variety.zkui;
 
 
 //import org.irri.iric.portal.chado.domain.VIricstockPassport;
-import org.irri.iric.portal.domain.CvTerm;
+
 import org.irri.iric.portal.domain.Passport;
-import org.irri.iric.portal.domain.Variety;
+
 //import org.irri.iric.portal.genotype.views.Snp2linesId;
-import org.zkoss.zk.ui.Component;
+
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listhead;
-import org.zkoss.zul.Listheader;
+
+
+
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Listcell;

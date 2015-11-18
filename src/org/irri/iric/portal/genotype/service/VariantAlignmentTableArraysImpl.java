@@ -2,7 +2,7 @@ package org.irri.iric.portal.genotype.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -11,8 +11,8 @@ import java.util.Set;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.ListItemsDAO;
-import org.irri.iric.portal.domain.IndelsAllvarsPos;
-import org.irri.iric.portal.domain.IndelsStringAllvars;
+
+
 //import org.irri.iric.portal.domain.MultiReferenceConversion;
 import org.irri.iric.portal.domain.MultiReferencePosition;
 import org.irri.iric.portal.domain.Position;
@@ -20,14 +20,14 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
-import org.irri.iric.portal.genotype.VariantIndelStringData;
+
 import org.irri.iric.portal.genotype.VariantSnpsStringData;
 import org.irri.iric.portal.genotype.VariantStringData;
-import org.irri.iric.portal.genotype.VariantTable;
+
 import org.irri.iric.portal.genotype.VariantTableArray;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import bsh.This;
+
 
 /**
  * display variants as variant table (variety x position)

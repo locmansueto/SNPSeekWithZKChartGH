@@ -7,9 +7,9 @@ import java.util.Map;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.Variety;
 import org.zkoss.zul.Button;
-import org.zkoss.zul.Checkbox;
+
 import org.zkoss.zul.Hbox;
-import org.zkoss.zul.Html;
+
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;

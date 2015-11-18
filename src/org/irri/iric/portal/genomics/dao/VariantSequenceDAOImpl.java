@@ -6,7 +6,8 @@ import java.io.FileWriter;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.Iterator;
 
-import org.broadinstitute.gatk.tools.walkers.fasta.FastaAlternateReferenceMaker;
+
+
 import org.irri.iric.portal.dao.VariantSequenceDAO;
 import org.irri.iric.portal.domain.MultiReferenceLocus;
 import org.irri.iric.portal.domain.Variety;

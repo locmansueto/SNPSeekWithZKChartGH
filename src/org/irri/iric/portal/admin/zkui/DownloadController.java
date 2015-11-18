@@ -1,7 +1,7 @@
 package org.irri.iric.portal.admin.zkui;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -21,7 +21,7 @@ import org.irri.iric.portal.genomics.VariantSequenceQuery;
 import org.irri.iric.portal.genotype.GenotypeFacade;
 import org.irri.iric.portal.variety.VarietyFacade;
 import org.irri.iric.portal.variety.VarietyPropertiesService;
-import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -41,7 +41,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.SimpleListModel;
-import org.zkoss.zul.Textbox;
+
 
 
 

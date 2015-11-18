@@ -2,7 +2,7 @@ package org.irri.iric.portal.admin.domain;
 
 import java.io.Serializable;
 
-import java.lang.StringBuilder;
+
 
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;

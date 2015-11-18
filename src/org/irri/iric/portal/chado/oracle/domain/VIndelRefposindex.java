@@ -1,7 +1,7 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
-import java.lang.StringBuilder;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
@@ -348,11 +348,11 @@ public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 		return this.maxInsertLen;
 	}
 
-	@Override
-	public Integer getDellength() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Integer getDellength() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public int compareTo(Object o) {

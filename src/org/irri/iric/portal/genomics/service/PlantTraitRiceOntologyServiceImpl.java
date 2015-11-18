@@ -9,7 +9,7 @@ import org.irri.iric.portal.dao.CvTermPathDAO;
 import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.genomics.OntologyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.stereotype.Service;
 
 @Service("PATOntologyService")

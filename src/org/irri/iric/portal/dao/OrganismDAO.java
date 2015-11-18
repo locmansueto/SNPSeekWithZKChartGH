@@ -1,13 +1,22 @@
 package org.irri.iric.portal.dao;
 
-import java.util.List;
+
 import java.util.Map;
 
 import org.irri.iric.portal.domain.Organism;
 
 public interface OrganismDAO {
 
-	//public List<Organism> getOrganisms(); 
+	/**
+	 * Get map of organism name to organism object
+	 * @return
+	 */
 	public Map<String,Organism> getMapName2Organism();
+	
+	/**
+	 * Get organism with ID
+	 * @param id
+	 * @return
+	 */
 	public Organism getOrganismByID(Integer id);
 }

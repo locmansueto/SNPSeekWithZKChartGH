@@ -284,22 +284,22 @@ public class VSnpNonsynallelePosDAOImpl extends AbstractJpaDao<VSnpNonsynalleleP
 	}
 	
 
-	@Override
-	public Set<SnpsNonsynAllele> findSnpNonsynAlleleBySnpfeatureidIn(
-			Collection listFeatureids, BigDecimal dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
-		System.out.println(" snpfeatureid in " +  listFeatureids.size()); // + AppContext.convertRegion2Snpfeatureid( chr,  Long.valueOf(start)) + " and " + AppContext.convertRegion2Snpfeatureid( chr, Long.valueOf(end)) );
-		Query query = createNamedQuery("findVSnpNonsynallelePosBySnpFeatureIdIn", -1, -1, listFeatureids, dataset);
-		return new HashSet<SnpsNonsynAllele>(query.getResultList());
-	}
-
-	@Override
-	public Set<SnpsNonsynAllele> findSnpNonsynAlleleBySnpfeatureidBetween( BigDecimal start, BigDecimal end, BigDecimal dataset) {
-		// TODO Auto-generated method stub
-		System.out.println(" snpfeatureid between " + start + " and " + end );
-		Query query = createNamedQuery("findVSnpNonsynallelePosBySnpFeatureIdBetween", -1, -1, start, end , dataset);
-		return new HashSet<SnpsNonsynAllele>(query.getResultList());
-	}
+//	@Override
+//	public Set<SnpsNonsynAllele> findSnpNonsynAlleleBySnpfeatureidIn(
+//			Collection listFeatureids, BigDecimal dataset) throws DataAccessException {
+//		// TODO Auto-generated method stub
+//		System.out.println(" snpfeatureid in " +  listFeatureids.size()); // + AppContext.convertRegion2Snpfeatureid( chr,  Long.valueOf(start)) + " and " + AppContext.convertRegion2Snpfeatureid( chr, Long.valueOf(end)) );
+//		Query query = createNamedQuery("findVSnpNonsynallelePosBySnpFeatureIdIn", -1, -1, listFeatureids, dataset);
+//		return new HashSet<SnpsNonsynAllele>(query.getResultList());
+//	}
+//
+//	@Override
+//	public Set<SnpsNonsynAllele> findSnpNonsynAlleleBySnpfeatureidBetween( BigDecimal start, BigDecimal end, BigDecimal dataset) {
+//		// TODO Auto-generated method stub
+//		System.out.println(" snpfeatureid between " + start + " and " + end );
+//		Query query = createNamedQuery("findVSnpNonsynallelePosBySnpFeatureIdBetween", -1, -1, start, end , dataset);
+//		return new HashSet<SnpsNonsynAllele>(query.getResultList());
+//	}
 
 	@Override
 	public Set<SnpsNonsynAllele> findSnpNonsynAlleleByChrPosIn(String chr,

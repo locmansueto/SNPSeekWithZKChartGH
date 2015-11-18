@@ -14,7 +14,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.chado.oracle.domain.VIndelRefposindex;
 import org.irri.iric.portal.dao.IndelStringDAO;
 import org.irri.iric.portal.dao.IndelsAllvarsDAO;
 import org.irri.iric.portal.dao.IndelsAllvarsPosDAO;
@@ -26,17 +25,12 @@ import org.irri.iric.portal.domain.IndelsAllvarsStr;
 import org.irri.iric.portal.domain.IndelsStringAllvars;
 import org.irri.iric.portal.domain.IndelsStringAllvarsImpl;
 import org.irri.iric.portal.domain.Position;
-import org.irri.iric.portal.domain.SnpsAllvars;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
-import org.irri.iric.portal.domain.SnpsAllvarsPosImpl;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
-import org.irri.iric.portal.domain.SnpsStringAllvarsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.context.annotation.ScopedProxyMode;
 
 
 /**
@@ -170,7 +164,7 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 	
 
 	/**
-	 * HDF5 index implementation
+	 * Normalize the HDF5 matrix 
 	 * @param chr
 	 * @param start
 	 * @param end

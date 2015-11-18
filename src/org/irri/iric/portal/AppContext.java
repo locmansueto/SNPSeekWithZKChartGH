@@ -73,8 +73,24 @@ public class AppContext {
 	 * is Pollux 172.29.4.215
 	 */
 	static boolean isPollux = false;
+	
+	/**
+	 * is ASTI
+	 */
 	static boolean isASTI = false;
+	
+	/**
+	 *  is localhost
+	 */
 	static boolean isLocalhost = true;
+	
+	/**
+	 * is sun using limited (uploaded for sharing) data
+	 */
+	static boolean isSharedData = true;
+
+	
+	
 	
 	
 	//******* COMPILATION TYPE
@@ -89,6 +105,7 @@ public class AppContext {
 	static boolean isTest = false;
 
 
+	
 	/**
 	 * config from XML file has been loaded
 	 */
@@ -124,12 +141,188 @@ public class AppContext {
 		// TODO Auto-generated constructor stub
 	}
     
+    
+    // ********************************  DEPLOYMENT-SPECIFIC SETTINGS (change these to match server congiguration ) ********************************* 
+    
+    /**
+     * Directory to write temp files accessible to the internet
+     * but using server file system
+     * ex. /path/to/tomcat/webapps/temp
+     * @return
+     */
+
+    public static String getTempDir() {
+    	
+    	if( tempdir!=null) return tempdir;    
+    	
+    	if(isAWS() || isAWSdev())
+    		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
+    		return "/usr/share/apache-tomcat-7.0.55/webapps/temp/";
+    	//else if(isAWSdev())
+    		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
+    	//	return "/usr/share/apache-tomcat-7.0.55/webapps/" + getHostDirectory() + "/tmp/";
+    	else  if(isVMIRRI)
+    		// vm-iric-portal
+    		return "/opt/tomcat7/webapps/temp/";
+    	else if(isLocalhost)
+    		return "E:/MyEclipse for Spring 2014/plugins/com.genuitec.eclipse.easie.tomcat7.myeclipse_11.5.0.me201310302042/tomcat/bin/temp/";
+    	else if(isPollux)
+    		return  "/usr/share/apache-tomcat-7.0.42/webapps/temp/";
+    	
+    	return "/usr/share/apache-tomcat/webapps/temp/";
+    }
+    
+    /**
+     * directory of SNP-Seek data files in the server (using server file system) 
+     * @return
+     */
+    public static String getFlatfilesDir() {
+    	if( flatfilesdir!=null) return flatfilesdir;    
+    	
+    	if(isLocalhost())
+    		return "E:/My Document/Transfer/3kcore_alleles/";
+    	else if(isAWS() || isAWSdev())
+    		return "/data/lmansueto/iric-portal-files/";
+    	else if(isASTI())
+    		return "/home/iric/iric-portal-files/";
+    	else http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=2456312
+    		return "/home/lmansueto/iric-portal-files/";
+    }
+    
+
+    /**
+     * get host name (for use in embedded wepapps like JBrowse), or webserver IP address
+     * @return
+     */
+    public static String getHostname() {
+    	
+    	if(hostname!=null) return hostname;
+    	
+    	if(isAWS())
+    		return "http://oryzasnp.org";
+    	else if(isAWSdev())
+    		return "http://54.255.100.88";
+    	else if(isVMIRRI())
+    		return "http://202.123.56.26:8080";
+    	else if(isPollux())
+    		//return "http://pollux:8080";
+    		return "http://172.29.4.215:8080";
+    	else if(isASTI())
+    		return "http://202.90.159.240:8080";
+    	else
+    		return "http://172.29.4.26:8080"; 
+    	//return "http://localhost";
+    }
+    
+    /**
+     * directory of webapp folder in host
+     * @return
+     */
+    public static String getHostDirectory() {
+    	if( hostdirectory!=null) return hostdirectory;    
+    	
+    	if(isDev()) {
+    		if(isAWS())
+    			return "iric-portal-test";
+    		else if(isAWSdev())
+    			return "iric-portal";
+    		else
+    			return "iric-portal-dev";
+    	}
+    	else if(isTest()) 
+    		return "iric-portal-test";
+    	else 
+    		return "iric-portal";
+    }
+    
+    
+    /**
+     * JBrowse host directory
+     * @return
+     */
+    public static String getJbrowseDir() {
+    	return "jbrowse-dev2";
+    }
+    
+    /**
+     * Path to BLAST program
+     * @return
+     */
+    public static String getPathToLocalBlast() {
+    	if( pathtolocalblast!=null) return pathtolocalblast;    
+
+    	if(isAWS() || isAWSdev())
+    		return "/home/ubuntu/lmansueto/ncbi-blast/bin/";
+    	else
+    		return "/home/lmansueto/ncbi-blast/bin/";
+    }
+
+    
+    /**
+     * Path to BLAST database
+     * @return
+     */
+    public static String getPathToLocalBlastData() {
+    	if( pathtolocalblastdata!=null) return pathtolocalblastdata;    
+    	if(isAWS() || isAWSdev())
+    		return "/home/ubuntu/lmansueto/ncbi-blast/iric-portal/";
+    	else	
+    		return "/home/lmansueto/ncbi-blast/iric-portal/";
+    }
+    
+    /**
+     * Path to BLAST server
+     * @return
+     */
+    public static String getBlastServer() {
+    	if(isLocalhost() || isPollux())
+    		return "http://pollux:8080/iric-portal-dev";
+    	else if(isAWS()) {
+    		return "http://oryzasnp.org/iric-portal";
+    	}
+    	return "";
+    }
+    
+
+    /**
+     * Path to VCF2Fasta converter program
+     * @return
+     */
+    public static String getPathToVCF2FastaGenerator() {
+    	return  getFlatfilesDir() + "getvcfseq/getSeqVCFaws.pl";
+    	
+    }
+    
+    // ***************************************** DATA-RELATED CONIGURATION *****************************************
+    
+    
+    /**
+     * prefix of DB Views to use (legacy or iric)
+     * @return
+     */
+    public static String getViewPrefix() {
+    	if(isChado)
+    		return "V";
+    	else return "VL";
+    }
+    
+  
+    
     /**
      * Ignore heterozygous Indels
      * @return
      */
     public static boolean isIgnoreHeteroIndels() {
     	return false;
+    }
+    
+    /**
+     *  Using only downloaded shared data. Will disable some functions
+     *  that use the huge data.
+     * @return
+     */
+    public static boolean isUsingsharedData() {
+    	return isSharedData;
     }
     
     /**
@@ -228,7 +421,7 @@ public class AppContext {
 	 * @return
 	 */
     public static boolean isIRRILAN() {
-    	return isLocalhost() || isPollux() || isVMIRRI();
+    	return  (isLocalhost() && !isUsingsharedData() )  || isPollux() || isVMIRRI();
     }
     
 
@@ -301,103 +494,7 @@ public class AppContext {
     	return "";
     }
     
-    /**
-     * directory to write temp files (using server file system)
-     * @return
-     */
-
-    public static String getTempDir() {
-    	
-    	if( tempdir!=null) return tempdir;    
-    	
-    	if(isAWS() || isAWSdev())
-    		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
-    		return "/usr/share/apache-tomcat-7.0.55/webapps/temp/";
-    	//else if(isAWSdev())
-    		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
-    	//	return "/usr/share/apache-tomcat-7.0.55/webapps/" + getHostDirectory() + "/tmp/";
-    	else  if(isVMIRRI)
-    		// vm-iric-portal
-    		return "/opt/tomcat7/webapps/temp/";
-    	else if(isLocalhost)
-    		return "E:/MyEclipse for Spring 2014/plugins/com.genuitec.eclipse.easie.tomcat7.myeclipse_11.5.0.me201310302042/tomcat/bin/temp/";
-    	else if(isPollux)
-    		return  "/usr/share/apache-tomcat-7.0.42/webapps/temp/";
-    	
-    	return "/usr/share/apache-tomcat/webapps/temp/";
-    }
-    
-    /**
-     * get domain name (for use in embedded wepapps like JBrowse)
-     * @return
-     */
-    public static String getHostname() {
-    	
-    	if(hostname!=null) return hostname;
-    	
-    	if(isAWS())
-    		return "http://oryzasnp.org";
-    	else if(isAWSdev())
-    		return "http://54.255.100.88";
-    	else if(isVMIRRI())
-    		return "http://202.123.56.26:8080";
-    	else if(isPollux())
-    		//return "http://pollux:8080";
-    		return "http://172.29.4.215:8080";
-    	else if(isASTI())
-    		return "http://202.90.159.240:8080";
-    	else
-    		return "http://172.29.4.26:8080"; 
-    	//return "http://localhost";
-    }
-    
-    /**
-     * directory of SNP-Seek related files in the server (using server file system) 
-     * @return
-     */
-    public static String getFlatfilesDir() {
-    	if( flatfilesdir!=null) return flatfilesdir;    
-    	
-    	if(isLocalhost())
-    		return "E:/My Document/Transfer/3kcore_alleles/";
-    	else if(isAWS() || isAWSdev())
-    		return "/data/lmansueto/iric-portal-files/";
-    	else if(isASTI())
-    		return "/home/iric/iric-portal-files/";
-    	else http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=2456312
-    		return "/home/lmansueto/iric-portal-files/";
-    }
-    
-    /**
-     * prefix of DB Views to use (legacy or iric)
-     * @return
-     */
-    public static String getViewPrefix() {
-    	if(isChado)
-    		return "V";
-    	else return "VL";
-    }
-    
-    /**
-     * directory of webapp folder in host
-     * @return
-     */
-    public static String getHostDirectory() {
-    	if( hostdirectory!=null) return hostdirectory;    
-    	
-    	if(isDev()) {
-    		if(isAWS())
-    			return "iric-portal-test";
-    		else if(isAWSdev())
-    			return "iric-portal";
-    		else
-    			return "iric-portal-dev";
-    	}
-    	else if(isTest()) 
-    		return "iric-portal-test";
-    	else 
-    		return "iric-portal";
-    }
+  
     
     
     /**
@@ -836,53 +933,7 @@ public class AppContext {
     	return obj;
     }
     
-    /**
-     * Path to BLAST program
-     * @return
-     */
-    public static String getPathToLocalBlast() {
-    	if( pathtolocalblast!=null) return pathtolocalblast;    
-
-    	if(isAWS() || isAWSdev())
-    		return "/home/ubuntu/lmansueto/ncbi-blast/bin/";
-    	else
-    		return "/home/lmansueto/ncbi-blast/bin/";
-    }
-
-    /**
-     * Path to VCF2Fasta converter program
-     * @return
-     */
-    public static String getPathToVCF2FastaGenerator() {
-    	return  getFlatfilesDir() + "getvcfseq/getSeqVCFaws.pl";
-    	
-    }
-    
-    /**
-     * Path to BLAST database
-     * @return
-     */
-    public static String getPathToLocalBlastData() {
-    	if( pathtolocalblastdata!=null) return pathtolocalblastdata;    
-    	if(isAWS() || isAWSdev())
-    		return "/home/ubuntu/lmansueto/ncbi-blast/iric-portal/";
-    	else	
-    		return "/home/lmansueto/ncbi-blast/iric-portal/";
-    }
-    
-    /**
-     * Path to BLAST server
-     * @return
-     */
-    public static String getBlastServer() {
-    	if(isLocalhost() || isPollux())
-    		return "http://pollux:8080/iric-portal-dev";
-    	else if(isAWS()) {
-    		return "http://oryzasnp.org/iric-portal";
-    	}
-    	return "";
-    }
-    
+ 
     
     public static String getFastqcURL() {
     	return "http://oryzasnp.org/3kfastqc/";
@@ -898,13 +949,7 @@ public class AppContext {
     	return "https://s3.amazonaws.com/3kricegenome/Nipponbare/" + boxcode.trim().replace(" ","_") + ".snp.vcf.gz";
     }
     
-    /**
-     * JBrowse host directory
-     * @return
-     */
-    public static String getJbrowseDir() {
-    	return "jbrowse-dev2";
-    }
+  
 
     public static String getJbrowseContigSuffix() {
     	return "";

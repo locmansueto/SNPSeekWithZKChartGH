@@ -10,6 +10,13 @@ public interface LocusCvTermDAO {
 	public static String GENEMODEL_RAP="rap";
 	public static String GENEMODEL_FGENESH="fgenesh";
 	
-	List getLocusByDescription(String goterm, Integer organismId, Integer cvId);
+	/**
+	 * Get locus with CV term in organism and CV
+	 * @param desc
+	 * @param organismId
+	 * @param cvId
+	 * @return
+	 */
+	List getLocusByDescription(String desc, Integer organismId, Integer cvId);
 
 }

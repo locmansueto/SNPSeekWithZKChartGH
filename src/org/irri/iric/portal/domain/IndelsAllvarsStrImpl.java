@@ -2,7 +2,7 @@ package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
 
-import org.irri.iric.portal.chado.domain.VIndelAllvars;
+
 
 public class IndelsAllvarsStrImpl implements IndelsAllvarsStr {
 

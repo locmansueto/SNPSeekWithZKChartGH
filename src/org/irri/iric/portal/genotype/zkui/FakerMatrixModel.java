@@ -23,11 +23,11 @@ import java.util.Set;
 
 import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
-import org.irri.iric.portal.domain.SnpsStringAllvars;
+
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantStringData;
 import org.irri.iric.portal.genotype.VariantTable;
-import org.irri.iric.portal.genotype.service.VariantTableRandomImpl;
+
 //import org.zkoss.addon.MatrixModel;
 import org.zkoss.lang.Objects;
 import org.zkoss.zkmax.zul.MatrixModel;

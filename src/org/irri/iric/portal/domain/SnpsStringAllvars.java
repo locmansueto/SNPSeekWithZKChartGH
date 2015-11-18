@@ -1,6 +1,6 @@
 package org.irri.iric.portal.domain;
 
-import java.math.BigDecimal;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -13,13 +13,28 @@ public interface SnpsStringAllvars extends SnpsAllvarsRefMismatch { //, SnpsAllv
 	 */
 	public String getVarnuc();
 	
-	
-	//public boolean[] getIsnonsyn();
-	//public Map<Position, Character> getMapPosIdx2Allele2();
+	/**
+	 * Map of position to allele2 for heterozygous SNPs
+	 * @return
+	 */
 	public Map<Position, Character> getMapPos2Allele2();
-	//public Set getNonsynIdxset();
+	
+	/**
+	 * Positions with non-synonymous alleles
+	 * @return
+	 */
 	public Set getNonsynPosset();
+	
+	/**
+	 * Positions with splice donor site SNP
+	 * @return
+	 */
 	public Set getDonorPosset();
+	
+	/**
+	 * Positions with splice acceptor site SNP
+	 * @return
+	 */
 	public Set getAcceptorPosset();
 	
 	/**

@@ -274,22 +274,22 @@ public class VSnpSynallelePosDAOImpl extends AbstractJpaDao<VSnpSynallelePos>
 	}
 	
 
-	@Override
-	public Set<SnpsSynAllele> findSnpSynAlleleBySnpfeatureidIn(
-			Collection listFeatureids, BigDecimal dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
-		System.out.println(" snpfeatureid in " +  listFeatureids.size()); // + AppContext.convertRegion2Snpfeatureid( chr,  Long.valueOf(start)) + " and " + AppContext.convertRegion2Snpfeatureid( chr, Long.valueOf(end)) );
-		Query query = createNamedQuery("findVSnpsynallelePosBySnpFeatureIdIn", -1, -1, listFeatureids, dataset);
-		return new HashSet<SnpsSynAllele>(query.getResultList());
-	}
-
-	@Override
-	public Set<SnpsSynAllele> findSnpSynAlleleBySnpfeatureidBetween( BigDecimal start, BigDecimal end, BigDecimal dataset) {
-		// TODO Auto-generated method stub
-		System.out.println(" snpfeatureid between " + start + " and " + end );
-		Query query = createNamedQuery("findVSnpSynallelePosBySnpFeatureIdBetween", -1, -1, start, end , dataset);
-		return new HashSet<SnpsSynAllele>(query.getResultList());
-	}
+//	@Override
+//	public Set<SnpsSynAllele> findSnpSynAlleleBySnpfeatureidIn(
+//			Collection listFeatureids, BigDecimal dataset) throws DataAccessException {
+//		// TODO Auto-generated method stub
+//		System.out.println(" snpfeatureid in " +  listFeatureids.size()); // + AppContext.convertRegion2Snpfeatureid( chr,  Long.valueOf(start)) + " and " + AppContext.convertRegion2Snpfeatureid( chr, Long.valueOf(end)) );
+//		Query query = createNamedQuery("findVSnpsynallelePosBySnpFeatureIdIn", -1, -1, listFeatureids, dataset);
+//		return new HashSet<SnpsSynAllele>(query.getResultList());
+//	}
+//
+//	@Override
+//	public Set<SnpsSynAllele> findSnpSynAlleleBySnpfeatureidBetween( BigDecimal start, BigDecimal end, BigDecimal dataset) {
+//		// TODO Auto-generated method stub
+//		System.out.println(" snpfeatureid between " + start + " and " + end );
+//		Query query = createNamedQuery("findVSnpSynallelePosBySnpFeatureIdBetween", -1, -1, start, end , dataset);
+//		return new HashSet<SnpsSynAllele>(query.getResultList());
+//	}
 
 	@Override
 	public Set<SnpsSynAllele> findSnpSynAlleleByChrPosIn(String chr,

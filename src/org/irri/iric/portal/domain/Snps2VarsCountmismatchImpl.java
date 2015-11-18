@@ -2,6 +2,11 @@ package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
 
+/**
+ * Implementation for Snps2VarsCountmismatch
+ * @author LMansueto
+ *
+ */
 public class Snps2VarsCountmismatchImpl implements Snps2VarsCountmismatch {
 
 	private BigDecimal var1;

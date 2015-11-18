@@ -2,9 +2,14 @@ package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
 
-import org.irri.iric.portal.AppContext;
-import org.zkoss.lang.reflect.Fields;
 
+
+
+/**
+ * Implementation for MultiReferencePosition, plus associated Allele and/or P-value
+ * @author LMansueto
+ *
+ */
 public class MultiReferencePositionImplAllelePvalue extends
 		MultiReferencePositionImpl {
 

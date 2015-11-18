@@ -2,6 +2,11 @@ package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
 
+/**
+ * Implementation of Variety
+ * @author LMansueto
+ *
+ */
 public class VarietyImpl implements Variety {
 
 	protected BigDecimal id;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +22,14 @@ import org.irri.iric.portal.domain.Scaffold;
 import org.irri.iric.portal.domain.Variety;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Lazy;
+
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of ListItemsDAO
+ * @author LMansueto
+ *
+ */
 //@Service(value={"ListItemsDAO","ListItemsDAOPostges"})
 @Service("ListItems")
 public class ListItemsDAOImpl implements  ListItemsDAO {

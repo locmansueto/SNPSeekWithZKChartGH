@@ -1,20 +1,25 @@
 package org.irri.iric.portal.dao;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+
+
+
 import java.util.Map;
 
-import org.irri.iric.portal.AppContext;
+
 import org.irri.iric.portal.domain.MultiReferenceLocus;
 import org.irri.iric.portal.domain.MultiReferenceConversion;
-import org.irri.iric.portal.domain.Organism;
+
 import org.irri.iric.portal.genotype.VariantStringData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Implementation of MultipleReferenceConverterDAO
+ * @author LMansueto
+ *
+ */
 @Repository("MultipleReferenceConverterDAOImpl")
 public class MultipleReferenceConverterDAOImpl implements MultipleReferenceConverterDAO {
 

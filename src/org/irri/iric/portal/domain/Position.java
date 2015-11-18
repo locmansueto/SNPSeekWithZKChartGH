@@ -2,6 +2,11 @@ package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
 
+/**
+ * Interface for genome position
+ * @author LMansueto
+ *
+ */
 public interface Position extends Comparable {
 
 	/**

@@ -43,7 +43,7 @@ import org.irri.iric.portal.genotype.VariantTableArray;
 import org.irri.iric.portal.genotype.VarietiesGenotypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
+
 
 
 import org.springframework.stereotype.Service;
@@ -511,8 +511,8 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 				allzipfilenames[i+12-1]=filenames[i-1] + ".map";
 			}
 		}
-		new CreateZipMultipleFiles(params.getFilename() + "-" + tmpname + ".zip", allzipfilenames ).create();
-		Filedownload.save(new File(params.getFilename() + "-" + tmpname + ".zip") , "application/zip");
+		new CreateZipMultipleFiles(AppContext.getTempDir() + params.getFilename() + "-" + tmpname + ".zip", allzipfilenames ).create();
+		Filedownload.save(new File(AppContext.getTempDir() + params.getFilename() + "-" + tmpname + ".zip") , "application/zip");
 		AppContext.debug("File download complete! Saved to: "+ params.getFilename());
 	    AppContext.resetTimer("query whole genome done..");	
 		

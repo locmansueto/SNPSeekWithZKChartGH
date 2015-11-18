@@ -6,20 +6,20 @@ import java.util.Map;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.variety.service.Data;
 import org.zkoss.chart.AxisLabels;
-import org.zkoss.chart.Chart;
+
 import org.zkoss.chart.Charts;
-import org.zkoss.chart.ChartsEvents;
+
 import org.zkoss.chart.ChartsSelectionEvent;
-import org.zkoss.chart.PlotLine;
-import org.zkoss.chart.ResetZoomButton;
-import org.zkoss.chart.YAxis;
+
+
+
 import org.zkoss.chart.model.DefaultCategoryModel;
-import org.zkoss.zk.ui.event.Events;
+
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Button;
-import org.zkoss.zul.CategoryModel;
+
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Window;
 

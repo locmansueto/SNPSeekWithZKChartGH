@@ -1,7 +1,7 @@
 package org.irri.iric.portal.ws.entity;
 
-import java.math.BigDecimal;
-import java.util.Map;
+
+
 
 import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;

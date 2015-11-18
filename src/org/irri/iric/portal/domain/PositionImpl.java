@@ -10,7 +10,12 @@ import java.util.TreeSet;
 
 import org.irri.iric.portal.AppContext;
 
-public class PositionImpl implements Position , Comparable {
+/**
+ * Implementation for Position
+ * @author LMansueto
+ *
+ */
+public class PositionImpl implements Position  {
 
 
 	protected String contig;

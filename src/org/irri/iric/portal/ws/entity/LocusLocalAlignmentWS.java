@@ -1,7 +1,6 @@
 package org.irri.iric.portal.ws.entity;
 
 import org.irri.iric.portal.domain.LocalAlignment;
-import org.irri.iric.portal.domain.LocusLocalAlignment;
 import org.irri.iric.portal.domain.LocalAlignmentImpl;
 
 public class LocusLocalAlignmentWS implements LocalAlignment {

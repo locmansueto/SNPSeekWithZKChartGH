@@ -2,7 +2,7 @@ package org.irri.iric.portal.variety.zkui;
 
 
 import java.math.BigDecimal;
-import java.util.Collection;
+
 import java.util.Iterator;
 
 
@@ -17,11 +17,11 @@ import org.irri.iric.portal.domain.VarietyPlusPlus;
 //import org.irri.iric.portal.genotype.views.Snp2linesId;
 //import org.irri.iric.portal.variety.domain.List3k;
 //import org.irri.iric.portal.variety.domain.Germplasm;
-import org.zkoss.zk.ui.Component;
+
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listhead;
-import org.zkoss.zul.Listheader;
+
+
+
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Listcell;

@@ -2,7 +2,7 @@ package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
+
 
 import javax.persistence.*;
 

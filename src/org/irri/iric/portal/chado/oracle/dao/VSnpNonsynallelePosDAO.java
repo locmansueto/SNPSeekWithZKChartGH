@@ -1,12 +1,12 @@
 package org.irri.iric.portal.chado.oracle.dao;
 
 import java.math.BigDecimal;
-import java.util.Collection;
+
 import java.util.Set;
 
 import org.irri.iric.portal.chado.oracle.domain.VSnpNonsynallelePos;
 import org.irri.iric.portal.dao.SnpsNonsynAllvarsDAO;
-import org.irri.iric.portal.domain.SnpsNonsynAllele;
+
 import org.skyway.spring.util.dao.JpaDao;
 import org.springframework.dao.DataAccessException;
 

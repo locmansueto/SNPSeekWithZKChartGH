@@ -8,8 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+
+
 import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLConnection;
@@ -26,11 +26,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import oracle.sql.DATE;
+
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
+
 //import org.irri.iric.portal.genotype.service.GenotypeFacade;
 //import org.irri.iric.portal.genotype.service.GenotypeFacadeImpl;
 //import org.irri.iric.portal.genotype.views.Snp2linesHome;
@@ -38,8 +38,8 @@ import org.springframework.context.ApplicationContext;
 import org.zkoss.zkplus.spring.SpringUtil;
 
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+
+
 
 
 /**

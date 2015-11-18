@@ -13,7 +13,7 @@ import org.zkoss.zkmax.zul.MatrixRenderer;
 
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantStringData;
-import org.irri.iric.portal.genotype.zkui.SNPRowRendererStyle;
+
 import org.irri.iric.portal.variety.service.Data;
 
 /**

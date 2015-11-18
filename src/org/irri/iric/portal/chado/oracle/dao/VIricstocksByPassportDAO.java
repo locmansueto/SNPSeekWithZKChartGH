@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 import org.irri.iric.portal.chado.oracle.domain.VIricstocksByPassport;
-import org.irri.iric.portal.dao.VarietyDAO;
+
 import org.irri.iric.portal.dao.VarietyByPassportDAO;
 import org.skyway.spring.util.dao.JpaDao;
 import org.springframework.dao.DataAccessException;

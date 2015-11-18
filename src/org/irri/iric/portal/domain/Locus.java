@@ -1,7 +1,12 @@
 package org.irri.iric.portal.domain;
 
-import java.math.BigDecimal;
 
+
+/**
+ * Locus interface
+ * @author LMansueto
+ *
+ */
 public interface Locus {
 
 	/**
@@ -28,9 +33,22 @@ public interface Locus {
 	 */
 	public Integer getFmax();
 	
+	/**
+	 * Strand
+	 * @return
+	 */
 	public Integer getStrand();
 	
+	/**
+	 * contig name
+	 * @return
+	 */
 	public String getContig();
+	
+	/**
+	 * Decription
+	 * @return
+	 */
 	public String getDescription();
 	
 }

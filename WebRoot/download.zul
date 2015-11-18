@@ -7,7 +7,7 @@
 
         import org.zkoss.zkplus.spring.SpringUtil;
 		import org.irri.iric.portal.admin.WorkspaceFacade;
-		import org.irri.iric.portal.genotype.service.GenotypeFacade;	
+		import org.irri.iric.portal.genotype.GenotypeFacade;	
 		import org.irri.iric.portal.AppContext;
 
 
@@ -59,7 +59,7 @@
             <tab label="SNPs Data" selected="true"/>
             <tab id="tabRawfiles" label="SNPs Analysis Files" visible="true"/>
             <tab  label="FastQC Reports"/>
-            <tab  label="Sequence"/>
+            <tab id="tabSequence" label="Sequence"/>
             
         </tabs>  
         <tabpanels>
@@ -221,6 +221,11 @@
         
      </tabpanels>
      </tabbox>
+     
+    <zscript><![CDATA[
+           tabSequence.setVisible( !AppContext.isUsingsharedData() );
+	]]></zscript>
+    
 	
  </window>	
 

@@ -1,7 +1,7 @@
 package org.irri.iric.portal.admin.zkui;
 
-import java.util.Iterator;
-import java.util.Set;
+
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,8 +15,8 @@ import org.hibernate.Session;
 import org.irri.iric.portal.AppContext;
 //import org.irri.iric.portal.admin.dao.VOracleSessionsDAO;
 //import org.irri.iric.portal.admin.domain.VOracleSessions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.zkoss.zk.ui.Sessions;
+
+
 import org.zkoss.zk.ui.util.SessionCleanup;
 
 public class ZKSessionCleaner implements SessionCleanup {

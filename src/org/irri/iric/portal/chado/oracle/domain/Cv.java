@@ -1,7 +1,7 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
-import java.lang.StringBuilder;
+
 
 import javax.persistence.Basic;
 import javax.persistence.Column;

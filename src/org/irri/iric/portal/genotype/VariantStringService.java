@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 
-import org.irri.iric.portal.dao.SnpsAllvarsDAO;
-import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
-import org.irri.iric.portal.domain.SnpsStringAllvars;
+
+
+
 
 /**
  * 

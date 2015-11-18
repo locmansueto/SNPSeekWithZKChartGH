@@ -11,6 +11,11 @@ import java.util.TreeSet;
 
 import org.irri.iric.portal.AppContext;
 
+/**
+ * Implementation for MultiReferencePosition
+ * @author LMansueto
+ *
+ */
 public class MultiReferencePositionImpl implements MultiReferencePosition, Comparable  {
 
 	protected String organism;

@@ -5,5 +5,10 @@ import java.util.Set;
 
 public interface IricstockPassportDAO {
 
+	/**
+	 * Get passport data for variety
+	 * @param id
+	 * @return
+	 */
 	public Set findIricstockPassportByIricStockId(BigDecimal id);
 }

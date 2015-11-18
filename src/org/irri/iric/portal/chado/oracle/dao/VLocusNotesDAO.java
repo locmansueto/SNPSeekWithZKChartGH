@@ -1,12 +1,12 @@
 package org.irri.iric.portal.chado.oracle.dao;
 
 import java.math.BigDecimal;
-import java.util.List;
+
 import java.util.Set;
 
 import org.irri.iric.portal.chado.oracle.domain.VLocusNotes;
 import org.irri.iric.portal.dao.LocusDAO;
-import org.irri.iric.portal.domain.Locus;
+
 import org.skyway.spring.util.dao.JpaDao;
 import org.springframework.dao.DataAccessException;
 

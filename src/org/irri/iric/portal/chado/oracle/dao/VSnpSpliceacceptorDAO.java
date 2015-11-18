@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.irri.iric.portal.chado.oracle.domain.VSnpSpliceacceptor;
 import org.irri.iric.portal.dao.SnpsSpliceAcceptorDAO;
-import org.irri.iric.portal.dao.SnpsSpliceDonorDAO;
+
 import org.skyway.spring.util.dao.JpaDao;
 import org.springframework.dao.DataAccessException;
 

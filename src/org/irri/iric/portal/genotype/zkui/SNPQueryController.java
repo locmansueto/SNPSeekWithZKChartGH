@@ -3929,9 +3929,9 @@ public void onselectdownloadnewick() {
 @Listen("onClick = #buttonDownloadTab")    
 public void downloadTab()    {
 	if(biglistboxArray.isVisible())
-		downloadBigListbox("snp3kvars-" + queryFilename() + ".txt", "\t");
+		downloadBigListbox(AppContext.getTempDir() + "snp3kvars-" + queryFilename() + ".txt", "\t");
 	else if(divPairwise.isVisible())
-		download2VarsList("snp2vars-" +   queryFilename() + ".txt", "\t");
+		download2VarsList(AppContext.getTempDir() + "snp2vars-" +   queryFilename() + ".txt", "\t");
 }
 
 
@@ -3939,7 +3939,7 @@ public void downloadTab()    {
 public void downloadPlink()    {
 	 //downloadDelimited("snpfile.txt", "\t"); 
 	if(biglistboxArray.isVisible())
-		downloadBigListboxPlinkZip("snp3kvars-" + queryFilename() + "-" +  AppContext.createTempFilename() );
+		downloadBigListboxPlinkZip(AppContext.getTempDir() + "snp3kvars-" + queryFilename() + "-" +  AppContext.createTempFilename() );
 	
 }
 
@@ -3949,22 +3949,22 @@ public void downloadPlink()    {
 @Listen("onClick = #buttonDownloadCsv")    
 public void downloadCsv()    {
 	if(this.biglistboxArray.isVisible())
-		downloadBigListbox("snp3kvars-" + queryFilename() + ".csv", ",");
+		downloadBigListbox(AppContext.getTempDir() + "snp3kvars-" + queryFilename() + ".csv", ",");
 	else if(divPairwise.isVisible())
-		download2VarsList("snp2vars-" +   queryFilename() + ".csv", ",");
+		download2VarsList(AppContext.getTempDir() +  "snp2vars-" +   queryFilename() + ".csv", ",");
 }
 
 
 @Listen("onClick = #buttonDownloadPairwiseCsv")    
 public void downloadPairwiseCsv()    {
 	if(divPairwise.isVisible())
-		download2VarsList("snp2vars-" +   queryFilename() + ".csv", ",");
+		download2VarsList(AppContext.getTempDir() +  "snp2vars-" +   queryFilename() + ".csv", ",");
 }
 
 @Listen("onClick = #buttonDownloadPairwiseTab")    
 public void downloadPairwiseTab()    {
 	if(divPairwise.isVisible())
-		download2VarsList("snp2vars-" +   queryFilename() + ".txt", ",");
+		download2VarsList(AppContext.getTempDir() +  "snp2vars-" +   queryFilename() + ".txt", ",");
 }
 
 

@@ -2,8 +2,12 @@ package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
 
+/**
+ * Interface for variety/germplasm
+ * @author LMansueto
+ *
+ */
 public interface Variety extends Comparable {
-	
 	
 	/**
 	 * Variety Id
@@ -43,10 +47,17 @@ public interface Variety extends Comparable {
 	public void setCountry(String country);
 	public void setSubpopulation(String subpopulation);
 	
-	
+	/**
+	 * Print fields using delimiter
+	 * @param delimiter
+	 * @return
+	 */
 	public String printFields(String delimiter);
 	
-	
+	/**
+	 * box code
+	 * @return
+	 */
 	public String getBoxCode();
 	
 }

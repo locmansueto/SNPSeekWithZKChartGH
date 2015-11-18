@@ -2,7 +2,7 @@ package org.irri.iric.portal.genomics.zkui;
 
 //import org.irri.iric.portal.chado.domain.VLocusNotes;
 import org.irri.iric.portal.domain.LocalAlignment;
-import org.irri.iric.portal.domain.LocalAlignmentImpl;
+
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;

@@ -24,9 +24,20 @@ public interface SnpsAllvarsPos extends Position {
 		
 		public void setRefnuc(String refnuc);
 		
+		/**
+		 * Contig name
+		 */
 		public String getContig();
 		
+		/**
+		 * column index of position in HDF5 matrix 
+		 * @return
+		 */
 		public BigDecimal getAlleleIndex();
 		
+		/**
+		 * SNP feature ID
+		 * @return
+		 */
 		public BigDecimal getSnpFeatureId();
 }

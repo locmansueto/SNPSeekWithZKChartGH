@@ -1,6 +1,6 @@
 package org.irri.iric.portal.genomics.zkui;
 
-import java.lang.reflect.InvocationTargetException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -9,19 +9,19 @@ import java.util.Set;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.admin.WorkspaceFacade;
-import org.irri.iric.portal.dao.ListItemsDAO;
-import org.irri.iric.portal.domain.LocalAlignment;
+
+
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.LocalAlignmentImpl;
 import org.irri.iric.portal.genomics.GeneOntologyService;
 import org.irri.iric.portal.genomics.GenomicsFacade;
-import org.irri.iric.portal.genotype.GenotypeFacade;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
+
 import org.springframework.stereotype.Controller;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.Events;
+
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;

@@ -14,9 +14,30 @@ This is the repository of IRIC-Portal Web interface. The application is written 
 ### How do I get set up? ###
 
 * Setup  
-	Download the project and open in Eclipse (or more preferrably MyEclipse). 
-	Compile the application and export into a war file.
-	Deploy the generated war in Tomcat
+	
+	- Download the HDF5 data files, Blast database files and save them in a dedicated directory in the web server.
+	- Download the customized JBrowse from . Extract it in the webserver and create a symbolic link (ex. jbrowse) from the tomcat webapps directory pointing to the extracted JBrowse directory.
+	- Download the project and open in Eclipse (or preferably MyEclipse). 
+	- Set the database connection parameters in bean IRIC\_ProductionDS in /resources/iric\_prod\_crud-dao-context.xml
+	- Set the parameters defined in the static class org.irri.iric.portal.AppContext, specially:
+	
+			getFlatfilesDir()	 	Directory of SNP-Seek data files in the server (using server file system) 
+			getHostname()			Web server hostname or IP address 
+			getTempDir()			Directory to write temp files accessible to the internet, but using the server file system (ex. /path/to/tomcat/webapps/temp)
+			getJbrowseDir() 		JBrowse folder name as deployed in web server (ex. jbrowse)
+		
+		These configurations are currently hard-coded, but will be made configurable through XML later. 
+
+	- Compile the application and export into a war file. (ex. iric-portal.war)
+
+	- Download and install the HDF5 library from [https://www.hdfgroup.org/HDF5/release/obtain5.html](https://www.hdfgroup.org/HDF5/release/obtain5.html "HDF5 library") into the web server (also available in ). Add the HDF5 library installation directory to Tomcat. In /path/to/tomcat/bin/setenv.sh add the line
+	
+			export JAVA_OPTS="-Djava.library.path=/path/to/hdf5/lib"
+
+	
+	- Deploy the generated war in Tomcat
+	- Set a cron job to regularly empty the directory defined in getTempDir() 
+	
   
 * Dependencies    
 	All required jar files are included in the project in /WebRoot/WEB-INF/lib
@@ -36,7 +57,7 @@ This is the repository of IRIC-Portal Web interface. The application is written 
 
 ### Project organization ###
 
-The project files are organized in these folders and packages
+The project files are organized in these folders and packages. Javadoc documentation is also available in [http://oryzasnp.org/snpseek-javadoc/](http://oryzasnp.org/snpseek-javadoc/)
 
 * /src   
 	the source code	organized into java packages described below. The packages are organized as descibed with the UML class diagrams in /uml
@@ -161,8 +182,17 @@ These are classes that are frequently used by all the modules.
 										Iterface and an implementation to cache list of objects frequently used by the user-interface.
 										The values are loaded from the database on first used, and then stored in a Map for fast access on next use.
 
+* SNP-Seek Software Architecture
+
+This diagram summarizes the different software layers and modules for the web-application.
+
+![](uml/snpseekarch.png)
+
 
 * UML diagrams
+
+The relationships between the components for each modules are illustrated in the following UML diagrams.
+
 
 Genotype Module
 ![](uml/genotype.png)
@@ -177,6 +207,10 @@ Genomics Module
 
 Domain Models 
 ![](uml/domain.png)
+
+Genotype Query Sequence
+
+![](uml/genotype_query.png)
 
 ### Embedded external sites
 

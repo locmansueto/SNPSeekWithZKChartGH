@@ -1,16 +1,16 @@
 package org.irri.iric.portal.genotype.zkui;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
+
+
 import java.util.HashSet;
-import java.util.Iterator;
+
 import java.util.Map;
 import java.util.Set;
 
-import org.irri.iric.portal.AppContext;
+
 import org.irri.iric.portal.domain.Position;
-import org.irri.iric.portal.domain.SnpsAllvarsPos;
-import org.irri.iric.portal.genotype.GenotypeFacade;
+
+
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantStringData;
 import org.zkoss.zul.Label;

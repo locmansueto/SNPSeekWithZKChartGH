@@ -1,12 +1,12 @@
 package org.irri.iric.portal.genomics.zkui;
 
-import java.util.Map;
+
 
 
 //import org.irri.iric.portal.chado.domain.VLocusCvterm;
 //import org.irri.iric.portal.chado.domain.VLocusCvtermCvtermpath;
 //import org.irri.iric.portal.chado.domain.VLocusNotes;
-import org.irri.iric.portal.domain.CvTerm;
+
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.MergedLoci;
 import org.zkoss.zul.Label;

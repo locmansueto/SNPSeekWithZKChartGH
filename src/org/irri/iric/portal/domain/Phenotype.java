@@ -2,6 +2,11 @@ package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
 
+/**
+ * Interface for phenotype values
+ * @author LMansueto
+ *
+ */
 public interface Phenotype {
 
 	/**

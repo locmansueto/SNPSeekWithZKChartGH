@@ -1059,7 +1059,10 @@ function doPosition() {
 		<zscript><![CDATA[
 	        listboxSnpresult.pagingChild.mold =  "os";
 	        listboxSnpresult.pagingPosition = "both";
-		buttonDownloadFasta.setVisible(AppContext.isIRRILAN());
+			
+	        buttonDownloadFasta.setVisible(AppContext.isIRRILAN());
+	        //checkboxCoreSNP.setChecked( AppContext.isUsingsharedData() );
+	        //checkboxCoreSNP.setDisabled(AppContext.isUsingsharedData() );
 		
 	    ]]></zscript>
 			    

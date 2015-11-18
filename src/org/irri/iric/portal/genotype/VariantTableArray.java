@@ -1,6 +1,6 @@
 package org.irri.iric.portal.genotype;
 
-import java.math.BigDecimal;
+
 
 import org.irri.iric.portal.domain.Position;
 

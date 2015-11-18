@@ -1,7 +1,7 @@
 package org.irri.iric.portal.chado.domain;
 
 import java.io.Serializable;
-import java.lang.StringBuilder;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Basic;

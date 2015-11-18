@@ -1,5 +1,10 @@
 package org.irri.iric.portal.domain;
 
+/**
+ * Implementation of LocalAlignment
+ * @author LMansueto
+ *
+ */
 public class LocalAlignmentImpl  implements LocalAlignment {
 
 	String qacc;

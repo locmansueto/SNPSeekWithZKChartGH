@@ -14,8 +14,8 @@ import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.genomics.GeneOntologyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Repository;
+
+
 import org.springframework.stereotype.Service;
 import org.w3c.dom.*;
 

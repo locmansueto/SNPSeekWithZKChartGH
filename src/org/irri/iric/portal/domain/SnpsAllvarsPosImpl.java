@@ -4,6 +4,11 @@ import java.math.BigDecimal;
 
 import org.irri.iric.portal.AppContext;
 
+/**
+ * Implementation for SnpsAllvarsPos
+ * @author LMansueto
+ *
+ */
 public class SnpsAllvarsPosImpl implements SnpsAllvarsPos, Comparable {
 
 	private BigDecimal pos;

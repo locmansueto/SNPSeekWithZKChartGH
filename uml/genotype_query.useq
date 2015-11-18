@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.1.9" icons="true" automaticImage="PNG">  
+  <object id="1" language="java" name="org.irri.iric.portal.genotype.service.GenotypeFacadeChadoImpl" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/genotype/service/GenotypeFacadeChadoImpl.java" 
+    binary="false" label="genotypeFacadeChadoImpl" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="327" y="0"/>    
+    <execution id="2">      
+      <position height="499" width="177" x="5" y="262"/>    
+    </execution>  
+  </object>  
+  <object id="7" language="java" name="org.irri.iric.portal.genotype.service.VarietiesGenotypeSNPsIndelServiceImpl" 
+    project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/genotype/service/VarietiesGenotypeSNPsIndelServiceImpl.java" 
+    binary="false" label="varietiesGenotypeSNPsIndelServiceImpl" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="602" y="0"/>    
+    <execution id="4">      
+      <position height="457" width="251" x="186" y="283"/>    
+    </execution>    
+    <execution id="6">      
+      <position height="21" width="251" x="186" y="658"/>    
+    </execution>  
+  </object>  
+  <object id="12" language="java" name="org.irri.iric.portal.genotype.service.SnpsStringHDF5nRDBMSHybridService" 
+    project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/genotype/service/SnpsStringHDF5nRDBMSHybridService.java" binary="false" 
+    label="snpsStringHDF5nRDBMSHybridService" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="447" y="0"/>    
+    <execution id="9">      
+      <position height="155" width="243" x="441" y="315"/>    
+    </execution>  
+  </object>  
+  <object id="17" language="java" name="org.irri.iric.portal.dao.MultipleReferenceConverterDAO" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/dao/MultipleReferenceConverterDAO.java" binary="false" 
+    label="multipleReferenceConverterDAO" type="interface" autoSize="true">    
+    <position height="-1" width="-1" x="686" y="0"/>    
+    <execution id="16">      
+      <position height="21" width="207" x="688" y="428"/>    
+    </execution>  
+  </object>  
+  <object id="18" language="java" name="org.irri.iric.portal.hdf5.dao.SNPUni3024VarietiesV2IUPACDAO" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/hdf5/dao/SNPUni3024VarietiesV2IUPACDAO.java" 
+    binary="false" label="snpUni3024VarietiesV2IUPACDAO" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="651" y="0"/>    
+    <execution id="14">      
+      <position height="21" width="217" x="688" y="347"/>    
+    </execution>  
+  </object>  
+  <object id="19" language="java" name="org.irri.iric.portal.genotype.service.IndelStringHDF5nRDBMSHybridService" 
+    project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/genotype/service/IndelStringHDF5nRDBMSHybridService.java" binary="false" 
+    label="indelStringHDF5nRDBMSHybridService" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="622" y="0"/>    
+    <execution id="11">      
+      <position height="174" width="241" x="441" y="545"/>    
+    </execution>  
+  </object>  
+  <object id="22" language="java" name="org.irri.iric.portal.genotype.service.IndelStringNormalizedDAOImpl" 
+    project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/genotype/service/IndelStringNormalizedDAOImpl.java" binary="false" 
+    label="indelStringNormalizedDAOImpl" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="894" y="0"/>    
+    <execution id="21">      
+      <position height="132" width="197" x="1154" y="566"/>    
+    </execution>  
+  </object>  
+  <object id="25" language="java" name="org.irri.iric.portal.hdf5.dao.IndelAllvarsHDF5DAOImpl" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/hdf5/dao/IndelAllvarsHDF5DAOImpl.java" binary="false" 
+    label="indelAllvarsHDF5DAOImpl" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="1173" y="0"/>    
+    <execution id="24">      
+      <position height="90" width="167" x="1355" y="587"/>    
+    </execution>  
+  </object>  
+  <object id="30" language="java" name="org.irri.iric.portal.hdf5.dao.IndelUni3024VarietiesAllele1v2DAO" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/hdf5/dao/IndelUni3024VarietiesAllele1v2DAO.java" 
+    binary="false" label="indelUni3024VarietiesAllele1v2DAO" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="1210" y="0"/>    
+    <execution id="27">      
+      <position height="21" width="222" x="1526" y="608"/>    
+    </execution>  
+  </object>  
+  <object id="31" language="java" name="org.irri.iric.portal.hdf5.dao.IndelUni3024VarietiesAllele2v2DAO" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/hdf5/dao/IndelUni3024VarietiesAllele2v2DAO.java" 
+    binary="false" label="indelUni3024VarietiesAllele2v2DAO" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="1210" y="0"/>    
+    <execution id="29">      
+      <position height="21" width="222" x="1752" y="635"/>    
+    </execution>  
+  </object>  
+  <message id="3" 
+    operation="queryVariantStringData(org.irri.iric.portal.genotype.GenotypeQueryParams):org.irri.iric.portal.genotype.VariantStringData" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="5" 
+    operation="fillVariantTable(org.irri.iric.portal.genotype.VariantTable,org.irri.iric.portal.genotype.VariantStringData,org.irri.iric.portal.genotype.GenotypeQueryParams):org.irri.iric.portal.genotype.VariantTable" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </message>  
+  <message id="8" 
+    operation="getVariantString(org.irri.iric.portal.genotype.GenotypeQueryParams):org.irri.iric.portal.genotype.VariantStringData" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="9"/>  
+  </message>  
+  <message id="10" 
+    operation="getVariantString(org.irri.iric.portal.genotype.GenotypeQueryParams):org.irri.iric.portal.genotype.VariantStringData" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="11"/>  
+  </message>  
+  <message id="13" operation="readSNPString(java.lang.String,int,int):java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="14"/>  
+  </message>  
+  <message id="15" 
+    operation="convertReferencePositions(org.irri.iric.portal.genotype.VariantStringData,org.irri.iric.portal.domain.MultiReferenceLocus,org.irri.iric.portal.domain.MultiReferenceLocus,java.lang.String,boolean):org.irri.iric.portal.genotype.VariantStringData" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="16"/>  
+  </message>  
+  <message id="20" 
+    operation="readSNPString(java.lang.String,int,int):java.util.Map&lt;BigDecimal,IndelsStringAllvars&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="21"/>  
+  </message>  
+  <message id="23" 
+    operation="findIndelAllvarsByChrPosBetween(java.lang.String,java.math.BigDecimal,java.math.BigDecimal,java.util.List):java.util.Set&lt;IndelsAllvars&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="24"/>  
+  </message>  
+  <message id="26" operation="readSNPString(java.lang.String,int,int):java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="27"/>  
+  </message>  
+  <message id="28" operation="readSNPString(java.lang.String,int,int):java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="29"/>  
+  </message>
+</sequence-diagram>

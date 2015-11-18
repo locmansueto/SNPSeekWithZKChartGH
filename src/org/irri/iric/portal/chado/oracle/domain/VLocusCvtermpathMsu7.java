@@ -1,7 +1,7 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
-import java.lang.StringBuilder;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.*;
 import javax.persistence.*;
 
 import org.irri.iric.portal.domain.CvTerm;
-import org.irri.iric.portal.domain.Locus;
+
 import org.irri.iric.portal.domain.MergedLoci;
 
 /**

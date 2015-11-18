@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.irri.iric.portal.AppContext;
+
 import org.irri.iric.portal.domain.CvTermUniqueValues;
 import org.irri.iric.portal.variety.VarietyFacade;
 import org.springframework.context.annotation.Scope;

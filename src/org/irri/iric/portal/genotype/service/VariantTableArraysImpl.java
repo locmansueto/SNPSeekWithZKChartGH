@@ -7,14 +7,14 @@ import java.util.Map;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.ListItemsDAO;
-import org.irri.iric.portal.domain.IndelsAllvarsPos;
-import org.irri.iric.portal.domain.IndelsStringAllvars;
+
+
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
-import org.irri.iric.portal.genotype.VariantIndelStringData;
-import org.irri.iric.portal.genotype.VariantSnpsStringData;
+
+
 import org.irri.iric.portal.genotype.VariantStringData;
 import org.irri.iric.portal.genotype.VariantTable;
 import org.springframework.beans.factory.annotation.Autowired;

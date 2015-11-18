@@ -3,7 +3,7 @@ package org.irri.iric.portal.variety.zkui;
 import java.util.Iterator;
 import java.util.List;
 
-import org.irri.iric.portal.AppContext;
+
 import org.irri.iric.portal.domain.CvTermUniqueValues;
 import org.irri.iric.portal.variety.VarietyFacade;
 import org.zkoss.zul.Listbox;
