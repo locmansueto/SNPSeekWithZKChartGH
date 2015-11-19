@@ -214,9 +214,11 @@ Genotype Query Sequence
 
 ### Embedded external sites
 
-* JBrowse ([http://jbrowse.org](http://jbrowse.org)) is a browser-based genome browser implemented in javascript. We added some scripts to display the Genotype track to display variants for all varieties within a region. The JBrowse script with the addid codes are in separate bitbucket project.   
+* [JBrowse]([http://jbrowse.org](http://jbrowse.org)) is a browser-based genome browser implemented in javascript. We added some scripts to display the Genotype track to display variants for all varieties within a region. The JBrowse script with the addid codes are in separate bitbucket project.   
 
-* Vista ([http://pipeline.lbl.gov/cgi-bin/gateway2](http://pipeline.lbl.gov/cgi-bin/gateway2)) is a comparative genomics tool with its own viewer. Use used Vista to compare the 5 reference genomes, and the results are viewable within SNP-Seek.
+* [Vista]([http://pipeline.lbl.gov/cgi-bin/gateway2](http://pipeline.lbl.gov/cgi-bin/gateway2)) is a comparative genomics tool with its own viewer. Use used Vista to compare the 5 reference genomes, and the results are viewable within SNP-Seek.
+
+
 
 
 ### Get started with development
@@ -227,6 +229,96 @@ To start a new module, we created a set of files to start with as templates. Cop
 		_blank_module.zul
 
 The blank_module page uses the BlankModuleFacade defined in the  **org.irri.iric.portal.blank\_module** package. Copy then modify these into a new package using your module name. 
+
+
+
+### Source code repository
+
+The source code is stored in BitBucket using git version control. This section is a short introduction on how to clone and contribute to the code. For users unfamiliar with git, please check this [tutorial](https://confluence.atlassian.com/bitbucket/git-tutorial-keep-track-of-your-space-station-locations-759857287.html).
+
+* Cloning a Git repository
+
+You can use Sourcetree, GitBash, or any client you like to clone your Git repository.  These instructions show you how to clone your repository with GitBash.
+
+1. Navigate to the repository in Bitbucket.
+2. Click the Clone button.
+3. Copy the clone command (either the SSH format or the HTTPS). If you are using the SSH protocol, you must make sure your public key is in Bitbucket and loaded on the local system you are cloning to.
+4. Launch a GitBash terminal.
+5. Change to the local directory where you want to clone your Bitbucket repository.
+6. Paste the command you copied from Bitbucket, for example:
+
+		$git clone git@bitbucket.org/irridev/iric_portal.git
+
+If you were successful, a new sub-directory appears on your local drive. This directory has the same name as the Bitbucket repository that you cloned. The clone contains the files and metadata that Git requires to maintain the changes you make to the source files.
+
+* Using Git to checkout a branch on the command line
+
+On your local system, make sure you have a local repository cloned from the remote repository. Then, do the following:
+
+1. Change to the root of the local repository.
+		
+		cd mytestproject
+2. List all your branches
+ 
+		git branch -a 
+You should see something similar to the following:
+
+		* master
+		  remotes/origin/HEAD -> origin/master
+		  remotes/origin/feature
+		  remotes/origin/master
+Notice that it lists both the branches that are local and the remote branches  on Bitbucket. Using the list as reference, choose the branch you want to checkout.  In this example, the feature branch is the branch.
+
+3. Checkout the branch you want to use.
+			
+		git checkout feature
+
+4. Confirm you are now working on that branch:
+		
+		git branch
+	You should see something similar to the following:
+
+		git branch
+		* feature
+		  master
+
+Going forward, all your Git commands apply to the branch. When you push the changes to your remote Bitbucket repository, those changes apply to the repository's branch.
+
+* Git Commit Example – Updating ALL files in the local repository
+
+	1. Enter `git add .` at the command line prompt in your local project directory, to stage files for commit.
+	2. Enter `git commit –m “Commit message here.”` to update the files in your local repository
+
+* Git push example – Updating files in the server
+	1. Enter `git push` at the command line prompt in your local project directory, to copy your files from your local repository to Bitbucket.
+	2. When prompted for authentication, enter your Bitbucket username and password.
+
+Example:
+
+	$ git push
+	Password:
+	Counting objects: 6, done.
+	Delta compression using up to 4 threads.
+	Compressing objects: 100% (3/3), done.
+	Writing objects: 100% (4/4), 23.98 KiB, done.
+	Total 4 (delta 0), reused 0 (delta 0)
+	remote: bb/acl: alui is allowed. accepted payload.
+	To https://alui@staging.bitbucket.org/alui/alui-git-fork.git
+	   0ad86b3..395d3c2  master -> master
+
+Open your Bitbucket repository in your browser. The Overview tab shows your most recent commits in the activity stream.
+
+
+* Pull request
+
+As this is better explained here, please see this [page](https://www.atlassian.com/git/tutorials/making-a-pull-request)
+
+* Git Workflow
+
+This is quite complex to discuss in a single paragraph, please refer to this [link](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow).
+
+Using this workflow won’t really give much benefit for a single-developer project. But the more developers we add, the higher the need for organizing our workflow. So in case we get 2 or more people working on the source code, please follow the Gitflow workflow.
+
 
 ### Who do I talk to? ###
 

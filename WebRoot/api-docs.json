@@ -1,1 +1,1 @@
-{"apiVersion":"1.0","swaggerVersion":"1.2","basePath":"http://172.29.4.215:8080/iric-portal/api-docs","apis":[{"path":"/application-api-docs.json"}],"info":{}}
+{"apiVersion":"1.0","swaggerVersion":"1.2","basePath":"http://www.oryzasnp.org/iric-portal/api-docs","apis":[{"path":"/application-api-docs.json"}],"info":{}}
