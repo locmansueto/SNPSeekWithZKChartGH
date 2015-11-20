@@ -45,6 +45,26 @@ To cite this resource: <h:a target="_blank" href="http://nar.oxfordjournals.org/
 
 
          	<hbox>
+				<newProduct title="GENOTYPE" img="/images/iric/genotypes.png" desc="Genotypes"
+					details="Query for SNPs from the 3000 genome project" href="_snp.zul"/>
+				<panel width="20px"  border="none"/>
+
+				<newProduct title="VARIETY" img="/images/iric/varieties.png" desc="Varieties"
+					details="Query for Variety passport and phenotypes" href="_variety.zul"/>
+				<panel width="20px"  border="none"/>
+
+				<newProduct title="JBROWSE" img="/images/iric/jbrowse.png" desc="JBrowse"
+					details="Rice Genome Browser" href="_jbrowse.zul?tracks=${paramstr}"/>
+				<panel width="20px"  border="none"/>
+
+				<newProduct title="HELP" img="/images/iric/help.png" desc="Help"
+					details="Help and documentation" href="_help.zul"/>
+			 </hbox>
+
+
+
+			<!--  v1 icons  -->
+         	<!--  hbox>
 				<newProduct title="GENOTYPE" img="/images/iric/gfh.png" desc="Genotypes"
 					details="Query for SNPs from the 3000 genome project" href="_snp.zul"/>
 				<panel width="20px"  border="none"/>
@@ -53,13 +73,13 @@ To cite this resource: <h:a target="_blank" href="http://nar.oxfordjournals.org/
 					details="Query for Variety passport and phenotypes" href="_variety.zul"/>
 				<panel width="20px"  border="none"/>
 
-				<newProduct title="JBROWSE" img="/images/iric/zxc.png" desc="JBrowse"
+				<newProduct title="JBROWSE" img="/images/iric/jbrowse5.png" desc="JBrowse"
 					details="Rice Genome Browser" href="_jbrowse.zul?tracks=${paramstr}"/>
 				<panel width="20px"  border="none"/>
 
 				<newProduct title="HELP" img="/images/iric/help5.png" desc="Help"
 					details="Help and documentation" href="_help.zul"/>
-			 </hbox>
+			 </hbox -->
 			 
 
 </vbox>

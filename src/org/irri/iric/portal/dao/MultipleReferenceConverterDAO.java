@@ -28,7 +28,16 @@ public interface MultipleReferenceConverterDAO {
 	 */
 	public MultiReferenceLocus convertLocus(MultiReferenceLocus fromLocus, String toReference, String toContig) throws Exception;
 	
-
+	/**
+	 * 
+	 * @param variantstringdataNPB
+	 * @param npbMultirefLocus
+	 * @param origMultiReferenceLocus
+	 * @param toContig
+	 * @param isOtherRefs
+	 * @return
+	 * @throws Exception
+	 */
 	VariantStringData convertReferencePositions(VariantStringData variantstringdataNPB, MultiReferenceLocus npbMultirefLocus, MultiReferenceLocus origMultiReferenceLocus, String toContig, boolean isOtherRefs) throws Exception;
 
 	

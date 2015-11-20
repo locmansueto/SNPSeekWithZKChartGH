@@ -47,8 +47,8 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage VConvertRefposPrecomp entities.
  * 
  */
-//@Repository("VConvertRefposPrecompDAO")
-@Repository("MultipleReferenceConverterDAO")
+@Repository("VConvertRefposPrecompDAO")
+//@Repository("MultipleReferenceConverterDAO")
 //@Repository("MultipleReferenceConverterDAO")
 
 @Transactional

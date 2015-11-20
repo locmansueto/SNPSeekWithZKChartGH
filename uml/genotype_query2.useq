@@ -1,0 +1,2209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.1.9" icons="true" automaticImage="PNG">  
+  <object id="1" language="java" name="org.irri.iric.portal.genotype.service.VarietiesGenotypeSNPsIndelServiceImpl" 
+    project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/genotype/service/VarietiesGenotypeSNPsIndelServiceImpl.java" 
+    binary="false" label="varietiesGenotypeSNPsIndelServiceImpl" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="156" y="0"/>    
+    <execution id="2">      
+      <position height="16114" width="251" x="5" y="225"/>    
+    </execution>  
+  </object>  
+  <object id="5" language="java" 
+    name="org.irri.iric.portal.genotype.service.SnpsStringHDF5nRDBMSHybridService.SNPsStringData" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/genotype/service/SnpsStringHDF5nRDBMSHybridService.java" binary="false" 
+    label="snPsStringData" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="419" y="0"/>  
+  </object>  
+  <object id="6" language="java" name="org.irri.iric.portal.genotype.service.SnpsStringHDF5nRDBMSHybridService" 
+    project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/genotype/service/SnpsStringHDF5nRDBMSHybridService.java" binary="false" 
+    label="&lt;static&gt;" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="419" y="0"/>    
+    <execution id="4">      
+      <position height="16072" width="243" x="414" y="246"/>    
+    </execution>    
+    <execution id="12">      
+      <position height="14383" width="0" x="0" y="876"/>    
+    </execution>    
+    <execution id="22">      
+      <position height="21" width="0" x="0" y="15542"/>    
+    </execution>    
+    <execution id="28">      
+      <position height="21" width="0" x="0" y="16098"/>    
+    </execution>    
+    <execution id="32">      
+      <position height="21" width="0" x="0" y="16276"/>    
+    </execution>    
+    <execution id="34">      
+      <position height="11791" width="0" x="0" y="1348"/>    
+    </execution>    
+    <execution id="40">      
+      <position height="21" width="0" x="0" y="13674"/>    
+    </execution>  
+  </object>  
+  <object id="491" language="java" name="org.irri.iric.portal.dao.SnpsAllvarsPosDAO" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/dao/SnpsAllvarsPosDAO.java" binary="false" 
+    label="snpstringallvarsposDAO" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="74">      
+      <position height="21" width="0" x="0" y="2345"/>    
+    </execution>    
+    <execution id="78">      
+      <position height="21" width="0" x="0" y="2471"/>    
+    </execution>    
+    <execution id="80">      
+      <position height="21" width="0" x="0" y="2555"/>    
+    </execution>    
+    <execution id="88">      
+      <position height="21" width="0" x="0" y="2891"/>    
+    </execution>    
+    <execution id="92">      
+      <position height="21" width="0" x="0" y="3017"/>    
+    </execution>    
+    <execution id="94">      
+      <position height="21" width="0" x="0" y="3101"/>    
+    </execution>  
+  </object>  
+  <object id="492" language="java" name="java.util.Collection" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="colLocus" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="76">      
+      <position height="21" width="0" x="0" y="2387"/>    
+    </execution>    
+    <execution id="90">      
+      <position height="21" width="0" x="0" y="2933"/>    
+    </execution>    
+    <execution id="154">      
+      <position height="21" width="0" x="0" y="4571"/>    
+    </execution>    
+    <execution id="164">      
+      <position height="21" width="0" x="0" y="5033"/>    
+    </execution>    
+    <execution id="178">      
+      <position height="21" width="0" x="0" y="5579"/>    
+    </execution>    
+    <execution id="436">      
+      <position height="21" width="0" x="0" y="11669"/>    
+    </execution>  
+  </object>  
+  <object id="493" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="start" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="82">      
+      <position height="21" width="0" x="0" y="2597"/>    
+    </execution>    
+    <execution id="96">      
+      <position height="21" width="0" x="0" y="3143"/>    
+    </execution>    
+    <execution id="444">      
+      <position height="21" width="0" x="0" y="11837"/>    
+    </execution>    
+    <execution id="450">      
+      <position height="21" width="0" x="0" y="11963"/>    
+    </execution>  
+  </object>  
+  <object id="494" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" label="end" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="84">      
+      <position height="21" width="0" x="0" y="2639"/>    
+    </execution>    
+    <execution id="98">      
+      <position height="21" width="0" x="0" y="3185"/>    
+    </execution>    
+    <execution id="446">      
+      <position height="21" width="0" x="0" y="11879"/>    
+    </execution>    
+    <execution id="452">      
+      <position height="21" width="0" x="0" y="12005"/>    
+    </execution>  
+  </object>  
+  <object id="495" language="java" name="java.util.TreeSet" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="86">      
+      <position height="21" width="0" x="0" y="2807"/>    
+    </execution>  
+  </object>  
+  <object id="496" language="java" name="java.util.List" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="snpsposlist" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="100">      
+      <position height="21" width="0" x="0" y="3227"/>    
+    </execution>    
+    <execution id="104">      
+      <position height="21" width="0" x="0" y="3311"/>    
+    </execution>    
+    <execution id="106">      
+      <position height="21" width="0" x="0" y="3353"/>    
+    </execution>    
+    <execution id="108">      
+      <position height="21" width="0" x="0" y="3395"/>    
+    </execution>    
+    <execution id="110">      
+      <position height="21" width="0" x="0" y="3479"/>    
+    </execution>    
+    <execution id="120">      
+      <position height="21" width="0" x="0" y="3689"/>    
+    </execution>    
+    <execution id="126">      
+      <position height="21" width="0" x="0" y="3815"/>    
+    </execution>    
+    <execution id="276">      
+      <position height="21" width="0" x="0" y="8057"/>    
+    </execution>    
+    <execution id="300">      
+      <position height="21" width="0" x="0" y="8645"/>    
+    </execution>    
+    <execution id="322">      
+      <position height="21" width="0" x="0" y="9107"/>    
+    </execution>  
+  </object>  
+  <object id="497" language="java" 
+    name="org.irri.iric.portal.genotype.service.SnpsStringHDF5nRDBMSHybridService.SNPsStringData" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/genotype/service/SnpsStringHDF5nRDBMSHybridService.java" binary="false" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="102">      
+      <position height="21" width="0" x="0" y="3269"/>    
+    </execution>  
+  </object>  
+  <object id="498" language="java" name="org.irri.iric.portal.domain.SnpsAllvarsPos" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsAllvarsPos.java" binary="false" label="startpos" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="112">      
+      <position height="21" width="0" x="0" y="3521"/>    
+    </execution>    
+    <execution id="116">      
+      <position height="21" width="0" x="0" y="3605"/>    
+    </execution>    
+    <execution id="186">      
+      <position height="21" width="0" x="0" y="5873"/>    
+    </execution>    
+    <execution id="196">      
+      <position height="21" width="0" x="0" y="6083"/>    
+    </execution>    
+    <execution id="206">      
+      <position height="21" width="0" x="0" y="6377"/>    
+    </execution>    
+    <execution id="216">      
+      <position height="21" width="0" x="0" y="6587"/>    
+    </execution>    
+    <execution id="226">      
+      <position height="21" width="0" x="0" y="6839"/>    
+    </execution>    
+    <execution id="236">      
+      <position height="21" width="0" x="0" y="7049"/>    
+    </execution>  
+  </object>  
+  <object id="499" language="java" name="org.irri.iric.portal.domain.SnpsAllvarsPos" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsAllvarsPos.java" binary="false" label="endpos" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="114">      
+      <position height="21" width="0" x="0" y="3563"/>    
+    </execution>    
+    <execution id="118">      
+      <position height="21" width="0" x="0" y="3647"/>    
+    </execution>    
+    <execution id="190">      
+      <position height="21" width="0" x="0" y="5957"/>    
+    </execution>    
+    <execution id="200">      
+      <position height="21" width="0" x="0" y="6167"/>    
+    </execution>    
+    <execution id="210">      
+      <position height="21" width="0" x="0" y="6461"/>    
+    </execution>    
+    <execution id="220">      
+      <position height="21" width="0" x="0" y="6671"/>    
+    </execution>    
+    <execution id="230">      
+      <position height="21" width="0" x="0" y="6923"/>    
+    </execution>    
+    <execution id="240">      
+      <position height="21" width="0" x="0" y="7133"/>    
+    </execution>  
+  </object>  
+  <object id="500" language="java" name="java.util.ArrayList" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="listStartStop" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="122">      
+      <position height="21" width="0" x="0" y="3731"/>    
+    </execution>    
+    <execution id="142">      
+      <position height="21" width="0" x="0" y="4151"/>    
+    </execution>    
+    <execution id="144">      
+      <position height="21" width="0" x="0" y="4193"/>    
+    </execution>    
+    <execution id="146">      
+      <position height="21" width="0" x="0" y="4235"/>    
+    </execution>    
+    <execution id="148">      
+      <position height="21" width="0" x="0" y="4277"/>    
+    </execution>  
+  </object>  
+  <object id="501" language="java" name="java.util.HashMap" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="mapSnpid2Pos" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="124">      
+      <position height="21" width="0" x="0" y="3773"/>    
+    </execution>    
+    <execution id="138">      
+      <position height="21" width="0" x="0" y="4067"/>    
+    </execution>    
+    <execution id="374">      
+      <position height="21" width="0" x="0" y="10199"/>    
+    </execution>    
+    <execution id="404">      
+      <position height="21" width="0" x="0" y="10829"/>    
+    </execution>  
+  </object>  
+  <object id="502" language="java" name="java.util.Iterator" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="itSnppos" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="128">      
+      <position height="21" width="0" x="0" y="3857"/>    
+    </execution>    
+    <execution id="130">      
+      <position height="21" width="0" x="0" y="3899"/>    
+    </execution>    
+    <execution id="324">      
+      <position height="21" width="0" x="0" y="9149"/>    
+    </execution>    
+    <execution id="326">      
+      <position height="21" width="0" x="0" y="9191"/>    
+    </execution>  
+  </object>  
+  <object id="503" language="java" name="org.irri.iric.portal.domain.SnpsAllvarsPos" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsAllvarsPos.java" binary="false" label="snppos" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="132">      
+      <position height="21" width="0" x="0" y="3941"/>    
+    </execution>    
+    <execution id="134">      
+      <position height="21" width="0" x="0" y="3983"/>    
+    </execution>    
+    <execution id="140">      
+      <position height="21" width="0" x="0" y="4109"/>    
+    </execution>  
+  </object>  
+  <object id="504" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="136">      
+      <position height="21" width="0" x="0" y="4025"/>    
+    </execution>  
+  </object>  
+  <object id="505" language="java" name="java.util.Iterator" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="itStartStop" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="150">      
+      <position height="21" width="0" x="0" y="4319"/>    
+    </execution>    
+    <execution id="152">      
+      <position height="21" width="0" x="0" y="4361"/>    
+    </execution>  
+  </object>  
+  <object id="506" language="java" name="org.irri.iric.portal.dao.SnpsStringDAO" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/dao/SnpsStringDAO.java" binary="false" 
+    label="snpstrSnpsAllele1AllvarsDAO" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="156">      
+      <position height="21" width="0" x="0" y="4739"/>    
+    </execution>    
+    <execution id="160">      
+      <position height="21" width="0" x="0" y="4907"/>    
+    </execution>    
+    <execution id="166">      
+      <position height="21" width="0" x="0" y="5159"/>    
+    </execution>    
+    <execution id="170">      
+      <position height="21" width="0" x="0" y="5327"/>    
+    </execution>    
+    <execution id="184">      
+      <position height="21" width="0" x="0" y="5831"/>    
+    </execution>    
+    <execution id="204">      
+      <position height="21" width="0" x="0" y="6335"/>    
+    </execution>  
+  </object>  
+  <object id="507" language="java" name="org.irri.iric.portal.dao.SnpsStringDAO" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/dao/SnpsStringDAO.java" binary="false" 
+    label="snpstrSnpsAllele2AllvarsDAO" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="158">      
+      <position height="21" width="0" x="0" y="4781"/>    
+    </execution>    
+    <execution id="162">      
+      <position height="21" width="0" x="0" y="4949"/>    
+    </execution>    
+    <execution id="168">      
+      <position height="21" width="0" x="0" y="5201"/>    
+    </execution>    
+    <execution id="172">      
+      <position height="21" width="0" x="0" y="5369"/>    
+    </execution>    
+    <execution id="194">      
+      <position height="21" width="0" x="0" y="6041"/>    
+    </execution>    
+    <execution id="214">      
+      <position height="21" width="0" x="0" y="6545"/>    
+    </execution>  
+  </object>  
+  <object id="508" language="java" name="org.irri.iric.portal.dao.SnpsNonsynAllvarsDAO" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/dao/SnpsNonsynAllvarsDAO.java" binary="false" label="snpsnonsynDAO" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="174">      
+      <position height="21" width="0" x="0" y="5495"/>    
+    </execution>    
+    <execution id="180">      
+      <position height="21" width="0" x="0" y="5621"/>    
+    </execution>    
+    <execution id="224">      
+      <position height="21" width="0" x="0" y="6797"/>    
+    </execution>  
+  </object>  
+  <object id="509" language="java" name="org.irri.iric.portal.dao.SnpsSynAllvarsDAO" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/dao/SnpsSynAllvarsDAO.java" binary="false" label="snpssynDAO" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="176">      
+      <position height="21" width="0" x="0" y="5537"/>    
+    </execution>    
+    <execution id="182">      
+      <position height="21" width="0" x="0" y="5663"/>    
+    </execution>    
+    <execution id="234">      
+      <position height="21" width="0" x="0" y="7007"/>    
+    </execution>  
+  </object>  
+  <object id="510" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="188">      
+      <position height="21" width="0" x="0" y="5915"/>    
+    </execution>  
+  </object>  
+  <object id="511" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="192">      
+      <position height="21" width="0" x="0" y="5999"/>    
+    </execution>  
+  </object>  
+  <object id="512" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="198">      
+      <position height="21" width="0" x="0" y="6125"/>    
+    </execution>  
+  </object>  
+  <object id="513" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="202">      
+      <position height="21" width="0" x="0" y="6209"/>    
+    </execution>  
+  </object>  
+  <object id="514" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="208">      
+      <position height="21" width="0" x="0" y="6419"/>    
+    </execution>  
+  </object>  
+  <object id="515" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="212">      
+      <position height="21" width="0" x="0" y="6503"/>    
+    </execution>  
+  </object>  
+  <object id="516" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="218">      
+      <position height="21" width="0" x="0" y="6629"/>    
+    </execution>  
+  </object>  
+  <object id="517" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="222">      
+      <position height="21" width="0" x="0" y="6713"/>    
+    </execution>  
+  </object>  
+  <object id="518" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="228">      
+      <position height="21" width="0" x="0" y="6881"/>    
+    </execution>  
+  </object>  
+  <object id="519" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="232">      
+      <position height="21" width="0" x="0" y="6965"/>    
+    </execution>  
+  </object>  
+  <object id="520" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="238">      
+      <position height="21" width="0" x="0" y="7091"/>    
+    </execution>  
+  </object>  
+  <object id="521" language="java" name="java.math.BigDecimal" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="242">      
+      <position height="21" width="0" x="0" y="7175"/>    
+    </execution>  
+  </object>  
+  <object id="522" language="java" name="java.util.HashMap" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="mapVarid2SnpsAllele2str" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="244">      
+      <position height="21" width="0" x="0" y="7259"/>    
+    </execution>    
+    <execution id="256">      
+      <position height="21" width="0" x="0" y="7595"/>    
+    </execution>    
+    <execution id="260">      
+      <position height="21" width="0" x="0" y="7679"/>    
+    </execution>    
+    <execution id="268">      
+      <position height="21" width="0" x="0" y="7889"/>    
+    </execution>    
+    <execution id="272">      
+      <position height="21" width="0" x="0" y="7973"/>    
+    </execution>    
+    <execution id="292">      
+      <position height="21" width="0" x="0" y="8477"/>    
+    </execution>    
+    <execution id="296">      
+      <position height="21" width="0" x="0" y="8561"/>    
+    </execution>  
+  </object>  
+  <object id="523" language="java" name="java.util.Map" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="mapVarid2Snpsstr_allele2" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="246">      
+      <position height="21" width="0" x="0" y="7343"/>    
+    </execution>    
+    <execution id="254">      
+      <position height="21" width="0" x="0" y="7553"/>    
+    </execution>    
+    <execution id="266">      
+      <position height="21" width="0" x="0" y="7847"/>    
+    </execution>    
+    <execution id="280">      
+      <position height="21" width="0" x="0" y="8183"/>    
+    </execution>    
+    <execution id="304">      
+      <position height="21" width="0" x="0" y="8729"/>    
+    </execution>    
+    <execution id="320">      
+      <position height="21" width="0" x="0" y="9065"/>    
+    </execution>  
+  </object>  
+  <object id="524" language="java" name="java.util.Set" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="248">      
+      <position height="21" width="0" x="0" y="7385"/>    
+    </execution>  
+  </object>  
+  <object id="525" language="java" name="java.util.Iterator" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="itVarid" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="250">      
+      <position height="21" width="0" x="0" y="7427"/>    
+    </execution>    
+    <execution id="252">      
+      <position height="21" width="0" x="0" y="7469"/>    
+    </execution>  
+  </object>  
+  <object id="526" language="java" name="java.util.HashMap" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="mapTableidx2Nuc" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="258">      
+      <position height="21" width="0" x="0" y="7637"/>    
+    </execution>    
+    <execution id="262">      
+      <position height="21" width="0" x="0" y="7721"/>    
+    </execution>  
+  </object>  
+  <object id="527" language="java" name="java.util.Map" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="mapVarid2Snpsstr" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="264">      
+      <position height="21" width="0" x="0" y="7805"/>    
+    </execution>    
+    <execution id="282">      
+      <position height="21" width="0" x="0" y="8225"/>    
+    </execution>    
+    <execution id="290">      
+      <position height="21" width="0" x="0" y="8393"/>    
+    </execution>    
+    <execution id="310">      
+      <position height="21" width="0" x="0" y="8855"/>    
+    </execution>    
+    <execution id="318">      
+      <position height="21" width="0" x="0" y="9023"/>    
+    </execution>  
+  </object>  
+  <object id="528" language="java" name="java.util.HashMap" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="mapTableidx2Nuc1" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="270">      
+      <position height="21" width="0" x="0" y="7931"/>    
+    </execution>    
+    <execution id="274">      
+      <position height="21" width="0" x="0" y="8015"/>    
+    </execution>  
+  </object>  
+  <object id="529" language="java" name="java.util.LinkedHashMap" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="mapVarid2SnpsstrSplitIUPAC" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="278">      
+      <position height="21" width="0" x="0" y="8141"/>    
+    </execution>    
+    <execution id="302">      
+      <position height="21" width="0" x="0" y="8687"/>    
+    </execution>  
+  </object>  
+  <object id="530" language="java" name="java.util.Set" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="284">      
+      <position height="21" width="0" x="0" y="8267"/>    
+    </execution>  
+  </object>  
+  <object id="531" language="java" name="java.util.Iterator" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="itVarid1" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="286">      
+      <position height="21" width="0" x="0" y="8309"/>    
+    </execution>    
+    <execution id="288">      
+      <position height="21" width="0" x="0" y="8351"/>    
+    </execution>  
+  </object>  
+  <object id="532" language="java" name="java.util.HashMap" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="mapTableidx2Nuc2" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="294">      
+      <position height="21" width="0" x="0" y="8519"/>    
+    </execution>    
+    <execution id="298">      
+      <position height="21" width="0" x="0" y="8603"/>    
+    </execution>  
+  </object>  
+  <object id="533" language="java" name="java.util.TreeMap" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="mapPos2Allele" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="306">      
+      <position height="21" width="0" x="0" y="8771"/>    
+    </execution>    
+    <execution id="328">      
+      <position height="21" width="0" x="0" y="9233"/>    
+    </execution>    
+    <execution id="332">      
+      <position height="21" width="0" x="0" y="9317"/>    
+    </execution>    
+    <execution id="380">      
+      <position height="21" width="0" x="0" y="10325"/>    
+    </execution>    
+    <execution id="410">      
+      <position height="21" width="0" x="0" y="10955"/>    
+    </execution>    
+    <execution id="482">      
+      <position height="21" width="0" x="0" y="12803"/>    
+    </execution>  
+  </object>  
+  <object id="534" language="java" name="java.util.TreeMap" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="mapPos2AlleleHetero" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="308">      
+      <position height="21" width="0" x="0" y="8813"/>    
+    </execution>    
+    <execution id="340">      
+      <position height="21" width="0" x="0" y="9485"/>    
+    </execution>    
+    <execution id="344">      
+      <position height="21" width="0" x="0" y="9569"/>    
+    </execution>    
+    <execution id="350">      
+      <position height="21" width="0" x="0" y="9695"/>    
+    </execution>    
+    <execution id="354">      
+      <position height="21" width="0" x="0" y="9779"/>    
+    </execution>    
+    <execution id="484">      
+      <position height="21" width="0" x="0" y="12887"/>    
+    </execution>  
+  </object>  
+  <object id="535" language="java" name="java.util.Set" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="312">      
+      <position height="21" width="0" x="0" y="8897"/>    
+    </execution>  
+  </object>  
+  <object id="536" language="java" name="java.util.Iterator" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="itVar" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="314">      
+      <position height="21" width="0" x="0" y="8939"/>    
+    </execution>    
+    <execution id="316">      
+      <position height="21" width="0" x="0" y="8981"/>    
+    </execution>  
+  </object>  
+  <object id="537" language="java" name="java.util.HashSet" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="setAlleles" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="330">      
+      <position height="21" width="0" x="0" y="9275"/>    
+    </execution>    
+    <execution id="334">      
+      <position height="21" width="0" x="0" y="9359"/>    
+    </execution>    
+    <execution id="336">      
+      <position height="21" width="0" x="0" y="9401"/>    
+    </execution>  
+  </object>  
+  <object id="538" language="java" name="org.irri.iric.portal.domain.Position" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/Position.java" binary="false" label="snppos1" type="interface" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="338">      
+      <position height="21" width="0" x="0" y="9443"/>    
+    </execution>    
+    <execution id="348">      
+      <position height="21" width="0" x="0" y="9653"/>    
+    </execution>  
+  </object>  
+  <object id="539" language="java" name="java.util.HashSet" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="allele2" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="342">      
+      <position height="21" width="0" x="0" y="9527"/>    
+    </execution>    
+    <execution id="346">      
+      <position height="21" width="0" x="0" y="9611"/>    
+    </execution>  
+  </object>  
+  <object id="540" language="java" name="java.util.HashSet" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="allele21" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="352">      
+      <position height="21" width="0" x="0" y="9737"/>    
+    </execution>    
+    <execution id="356">      
+      <position height="21" width="0" x="0" y="9821"/>    
+    </execution>  
+  </object>  
+  <object id="541" language="java" name="java.util.TreeMap" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="mapPos2NonsynAlleles" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="358">      
+      <position height="21" width="0" x="0" y="9863"/>    
+    </execution>    
+    <execution id="388">      
+      <position height="21" width="0" x="0" y="10493"/>    
+    </execution>    
+    <execution id="392">      
+      <position height="21" width="0" x="0" y="10577"/>    
+    </execution>    
+    <execution id="428">      
+      <position height="21" width="0" x="0" y="11375"/>    
+    </execution>    
+    <execution id="430">      
+      <position height="21" width="0" x="0" y="11417"/>    
+    </execution>    
+    <execution id="478">      
+      <position height="21" width="0" x="0" y="12635"/>    
+    </execution>  
+  </object>  
+  <object id="542" language="java" name="java.util.TreeMap" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="mapPos2SynAlleles" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="360">      
+      <position height="21" width="0" x="0" y="9905"/>    
+    </execution>    
+    <execution id="416">      
+      <position height="21" width="0" x="0" y="11081"/>    
+    </execution>    
+    <execution id="420">      
+      <position height="21" width="0" x="0" y="11165"/>    
+    </execution>    
+    <execution id="480">      
+      <position height="21" width="0" x="0" y="12719"/>    
+    </execution>  
+  </object>  
+  <object id="543" language="java" name="java.util.TreeSet" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="setSnpInExonPos" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="362">      
+      <position height="21" width="0" x="0" y="9947"/>    
+    </execution>    
+    <execution id="364">      
+      <position height="21" width="0" x="0" y="9989"/>    
+    </execution>    
+    <execution id="378">      
+      <position height="21" width="0" x="0" y="10283"/>    
+    </execution>    
+    <execution id="408">      
+      <position height="21" width="0" x="0" y="10913"/>    
+    </execution>  
+  </object>  
+  <object id="544" language="java" name="java.util.Set" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="nonsynAllele" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="366">      
+      <position height="21" width="0" x="0" y="10031"/>    
+    </execution>    
+    <execution id="426">      
+      <position height="21" width="0" x="0" y="11333"/>    
+    </execution>  
+  </object>  
+  <object id="545" language="java" name="java.util.Iterator" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="itNonsyn" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="368">      
+      <position height="21" width="0" x="0" y="10073"/>    
+    </execution>    
+    <execution id="370">      
+      <position height="21" width="0" x="0" y="10115"/>    
+    </execution>  
+  </object>  
+  <object id="546" language="java" name="org.irri.iric.portal.domain.SnpsNonsynAllele" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsNonsynAllele.java" binary="false" label="nonsynallele" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="372">      
+      <position height="21" width="0" x="0" y="10157"/>    
+    </execution>    
+    <execution id="376">      
+      <position height="21" width="0" x="0" y="10241"/>    
+    </execution>    
+    <execution id="382">      
+      <position height="21" width="0" x="0" y="10367"/>    
+    </execution>    
+    <execution id="386">      
+      <position height="21" width="0" x="0" y="10451"/>    
+    </execution>    
+    <execution id="396">      
+      <position height="21" width="0" x="0" y="10661"/>    
+    </execution>  
+  </object>  
+  <object id="547" language="java" name="java.util.Set" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="setVarietyAlleles" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="384">      
+      <position height="21" width="0" x="0" y="10409"/>    
+    </execution>  
+  </object>  
+  <object id="548" language="java" name="java.util.HashSet" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="alleles" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="390">      
+      <position height="21" width="0" x="0" y="10535"/>    
+    </execution>    
+    <execution id="394">      
+      <position height="21" width="0" x="0" y="10619"/>    
+    </execution>  
+  </object>  
+  <object id="549" language="java" name="java.util.Set" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="synAllele" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="398">      
+      <position height="21" width="0" x="0" y="10703"/>    
+    </execution>  
+  </object>  
+  <object id="550" language="java" name="java.util.Iterator" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="itSyn" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="400">      
+      <position height="21" width="0" x="0" y="10745"/>    
+    </execution>    
+    <execution id="402">      
+      <position height="21" width="0" x="0" y="10787"/>    
+    </execution>  
+  </object>  
+  <object id="551" language="java" name="org.irri.iric.portal.domain.SnpsSynAllele" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsSynAllele.java" binary="false" label="synallele" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="406">      
+      <position height="21" width="0" x="0" y="10871"/>    
+    </execution>    
+    <execution id="414">      
+      <position height="21" width="0" x="0" y="11039"/>    
+    </execution>    
+    <execution id="424">      
+      <position height="21" width="0" x="0" y="11249"/>    
+    </execution>  
+  </object>  
+  <object id="552" language="java" name="java.util.Set" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="setVarietyAlleles1" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="412">      
+      <position height="21" width="0" x="0" y="10997"/>    
+    </execution>  
+  </object>  
+  <object id="553" language="java" name="java.util.HashSet" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="alleles1" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="418">      
+      <position height="21" width="0" x="0" y="11123"/>    
+    </execution>    
+    <execution id="422">      
+      <position height="21" width="0" x="0" y="11207"/>    
+    </execution>  
+  </object>  
+  <object id="554" language="java" name="org.irri.iric.portal.dao.SnpsSpliceAcceptorDAO" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/dao/SnpsSpliceAcceptorDAO.java" binary="false" 
+    label="snpsspliceacceptorDAO" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="432">      
+      <position height="21" width="0" x="0" y="11585"/>    
+    </execution>    
+    <execution id="438">      
+      <position height="21" width="0" x="0" y="11711"/>    
+    </execution>    
+    <execution id="442">      
+      <position height="21" width="0" x="0" y="11795"/>    
+    </execution>  
+  </object>  
+  <object id="555" language="java" name="org.irri.iric.portal.dao.SnpsSpliceDonorDAO" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/dao/SnpsSpliceDonorDAO.java" binary="false" label="snpssplicedonorDAO" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="434">      
+      <position height="21" width="0" x="0" y="11627"/>    
+    </execution>    
+    <execution id="440">      
+      <position height="21" width="0" x="0" y="11753"/>    
+    </execution>    
+    <execution id="448">      
+      <position height="21" width="0" x="0" y="11921"/>    
+    </execution>  
+  </object>  
+  <object id="556" language="java" name="java.util.HashSet" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="setSpliceAcceptorsPos" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="454">      
+      <position height="21" width="0" x="0" y="12047"/>    
+    </execution>    
+    <execution id="464">      
+      <position height="21" width="0" x="0" y="12257"/>    
+    </execution>    
+    <execution id="488">      
+      <position height="21" width="0" x="0" y="13055"/>    
+    </execution>  
+  </object>  
+  <object id="557" language="java" name="java.util.HashSet" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="setSpliceDonorsPos" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="456">      
+      <position height="21" width="0" x="0" y="12089"/>    
+    </execution>    
+    <execution id="474">      
+      <position height="21" width="0" x="0" y="12467"/>    
+    </execution>    
+    <execution id="486">      
+      <position height="21" width="0" x="0" y="12971"/>    
+    </execution>  
+  </object>  
+  <object id="558" language="java" name="java.util.Set" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="setSpliceAcceptors" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="458">      
+      <position height="21" width="0" x="0" y="12131"/>    
+    </execution>  
+  </object>  
+  <object id="559" language="java" name="java.util.Iterator" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="itAcceptors" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="460">      
+      <position height="21" width="0" x="0" y="12173"/>    
+    </execution>    
+    <execution id="462">      
+      <position height="21" width="0" x="0" y="12215"/>    
+    </execution>  
+  </object>  
+  <object id="560" language="java" name="org.irri.iric.portal.domain.SnpsSpliceAcceptor" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsSpliceAcceptor.java" binary="false" label="acc" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="466">      
+      <position height="21" width="0" x="0" y="12299"/>    
+    </execution>  
+  </object>  
+  <object id="561" language="java" name="java.util.Set" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="setSpliceDonors" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="468">      
+      <position height="21" width="0" x="0" y="12341"/>    
+    </execution>  
+  </object>  
+  <object id="562" language="java" name="java.util.Iterator" project="iric_portal" 
+    file="E:/MyEclipse 2015 CI/binary/com.sun.java.jdk7.win32.x86_64_1.7.0.u45/jre/lib/rt.jar" binary="true" 
+    label="itDonor" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="470">      
+      <position height="21" width="0" x="0" y="12383"/>    
+    </execution>    
+    <execution id="472">      
+      <position height="21" width="0" x="0" y="12425"/>    
+    </execution>  
+  </object>  
+  <object id="563" language="java" name="org.irri.iric.portal.domain.SnpsSpliceDonor" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsSpliceDonor.java" binary="false" label="acc1" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="476">      
+      <position height="21" width="0" x="0" y="12509"/>    
+    </execution>  
+  </object>  
+  <object id="564" language="java" 
+    name="org.irri.iric.portal.genotype.service.SnpsStringHDF5nRDBMSHybridService.SNPsStringData" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/genotype/service/SnpsStringHDF5nRDBMSHybridService.java" binary="false" 
+    label="snpstrdata" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="36">      
+      <position height="21" width="0" x="0" y="13149"/>    
+    </execution>    
+    <execution id="42">      
+      <position height="21" width="0" x="0" y="13705"/>    
+    </execution>    
+    <execution id="44">      
+      <position height="21" width="0" x="0" y="13747"/>    
+    </execution>    
+    <execution id="46">      
+      <position height="21" width="0" x="0" y="13789"/>    
+    </execution>    
+    <execution id="48">      
+      <position height="21" width="0" x="0" y="13873"/>    
+    </execution>    
+    <execution id="50">      
+      <position height="21" width="0" x="0" y="13915"/>    
+    </execution>    
+    <execution id="52">      
+      <position height="21" width="0" x="0" y="14293"/>    
+    </execution>    
+    <execution id="64">      
+      <position height="21" width="0" x="0" y="15049"/>    
+    </execution>    
+    <execution id="66">      
+      <position height="21" width="0" x="0" y="15091"/>    
+    </execution>    
+    <execution id="68">      
+      <position height="21" width="0" x="0" y="15133"/>    
+    </execution>    
+    <execution id="70">      
+      <position height="21" width="0" x="0" y="15175"/>    
+    </execution>    
+    <execution id="72">      
+      <position height="21" width="0" x="0" y="15217"/>    
+    </execution>    
+    <execution id="490">      
+      <position height="21" width="0" x="0" y="13097"/>    
+    </execution>  
+  </object>  
+  <object id="565" language="java" name="org.irri.iric.portal.genotype.service.SnpsStringAllvarsImplSorter" 
+    project="iric_portal" file="/iric_portal/src/org/irri/iric/portal/genotype/service/SnpsStringAllvarsImplSorter.java" 
+    binary="false" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="38">      
+      <position height="21" width="0" x="0" y="13317"/>    
+    </execution>  
+  </object>  
+  <object id="566" language="java" name="org.irri.iric.portal.domain.SnpsStringAllvarsImpl" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsStringAllvarsImpl.java" binary="false" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="54">      
+      <position height="21" width="0" x="0" y="14377"/>    
+    </execution>  
+  </object>  
+  <object id="567" language="java" name="org.irri.iric.portal.domain.SnpsAllvarsRefMismatch" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/SnpsAllvarsRefMismatch.java" binary="false" label="snpstrvar" 
+    type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="56">      
+      <position height="21" width="0" x="0" y="14755"/>    
+    </execution>    
+    <execution id="58">      
+      <position height="21" width="0" x="0" y="14839"/>    
+    </execution>    
+    <execution id="60">      
+      <position height="21" width="0" x="0" y="14881"/>    
+    </execution>  
+  </object>  
+  <object id="568" language="java" name="org.irri.iric.portal.domain.MultiReferenceLocusImpl" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/MultiReferenceLocusImpl.java" binary="false" label="locusQueried" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="8">      
+      <position height="21" width="0" x="0" y="519"/>    
+    </execution>    
+    <execution id="14">      
+      <position height="21" width="0" x="0" y="15269"/>    
+    </execution>  
+  </object>  
+  <object id="569" language="java" name="org.irri.iric.portal.dao.MultipleReferenceConverterDAO" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/dao/MultipleReferenceConverterDAO.java" binary="false" 
+    label="multiplerefconvertdao" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="10">      
+      <position height="21" width="0" x="0" y="729"/>    
+    </execution>    
+    <execution id="20">      
+      <position height="21" width="0" x="0" y="15437"/>    
+    </execution>  
+  </object>  
+  <object id="570" language="java" name="org.irri.iric.portal.genotype.VariantStringData" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/genotype/VariantStringData.java" binary="false" 
+    label="variantstringdataNPB" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="16">      
+      <position height="21" width="0" x="0" y="15311"/>    
+    </execution>    
+    <execution id="18">      
+      <position height="21" width="0" x="0" y="15353"/>    
+    </execution>  
+  </object>  
+  <object id="571" language="java" name="org.irri.iric.portal.genotype.VariantStringData" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/genotype/VariantStringData.java" binary="false" label="vardata" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="24">      
+      <position height="21" width="0" x="0" y="15615"/>    
+    </execution>    
+    <execution id="30">      
+      <position height="21" width="0" x="0" y="16171"/>    
+    </execution>    
+    <execution id="62">      
+      <position height="21" width="0" x="0" y="15007"/>    
+    </execution>  
+  </object>  
+  <object id="572" language="java" name="org.irri.iric.portal.domain.MultiReferenceLocusImpl" project="iric_portal" 
+    file="/iric_portal/src/org/irri/iric/portal/domain/MultiReferenceLocusImpl.java" binary="false" 
+    label="locusNipponbare" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="26">      
+      <position height="21" width="0" x="0" y="15867"/>    
+    </execution>  
+  </object>  
+  <message id="3" 
+    operation="getVariantString(org.irri.iric.portal.genotype.GenotypeQueryParams):org.irri.iric.portal.genotype.VariantStringData" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="7" 
+    operation="MultiReferenceLocusImpl(java.lang.String,java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.Integer)" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="8"/>  
+  </message>  
+  <message id="9" 
+    operation="convertLocus(org.irri.iric.portal.domain.MultiReferenceLocus,java.lang.String,java.lang.String):org.irri.iric.portal.domain.MultiReferenceLocus" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="10"/>  
+  </message>  
+  <message id="11" 
+    operation="_getSNPsStringNipponbare(org.irri.iric.portal.genotype.GenotypeQueryParams):org.irri.iric.portal.genotype.VariantStringData" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="12"/>  
+  </message>  
+  <message id="13" operation="getContig():java.lang.String" asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="14"/>  
+  </message>  
+  <message id="15" operation="setMessage(java.lang.String):void" asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="16"/>  
+  </message>  
+  <message id="17" operation="getMessage():java.lang.String" asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="18"/>  
+  </message>  
+  <message id="19" 
+    operation="convertReferencePositions(org.irri.iric.portal.genotype.VariantStringData,org.irri.iric.portal.domain.MultiReferenceLocus,org.irri.iric.portal.domain.MultiReferenceLocus,java.lang.String,boolean):org.irri.iric.portal.genotype.VariantStringData" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="20"/>  
+  </message>  
+  <message id="21" 
+    operation="convertReferencePositionsToAllReferences(org.irri.iric.portal.genotype.GenotypeQueryParams,org.irri.iric.portal.genotype.VariantStringData,org.irri.iric.portal.domain.MultiReferenceLocus):org.irri.iric.portal.genotype.VariantStringData" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="22"/>  
+  </message>  
+  <message id="23" 
+    operation="getMapOrg2MSU7Pos2ConvertedPos():java.util.Map&lt;String,Map&lt;BigDecimal,MultiReferencePosition&gt;&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="24"/>  
+  </message>  
+  <message id="25" 
+    operation="MultiReferenceLocusImpl(java.lang.String,java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.Integer)" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="26"/>  
+  </message>  
+  <message id="27" 
+    operation="convertReferencePositionsToAllReferences(org.irri.iric.portal.genotype.GenotypeQueryParams,org.irri.iric.portal.genotype.VariantStringData,org.irri.iric.portal.domain.MultiReferenceLocus):org.irri.iric.portal.genotype.VariantStringData" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="28"/>  
+  </message>  
+  <message id="29" 
+    operation="getMapOrg2MSU7Pos2ConvertedPos():java.util.Map&lt;String,Map&lt;BigDecimal,MultiReferencePosition&gt;&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="30"/>  
+  </message>  
+  <message id="31" 
+    operation="_getSNPsStringNipponbare(org.irri.iric.portal.genotype.GenotypeQueryParams):org.irri.iric.portal.genotype.VariantStringData" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="32"/>  
+  </message>  
+  <message id="33" 
+    operation="getSNPsStringData(org.irri.iric.portal.genotype.GenotypeQueryParams,java.util.Collection,java.lang.String,java.math.BigDecimal,java.math.BigDecimal,java.util.Collection,java.util.Collection):org.irri.iric.portal.genotype.service.SnpsStringHDF5nRDBMSHybridService.SNPsStringData" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="34"/>  
+  </message>  
+  <message id="35" operation="getMapVarid2Snpsstr():java.util.Map&lt;BigDecimal,String&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="36"/>  
+  </message>  
+  <message id="37" operation="SnpsStringAllvarsImplSorter()" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="38"/>  
+  </message>  
+  <message id="39" 
+    operation="countVarpairMismatch(java.util.List,java.lang.String,java.lang.String,boolean,java.util.Map&lt;org.irri.iric.portal.domain.Position,java.lang.Character&gt;,java.util.Map&lt;org.irri.iric.portal.domain.Position,java.lang.Character&gt;,java.util.Map&lt;org.irri.iric.portal.domain.Position,java.util.Set&lt;java.lang.Character&gt;&gt;,java.util.Set&lt;org.irri.iric.portal.domain.Position&gt;,java.util.Set&lt;org.irri.iric.portal.domain.Position&gt;,boolean):double" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="40"/>  
+  </message>  
+  <message id="41" operation="getListSnpsPos():java.util.List&lt;SnpsAllvarsPos&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="42"/>  
+  </message>  
+  <message id="43" operation="getStrRef():java.lang.String" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="44"/>  
+  </message>  
+  <message id="45" operation="getMapVarid2SnpsAllele2str():java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="46"/>  
+  </message>  
+  <message id="47" operation="getMapPos2NonsynAlleles():java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="48"/>  
+  </message>  
+  <message id="49" operation="getSetSnpInExonPos():java.util.Set" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="50"/>  
+  </message>  
+  <message id="51" operation="getMapVarid2SnpsAllele2str():java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="52"/>  
+  </message>  
+  <message id="53" 
+    operation="SnpsStringAllvarsImpl(java.math.BigDecimal,java.lang.String,java.lang.String,java.math.BigDecimal,java.util.Map,java.util.Set,java.util.Set,java.util.Set)" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="54"/>  
+  </message>  
+  <message id="55" operation="getVar():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="56"/>  
+  </message>  
+  <message id="57" operation="getVar():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="58"/>  
+  </message>  
+  <message id="59" operation="getMismatch():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="60"/>  
+  </message>  
+  <message id="61" 
+    operation="VariantSnpsStringData(java.util.Map&lt;java.math.BigDecimal,java.lang.Double&gt;,java.util.Map&lt;java.math.BigDecimal,java.lang.Integer&gt;,java.util.List&lt;org.irri.iric.portal.domain.SnpsAllvarsPos&gt;,java.util.List&lt;org.irri.iric.portal.domain.SnpsStringAllvars&gt;,java.lang.String,java.util.Map&lt;java.math.BigDecimal,java.util.Map&lt;org.irri.iric.portal.domain.Position,java.lang.Character&gt;&gt;,java.util.Map&lt;org.irri.iric.portal.domain.Position,java.util.Set&lt;java.lang.Character&gt;&gt;,java.util.Set&lt;org.irri.iric.portal.domain.Position&gt;,java.util.Set&lt;org.irri.iric.portal.domain.Position&gt;,java.util.Set&lt;org.irri.iric.portal.domain.Position&gt;)" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="62"/>  
+  </message>  
+  <message id="63" operation="getListSnpsPos():java.util.List&lt;SnpsAllvarsPos&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="64"/>  
+  </message>  
+  <message id="65" operation="getStrRef():java.lang.String" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="66"/>  
+  </message>  
+  <message id="67" operation="getMapVarid2SnpsAllele2str():java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="68"/>  
+  </message>  
+  <message id="69" operation="getMapPos2NonsynAlleles():java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="70"/>  
+  </message>  
+  <message id="71" operation="getSetSnpInExonPos():java.util.Set" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="72"/>  
+  </message>  
+  <message id="73" 
+    operation="getSNPsInChromosome(java.lang.String,java.util.Collection,java.math.BigDecimal):java.util.List" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="74"/>  
+  </message>  
+  <message id="75" operation="isEmpty():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="76"/>  
+  </message>  
+  <message id="77" 
+    operation="getSNPsInChromosome(java.lang.String,java.util.Collection,java.math.BigDecimal):java.util.List" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="78"/>  
+  </message>  
+  <message id="79" 
+    operation="getSNPs(java.lang.String,java.lang.Integer,java.lang.Integer,java.math.BigDecimal,int,int):java.util.List" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="80"/>  
+  </message>  
+  <message id="81" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="82"/>  
+  </message>  
+  <message id="83" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="84"/>  
+  </message>  
+  <message id="85" operation="TreeSet(java.util.Collection&lt;? extends E&gt;)" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="86"/>  
+  </message>  
+  <message id="87" 
+    operation="getSNPsInChromosome(java.lang.String,java.util.Collection,java.math.BigDecimal):java.util.List" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="88"/>  
+  </message>  
+  <message id="89" operation="isEmpty():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="90"/>  
+  </message>  
+  <message id="91" 
+    operation="getSNPsInChromosome(java.lang.String,java.util.Collection,java.math.BigDecimal):java.util.List" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="92"/>  
+  </message>  
+  <message id="93" 
+    operation="getSNPs(java.lang.String,java.lang.Integer,java.lang.Integer,java.math.BigDecimal,int,int):java.util.List" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="94"/>  
+  </message>  
+  <message id="95" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="96"/>  
+  </message>  
+  <message id="97" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="98"/>  
+  </message>  
+  <message id="99" operation="isEmpty():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="100"/>  
+  </message>  
+  <message id="101" operation="SNPsStringData()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="102"/>  
+  </message>  
+  <message id="103" operation="get(int):E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="104"/>  
+  </message>  
+  <message id="105" operation="get(int):E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="106"/>  
+  </message>  
+  <message id="107" operation="size():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="108"/>  
+  </message>  
+  <message id="109" operation="size():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="110"/>  
+  </message>  
+  <message id="111" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="112"/>  
+  </message>  
+  <message id="113" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="114"/>  
+  </message>  
+  <message id="115" operation="getAlleleIndex():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="116"/>  
+  </message>  
+  <message id="117" operation="getAlleleIndex():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="118"/>  
+  </message>  
+  <message id="119" operation="size():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="120"/>  
+  </message>  
+  <message id="121" operation="ArrayList()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="122"/>  
+  </message>  
+  <message id="123" operation="HashMap()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="124"/>  
+  </message>  
+  <message id="125" operation="iterator():java.util.Iterator&lt;E&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="126"/>  
+  </message>  
+  <message id="127" operation="hasNext():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="128"/>  
+  </message>  
+  <message id="129" operation="next():E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="130"/>  
+  </message>  
+  <message id="131" operation="getRefnuc():java.lang.String" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="132"/>  
+  </message>  
+  <message id="133" operation="getAlleleIndex():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="134"/>  
+  </message>  
+  <message id="135" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="136"/>  
+  </message>  
+  <message id="137" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="138"/>  
+  </message>  
+  <message id="139" operation="getSnpFeatureId():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="140"/>  
+  </message>  
+  <message id="141" operation="add(E):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="142"/>  
+  </message>  
+  <message id="143" operation="add(E):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="144"/>  
+  </message>  
+  <message id="145" operation="size():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="146"/>  
+  </message>  
+  <message id="147" operation="iterator():java.util.Iterator&lt;E&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="148"/>  
+  </message>  
+  <message id="149" operation="hasNext():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="150"/>  
+  </message>  
+  <message id="151" operation="next():E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="152"/>  
+  </message>  
+  <message id="153" operation="isEmpty():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="154"/>  
+  </message>  
+  <message id="155" 
+    operation="readSNPString(java.util.Set&lt;java.math.BigDecimal&gt;,java.lang.String,int[]):java.util.Map" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="156"/>  
+  </message>  
+  <message id="157" 
+    operation="readSNPString(java.util.Set&lt;java.math.BigDecimal&gt;,java.lang.String,int[]):java.util.Map" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="158"/>  
+  </message>  
+  <message id="159" operation="readSNPString(java.lang.String,int[]):java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="160"/>  
+  </message>  
+  <message id="161" operation="readSNPString(java.lang.String,int[]):java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="162"/>  
+  </message>  
+  <message id="163" operation="isEmpty():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="164"/>  
+  </message>  
+  <message id="165" operation="readSNPString(java.util.Set,java.lang.String,int[][]):java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="166"/>  
+  </message>  
+  <message id="167" operation="readSNPString(java.util.Set,java.lang.String,int[][]):java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="168"/>  
+  </message>  
+  <message id="169" operation="readSNPString(java.lang.String,int[][]):java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="170"/>  
+  </message>  
+  <message id="171" operation="readSNPString(java.lang.String,int[][]):java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="172"/>  
+  </message>  
+  <message id="173" 
+    operation="findSnpNonsynAlleleByChrPosIn(java.lang.String,java.util.Collection,java.math.BigDecimal):java.util.Set&lt;SnpsNonsynAllele&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="174"/>  
+  </message>  
+  <message id="175" 
+    operation="findSnpSynAlleleByChrPosIn(java.lang.String,java.util.Collection,java.math.BigDecimal):java.util.Set&lt;SnpsSynAllele&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="176"/>  
+  </message>  
+  <message id="177" operation="isEmpty():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="178"/>  
+  </message>  
+  <message id="179" 
+    operation="findSnpNonsynAlleleByChrPosIn(java.lang.String,java.util.Collection,java.math.BigDecimal):java.util.Set&lt;SnpsNonsynAllele&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="180"/>  
+  </message>  
+  <message id="181" 
+    operation="findSnpSynAlleleByChrPosIn(java.lang.String,java.util.Collection,java.math.BigDecimal):java.util.Set&lt;SnpsSynAllele&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="182"/>  
+  </message>  
+  <message id="183" 
+    operation="readSNPString(java.util.Set&lt;java.math.BigDecimal&gt;,java.lang.String,int,int):java.util.Map" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="184"/>  
+  </message>  
+  <message id="185" operation="getAlleleIndex():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="186"/>  
+  </message>  
+  <message id="187" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="188"/>  
+  </message>  
+  <message id="189" operation="getAlleleIndex():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="190"/>  
+  </message>  
+  <message id="191" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="192"/>  
+  </message>  
+  <message id="193" 
+    operation="readSNPString(java.util.Set&lt;java.math.BigDecimal&gt;,java.lang.String,int,int):java.util.Map" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="194"/>  
+  </message>  
+  <message id="195" operation="getAlleleIndex():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="196"/>  
+  </message>  
+  <message id="197" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="198"/>  
+  </message>  
+  <message id="199" operation="getAlleleIndex():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="200"/>  
+  </message>  
+  <message id="201" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="202"/>  
+  </message>  
+  <message id="203" operation="readSNPString(java.lang.String,int,int):java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="204"/>  
+  </message>  
+  <message id="205" operation="getAlleleIndex():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="206"/>  
+  </message>  
+  <message id="207" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="208"/>  
+  </message>  
+  <message id="209" operation="getAlleleIndex():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="210"/>  
+  </message>  
+  <message id="211" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="212"/>  
+  </message>  
+  <message id="213" operation="readSNPString(java.lang.String,int,int):java.util.Map" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="214"/>  
+  </message>  
+  <message id="215" operation="getAlleleIndex():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="216"/>  
+  </message>  
+  <message id="217" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="218"/>  
+  </message>  
+  <message id="219" operation="getAlleleIndex():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="220"/>  
+  </message>  
+  <message id="221" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="222"/>  
+  </message>  
+  <message id="223" 
+    operation="findSnpNonsynAlleleByChrPosBetween(java.lang.String,java.lang.Integer,java.lang.Integer,java.math.BigDecimal):java.util.Set&lt;SnpsNonsynAllele&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="224"/>  
+  </message>  
+  <message id="225" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="226"/>  
+  </message>  
+  <message id="227" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="228"/>  
+  </message>  
+  <message id="229" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="230"/>  
+  </message>  
+  <message id="231" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="232"/>  
+  </message>  
+  <message id="233" 
+    operation="findSnpSynAlleleByChrPosBetween(java.lang.String,java.lang.Integer,java.lang.Integer,java.math.BigDecimal):java.util.Set&lt;SnpsSynAllele&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="234"/>  
+  </message>  
+  <message id="235" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="236"/>  
+  </message>  
+  <message id="237" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="238"/>  
+  </message>  
+  <message id="239" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="240"/>  
+  </message>  
+  <message id="241" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="242"/>  
+  </message>  
+  <message id="243" operation="HashMap()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="244"/>  
+  </message>  
+  <message id="245" operation="keySet():java.util.Set&lt;K&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="246"/>  
+  </message>  
+  <message id="247" operation="iterator():java.util.Iterator&lt;E&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="248"/>  
+  </message>  
+  <message id="249" operation="hasNext():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="250"/>  
+  </message>  
+  <message id="251" operation="next():E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="252"/>  
+  </message>  
+  <message id="253" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="254"/>  
+  </message>  
+  <message id="255" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="256"/>  
+  </message>  
+  <message id="257" operation="HashMap()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="258"/>  
+  </message>  
+  <message id="259" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="260"/>  
+  </message>  
+  <message id="261" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="262"/>  
+  </message>  
+  <message id="263" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="264"/>  
+  </message>  
+  <message id="265" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="266"/>  
+  </message>  
+  <message id="267" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="268"/>  
+  </message>  
+  <message id="269" operation="HashMap()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="270"/>  
+  </message>  
+  <message id="271" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="272"/>  
+  </message>  
+  <message id="273" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="274"/>  
+  </message>  
+  <message id="275" operation="get(int):E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="276"/>  
+  </message>  
+  <message id="277" operation="LinkedHashMap()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="278"/>  
+  </message>  
+  <message id="279" operation="LinkedHashMap()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="280"/>  
+  </message>  
+  <message id="281" operation="keySet():java.util.Set&lt;K&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="282"/>  
+  </message>  
+  <message id="283" operation="iterator():java.util.Iterator&lt;E&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="284"/>  
+  </message>  
+  <message id="285" operation="hasNext():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="286"/>  
+  </message>  
+  <message id="287" operation="next():E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="288"/>  
+  </message>  
+  <message id="289" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="290"/>  
+  </message>  
+  <message id="291" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="292"/>  
+  </message>  
+  <message id="293" operation="HashMap()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="294"/>  
+  </message>  
+  <message id="295" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="296"/>  
+  </message>  
+  <message id="297" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="298"/>  
+  </message>  
+  <message id="299" operation="get(int):E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="300"/>  
+  </message>  
+  <message id="301" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="302"/>  
+  </message>  
+  <message id="303" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="304"/>  
+  </message>  
+  <message id="305" operation="TreeMap()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="306"/>  
+  </message>  
+  <message id="307" operation="TreeMap()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="308"/>  
+  </message>  
+  <message id="309" operation="keySet():java.util.Set&lt;K&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="310"/>  
+  </message>  
+  <message id="311" operation="iterator():java.util.Iterator&lt;E&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="312"/>  
+  </message>  
+  <message id="313" operation="hasNext():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="314"/>  
+  </message>  
+  <message id="315" operation="next():E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="316"/>  
+  </message>  
+  <message id="317" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="318"/>  
+  </message>  
+  <message id="319" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="320"/>  
+  </message>  
+  <message id="321" operation="iterator():java.util.Iterator&lt;E&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="322"/>  
+  </message>  
+  <message id="323" operation="hasNext():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="324"/>  
+  </message>  
+  <message id="325" operation="next():E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="326"/>  
+  </message>  
+  <message id="327" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="328"/>  
+  </message>  
+  <message id="329" operation="HashSet()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="330"/>  
+  </message>  
+  <message id="331" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="332"/>  
+  </message>  
+  <message id="333" operation="add(E):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="334"/>  
+  </message>  
+  <message id="335" operation="add(E):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="336"/>  
+  </message>  
+  <message id="337" operation="getRefcall():java.lang.String" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="338"/>  
+  </message>  
+  <message id="339" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="340"/>  
+  </message>  
+  <message id="341" operation="HashSet()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="342"/>  
+  </message>  
+  <message id="343" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="344"/>  
+  </message>  
+  <message id="345" operation="add(E):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="346"/>  
+  </message>  
+  <message id="347" operation="getRefcall():java.lang.String" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="348"/>  
+  </message>  
+  <message id="349" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="350"/>  
+  </message>  
+  <message id="351" operation="HashSet()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="352"/>  
+  </message>  
+  <message id="353" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="354"/>  
+  </message>  
+  <message id="355" operation="add(E):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="356"/>  
+  </message>  
+  <message id="357" operation="TreeMap()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="358"/>  
+  </message>  
+  <message id="359" operation="TreeMap()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="360"/>  
+  </message>  
+  <message id="361" operation="TreeSet()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="362"/>  
+  </message>  
+  <message id="363" operation="TreeSet()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="364"/>  
+  </message>  
+  <message id="365" operation="iterator():java.util.Iterator&lt;E&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="366"/>  
+  </message>  
+  <message id="367" operation="hasNext():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="368"/>  
+  </message>  
+  <message id="369" operation="next():E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="370"/>  
+  </message>  
+  <message id="371" operation="getSnp():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="372"/>  
+  </message>  
+  <message id="373" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="374"/>  
+  </message>  
+  <message id="375" operation="getSnp():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="376"/>  
+  </message>  
+  <message id="377" operation="add(E):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="378"/>  
+  </message>  
+  <message id="379" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="380"/>  
+  </message>  
+  <message id="381" operation="getAllele():char" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="382"/>  
+  </message>  
+  <message id="383" operation="contains(java.lang.Object):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="384"/>  
+  </message>  
+  <message id="385" operation="getAllele():char" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="386"/>  
+  </message>  
+  <message id="387" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="388"/>  
+  </message>  
+  <message id="389" operation="HashSet()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="390"/>  
+  </message>  
+  <message id="391" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="392"/>  
+  </message>  
+  <message id="393" operation="add(E):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="394"/>  
+  </message>  
+  <message id="395" operation="getAllele():char" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="396"/>  
+  </message>  
+  <message id="397" operation="iterator():java.util.Iterator&lt;E&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="398"/>  
+  </message>  
+  <message id="399" operation="hasNext():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="400"/>  
+  </message>  
+  <message id="401" operation="next():E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="402"/>  
+  </message>  
+  <message id="403" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="404"/>  
+  </message>  
+  <message id="405" operation="getSnp():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="406"/>  
+  </message>  
+  <message id="407" operation="add(E):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="408"/>  
+  </message>  
+  <message id="409" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="410"/>  
+  </message>  
+  <message id="411" operation="contains(java.lang.Object):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="412"/>  
+  </message>  
+  <message id="413" operation="getAllele():char" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="414"/>  
+  </message>  
+  <message id="415" operation="get(java.lang.Object):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="416"/>  
+  </message>  
+  <message id="417" operation="HashSet()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="418"/>  
+  </message>  
+  <message id="419" operation="put(K,V):V" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="420"/>  
+  </message>  
+  <message id="421" operation="add(E):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="422"/>  
+  </message>  
+  <message id="423" operation="getAllele():char" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="424"/>  
+  </message>  
+  <message id="425" operation="size():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="426"/>  
+  </message>  
+  <message id="427" operation="size():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="428"/>  
+  </message>  
+  <message id="429" operation="size():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="430"/>  
+  </message>  
+  <message id="431" operation="getSNPsIn(java.lang.String,java.util.Collection):java.util.Set&lt;SnpsSpliceAcceptor&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="432"/>  
+  </message>  
+  <message id="433" operation="getSNPsIn(java.lang.String,java.util.Collection):java.util.Set&lt;SnpsSpliceDonor&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="434"/>  
+  </message>  
+  <message id="435" operation="isEmpty():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="436"/>  
+  </message>  
+  <message id="437" operation="getSNPsIn(java.lang.String,java.util.Collection):java.util.Set&lt;SnpsSpliceAcceptor&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="438"/>  
+  </message>  
+  <message id="439" operation="getSNPsIn(java.lang.String,java.util.Collection):java.util.Set&lt;SnpsSpliceDonor&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="440"/>  
+  </message>  
+  <message id="441" 
+    operation="getSNPsBetween(java.lang.String,java.lang.Integer,java.lang.Integer):java.util.Set&lt;SnpsSpliceAcceptor&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="442"/>  
+  </message>  
+  <message id="443" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="444"/>  
+  </message>  
+  <message id="445" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="446"/>  
+  </message>  
+  <message id="447" 
+    operation="getSNPsBetween(java.lang.String,java.lang.Integer,java.lang.Integer):java.util.Set&lt;SnpsSpliceDonor&gt;" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="448"/>  
+  </message>  
+  <message id="449" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="450"/>  
+  </message>  
+  <message id="451" operation="intValue():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="452"/>  
+  </message>  
+  <message id="453" operation="HashSet()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="454"/>  
+  </message>  
+  <message id="455" operation="HashSet()" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="456"/>  
+  </message>  
+  <message id="457" operation="iterator():java.util.Iterator&lt;E&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="458"/>  
+  </message>  
+  <message id="459" operation="hasNext():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="460"/>  
+  </message>  
+  <message id="461" operation="next():E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="462"/>  
+  </message>  
+  <message id="463" operation="add(E):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="464"/>  
+  </message>  
+  <message id="465" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="466"/>  
+  </message>  
+  <message id="467" operation="iterator():java.util.Iterator&lt;E&gt;" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="468"/>  
+  </message>  
+  <message id="469" operation="hasNext():boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="470"/>  
+  </message>  
+  <message id="471" operation="next():E" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="472"/>  
+  </message>  
+  <message id="473" operation="add(E):boolean" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="474"/>  
+  </message>  
+  <message id="475" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="476"/>  
+  </message>  
+  <message id="477" operation="size():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="478"/>  
+  </message>  
+  <message id="479" operation="size():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="480"/>  
+  </message>  
+  <message id="481" operation="size():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="482"/>  
+  </message>  
+  <message id="483" operation="size():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="484"/>  
+  </message>  
+  <message id="485" operation="size():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="486"/>  
+  </message>  
+  <message id="487" operation="size():int" asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="488"/>  
+  </message>  
+  <message id="489" 
+    operation="SNPsStringData(java.util.List,java.lang.String,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Set,java.util.Set,java.util.Set)" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="490"/>  
+  </message>
+</sequence-diagram>

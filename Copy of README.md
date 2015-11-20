@@ -12,29 +12,25 @@ This is the repository of IRIC-Portal Web interface. The application is written 
 
 * Setup  
 	
-	- Download the [HDF5 data files](https://s3.amazonaws.com/snp-seek/snpseekdata-4bitbucket.zip) and save them in a dedicated directory in the web server.
-	- Download the [customized JBrowse](https://s3.amazonaws.com/snp-seek/jbrowse-1.11.6-4bitbucket.tgz), extract it in the webserver and create a symbolic link (ex. jbrowse) from the tomcat webapps directory pointing to the extracted JBrowse directory.
-	- Download/Clone this project and open in Eclipse (or preferably MyEclipse). 
-	- Set the database connection parameters in bean IRIC\_ProductionDS in /resources/iric\_prod\_crud-dao-context.xml (described next section)
+	- Download the HDF5 data files, Blast database files and save them in a dedicated directory in the web server.
+	- Download the customized JBrowse from . Extract it in the webserver and create a symbolic link (ex. jbrowse) from the tomcat webapps directory pointing to the extracted JBrowse directory.
+	- Download the project and open in Eclipse (or preferably MyEclipse). 
+	- Set the database connection parameters in bean IRIC\_ProductionDS in /resources/iric\_prod\_crud-dao-context.xml
 	- Set the parameters defined in the static class org.irri.iric.portal.AppContext, specially:
 	
-			webserver				The target webserver. enum WEBSERVER { LOCALHOST, AWS, AWSDEV, VMIRRI, POLLUX, ASTI }
-									Unless you are within IRRI network, just set this to the default LOCALHOST.
-			compiletype				Compilation type. enum COMPILETYPE { PROD, DEV, TEST }
 			getFlatfilesDir()	 	Directory of SNP-Seek data files in the server (using server file system) 
 			getHostname()			Web server hostname or IP address 
 			getTempDir()			Directory to write temp files accessible to the internet, but using the server file system (ex. /path/to/tomcat/webapps/temp)
 			getJbrowseDir() 		JBrowse folder name as deployed in web server (ex. jbrowse)
 		
-		These configurations are currently hard-coded, but will be made configurable through XML later.  
+		These configurations are currently hard-coded, but will be made configurable through XML later. 
 
 	- Compile the application and export into a war file. (ex. iric-portal.war)
 
-	- Download and install the HDF5 library from [https://www.hdfgroup.org/HDF5/release/obtain5.html](https://www.hdfgroup.org/HDF5/release/obtain5.html "HDF5 library") (also available [here](https://s3.amazonaws.com/snp-seek/hdf5lib.zip)) in the web server. Add the HDF5 library installation directory to Tomcat. In /path/to/tomcat/bin/setenv.sh add the line
+	- Download and install the HDF5 library from [https://www.hdfgroup.org/HDF5/release/obtain5.html](https://www.hdfgroup.org/HDF5/release/obtain5.html "HDF5 library") into the web server (also available in ). Add the HDF5 library installation directory to Tomcat. In /path/to/tomcat/bin/setenv.sh add the line
 	
 			export JAVA_OPTS="-Djava.library.path=/path/to/hdf5/lib"
 
-		Within Eclipse, set it in Run>Run configuration>Server>Tomcat, select Arguments tab, VM arguments textbox 
 	
 	- Deploy the generated war in Tomcat
 	- Set a cron job to regularly empty the directory defined in getTempDir() 
@@ -98,7 +94,7 @@ to makes sure that the Spring dependency injection works without NULL reference 
 		template.zul	Page layout
 		banner.zul		Banner and menu page
 		footer.zul		Footer page	
-		_*				files starting with _ are the corresponding decorators to apply the template to the pages
+		_*				files starting with _ are the corresponding containers to apply the template to the pages
 	
 * README.md   this file
 	
@@ -111,7 +107,6 @@ to makes sure that the Spring dependency injection works without NULL reference 
 
 The Java source codes are organized into these major packages  
 
-		org.irri.iric.portal			global configurations, utility functions
 		org.irri.iric.portal.domain		domain objects interface, used by all services
 		org.irri.iric.portal.dao		data access object interface, used by all services
 		org.irri.iric.portal.genotype	SNPs and Indels queries
@@ -214,19 +209,13 @@ Genotype Query Sequence
 
 ![](uml/genotype_query.png)
 
-
 ### Embedded external sites
 
 * [JBrowse]([http://jbrowse.org](http://jbrowse.org)) is a browser-based genome browser implemented in javascript. We added some scripts to display the Genotype track to display variants for all varieties within a region. The JBrowse script with the addid codes are in separate bitbucket project.   
 
 * [Vista]([http://pipeline.lbl.gov/cgi-bin/gateway2](http://pipeline.lbl.gov/cgi-bin/gateway2)) is a comparative genomics tool with its own viewer. Use used Vista to compare the 5 reference genomes, and the results are viewable within SNP-Seek.
 
-### Embedded internal sites
 
-Some pages are generated using Java Server Pages (JSP) and embedded as IFrame to the ZK pages. The reason is that these pages extensively use javascript libraries that may conflict with ZK, which itself is in javascript. This includes:
-
-- /jsp/phylotreeGermplasm.jsp		Phylogenetic tree viewer
-- /jsp/jsav.jsp						Multiple alignment viewer
 
 
 ### Get started with development

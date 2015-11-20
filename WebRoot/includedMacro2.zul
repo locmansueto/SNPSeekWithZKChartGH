@@ -1,0 +1,10 @@
+<groupbox id="gb" width="200px" height="200px"  style="border-color:white"  > <!--  mold="3d" -->
+	<style>
+	    .desc { color:green;font-weight:bold;font-family:arial;font-size:20px; } 
+	    .pic { width:160px; height:200px; }
+	    .details { color:grey;font-weight:bold;font-family:arial;font-size:12px } 
+	    
+	</style>
+    <button image="${arg.img}" width="200px" height="200px" href="${arg.href}" style="border-color:white"/>
+	
+</groupbox>

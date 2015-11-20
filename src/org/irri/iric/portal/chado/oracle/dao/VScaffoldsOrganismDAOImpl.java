@@ -414,9 +414,9 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 	@Override
 	public Long getScaffoldLength(String scaffold, String organism) {
 		// TODO Auto-generated method stub
-		AppContext.debug("scafold=" + scaffold + ", organism=" + organism);
+		//AppContext.debug("scafold=" + scaffold + ", organism=" + organism);
 		
-		Query query = createNamedQuery("findVScaffoldsOrganismByUniquenameCommonName", -1, -1, scaffold, organism);
+		Query query = createNamedQuery("findVScaffoldsOrganismByNameCommonName", -1, -1, scaffold, organism);
 		return ((VScaffoldsOrganism)query.getResultList().get(0)).getSeqlen().longValue();
 	}
 
@@ -432,10 +432,38 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 	public Long getScaffoldLength(String scaffold, BigDecimal organism) {
 		// TODO Auto-generated method stub
 		
-		AppContext.debug("scafold=" + scaffold + ", organism=" + organism);
+		//AppContext.debug("scafold=" + scaffold + ", organism=" + organism);
 		
-		Query query = createNamedQuery("findVScaffoldsOrganismByUniquenameOrganismId", -1, -1, scaffold, organism);
+		Query query = createNamedQuery("findVScaffoldsOrganismByNameOrganismId", -1, -1, scaffold, organism);
 		return ((VScaffoldsOrganism)query.getResultList().get(0)).getSeqlen().longValue();
+	}
+
+	
+	
+	
+	@Override
+	public Scaffold getScaffold(String scaffold, BigDecimal organism) {
+		// TODO Auto-generated method stub
+
+		Query query = createNamedQuery("findVScaffoldsOrganismByNameOrganismId", -1, -1, scaffold, organism);
+		List result=query.getResultList();
+		if(result.size()==1)
+			return (Scaffold)result.get(0);
+		else if(result.size()==0)
+			return null;
+		else throw new RuntimeException("findVScaffoldsOrganismByNameOrganismId " +  scaffold + " " +  organism + " size=" + result.size());
+	}
+
+	@Override
+	public Scaffold getScaffold(String scaffold, String organism) {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVScaffoldsOrganismByNameCommonName", -1, -1, scaffold, organism);
+		List result=query.getResultList();
+		if(result.size()==1)
+			return (Scaffold)result.get(0);
+		else if(result.size()==0)
+			return null;
+		else throw new RuntimeException("findVScaffoldsOrganismByNameCommonName " +  scaffold + " " +  organism + " size=" + result.size());
 	}
 	
 	

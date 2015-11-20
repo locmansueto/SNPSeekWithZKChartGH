@@ -48,63 +48,26 @@ public class AppContext {
 	
 	private static ApplicationContext ctx;
 
+	static enum WEBSERVER { LOCALHOST, AWS, AWSDEV, VMIRRI, POLLUX, ASTI };
+	static enum COMPILETYPE { PROD, DEV, TEST};
+	
 	/**
 	 * random number generator 
 	 */
 	private static final java.util.Random  rand = new   java.util.Random();
 	
 	
-	//static String suffixDAOBean = "Postges";
-	static String suffixDAOBean = "";
-	
-	//*******  TARGET WEBSERVER
-	/**
-	 * is Amazon Web Service compile?
-	 */
-	static boolean isAWS = false;
-	static boolean isAWSdev = false;
+	// set target webserver and compile type
+	static WEBSERVER webserver =  AppContext.WEBSERVER.LOCALHOST;
+	static COMPILETYPE compiletype =  AppContext.COMPILETYPE.PROD;
+
 	
 	/**
-	 * is IRRI-VM machine 172.29.4.26
-	 */
-	static boolean isVMIRRI = false;
-	
-	/**
-	 * is Pollux 172.29.4.215
-	 */
-	static boolean isPollux = false;
-	
-	/**
-	 * is ASTI
-	 */
-	static boolean isASTI = false;
-	
-	/**
-	 *  is localhost
-	 */
-	static boolean isLocalhost = true;
-	
-	/**
-	 * is sun using limited (uploaded for sharing) data
+	 * is using limited (uploaded for sharing) data
+	 * Source code and data downloaded from Bitbucket repository should set this to true
 	 */
 	static boolean isSharedData = true;
-
 	
-	
-	
-	
-	//******* COMPILATION TYPE
-	/**
-	 * is development version
-	 */
-	static boolean isDev =  false;
-	
-	/**
-	 * is test version
-	 */
-	static boolean isTest = false;
-
-
 	
 	/**
 	 * config from XML file has been loaded
@@ -161,12 +124,12 @@ public class AppContext {
     	//else if(isAWSdev())
     		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
     	//	return "/usr/share/apache-tomcat-7.0.55/webapps/" + getHostDirectory() + "/tmp/";
-    	else  if(isVMIRRI)
+    	else  if(isVMIRRI())
     		// vm-iric-portal
     		return "/opt/tomcat7/webapps/temp/";
-    	else if(isLocalhost)
+    	else if(isLocalhost())
     		return "E:/MyEclipse for Spring 2014/plugins/com.genuitec.eclipse.easie.tomcat7.myeclipse_11.5.0.me201310302042/tomcat/bin/temp/";
-    	else if(isPollux)
+    	else if(isPollux())
     		return  "/usr/share/apache-tomcat-7.0.42/webapps/temp/";
     	
     	return "/usr/share/apache-tomcat/webapps/temp/";
@@ -241,7 +204,9 @@ public class AppContext {
      * @return
      */
     public static String getJbrowseDir() {
-    	return "jbrowse-dev2";
+    	if(isUsingsharedData())
+    		return "jbrowse";
+    	else return "jbrowse-dev2";
     }
     
     /**
@@ -343,13 +308,16 @@ public class AppContext {
     	return suffixDAOBean;
     }
     
+	//static String suffixDAOBean = "Postges";
+	static String suffixDAOBean = "";
+
 
     /**
      * Launch in AWS
      * @return
      */
     public static boolean isAWS() {
-    	return isAWS;
+    	return webserver==AppContext.WEBSERVER.AWS;
     }
     
     /**
@@ -357,7 +325,7 @@ public class AppContext {
      * @return
      */
 	public static boolean isAWSdev() {
-		return isAWSdev;
+		return webserver==AppContext.WEBSERVER.AWSDEV;
 	}
 	
     /**
@@ -365,7 +333,7 @@ public class AppContext {
      * @return
      */
 	public static boolean isVMIRRI() {
-		return isVMIRRI;
+		return webserver==AppContext.WEBSERVER.VMIRRI;
 	}
 	
     /**
@@ -373,7 +341,7 @@ public class AppContext {
      * @return
      */
 	public static boolean isPollux() {
-		return isPollux;
+		return webserver==AppContext.WEBSERVER.POLLUX;
 	}
 	
 	/**
@@ -381,7 +349,7 @@ public class AppContext {
 	 * @return
 	 */
 	public static boolean isASTI() {
-		return isASTI;
+		return webserver==AppContext.WEBSERVER.ASTI;
 	}
 	
 	/**
@@ -389,14 +357,14 @@ public class AppContext {
 	 * @return
 	 */
 	public static boolean isLocalhost() {
-		return isLocalhost;
+		return webserver==AppContext.WEBSERVER.LOCALHOST;
 	}
 	
 	/**
 	 * is development version
 	 */
 	public static boolean isDev() {
-		return isDev;
+		return compiletype==AppContext.COMPILETYPE.DEV;
 	}
 
 	/**
@@ -404,7 +372,7 @@ public class AppContext {
 	 * @return
 	 */
 	public static boolean isTest() {
-		return isTest;
+		return compiletype==AppContext.COMPILETYPE.TEST;
 	}
     
 
@@ -1132,6 +1100,51 @@ public static Collection convertRegion2SnpfeatureidLongcol(Integer chr, Collecti
 }
 
 //*************  PAST CODES RETAINED
+
+
+
+
+///**
+// * is Amazon Web Service compile?
+// */
+//static boolean isAWS = false;
+//static boolean isAWSdev = false;
+//
+///**
+// * is IRRI-VM machine 172.29.4.26
+// */
+//static boolean isVMIRRI = false;
+//
+///**
+// * is Pollux 172.29.4.215
+// */
+//static boolean isPollux = false;
+//
+///**
+// * is ASTI
+// */
+//static boolean isASTI = false;
+//
+///**
+// *  is localhost
+// */
+//static boolean isLocalhost = true;
+//
+
+
+
+////******* COMPILATION TYPE
+///**
+// * is development version
+// */
+//static boolean isDev =  false;
+//
+///**
+// * is test version
+// */
+//static boolean isTest = false;
+
+
 //
 //public static void sentHttpPostRequest(String url, String args) throws IOException {
 //	
