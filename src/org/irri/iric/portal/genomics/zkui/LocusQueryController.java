@@ -117,6 +117,9 @@ public class LocusQueryController extends SelectorComposer<Window> {
 	
 	@Wire
 	private Listbox listboxMyLocusList;
+	@Wire
+	private Intbox intboxPlusMinusBP;
+	
 	
 	@Wire
 	private Button searchGenefunctionButton;
@@ -682,7 +685,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 				locusresult = genomics.getLociByContigPositions(contigname[0].trim() ,
 						colPos, 
 						this.listboxOrganism.getSelectedItem().getLabel(), 
-						(String)this.listboxAnnotation.getSelectedItem().getValue());
+						(String)this.listboxAnnotation.getSelectedItem().getValue(),  intboxPlusMinusBP.getValue() );
 			gridLocus.setRowRenderer(new LocusGridRenderer());
 			gridLocus.setModel( new SimpleListModel( locusresult ));
 			

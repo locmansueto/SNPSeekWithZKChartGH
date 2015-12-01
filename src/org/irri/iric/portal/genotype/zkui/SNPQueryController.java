@@ -643,6 +643,8 @@ public  void queryVariants()    {
 	    tabMSA.setVisible(false);
 	    tabPhylo.setVisible(false);
 	    tabJBrowsePhylo.setVisible(false);
+	    tabVistaNPB.setVisible(false);
+	    tabVistaRev.setVisible(false);
 	
 	    
 		gfffile=null;
@@ -1172,6 +1174,9 @@ public  void queryVariants()    {
 					allelefreqlines=null;
 					calculateAlleleFrequencies();
 					hboxDownload.setVisible(true);
+					
+					tabVistaNPB.setVisible(true);
+					//tabVistaRev.setVisible(true);
 				}
 				
 				divTablePanel.setVisible(true);
@@ -5127,9 +5132,9 @@ public void onclickDownloadFasta() {
 			
 			if(!AppContext.isIRRILAN()) {
 				
-				tabVista.setVisible(false);
-				tabVistaRev.setVisible(false);
-				tabVistaNPB.setVisible(false);
+				//tabVista.setVisible(false);
+				//tabVistaRev.setVisible(false);
+				//tabVistaNPB.setVisible(false);
 				return;
 			}
 			
@@ -5168,14 +5173,15 @@ public void onclickDownloadFasta() {
 				
 				//http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=21641-znnYkRUW#&base=4143&run=21641-znnYkRUW&pos=chr09:1-100000&genes=user&indx=0&cutoff=50
 				
-				this.tabVista.setLabel("Compare " + org + " vs. Nipponbare");
+				this.tabVistaNPB.setLabel("Compare " + org + " vs. Nipponbare");
 				this.tabVistaRev.setLabel( "Compare Nipponbare vs. " + org );
 				if(vistaurl!=null) {
-					tabVista.setVisible(true);
-					tabVistaRev.setVisible(true);
+					//tabVista.setVisible(true);
+					//tabVistaRev.setVisible(true);
+					tabVistaNPB.setVisible(true);
 				}
 
-				tabVistaNPB.setVisible(false);
+				
 					
 			}
 			else {

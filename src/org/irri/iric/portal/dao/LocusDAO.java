@@ -33,8 +33,8 @@ public interface LocusDAO {
 	 * @param organism
 	 * @return
 	 */
-	public List getLocusByContigPositions(String contig, Collection posset, String organism);
-	public List getLocusByContigPositions(String contig, Collection posset, String organism, String genemodel);
+	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus);
+	public List getLocusByContigPositions(String contig, Collection posset, String organism, String genemodel, Integer plusminus);
 	
 	/**
 	 * Get loci with description

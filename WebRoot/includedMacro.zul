@@ -1,4 +1,4 @@
-<groupbox id="gb" width="230px" height="300px"  style="border-color:white"  > <!--  mold="3d" -->
+<groupbox id="gb" width="250px" height="300px"  style="border-color:white"  > <!--  mold="3d" -->
 	<style>
 	    .desc { color:green;font-weight:bold;font-family:arial;font-size:20px; } 
 	    .pic { width:80px; height:80px; }

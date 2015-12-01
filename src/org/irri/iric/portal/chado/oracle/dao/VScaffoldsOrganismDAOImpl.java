@@ -163,7 +163,7 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 	 *
 	 */
 	@Transactional
-	public VScaffoldsOrganism findVScaffoldsOrganismByFeatureId(Integer featureId) throws DataAccessException {
+	public VScaffoldsOrganism findVScaffoldsOrganismByFeatureId(BigDecimal featureId) throws DataAccessException {
 
 		return findVScaffoldsOrganismByFeatureId(featureId, -1, -1);
 	}
@@ -174,7 +174,7 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 	 */
 
 	@Transactional
-	public VScaffoldsOrganism findVScaffoldsOrganismByFeatureId(Integer featureId, int startResult, int maxRows) throws DataAccessException {
+	public VScaffoldsOrganism findVScaffoldsOrganismByFeatureId(BigDecimal featureId, int startResult, int maxRows) throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVScaffoldsOrganismByFeatureId", startResult, maxRows, featureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VScaffoldsOrganism) query.getSingleResult();
@@ -232,7 +232,7 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 	 *
 	 */
 	@Transactional
-	public VScaffoldsOrganism findVScaffoldsOrganismByPrimaryKey(Integer featureId) throws DataAccessException {
+	public VScaffoldsOrganism findVScaffoldsOrganismByPrimaryKey(BigDecimal featureId) throws DataAccessException {
 
 		return findVScaffoldsOrganismByPrimaryKey(featureId, -1, -1);
 	}
@@ -243,7 +243,7 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 	 */
 
 	@Transactional
-	public VScaffoldsOrganism findVScaffoldsOrganismByPrimaryKey(Integer featureId, int startResult, int maxRows) throws DataAccessException {
+	public VScaffoldsOrganism findVScaffoldsOrganismByPrimaryKey(BigDecimal featureId, int startResult, int maxRows) throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVScaffoldsOrganismByPrimaryKey", startResult, maxRows, featureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VScaffoldsOrganism) query.getSingleResult();
@@ -415,7 +415,10 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 	public Long getScaffoldLength(String scaffold, String organism) {
 		// TODO Auto-generated method stub
 		//AppContext.debug("scafold=" + scaffold + ", organism=" + organism);
-		
+		if(organism.equals(AppContext.getDefaultOrganism())) {
+			scaffold=scaffold.replace("r0","r");
+		}
+
 		Query query = createNamedQuery("findVScaffoldsOrganismByNameCommonName", -1, -1, scaffold, organism);
 		return ((VScaffoldsOrganism)query.getResultList().get(0)).getSeqlen().longValue();
 	}
@@ -432,7 +435,11 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 	public Long getScaffoldLength(String scaffold, BigDecimal organism) {
 		// TODO Auto-generated method stub
 		
-		//AppContext.debug("scafold=" + scaffold + ", organism=" + organism);
+		AppContext.debug("scafold=" + scaffold + ", organism=" + organism);
+		
+		if(organism.equals(BigDecimal.valueOf(9))) {
+			scaffold=scaffold.replace("r0","r");
+		}
 		
 		Query query = createNamedQuery("findVScaffoldsOrganismByNameOrganismId", -1, -1, scaffold, organism);
 		return ((VScaffoldsOrganism)query.getResultList().get(0)).getSeqlen().longValue();
@@ -445,6 +452,11 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 	public Scaffold getScaffold(String scaffold, BigDecimal organism) {
 		// TODO Auto-generated method stub
 
+		if(organism.equals(BigDecimal.valueOf(9))) {
+			scaffold=scaffold.replace("r0","r");
+		}
+
+		
 		Query query = createNamedQuery("findVScaffoldsOrganismByNameOrganismId", -1, -1, scaffold, organism);
 		List result=query.getResultList();
 		if(result.size()==1)
@@ -457,6 +469,12 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 	@Override
 	public Scaffold getScaffold(String scaffold, String organism) {
 		// TODO Auto-generated method stub
+		
+		if(organism.equals(AppContext.getDefaultOrganism())) {
+			scaffold=scaffold.replace("r0","r");
+		}
+
+		
 		Query query = createNamedQuery("findVScaffoldsOrganismByNameCommonName", -1, -1, scaffold, organism);
 		List result=query.getResultList();
 		if(result.size()==1)
@@ -464,6 +482,12 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 		else if(result.size()==0)
 			return null;
 		else throw new RuntimeException("findVScaffoldsOrganismByNameCommonName " +  scaffold + " " +  organism + " size=" + result.size());
+	}
+
+	@Override
+	public Scaffold getScaffold(BigDecimal scaffoldId) {
+		// TODO Auto-generated method stub
+		return  findVScaffoldsOrganismByFeatureId( scaffoldId);
 	}
 	
 	

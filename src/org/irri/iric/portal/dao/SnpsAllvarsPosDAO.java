@@ -19,10 +19,15 @@ public interface SnpsAllvarsPosDAO {
 
 	public static BigDecimal TYPE_3KCORESNP_HDF5_V2 = new BigDecimal(6);
 	public static BigDecimal TYPE_3KALLSNP_HDF5_V2 = new BigDecimal(5);
-
+	public static BigDecimal TYPE_3K9311SNP_HDF5_V2 = new BigDecimal(8);
+	public static BigDecimal TYPE_3KIR64SNP_HDF5_V2 = new BigDecimal(9);
+	public static BigDecimal TYPE_3KKASSALATHSNP_HDF5_V2 = new BigDecimal(10);
+	public static BigDecimal TYPE_3KDJ123SNP_HDF5_V2 = new BigDecimal(11);
 	
 	public static BigDecimal TYPE_3KALLINDEL_V2 = new BigDecimal(7);
 	public static BigDecimal TYPE_3KALLINDEL_V1 = new BigDecimal(8);
+
+
 	
 	public static String DATASET_SNPINDELV1="SNP v1";
 	public static String DATASET_SNPINDELV2="SNP v2";

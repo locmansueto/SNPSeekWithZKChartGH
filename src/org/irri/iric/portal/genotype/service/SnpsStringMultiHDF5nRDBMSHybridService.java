@@ -45,8 +45,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.zkoss.zul.Messagebox;
 
-@Service("SnpsStringServiceOld")
-public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
+@Service("SnpsStringService")
+public class SnpsStringMultiHDF5nRDBMSHybridService implements VariantStringService {
 
 	
 	@Autowired
@@ -301,7 +301,11 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 		
 		
 			// query variants
-			SNPsStringData snpstrdata = getSNPsStringData(params, colVarids,  chr,  start,  end,  setPositions,  colLocus); 
+			SNPsStringData snpstrdata = null;
+			if(params.getOrganism().equals(AppContext.getDefaultOrganism()))
+				snpstrdata=getSNPsStringData(params, colVarids,  chr,  start,  end,  setPositions,  colLocus);
+			else snpstrdata=getSNPsStringDataOtherRefs(params, colVarids,  chr,  start,  end,  setPositions,  colLocus);
+			
 			if(snpstrdata==null)  {
 				throw new RuntimeException("getSNPsString:  snpstrdata==null");
 			}
@@ -922,6 +926,519 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 	}
 	
 
+	
+
+	/**
+	 * query SNPsStringData for other (not NB) reference genomes
+	 * @param params
+	 * @param colVarids
+	 * @param chr
+	 * @param start
+	 * @param end
+	 * @param setPositions
+	 * @param colLocus
+	 * @return
+	 */
+	private SNPsStringData getSNPsStringDataOtherRefs(GenotypeQueryParams params, Collection colVarids, String chr, BigDecimal start, BigDecimal end, Collection setPositions, Collection colLocus) { //, boolean exactMismatch, int firstRow, int maxRows) {
+		// TODO Auto-generated method stub
+
+		snpstringallvarsposDAO = (SnpsAllvarsPosDAO)AppContext.checkBean(snpstringallvarsposDAO, "VSnpRefposindexDAO") ;
+		
+		SnpsStringDAO snpstrSnpsAllele1AllvarsDAO=null;
+		SnpsStringDAO snpstrSnpsAllele2AllvarsDAO=null;
+		BigDecimal snptype=null; 
+		
+		// get SNP positions and HDF5 column index mapping
+		// depends on dataset, version, core or all
+		if(params.includeDataset(SnpsAllvarsPosDAO.DATASET_SNPINDELV1)) {
+		
+			if(params.isbCoreonly()) {
+				snpstrSnpsAllele1AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrCoresnpsAllele1AllvarsDAO, "H5SNPCoreAllele1DAO");
+				snpstrSnpsAllele2AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrCoresnpsAllele1AllvarsDAO, "H5SNPCoreAllele2DAO");
+				snptype=SnpsAllvarsPosDAO.TYPE_3KCORESNP;
+			} else {
+				snptype=SnpsAllvarsPosDAO.TYPE_3KALLSNP;
+				snpstrSnpsAllele1AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrAllsnpsAllele1AllvarsDAO, "H5SNPUniAllele1DAO");
+				snpstrSnpsAllele2AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrAllsnpsAllele2AllvarsDAO, "H5SNPUniAllele2DAO");
+			}
+		} else if(params.includeDataset(SnpsAllvarsPosDAO.DATASET_SNPINDELV2)) {
+			if(params.isbCoreonly()) {
+				snpstrSnpsAllele1AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrCoresnpsAllele1AllvarsDAO, "H5SNPCoreAllele1V2DAO");
+				snpstrSnpsAllele2AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrCoresnpsAllele1AllvarsDAO, "H5SNPCoreAllele2V2DAO");
+				snptype=SnpsAllvarsPosDAO.TYPE_3KCORESNP_HDF5_V2;
+			} else {
+				snptype=SnpsAllvarsPosDAO.TYPE_3KALLSNP_HDF5_V2;
+				snpstrSnpsAllele1AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrAllsnpsAllele1AllvarsDAO, "H5SNPUniAllele1V2DAO");
+				snpstrSnpsAllele2AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrAllsnpsAllele2AllvarsDAO, "H5SNPUniAllele2V2DAO");
+			}
+			
+		} else if(params.includeDataset(SnpsAllvarsPosDAO.DATASET_SNPINDELV2_IUPAC)) {
+			if(params.isbCoreonly()) {
+				snpstrSnpsAllele1AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrCoresnpsAllele1AllvarsDAO, "H5SNPCoreIUPACV2DAO");
+				//snpstrSnpsAllele2AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrCoresnpsAllele1AllvarsDAO, "H5SNPCoreAllele2V2DAO");
+				snptype=SnpsAllvarsPosDAO.TYPE_3KCORESNP_HDF5_V2;
+			} else {
+				snptype=SnpsAllvarsPosDAO.TYPE_3KALLSNP_HDF5_V2;
+				snpstrSnpsAllele1AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrAllsnpsAllele1AllvarsDAO, "H5SNPUniIUPACV2DAO");
+				//snpstrSnpsAllele2AllvarsDAO = (SnpsStringDAO)AppContext.checkBean( snpstrAllsnpsAllele2AllvarsDAO, "H5SNPUniAllele2V2DAO");
+			}
+			
+		}
+		    
+		if(snptype==null) throw new RuntimeException("snptype==null");
+		if(snpstrSnpsAllele1AllvarsDAO==null) throw new RuntimeException("snpstrSnpsAllele1AllvarsDAO==null");
+		
+		List<SnpsAllvarsPos> snpsposlist = null;
+		List listpos = null;
+		if(colVarids==null || colVarids.isEmpty()) {
+			if( (setPositions!=null && !setPositions.isEmpty()) ) {
+				listpos = new ArrayList();
+				listpos.addAll(new TreeSet(setPositions));
+				AppContext.resetTimer("getSNPsString start1");
+				snpsposlist  = snpstringallvarsposDAO.getSNPsInChromosome(chr.toString(),  listpos, snptype);
+			}
+			else if( (colLocus!=null && !colLocus.isEmpty()) ) {
+				AppContext.resetTimer("getSNPsString start1b");
+				snpsposlist  = snpstringallvarsposDAO.getSNPsInChromosome(chr.toString(),  colLocus, snptype);
+			}
+			else {
+				AppContext.resetTimer("getSNPsString start2");
+				snpsposlist  = snpstringallvarsposDAO.getSNPs(chr.toString(), start.intValue(), end.intValue(),   snptype, -1, -1);
+			}
+		} else {
+			if(setPositions!=null && !setPositions.isEmpty()) {
+				listpos = new ArrayList();
+				listpos.addAll(new TreeSet(setPositions));
+				AppContext.resetTimer("getSNPsString start3");
+				snpsposlist  = snpstringallvarsposDAO.getSNPsInChromosome( chr.toString(),  listpos, snptype);
+			}
+			else if(colLocus!=null && !colLocus.isEmpty()) {
+				AppContext.resetTimer("getSNPsString start3b");
+				snpsposlist  = snpstringallvarsposDAO.getSNPsInChromosome( chr.toString(),  colLocus, snptype);
+			}
+			else {
+				AppContext.resetTimer("getSNPsString start4");
+				snpsposlist  = snpstringallvarsposDAO.getSNPs(chr.toString(), start.intValue(), end.intValue(),  snptype, -1, -1);
+			}
+			
+			//AppContext.debug("colvarids=" + colVarids.toString());
+		}
+		
+		if(snpsposlist==null) throw new RuntimeException("snpsposlist==null");
+		
+		if(snpsposlist.isEmpty()) return new SNPsStringData();
+		
+
+		// get allele column indices from start to end positions
+		SnpsAllvarsPos startpos =  snpsposlist.get(0);
+		SnpsAllvarsPos endpos =  snpsposlist.get( snpsposlist.size()-1 );
+
+		String strRef=null;
+		
+		int refLength=-1;
+		
+		AppContext.debug( snpsposlist.size() + " snpposlist, pos between " +startpos.getPos() +  "-" + endpos.getPos() + "  index between " + startpos.getAlleleIndex() + "-" + endpos.getAlleleIndex());
+		
+		
+		// generate column indexes to query HDF5
+		
+			int indxs[] = new int[snpsposlist.size()];
+			List<int[]> listStartStop = new ArrayList();
+			int indxscount = 0;
+			Map<BigDecimal, Position> mapSnpid2Pos = new HashMap();
+			
+			Iterator<SnpsAllvarsPos> itSnppos =snpsposlist.iterator();
+			StringBuffer buffRef = new StringBuffer();
+			
+			int previdx=-100;
+			int laststart=-100;
+			while(itSnppos.hasNext()) {
+				SnpsAllvarsPos snppos = itSnppos.next(); 
+				buffRef.append( snppos.getRefnuc());
+				indxs[indxscount] =  snppos.getAlleleIndex().intValue();
+				
+				mapSnpid2Pos.put( snppos.getSnpFeatureId() , snppos);
+
+				// merge adjacent indexes into a range, for locus list
+				if(indxs[indxscount]==(previdx+1)) {
+					previdx=indxs[indxscount];
+				} else {
+					if(laststart>=0 && previdx>=0) {
+						listStartStop.add(new int[]{laststart, previdx});
+					}
+					laststart=indxs[indxscount];
+					previdx=indxs[indxscount];
+				}
+				indxscount++;
+			}
+			listStartStop.add(new int[]{laststart, previdx});
+			
+			int intStartStopIdx[][] = new int[listStartStop.size()][2];
+			Iterator<int[]> itStartStop = listStartStop.iterator();
+			int sscount=0;
+			while(itStartStop.hasNext()) {
+				intStartStopIdx[sscount] = itStartStop.next();
+				AppContext.debug("idxrange " + intStartStopIdx[sscount][0] + "-" + intStartStopIdx[sscount][1]);
+				sscount++;
+			}
+			
+			strRef = buffRef.toString();
+			refLength = strRef.length();
+			
+			snpsnonsynDAO = (SnpsNonsynAllvarsDAO) AppContext.checkBean(snpsnonsynDAO, "VSnpNonsynallelePosDAO");
+			snpssynDAO = (SnpsSynAllvarsDAO) AppContext.checkBean(snpssynDAO, "VSnpSynalleleDAO");
+			//snpsinexonDAO = (SnpsInExonDAO) AppContext.checkBean(snpsinexonDAO, "SnpsInExonDAO");
+			//snpsheteroDAO = (SnpsHeteroAllvarsDAO)AppContext.checkBean(snpsheteroDAO, "SnpsHeteroAllvarsDAO");
+
+			
+			// get snpstring for each varieties
+			// get allele2 for heterozygous varieties
+			Map  mapVarid2Snpsstr = null;
+			Map mapVarid2Snpsstr_allele2 = null;
+		
+			//Set heteroSnps = null;
+			Set nonsynAllele = null;
+			Set synAllele = null;
+			//Set inexonSnps = null;
+			
+			// using hdf5
+			if(  (setPositions!=null && !setPositions.isEmpty())  || (colLocus!=null && !colLocus.isEmpty()) ) {
+				
+				// position list or locus list
+				if(setPositions!=null && !setPositions.isEmpty()) {
+					if(colVarids!=null && !colVarids.isEmpty() ) {
+						AppContext.resetTimer("using readSNPString1 start");
+						mapVarid2Snpsstr = snpstrSnpsAllele1AllvarsDAO.readSNPString((Set)colVarids, chr, indxs);
+						if(snpstrSnpsAllele2AllvarsDAO!=null) mapVarid2Snpsstr_allele2= snpstrSnpsAllele2AllvarsDAO.readSNPString((Set)colVarids, chr,  indxs );
+						AppContext.resetTimer("using readSNPString1 end");
+					}
+					else {
+						AppContext.resetTimer("using readSNPString2 start");
+						mapVarid2Snpsstr = snpstrSnpsAllele1AllvarsDAO.readSNPString(chr,  indxs);
+						if(snpstrSnpsAllele2AllvarsDAO!=null) mapVarid2Snpsstr_allele2=  snpstrSnpsAllele2AllvarsDAO.readSNPString(chr,  indxs);
+						AppContext.resetTimer("using readSNPString2 end");
+					}
+				} else if(colLocus!=null && !colLocus.isEmpty()) {
+					if(colVarids!=null && !colVarids.isEmpty() ) {
+						AppContext.resetTimer("using readSNPString1b start");
+						mapVarid2Snpsstr = snpstrSnpsAllele1AllvarsDAO.readSNPString((Set)colVarids, chr, intStartStopIdx);
+						if(snpstrSnpsAllele2AllvarsDAO!=null) mapVarid2Snpsstr_allele2= snpstrSnpsAllele2AllvarsDAO.readSNPString((Set)colVarids, chr,  intStartStopIdx );
+						AppContext.resetTimer("using readSNPString1b end");
+					}
+					else {
+						AppContext.resetTimer("using readSNPString2b start");
+						mapVarid2Snpsstr = snpstrSnpsAllele1AllvarsDAO.readSNPString(chr,  intStartStopIdx);
+						if(snpstrSnpsAllele2AllvarsDAO!=null) mapVarid2Snpsstr_allele2=  snpstrSnpsAllele2AllvarsDAO.readSNPString(chr,  intStartStopIdx);
+						AppContext.resetTimer("using readSNPString2b end");
+					}
+				}
+				
+				if(setPositions!=null && !setPositions.isEmpty()) {
+					nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleByChrPosIn(chr, listpos, snptype);
+					synAllele = snpssynDAO.findSnpSynAlleleByChrPosIn(chr, listpos, snptype);
+					//nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleBySnpfeatureidIn(chr, listpos);
+					//inexonSnps = snpsinexonDAO.getSnps(chr, listpos);
+				} 
+				else if(colLocus!=null && !colLocus.isEmpty()) {
+					nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleByChrPosIn(chr, colLocus, snptype);
+					//inexonSnps = snpsinexonDAO.getSnps(chr, colLocus);
+					synAllele = snpssynDAO.findSnpSynAlleleByChrPosIn(chr, colLocus, snptype);
+				} 
+				AppContext.resetTimer("to read nonsynonymous allele, inexon  from  database..");
+			}
+			else {
+				if(colVarids!=null && !colVarids.isEmpty() )
+				{
+					AppContext.resetTimer("using readSNPString3 start");
+						mapVarid2Snpsstr = snpstrSnpsAllele1AllvarsDAO.readSNPString((Set)colVarids, chr, startpos.getAlleleIndex().intValue(), endpos.getAlleleIndex().intValue());
+						if(snpstrSnpsAllele2AllvarsDAO!=null) mapVarid2Snpsstr_allele2 = snpstrSnpsAllele2AllvarsDAO.readSNPString((Set)colVarids, chr, startpos.getAlleleIndex().intValue(), endpos.getAlleleIndex().intValue());
+					AppContext.resetTimer("using readSNPString3 end");
+				}
+				else {
+					AppContext.resetTimer("using readSNPString4 start");
+						mapVarid2Snpsstr = snpstrSnpsAllele1AllvarsDAO.readSNPString(chr,  startpos.getAlleleIndex().intValue(), endpos.getAlleleIndex().intValue());
+						if(snpstrSnpsAllele2AllvarsDAO!=null) mapVarid2Snpsstr_allele2 = snpstrSnpsAllele2AllvarsDAO.readSNPString(chr,  startpos.getAlleleIndex().intValue(), endpos.getAlleleIndex().intValue());
+				}
+				
+				AppContext.resetTimer("to read allele2 database..");
+				//nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleByChrPosBetween(chr, start.intValue(), end.intValue());
+				//nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleBySnpfeatureidBetween(startpos.getSnpFeatureId(), endpos.getSnpFeatureId(), snptype);
+				nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleByChrPosBetween(chr, startpos.getPos().intValue(), endpos.getPos().intValue(), snptype);
+				synAllele = snpssynDAO.findSnpSynAlleleByChrPosBetween(chr, startpos.getPos().intValue(), endpos.getPos().intValue(), snptype);
+				//inexonSnps = snpsinexonDAO.getSnps(chr,start.intValue(), end.intValue()); 
+				AppContext.resetTimer("to read nonsynonymous allele, inexon  from  database..");
+			}
+
+			
+			
+			Map<BigDecimal,Map> mapVarid2SnpsAllele2str = new HashMap();
+			
+			if(mapVarid2Snpsstr_allele2!=null) {
+				
+				if(params.includeDataset(SnpsAllvarsPosDAO.DATASET_SNPINDELV2_IUPAC)) throw new RuntimeException("Unexpected case mapVarid2Snpsstr_allele2!=null for IUPAC");
+				
+				Iterator itVarid = mapVarid2Snpsstr_allele2.keySet().iterator();
+				while(itVarid.hasNext()) {
+					BigDecimal varid= (BigDecimal)itVarid.next();
+					
+					if(params.includeDataset(SnpsAllvarsPosDAO.DATASET_SNPINDELV1)) {					
+					
+						String allele2str = (String)mapVarid2Snpsstr_allele2.get( varid );
+						for(int iStr=0; iStr<allele2str.length(); iStr++) {
+							char allele2i =allele2str.charAt(iStr);
+							if(allele2i!='*' && allele2i!='0' && allele2i!='.' && allele2i!=' ') {
+						
+								Map mapTableidx2Nuc = mapVarid2SnpsAllele2str.get( varid );
+								if(mapTableidx2Nuc==null) {
+									mapTableidx2Nuc = new HashMap();
+									mapVarid2SnpsAllele2str.put(varid , mapTableidx2Nuc);
+								}
+								mapTableidx2Nuc.put( iStr, allele2i);
+							}
+						}
+					
+					} else
+					if(params.includeDataset(SnpsAllvarsPosDAO.DATASET_SNPINDELV2)) {					
+						// revised for SNPv2 (allele2!=0 for allele1==allele2)
+						String allele1str = (String)mapVarid2Snpsstr.get( varid );
+						String allele2str = (String)mapVarid2Snpsstr_allele2.get( varid );
+						
+						if(allele1str.length()!=allele2str.length()) throw new RuntimeException( "allele1str.length()!=allele2str.length(): " + allele1str.length() + ", " + allele2str.length());
+						
+						for(int iStr=0; iStr<allele2str.length(); iStr++) {
+							char allele2i =allele2str.charAt(iStr);
+							char allele1i =allele1str.charAt(iStr);
+							if(allele1i!='0' && allele2i!='0' && allele1i!=allele2i) {
+							//if(allele2i!='*' && allele2i!='0' && allele2i!='.' && allele2i!=' ') {
+						
+								Map mapTableidx2Nuc = mapVarid2SnpsAllele2str.get( varid );
+								if(mapTableidx2Nuc==null) {
+									mapTableidx2Nuc = new HashMap();
+									mapVarid2SnpsAllele2str.put(varid , mapTableidx2Nuc);
+								}
+								//mapTableidx2Nuc.put( iStr, allele2i);
+								
+								mapTableidx2Nuc.put( snpsposlist.get(iStr), allele2i);
+							}
+						}
+					}
+				}
+			} else if (mapVarid2Snpsstr_allele2==null && params.includeDataset(SnpsAllvarsPosDAO.DATASET_SNPINDELV2_IUPAC)) {
+				
+				Map mapVarid2SnpsstrSplitIUPAC=new LinkedHashMap();
+				mapVarid2Snpsstr_allele2=new LinkedHashMap();
+				
+				Iterator itVarid = mapVarid2Snpsstr.keySet().iterator();
+				while(itVarid.hasNext()) {
+					BigDecimal varid= (BigDecimal)itVarid.next();
+
+					//if(params.includeDataset(SnpsAllvarsPosDAO.DATASET_SNPINDELV2)) {					
+						// revised for SNPv2 (allele2!=0 for allele1==allele2)
+						String allele1str = (String)mapVarid2Snpsstr.get( varid );
+						
+						//String allele2str = (String)mapVarid2Snpsstr_allele2.get( varid );
+						//if(allele1str.length()!=allele2str.length()) throw new RuntimeException( "allele1str.length()!=allele2str.length(): " + allele1str.length() + ", " + allele2str.length());
+						
+						StringBuffer buffNewStr=new StringBuffer();
+						StringBuffer buffNewStr2=new StringBuffer();
+						for(int iStr=0; iStr<allele1str.length(); iStr++) {
+							//char allele2i =allele2str.charAt(iStr);
+							char allele1i =allele1str.charAt(iStr);
+							String alleles12= AppContext.getNucsFromIUPAC(allele1i);
+							if(alleles12.length()==2) {
+								Map mapTableidx2Nuc = mapVarid2SnpsAllele2str.get( varid );
+								if(mapTableidx2Nuc==null) {
+									mapTableidx2Nuc = new HashMap();
+									mapVarid2SnpsAllele2str.put(varid , mapTableidx2Nuc);
+								}
+								mapTableidx2Nuc.put( snpsposlist.get(iStr), alleles12.charAt(1));
+								buffNewStr2.append(alleles12.charAt(1));
+							} else 
+								buffNewStr2.append(alleles12.charAt(0));
+							
+							buffNewStr.append(alleles12.charAt(0));
+						}
+						
+						mapVarid2SnpsstrSplitIUPAC.put( varid , buffNewStr.toString());
+						mapVarid2Snpsstr_allele2.put( varid , buffNewStr2.toString());
+						
+//						if(!allele1str.equals(buffNewStr.toString())) {
+//							AppContext.debug( "varid=" + varid);
+//							AppContext.debug( "alleleIUPACstr=" + allele1str);
+//							AppContext.debug( "allele1    str=" + buffNewStr);
+//							AppContext.debug( "allele2    str=" + buffNewStr2);
+//						}
+					//}
+				}
+				
+				mapVarid2Snpsstr = mapVarid2SnpsstrSplitIUPAC;
+				
+				
+			} // else throw new RuntimeException("heteroSnps==null and mapVarid2Snpsstr_allele2==null ... no allele2 data");
+			
+			
+			// generate pos2alleles
+
+			Map<Position, Set<Character>> mapPos2Allele=new TreeMap();
+			Map<Position, Set<Character>> mapPos2AlleleHetero=new TreeMap();
+			
+			Iterator<BigDecimal> itVar=mapVarid2Snpsstr.keySet().iterator();
+			while(itVar.hasNext()) {
+				BigDecimal varid=itVar.next();
+				String allele1str = (String)mapVarid2Snpsstr.get( varid );
+				String allele2str = (String)mapVarid2Snpsstr_allele2.get( varid );
+				itSnppos =snpsposlist.iterator();
+				int icount=0;
+				while(itSnppos.hasNext()) {
+					SnpsAllvarsPos snppos=itSnppos.next();
+					
+					Set setAlleles=mapPos2Allele.get(snppos);
+					if(setAlleles==null) {
+						setAlleles=new HashSet();
+						mapPos2Allele.put(snppos, setAlleles);
+					}
+					// hdf5 format v2
+					char chari1=allele1str.charAt(icount);
+					if(chari1!='0' && chari1!='?') setAlleles.add(chari1);
+					char chari2=allele2str.charAt(icount);
+					if(chari2!='0' && chari2!='?' ) setAlleles.add(chari2);
+					
+					if(chari1!=chari2) {
+						if(chari1!=snppos.getRefcall().charAt(0)) {
+							Set allele2= mapPos2AlleleHetero.get(snppos);
+							if(allele2==null) {
+								allele2=new HashSet();
+								mapPos2AlleleHetero.put(snppos,  allele2);
+							}
+							allele2.add(chari1);
+						}
+						if(chari2!=snppos.getRefcall().charAt(0)) {
+							Set allele2= mapPos2AlleleHetero.get(snppos);
+							if(allele2==null) {
+								allele2=new HashSet();
+								mapPos2AlleleHetero.put(snppos,  allele2);
+							}
+							allele2.add(chari2);
+						}
+					}
+					
+					
+					icount++;
+				}
+			}
+			
+			
+			// non-synonymous alleles for positions
+			Map<Position,Set<Character>> mapPos2NonsynAlleles = new TreeMap();
+			Map<Position,Set<Character>> mapPos2SynAlleles = new TreeMap();
+			
+			
+			Set<Position> setSnpInExonPos = new TreeSet();
+			
+			setSnpInExonPos = new TreeSet();
+			
+			Iterator<SnpsNonsynAllele> itNonsyn = nonsynAllele.iterator();
+			while(itNonsyn.hasNext()) {
+				SnpsNonsynAllele nonsynallele = itNonsyn.next();
+				
+				if(mapSnpid2Pos==null) throw new RuntimeException("mapSnpid2Pos==null");
+				if(nonsynallele==null) throw new RuntimeException("nonsynallele==null");
+				if(nonsynallele.getSnp()==null) throw new RuntimeException("nonsynallele.getSnp()==null");
+				
+				Position pos = mapSnpid2Pos.get( nonsynallele.getSnp() );
+				
+				// assuming all nonsyn are in exon
+				setSnpInExonPos.add( pos );
+				
+				Set<Character> setVarietyAlleles = mapPos2Allele.get(pos);
+				if(setVarietyAlleles==null) throw new RuntimeException("setVarietyAlleles==null");
+				if(nonsynallele.getAllele()=='\0') throw new RuntimeException("nonsynallele.getAllele()==null");
+
+				if(setVarietyAlleles.contains( nonsynallele.getAllele()) ) {
+
+					Set<Character> alleles = mapPos2NonsynAlleles.get(pos);
+					if(alleles==null) {
+						alleles = new HashSet();
+						mapPos2NonsynAlleles.put( pos , alleles);
+					}
+					alleles.add( nonsynallele.getAllele() );
+				}
+			}
+			
+			Iterator<SnpsSynAllele> itSyn = synAllele.iterator();
+			while(itSyn.hasNext()) {
+				SnpsSynAllele synallele = itSyn.next();
+				Position pos = mapSnpid2Pos.get( synallele.getSnp() );
+				
+				// assuming all syn are in exon
+				setSnpInExonPos.add( pos );
+				
+				Set<Character> setVarietyAlleles = mapPos2Allele.get(pos);
+				
+				if(setVarietyAlleles.contains( synallele.getAllele()) ) {
+					Set<Character> alleles = mapPos2SynAlleles.get(pos);
+					if(alleles==null) {
+						alleles = new HashSet();
+						mapPos2SynAlleles.put( pos , alleles);
+					}
+					alleles.add( synallele.getAllele() );
+				}
+			}
+		
+			if(nonsynAllele!=null) AppContext.debug( nonsynAllele.size() + " non-synonymous alleles, " + mapPos2NonsynAlleles.size() + " positions/idx,  " +  mapPos2NonsynAlleles.size() + "  nonsys alleles positions");
+			
+			
+			// get splice variants
+			Set setSpliceAcceptorsPos = null;
+			Set setSpliceDonorsPos = null;
+
+			Set setSpliceAcceptors= null;
+			Set setSpliceDonors= null;
+			
+			snpsspliceacceptorDAO = (SnpsSpliceAcceptorDAO)AppContext.checkBean(snpsspliceacceptorDAO, "SnpsSpliceAcceptorDAO");
+			snpssplicedonorDAO = (SnpsSpliceDonorDAO)AppContext.checkBean(snpssplicedonorDAO, "SnpsSpliceDonorDAO");
+			if(setPositions!=null && !setPositions.isEmpty()) {
+				setSpliceAcceptors = snpsspliceacceptorDAO.getSNPsIn(chr, setPositions);
+				setSpliceDonors = snpssplicedonorDAO.getSNPsIn(chr, setPositions);
+			}
+			else if(colLocus!=null && !colLocus.isEmpty()) {
+					setSpliceAcceptors = snpsspliceacceptorDAO.getSNPsIn(chr, colLocus);
+					setSpliceDonors = snpssplicedonorDAO.getSNPsIn(chr, colLocus);							
+			} else {
+				setSpliceAcceptors = snpsspliceacceptorDAO.getSNPsBetween(chr, start.intValue(), end.intValue());  
+				setSpliceDonors = snpssplicedonorDAO.getSNPsBetween(chr, start.intValue(), end.intValue());							
+			}
+			
+			setSpliceAcceptorsPos = new HashSet();
+			setSpliceDonorsPos = new HashSet();
+			Iterator<SnpsSpliceAcceptor>  itAcceptors = setSpliceAcceptors.iterator();
+			while(itAcceptors.hasNext()) {
+				SnpsSpliceAcceptor acc = itAcceptors.next();
+				setSpliceAcceptorsPos.add( acc.getPos());
+			}
+			Iterator<SnpsSpliceDonor>  itDonor = setSpliceDonors.iterator();
+			while(itDonor.hasNext()) {
+				SnpsSpliceDonor acc = itDonor.next();
+				setSpliceDonorsPos.add( acc.getPos());
+			}
+				
+			
+			if(AppContext.isLocalhost()) {
+				AppContext.debug("mapPos2NonsynAlleles " + mapPos2NonsynAlleles.size() +": " + mapPos2NonsynAlleles.toString() );
+				AppContext.debug("mapPos2SynAlleles " + mapPos2SynAlleles.size() + ": " + mapPos2SynAlleles.toString() );
+				AppContext.debug("mapPos2Allele " + mapPos2Allele.size() + ": " + mapPos2Allele.toString() );
+				AppContext.debug("mapPos2AlleleHetero " + mapPos2AlleleHetero.size() +": " + mapPos2AlleleHetero.toString() );
+				AppContext.debug("setSpliceDonorsPos " + setSpliceDonorsPos.size() +": " + setSpliceDonorsPos.toString() );
+				AppContext.debug("setSpliceAcceptorsPos " + setSpliceAcceptorsPos.size() +": " + setSpliceAcceptorsPos.toString() );
+				//AppContext.debug( nonsynAllele.toString() );
+			}
+			
+			SNPsStringData snpstrdata = new  SNPsStringData(snpsposlist,  strRef, mapVarid2Snpsstr, mapVarid2SnpsAllele2str,
+					mapPos2Allele, mapPos2NonsynAlleles, mapPos2SynAlleles, setSnpInExonPos, setSpliceDonorsPos,  setSpliceAcceptorsPos);
+			return snpstrdata;
+	}
+	
+	
 
 /**
  * Count mismatch between nucelotide sequences, based on several criteria

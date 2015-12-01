@@ -59,6 +59,7 @@ public class AppContext {
 	
 	// set target webserver and compile type
 	static WEBSERVER webserver =  AppContext.WEBSERVER.LOCALHOST;
+	//static WEBSERVER webserver =  AppContext.WEBSERVER.POLLUX;
 	static COMPILETYPE compiletype =  AppContext.COMPILETYPE.PROD;
 
 	

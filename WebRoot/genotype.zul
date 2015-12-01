@@ -359,15 +359,15 @@ function doPosition() {
 				
             	<hbox visible="false">				            
             	<label>Reference:</label>
-            	<listbox id="listboxReference" mold="select" rows="1" disabled="false"/>
+            	<listbox id="listboxReference" mold="select" rows="1" disabled="true"/>
             		<zscript><![CDATA[
 			    	    	listboxReference.setModel(new SimpleListModel(listReference));
 			    	    	listboxReference.setSelectedIndex(0);
 			   			]]></zscript>
 
             	<vbox width="10px"/>
-           		<label pre="true">Show all reference alleles</label>
-           		<checkbox id="checkboxShowAllRefAlleles" />
+           		<!--  label pre="true">Show all reference alleles</label>
+           		<checkbox id="checkboxShowAllRefAlleles" / -->
 			   			
             	<vbox width="10px"/>
             	
@@ -505,7 +505,9 @@ function doPosition() {
 				    	    	listboxPhenotype.setModel(new SimpleListModel(listPhenotype));
 				   			]]></zscript>
 						</div>
-         			
+         				<label pre="true" value="  Show all reference alleles" style="font-weight:bold;" tooltip="popupShowallrefalleles"/>
+           				<checkbox id="checkboxShowAllRefAlleles"/>
+           		
          			</hbox>
 
     				<hbox>
@@ -1264,6 +1266,13 @@ function doPosition() {
 <popup id="popupDownloadFasta" width="300px">
         <html><![CDATA[
 			Downloads the Fasta file of alternate sequence without displaying the table.
+        ]]></html>
+</popup>
+
+<popup id="popupShowallrefalleles" width="300px">
+        <html><![CDATA[
+			Show alleles from 4 other reference genomes (93-11,DJ123,IR64,Kasalath) 
+			which aligned to the queried Nipponbare region.
         ]]></html>
 </popup>
 

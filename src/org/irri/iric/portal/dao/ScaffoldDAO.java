@@ -53,4 +53,12 @@ public interface ScaffoldDAO {
 	 */
 	public Scaffold getScaffold(String scaffold, String organism);
 	
+	
+	/**
+	 * Get scaffold by scaffold id
+	 * @param scaffoldId
+	 * @return
+	 */
+	public Scaffold getScaffold(BigDecimal scaffoldId);
+	
 }

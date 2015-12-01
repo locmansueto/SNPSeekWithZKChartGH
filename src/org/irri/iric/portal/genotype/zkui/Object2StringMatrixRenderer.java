@@ -469,7 +469,7 @@ public class Object2StringMatrixRenderer implements MatrixRenderer, SNPRowRender
 			if(refnuc==null) return "";
 			 
 			if(colIndex>frozenCols && !mapPos2Refnuc.get(snppos).equals(refnuc) ) {
-			 	if(refnuc.equals("-")) refnuc="&#151;"; // "&#151;"
+			 	if(refnuc.equals("-") || refnuc.equals("")) refnuc="&#151;"; // "&#151;"
 			 	
 			 	String ttt = "<div align=\"center\" style=\"" + STYLE_MISMATCH + "\" >" +  refnuc.replace("null", "").trim()  + "</div>" ;
 			 	//String ttt = "<label  align=\"center\"  style=\"" + STYLE_MISMATCH + "\" >" +  refnuc.replace("null", "").trim()  + "</label>" ;
@@ -480,7 +480,7 @@ public class Object2StringMatrixRenderer implements MatrixRenderer, SNPRowRender
 				return	 ttt; 
 						
 		 	} else {
-				if(refnuc.equals("-")) refnuc="&#151;"; // "&#151;"
+				if(refnuc.equals("-") || refnuc.equals("")) refnuc="&#151;"; // "&#151;"
 				String ttt = "<div align=\"center\" >" + refnuc.replace("null", "").trim() + "</div>" ;
 				//String ttt = "<label align=\"center\"  >" + refnuc.replace("null", "").trim() + "</label>" ;
 				

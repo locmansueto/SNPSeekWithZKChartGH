@@ -66,13 +66,13 @@ public interface VScaffoldsOrganismDAO extends JpaDao<VScaffoldsOrganism>, Scaff
 	 * JPQL Query - findVScaffoldsOrganismByFeatureId
 	 *
 	 */
-	public VScaffoldsOrganism findVScaffoldsOrganismByFeatureId(Integer featureId) throws DataAccessException;
+	public VScaffoldsOrganism findVScaffoldsOrganismByFeatureId(BigDecimal featureId) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVScaffoldsOrganismByFeatureId
 	 *
 	 */
-	public VScaffoldsOrganism findVScaffoldsOrganismByFeatureId(Integer featureId, int startResult, int maxRows) throws DataAccessException;
+	public VScaffoldsOrganism findVScaffoldsOrganismByFeatureId(BigDecimal featureId, int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVScaffoldsOrganismByTypeContaining
@@ -102,13 +102,13 @@ public interface VScaffoldsOrganismDAO extends JpaDao<VScaffoldsOrganism>, Scaff
 	 * JPQL Query - findVScaffoldsOrganismByPrimaryKey
 	 *
 	 */
-	public VScaffoldsOrganism findVScaffoldsOrganismByPrimaryKey(Integer featureId_1) throws DataAccessException;
+	public VScaffoldsOrganism findVScaffoldsOrganismByPrimaryKey(BigDecimal featureId_1) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVScaffoldsOrganismByPrimaryKey
 	 *
 	 */
-	public VScaffoldsOrganism findVScaffoldsOrganismByPrimaryKey(Integer featureId_1, int startResult, int maxRows) throws DataAccessException;
+	public VScaffoldsOrganism findVScaffoldsOrganismByPrimaryKey(BigDecimal featureId_1, int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVScaffoldsOrganismByNameContaining

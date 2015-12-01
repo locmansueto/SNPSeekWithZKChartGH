@@ -217,13 +217,13 @@ Genotype Query Sequence
 
 ### Embedded external sites
 
-* [JBrowse]([http://jbrowse.org](http://jbrowse.org)) is a browser-based genome browser implemented in javascript. We added some scripts to display the Genotype track to display variants for all varieties within a region. The JBrowse script with the addid codes are in separate bitbucket project.   
+* [JBrowse]([http://jbrowse.org](http://jbrowse.org)) is a browser-based genome browser implemented in javascript. We added some scripts for the Genotype track to display variants for all varieties within a region. The JBrowse script with the added codes and SNP-seek data are in [here](https://s3.amazonaws.com/snp-seek/jbrowse-1.11.6-4bitbucket.tgz).   
 
-* [Vista]([http://pipeline.lbl.gov/cgi-bin/gateway2](http://pipeline.lbl.gov/cgi-bin/gateway2)) is a comparative genomics tool with its own viewer. Use used Vista to compare the 5 reference genomes, and the results are viewable within SNP-Seek.
+* [Vista]([http://pipeline.lbl.gov/cgi-bin/gateway2](http://pipeline.lbl.gov/cgi-bin/gateway2)) is a comparative genomics tool with its own viewer. We used Vista to compare the 5 reference genomes, and the results made viewable within SNP-Seek.
 
 ### Embedded internal sites
 
-Some pages are generated using Java Server Pages (JSP) and embedded as IFrame to the ZK pages. The reason is that these pages extensively use javascript libraries that may conflict with ZK, which itself is in javascript. This includes:
+Some pages are generated using Java Server Pages (JSP) and embedded as IFrame to the ZK pages. The reason is that these pages extensively use javascript libraries that may conflict with ZK, which itself is in javascript. These include:
 
 - /jsp/phylotreeGermplasm.jsp		Phylogenetic tree viewer
 - /jsp/jsav.jsp						Multiple alignment viewer
@@ -231,13 +231,21 @@ Some pages are generated using Java Server Pages (JSP) and embedded as IFrame to
 
 ### Get started with development
 
-To start a new module, we created a set of files to start with as templates. Copy these files then rename to the module name.
+To start a new module, we created a set of files to start with as templates. 
+
+
+
+1. Copy these files then rename to the module name.
 
 		blank_module.zul
 		_blank_module.zul
 
-The blank_module page uses the BlankModuleFacade defined in the  **org.irri.iric.portal.blank\_module** package. Copy then modify these into a new package using your module name. 
-
+	The blank_module page uses the BlankModuleFacade defined in the  **org.irri.iric.portal.blank\_module** package. Copy then modify these into a new package using your module name. 
+2. As a convention, create subpackages **org.irri.iric.portal.blank\_module.service**, **org.irri.iric.portal.blank\_module.dao** and  **org.irri.iric.portal.blank\_module.domain**  
+3. Implement **org.irri.iric.portal.blank\_module.BlankModuleFacade** in the service subpackage, example **org.irri.iric.portal.blank\_module.BlankModuleFacadeImpl**. Implement all data Access Objects (DAO) related to this module in the DAO subpackage. The DAO's should implement DAO interfaces defined in **org.irri.iric.portal.dao**.    
+4. Implement the Domain entities for the DAO's above in **org.irri.iric.portal.blank\_module.domain**. The domain entities should implement the interfaces defined in **org.irri.iric.portal.domain**. Register the new domain implementations in '/resources/META-INF/persistence.xml'.
+5. Write codes to implement business logic methods in **org.irri.iric.portal.blank\_module.BlankModuleFacadeImpl**. For complex modules, you can divide the module into submodules as separate Services. In the service layer codes, **PROGRAM BY INTERFACE**, that is, use only the Interfaces defined in **org.irri.iric.portal.dao** and **org.irri.iric.portal.domain** for variable declarations, instead of the concrete implementations.
+6. You may define new interfaces in **org.irri.iric.portal.dao** or **org.irri.iric.portal.domain** when necessary, but this has to be discussed with the team beforehand.        
 
 
 ### Source code repository

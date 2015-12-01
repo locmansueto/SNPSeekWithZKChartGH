@@ -1,5 +1,6 @@
 package org.irri.iric.portal.dao;
 
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.MultiReferenceLocus;
 import org.irri.iric.portal.domain.MultiReferenceConversion;
 import org.irri.iric.portal.genotype.VariantStringData;
@@ -29,11 +30,11 @@ public interface MultipleReferenceConverterDAO {
 	public MultiReferenceLocus convertLocus(MultiReferenceLocus fromLocus, String toReference, String toContig) throws Exception;
 	
 	/**
-	 * 
+	 * Converts positions in variantstringdataNPB to  origMultiReferenceLocus
 	 * @param variantstringdataNPB
 	 * @param npbMultirefLocus
-	 * @param origMultiReferenceLocus
-	 * @param toContig
+	 * @param origMultiReferenceLocus	(other reference actual query)
+	 * @param toContig		limit only to contig
 	 * @param isOtherRefs
 	 * @return
 	 * @throws Exception

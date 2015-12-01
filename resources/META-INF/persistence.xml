@@ -57,6 +57,8 @@
 				<!--  class>org.irri.iric.portal.chado.oracle.domain.VSnpNonsynAllele</class -->
 				
 				
+				<class>org.irri.iric.portal.chado.oracle.domain.VConvertposNb2allrefs</class>
+				
 				<class>org.irri.iric.portal.chado.oracle.domain.VSnpNonsynallelePos</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VSnpSynallelePos</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VSnpInExon</class>

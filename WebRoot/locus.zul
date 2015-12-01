@@ -210,6 +210,10 @@
 			        listboxMySNPList.setSelectedIndex(0);
 			    ]]></zscript>
 <vbox width="20px"/>
+<label value="+/-" />
+<intbox id="intboxPlusMinusBP" value="0" width="80px"/>
+<label value="basepairs" />
+<vbox width="20px"/>
 <button id="searchMySnpListButton" label="Search SNP List"   style="font-size:14px;font-weight:bold;color:gray;"
   width="150px" height="30px"  autodisable="self"
   />

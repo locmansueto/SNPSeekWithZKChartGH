@@ -520,6 +520,7 @@ public class Object2StringMatrixModel<Head extends  List, Row extends List, Cell
 										MultiReferencePosition multiref = mapPos2Refpos.get(snppos.getPos()); 
 										if(multiref==null) {
 											return "";
+											
 										}
 										else {
 											return multiref.getRefcall();

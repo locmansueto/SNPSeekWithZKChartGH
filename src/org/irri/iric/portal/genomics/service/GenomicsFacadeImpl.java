@@ -150,10 +150,10 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	
 	@Override
 	public List getLociByContigPositions(String contig, Collection posset,
-			String organism) {
+			String organism, Integer plusminus) {
 		// TODO Auto-generated method stub
 		locusService = (LocusService)AppContext.checkBean(locusService, "LocusService");
-		return locusService.getLocusByContigPositions( contig,  posset,  organism);
+		return locusService.getLocusByContigPositions( contig,  posset,  organism, plusminus);
 	}
 
 	@Override
@@ -251,10 +251,10 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 
 	@Override
 	public List<Locus> getLociByContigPositions(String contig, Collection colPos,
-			String org, String genemodel) {
+			String org, String genemodel, Integer plusminus) {
 		// TODO Auto-generated method stub
 		locusService = (LocusService)AppContext.checkBean(locusService, "LocusService");
-		return locusService.getLocusByContigPositions( contig,  colPos,  org, genemodel);
+		return locusService.getLocusByContigPositions( contig,  colPos,  org, genemodel, plusminus);
 	}
 	
 	

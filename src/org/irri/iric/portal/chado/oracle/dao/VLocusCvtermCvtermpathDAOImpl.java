@@ -837,7 +837,7 @@ public class VLocusCvtermCvtermpathDAOImpl extends AbstractJpaDao<VLocusCvtermCv
 
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset,
-			String organism) {
+			String organism, Integer plusminus) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -858,7 +858,7 @@ public class VLocusCvtermCvtermpathDAOImpl extends AbstractJpaDao<VLocusCvtermCv
 
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset,
-			String organism, String genemodel) {
+			String organism, String genemodel,  Integer plusminus) {
 		// TODO Auto-generated method stub
 		return null;
 	}

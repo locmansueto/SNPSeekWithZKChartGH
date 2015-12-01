@@ -56,8 +56,8 @@ public interface LocusService {
 	 * @param organism
 	 * @return
 	 */
-	public List getLocusByContigPositions(String contig, Collection posset, String organism);
-	List getLocusByContigPositions(String contig, Collection posset, String organism, String genemodel);
+	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus);
+	List getLocusByContigPositions(String contig, Collection posset, String organism, String genemodel, Integer plusminus);
 
 	/**
 	 * Get loci linked to cvterm

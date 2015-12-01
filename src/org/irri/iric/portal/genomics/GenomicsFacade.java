@@ -149,8 +149,8 @@ public interface GenomicsFacade {
 	 * @param genemodel
 	 * @return
 	 */
-	public List<Locus> getLociByContigPositions(String contig, Collection colPos, String organism, String genemodel);
-	List getLociByContigPositions(String contig, Collection posset, String organism);
+	public List<Locus> getLociByContigPositions(String contig, Collection colPos, String organism, String genemodel, Integer plusminus);
+	List getLociByContigPositions(String contig, Collection posset, String organism, Integer plusminus);
 	
 	/**
 	 * Generate FASTA

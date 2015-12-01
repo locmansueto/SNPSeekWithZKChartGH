@@ -196,7 +196,7 @@ public class LocusServiceImpl implements LocusService {
 
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset,
-			String organism, String genemodel) {
+			String organism, String genemodel, Integer plusminus) {
 		// TODO Auto-generated method stub
 		
 		locusnotesDAO = (LocusDAO)AppContext.checkBean(locusnotesDAO,"LocusNotesDAO");
@@ -207,20 +207,20 @@ public class LocusServiceImpl implements LocusService {
 			Iterator<String> itChr = mapChr2Pos.keySet().iterator();
 			while(itChr.hasNext()) {
 				String chr = itChr.next();
-				listLoci.addAll( locusnotesDAO.getLocusByContigPositions(chr, mapChr2Pos.get(chr) ,  organism, genemodel) );
+				listLoci.addAll( locusnotesDAO.getLocusByContigPositions(chr, mapChr2Pos.get(chr) ,  organism, genemodel, plusminus) );
 			}
 			return listLoci;
 			
 		} else {
 			
-			return locusnotesDAO.getLocusByContigPositions(contig, posset,  organism, genemodel);
+			return locusnotesDAO.getLocusByContigPositions(contig, posset,  organism, genemodel, plusminus);
 		}
 	}
 
 
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset,
-			String organism) {
+			String organism, Integer plusminus) {
 		// TODO Auto-generated method stub
 		return null;
 	}

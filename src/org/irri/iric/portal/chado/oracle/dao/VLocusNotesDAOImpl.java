@@ -676,11 +676,11 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 	
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset,
-			String organism, String genemodel) {
+			String organism, String genemodel, Integer plusminus) {
 		Set allset=new HashSet();
 		Set sets[] = AppContext.setSlicer(new HashSet(posset),500);
 		for(int iset=0; iset<sets.length; iset++) {
-			allset.addAll( _getLocusByContigPositions( contig,  sets[iset],  organism, genemodel));
+			allset.addAll( _getLocusByContigPositions( contig,  sets[iset],  organism, genemodel, plusminus));
 		}
 		List listall=new ArrayList();
 		listall.addAll(allset);
@@ -689,11 +689,11 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset,
-			String organism) {
+			String organism, Integer plusminus) {
 		Set allset=new HashSet();
 		Set sets[] = AppContext.setSlicer(new HashSet(posset),500);
 		for(int iset=0; iset<sets.length; iset++) {
-			allset.addAll( _getLocusByContigPositions( contig,  sets[iset],  organism));
+			allset.addAll( _getLocusByContigPositions( contig,  sets[iset],  organism, null,  plusminus));
 		}
 		List listall=new ArrayList();
 		listall.addAll(allset);
@@ -701,7 +701,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 	}
 
 	
-	private List _getLocusByContigPositions(String contig, Collection posset, String organism) {
+	private List _getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus) {
 		
 		/*
 		// TODO Auto-generated method stub
@@ -737,6 +737,13 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 		
 		listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItems");
 
+		String mpm="";
+		String ppm="";
+		if(plusminus!=null && plusminus.intValue()!=0 ) {
+			mpm= "-" + plusminus;
+			ppm= "+" + plusminus;
+		}
+		
 		StringBuffer sql = new StringBuffer();
 		sql.append(	"select distinct f.feature_id, f.name name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, dbms_lob.substr(f3.value,1000,1) notes, f.organism_id, o.common_name "
 		  + " from iric.featureloc fl,  iric.feature fsrc, iric.organism o, iric.cvterm cvtype, ");
@@ -758,8 +765,12 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 			+ " )" ;
 			*/
 		
-
-			sql.append("  and lower(fsrc.uniquename)='" + contig.toLowerCase() + "' and postable.pos between fl.fmin and fl.fmax ");
+			String cont=contig.toLowerCase();
+			if(organism.equals(AppContext.getDefaultOrganism())) {
+				cont=cont.replace("r0","r");
+			}
+		
+			sql.append("  and lower(fsrc.name)='" + cont + "' and postable.pos between (fl.fmin" + mpm + ") and (fl.fmax" + ppm + ")");
 			
 			/*
 			Iterator<String> itPoslist = AppContext.setSlicerIds(new HashSet(posset)).iterator();
@@ -782,12 +793,12 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 		
 	}
 	
-	private List _getLocusByContigPositions(String contig, Collection posset, String organism, String genemodel) {
+	private List _getLocusByContigPositions(String contig, Collection posset, String organism, String genemodel, Integer plusminus) {
 		
 		String locusmapping="";
 		String locuspref="";
 		if(genemodel.equals( LocusCvTermDAO.GENEMODEL_ALL)) {
-			return  _getLocusByContigPositions( contig,  posset,  organism);
+			return  _getLocusByContigPositions( contig,  posset,  organism, null);
 		}
 		else if(genemodel.equals( LocusCvTermDAO.GENEMODEL_IRIC)) {
 			locuspref = " where  flist.name like 'OsNippo%'"; 
@@ -820,7 +831,20 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 		         + " on f.feature_id=f3.feature_id" 
 		  + " where f.feature_id=fl.feature_id ");
 
-			sql.append("  and lower(fsrc.uniquename)='" + contig.toLowerCase() + "' and postable.pos between fl.fmin and fl.fmax ");
+			
+			String ppm="";
+			String mpm="";
+			if(plusminus!=null && plusminus.intValue()!=0 ) {
+				ppm = "+" + plusminus;
+				mpm = "-" + plusminus;
+			}
+			
+			String cont= contig.toLowerCase() ;
+			if(organism.equals(AppContext.getDefaultOrganism())) {
+				cont=cont.replace("r0", "r");
+			}
+		
+			sql.append("  and lower(fsrc.name)='" + cont + "' and postable.pos between (fl.fmin" + mpm + ") and (fl.fmax" + ppm + ")" );
 			
 			sql.append(" and fsrc.feature_id=fl.srcfeature_id and f.organism_id=o.organism_id "
 			+ " and cvtype.name='gene' and cvtype.cvterm_id=f.type_id "
