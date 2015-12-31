@@ -84,11 +84,7 @@ public class VSnpSynallelePos implements Serializable, SnpsSynAllele , Comparabl
 		this.snpFeatureId = snpFeatureId;
 	}
 
-	/**
-	 */
-	public BigDecimal getSnpFeatureId() {
-		return this.snpFeatureId;
-	}
+
 
 	/**
 	 */
@@ -208,7 +204,7 @@ public class VSnpSynallelePos implements Serializable, SnpsSynAllele , Comparabl
 	}
 
 	@Override
-	public BigDecimal getSnp() {
+	public BigDecimal getSnpFeatureId() {
 		// TODO Auto-generated method stub
 		return this.snpFeatureId;
 	}

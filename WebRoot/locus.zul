@@ -72,6 +72,8 @@
 <listitem  label="My SNP List"/>
 </listbox>
 
+<div id="divGeneModel">
+<hbox>
 <vbox width="30px"/>			    
 <label value="Gene model:" style="font-size:14px;font-weight:bold;color:gray;"/>
 <vbox width="10px"/>
@@ -81,6 +83,8 @@
 <listitem  value="iric" label="Merged MSU7,RAP,FGenesh (by IRIC)"/>
 <!--  listitem  value="all" label="All"/ -->
 </listbox>
+</hbox>
+</div>
 </hbox>
 </row>
 
@@ -345,20 +349,21 @@
 </hbox>
 
 
-
+<hbox>
 <hbox id="hboxAddtolist" visible="false">
- 
   <button id="buttonAddToList" label="Create List:"  autodisable="self" tooltip="popupCreateList"/>
   <label value="   List Name  " pre="true"/>
   <textbox id="txtboxListname" width="200px"/>
 </hbox>
- <div visible="false">
- <label value="Download:  " pre="true"/>
+<hbox id="hboxDownload" visible="false">
+ <label value="    Download:  " pre="true"/>
  <button id="buttonDownloadCSV" label="CSV"/>
  <hbox width="5px"/>
  <button id="buttonDownloadTab" label="Tab"/>
  <hbox width="25px"/>
- </div>
+</hbox>
+</hbox>
+ 
  
  
  <!--  *********************   GENE LOCUS QUERY RESULTS DISPLAY  *********************************************************************************** -->
@@ -376,6 +381,17 @@
                 <column label="DESCRIPTION"  sort="auto" />
             	</columns>
 </grid>		
+
+<grid id="gridMarker" width="100%"   mold="paging" pageSize="100" visible="false" >
+	        	<columns>
+	        	<column label="CONTIG" width="100px"  sort="auto" />
+	        	<column label="POSITION" width="100px"  sort="auto" />
+                <column label="GENE MODELS" width="350px"  sort="auto" />
+                <column label="QTARO QTLs" width="500px"  sort="auto" />
+                <column label="GRAMENE QTLs" width="500px"  sort="auto" />
+            	</columns>
+</grid>		
+
 
 
 <grid id="gridGOTerms" width="100%"   mold="paging" pageSize="100" visible="false" >

@@ -79,12 +79,7 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 		this.snpFeatureId = snpFeatureId;
 	}
 
-	/**
-	 */
-	public BigDecimal getSnpFeatureId() {
-		return this.snpFeatureId;
-	}
-
+	
 	/**
 	 */
 	public void setSrcfeatureId(BigDecimal srcfeatureId) {
@@ -193,7 +188,7 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 	}
 
 	@Override
-	public BigDecimal getSnp() {
+	public BigDecimal getSnpFeatureId() {
 		// TODO Auto-generated method stub
 		return snpFeatureId;
 	}

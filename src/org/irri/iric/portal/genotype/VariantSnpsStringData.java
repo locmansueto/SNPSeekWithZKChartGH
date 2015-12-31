@@ -150,7 +150,7 @@ public class VariantSnpsStringData extends VariantStringData {
 			List snpsposlist=this.listPos;
 
 			List listNonsynPos=new ArrayList();
-			Iterator itSnppos =snpsposlist.iterator();
+			Iterator<SnpsAllvarsPos> itSnppos =snpsposlist.iterator();
 			StringBuffer buffRef = new StringBuffer();
 
 			Set setInExonAndNonsyn = new TreeSet( this.mapPos2NonsynAlleles.keySet());
@@ -162,8 +162,8 @@ public class VariantSnpsStringData extends VariantStringData {
 			
 			Set<Integer> setIncludeIdx=new TreeSet();
 			while(itSnppos.hasNext()) {
-				VSnpRefposindex snppos = (VSnpRefposindex)itSnppos.next();
-
+				//VSnpRefposindex snppos = (VSnpRefposindex)itSnppos.next();
+				SnpsAllvarsPos snppos = itSnppos.next();
 				boolean includethis=false;
 				//if(setInExonAndNonsyn.contains( snppos.getPos())) {
 				if(setInExonAndNonsyn.contains( snppos)) {

@@ -3,6 +3,7 @@ package org.irri.iric.portal.genomics.zkui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,20 +14,23 @@ import org.irri.iric.portal.admin.WorkspaceFacade;
 
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.LocalAlignmentImpl;
+import org.irri.iric.portal.domain.MarkerAnnotation;
+import org.irri.iric.portal.domain.MergedLoci;
 import org.irri.iric.portal.genomics.GeneOntologyService;
 import org.irri.iric.portal.genomics.GenomicsFacade;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.zkoss.zk.ui.Executions;
-
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Div;
+import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Intbox;
@@ -41,6 +45,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 @Controller
+@Scope(value="session")
 public class LocusQueryController extends SelectorComposer<Window> {
 
 	
@@ -51,15 +56,23 @@ public class LocusQueryController extends SelectorComposer<Window> {
 	@Autowired
 	@Qualifier("WorkspaceFacade")
 	private WorkspaceFacade workspace;
-	    
+	  
+	@Wire
+	private Hbox hboxDownload;
+	
 	@Wire 
 	private Listbox listboxAnnotation;
-	  
+	
+	@Wire
+	private Div divGeneModel;
+	
 	@Wire
 	Label labelChrExample;
 	
 	@Wire
 	private Textbox msgbox;
+	@Wire
+	private Grid gridMarker;
 	
 	@Wire
 	private Grid gridLocus;
@@ -141,6 +154,8 @@ public class LocusQueryController extends SelectorComposer<Window> {
 	
 	private List<Locus> locusresult;
 	private List<LocalAlignmentImpl> locusalignmentresult;
+	private List<MarkerAnnotation> markerresult;
+
 	
 	
 	@Wire
@@ -192,8 +207,8 @@ public class LocusQueryController extends SelectorComposer<Window> {
 	@Wire
 	private Row rowMySnpList;
 	
-	@Wire
-	private Row rowNPBannotation;
+	//@Wire
+	//private Row rowNPBannotation;
 	
 	@Wire
 	private Button searchMySnpListButton;
@@ -211,6 +226,8 @@ public class LocusQueryController extends SelectorComposer<Window> {
 		rowMySnpList.setVisible(false);
 		rowCountGOTermLoci.setVisible(false);
 		rowPatoTerm.setVisible(false);
+		
+		
 		String searchby = listboxSearchby.getSelectedItem().getLabel();
 		
 		if(searchby.isEmpty()) return;
@@ -457,7 +474,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 		rowMySnpList.setVisible(false);
 		rowGeneFunction.setVisible(false);
 		rowSequence.setVisible(false);
-		rowNPBannotation.setVisible(false);
+		//rowNPBannotation.setVisible(false);
 		rowPatoTerm.setVisible(false);
 
 		String selorg = listboxOrganism.getSelectedItem().getLabel();
@@ -497,7 +514,8 @@ public class LocusQueryController extends SelectorComposer<Window> {
 			labelChrExample.setValue("(ex. chr01)" );
 			
 			//rowNPBannotation.setVisible(true);
-			this.listboxAnnotation.setVisible(true);
+			//this.listboxAnnotation.setVisible(true);
+			divGeneModel.setVisible(true);
 			
 			
 		} else {
@@ -524,7 +542,8 @@ public class LocusQueryController extends SelectorComposer<Window> {
 				//labelChrExample.setValue("(ex. " + listContigs.get(1).toString().toLowerCase() + ") " );
 				labelChrExample.setValue("(ex. scaffold...)" );
 
-			this.listboxAnnotation.setVisible(false);
+			//this.listboxAnnotation.setVisible(false);
+			divGeneModel.setVisible(false);
 		}
 
 		/*
@@ -592,6 +611,8 @@ public class LocusQueryController extends SelectorComposer<Window> {
 		gridGOTerms.setVisible(false);
 		msgbox.setValue("");
 		hboxAddtolist.setVisible(false);
+		gridMarker.setVisible(false);
+		hboxDownload.setVisible(false);
 	}
 	
 
@@ -667,7 +688,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 		}
 	}
 	
-	@Listen("onClick =#searchMySnpListButton") 
+	//@Listen("onClick =#searchMySnpListButton") 
 	public void searchbyMySnpList() {
 		initResults();
 		
@@ -705,7 +726,42 @@ public class LocusQueryController extends SelectorComposer<Window> {
 		
 	}
 	
-	
+	//@Listen("onClick =#searchMySnpListButtonWithqtl") 
+	@Listen("onClick =#searchMySnpListButton")
+	public void searchbyMySnpListQtl() {
+		initResults();
+		
+		try {
+			genomics = (GenomicsFacade)AppContext.checkBean(genomics, "GenomicsFacade");
+			workspace =(WorkspaceFacade)AppContext.checkBean(workspace, "WorkspaceFacade");
+			
+			String mylist = this.listboxMySNPList.getSelectedItem().getLabel();
+			
+			String contigname[] =  mylist.trim().split(":"); 
+			
+			Collection colPos = workspace.getSnpPositions(contigname[0].trim(), contigname[1].trim());
+			
+			markerresult = genomics.getMarkerAnnotsByContigPositions(contigname[0].trim() ,
+						colPos, 
+						this.listboxOrganism.getSelectedItem().getLabel(), 
+						
+						(String)this.listboxAnnotation.getSelectedItem().getValue(),  intboxPlusMinusBP.getValue() );
+				gridMarker.setRowRenderer(new MarkerGridRenderer());
+				gridMarker.setModel( new SimpleListModel( markerresult ));
+			
+			if(markerresult.size()>0) hboxAddtolist.setVisible(true);
+			else hboxAddtolist.setVisible(false);
+			this.msgbox.setValue("Search by SNP List positions: Contig " + contigname[0].trim() + ", SNP List " + listboxMySNPList.getSelectedItem().getLabel() + " ... RESULT:" + markerresult.size() + " markers");
+			
+			gridMarker.setVisible(true);
+			hboxDownload.setVisible(true);
+			
+			} catch(Exception ex) {
+				ex.printStackTrace();
+				Messagebox.show( ex.getMessage(), "onlclickSearchFunction Exception", Messagebox.OK, Messagebox.ERROR );
+			}
+		
+	}	
 	@Listen("onClick =#searchByBlast") 
 	public void searchByBlast() {
 	
@@ -886,6 +942,114 @@ public class LocusQueryController extends SelectorComposer<Window> {
 			}
 	}
 
+	@Listen("onClick =#buttonDownloadCSV") 
+	public void downloadtableCSV() {
+		downloadtable(",");
+	}
+	
+	@Listen("onClick =#buttonDownloadTab") 
+	public void downloadtableTab() {
+		downloadtable("\t");
+	}
+	
+	public void downloadtable(String delimiter) {
+		
+		AppContext.debug("executing downloadtable...");
+    	if(this.gridMarker.isVisible()) {
+
+    		StringBuffer buff=new StringBuffer();
+    		buff.append("CONTIG").append(delimiter).append("POSITION").append(delimiter).append("GENE MODELS").append(delimiter).append("QTARO QTL").append(delimiter).append("GRAMENE QTL").append("\n");
+    		Iterator<MarkerAnnotation> itMarker=markerresult.iterator();
+    		while(itMarker.hasNext()) {
+    			MarkerAnnotation annot = itMarker.next();
+    			
+    			
+    			buff.append(annot.getContig()).append(delimiter).append(annot.getPosition()).append(delimiter).append("\"");
+    			if(annot.getGenes()!=null && !annot.getGenes().isEmpty()) {
+    				Iterator<Locus> itLocus=annot.getGenes().iterator();
+    				while(itLocus.hasNext()) {
+    					Locus loc= itLocus.next();
+    					buff.append( loc.getUniquename() + " [" + loc.getFmin() + "-" + loc.getFmax() + "]" );
+    					if(loc.getDescription()!=null && !loc.getDescription().isEmpty()) {
+    						buff.append(" -" + loc.getDescription() );
+    					}
+    					
+    					if(loc instanceof MergedLoci) {
+    						MergedLoci ml=(MergedLoci)loc;
+    						StringBuffer loci=new StringBuffer();
+    						if(ml.getMSU7Name()!=null && !loc.getUniquename().startsWith("LOC_") ) loci.append(ml.getMSU7Name());
+    						if(ml.getRAPRepName()!=null  && ! (loc.getUniquename().startsWith("Os0") || loc.getUniquename().startsWith("Os1")) ) {
+    							if(loci.length()>0) loci.append(",");
+    							loci.append(ml.getRAPRepName());
+    						}
+    						if(ml.getRAPPredName()!=null && ! (loc.getUniquename().startsWith("Os0") || loc.getUniquename().startsWith("Os1")) ) {
+    							if(loci.length()>0) loci.append(",");
+    							loci.append(ml.getRAPPredName());
+    						}
+    						if(ml.getIRICName()!=null && ! loc.getUniquename().startsWith("OsNippo")) {
+    							if(loci.length()>0) loci.append(",");
+    							loci.append(ml.getIRICName());
+    						}
+    						if(loci.length()==0 && ml.getFGeneshName()!=null) loci.append(ml.getFGeneshName()); 
+    						
+    						if(loci.length()>0) buff.append(" (" + loci + ")");
+    					}					
+    					if(itLocus.hasNext()) buff.append("; ");
+    				}
+    			};
+    			buff.append("\"").append(delimiter).append("\"");
+    			if(annot.getQTL1()!=null && !annot.getQTL1().isEmpty()) {
+    				
+    				Iterator<Locus> itLocus=annot.getQTL1().iterator();
+    				while(itLocus.hasNext()) {
+    					Locus loc= itLocus.next();
+    					buff.append( loc.getUniquename() + " [" + loc.getFmin() + "-" + loc.getFmax() + "]" );
+    					if(loc.getDescription()!=null && !loc.getDescription().isEmpty()) {
+    						buff.append(" - " + loc.getDescription() );
+    					}
+    					if(itLocus.hasNext()) buff.append("; ");
+    				}
+    				
+    			};
+    			buff.append("\"").append(delimiter).append("\"");
+    			if(annot.getQTL2()!=null && !annot.getQTL2().isEmpty()) {
+    				
+    				Iterator<Locus> itLocus=annot.getQTL2().iterator();
+    				while(itLocus.hasNext()) {
+    					Locus loc= itLocus.next();
+    					buff.append( loc.getUniquename() + " [" + loc.getFmin() + "-" + loc.getFmax() + "]" );
+    					if(loc.getDescription()!=null && !loc.getDescription().isEmpty()) {
+    						buff.append(" - " + loc.getDescription() );
+    					}
+    					if(itLocus.hasNext()) buff.append("; ");
+    				}
+    			}    			
+    			buff.append("\"").append("\n");
+    		}
+    		
+    		String filetype = "text/plain";
+    		String fileext=".txt";
+    		if(delimiter.equals(",")) {
+    			filetype="text/csv";
+    			fileext=".csv";
+    		}
+    		
+    		try {
+	    		String filename="markers-" + AppContext.createTempFilename() + fileext;
+	    		AppContext.debug("downloading... " + filename);
+	    		Filedownload.save(  buff.toString(), filetype , filename) ;
+	    		//AppContext.debug("File download complete! Saved to: "+filename);
+	    		org.zkoss.zk.ui.Session zksession = Sessions.getCurrent();
+	    		AppContext.debug("markers download complete!"+ filename +  " " + markerresult.size() + " MarkerAnnots,  Downloaded to:"  +  zksession.getRemoteHost() + "  "  +  zksession.getRemoteAddr()  );
+    		} catch(Exception ex) {
+    			ex.printStackTrace();
+    			Messagebox.show(ex.getMessage());
+    		}
+
+    		
+    	}
+	}
+	
 	@Listen("onClick =#buttonAddToList") 
 	public void onclickAddtolist() {
 		// add to locus list

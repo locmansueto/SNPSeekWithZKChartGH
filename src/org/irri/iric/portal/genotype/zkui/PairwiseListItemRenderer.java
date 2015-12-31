@@ -3,11 +3,12 @@ package org.irri.iric.portal.genotype.zkui;
 
 
 import java.util.HashSet;
-
 import java.util.Map;
 import java.util.Set;
 
 
+
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.Position;
 
 
@@ -62,6 +63,8 @@ public class PairwiseListItemRenderer  implements SNPRowRendererStyle, ListitemR
 			//String refnuc = (String)obj[2];
 			String var1nuc = "";
 			String var2nuc = "";
+			
+			//AppContext.debug(index + "\t" + obj[0] + "\t" + obj[1] + "\t" + obj[2] + "\t" +  obj[3]); 
 		
 			if(!params.isbShowNPBPositions()) {
 				/*

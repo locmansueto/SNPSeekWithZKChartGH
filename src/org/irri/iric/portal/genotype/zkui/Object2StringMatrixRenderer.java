@@ -187,7 +187,7 @@ public class Object2StringMatrixRenderer implements MatrixRenderer, SNPRowRender
 			if(mapPos2Refnuc.get(snppos)==null) AppContext.debug( "mapPos2Refnuc.get(snppos)==null,  pos=" + snppos); 
 			if(cellval==null)  AppContext.debug( "cellval==null,  pos=" + snppos); 
 			if(indelposref==null) {
-				indelposref=snppos.getRefcall();
+				indelposref=snppos.getRefnuc();
 			}
 			
 			
@@ -447,7 +447,7 @@ public class Object2StringMatrixRenderer implements MatrixRenderer, SNPRowRender
 			String refnuc = (String)((List)data).get(colIndex); 
 			if(colIndex>=frozenCols && (refnuc==null || refnuc.isEmpty())) {
 				//tabledata.getIndelstringdata().getMapIndelIdx2Refnuc().get(colIndex-frozenCols);
-				BigDecimal pos = tabledata.getListPos().get(colIndex-frozenCols).getPos();
+				BigDecimal pos = tabledata.getListPos().get(colIndex-frozenCols).getPosition();
 				if(tabledata.getIndelstringdata()!=null && tabledata.getIndelstringdata().getMapIndelpos2Refnuc()!=null)
 					refnuc = tabledata.getIndelstringdata().getMapIndelpos2Refnuc().get(pos);
 			}

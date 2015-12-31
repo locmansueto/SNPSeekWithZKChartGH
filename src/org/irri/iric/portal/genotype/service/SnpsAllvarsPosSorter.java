@@ -12,7 +12,7 @@ public class SnpsAllvarsPosSorter implements Comparator {
 		SnpsAllvarsPos pos2 = (SnpsAllvarsPos)o2;
 		int ret=pos1.getContig().compareTo(pos2.getContig());
 		if(ret!=0) return ret;
-		ret = pos1.getPos().compareTo(pos2.getPos());
+		ret = pos1.getPosition().compareTo(pos2.getPosition());
 		return ret;
 	}
 }

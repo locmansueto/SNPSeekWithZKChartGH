@@ -11,6 +11,7 @@ import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.dao.VariantSequenceDAO;
 import org.irri.iric.portal.domain.CvTermLocusCount;
 import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.domain.MarkerAnnotation;
 import org.irri.iric.portal.domain.Organism;
 import org.irri.iric.portal.genomics.GeneOntologyService;
 import org.irri.iric.portal.genomics.GenomicsFacade;
@@ -33,7 +34,7 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	private OntologyService goService;
 	
 	@Autowired
-	@Qualifier("PATOntologyService")
+	@Qualifier("PATOGenesOntologyService")
 	private OntologyService patoService;
 	
 	@Autowired
@@ -255,6 +256,14 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 		// TODO Auto-generated method stub
 		locusService = (LocusService)AppContext.checkBean(locusService, "LocusService");
 		return locusService.getLocusByContigPositions( contig,  colPos,  org, genemodel, plusminus);
+	}
+
+	@Override
+	public List<MarkerAnnotation> getMarkerAnnotsByContigPositions(String contig,
+			Collection colPos, String organism, String genemodel,
+			Integer plusminus) {
+		locusService = (LocusService)AppContext.checkBean(locusService, "LocusService");
+		return locusService.getMarkerAnnotsByContigPositions( contig,  colPos,  genemodel, plusminus);
 	}
 	
 	

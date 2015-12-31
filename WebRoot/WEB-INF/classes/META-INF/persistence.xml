@@ -37,8 +37,13 @@
 				
 				<!-- class>org.irri.iric.portal.admin.domain.VOracleSessions</class -->
 
+				
+				<class>org.irri.iric.portal.chado.oracle.domain.VCvPtoco</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.Feature</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VCvPhenotype</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VCvPhenotypeByPtoco</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VCvPhenotypeByPtocoPath</class>
+				
 				<class>org.irri.iric.portal.chado.oracle.domain.VGene</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VCvPassport</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VIricstockDistance</class>
@@ -51,6 +56,7 @@
 				<class>org.irri.iric.portal.chado.oracle.domain.VIricstockPhenotypeQualval</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VIricstocksByPassport</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VIricstocksByPhenotype</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VIricstocksByPtoco</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VSnpRefposindex</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VSnpSpliceacceptor</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VSnpSplicedonor</class>
@@ -58,6 +64,7 @@
 				
 				
 				<class>org.irri.iric.portal.chado.oracle.domain.VConvertposNb2allrefs</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VConvertposAny2allrefs</class>
 				
 				<class>org.irri.iric.portal.chado.oracle.domain.VSnpNonsynallelePos</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VSnpSynallelePos</class>
@@ -78,6 +85,8 @@
 				<class>org.irri.iric.portal.chado.oracle.domain.VLocusCvtermpathMsu7</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VLocusCvtermpathRap</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VLocusMergedNotes</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VQtl</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VLocusNotesMarker</class>
 								
 								
 				

@@ -1,5 +1,6 @@
 package org.irri.iric.portal.chado.oracle.dao;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import org.irri.iric.portal.chado.oracle.domain.Organism;
@@ -88,13 +89,13 @@ public interface OrganismDAO extends JpaDao<Organism> ,  org.irri.iric.portal.da
 	 * JPQL Query - findOrganismByOrganismId
 	 *
 	 */
-	public Organism findOrganismByOrganismId(Integer organismId) throws DataAccessException;
+	public Organism findOrganismByOrganismId(BigDecimal organismId) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findOrganismByOrganismId
 	 *
 	 */
-	public Organism findOrganismByOrganismId(Integer organismId, int startResult, int maxRows) throws DataAccessException;
+	public Organism findOrganismByOrganismId(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findOrganismByAbbreviation
@@ -124,13 +125,13 @@ public interface OrganismDAO extends JpaDao<Organism> ,  org.irri.iric.portal.da
 	 * JPQL Query - findOrganismByPrimaryKey
 	 *
 	 */
-	public Organism findOrganismByPrimaryKey(Integer organismId_1) throws DataAccessException;
-
+	public Organism findOrganismByPrimaryKey(BigDecimal organismId_1) throws DataAccessException;
+	
 	/**
 	 * JPQL Query - findOrganismByPrimaryKey
 	 *
 	 */
-	public Organism findOrganismByPrimaryKey(Integer organismId_1, int startResult, int maxRows) throws DataAccessException;
+	public Organism findOrganismByPrimaryKey(BigDecimal organismId_1, int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findOrganismByCommonName
@@ -143,5 +144,7 @@ public interface OrganismDAO extends JpaDao<Organism> ,  org.irri.iric.portal.da
 	 *
 	 */
 	public Set<Organism> findOrganismByCommonName(String commonName_1, int startResult, int maxRows) throws DataAccessException;
+
+	
 
 }

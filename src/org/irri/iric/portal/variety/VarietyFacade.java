@@ -245,6 +245,22 @@ public interface VarietyFacade {
 	 * @return
 	 */
 	public Set checkVariety(String varstrs);
+
+
+	/**
+	 * TO/CO terms to ID
+	 * @return
+	 */
+	public Map<String, BigDecimal> getPtocoDefinitions();
+
+
+	/**
+	 * Get GRIMS phenotype from CV (plant_trait_ontology/rice_trait) term
+	 * @param cv
+	 * @param term
+	 * @return
+	 */
+	public List getPhenotypeByPtoco(String cv, String term);
 	
 	
 	//public List getVarietyByPassport(String sPassId);

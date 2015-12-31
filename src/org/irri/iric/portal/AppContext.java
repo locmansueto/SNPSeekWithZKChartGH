@@ -23,10 +23,13 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.irri.iric.portal.domain.MultiReferenceLocus;
 import org.springframework.context.ApplicationContext;
 import org.zkoss.zkplus.spring.SpringUtil;
+
 
 
 import javax.servlet.FilterConfig;
@@ -48,26 +51,28 @@ public class AppContext {
 	
 	private static ApplicationContext ctx;
 
-	static enum WEBSERVER { LOCALHOST, AWS, AWSDEV, VMIRRI, POLLUX, ASTI };
-	static enum COMPILETYPE { PROD, DEV, TEST};
+	
+	
+	public static enum WEBSERVER { LOCALHOST, AWS, AWSDEV, VMIRRI, POLLUX, ASTI };
+	public static enum COMPILETYPE { PROD, DEV, TEST};
 	
 	/**
 	 * random number generator 
 	 */
 	private static final java.util.Random  rand = new   java.util.Random();
-	
+
 	
 	// set target webserver and compile type
+	//static WEBSERVER webserver =  AppContext.WEBSERVER.AWS; 
 	static WEBSERVER webserver =  AppContext.WEBSERVER.LOCALHOST;
 	//static WEBSERVER webserver =  AppContext.WEBSERVER.POLLUX;
 	static COMPILETYPE compiletype =  AppContext.COMPILETYPE.PROD;
-
 	
 	/**
 	 * is using limited (uploaded for sharing) data
 	 * Source code and data downloaded from Bitbucket repository should set this to true
 	 */
-	static boolean isSharedData = true;
+	static boolean isSharedData = false;
 	
 	
 	/**
@@ -98,6 +103,7 @@ public class AppContext {
     static String  webappdirectory;
     
     public static Pattern patRemoveZeroes = Pattern.compile("\\.?0*");
+    public static Pattern patStartNumber = Pattern.compile("^\\d+?");
     
     
     public AppContext() {
@@ -118,7 +124,6 @@ public class AppContext {
     public static String getTempDir() {
     	
     	if( tempdir!=null) return tempdir;    
-    	
     	if(isAWS() || isAWSdev())
     		//return  "../webapps/" +  getHostDirectory() + "/tmp/";
     		return "/usr/share/apache-tomcat-7.0.55/webapps/temp/";
@@ -132,8 +137,8 @@ public class AppContext {
     		return "E:/MyEclipse for Spring 2014/plugins/com.genuitec.eclipse.easie.tomcat7.myeclipse_11.5.0.me201310302042/tomcat/bin/temp/";
     	else if(isPollux())
     		return  "/usr/share/apache-tomcat-7.0.42/webapps/temp/";
-    	
-    	return "/usr/share/apache-tomcat/webapps/temp/";
+    		
+    	return null;
     }
     
     /**
@@ -141,16 +146,18 @@ public class AppContext {
      * @return
      */
     public static String getFlatfilesDir() {
-    	if( flatfilesdir!=null) return flatfilesdir;    
     	
+    	if( flatfilesdir!=null) return flatfilesdir;    
     	if(isLocalhost())
+    		//return "/home/lmansueto/iric-portal-files/";
     		return "E:/My Document/Transfer/3kcore_alleles/";
     	else if(isAWS() || isAWSdev())
     		return "/data/lmansueto/iric-portal-files/";
     	else if(isASTI())
     		return "/home/iric/iric-portal-files/";
-    	else http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=2456312
+    	else
     		return "/home/lmansueto/iric-portal-files/";
+    	
     }
     
 
@@ -175,7 +182,6 @@ public class AppContext {
     		return "http://202.90.159.240:8080";
     	else
     		return "http://172.29.4.26:8080"; 
-    	//return "http://localhost";
     }
     
     /**
@@ -205,6 +211,7 @@ public class AppContext {
      * @return
      */
     public static String getJbrowseDir() {
+    	
     	if(isUsingsharedData())
     		return "jbrowse";
     	else return "jbrowse-dev2";
@@ -365,6 +372,7 @@ public class AppContext {
 	 * is development version
 	 */
 	public static boolean isDev() {
+		//return compiletype.equals(AppContext.COMPILETYPE.DEV);
 		return compiletype==AppContext.COMPILETYPE.DEV;
 	}
 
@@ -373,6 +381,7 @@ public class AppContext {
 	 * @return
 	 */
 	public static boolean isTest() {
+		//return compiletype.equals(AppContext.COMPILETYPE.TEST);
 		return compiletype==AppContext.COMPILETYPE.TEST;
 	}
     
@@ -390,7 +399,8 @@ public class AppContext {
 	 * @return
 	 */
     public static boolean isIRRILAN() {
-    	return  (isLocalhost() && !isUsingsharedData() )  || isPollux() || isVMIRRI();
+    	//return  (isLocalhost() && !isUsingsharedData() )  || isPollux() || isVMIRRI();
+    	return  isLocalhost()  || isPollux() || isVMIRRI();
     }
     
 
@@ -612,7 +622,7 @@ public class AppContext {
 		StringBuffer buff = new StringBuffer();
 		Iterator itSet = col.iterator();
 		while(itSet.hasNext()) {
-			buff.append( itSet.next() );
+			buff.append(itSet.next());
 			if(itSet.hasNext()) buff.append(",");
 		}
 		return  buff.toString();
@@ -744,9 +754,14 @@ public class AppContext {
     	while(it.hasNext()) {
     		String item = it.next();
     		if(item==null) continue;
+    		
     		if(upperlower) {
-    		newlist.add( item.toLowerCase());
-    		newlist.add( item.toUpperCase());
+    			if(patStartNumber.matcher(item).find()) {
+    				newlist.add(item);
+    			} else {
+		    		newlist.add( item.toLowerCase());
+		    		newlist.add( item.toUpperCase());
+    			}
     		} else {
     			newlist.add(item);
     		}
@@ -1099,6 +1114,27 @@ public static Collection convertRegion2SnpfeatureidLongcol(Integer chr, Collecti
 	}
 	return snpfeatureidSet;
 }
+
+
+public static String convertParams2URL(Map map) {
+	StringBuffer buff=new StringBuffer();
+	if(map.size()>0) buff.append("?");
+	Iterator<String> itKey=map.keySet().iterator();
+	while(itKey.hasNext()) {
+		String key=itKey.next().toString();
+		String[] vals=(String[])map.get(key);
+		buff.append(key).append("=");
+		for(int i=0; i<vals.length; i++) {
+			buff.append(vals[i]);
+			if(i+1<vals.length) buff.append(",");
+		}
+		if(itKey.hasNext()) buff.append("&");
+	}
+	String params=buff.toString();
+	debug(params);
+	return params;
+}
+
 
 //*************  PAST CODES RETAINED
 

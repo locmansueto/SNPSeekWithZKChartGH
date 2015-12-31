@@ -60,6 +60,9 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	//@Qualifier("VCvPhenotypeDAOPostges")
 	private CvTermDAO cvtermsPhenotypedao;
 
+	private CvTermDAO cvtermsPtocodao;
+
+	
 	@Autowired
 	//@Qualifier("ScaffoldDAO")
 	private ScaffoldDAO scaffolddao;
@@ -103,6 +106,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 	
 	private Map<String,BigDecimal> passportDefinitions;
 	private Map<String,BigDecimal> phenotypeDefinitions;
+	private Map<String,BigDecimal> ptocoDefinitions;
 
 	
 	public static boolean lockGenenameReader = false;
@@ -472,6 +476,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		
 		cvtermsPassportdao = (CvTermDAO)AppContext.checkBean(cvtermsPassportdao, "VCvPassportDAO");
 		cvtermsPhenotypedao = (CvTermDAO)AppContext.checkBean(cvtermsPhenotypedao, "VCvPhenotypeDAO");
+		cvtermsPtocodao = (CvTermDAO)AppContext.checkBean(cvtermsPtocodao, "VCvPtocoDAO");
 			
 		List listCVPassport =  cvtermsPassportdao.getAllTerms();
 		passportDefinitions = new TreeMap<String,BigDecimal>();
@@ -497,7 +502,18 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		{
 			CvTerm term = itTerm2.next();
 			phenotypeDefinitions.put(term.getDefinition(), term.getCvTermId());
-		}	
+		}
+		
+		List listCvProco = cvtermsPtocodao.getAllTerms();
+		ptocoDefinitions = new TreeMap<String,BigDecimal>();
+//		phenotypeDefinitions.put("", BigDecimal.ZERO);
+		Iterator<CvTerm>  itTerm3=listCvProco.iterator();
+		while(itTerm3.hasNext())
+		{
+			CvTerm term = itTerm3.next();
+			ptocoDefinitions.put(term.getName(), term.getCvTermId());
+		}
+		
 		
 	}
 	
@@ -515,6 +531,15 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		return passportDefinitions;
 	}
 
+	
+	@Override
+	public Map<String,BigDecimal> getPtocoDefinitions() {
+		// TODO Auto-generated method stub
+		if(ptocoDefinitions==null) initMoreConstraints();		
+		return ptocoDefinitions;
+	}
+
+	
 	
 //	@Override
 //	public Integer getFeatureLength(String feature) {
@@ -576,6 +601,13 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		scaffolddao = (ScaffoldDAO)AppContext.checkBean(scaffolddao, "ScaffoldDAO");
 		return scaffolddao.getScaffoldLength(feature,  getOrganismByName(organism).getOrganismId() );
 	}
+
+	@Override
+	public Scaffold getFeature(String feature, String organism) {
+		// TODO Auto-generated method stub
+		scaffolddao = (ScaffoldDAO)AppContext.checkBean(scaffolddao, "ScaffoldDAO");
+		return scaffolddao.getScaffold(feature, organism);
+	}
 	
 	private List createCvtermMap(List cvterms) {
 		//Map mapCvid2Term=new LinkedHashMap();
@@ -634,7 +666,7 @@ public class ListItemsDAOImpl implements  ListItemsDAO {
 		
 		organismdao = (OrganismDAO)AppContext.checkBean(organismdao, "OrganismDAO");
 		Map<String, Organism> mapOrg = organismdao.getMapName2Organism();
-		AppContext.debug("getting organism " + name + " from " + mapOrg);
+		//AppContext.debug("getting organism " + name + " from " + mapOrg);
 		
 		return mapOrg.get(name);
 	}

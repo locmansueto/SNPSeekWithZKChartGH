@@ -33,7 +33,7 @@
 	
 		String newick = "";
 
-		int nvars = 3000; 
+		int nvars = 3023; 
 		long pairs = 0;
 		int topn=-1;
 		
@@ -62,6 +62,7 @@
 				
 				//String newick =   variety.constructPhylotree( varlist.replace("-", "_").replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") );
 				newick =   variety.constructPhylotree( varlist, request.getParameter("scale") , request.getParameter("topn") ,request.getParameter("requestid") );
+
 				
 		} else if(request.getParameter("chr")!=null && request.getParameter("start")!=null && request.getParameter("end")!=null) {
 				

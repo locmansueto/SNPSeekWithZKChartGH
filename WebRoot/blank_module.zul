@@ -1,31 +1,60 @@
 <?page title="Module" contentType="text/html;charset=UTF-8"?>
 <zk>
-
 <zscript>
+	// initialization 
     import org.zkoss.zkplus.spring.SpringUtil;      
  	import org.irri.iric.portal.blank_module.BlankModuleFacade;
- 	
  	BlankModuleFacade module = (BlankModuleFacade)SpringUtil.getBean("BlankModuleFacade"); 
- 	
  	List options = module.getOptions();
- 	
-</zscript>
 
+ 	import org.irri.iric.portal.variety.VarietyFacade;
+ 	import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
+ 	VarietyFacade variety = (VarietyFacade)SpringUtil.getBean("VarietyFacade"); 
+ 	List listVariety = variety.getSubpopulations();
+</zscript>
 <window border="none" apply="org.irri.iric.portal.blank_module.zkui.BlankModuleController">
 
-<!--  INSERT YOUR UI COMPONENTS HERE -->
+<!--  DISPLAY SAMPLE OPTION FROM BlankModuleFacade -->
+<hbox height="50px"/>
 <hbox>
 <vbox width="300px"/>
-<label value="Select population: " />
+<label value="Select BlankModule options " />
 <vbox width="50px"/>
 <listbox id="listboxOptions" mold="select"/>
-<vbox width="100px"/>
-<button id="buttonStart" style="font-size:14px;font-weight:bold;color:gray;" label="Start" />
-</hbox>
-
 <zscript><![CDATA[
  	    	listboxOptions.setModel(new SimpleListModel(options));
  	    	listboxOptions.setSelectedIndex(0);
+			]]></zscript>
+</hbox>
+
+<!--  DISPLAY SUBPOPULATION OPTION FROM VarietyFacade -->
+<hbox height="20px"/>
+<hbox>
+<vbox width="300px"/>
+<label value="Select subpopulation " />
+<vbox width="50px"/>
+<listbox id="listboxSubpopulation" mold="select"/>
+<zscript><![CDATA[
+ 	    	listboxSubpopulation.setModel(new SimpleListModel(listVariety));
+ 	    	listboxSubpopulation.setSelectedIndex(0);
+			]]></zscript>
+<vbox width="100px"/>
+<button id="buttonSearch" style="font-size:14px;font-weight:bold;color:gray;" label="Search" />
+</hbox>
+<hbox height="50px"/>
+
+<!--  DISPLAY QUERY RESULT TABLE  -->
+	 <listbox id="listboxVariety" fixedLayout="true" mold="paging" pageSize="100" visible="true"  >
+		<listhead>
+			<listheader  sort="auto"></listheader>
+			<listheader  sort="auto"></listheader>
+			<listheader  sort="auto"></listheader>
+			<listheader  sort="auto"></listheader>
+			<listheader  sort="auto"></listheader>
+		</listhead>		
+	</listbox>
+	<zscript><![CDATA[
+ 	    	listboxVariety.setItemRenderer(new VarietyListItemRenderer());
 			]]></zscript>
 			   			
 </window>

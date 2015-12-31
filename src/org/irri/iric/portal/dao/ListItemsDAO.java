@@ -9,6 +9,7 @@ import java.util.Set;
 import org.irri.iric.portal.domain.Cv;
 import org.irri.iric.portal.domain.Gene;
 import org.irri.iric.portal.domain.Organism;
+import org.irri.iric.portal.domain.Scaffold;
 import org.irri.iric.portal.domain.Variety;
 
 /**
@@ -68,6 +69,7 @@ public interface ListItemsDAO {
 	List getOrganisms() throws Exception;
 	List getContigs(String organism);
 	Long getFeatureLength(String feature, String organism);
+	Scaffold getFeature(String feature, String organism);
 
 	List getGOTermsWithLoci(String cv, String organism);
 
@@ -80,6 +82,8 @@ public interface ListItemsDAO {
 	public Organism getOrganismById(Integer id);
 
 	public Cv getCvByName(String cv);
+
+	public Map<String, BigDecimal> getPtocoDefinitions();
 	
 	
 	

@@ -341,7 +341,7 @@ public class Object2StringMatrixModel<Head extends  List, Row extends List, Cell
 						DecimalFormat df = new DecimalFormat("0.00");
 						
 						if(data.getVariantStringData().isNipponbareReference()) {
-							out += df.format(  snppos.getPos() ).replace(".00","");
+							out += df.format(  snppos.getPosition() ).replace(".00","");
 							if(out.endsWith(".0")) out=out.replace(".0", "");
 							
 							if(data.getContigs()!=null && !out.isEmpty())
@@ -365,11 +365,11 @@ public class Object2StringMatrixModel<Head extends  List, Row extends List, Cell
 //							}
 							
 							
-							if(mapMSU7Pos2ConvertedPos.get(snppos.getPos())==null) {
+							if(mapMSU7Pos2ConvertedPos.get(snppos.getPosition())==null) {
 								out ="";
 							}
 							else {
-								out += df.format(mapMSU7Pos2ConvertedPos.get(snppos.getPos()).getPosition() ).replace(".00","");
+								out += df.format(mapMSU7Pos2ConvertedPos.get(snppos.getPosition()).getPosition() ).replace(".00","");
 								if(out.endsWith(".0")) out=out.replace(".0", "");
 								
 								//AppContext.debug( snppos.getPos() + " -> " + mapMSU7Pos2ConvertedPos.get(snppos.getPos()).getPosition() );
@@ -415,12 +415,12 @@ public class Object2StringMatrixModel<Head extends  List, Row extends List, Cell
 					if(data.getVariantStringData().isNipponbareReference()) {
 						return snppos.getRefnuc() ;
 					} else {
-						MultiReferencePosition multiref =mapMSU7Pos2ConvertedPos.get(snppos.getPos()); 
+						MultiReferencePosition multiref =mapMSU7Pos2ConvertedPos.get(snppos.getPosition()); 
 						if(multiref==null) {
 							return "";
 						}
 						else {
-							return multiref.getRefcall();
+							return multiref.getRefnuc();
 						}
 					}
 				}
@@ -444,7 +444,7 @@ public class Object2StringMatrixModel<Head extends  List, Row extends List, Cell
 							String out="";
 							DecimalFormat df = new DecimalFormat("0.00");
 							
-							out += df.format(snppos.getPos()).replace(".00","");
+							out += df.format(snppos.getPosition()).replace(".00","");
 							if(out.endsWith(".0")) out=out.replace(".0", "");
 								
 							return out;
@@ -493,12 +493,12 @@ public class Object2StringMatrixModel<Head extends  List, Row extends List, Cell
 								if(index>=frozenCols) {
 									SnpsAllvarsPos snppos = data.getVariantStringData().getListPos().get(index-frozenCols);
 										Map<BigDecimal, MultiReferencePosition> mapPos2Refpos =  mapOrg2MSU7Pos2ConvertedPos.get( listOtherRefs.get(0));
-										MultiReferencePosition multiref = mapPos2Refpos.get(snppos.getPos()); 
+										MultiReferencePosition multiref = mapPos2Refpos.get(snppos.getPosition()); 
 										if(multiref==null) {
 											return "";
 										}
 										else {
-											return multiref.getRefcall();
+											return multiref.getRefnuc();
 										}
 								}
 								else if(index==0)
@@ -517,13 +517,13 @@ public class Object2StringMatrixModel<Head extends  List, Row extends List, Cell
 								if(index>=frozenCols) {
 									SnpsAllvarsPos snppos = data.getVariantStringData().getListPos().get(index-frozenCols);
 										Map<BigDecimal, MultiReferencePosition> mapPos2Refpos =  mapOrg2MSU7Pos2ConvertedPos.get( listOtherRefs.get(1));
-										MultiReferencePosition multiref = mapPos2Refpos.get(snppos.getPos()); 
+										MultiReferencePosition multiref = mapPos2Refpos.get(snppos.getPosition()); 
 										if(multiref==null) {
 											return "";
 											
 										}
 										else {
-											return multiref.getRefcall();
+											return multiref.getRefnuc();
 										}
 								}
 								else if(index==0)
@@ -542,12 +542,12 @@ public class Object2StringMatrixModel<Head extends  List, Row extends List, Cell
 								if(index>=frozenCols) {
 									SnpsAllvarsPos snppos = data.getVariantStringData().getListPos().get(index-frozenCols);
 										Map<BigDecimal, MultiReferencePosition> mapPos2Refpos =  mapOrg2MSU7Pos2ConvertedPos.get( listOtherRefs.get(2));
-										MultiReferencePosition multiref = mapPos2Refpos.get(snppos.getPos()); 
+										MultiReferencePosition multiref = mapPos2Refpos.get(snppos.getPosition()); 
 										if(multiref==null) {
 											return "";
 										}
 										else {
-											return multiref.getRefcall();
+											return multiref.getRefnuc();
 										}
 								}
 								else if(index==0)
@@ -566,12 +566,12 @@ public class Object2StringMatrixModel<Head extends  List, Row extends List, Cell
 								if(index>=frozenCols) {
 									SnpsAllvarsPos snppos = data.getVariantStringData().getListPos().get(index-frozenCols);
 										Map<BigDecimal, MultiReferencePosition> mapPos2Refpos =  mapOrg2MSU7Pos2ConvertedPos.get( listOtherRefs.get(3));
-										MultiReferencePosition multiref = mapPos2Refpos.get(snppos.getPos()); 
+										MultiReferencePosition multiref = mapPos2Refpos.get(snppos.getPosition()); 
 										if(multiref==null) {
 											return "";
 										}
 										else {
-											return multiref.getRefcall();
+											return multiref.getRefnuc();
 										}
 								}
 								else if(index==0)

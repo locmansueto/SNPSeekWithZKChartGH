@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.irri.iric.portal.domain.Gene;
 import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.domain.Scaffold;
 
 /**
  * API functions used mostly by SNP Query Controller
@@ -28,7 +29,7 @@ public interface GenotypeFacade {
 	 * @author lmansueto
 	 *
 	 */
-	public static enum snpQueryMode { SNPQUERY_VARIETIES,  SNPQUERY_ALLVARIETIESPOS, } //SNPQUERY_ALLREFPOS,  }
+	public static enum snpQueryMode { SNPQUERY_VARIETIES,  SNPQUERY_ALLVARIETIESPOS } //SNPQUERY_ALLREFPOS,  }
 
 
 	public static final String strBlank = "";
@@ -175,6 +176,15 @@ public interface GenotypeFacade {
 	 * @return
 	 */
 	Integer getFeatureLength(String feature, String organism);
+
+	/**
+	 * Get  feature in organism
+	 * @param feature
+	 * @param organism
+	 * @return
+	 */
+	Scaffold getFeature(String feature, String organism);
+
 	
 	/**
 	 * Get gene loci for reference

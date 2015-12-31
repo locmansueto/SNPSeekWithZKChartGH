@@ -242,3 +242,15 @@ bin/flatfile-to-json.pl --gff loaded_gff/3kcoresnps.gff  --trackLabel snp3kcore 
 
 bin/flatfile-to-json.pl  --gff  ~lmansueto/osnippo/tr --nameAttributes "ID,Name,Note"  --type gene --trackLabel oryzabasetraitgenesv1  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'Oryzabase trait-associated genes' --metadata '{"description": "Trait-associated genes from Oryzabase.org" }'
 
+// index names
+bin/generate-names.pl --out 9311v1 --tracks 9311v1gff,9311v1rengff  --verbose --hashBits 16
+
+bin/generate-names.pl --out ir64v1 --tracks ir6421v1gff,ir6421v1gffv2  --hashBits 16
+bin/generate-names.pl --out kasv1  --tracks kasv1gffrap,kasv1gffrapv2  --hashBits 16
+bin/generate-names.pl --out 9311v1 --tracks 9311v1gff,9311v1gffv2  --hashBits 16
+bin/generate-names.pl --out dj123v1 --tracks dj123v1gff,dj123v1gffv2 --hashBits 16
+
+
+
+
+

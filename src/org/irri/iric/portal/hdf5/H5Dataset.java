@@ -15,7 +15,7 @@ import ncsa.hdf.object.h5.*;
 //import org.irri.iric.portal.AppContext;
 
 
-public abstract class H5Dataset implements SnpsStringDAO {
+public  class H5Dataset implements SnpsStringDAO {
 	
 	protected String filename;
 	private Dataset dataset;
@@ -59,13 +59,13 @@ public abstract class H5Dataset implements SnpsStringDAO {
 		this.filename = filename;
 		matrixReader = new H5ReadCharmatrix();
 		
-		//AppContext.debug( filename + " loaded");
 	}
 
 	public H5Dataset(String filename, H5ReadMatrix reader) {
 		super();
 		this.filename = filename;
 		matrixReader = reader;
+		
 	}
 
 	public Dataset getDataset() throws Exception {
@@ -116,6 +116,8 @@ public abstract class H5Dataset implements SnpsStringDAO {
 	@Override
 	public Map readSNPString(String chr,  int startIdx,  int endIdx) {
 		try {
+			
+		AppContext.debug("H5 querying all " + this.filename + " [" + startIdx + "-" + endIdx + "]  0-based");	
 		return matrixReader.read( this , new InputParamsIdxs(startIdx,endIdx)).getMapVar2String() ;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -126,6 +128,7 @@ public abstract class H5Dataset implements SnpsStringDAO {
 	@Override
 	public Map readSNPString(String chr,  int posIdxs[])  {
 		try {
+		AppContext.debug("H5 querying "  + this.filename + " " + posIdxs.length + " positions");
 		return matrixReader.read( this , new InputParamsIdxs(posIdxs)).getMapVar2String() ;
 	} catch (Exception ex) {
 		ex.printStackTrace();
@@ -146,6 +149,7 @@ public abstract class H5Dataset implements SnpsStringDAO {
 			varids[icount]=itVarid.next().intValue();
 			icount++;
 		}
+		AppContext.debug("H5 querying " + varids.length + " vars " + this.filename + " " + posIdxs.length + " positions");
 		return matrixReader.read( this , new InputParamsIdxs(posIdxs, varids)).getMapVar2String() ;
 	} catch (Exception ex) {
 		ex.printStackTrace();
@@ -166,6 +170,8 @@ public abstract class H5Dataset implements SnpsStringDAO {
 			varids[icount]=itVarid.next().intValue();
 			icount++;
 		}
+		
+		AppContext.debug("H5 querying " + varids.length + " vars " + this.filename + " [" + startIdx + "-" + endIdx + "]  0-based");	
 		return matrixReader.read( this , new InputParamsIdxs(startIdx, endIdx, varids)).getMapVar2String() ;
 	} catch (Exception ex) {
 		ex.printStackTrace();
@@ -187,6 +193,7 @@ public abstract class H5Dataset implements SnpsStringDAO {
 				varids[icount]=itVarid.next().intValue();
 				icount++;
 			}
+			AppContext.debug("H5 querying " + varids.length + " vars " + this.filename + " " + posidxstartend.length + " ranges");
 			return matrixReader.read( this , new InputParamsIdxs(posidxstartend, varids)).getMapVar2String() ;
 			
 		} catch (Exception ex) {
@@ -201,6 +208,7 @@ public abstract class H5Dataset implements SnpsStringDAO {
 		// TODO Auto-generated method stub
 		try {
 			// order varids based on file ordering for 1pass/smooth disk read
+			AppContext.debug("H5 querying " + this.filename + " " + posidxstartend.length + " ranges");
 			return matrixReader.read( this , new InputParamsIdxs(posidxstartend)).getMapVar2String() ;
 			
 		} catch (Exception ex) {

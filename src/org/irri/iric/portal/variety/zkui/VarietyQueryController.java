@@ -99,6 +99,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     private WorkspaceFacade workspace;
 
     
+    
     // hold form components
     @Wire
     private Window winVariety;
@@ -195,7 +196,8 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     @Wire
     private Button buttonDownloadVCF;
     
-    
+    @Wire
+    private Listbox listboxPtocoterm;
     
     @Listen("onClick = #buttonDownloadCSV")
     public void clickDownloadCSV() {
@@ -281,6 +283,46 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
     	Set setVarieties = new LinkedHashSet();
     	workspace.addVarietyList( txtboxListname.getValue().trim(), new LinkedHashSet(varsresult) );
     	txtboxListname.setValue("");
+    }
+    
+    
+    @Listen("onSelect = #listboxPtocoterm")
+    public void onselectPtocoterm() {
+    	variety =  (VarietyFacade)AppContext.checkBean(variety , "VarietyFacade");
+    	String term = this.listboxPtocoterm.getSelectedItem().getLabel();
+    	String cv="";
+    	
+    	List list=new ArrayList();
+    	if(term.isEmpty()) {
+    		// display all traits
+    		Set setPhenotype = variety.getPhenotypeDefinitions().keySet();
+    	    list.add("");
+            list.addAll( setPhenotype );
+    		
+    	} else {
+	    	String terms[] = term.split(":");
+	    	String terms2[] = terms[0].split("\\(");
+	    	if(terms2[1].contains("TO")) cv="plant_trait_ontology";
+	    	else if(terms2[1].contains("CO_")) cv="rice_trait";
+	    	term=terms2[0].trim();
+	    	list.add("");
+	    	list.addAll(variety.getPhenotypeByPtoco(cv , term));
+    	}
+    	
+    	if(listPhenotypeListbox.size()==0) {
+	    	this.listboxPhenotypes.setModel(new SimpleListModel(list));
+	    	listboxPhenotypes.setSelectedIndex(0);
+	    	//setPhenotypeConstraint();
+    	} else {
+    		ListboxPhenotype lastPhen =  listPhenotypeListbox.get(listPhenotypeListbox.size()-1);
+    		lastPhen.setModel(new SimpleListModel(list));
+    		lastPhen.setSelectedIndex(0);
+    		
+    		
+    		//lastPhen.onSelect();
+    	}
+    	
+    	AppContext.debug("getting phenototypes for " + cv + "  " + term + "  items=" + list.size());
     }
     
     /**

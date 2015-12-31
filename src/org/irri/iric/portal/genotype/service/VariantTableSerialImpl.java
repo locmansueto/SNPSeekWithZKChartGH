@@ -56,7 +56,7 @@ public class VariantTableSerialImpl implements VariantTable {
 			}
 			while(itPos.hasNext()) {
 				SnpsAllvarsPos posnuc=itPos.next();
-				buff1.append(posnuc.getPos());
+				buff1.append(posnuc.getPosition());
 				buff2.append(posnuc.getRefnuc());
 				poscount++;
 				if(itPos.hasNext()) {

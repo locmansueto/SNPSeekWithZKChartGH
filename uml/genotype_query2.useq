@@ -1302,9 +1302,7 @@
     <end type="SOURCE" refId="12"/>    
     <end type="TARGET" refId="60"/>  
   </message>  
-  <message id="61" 
-    operation="VariantSnpsStringData(java.util.Map&lt;java.math.BigDecimal,java.lang.Double&gt;,java.util.Map&lt;java.math.BigDecimal,java.lang.Integer&gt;,java.util.List&lt;org.irri.iric.portal.domain.SnpsAllvarsPos&gt;,java.util.List&lt;org.irri.iric.portal.domain.SnpsStringAllvars&gt;,java.lang.String,java.util.Map&lt;java.math.BigDecimal,java.util.Map&lt;org.irri.iric.portal.domain.Position,java.lang.Character&gt;&gt;,java.util.Map&lt;org.irri.iric.portal.domain.Position,java.util.Set&lt;java.lang.Character&gt;&gt;,java.util.Set&lt;org.irri.iric.portal.domain.Position&gt;,java.util.Set&lt;org.irri.iric.portal.domain.Position&gt;,java.util.Set&lt;org.irri.iric.portal.domain.Position&gt;)" 
-    asynchronous="false">    
+  <message id="61" asynchronous="false">    
     <end type="SOURCE" refId="12"/>    
     <end type="TARGET" refId="62"/>  
   </message>  
@@ -1416,11 +1414,11 @@
     <end type="SOURCE" refId="34"/>    
     <end type="TARGET" refId="110"/>  
   </message>  
-  <message id="111" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+  <message id="111" operation="getPosition():java.math.BigDecimal" asynchronous="false">    
     <end type="SOURCE" refId="34"/>    
     <end type="TARGET" refId="112"/>  
   </message>  
-  <message id="113" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+  <message id="113" operation="getPosition():java.math.BigDecimal" asynchronous="false">    
     <end type="SOURCE" refId="34"/>    
     <end type="TARGET" refId="114"/>  
   </message>  
@@ -1662,7 +1660,7 @@
     <end type="SOURCE" refId="34"/>    
     <end type="TARGET" refId="224"/>  
   </message>  
-  <message id="225" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+  <message id="225" operation="getPosition():java.math.BigDecimal" asynchronous="false">    
     <end type="SOURCE" refId="34"/>    
     <end type="TARGET" refId="226"/>  
   </message>  
@@ -1670,7 +1668,7 @@
     <end type="SOURCE" refId="34"/>    
     <end type="TARGET" refId="228"/>  
   </message>  
-  <message id="229" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+  <message id="229" operation="getPosition():java.math.BigDecimal" asynchronous="false">    
     <end type="SOURCE" refId="34"/>    
     <end type="TARGET" refId="230"/>  
   </message>  
@@ -1684,7 +1682,7 @@
     <end type="SOURCE" refId="34"/>    
     <end type="TARGET" refId="234"/>  
   </message>  
-  <message id="235" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+  <message id="235" operation="getPosition():java.math.BigDecimal" asynchronous="false">    
     <end type="SOURCE" refId="34"/>    
     <end type="TARGET" refId="236"/>  
   </message>  
@@ -1692,7 +1690,7 @@
     <end type="SOURCE" refId="34"/>    
     <end type="TARGET" refId="238"/>  
   </message>  
-  <message id="239" operation="getPos():java.math.BigDecimal" asynchronous="false">    
+  <message id="239" operation="getPosition():java.math.BigDecimal" asynchronous="false">    
     <end type="SOURCE" refId="34"/>    
     <end type="TARGET" refId="240"/>  
   </message>  
@@ -1772,7 +1770,7 @@
     <end type="SOURCE" refId="34"/>    
     <end type="TARGET" refId="278"/>  
   </message>  
-  <message id="279" operation="LinkedHashMap()" asynchronous="false">    
+  <message id="279" asynchronous="false">    
     <end type="SOURCE" refId="34"/>    
     <end type="TARGET" refId="280"/>  
   </message>  

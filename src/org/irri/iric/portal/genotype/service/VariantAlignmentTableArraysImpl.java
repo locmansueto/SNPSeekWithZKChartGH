@@ -195,13 +195,13 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 			while(itPos.hasNext()) {
 				SnpsAllvarsPos posnuc=itPos.next();
 				
-				MultiReferencePosition newpos = (MultiReferencePosition)mapPos2Newpos.get( posnuc.getPos() ); 
+				MultiReferencePosition newpos = (MultiReferencePosition)mapPos2Newpos.get( posnuc.getPosition() ); 
 				
 				if(newpos!=null) {
 					//posarr[poscount] = posnuc.getPos().doubleValue(); //.longValue();
 					//newref_posarr[newref_poscount] =  newpos.getPosition() ;
 					newref_posarr[newref_poscount] =  newpos; //.getPosition() ;
-					newref_refnuc[newref_poscount] =  newpos.getRefcall();  //posnuc.getRefnuc();
+					newref_refnuc[newref_poscount] =  newpos.getRefnuc();  //posnuc.getRefnuc();
 					//contigarr[newref_poscount] = newpos.getToContig();
 					newref_poscount++;
 				}  else {
@@ -262,9 +262,9 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 				int newref_poscount=0;
 				while(itPos.hasNext()) {
 					SnpsAllvarsPos posnuc=itPos.next();
-					MultiReferencePosition newpos = (MultiReferencePosition)mapPos.get( posnuc.getPos() ); 
+					MultiReferencePosition newpos = (MultiReferencePosition)mapPos.get( posnuc.getPosition() ); 
 					if(newpos!=null) {
-						allrefalleles[iref][newref_poscount] =  newpos.getRefcall();  //posnuc.getRefnuc();
+						allrefalleles[iref][newref_poscount] =  newpos.getRefnuc();  //posnuc.getRefnuc();
 					}  else {
 						allrefalleles[iref][newref_poscount] =  null;
 					}
@@ -426,7 +426,37 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 	
 	public List getCompare2VarsList(String chromosome, GenotypeQueryParams params) {
 		List list = new ArrayList();
-		if(allelestring.length==2) {
+		
+		AppContext.debug("getCompare2VarsList allelestring.length=" + allelestring.length);
+		
+		if(allelestring.length!=2) {
+			
+			String[] newvarnames = new String[2];
+			Long[] newvarids = new Long[2];
+			Double[] newvarmismatch = new Double[2];
+			String[][] newallelestring = new String[2][data.getListPos().size()];
+			
+			int varcount=0;
+			for(int ivar=0; ivar<varids.length; ivar++ ) {
+				if(!params.getColVarIds().contains( BigDecimal.valueOf(varids[ivar]))) continue;
+				
+				newvarnames[varcount]=varnames[ivar];
+				newvarids[varcount] =varids[ivar];
+				newvarmismatch[varcount] = varmismatch[ivar];
+				newallelestring[varcount] =allelestring[ivar];
+				varcount++;
+				
+				if(varcount==2) break;
+			}
+			varnames=newvarnames;
+			varids=newvarids;
+			varmismatch=newvarmismatch;
+			allelestring=newallelestring;
+			AppContext.debug("getCompare2VarsList allelestring.length=" + allelestring.length);
+		}
+
+
+		if(true) {
 			
 			String npbContig="";
 			if(params.isbShowNPBPositions()) {
@@ -450,7 +480,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 							if(!allelestring[0][ipos].equals(allelestring[1][ipos])) {
 								if(params.isbShowNPBPositions()) {
 									SnpsAllvarsPos snppos = data.getListPos().get(ipos);
-									list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPos(), snppos.getRefnuc(), 
+									list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPosition(), snppos.getRefnuc(), 
 											this.allelestring[0][ipos], this.allelestring[1][ipos]} );
 								}
 								else list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
@@ -470,7 +500,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 								) {
 								if(params.isbShowNPBPositions()) {
 									SnpsAllvarsPos snppos = data.getListPos().get(ipos);
-									list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPos(), snppos.getRefnuc(), 
+									list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPosition(), snppos.getRefnuc(), 
 											this.allelestring[0][ipos], this.allelestring[1][ipos]} );
 								}
 								else list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
@@ -485,7 +515,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 							if(!allelestring[0][ipos].equals(allelestring[1][ipos])) {
 								if(params.isbShowNPBPositions()) {
 									SnpsAllvarsPos snppos = data.getListPos().get(ipos);
-									list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPos(), snppos.getRefnuc(), 
+									list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPosition(), snppos.getRefnuc(), 
 											this.allelestring[0][ipos], this.allelestring[1][ipos]} );
 								}
 								else list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
@@ -497,7 +527,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 					for(int ipos=0; ipos<this.posarr.length; ipos++) {
 						if(params.isbShowNPBPositions()) {
 							SnpsAllvarsPos snppos = data.getListPos().get(ipos);
-							list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPos(), snppos.getRefnuc(), 
+							list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPosition(), snppos.getRefnuc(), 
 									this.allelestring[0][ipos], this.allelestring[1][ipos]} );
 						}
 						else list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 

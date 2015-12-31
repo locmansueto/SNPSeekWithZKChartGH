@@ -18,12 +18,12 @@ import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.irri.iric.portal.AppContext;
-
 import org.irri.iric.portal.chado.oracle.domain.VLocusMergedNotes;
 import org.irri.iric.portal.chado.oracle.domain.VLocusNotes;
 import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.dao.LocusCvTermDAO;
 import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.domain.Organism;
 import org.irri.iric.portal.domain.Snps2VarsCountmismatch;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -504,7 +504,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 		
 		String locusmapping="";
 		String locuspref="";
-		if(genemodel.equals( LocusCvTermDAO.GENEMODEL_ALL)) {
+		if(genemodel.equals( LocusCvTermDAO.GENEMODEL_ALL)  || !organism.equals(Organism.REFERENCE_NIPPONBARE) ) {
 			return  getLocusByDescription( description, organism);
 		}
 		else if(genemodel.equals( LocusCvTermDAO.GENEMODEL_IRIC)) {
@@ -600,8 +600,14 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 		// TODO Auto-generated method stub
 		
 		// use left join to include even without description
+		
+		String notes="'' notes";
+		if(organism.equals(Organism.REFERENCE_NIPPONBARE))
+			notes= "dbms_lob.substr(f3.value,1000,1) notes";
+		
 
-		String sql = "select distinct f.feature_id, f.name name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, dbms_lob.substr(f3.value,1000,1) notes, f.organism_id, o.common_name "
+		String sql = "select distinct f.feature_id, f.name name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, " + notes + ", f.organism_id, o.common_name "
+				+ ", f.name iric, '' as msu7, '' as rap_rep, '' as rap_pred, '' as fgenesh" 
 		  + " from iric.featureloc fl,  iric.feature fsrc, iric.organism o, iric.cvterm cvtype, iric.feature f"   
 		  + " left join ( select f2.feature_id, fp.value from iric.featureprop fp, iric.cvterm cv, iric.feature f2" 
 		         + " where fp.feature_id=f2.feature_id and  fp.type_id=cv.cvterm_id and cv.name='Note') f3"
@@ -618,7 +624,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 			+ " order by contig_name, fmin, fmax";
 		         
 
-		return executeSQL(sql);
+		return executeSQLMerged(sql);
 	}
 
 	@Override
@@ -630,7 +636,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 		
 		String locusmapping="";
 		String locuspref="";
-		if(genemodel.equals( LocusCvTermDAO.GENEMODEL_ALL)) {
+		if(genemodel.equals( LocusCvTermDAO.GENEMODEL_ALL) || !organism.equals(Organism.REFERENCE_NIPPONBARE) ) {
 			return  getLocusByRegion( contig,  start,  end, organism);
 		}
 		else if(genemodel.equals( LocusCvTermDAO.GENEMODEL_IRIC)) {
@@ -797,7 +803,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 		
 		String locusmapping="";
 		String locuspref="";
-		if(genemodel.equals( LocusCvTermDAO.GENEMODEL_ALL)) {
+		if(genemodel.equals( LocusCvTermDAO.GENEMODEL_ALL) || !organism.equals(Organism.REFERENCE_NIPPONBARE) ) {
 			return  _getLocusByContigPositions( contig,  posset,  organism, null);
 		}
 		else if(genemodel.equals( LocusCvTermDAO.GENEMODEL_IRIC)) {

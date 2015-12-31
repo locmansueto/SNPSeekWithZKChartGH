@@ -7,14 +7,9 @@ import java.math.BigDecimal;
  * @author LMansueto
  *
  */
-public interface SnpsSynAllele {
+public interface SnpsSynAllele extends Snp {
 	
-	/**
-	 * SNP fetaure ID
-	 * @return
-	 */
-	BigDecimal getSnp();
-	
+
 	/**
 	 * synonymous allele
 	 * @return

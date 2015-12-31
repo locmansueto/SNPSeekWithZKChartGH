@@ -39,11 +39,11 @@ public class IndelsAllvarsPosAlleleImpl implements IndelsAllvarsPos {
 		this.maxdellength=maxdellength;
 	}
 
-	@Override
-	public BigDecimal getPos() {
-		// TODO Auto-generated method stub
-		return pos;
-	}
+//	@Override
+//	public BigDecimal getPosition() {
+//		// TODO Auto-generated method stub
+//		return pos;
+//	}
 
 	@Override
 	public String getRefnuc() {
@@ -167,11 +167,11 @@ public class IndelsAllvarsPosAlleleImpl implements IndelsAllvarsPos {
 		return this.pos;
 	}
 
-	@Override
-	public String getRefcall() {
-		// TODO Auto-generated method stub
-		return this.refnuc;
-	}
+//	@Override
+//	public String getRefnuc() {
+//		// TODO Auto-generated method stub
+//		return this.refnuc;
+//	}
 
 	@Override
 	public int compareTo(Object o) {

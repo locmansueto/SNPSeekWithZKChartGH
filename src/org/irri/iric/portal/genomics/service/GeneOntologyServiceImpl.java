@@ -16,6 +16,7 @@ import org.irri.iric.portal.genomics.GeneOntologyService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.*;
 
@@ -27,9 +28,8 @@ import java.util.List;
 
 @Service("GeneOntologyService")
 public class GeneOntologyServiceImpl implements GeneOntologyService{
-
 	@Autowired
-	//@Qualifier("CvTermPathDAO")
+	@Qualifier("VGoCvtermpathDAO")
 	private CvTermPathDAO cvtermpathDAO;
 	@Autowired
 	private  CvTermLocusCountDAO cvtermlocuscountdao;

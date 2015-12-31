@@ -39,8 +39,8 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage VConvertposNb2allrefs entities.
  * 
  */
-//@Repository("VConvertposNb2allrefsDAO")
-@Repository("MultipleReferenceConverterDAO")
+@Repository("VConvertposNb2allrefsDAO")
+//@Repository("MultipleReferenceConverterDAO")
 @Transactional
 public class VConvertposNb2allrefsDAOImpl extends AbstractJpaDao<VConvertposNb2allrefs>
 		implements VConvertposNb2allrefsDAO {
@@ -420,6 +420,7 @@ public class VConvertposNb2allrefsDAOImpl extends AbstractJpaDao<VConvertposNb2a
 		// TODO Auto-generated method stub
 		
 		if(origMultiReferenceLocus!=null)  throw new RuntimeException("origMultiReferenceLocus!=null: " + origMultiReferenceLocus);
+		//if(npbMultirefLocus!=null)  throw new RuntimeException("npbMultirefLocus!=null: " + npbMultirefLocus);
 		if(toContig!=null)  throw new RuntimeException("toContig!=null: " + toContig);
 		if(isOtherRefs)  throw new RuntimeException("toContig!=null: " + toContig);
 		
@@ -514,10 +515,10 @@ public class VConvertposNb2allrefsDAOImpl extends AbstractJpaDao<VConvertposNb2a
 			}
 			
 		}
-		variantstringdataNPB.addMapOrg2MSU7PosConverterPos(Organism.REFERENCE_9311, mapMSU7Pos2ConvertedPos_9311, npbcontig.getName());
-		variantstringdataNPB.addMapOrg2MSU7PosConverterPos(Organism.REFERENCE_IR64, mapMSU7Pos2ConvertedPos_IR64, npbcontig.getName());
-		variantstringdataNPB.addMapOrg2MSU7PosConverterPos(Organism.REFERENCE_DJ123, mapMSU7Pos2ConvertedPos_DJ123, npbcontig.getName());
-		variantstringdataNPB.addMapOrg2MSU7PosConverterPos(Organism.REFERENCE_KASALATH, mapMSU7Pos2ConvertedPos_Kas, npbcontig.getName());
+		variantstringdataNPB.addMapOrg2RefPosConverterPos(Organism.REFERENCE_9311, mapMSU7Pos2ConvertedPos_9311, npbcontig.getName());
+		variantstringdataNPB.addMapOrg2RefPosConverterPos(Organism.REFERENCE_IR64, mapMSU7Pos2ConvertedPos_IR64, npbcontig.getName());
+		variantstringdataNPB.addMapOrg2RefPosConverterPos(Organism.REFERENCE_DJ123, mapMSU7Pos2ConvertedPos_DJ123, npbcontig.getName());
+		variantstringdataNPB.addMapOrg2RefPosConverterPos(Organism.REFERENCE_KASALATH, mapMSU7Pos2ConvertedPos_Kas, npbcontig.getName());
 		
 		
 		return variantstringdataNPB;

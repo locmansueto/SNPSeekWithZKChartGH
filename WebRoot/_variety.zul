@@ -7,18 +7,10 @@ window.Boot_progressbox = function (){}
 ]]>?>
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/template.zul"?>
 <zk>
- 		<zscript>         
- 			String varietyview="";
-	        String varid=Executions.getCurrent().getParameter("irisid");
-	        if(varid==null || varid.isEmpty())
-	        { 
-		        String name=Executions.getCurrent().getParameter("name");
-		        if(name==null || name.isEmpty()) 
-		        	varietyview="";
-		        else
-		        	varietyview="?name=" + name;
-	        } else
-	        	varietyview="?irisid=" + varid;
+ 		<zscript>
+ 			import org.irri.iric.portal.AppContext;
+	        String varietyview="";
+	        varietyview=AppContext.convertParams2URL(Executions.getCurrent().getParameterMap());	
         </zscript>
         
     <include self="@define(content)" src="/variety.zul${varietyview}"/>

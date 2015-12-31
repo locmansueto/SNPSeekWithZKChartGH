@@ -972,14 +972,14 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 	        			
 			        	Iterator<SnpsAllvarsPos> itSnpsDB = genotype.checkSNPInChromosome(chr, setSNP,  SnpsAllvarsPosDAO.TYPE_3KALLSNP ).iterator();
 			        	while(itSnpsDB.hasNext()) {
-			        		BigDecimal ipos= itSnpsDB.next().getPos();
+			        		BigDecimal ipos= itSnpsDB.next().getPosition();
 			        		setSNPDBPos.add(  new  MultiReferencePositionImplAllelePvalue(organism, chr, ipos, mapPos2Allele.get(ipos), mapPos2Pvalue.get(ipos)));
 			        	}
 			        	
 			        	
 			        	Iterator<SnpsAllvarsPos> itCoreSnpsDB = genotype.checkSNPInChromosome(chr, setSNP,  SnpsAllvarsPosDAO.TYPE_3KCORESNP ).iterator();
 			        	while(itCoreSnpsDB.hasNext()) {
-			        		BigDecimal ipos= itCoreSnpsDB.next().getPos();
+			        		BigDecimal ipos= itCoreSnpsDB.next().getPosition();
 			        		setCoreSNPDBPos.add(  new  MultiReferencePositionImplAllelePvalue(organism, chr, ipos, mapPos2Allele.get(ipos), mapPos2Pvalue.get(ipos)));
 			        	}
 			        	
@@ -1003,11 +1003,11 @@ public class WorkspaceController  extends SelectorComposer<Component> {
 	        		
 			        	Iterator<SnpsAllvarsPos> itSnpsDB = genotype.checkSNPInChromosome(chr, setSNP,  SnpsAllvarsPosDAO.TYPE_3KALLSNP ).iterator();
 			        	while(itSnpsDB.hasNext()) {
-			        		setSNPDBPos.add(  new  MultiReferencePositionImpl(organism, chr, itSnpsDB.next().getPos()));
+			        		setSNPDBPos.add(  new  MultiReferencePositionImpl(organism, chr, itSnpsDB.next().getPosition()));
 			        	}
 			        	Iterator<SnpsAllvarsPos> itCoreSnpsDB = genotype.checkSNPInChromosome(chr, setSNP,  SnpsAllvarsPosDAO.TYPE_3KCORESNP ).iterator();
 			        	while(itCoreSnpsDB.hasNext()) {
-			        		setCoreSNPDBPos.add(  new  MultiReferencePositionImpl(organism, chr, itCoreSnpsDB.next().getPos()));
+			        		setCoreSNPDBPos.add(  new  MultiReferencePositionImpl(organism, chr, itCoreSnpsDB.next().getPosition()));
 			        	}
 			        	Iterator<BigDecimal> itPos = setSNP.iterator();
 			        	while(itPos.hasNext()) {
@@ -1047,7 +1047,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
         	Set<BigDecimal> setSNPDBPos = new HashSet();
         	Iterator<SnpsAllvarsPos> itSnpsDB = genotype.checkSNPInChromosome(selectChromosome.getSelectedItem().getLabel(), setSNP,  SnpsAllvarsPosDAO.TYPE_3KALLSNP ).iterator();
         	while(itSnpsDB.hasNext()) {
-        		setSNPDBPos.add( itSnpsDB.next().getPos() );
+        		setSNPDBPos.add( itSnpsDB.next().getPosition() );
         	}
         	
         	//AppContext.displayCollection("setSNPDBPos", setSNPDBPos);
@@ -1056,7 +1056,7 @@ public class WorkspaceController  extends SelectorComposer<Component> {
         	Set<BigDecimal> setCoreSNPDBPos = new HashSet();
         	Iterator<SnpsAllvarsPos> itCoreSnpsDB = genotype.checkSNPInChromosome(selectChromosome.getSelectedItem().getLabel(), setSNP, SnpsAllvarsPosDAO.TYPE_3KCORESNP ).iterator();
         	while(itCoreSnpsDB.hasNext()) {
-        		setCoreSNPDBPos.add( itCoreSnpsDB.next().getPos() );
+        		setCoreSNPDBPos.add( itCoreSnpsDB.next().getPosition() );
         	}
 
         	//AppContext.displayCollection("setCoreSNPDBPos", setCoreSNPDBPos);

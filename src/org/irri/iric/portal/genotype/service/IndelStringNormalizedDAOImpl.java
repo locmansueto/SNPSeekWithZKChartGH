@@ -232,7 +232,7 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 				listRef.add( snppos.getRefnuc());
 				indxs[indxscount] =  snppos.getAlleleIndex().intValue();
 				mapSnpid2TableIdx.put(snppos.getSnpFeatureId(), indxscount);
-				mapIdx2Pos.put(indxscount, snppos.getPos());
+				mapIdx2Pos.put(indxscount, snppos.getPosition());
 				mapIdx2SnpRefposindex.put(indxscount, snppos);
 				
 				if(indxs[indxscount]==(previdx+1)) {
@@ -285,7 +285,7 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 		Iterator<SnpsAllvarsPos> itmapAlleleId2Indel=listPos.iterator();
 		while(itmapAlleleId2Indel.hasNext()) {
 			SnpsAllvarsPos pos=itmapAlleleId2Indel.next();
-			mappos2indelpos.put(pos.getContig() +"-" + pos.getPos(), pos);
+			mappos2indelpos.put(pos.getContig() +"-" + pos.getPosition(), pos);
 		}
 		
 		

@@ -130,11 +130,6 @@ public class VSnpRefposindex implements Serializable , SnpsAllvarsPos, Comparabl
 		this.position = position;
 	}
 
-	/**
-	 */
-	public BigDecimal getPosition() {
-		return this.position;
-	}
 
 	/**
 	 */
@@ -234,7 +229,7 @@ public class VSnpRefposindex implements Serializable , SnpsAllvarsPos, Comparabl
 	
 
 	@Override
-	public BigDecimal getPos() {
+	public BigDecimal getPosition() {
 		// TODO Auto-generated method stub
 		return getPosition();
 	}

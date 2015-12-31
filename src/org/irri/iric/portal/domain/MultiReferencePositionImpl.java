@@ -74,7 +74,7 @@ public class MultiReferencePositionImpl implements MultiReferencePosition, Compa
 	}
 
 	@Override
-	public String getRefcall() {
+	public String getRefnuc() {
 		// TODO Auto-generated method stub
 		return refcall;
 	}

@@ -108,6 +108,7 @@ public class VarietiesGenotypeSNPsIndelServiceImpl implements VarietiesGenotypeS
 		params.setsSubpopulation(null);
 		
 		//params.setbMismatchonly(false);
+		
 		return queryVariantStringData(params);
 	}
 	
@@ -261,6 +262,7 @@ public class VarietiesGenotypeSNPsIndelServiceImpl implements VarietiesGenotypeS
 		variantMerged.setSnpstringdata( (VariantSnpsStringData)variantssnps);
 		variantMerged.setIndelstringdata( (VariantIndelStringData)variantsindels );
 		variantMerged.merge();
+		
 		
 		return variantMerged;
 		

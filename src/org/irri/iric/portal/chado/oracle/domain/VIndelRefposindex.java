@@ -141,17 +141,7 @@ public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 		this.position = position;
 	}
 
-	/**
-	 */
-	public BigDecimal getPosition() {
-		return this.position;
-	}
 
-	/**
-	 */
-	public void setRefcall(String refcall) {
-		this.refcall = refcall;
-	}
 
 	/**
 	 */
@@ -232,7 +222,7 @@ public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 		setIndelFeatureId(that.getIndelFeatureId());
 		setChromosome(that.getChromosome());
 		setPosition(that.getPosition());
-		setRefcall(that.getRefcall());
+
 		setAltcall(that.getAltcall());
 		setTypeId(that.getTypeId());
 		setAlleleIndex(that.getAlleleIndex());
@@ -299,7 +289,7 @@ public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 	}
 
 	@Override
-	public BigDecimal getPos() {
+	public BigDecimal getPosition() {
 		// TODO Auto-generated method stub
 		return this.position;
 	}

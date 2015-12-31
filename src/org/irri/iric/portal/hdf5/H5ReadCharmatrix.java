@@ -286,8 +286,11 @@ public class H5ReadCharmatrix implements H5ReadMatrix {
 		       } catch (Exception ex) {
 		    	   ex.printStackTrace();
 		       }
-		       if(dataRead==null)
+		       if(dataRead==null) {
+		    	   long maxdims[] = dataset.getMaxDims();
+		    	   AppContext.debug("read=null for " + hfdata.filename +  " " + maxdims[0] +"x" + maxdims[1] + "  [" + input.startPosidx + "-" + input.endPosidx + "]");
 		    	   throw new RuntimeException("dataRead=null");
+		       }
 		       for (int i = 0; i < rows ; i++) {
 		    	   if(setVarsIds!=null && !setVarsIds.contains(i+1+start_var)) continue;
 			       	String s = new String( java.util.Arrays.copyOfRange(dataRead, i * cols, i * cols+ cols ) );

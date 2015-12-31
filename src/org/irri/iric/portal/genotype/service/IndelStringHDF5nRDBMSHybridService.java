@@ -230,7 +230,7 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 			// get reference sequence of the region
 			String subseq = "";
 			try {
-				subseq = indelSequenceDAO.getSubSequence(chr,  indelstringnormalizeddao.getListPos().get(0).getPos().longValue() , end+10000, organismId);
+				subseq = indelSequenceDAO.getSubSequence(chr,  indelstringnormalizeddao.getListPos().get(0).getPosition().longValue() , end+10000, organismId);
 				AppContext.debug( "indelsequence length=" + subseq.length() );
 			} catch(Exception ex) {
 				ex.printStackTrace();
@@ -243,7 +243,7 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 			Iterator<IndelsAllvarsPos> itIndels =  mapIndelId2Indel.values().iterator();
 			while(itIndels.hasNext()) {
 				IndelsAllvarsPos indelpos = itIndels.next(); 
-				Set setalleles = mapPos2Allele.get(indelpos.getPos());
+				Set setalleles = mapPos2Allele.get(indelpos.getPosition());
 				if(setalleles==null) {
 					setalleles = new TreeSet();
 					mapPos2Allele.put(indelpos , setalleles);
@@ -312,9 +312,9 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 										char element2 = mapPos2allele2.get(pos);
 										if(element2!='0' && element2!='.' && element2!=' ' && element2!='*' && element2!=element) {
 											SnpsAllvarsPos  snppos = varstringdata.getListPos().get(iCols);
-											if(snppos.getRefcall().charAt(0)==element) 
+											if(snppos.getRefnuc().charAt(0)==element) 
 												buff.append(element) .append("/").append(element2);
-											else if(snppos.getRefcall().charAt(0)==element2)
+											else if(snppos.getRefnuc().charAt(0)==element2)
 												buff.append(element2) .append("/").append(element);
 											else {
 												if(element2>element) 
@@ -373,9 +373,9 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 							if(element2!='0' && element2!='.' && element2!=' ' && element2!='*' && element2!=element && element2!='?') {
 								
 								SnpsAllvarsPos  snppos = varstringdata.getListPos().get(iCols);
-								if(snppos.getRefcall().charAt(0)==element) 
+								if(snppos.getRefnuc().charAt(0)==element) 
 									buff.append(element) .append("/").append(element2);
-								else if(snppos.getRefcall().charAt(0)==element2)
+								else if(snppos.getRefnuc().charAt(0)==element2)
 									buff.append(element2) .append("/").append(element);
 								else {
 									if(element2>element) 
@@ -468,9 +468,9 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 									buffGap.append(alleles1);
 								} else {
 									SnpsAllvarsPos  snppos = varstringdata.getListPos().get(iCols);
-									if(snppos.getRefcall().equals(alleles1))
+									if(snppos.getRefnuc().equals(alleles1))
 										buffGap.append(alleles1).append("/").append(alleles2);
-									else if(snppos.getRefcall().equals(alleles2))
+									else if(snppos.getRefnuc().equals(alleles2))
 										buffGap.append(alleles2).append("/").append(alleles1);
 									else {
 									if(alleles2.compareTo(alleles1)>0) 
@@ -510,9 +510,9 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 									//buff.append("/").append(INDEL_GAP);
 									if(!alleles1.equals(INDEL_GAP)) {
 										SnpsAllvarsPos  snppos = varstringdata.getListPos().get(iCols);
-										if(snppos.getRefcall().equals(alleles1) )
+										if(snppos.getRefnuc().equals(alleles1) )
 											buffGap.append(alleles1).append("/").append(INDEL_GAP);
-										else if(snppos.getRefcall().equals(INDEL_GAP) )
+										else if(snppos.getRefnuc().equals(INDEL_GAP) )
 											buffGap.append(INDEL_GAP).append("/").append(alleles1);
 										else {
 											if(alleles1.compareTo(INDEL_GAP)>0) 
@@ -591,9 +591,9 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 												
 												
 												SnpsAllvarsPos  snppos = varstringdata.getListPos().get(iCols);
-												if(snppos.getRefcall().equals(snpAllele1)) 
+												if(snppos.getRefnuc().equals(snpAllele1)) 
 													buffSNP.append(snpAllele1) .append("/").append(snpAllele2);
-												else if(snppos.getRefcall().equals(snpAllele2))
+												else if(snppos.getRefnuc().equals(snpAllele2))
 													buffSNP.append(snpAllele2) .append("/").append(snpAllele1);
 												else {
 													if(snpAllele1.compareTo(snpAllele2)>0) 
@@ -808,9 +808,9 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 											char element2 = mapPos2allele2.get(pos);
 											
 											SnpsAllvarsPos  snppos = varstringdata.getListPos().get(iCols);
-											if(snppos.getRefcall().charAt(0)==element) 
+											if(snppos.getRefnuc().charAt(0)==element) 
 												buff.append(element) .append("/").append(element2);
-											else if(snppos.getRefcall().charAt(0)==element2)
+											else if(snppos.getRefnuc().charAt(0)==element2)
 												buff.append(element2) .append("/").append(element);
 											else {
 												
@@ -833,11 +833,11 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 				if(finalallele.length()==0) {
 					VariantIndelStringData indelstrdata= varstringdata.getIndelstringdata();
 					if( indelstrdata!=null &&  indelstrdata.getSetPosGapRegion().contains(pos)) {
-						finalallele=pos.getRefcall();
+						finalallele=pos.getRefnuc();
 						AppContext.debug("var=" + snpstr.getVar() + " gap at pos=" + pos.getPosition() + " buff=" + buff);
 					}
 					if( indelstrdata!=null &&  indelstrdata.getSetPosDeletionRegion().contains(pos)) {
-						finalallele=pos.getRefcall();
+						finalallele=pos.getRefnuc();
 						AppContext.debug("var=" + snpstr.getVar() + " deletion at pos=" + pos.getPosition() + " buff=" + buff);
 					}
 				}

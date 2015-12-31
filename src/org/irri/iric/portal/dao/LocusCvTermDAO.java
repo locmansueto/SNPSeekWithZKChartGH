@@ -10,6 +10,11 @@ public interface LocusCvTermDAO {
 	public static String GENEMODEL_RAP="rap";
 	public static String GENEMODEL_FGENESH="fgenesh";
 	
+	public static String QTL_ALL="all";
+	public static String QTL_QTARO="qtaro";
+	public static String QTL_GRAMENE="gramene";
+
+	
 	/**
 	 * Get locus with CV term in organism and CV
 	 * @param desc

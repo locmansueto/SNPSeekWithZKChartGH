@@ -28,18 +28,36 @@
 		</menu>			
 		<menu label="Browse" src="/images/iric/browse6.png">
 			<menupopup>
-				<menuitem src="/images/iric/genome1.png" label="Genome" href="_jbrowse.zul?tracks=${paramstr}"/>
+			
+
+				<menu label="Genome" src="/images/iric/genome1.png">
+					<menupopup>
+					<menuitem src="/images/iric/genome1.png" label="Nipponbare" href="_jbrowse.zul?tracks=${paramstr}"/>
+					<menuitem src="/images/iric/genome1.png" label="93-11" href="_jbrowse.zul?data=9311v1&amp;tracks=DNA,9311v1gffv2"/>
+					<menuitem src="/images/iric/genome1.png" label="IR64-21" href="_jbrowse.zul?data=ir6421v1&amp;tracks=DNA,ir6421v1gffv2"/>
+					<menuitem src="/images/iric/genome1.png" label="Kasalath" href="_jbrowse.zul?data=kasv1&amp;tracks=DNA,kav1gffrapv2"/>
+					<menuitem src="/images/iric/genome1.png" label="DJ123" href="_jbrowse.zul?data=dj123v1&amp;tracks=DNA,dj123v1gffv2"/>
+					</menupopup>
+				</menu>
 				<!-- menuitem src="/images/iric/tree1.png" label="Tree (static)" href="_phylotree.zul"/ -->
 				<!--  menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Tree (dynamic)" href="_phylotreedyn.zul"/ -->
 				
 				<!--  menuitem src="/images/iric/tree1.png" label="Tree (dynamic)" target="_blank" href="jsp/phylotreeGermplasms.jsp?scale=1&amp;varid=all"/ -->
 				<!--  menuitem src="/images/iric/tree1.png" label="Phylogenetic Tree (dynamic)" href="_phylotreedyn.zul"/ -->
-				<menuitem src="/images/iric/tree1.png" label="Phylogenetic Tree" href="_variety.zul?irisid=alltree"/>
+
+
+				<menu label="Phylogenetic tree" src="/images/iric/tree1.png">
+					<menupopup>
+					<menuitem src="/images/iric/tree1.png" label="K9 groups" href="_variety.zul?irisid=alltree"/>
+					<menuitem src="/images/iric/tree1.png" label="K15 groups" href="_variety.zul?irisid=alltree2"/>
+					</menupopup>
+				</menu>				
+				
 				<menuitem src="/images/iric/mds_plot.png" label="MDS Plot" href="_variety.zul?irisid=allmds"/>
 				<!--  menuitem src="/images/iric/mds_plot.png" label="GWAS Plots" href="_gwas.zul"/ -->
 
 <!--  base nippo 4143, 9311 4144, 1r64 4146, kasalath 3591, dj123 4153 -->
-		<!-- menu label="Genome alignments" src="/images/iric/synteny.png">
+		<menu label="Genome alignments" src="/images/iric/synteny.png">
 			<menupopup>
 				<menuitem label="Select Reference" disabled="true"/>
 				<menuseparator/>
@@ -71,7 +89,6 @@
 						<menuseparator/>
 						<menuitem  src="/images/iric/var5.png"  label="Kasalath" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=35323-HjDgoi3o"/>
 						<menuitem src="/images/iric/var5.png"  label="DJ123" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=36564-IOIuXPnh"/>
-
 						<menuitem  src="/images/iric/var5.png" label="Nipponbare" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=37870-HIlpnZhn&amp;base=4146"/>
 						<menuitem  src="/images/iric/var5.png" label="93-11" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=36371-uPgcWnIQ&amp;base=4146"/>
 					</menupopup>
@@ -101,7 +118,7 @@
 					</menupopup>
 				</menu>
 			</menupopup>
-		</menu -->
+		</menu>
 
 			</menupopup>
 		</menu>
@@ -127,8 +144,13 @@
 </div>
 
 <div style="background-color:green;color:green">
-<vbox height="20px" width="100%">
-</vbox>
+<!--  vbox height="20px" width="100%"/ -->
+
+<vbox width="100%" height="3px"/>
+<hbox align="center" pack="center">
+<vbox width="600px"/><label value="SITE IS CURRENTLY UNDER MAINTENANCE" style="font-size:13px;color:white"/>
+</hbox>
+<vbox width="100%" height="3px"/>
 </div>
 
 

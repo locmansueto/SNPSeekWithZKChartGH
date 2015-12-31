@@ -23,12 +23,12 @@ public class SnpsAllvarsPosImpl implements SnpsAllvarsPos, Comparable {
 		this.refnuc = refnuc;
 		this.contig= contig;
 	}
-
-	@Override
-	public BigDecimal getPos() {
-		// TODO Auto-generated method stub
-		return pos;
-	}
+//
+//	@Override
+//	public BigDecimal getPosition() {
+//		// TODO Auto-generated method stub
+//		return pos;
+//	}
 
 	@Override
 	public String getRefnuc() {
@@ -104,14 +104,14 @@ public class SnpsAllvarsPosImpl implements SnpsAllvarsPos, Comparable {
 	@Override
 	public BigDecimal getPosition() {
 		// TODO Auto-generated method stub
-		return this.getPos();
+		return this.pos;
 	}
 
-	@Override
-	public String getRefcall() {
-		// TODO Auto-generated method stub
-		return this.refnuc;
-	}
+//	@Override
+//	public String getRefnuc() {
+//		// TODO Auto-generated method stub
+//		return this.refnuc;
+//	}
 
 	@Override
 	public boolean equals(Object obj) {

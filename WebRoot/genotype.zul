@@ -357,23 +357,23 @@ function doPosition() {
 				<!--  *********************   REFERENCE GENOME SELECTION  ************************************* -->
 				
 				
-            	<hbox visible="false">				            
+            	<hbox visible="true">				            
             	<label>Reference:</label>
-            	<listbox id="listboxReference" mold="select" rows="1" disabled="true"/>
+            	<listbox id="listboxReference" mold="select" rows="1" disabled="false" tooltip="popupReference"/>
             		<zscript><![CDATA[
 			    	    	listboxReference.setModel(new SimpleListModel(listReference));
 			    	    	listboxReference.setSelectedIndex(0);
 			   			]]></zscript>
 
             	<vbox width="10px"/>
-           		<!--  label pre="true">Show all reference alleles</label>
-           		<checkbox id="checkboxShowAllRefAlleles" / -->
+           		<label pre="true"  tooltip="popupShowallrefalleles">Show all reference alleles</label>
+           		<checkbox id="checkboxShowAllRefAlleles" />
 			   			
             	<vbox width="10px"/>
             	
             	<div id="divShowNPBPositions" visible="false">
             		<hbox>
-            		<label pre="true">Show Nipponbare positions</label>
+            		<label pre="true" >Show Nipponbare positions</label>
             		<checkbox id="checkboxShowNPBPosition" />
             		</hbox>
             	</div>	
@@ -423,7 +423,7 @@ function doPosition() {
 				        ListModel geneComboModel= new SimpleListModel(genenames);
 				        comboGene.setModel(geneComboModel);
 				    ]]></zscript>		
-				    <label id="labelLocusExample" pre="true" value="(ex. loc_os01g01010) " style="font-size:10px"/>
+				    <label id="labelLocusExample" pre="true" value="(ex. loc_os01g01010) " style="font-size:9px"/>
 				    
 					<label>SNP List</label>
 					<listbox id="listboxMySNPList" mold="select" tooltip="popupMySNPList"  width="100px" />
@@ -505,8 +505,8 @@ function doPosition() {
 				    	    	listboxPhenotype.setModel(new SimpleListModel(listPhenotype));
 				   			]]></zscript>
 						</div>
-         				<label pre="true" value="  Show all reference alleles" style="font-weight:bold;" tooltip="popupShowallrefalleles"/>
-           				<checkbox id="checkboxShowAllRefAlleles"/>
+         				<!--  label pre="true" value="  Show all reference alleles" style="font-weight:bold;" tooltip="popupShowallrefalleles"/>
+           				<checkbox id="checkboxShowAllRefAlleles"/ -->
            		
          			</hbox>
 
@@ -626,7 +626,7 @@ function doPosition() {
             <tab id="tabMSA" label="Alignment"  visible="false"/>  
             <tab id="tabVista" label="Compare genomes" visible="false"/>  
             <tab id="tabVistaRev" label="Compare rev genomes" visible="false"/>
-            <tab id="tabVistaNPB" label="Compare Genomes" visible="false"/>  
+            <tab id="tabVistaNPB" label="NPB Compare Genomes" visible="false"/>  
             <tab id="tabPhylo" label="Phylotree" visible="false"/>  
             <tab id="tabJBrowsePhylo" label="PhyloJBrowse" visible="false"/>  
         </tabs>  
@@ -863,7 +863,7 @@ function doPosition() {
 				<listheader id="listheader3MultirefPairwise" visible="false" label="REFERENCE"/>
 				<listheader label="CONTIG"/>
 				<listheader label="POSITION"/>
-				<listheader label="NPB REFERENCE"/>
+				<listheader id="listHeaderVar2Reference" label="NPB REFERENCE"/>
 				<listheader id="listheaderVar1MultirefPairwise"></listheader>
 				<listheader id="listheaderVar2MultirefPairwise"></listheader>			
 			</listhead>
@@ -943,15 +943,45 @@ function doPosition() {
 
             
   <!--  *********************   DISPLAY GENOME COMPARISON (VISTA) TAB  *********************************************************************************** -->
-  <tabpanel id="tabpanelVista"> 
+  <!-- tabpanel id="tabpanelVista"> 
   <iframe id= "iframeVista"  align="left" visible="true" style="width:95%;height:800px;border:0px inset;" />
+  </tabpanel -->
+
+  <tabpanel id="tabpanelVista"> 
+  	 <vbox width="100%">
+  	  <hbox height="15px"/>
+	  <tabbox width="100%">   
+	        <tabs>
+	            <tab id="tabVista1" label="Nipponbarre vs IR64-21" selected="true"/>
+	            <tab id="tabVista2" label="Nipponbarre vs 93-11"/>
+	            <tab id="tabVista3" label="Nipponbarre vs DJ123"/>
+	            <tab id="tabVista4" label="Nipponbarre vs Kasalath"/>
+	        </tabs>  
+	        <tabpanels>
+	        <tabpanel>
+	        	<iframe id="iframeVista1" align="left" visible="true" style="width:95%;height:800px;border:0px inset;" />
+	        </tabpanel>
+	        <tabpanel>
+	        	<iframe id="iframeVista2" align="left" visible="true" style="width:95%;height:800px;border:0px inset;" />
+	        </tabpanel>
+	        <tabpanel>
+	        	<iframe id="iframeVista3" align="left" visible="true" style="width:95%;height:800px;border:0px inset;" />
+	        </tabpanel>
+	        <tabpanel>
+	        	<iframe id="iframeVista4" align="left" visible="true" style="width:95%;height:800px;border:0px inset;" />
+	        </tabpanel>
+	        
+	        </tabpanels>
+	  </tabbox>  
+    </vbox>
   </tabpanel>
+
             
   <tabpanel id="tabpanelVistaRev"> 
-  <iframe id= "iframeVistaRev"  align="left" visible="true" style="width:95%;height:800px;border:0px inset;" />
+  <iframe id= "iframeVistaRev"  align="left" visible="false" style="width:95%;height:800px;border:0px inset;" />
   </tabpanel>
             
-  <tabpanel id="tabpanelVistaNPB">
+  <tabpanel id="tabpanelVistaNPB"  visible="false">
   	 <vbox width="100%">
   	  <hbox height="15px"/>
 	  <tabbox width="100%">   
@@ -978,10 +1008,10 @@ function doPosition() {
 	        </tabpanels>
 	  </tabbox>  
     </vbox>
-  
   </tabpanel>
             
-            
+  
+  
                
   <!--  *********************   DISPLAY PHYLOGENETIC TREE TAB  *********************************************************************************** -->
                
@@ -1269,12 +1299,23 @@ function doPosition() {
         ]]></html>
 </popup>
 
-<popup id="popupShowallrefalleles" width="300px">
+
+
+<popup id="popupReference" width="300px">
         <html><![CDATA[
-			Show alleles from 4 other reference genomes (93-11,DJ123,IR64,Kasalath) 
-			which aligned to the queried Nipponbare region.
+			Select the reference genome to use. If not Nipponbare, will disable 
+			several options (indels, core snps, non-synonymous, snp/locus lists).
         ]]></html>
 </popup>
+
+
+<popup id="popupShowallrefalleles" width="300px">
+        <html><![CDATA[
+			Show alleles from the other 4 reference genomes which aligned 
+			with the queried reference region. Will disable indels.
+        ]]></html>
+</popup>
+
 
 
 	<div id="tip" class="tooltip" visible="false" width="280px">

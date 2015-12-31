@@ -9,14 +9,16 @@ import org.irri.iric.portal.dao.CvTermPathDAO;
 import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.genomics.OntologyService;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-@Service("PATOntologyService")
-public class PlantTraitRiceOntologyServiceImpl implements OntologyService {
+@Service("PATOGenesOntologyService")
+public class PlantTraitRiceGeneOntologyServiceImpl implements OntologyService {
 
 	@Autowired
 	//@Qualifier("CvTermPathDAO")
+	
+	@Qualifier("VGoCvtermpathDAO")
 	private CvTermPathDAO cvtermpathDAO;
 	@Autowired
 	private  CvTermLocusCountDAO cvtermlocuscountdao;

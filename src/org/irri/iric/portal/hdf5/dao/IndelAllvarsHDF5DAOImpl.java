@@ -157,17 +157,17 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 						//
 						
 						if(prevdel1!=null)
-							prevdel1=prevdel1-Long.valueOf(pos.getPos().longValue()-prevdel1pos).intValue();
+							prevdel1=prevdel1-Long.valueOf(pos.getPosition().longValue()-prevdel1pos).intValue();
 
 						
 						if(isdel) {
 							//if(prevdel1!=null &&  prevdel1>-1) throw new RuntimeException("var=" + varid + " pos=" + pos.getPos() + ": past deletion at " + prevdel1pos + " extend here but allele1=" +allele1idx);
-							if(prevdel1!=null &&  prevdel1>0) throw new RuntimeException("var=" + varid + " pos=" + pos.getPos() + ": past deletion at " + prevdel1pos + " extend here but allele1=" +allele1idx);
+							if(prevdel1!=null &&  prevdel1>0) throw new RuntimeException("var=" + varid + " pos=" + pos.getPosition() + ": past deletion at " + prevdel1pos + " extend here but allele1=" +allele1idx);
 							//if(prevdel1>0) throw new RuntimeException("var=" + varid + " pos=" + pos + ": past deletion at " + prevdel1pos + " extend here but allele1=" +allele1idx);
 							try{
 								//del=Integer.valueOf(allele1idx.replace("del","").trim());
 								prevdel1=Integer.valueOf(allele1idx);
-								prevdel1pos=pos.getPos().longValue();
+								prevdel1pos=pos.getPosition().longValue();
 							}catch(Exception ex) {};
 						}
 						else if(prevdel1!=null && prevdel1>-1) {
@@ -177,7 +177,7 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 							if(!allele1idx.equals("?"))
 							{
 								//throw new RuntimeException("var=" + varid + "pos=" + pos + ": past deletion at " + prevdel1pos + " extend here but allele1=" + allele1idx);
-								AppContext.debug("var=" + varid + "pos=" + pos.getPos() + " prevdel1=" + prevdel1 +  "  : past deletion at " + prevdel1pos + " extend here but allele1=" + allele1idx);
+								AppContext.debug("var=" + varid + "pos=" + pos.getPosition() + " prevdel1=" + prevdel1 +  "  : past deletion at " + prevdel1pos + " extend here but allele1=" + allele1idx);
 							} 
 							if(prevdel1>0) allele1idx="-" + prevdel1;
 							else if(prevdel1==0) {
@@ -208,17 +208,17 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 						if(prevdel2!=null) {
 							
 							//AppContext.debug("prevdel2pos=" + prevdel2pos);
-							prevdel2=prevdel2- Long.valueOf(pos.getPos().longValue()-prevdel2pos).intValue();
+							prevdel2=prevdel2- Long.valueOf(pos.getPosition().longValue()-prevdel2pos).intValue();
 							//AppContext.debug("prevdel2pos=" + prevdel2pos);
 						}
 						
 						if(isdel) {
 							//if(prevdel2!=null && prevdel2>-1) throw new RuntimeException("var=" + varid + " pos=" + pos.getPos() + ": past deletion at " + prevdel2pos + " extend here but allele2=" + allele2idx);
-							if(prevdel2!=null && prevdel2>0) throw new RuntimeException("var=" + varid + " pos=" + pos.getPos() + ": past deletion at " + prevdel2pos + " extend here but allele2=" + allele2idx);
+							if(prevdel2!=null && prevdel2>0) throw new RuntimeException("var=" + varid + " pos=" + pos.getPosition() + ": past deletion at " + prevdel2pos + " extend here but allele2=" + allele2idx);
 							//AppContext.debug("Illegal?? pos=" + pos + ": past deletion at " + prevdel2pos + " extend here but allele2=" + allele2idx);
 							try{
 								prevdel2 =Integer.valueOf(allele2idx);
-								prevdel2pos=pos.getPos().longValue();
+								prevdel2pos=pos.getPosition().longValue();
 								
 							}catch(Exception ex) {};
 						}
@@ -229,7 +229,7 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 							if(!allele2idx.equals("?"))
 							{
 							//	throw new RuntimeException("var=" + varid + "pos=" + pos + ": past deletion at " + prevdel2pos + " extend here but allele2=" +allele2idx);
-								AppContext.debug("var=" + varid + "pos=" + pos.getPos() +  "prevdel2=" + prevdel2 + " : past deletion at " + prevdel2pos + " extend here but allele2=" +allele2idx);
+								AppContext.debug("var=" + varid + "pos=" + pos.getPosition() +  "prevdel2=" + prevdel2 + " : past deletion at " + prevdel2pos + " extend here but allele2=" +allele2idx);
 							}
 							
 							if(prevdel2>0) allele2idx="-" + prevdel2;
@@ -252,7 +252,7 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 					
 					
 				//if(varnuc.equals("/")) continue;
-				setSnps.add(new IndelsAllvarsStrImpl(varid, pos.getPos(), pos.getRefnuc(), varnuc, pos.getContig() ,  Long.valueOf(AppContext.guessChrFromString(pos.getContig())), allele1idx, allele2idx));
+				setSnps.add(new IndelsAllvarsStrImpl(varid, pos.getPosition(), pos.getRefnuc(), varnuc, pos.getContig() ,  Long.valueOf(AppContext.guessChrFromString(pos.getContig())), allele1idx, allele2idx));
 						
 				//setSnps.add(  new IndelsAllvarsStrImpl(varid, pos.getPos(), pos.getRefnuc(), varnuc, pos.getContig() , Long.valueOf(AppContext.guessChrFromString(pos.getContig()))) );
 				//setSnps.add(  new IndelsAllvarsStrImpl(varid, pos.getPos(), pos.getRefnuc(), varnuc, pos.getContig() , Long.valueOf(AppContext.guessChrFromString(pos.getContig()))) );

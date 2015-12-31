@@ -83,11 +83,7 @@ public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor, Comparabl
 		this.snpFeatureId = snpFeatureId;
 	}
 
-	/**
-	 */
-	public BigDecimal getSnpFeatureId() {
-		return this.snpFeatureId;
-	}
+
 
 	/**
 	 */
@@ -197,7 +193,7 @@ public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor, Comparabl
 	}
 
 	@Override
-	public BigDecimal getSnp() {
+	public BigDecimal getSnpFeatureId() {
 		// TODO Auto-generated method stub
 		return snpFeatureId;
 	}

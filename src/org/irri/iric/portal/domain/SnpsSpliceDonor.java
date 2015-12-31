@@ -7,13 +7,8 @@ import java.math.BigDecimal;
  * @author LMansueto
  *
  */
-public interface SnpsSpliceDonor {
+public interface SnpsSpliceDonor extends Snp {
 
-	/**
-	 * SNP feature ID
-	 * @return
-	 */
-	public BigDecimal getSnp();
 	
 	/**
 	 * Nipponbare position

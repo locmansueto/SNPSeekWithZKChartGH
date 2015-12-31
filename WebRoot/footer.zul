@@ -7,7 +7,8 @@
 <hbox  align="center" pack="center">
 <label value="©2014 International Rice Research Institute. Los Banos, Laguna, Philippines" style="font-size:11px"/>
 <vbox width="100px"/>
-<label value="This site is under development. We schedule maintenance every Monday, 8-9:00 GMT (4-5PM Manila)"  style="font-size:11px"/>
+<!--  label value="This site is under development. We schedule maintenance every Monday, 8-9:00 GMT (4-5PM Manila)"  style="font-size:11px"/ -->
+<label value="Site is currently under maintenance"  style="font-size:13px;color:red"/>
 </hbox>	
 </vbox>
 </div>

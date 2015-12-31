@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.irri.iric.portal.domain.CvTermLocusCount;
 import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.domain.MarkerAnnotation;
 
 /**
  * API functions used mostly by Gene Locus Query
@@ -151,6 +152,18 @@ public interface GenomicsFacade {
 	 */
 	public List<Locus> getLociByContigPositions(String contig, Collection colPos, String organism, String genemodel, Integer plusminus);
 	List getLociByContigPositions(String contig, Collection posset, String organism, Integer plusminus);
+
+	
+	/**
+	 * 
+	 * @param contig
+	 * @param colPos
+	 * @param organism
+	 * @param genemodel
+	 * @return
+	 */
+	public List<MarkerAnnotation> getMarkerAnnotsByContigPositions(String contig, Collection colPos, String organism, String genemodel, Integer plusminus);
+
 	
 	/**
 	 * Generate FASTA

@@ -10,11 +10,12 @@ This is the repository of IRIC-Portal Web interface. The application is written 
 
 ### How do I get set up? ###
 
-* Setup  
+* Setup development environment   
 	
-	- Download the [HDF5 data files](https://s3.amazonaws.com/snp-seek/snpseekdata-4bitbucket.zip) and save them in a dedicated directory in the web server.
+	- Download and install [Apace Tomcat v.7](https://tomcat.apache.org/download-70.cgi) to your webserver.
+	- Download the [Nipponbare](https://s3.amazonaws.com/snp-seek/snpseekdata-4bitbucket.zip) and [other reference](https://3kricegenome.s3.amazonaws.com/snpseek-otherrefs-4bitbucket.zip) HDF5 data files, then extract to a dedicated directory in the web server.
 	- Download the [customized JBrowse](https://s3.amazonaws.com/snp-seek/jbrowse-1.11.6-4bitbucket.tgz), extract it in the webserver and create a symbolic link (ex. jbrowse) from the tomcat webapps directory pointing to the extracted JBrowse directory.
-	- Download/Clone this project and open in Eclipse (or preferably MyEclipse). 
+	- Download/Clone this project and open in [Eclipse](https://eclipse.org/) (or preferably [MyEclipse for Spring](https://www.genuitec.com/products/myeclipse/features/spring/)). 
 	- Set the database connection parameters in bean IRIC\_ProductionDS in /resources/iric\_prod\_crud-dao-context.xml (described next section)
 	- Set the parameters defined in the static class org.irri.iric.portal.AppContext, specially:
 	
@@ -207,7 +208,11 @@ Genomics Module
 ![](uml/genomics.png)
 
 
-Domain Models 
+Genotype Domain Models
+
+![](uml/domain_interfaces_genotype.png)
+ 
+All Domain Models
 ![](uml/domain.png)
 
 Genotype Query Sequence
@@ -231,7 +236,7 @@ Some pages are generated using Java Server Pages (JSP) and embedded as IFrame to
 
 ### Get started with development
 
-To start a new module, we created a set of files to start with as templates. 
+To develop a new module, we created a set of files to start with as templates. 
 
 
 
@@ -242,10 +247,11 @@ To start a new module, we created a set of files to start with as templates.
 
 	The blank_module page uses the BlankModuleFacade defined in the  **org.irri.iric.portal.blank\_module** package. Copy then modify these into a new package using your module name. 
 2. As a convention, create subpackages **org.irri.iric.portal.blank\_module.service**, **org.irri.iric.portal.blank\_module.dao** and  **org.irri.iric.portal.blank\_module.domain**  
-3. Implement **org.irri.iric.portal.blank\_module.BlankModuleFacade** in the service subpackage, example **org.irri.iric.portal.blank\_module.BlankModuleFacadeImpl**. Implement all data Access Objects (DAO) related to this module in the DAO subpackage. The DAO's should implement DAO interfaces defined in **org.irri.iric.portal.dao**.    
-4. Implement the Domain entities for the DAO's above in **org.irri.iric.portal.blank\_module.domain**. The domain entities should implement the interfaces defined in **org.irri.iric.portal.domain**. Register the new domain implementations in '/resources/META-INF/persistence.xml'.
-5. Write codes to implement business logic methods in **org.irri.iric.portal.blank\_module.BlankModuleFacadeImpl**. For complex modules, you can divide the module into submodules as separate Services. In the service layer codes, **PROGRAM BY INTERFACE**, that is, use only the Interfaces defined in **org.irri.iric.portal.dao** and **org.irri.iric.portal.domain** for variable declarations, instead of the concrete implementations.
-6. You may define new interfaces in **org.irri.iric.portal.dao** or **org.irri.iric.portal.domain** when necessary, but this has to be discussed with the team beforehand.        
+3. Implement **org.irri.iric.portal.blank\_module.BlankModuleFacade** in the service subpackage, example **org.irri.iric.portal.blank\_module.BlankModuleFacadeImpl**. Implement all data Access Objects (DAO) specific to this module in the DAO subpackage **org.irri.iric.portal.blank\_module.dao** 
+4. Implement the Domain entities for the DAO's above in **org.irri.iric.portal.blank\_module.domain**. Register the new domain implementations in '/resources/META-INF/persistence.xml'.
+5. For your new module to be usable by the other modules, the DAOs in 3. and Domains in 4. above should implement the interfaces defined in **org.irri.iric.portal.dao** and  **org.irri.iric.portal.domain**, respectively. If your entities are not defined in **org.irri.iric.portal.domain**, contact us so we can define the appropriate entities and DAOs.
+6. Write codes to implement business logic methods in **org.irri.iric.portal.blank\_module.BlankModuleFacadeImpl**. For complex modules, you can divide the module into submodules as separate Services. In the controller and service layer codes, **PROGRAM BY INTERFACE**, that is, use only the Interfaces defined in **org.irri.iric.portal.dao** and **org.irri.iric.portal.domain** for variable declarations, instead of the concrete implementations.
+        
 
 
 ### Source code repository

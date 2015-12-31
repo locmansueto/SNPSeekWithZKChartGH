@@ -484,7 +484,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 		
 		int refLength=-1;
 		
-		AppContext.debug( snpsposlist.size() + " snpposlist, pos between " +startpos.getPos() +  "-" + endpos.getPos() + "  index between " + startpos.getAlleleIndex() + "-" + endpos.getAlleleIndex());
+		AppContext.debug( snpsposlist.size() + " snpposlist, pos between " +startpos.getPosition() +  "-" + endpos.getPosition() + "  index between " + startpos.getAlleleIndex() + "-" + endpos.getAlleleIndex());
 		
 		
 		// generate column indexes to query HDF5
@@ -610,8 +610,8 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 				AppContext.resetTimer("to read allele2 database..");
 				//nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleByChrPosBetween(chr, start.intValue(), end.intValue());
 				//nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleBySnpfeatureidBetween(startpos.getSnpFeatureId(), endpos.getSnpFeatureId(), snptype);
-				nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleByChrPosBetween(chr, startpos.getPos().intValue(), endpos.getPos().intValue(), snptype);
-				synAllele = snpssynDAO.findSnpSynAlleleByChrPosBetween(chr, startpos.getPos().intValue(), endpos.getPos().intValue(), snptype);
+				nonsynAllele = snpsnonsynDAO.findSnpNonsynAlleleByChrPosBetween(chr, startpos.getPosition().intValue(), endpos.getPosition().intValue(), snptype);
+				synAllele = snpssynDAO.findSnpSynAlleleByChrPosBetween(chr, startpos.getPosition().intValue(), endpos.getPosition().intValue(), snptype);
 				//inexonSnps = snpsinexonDAO.getSnps(chr,start.intValue(), end.intValue()); 
 				AppContext.resetTimer("to read nonsynonymous allele, inexon  from  database..");
 			}
@@ -787,7 +787,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 					if(chari2!='0' && chari2!='?' ) setAlleles.add(chari2);
 					
 					if(chari1!=chari2) {
-						if(chari1!=snppos.getRefcall().charAt(0)) {
+						if(chari1!=snppos.getRefnuc().charAt(0)) {
 							Set allele2= mapPos2AlleleHetero.get(snppos);
 							if(allele2==null) {
 								allele2=new HashSet();
@@ -795,7 +795,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 							}
 							allele2.add(chari1);
 						}
-						if(chari2!=snppos.getRefcall().charAt(0)) {
+						if(chari2!=snppos.getRefnuc().charAt(0)) {
 							Set allele2= mapPos2AlleleHetero.get(snppos);
 							if(allele2==null) {
 								allele2=new HashSet();
@@ -826,9 +826,9 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 				
 				if(mapSnpid2Pos==null) throw new RuntimeException("mapSnpid2Pos==null");
 				if(nonsynallele==null) throw new RuntimeException("nonsynallele==null");
-				if(nonsynallele.getSnp()==null) throw new RuntimeException("nonsynallele.getSnp()==null");
+				if(nonsynallele.getSnpFeatureId()==null) throw new RuntimeException("nonsynallele.getSnp()==null");
 				
-				Position pos = mapSnpid2Pos.get( nonsynallele.getSnp() );
+				Position pos = mapSnpid2Pos.get( nonsynallele.getSnpFeatureId() );
 				
 				// assuming all nonsyn are in exon
 				setSnpInExonPos.add( pos );
@@ -851,7 +851,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 			Iterator<SnpsSynAllele> itSyn = synAllele.iterator();
 			while(itSyn.hasNext()) {
 				SnpsSynAllele synallele = itSyn.next();
-				Position pos = mapSnpid2Pos.get( synallele.getSnp() );
+				Position pos = mapSnpid2Pos.get( synallele.getSnpFeatureId() );
 				
 				// assuming all syn are in exon
 				setSnpInExonPos.add( pos );

@@ -1,6 +1,7 @@
 package org.irri.iric.portal.dao;
 
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import org.irri.iric.portal.domain.Organism;
@@ -19,4 +20,5 @@ public interface OrganismDAO {
 	 * @return
 	 */
 	public Organism getOrganismByID(Integer id);
+
 }

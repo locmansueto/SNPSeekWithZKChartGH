@@ -77,6 +77,7 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
                   
         Set setPassport = variety.getPassportDefinitions().keySet();
         Set setPhenotype = variety.getPhenotypeDefinitions().keySet();
+        Set setPtoco= variety.getPtocoDefinitions().keySet();
         
         WorkspaceFacade workspace = (WorkspaceFacade)SpringUtil.getBean("WorkspaceFacade");
         
@@ -85,7 +86,8 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
         listMyVarieties.addAll( workspace.getVarietylistNames());
         
         String msg =varnames.size() + " varieties, " + irisIds.size() + " IRIS IDs, "  + countries.size() + " countries, " +
-         subpopulation.size() +  " subpopulations, " +  setPassport.size() +  " passport fields, " + setPhenotype.size() + " phenotypes for selection";
+         subpopulation.size() +  " subpopulations, " +  setPassport.size() +  " passport fields, " + setPhenotype.size() + " phenotypes, "  + 
+         setPtoco.size() + " rice trait terms, for selection";
          
         java.util.List listPassport = new java.util.ArrayList();
         listPassport.add("");
@@ -93,6 +95,11 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
         java.util.List listPhenotype = new java.util.ArrayList();
         listPhenotype.add("");
         listPhenotype.addAll( setPhenotype );
+        
+        java.util.List listPtocoterm = new java.util.ArrayList();
+        listPtocoterm.add("");
+        listPtocoterm.addAll( setPtoco );
+
          
         
        	subpopulation = AppContext.createUniqueUpperLowerStrings( subpopulation, false, true);
@@ -109,7 +116,8 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 <vbox id="hboxQuery">
 <hbox>
 <!--  grid id="gridQuery" width="600px" height="250px" -->
-<grid id="gridQuery" width="100%" height="340px">
+<!-- grid id="gridQuery" width="100%" height="340px" -->
+<grid id="gridQuery" width="100%" height="360px">
 
 <rows>
 
@@ -181,11 +189,17 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		</vbox>
 	</row>
 	
-	<row  spans="1,3">	
+	<row  spans="1,3">
+		
 		<hbox>
 		<label pre="true" value="Phenotype " style="font-size:14px;font-weight:bold;color:gray;"/><label/>  <a target="_blank" href="/phenotype_dict.pdf" label="Data dictionary"/>
 		</hbox>	
-		
+
+		<vbox>
+		<hbox>
+			<label pre="true" value="Rice Crop/Trait Ontology term " style="font-size:12px;font-weight:bold;color:gray;"/>
+			<listbox id="listboxPtocoterm"  mold="select"  rows="1" width="300px" tooltip="popupListboxPtoco"/>
+		</hbox>
 		<vbox id="vboxPhenConstraints">
 		<hbox>
 		<listbox id="listboxPhenotypes"  mold="select"  rows="1" width="300px"/>
@@ -194,6 +208,9 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		<button id="buttonAddPhenConstraint" label="Add" tooltip="popupAddPhenotype"/>
 		</hbox>
 		</vbox>
+		</vbox>
+		
+		
 	</row>
 
 	<row  spans="1,3">
@@ -257,11 +274,15 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
  <zscript><![CDATA[
         listboxPassport.setModel( new SimpleListModel(listPassport));
         listboxPhenotypes.setModel( new SimpleListModel(listPhenotype));
+        listboxPtocoterm.setModel( new SimpleListModel(listPtocoterm));
         
         List listQuanOperator = new ArrayList();
         listQuanOperator.add(VarietyFacade.COMPARATOR_EQUALS); listQuanOperator.add(VarietyFacade.COMPARATOR_LESSTHAN);listQuanOperator.add(VarietyFacade.COMPARATOR_GREATERTHAN);
         listboxPhenComparator.setModel(new SimpleListModel(listQuanOperator));
         listboxPhenComparator.setSelectedIndex(0);
+        
+        
+        
 			    ]]>
 </zscript>
 			    
@@ -402,23 +423,67 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
             
 				<!--  div style="overflow:auto;position:relative" --> 
 				<vbox> 
-				<label value="The tree is constructed using  Neighbor-Joining method based on 400,000 core SNPs" style="font-family: arial;font-size:12px" />
+				<!-- label value="The tree is constructed using  Neighbor-Joining method based on 400,000 core SNPs" style="font-family: arial;font-size:12px" / -->
 				
-				<hbox>
-				<label value="admx" style="color:#006666"/> <!-- toequoise -->
-				<label value="aus" style="color:#CC7A52"/> <!-- salmon -->
-				<label value="trop/temp" style="color:#FF33CC"/> <!-- red/blue -->
-				<label value="inax" style="color:#00CC99"/> <!-- marine -->
-				<label value="temp" style="color:#0066FF"/> <!-- blue -->
-				<label value="aro" style="color:#AD8533"/> <!-- brown -->
-				<label value="trop" style="color:#FF3300"/> <!-- red -->
-				<label value="japx" style="color:#FFCC00"/> <!--  yellow -->
-				<label value="ind1" style="color:#009900"/> <!--  green1 -->
+				<hbox id="hboxSubpopColor1" >		
+				<label value="ind1A" style="color:#60e0c0"/>
+				<label value="ind1B" style="color:aquamarine"/>
+				<label value="ind2" style="color:#336622"/>
+				<label value="ind3" style="color:#339910"/>
+				<label value="trop1" style="color:steelblue"/>
+				<label value="trop2" style="color:#2045c0"/>
+				<label value="aro" style="color:purple"/>
+				<label value="temp" style="color:lightskyblue"/>
+				<label value="aus" style="color:orange"/>
+				<label value="admix" style="color:gray"/>
+				<label value="japx" style="color:#acacfc"/>
+				<label value="indx" style="color:#9cbb9c"/>
+				</hbox>
+
+				<hbox id="hboxSubpopColor2" visible="false">	
+				<label value="ind1" style="color:#60e0c0"/>	
+				<label value="ind1.1" style="color:#60e0c0"/>	
+				<label value="ind1.2" style="color:#65e5c5"/>	
+				<label value="ind1.2.1" style="color:#50aa99"/>	
+				<label value="ind1.2.2" style="color:#306600"/>	
+				<label value="ind2" style="color:#336622"/>	
+				<label value="ind2.1" style="color:#306600"/>	
+				<label value="ind2.2" style="color:#507755"/>	
+				<label value="ind3" style="color:#339910"/>	
+				<label value="ind3.1" style="color:#339910"/>	
+				<label value="ind3.2" style="color:#299506"/>	
+				<label value="ind3.2.1" style="color:#a2cd5a"/>	
+				<label value="ind3.2.2" style="color:#33cc77"/>	
+				<label value="trop1" style="color:#4682b4"/>	
+				<label value="trop1.1" style="color:#4f94cd"/>	
+				<label value="trop1.2" style="color:#3163aa"/>	
+				<label value="trop2" style="color:#2045c0"/>	
+				<label value="aro" style="color:purple"/>	
+				<label value="temp" style="color:lightskyblue"/>	
+				<label value="aus1" style="color:#ee9a00"/>	
+				<label value="aus2" style="color:#ad6020"/>	
+				<label value="ausx" style="color:#b07060"/>	
+				<label value="admix" style="color:gray"/>	
+				<label value="japx" style="color:#acacfc"/>	
+				<label value="indx" style="color:#9cbb9c"/>	
+				</hbox>
+					
+				
+				<!--  hbox v1>
+				<label value="admx" style="color:#006666"/>
+				<label value="aus" style="color:#CC7A52"/> 
+				<label value="trop/temp" style="color:#FF33CC"/>
+				<label value="inax" style="color:#00CC99"/> 
+				<label value="temp" style="color:#0066FF"/> 
+				<label value="aro" style="color:#AD8533"/> 
+				<label value="trop" style="color:#FF3300"/>
+				<label value="japx" style="color:#FFCC00"/>
+				<label value="ind1" style="color:#009900"/>
 				<label value="ind3" style="color:#99CC00"/>
 				<label value="ind2" style="color:#718C64"/>
 				<label value="indx" style="color:#A3FFA3"/>
-				<label value="temp/trop" style="color:#6600CC"/> <!-- blue/red -->
-				</hbox>
+				<label value="temp/trop" style="color:#6600CC"/> 
+				</hbox -->
 				
 				<!-- hbox>
 				<label value="Color by subpopulation "/><label value="IND " style="color:blue"/> <label value="AUS " style="color:orange"/> <label value="TEMP " style="color:pink"/> <label value="MAGIC " style="color:violet"/>
@@ -513,10 +578,18 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 
        <zscript>         
        
+       		AppContext.debug("AppContext.isIRRILAN()=" + AppContext.isIRRILAN() + 
+       			"  AppContext.isAWS()=" + AppContext.isAWS() +  
+       			"  AppContext.isLocalhost()=" + AppContext.isLocalhost() + 
+       		  " AppContext.isPollux()=" + AppContext.isPollux()  );
+       
        		if(AppContext.isIRRILAN()) {
        			hboxRawfiles.setVisible(true);
        		}
        
+       		AppContext.debug( Executions.getCurrent().getParameterMap().toString() );
+
+
 	        String varid=Executions.getCurrent().getParameter("irisid");
 	        if(varid==null || varid.isEmpty()) {
 	        	String varname=Executions.getCurrent().getParameter("name");
@@ -529,11 +602,17 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 	        	}
 	        }
 	        else {
-	        	if(varid.equals("alltree")) {
+	        	if(varid.equals("alltree") || varid.equals("alltree2")) {
 	        	
 	        		iframePhylotree.setStyle("height:1500px;width:1500px");
 					iframePhylotree.setScrolling("yes");
-					String url =  "treeBrowser3k.htm"; //"jsp/phylotreeGermplasms.jsp?scale=1&amp;varid=all" ; //   "treeBrowser3k.htm"; // //"treeBrowser1k.htm";
+					String url =  "treeBrowser3023.html"; //"jsp/phylotreeGermplasms.jsp?scale=1&amp;varid=all" ; //   "treeBrowser3k.htm"; // //"treeBrowser1k.htm";
+					if(varid.equals("alltree2")) {
+	        		    hboxSubpopColor1.setVisible(false);
+       					hboxSubpopColor2.setVisible(true);
+       					url="treeBrowser3023color2.html";
+	        		}
+					
 					System.out.println( url );
 					iframePhylotree.setSrc( url );
 					iframePhylotree.setVisible(true);
@@ -544,6 +623,8 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 	        		
 	        		//varietyresult.setVisible(false);
 	        		hboxQuery.setVisible(false);
+	        		
+
 	        	}
 	        	else if(varid.equals("allmds")) {
 	        		//showmds_allvars();
@@ -583,6 +664,14 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
           Provide the list name in the box.
         ]]></html>
 </popup>
+
+<popup id="popupListboxPtoco" width="300px">
+        <html><![CDATA[
+			Limits the last phenotype contraint choices only to traits belonging
+			to the selected CO_320 (Rice Trait)/TO term (Pland Trait).
+        ]]></html>
+</popup>
+
 </window>
 
 

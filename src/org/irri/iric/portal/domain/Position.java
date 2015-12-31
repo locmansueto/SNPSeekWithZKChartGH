@@ -25,11 +25,14 @@ public interface Position extends Comparable {
 	 * reference nuc
 	 * @return
 	 */
-	public String getRefcall();
+	public String getRefnuc();
+	
 	
 	/**
 	 * chromosome no.
 	 * @return
 	 */
 	public Long getChr();
+	
+	
 }

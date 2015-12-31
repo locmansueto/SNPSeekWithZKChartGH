@@ -66,7 +66,7 @@ public class PositionImpl implements Position  {
 	}
 
 	@Override
-	public String getRefcall() {
+	public String getRefnuc() {
 		// TODO Auto-generated method stub
 		return refcall;
 	}

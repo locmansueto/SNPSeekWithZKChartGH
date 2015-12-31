@@ -47,7 +47,7 @@ public class VariantTableArraysImpl implements VariantTable {
 		int poscount = 0;
 		while(itPos.hasNext()) {
 			SnpsAllvarsPos posnuc=itPos.next();
-			posarr[poscount] = posnuc.getPos().longValue();
+			posarr[poscount] = posnuc.getPosition().longValue();
 			refnuc[poscount] = posnuc.getRefnuc();
 			poscount++;
 		}

@@ -124,7 +124,7 @@ public class IndelsAllvarsStrImpl implements IndelsAllvarsStr {
 	}
 
 	@Override
-	public String getRefcall() {
+	public String getRefnuc() {
 		// TODO Auto-generated method stub
 		return this.refnuc;
 	}

@@ -119,11 +119,6 @@ public class IndelAllele implements Serializable, IndelsAllvarsPos {
 		this.pos = pos.subtract(BigDecimal.ONE);
 	}
 
-	/**
-	 */
-	public BigDecimal getPos() {
-		return this.pos.add(BigDecimal.ONE);
-	}
 
 	/**
 	 */
@@ -173,7 +168,7 @@ public class IndelAllele implements Serializable, IndelsAllvarsPos {
 	public void copy(IndelAllele that) {
 		setIndelId(that.getIndelId());
 		setSrcFeatureId(that.getSrcFeatureId());
-		setPos(that.getPos());
+		setPos(that.getPosition());
 		setDelLen(that.getDelLen());
 		setInsStr(that.getInsStr());
 		setMethod(that.getMethod());
@@ -284,11 +279,7 @@ public class IndelAllele implements Serializable, IndelsAllvarsPos {
 		return this.pos;
 	}
 
-	@Override
-	public String getRefcall() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	
 	@Override

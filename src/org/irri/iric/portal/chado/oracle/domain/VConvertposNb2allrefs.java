@@ -1,18 +1,16 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
-
 import java.lang.StringBuilder;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-
 import javax.xml.bind.annotation.*;
-
 import javax.persistence.*;
+
+import org.irri.iric.portal.domain.SnpsAllvarsPos;
 
 /**
  */
@@ -34,7 +32,7 @@ import javax.persistence.*;
 @Table(schema = "IRIC", name = "V_CONVERTPOS_NB2ALLREFS")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VConvertposNb2allrefs")
-public class VConvertposNb2allrefs implements Serializable {
+public class VConvertposNb2allrefs implements Serializable, SnpsAllvarsPos {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -179,6 +177,7 @@ public class VConvertposNb2allrefs implements Serializable {
 	@XmlElement
 	String kasalathRefcall;
 
+	
 	/**
 	 */
 	public void setSnpFeatureId(BigDecimal snpFeatureId) {
@@ -507,4 +506,51 @@ public class VConvertposNb2allrefs implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public BigDecimal getPosition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Long getChr() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+	@Override
+	public String getRefnuc() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setRefnuc(String refnuc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BigDecimal getAlleleIndex() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

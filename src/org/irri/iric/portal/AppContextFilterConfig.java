@@ -45,7 +45,6 @@ public class AppContextFilterConfig implements Filter {
 		 String deployment =  config.getInitParameter("deployment");
 		 String deploymenttype =  config.getInitParameter("deploymenttype");
 		 
-		 AppContext.webserver=AppContext.WEBSERVER.LOCALHOST;
 
 		 if(deployment!=null) {
 
@@ -64,7 +63,7 @@ public class AppContextFilterConfig implements Filter {
 		 }
 		 
 
-		 AppContext.compiletype = AppContext.COMPILETYPE.PROD;
+		 //AppContext.compiletype = AppContext.COMPILETYPE_PROD;
 
 		if(deploymenttype!=null) {
 			 if(deploymenttype.equals("dev"))

@@ -86,11 +86,6 @@ public class VSnpNonsynallelePos implements Serializable, SnpsNonsynAllele, Comp
 		this.snpFeatureId = snpFeatureId;
 	}
 
-	/**
-	 */
-	public BigDecimal getSnpFeatureId() {
-		return this.snpFeatureId;
-	}
 
 	/**
 	 */
@@ -236,9 +231,9 @@ public class VSnpNonsynallelePos implements Serializable, SnpsNonsynAllele, Comp
 	}
 
 	@Override
-	public BigDecimal getSnp() {
+	public BigDecimal getSnpFeatureId() {
 		// TODO Auto-generated method stub
-		return this.getSnpFeatureId();
+		return this.snpFeatureId;
 	}
 
 	

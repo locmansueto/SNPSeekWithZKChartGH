@@ -24,6 +24,7 @@ import org.irri.iric.portal.dao.VarietyDAO;
 import org.irri.iric.portal.dao.VarietyDistanceDAO;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.domain.VarietyDistance;
+import org.irri.iric.portal.genomics.OntologyService;
 import org.irri.iric.portal.variety.VarietyFacade;
 import org.irri.iric.portal.variety.VarietyPropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,16 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	private VarietyByPassportDAO varbypassportdao;
 
 	@Autowired
+	@Qualifier("VIricstocksByPhenotypeDAO")
 	private VarietyByPhenotypeDAO varbyphenotypedao;
+
+	
+	@Autowired
+	@Qualifier("VIricstocksByPtocoDAO")
+	private VarietyByPhenotypeDAO varbyptocodao;
+
+	@Autowired
+	private PlantTraitRiceVarietyOntologyService traitvarietyservice; 
 	
 	// Passport DAOs
 	//@Autowired
@@ -202,6 +212,12 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	}
 	
 	
+	@Override
+	public List getPhenotypeByPtoco(String cv, String term) {
+			traitvarietyservice=(PlantTraitRiceVarietyOntologyService)AppContext.checkBean(traitvarietyservice, "PlantTraitRiceVarietyOntologyService") ;
+			return traitvarietyservice.getCVtermDescendants(cv, term);
+	}
+	
 	
 
 	@Override
@@ -289,6 +305,13 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		// TODO Auto-generated method stub
 		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems"); 
 		return listitemsDAO.getPhenotypeDefinitions();
+	}
+
+	@Override
+	public  Map<String,BigDecimal>  getPtocoDefinitions() {
+		// TODO Auto-generated method stub
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems"); 
+		return listitemsDAO.getPtocoDefinitions();
 	}
 
 	@Override

@@ -7,13 +7,8 @@ import java.math.BigDecimal;
  * @author LMansueto
  *
  */
-public interface SnpsNonsynAllele {
+public interface SnpsNonsynAllele extends Snp {
 	
-	/**
-	 * SNP feature ID
-	 * @return
-	 */
-	BigDecimal getSnp();
 	
 	/**
 	 * allele

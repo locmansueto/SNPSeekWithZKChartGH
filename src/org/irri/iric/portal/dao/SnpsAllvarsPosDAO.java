@@ -2,7 +2,10 @@ package org.irri.iric.portal.dao;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 
@@ -19,13 +22,9 @@ public interface SnpsAllvarsPosDAO {
 
 	public static BigDecimal TYPE_3KCORESNP_HDF5_V2 = new BigDecimal(6);
 	public static BigDecimal TYPE_3KALLSNP_HDF5_V2 = new BigDecimal(5);
-	public static BigDecimal TYPE_3K9311SNP_HDF5_V2 = new BigDecimal(8);
-	public static BigDecimal TYPE_3KIR64SNP_HDF5_V2 = new BigDecimal(9);
-	public static BigDecimal TYPE_3KKASSALATHSNP_HDF5_V2 = new BigDecimal(10);
-	public static BigDecimal TYPE_3KDJ123SNP_HDF5_V2 = new BigDecimal(11);
 	
 	public static BigDecimal TYPE_3KALLINDEL_V2 = new BigDecimal(7);
-	public static BigDecimal TYPE_3KALLINDEL_V1 = new BigDecimal(8);
+
 
 
 	
@@ -43,8 +42,7 @@ public interface SnpsAllvarsPosDAO {
 	 */
 	public List getSNPs(String chromosome, Integer startPos, Integer endPos , BigDecimal type);
 
-	public List getSNPs(String chromosome, Integer startPos, Integer endPos, BigDecimal type,
-			int firstRow, int maxRows);
+	public List getSNPs(String chromosome, Integer startPos, Integer endPos, BigDecimal type, int firstRow, int maxRows);
 
 	public List getSNPsInChromosome(String chr, Collection posset, BigDecimal type);
 	

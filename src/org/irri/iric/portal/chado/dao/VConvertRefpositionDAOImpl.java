@@ -578,10 +578,10 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 			//Set insertionRegions = new HashSet();
 			List listConv = null;
 			//if(snppos.getPos().toString().contains(".")) {
-			if(!snppos.getPos().remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
+			if(!snppos.getPosition().remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
 				// Position has fractional part, .. insertion region
 				
-				listConv = queryConversion( getOrganismId(  npbMultirefLocus.getOrganism() ) , npbMultirefLocus.getContig(), snppos.getPos().longValue(),  getOrganismId( origMultiReferenceLocus.getOrganism() ), toContig);
+				listConv = queryConversion( getOrganismId(  npbMultirefLocus.getOrganism() ) , npbMultirefLocus.getContig(), snppos.getPosition().longValue(),  getOrganismId( origMultiReferenceLocus.getOrganism() ), toContig);
 				
 				if(toContig!=null && !toContig.isEmpty()) {
 					List filteredList = new java.util.ArrayList();	
@@ -597,14 +597,14 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 							//conv.setFromPosition( conv.getFromPosition().add(  snppos.getPos().remainder(BigDecimal.ONE) ) );
 							//conv.setToPosition( conv.getToPosition().add(  snppos.getPos().remainder(BigDecimal.ONE) ) );
 							
-							BigDecimal to = conv.getToPosition().add(  snppos.getPos().remainder(BigDecimal.ONE) );
-							AppContext.debug("insertion region:"  + snppos.getPos() + " to " + to);
+							BigDecimal to = conv.getToPosition().add(  snppos.getPosition().remainder(BigDecimal.ONE) );
+							AppContext.debug("insertion region:"  + snppos.getPosition() + " to " + to);
 							
 							MultiReferenceConversion coversion = new MultiReferenceConversionImpl( origMultiReferenceLocus.getOrganism(), conv.getToContig(), to);
 							filteredList.add(coversion);
 						} else {
-							AppContext.debug("SNP npb:" + snppos.getPos() + "-->" + origMultiReferenceLocus.getOrganism() +":" + conv.getToPosition() + " not within query region "  + origMultiReferenceLocus );
-							strMessage.append("SNP npb:" + snppos.getPos() + "-->" + origMultiReferenceLocus.getOrganism() +":" + conv.getToPosition() + " not within query region "  + origMultiReferenceLocus +"\n" );
+							AppContext.debug("SNP npb:" + snppos.getPosition() + "-->" + origMultiReferenceLocus.getOrganism() +":" + conv.getToPosition() + " not within query region "  + origMultiReferenceLocus );
+							strMessage.append("SNP npb:" + snppos.getPosition() + "-->" + origMultiReferenceLocus.getOrganism() +":" + conv.getToPosition() + " not within query region "  + origMultiReferenceLocus +"\n" );
 						}
 
 					}
@@ -615,7 +615,7 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 				
 				// Position has no fractional part, .. anchor point or deletion region
 				
-				listConv = queryConversion( getOrganismId(  npbMultirefLocus.getOrganism() ) , npbMultirefLocus.getContig(), snppos.getPos().longValueExact(),  getOrganismId( origMultiReferenceLocus.getOrganism() ), toContig);
+				listConv = queryConversion( getOrganismId(  npbMultirefLocus.getOrganism() ) , npbMultirefLocus.getContig(), snppos.getPosition().longValueExact(),  getOrganismId( origMultiReferenceLocus.getOrganism() ), toContig);
 			
 				if(toContig!=null && !toContig.isEmpty()) {
 					List filteredList = new java.util.ArrayList();	
@@ -631,8 +631,8 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 							
 						} else
 						{
-							AppContext.debug("SNP npb:" + snppos.getPos() + "-->" + origMultiReferenceLocus.getOrganism() +":" + conv.getToPosition() + " not within query region "  + origMultiReferenceLocus );
-							strMessage.append("SNP npb:" + snppos.getPos() + "-->" + origMultiReferenceLocus.getOrganism() +":" + conv.getToPosition() + " not within query region "  + origMultiReferenceLocus+"\n" );
+							AppContext.debug("SNP npb:" + snppos.getPosition() + "-->" + origMultiReferenceLocus.getOrganism() +":" + conv.getToPosition() + " not within query region "  + origMultiReferenceLocus );
+							strMessage.append("SNP npb:" + snppos.getPosition() + "-->" + origMultiReferenceLocus.getOrganism() +":" + conv.getToPosition() + " not within query region "  + origMultiReferenceLocus+"\n" );
 						}
 						//filteredList.add(conv);
 					}
@@ -650,8 +650,8 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 			listConv.addAll(setConv);
 			
 			if(listConv.size()==0) {
-				AppContext.debug("No reference coordinate conversion at " + snppos.getPos() + "  from " +  npbMultirefLocus + " to " + origMultiReferenceLocus );
-				strMessage.append("No reference coordinate conversion at " + snppos.getPos() + "  from " +  npbMultirefLocus + " to " + origMultiReferenceLocus + "\n");
+				AppContext.debug("No reference coordinate conversion at " + snppos.getPosition() + "  from " +  npbMultirefLocus + " to " + origMultiReferenceLocus );
+				strMessage.append("No reference coordinate conversion at " + snppos.getPosition() + "  from " +  npbMultirefLocus + " to " + origMultiReferenceLocus + "\n");
 			}
 			else if(listConv.size()>1) {
 				Iterator<MultiReferenceConversion> itConv = listConv.iterator();
@@ -659,24 +659,24 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 					MultiReferenceConversion conv = itConv.next();
 					
 					if(npbMultirefLocus.getStrand()>0 && conv.getToPosition().doubleValue() >prevPos) {
-						AppContext.debug("Multiple (" + listConv + ") reference coordinate conversions at " + snppos.getPos() + " from " +  npbMultirefLocus + " to " + origMultiReferenceLocus + " (overlapped).. will use nearest right from previous");
-						strMessage.append("Multiple (" + listConv + ") reference coordinate conversions at " + snppos.getPos() + " from " +  npbMultirefLocus + " to " + origMultiReferenceLocus + " (overlapped).. will use nearest right from previous\n");
+						AppContext.debug("Multiple (" + listConv + ") reference coordinate conversions at " + snppos.getPosition() + " from " +  npbMultirefLocus + " to " + origMultiReferenceLocus + " (overlapped).. will use nearest right from previous");
+						strMessage.append("Multiple (" + listConv + ") reference coordinate conversions at " + snppos.getPosition() + " from " +  npbMultirefLocus + " to " + origMultiReferenceLocus + " (overlapped).. will use nearest right from previous\n");
 						MultiReferenceConversion coversion = new MultiReferenceConversionImpl( origMultiReferenceLocus.getOrganism(), conv.getToContig(), conv.getToPosition());
 						//mapMSU7toNewref.put(snppos.getPos() ,  new SnpsAllvarsPosImpl(BigDecimal.valueOf(val)coversion.getPosition(), snppos.getRefnuc()) );
 						//AppContext.debug("conv:" + conv);
-						AppContext.debug("convert snp pos: from NPB " + npbMultirefLocus.getContig() + " " + snppos.getPos() + " to " + coversion );
-						mapMSU7Pos2ConvertedPos.put( snppos.getPos(), coversion);
+						AppContext.debug("convert snp pos: from NPB " + npbMultirefLocus.getContig() + " " + snppos.getPosition() + " to " + coversion );
+						mapMSU7Pos2ConvertedPos.put( snppos.getPosition(), coversion);
 						prevPos = coversion.getToPosition().doubleValue();
 						break;
 					}
 					else if(npbMultirefLocus.getStrand()<0 && conv.getToPosition().doubleValue() < prevPos) {
-						AppContext.debug("Multiple (" + listConv + ") reference coordinate conversions at " + snppos.getPos() + "  from " +  npbMultirefLocus + " to " + origMultiReferenceLocus + " (overlapped).. will use nearest left from previous");
-						strMessage.append("Multiple (" + listConv + ") reference coordinate conversions at " + snppos.getPos() + "  from " +  npbMultirefLocus + " to " + origMultiReferenceLocus + " (overlapped).. will use nearest left from previous\n");
+						AppContext.debug("Multiple (" + listConv + ") reference coordinate conversions at " + snppos.getPosition() + "  from " +  npbMultirefLocus + " to " + origMultiReferenceLocus + " (overlapped).. will use nearest left from previous");
+						strMessage.append("Multiple (" + listConv + ") reference coordinate conversions at " + snppos.getPosition() + "  from " +  npbMultirefLocus + " to " + origMultiReferenceLocus + " (overlapped).. will use nearest left from previous\n");
 						MultiReferenceConversion coversion = new MultiReferenceConversionImpl( origMultiReferenceLocus.getOrganism(), conv.getToContig(), conv.getToPosition());
 						//mapMSU7toNewref.put(snppos.getPos() ,  new SnpsAllvarsPosImpl(BigDecimal.valueOf(val)coversion.getPosition(), snppos.getRefnuc()) );
 						//AppContext.debug("conv:" + conv);
-						AppContext.debug("convert snp pos: from NPB " + npbMultirefLocus.getContig() + " " + snppos.getPos() + " to " + coversion );
-						mapMSU7Pos2ConvertedPos.put( snppos.getPos(), coversion);
+						AppContext.debug("convert snp pos: from NPB " + npbMultirefLocus.getContig() + " " + snppos.getPosition() + " to " + coversion );
+						mapMSU7Pos2ConvertedPos.put( snppos.getPosition(), coversion);
 						prevPos = coversion.getToPosition().doubleValue();
 						break;
 					}
@@ -690,7 +690,7 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 				//AppContext.debug("conv:" + conv);
 				//AppContext.debug("convert snp pos: from NPB " + npbMultirefLocus.getContig() + " " + snppos.getPos() + " to " + coversion );
 				
-				mapMSU7Pos2ConvertedPos.put( snppos.getPos(), coversion);
+				mapMSU7Pos2ConvertedPos.put( snppos.getPosition(), coversion);
 				
 				prevPos = coversion.getToPosition().doubleValue();
 			}

@@ -7,12 +7,10 @@ import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -40,6 +38,7 @@ import org.irri.iric.portal.domain.IndelsStringAllvars;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.MultiReferenceConversion;
 import org.irri.iric.portal.domain.MultiReferenceLocusImpl;
+import org.irri.iric.portal.domain.Organism;
 import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
@@ -168,12 +167,15 @@ public class SNPQueryController extends SelectorComposer<Window> { //<Component>
     
 	// url address of tab frames
 	private String urljbrowse,gfffile,urlphylo,urljbrowsephylo;
-	private String vistaurl;
+	private String vistaurl1;
+	private String vistaurl2;
+	private String vistaurl3;
+	private String vistaurl4;
 	private String vistaurlrev;
 
 
 	// number of 
-	private int nAllelefreqLabels=25;
+	private int nAllelefreqLabels=10; //25;
 	
 	//int screenwidth=0;
 	//int screenheight=0;
@@ -195,7 +197,7 @@ public class SNPQueryController extends SelectorComposer<Window> { //<Component>
 	
     final private String classGenotypefacade = "GenotypeFacade";
     
-    private Object2StringMatrixModel biglistboxModel=null;
+    private Object2StringMultirefsMatrixModel biglistboxModel=null;
     private MatrixComparatorProvider matriccmpproviderAsc;
 	private MatrixComparatorProvider matriccmpproviderDesc;
 	
@@ -232,6 +234,9 @@ public class SNPQueryController extends SelectorComposer<Window> { //<Component>
 
     
     // attributes for SNP Query controller components
+    @Wire
+    private Listheader listHeaderVar2Reference;
+    
 	@Wire
 	private Button buttonResetzoom;
 	
@@ -359,7 +364,23 @@ public class SNPQueryController extends SelectorComposer<Window> { //<Component>
 	@Wire
 	private Tabpanel tabpanelVista;
 	@Wire
-	private Iframe iframeVista;
+	private Tab tabVista1;
+	@Wire
+	private Tab tabVista2;
+	@Wire
+	private Tab tabVista3;
+	@Wire
+	private Tab tabVista4;
+
+	@Wire
+	private Iframe iframeVista1;
+	@Wire
+	private Iframe iframeVista2;
+	@Wire
+	private Iframe iframeVista3;
+	@Wire
+	private Iframe iframeVista4;
+
 	@Wire
 	private Tab tabVistaRev;
 	@Wire
@@ -645,6 +666,12 @@ public  void queryVariants()    {
 	    tabJBrowsePhylo.setVisible(false);
 	    tabVistaNPB.setVisible(false);
 	    tabVistaRev.setVisible(false);
+	    tabVista.setVisible(false);
+	    
+	    vistaurl1=null;
+	    vistaurl2=null;
+	    vistaurl3=null;
+	    vistaurl4=null;
 	
 	    
 		gfffile=null;
@@ -811,12 +838,13 @@ public  void queryVariants()    {
 
 			
 			String selcontig = params.getsChr();
+			
 			if(this.listboxMySNPList.getSelectedIndex()>0)
-				msgbox.setValue("SEARCHING: in chromosome " + selcontig + " , list " + listboxMySNPList.getSelectedItem().getLabel() );
+				msgbox.setValue("SEARCHING: in " + this.listboxReference.getSelectedItem().getLabel() + " contig " + selcontig + " , list " + listboxMySNPList.getSelectedItem().getLabel() );
 			else if(intStart.getValue()!=null && intStop.getValue()!=null && !selcontig.isEmpty())
-				msgbox.setValue("SEARCHING: in chromosome " + selcontig+ " [" + intStart.getValue() +  "-" + intStop.getValue()+  "]" );
+				msgbox.setValue("SEARCHING: in " + this.listboxReference.getSelectedItem().getLabel() + " contig "   + selcontig+ " [" + intStart.getValue() +  "-" + intStop.getValue()+  "]" );
 			else 
-				msgbox.setValue("SEARCHING: in chromosome " +selcontig);
+				msgbox.setValue("SEARCHING: in " + this.listboxReference.getSelectedItem().getLabel() + " contig "  +selcontig);
 
 
 			
@@ -832,13 +860,19 @@ public  void queryVariants()    {
 					// Deligate query to API 
 					queryRawResult = genotype.queryGenotype( params);
 
-					if(!params.getOrganism().equals(AppContext.getDefaultOrganism())) {
+					if(!params.getOrganism().equals(AppContext.getDefaultOrganism()) && !AppContext.isAWS()  ) {
 					if(	queryRawResult.getSnpstringdata()!=null) {
-						AppContext.debug( "queryRawResult.getSnpstringdata().getMapMSU7Pos2ConvertedPos()=" + queryRawResult.getSnpstringdata().getMapMSU7Pos2ConvertedPos().size() + ": " + queryRawResult.getSnpstringdata().getMapMSU7Pos2ConvertedPos());
+						if(queryRawResult.getSnpstringdata().getMapMSU7Pos2ConvertedPos()!=null)
+							AppContext.debug( "queryRawResult.getSnpstringdata().getMapMSU7Pos2ConvertedPos()=" + queryRawResult.getSnpstringdata().getMapMSU7Pos2ConvertedPos().size() + ": " + queryRawResult.getSnpstringdata().getMapMSU7Pos2ConvertedPos());
+						else 
+							AppContext.debug( "queryRawResult.getSnpstringdata().getMapOrg2RefPos2ConvertedPos()=" + queryRawResult.getSnpstringdata().getMapOrg2RefPos2ConvertedPos().size() + ": " + queryRawResult.getSnpstringdata().getMapOrg2RefPos2ConvertedPos());
 					}
 					
 					if(	queryRawResult.getIndelstringdata()!=null) {
-						AppContext.debug( "queryRawResult.getIndelstringdata().getMapMSU7Pos2ConvertedPos()=" +  queryRawResult.getIndelstringdata().getMapMSU7Pos2ConvertedPos().size() + ": " +  queryRawResult.getIndelstringdata().getMapMSU7Pos2ConvertedPos());
+						if(queryRawResult.getIndelstringdata().getMapMSU7Pos2ConvertedPos()!=null)
+							AppContext.debug( "queryRawResult.getIndelstringdata().getMapMSU7Pos2ConvertedPos()=" +  queryRawResult.getIndelstringdata().getMapMSU7Pos2ConvertedPos().size() + ": " +  queryRawResult.getIndelstringdata().getMapMSU7Pos2ConvertedPos());
+						else 
+							AppContext.debug( "queryRawResult.getIndelstringdata().getMapMSU7Pos2ConvertedPos()=" +  queryRawResult.getIndelstringdata().getMapOrg2RefPos2ConvertedPos().size() + ": " +  queryRawResult.getIndelstringdata().getMapOrg2RefPos2ConvertedPos());
 					}
 					}
 
@@ -898,9 +932,9 @@ public  void queryVariants()    {
 					biglistboxArray.setColWidth(biglistcolwidth + "px");
 
 					// set table model and renderer
-					Object2StringMatrixRenderer renderer  = new Object2StringMatrixRenderer(queryResult,  params);
+					Object2StringMultirefsMatrixRenderer renderer  = new Object2StringMultirefsMatrixRenderer(queryResult,  params);
 					biglistboxArray.setMatrixRenderer(renderer);
-					biglistboxModel=new Object2StringMatrixModel(varianttable, fillGenotypeQueryParams(),  varietyfacade.getMapId2Variety(), gridBiglistheader, mapVarid2Phenotype, sPhenotype);
+					biglistboxModel=new Object2StringMultirefsMatrixModel(varianttable, fillGenotypeQueryParams(),  varietyfacade.getMapId2Variety(), gridBiglistheader, mapVarid2Phenotype, sPhenotype);
 					biglistboxModel.setHeaderRows(biglistboxRows, lastY);
 					biglistboxArray.setModel(biglistboxModel); //strRef));
 					
@@ -933,7 +967,7 @@ public  void queryVariants()    {
 					}
 					gridBiglistheader.setRowRenderer(new BiglistRowheaderRenderer());
 					biglistboxModel.setHeaderRows(biglistboxRows, lastY);
-					Object2StringMatrixModel model = (Object2StringMatrixModel)biglistboxArray.getModel();
+					Object2StringMultirefsMatrixModel model = (Object2StringMultirefsMatrixModel)biglistboxArray.getModel();
 					
 					List headerlist = model.getRowHeaderHeaderList();
 					auxheadAlleles1.setVisible(false);
@@ -1053,7 +1087,8 @@ public  void queryVariants()    {
 					
 					buttonDownloadPlink.setDisabled( checkboxIndel.isChecked() );
 					
-					updateVista(params,varianttable);
+					//updateVista(params,varianttable);
+					updateVistaTab(params.getOrganism(), params.getsChr(), params.getlStart(), params.getlEnd());
 					
 					AppContext.logSystemStatus();
 				
@@ -1066,7 +1101,7 @@ public  void queryVariants()    {
 			        	 	java.util.List listPosition = new java.util.ArrayList();
 			        		listPosition.add("");
 			        		
-			        		model = (Object2StringMatrixModel)this.biglistboxArray.getModel();
+			        		model = (Object2StringMultirefsMatrixModel)this.biglistboxArray.getModel();
 			        		int poscol=-1;
 			        		List listPos = (List)model.getHeadAt(0);
 			        		for(int i=0; i<model.getColumnSize(); i++) {
@@ -1125,6 +1160,7 @@ public  void queryVariants()    {
 					
 					listheaderVar1MultirefPairwise.setLabel(var1header);
 					listheaderVar2MultirefPairwise.setLabel(var2header);
+					listHeaderVar2Reference.setLabel(params.getOrganism() + " REFERENCE");
 					  
 					listboxSnpresult.setItemRenderer( new PairwiseListItemRenderer(queryResult, params));
 					listboxSnpresult.setModel( new SimpleListModel( ((VariantAlignmentTableArraysImpl)varianttable).getCompare2VarsList( this.selectChr.getValue(), params ) ));
@@ -1175,7 +1211,8 @@ public  void queryVariants()    {
 					calculateAlleleFrequencies();
 					hboxDownload.setVisible(true);
 					
-					tabVistaNPB.setVisible(true);
+					tabVista.setVisible(true);
+					//tabVistaNPB.setVisible(true);
 					//tabVistaRev.setVisible(true);
 				}
 				
@@ -1293,6 +1330,12 @@ private GenotypeFacade.snpQueryMode validateValues() {
 				Messagebox.show("Please select chromosome/contig", "INVALID POSITION VALUE", Messagebox.OK, Messagebox.EXCLAMATION);
 				return  null;
 			}
+			
+			if(genotype.getFeature(selcontig, this.listboxReference.getSelectedItem().getLabel() )==null) {
+				Messagebox.show("Contig " + selcontig + " not found in " + listboxReference.getSelectedItem().getLabel() , 
+				"INVALID CONTIG VALUE", Messagebox.OK, Messagebox.EXCLAMATION);
+				return null;
+			}; 
 			
 			//int chrlen = genotype.getFeatureLength( selectChr.getValue());
 			int chrlen = genotype.getFeatureLength(selcontig, this.listboxReference.getSelectedItem().getLabel() ); // .getFeatureLength( selectChr.getValue());
@@ -1509,17 +1552,22 @@ public void reset()    {
 
 @Listen("onClick =#checkboxShowAllRefAlleles")
 public void onclickShowallrefss() {
-	if(checkboxShowAllRefAlleles.isChecked()) {
-		this.checkboxIndel.setChecked(false);
-		this.checkboxIndel.setDisabled(true);
+	if(listboxReference.getSelectedItem().getLabel().equals(Organism.REFERENCE_NIPPONBARE)) {
+		if(checkboxShowAllRefAlleles.isChecked()) {
+			this.checkboxIndel.setChecked(false);
+			this.checkboxIndel.setDisabled(true);
+		} else {
+			this.checkboxIndel.setDisabled(false);
+		}
 	} else {
-		this.checkboxIndel.setDisabled(false);
+		this.checkboxIndel.setDisabled(true);
 	}
 }
 
 
 @Listen("onClick =#checkboxIndel")
 public void onclickIndels() {
+	/*
 	if(checkboxIndel.isChecked()) {
 		// disable display of other references for INDELS
 		this.checkboxShowAllRefAlleles.setChecked(false);
@@ -1527,6 +1575,7 @@ public void onclickIndels() {
 	} else {
 		this.checkboxShowAllRefAlleles.setDisabled(false);
 	}
+	*/
 }
 
 
@@ -1534,11 +1583,11 @@ public void onclickIndels() {
 public void onclickcolorMismatch() {
 	try {
 		if(biglistboxArray==null) return;
-		//Object2StringMatrixRenderer renderer =  (Object2StringMatrixRenderer)this.biglistboxArray.getMatrixRenderer();
-		Object2StringMatrixModel model  =  (Object2StringMatrixModel)this.biglistboxArray.getModel();
+		//Object2StringMultirefsMatrixRenderer renderer =  (Object2StringMultirefsMatrixRenderer)this.biglistboxArray.getMatrixRenderer();
+		Object2StringMultirefsMatrixModel model  =  (Object2StringMultirefsMatrixModel)this.biglistboxArray.getModel();
 		 if(model==null || model.getData()==null) return;
 		
-		Object2StringMatrixRenderer renderer = new Object2StringMatrixRenderer( model.getData().getVariantStringData(),   fillGenotypeQueryParams() );
+		Object2StringMultirefsMatrixRenderer renderer = new Object2StringMultirefsMatrixRenderer( model.getData().getVariantStringData(),   fillGenotypeQueryParams() );
 		biglistboxArray.setMatrixRenderer(renderer);
 		this.divMismatch.setVisible(true);
 		this.divNucleotide.setVisible(false);
@@ -1553,10 +1602,10 @@ public void onclickcolorMismatch() {
 public void onclickcolorAllele() {
 	try {
 		if(biglistboxArray==null) return;
-		Object2StringMatrixModel model  =  (Object2StringMatrixModel)this.biglistboxArray.getModel();
+		Object2StringMultirefsMatrixModel model  =  (Object2StringMultirefsMatrixModel)this.biglistboxArray.getModel();
 		if(model==null || model.getData()==null) return;
 		
-		Object2StringMatrixRenderer renderer = new Object2StringMatrixRenderer( model.getData().getVariantStringData(),   fillGenotypeQueryParams() );
+		Object2StringMultirefsMatrixRenderer renderer = new Object2StringMultirefsMatrixRenderer( model.getData().getVariantStringData(),   fillGenotypeQueryParams() );
 		biglistboxArray.setMatrixRenderer(renderer);
 		this.divNucleotide.setVisible(true);
 		this.divMismatch.setVisible(false);
@@ -1587,37 +1636,82 @@ public void onselectReference() {
 		selectChr.setModel(new SimpleListModel(listContigs));
 		comboGene.setModel( new SimpleListModel(listLoci) );
 		
-		if(selOrg.equals("93-11"))
+		if(selOrg.equals(Organism.REFERENCE_9311))
 			labelChrExample.setValue("(ex. 9311_chr01, scaffold01_4619) " );
-		else if(selOrg.equals("Kasalath"))
+		else if(selOrg.equals(Organism.REFERENCE_KASALATH))
 			labelChrExample.setValue("(ex. chr01, um) " );
+		//else if(selOrg.equals(AppContext.getDefaultOrganism())) 
+		//	labelChrExample.setValue("(ex. 9311_chr01, scaffold01_4619) " );
 		else
 			labelChrExample.setValue("(ex. " + listContigs.get(1).toString().toLowerCase() + ") " );
 		
-		if(selOrg.equals("93-11"))
+		if(selOrg.equals(Organism.REFERENCE_9311))
 			labelChr.setValue("Chromosome/Scaffold");
-		else if( selOrg.equals(AppContext.getDefaultOrganism()) || selOrg.equals("Kasalath"))
+		else if( selOrg.equals(Organism.REFERENCE_NIPPONBARE) || selOrg.equals(Organism.REFERENCE_KASALATH))
 			labelChr.setValue("Chromosome");
 		else 
 			labelChr.setValue("Scaffold");
 		
+		if(selOrg.equals(Organism.REFERENCE_NIPPONBARE)) 
+			labelLocusExample.setValue("(ex. loc_os01g01010)");
+		else if(selOrg.equals(Organism.REFERENCE_IR64)) 
+			labelLocusExample.setValue("(ex. osir64_00001g0100)");
+		else if(selOrg.equals(Organism.REFERENCE_9311)) 
+			labelLocusExample.setValue("(ex. os9311_01g010100)");
+		else if(selOrg.equals(Organism.REFERENCE_KASALATH)) 
+			labelLocusExample.setValue("(ex. oskasal01g010050)");
+		else if(selOrg.equals(Organism.REFERENCE_DJ123)) 
+			labelLocusExample.setValue("(ex. osdj12_00001g010100)");
+		
+		
 		selectChr.setValue("");
+		comboGene.setValue("");
 		
 		// hide/disable some features if reference is not Nipponbare
-		if(!selOrg.equals( AppContext.getDefaultOrganism())) {
+		if(!selOrg.equals(Organism.REFERENCE_NIPPONBARE)) {
 			checkboxShowNPBPosition.setChecked(false);
-			divShowNPBPositions.setVisible(true);
-			comboGene.setValue("");
+			//divShowNPBPositions.setVisible(true);
+			
 			//this.comboGene.setDisabled(true);
 			listboxMySNPList.setSelectedIndex(0);
 			this.listboxMySNPList.setDisabled(true);
 			this.listboxMyLocusList.setDisabled(true);
+			
+			//this.comboGene.setValue("");
+			//this.comboGene.setDisabled(true);
+
+			this.checkboxIndel.setDisabled(true);
+			this.checkboxIndel.setChecked(false);
+			
+			this.radioAllSnps.setSelected(true);
+			this.radioAllSnps.setDisabled(true);
+			this.radioNonsynSnps.setDisabled(true);
+			this.radioNonsynHighlights.setDisabled(true);
+			this.radioNonsynSnpsPlusSplice.setDisabled(true);
+			
+			this.checkboxCoreSNP.setChecked(false);
+			this.checkboxCoreSNP.setDisabled(true);
+			
+			this.checkboxShowAllRefAlleles.setChecked(true);
+			checkboxShowAllRefAlleles.setDisabled(true);
+			
 		} else {
 			checkboxShowNPBPosition.setChecked(false);
 			divShowNPBPositions.setVisible(false);
 			//this.comboGene.setDisabled(false);
 			this.listboxMySNPList.setDisabled(false);
 			this.listboxMyLocusList.setDisabled(false);
+			
+			this.comboGene.setValue("");
+			this.comboGene.setDisabled(false);
+			this.radioAllSnps.setDisabled(false);
+			this.radioNonsynHighlights.setDisabled(false);
+			this.radioNonsynSnpsPlusSplice.setDisabled(false);
+			this.checkboxIndel.setDisabled(false);
+			
+			this.checkboxCoreSNP.setDisabled(false);
+			this.checkboxShowAllRefAlleles.setChecked(false);
+			checkboxShowAllRefAlleles.setDisabled(false);
 		}
 		
 	} catch(Exception ex) {
@@ -1686,7 +1780,7 @@ public void onScrollYTable(ScrollEventExt event) {
 	lastY=event.getY();
 	biglistboxModel.setHeaderRows(biglistboxRows, lastY);
 	
-	Object2StringMatrixModel model = (Object2StringMatrixModel)biglistboxArray.getModel();
+	Object2StringMultirefsMatrixModel model = (Object2StringMultirefsMatrixModel)biglistboxArray.getModel();
 	//gridBiglistheader.setModel( new SimpleListModel(  model.getRowHeaderList(biglistboxRows, lastY) ));
 	gridBiglistheader.setModel( new BiglistRowheaderModel(  model.getRowHeaderList(biglistboxRows, lastY) ));
 	
@@ -1703,7 +1797,7 @@ public void onScrollYTable(ScrollEventExt event) {
 @Listen("onSort =#biglistboxArray") 
 public void onsortBiglistbox(SortEventExt event) {
 	
-	Object2StringMatrixModel model = (Object2StringMatrixModel)biglistboxArray.getModel();
+	Object2StringMultirefsMatrixModel model = (Object2StringMultirefsMatrixModel)biglistboxArray.getModel();
 	getSession().putValue("variantTable", model.getData());
 	gfffile=null;
 	//AppContext.debug("reset gff=null");
@@ -1721,7 +1815,7 @@ public void onclickCreateVarlist() {
 	
 	Map<String,Variety> mapName2Var = varietyfacade.getMapVarname2Variety();
 	Set setVarieties = new LinkedHashSet();
-	Object2StringMatrixModel model = (Object2StringMatrixModel)biglistboxArray.getModel();
+	Object2StringMultirefsMatrixModel model = (Object2StringMultirefsMatrixModel)biglistboxArray.getModel();
 	for(int i=0; i<model.getSize(); i++) {
 		Object  varname =  ((Object[])model.getElementAt(i).get(0))[0];
 		setVarieties.add( mapName2Var.get(varname) );
@@ -2043,9 +2137,9 @@ private void updateBiglistboxArray(GenotypeQueryParams params)  {
 
 	AppContext.debug("updateBiglistboxArray: queryResult=" + queryResult.getListVariantsString().size() + " x " +  queryResult.getListPos().size());
 	
-	Object2StringMatrixRenderer renderer  = new Object2StringMatrixRenderer(queryResult,  params);
+	Object2StringMultirefsMatrixRenderer renderer  = new Object2StringMultirefsMatrixRenderer(queryResult,  params);
 	biglistboxArray.setMatrixRenderer(renderer);
-	biglistboxModel=new Object2StringMatrixModel(varianttable, fillGenotypeQueryParams(),  varietyfacade.getMapId2Variety(), gridBiglistheader);
+	biglistboxModel=new Object2StringMultirefsMatrixModel(varianttable, fillGenotypeQueryParams(),  varietyfacade.getMapId2Variety(), gridBiglistheader);
 	biglistboxModel.setHeaderRows(biglistboxRows, lastY);
 	biglistboxArray.setModel(biglistboxModel); //strRef));
 	
@@ -2064,7 +2158,7 @@ private void updateBiglistboxArray(GenotypeQueryParams params)  {
 		updateJBrowse( selectChr.getValue().trim(),  intStart.getValue().toString() , intStop.getValue().toString(), this.comboGene.getValue());
 	
 	
-	Object2StringMatrixModel model = (Object2StringMatrixModel)this.biglistboxArray.getModel();
+	Object2StringMultirefsMatrixModel model = (Object2StringMultirefsMatrixModel)this.biglistboxArray.getModel();
 	int poscol=-1;
 	List listPos = (List)model.getHeadAt(0);
 	//for(int i=0; i<biglistboxArray.getCols(); i++) {
@@ -2110,7 +2204,7 @@ public void onselectposition() {
 		// get alleles for position
 		// get position column index
 
-		Object2StringMatrixModel model = (Object2StringMatrixModel)this.biglistboxArray.getModel();
+		Object2StringMultirefsMatrixModel model = (Object2StringMultirefsMatrixModel)this.biglistboxArray.getModel();
 		int poscol=-1;
 		List listPos = (List)model.getHeadAt(0);
 		//for(int i=0; i<biglistboxArray.getCols(); i++) {
@@ -2167,7 +2261,7 @@ public void onclickFilterAllele() {
 
 	String selpos = listboxPosition.getSelectedItem().getLabel();
 	if(selpos.isEmpty()) {
-		biglistboxModel= new Object2StringMatrixModel(varianttable, fillGenotypeQueryParams(),  varietyfacade.getMapId2Variety(), gridBiglistheader );
+		biglistboxModel= new Object2StringMultirefsMatrixModel(varianttable, fillGenotypeQueryParams(),  varietyfacade.getMapId2Variety(), gridBiglistheader );
 		biglistboxModel.setHeaderRows(biglistboxRows, lastY);
 		biglistboxArray.setModel(biglistboxModel);
 		//gridBiglistheader.setModel(new BiglistRowheaderModel( ((VariantAlignmentTableArraysImpl)varianttable).getRowHeaderList( biglistboxRows) ));
@@ -2197,7 +2291,7 @@ public void onclickFilterAllele() {
 		List listNames = new ArrayList();
 		
 
-		Object2StringMatrixModel origModel = (Object2StringMatrixModel)this.biglistboxArray.getModel();
+		Object2StringMultirefsMatrixModel origModel = (Object2StringMultirefsMatrixModel)this.biglistboxArray.getModel();
 		VariantAlignmentTableArraysImpl  table = (VariantAlignmentTableArraysImpl)origModel.getData();
 		Object[][] varalleles = table.getVaralleles();
 
@@ -2237,7 +2331,7 @@ public void onclickFilterAllele() {
 		
 		//this.filteredList =
 		
-		biglistboxModel= new Object2StringMatrixModel(newtable, fillGenotypeQueryParams(),  varietyfacade.getMapId2Variety(),gridBiglistheader);
+		biglistboxModel= new Object2StringMultirefsMatrixModel(newtable, fillGenotypeQueryParams(),  varietyfacade.getMapId2Variety(),gridBiglistheader);
 		biglistboxModel.setHeaderRows(biglistboxRows, lastY);
 		biglistboxArray.setModel(biglistboxModel);
 		
@@ -2271,7 +2365,7 @@ public void onclickFilterAllele() {
 public void onclickClearFilterAllele() {
 
 	try {
-	biglistboxModel= new Object2StringMatrixModel(varianttable, fillGenotypeQueryParams(),  varietyfacade.getMapId2Variety(), gridBiglistheader );
+	biglistboxModel= new Object2StringMultirefsMatrixModel(varianttable, fillGenotypeQueryParams(),  varietyfacade.getMapId2Variety(), gridBiglistheader );
 	biglistboxModel.setHeaderRows(biglistboxRows, lastY);
 	biglistboxArray.setModel(biglistboxModel);
 
@@ -2375,13 +2469,15 @@ public void onselectTabJbrowse() {
 				
 				// update positions and refnuc in list gff 
 				// listGFF
-				
+				/*
 				if(!this.listboxReference.equals(AppContext.getDefaultOrganism())) {
 					if(!this.checkboxIndel.isChecked())
 						listGFF = convertGFFReferencePosInterval(listGFF);
 					else
 						listGFF = convertGFFReferencePosPoint(listGFF);
 				}
+				*/
+				
 				
 				writeGFF(listGFF, AppContext.getTempDir() + gfffile);
 				
@@ -2726,7 +2822,7 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 			varietyfacade =  (VarietyFacade)AppContext.checkBean(varietyfacade , "VarietyFacade");
 			Map<String,Variety> mapName2Var = varietyfacade.getMapVarname2Variety();
 			Map<BigDecimal,Integer> mapVar2Order = new HashMap();
-			Object2StringMatrixModel model = (Object2StringMatrixModel)biglistboxArray.getModel();
+			Object2StringMultirefsMatrixModel model = (Object2StringMultirefsMatrixModel)biglistboxArray.getModel();
 			for(int i=0; i<model.getSize(); i++) {
 				Object  varname =  ((Object[])model.getElementAt(i).get(0))[0];
 				mapVar2Order.put(mapName2Var.get(varname).getVarietyId(),i);
@@ -2899,7 +2995,7 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 			long prevpos = start.longValue();
 			if(itPos.hasNext()) {
 				SnpsAllvarsPos pos = itPos.next();
-				long curpos = pos.getPos().longValue();
+				long curpos = pos.getPosition().longValue();
 				
 				lPos[iPosCount]=curpos;
 				cRef[iPosCount]=pos.getRefnuc().charAt(0);
@@ -2915,7 +3011,7 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 			iPosCount++;
 			while(itPos.hasNext()) {
 				SnpsAllvarsPos pos = itPos.next();
-				long curpos = pos.getPos().longValue();
+				long curpos = pos.getPosition().longValue();
 				mapPrevPos.put(curpos, prevpos);
 				mapNextPos.put(prevpos, curpos);
 				
@@ -2945,8 +3041,17 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 		
 				Iterator<SnpsStringAllvars> itsnpstring = listSNPs.iterator();
 				
+				String ref=listboxReference.getSelectedItem().getLabel();
+				String contigsuff="";
+				if(ref.equals(Organism.REFERENCE_9311)) contigsuff="|9311v1";
+				else if(ref.equals(Organism.REFERENCE_DJ123)) contigsuff="|dj123v1";
+				else if(ref.equals(Organism.REFERENCE_IR64)) contigsuff="|ir6421v1";
+				else if(ref.equals(Organism.REFERENCE_KASALATH)) contigsuff="|kasv1";
+				
+				
 				while(itsnpstring.hasNext()) {
 					SnpsStringAllvars snpvars = itsnpstring.next();
+					
 					
 					if(!var2order.containsKey( snpvars.getVar() )) continue;
 					
@@ -2957,11 +3062,30 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 					
 					Map<Position,Character> mapPos2allele2 = snpvars.getMapPos2Allele2();
 					
-					String chr = snpvars.getChr().toString(); 
+					Long intchr = snpvars.getChr();
+					String chr=null;
+					if(intchr==null) {
+						chr = snpvars.getContig(); // .getChr().toString();
+						try {
+							intchr = Long.valueOf(chr);
+							if(intchr<10) chr="chr0"+intchr;
+							else chr="chr"+intchr;
+						} catch(Exception ex) {
+							
+						}
+					} else {
+						if(intchr<10) chr="chr0"+intchr;
+						else chr="chr"+intchr;
+					}
+					
+					chr=chr+contigsuff;
+					
+					/*
 					if(chr.length()==1)
 						chr= "chr0" + chr + AppContext.getJbrowseContigSuffix(); //"|msu7";
 					else 
 						chr= "chr" + chr + AppContext.getJbrowseContigSuffix(); //"|msu7";
+						*/
 		
 					String order =  var2order.get(snpvars.getVar() ).toString();
 					Variety var=mapId2Variety.get( snpvars.getVar() );
@@ -3012,8 +3136,11 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 							String ismissing=";Missing=0";
 							if(charAtPos=='?') ismissing=";Missing=1";
 						
+							BigDecimal snpid = ((SnpsAllvarsPos)listSnpPos.get(iPos)).getSnpFeatureId();
+							
 							String line_right =  "\t.\t.\t.\tName=" +  var.getName() +
-									";ID=VAR" +  var.getVarietyId() + "-CHR" + snpvars.getChr() + "-" +  lPos[iPos] + 
+									//";ID=VAR" +  var.getVarietyId() + "-CHR" + snpvars.getChr() + "-" +  lPos[iPos] +
+									";ID=VAR" +  var.getVarietyId() + "-SNP" + snpid + //   + "-" +  lPos[iPos] +
 									";AlleleRef=" +   cRef[iPos] + 
 									";AlleleAlt=" + charAtPos + al2 +
 									";Position=" +  lPos[iPos] +
@@ -3065,7 +3192,7 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 			long prevpos = start.longValue();
 			while(itPos.hasNext()) {
 				SnpsAllvarsPos pos = itPos.next();
-				long curpos = pos.getPos().longValue();
+				long curpos = pos.getPosition().longValue();
 				lPos[iPosCount]=curpos;
 				if(!pos.getRefnuc().isEmpty())
 					cRef[iPosCount]=pos.getRefnuc().charAt(0);
@@ -3379,7 +3506,7 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 							String  strRef=null;
 							
 							if(mapIndelpos2Refnuc!=null)
-								strRef = mapIndelpos2Refnuc.get(pos.getPos());
+								strRef = mapIndelpos2Refnuc.get(pos.getPosition());
 							if(strRef==null) strRef=pos.getRefnuc();
 							
 							// no ref value
@@ -3398,13 +3525,13 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 							
 							String splicestr = "";
 							if(setposAcceptor!=null) {
-							if(setposAcceptor.contains(pos.getPos()))
+							if(setposAcceptor.contains(pos.getPosition()))
 								splicestr=";Acceptor=1";	
 								else splicestr=";Acceptor=0";
 							}
 							
 							if(setposDonor!=null) {
-							if(setposDonor.contains(pos.getPos())) 
+							if(setposDonor.contains(pos.getPosition())) 
 								splicestr+=";Donor=1";	
 								else splicestr+=";Donor=0";
 							}
@@ -3413,16 +3540,16 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 							if( showAll || (charAtPos!='0' && cRef!= charAtPos && charAtPos!='.' && charAtPos!=' ') ) {
 								
 								String line_right =  "\t.\t.\t.\tName=" +  var.getName() +
-										";ID=VAR" +  var.getVarietyId() + "-" +  snpvars.getContig() + "-" +  pos.getPos() + 
+										";ID=VAR" +  var.getVarietyId() + "-" +  snpvars.getContig() + "-" +  pos.getPosition() + 
 										";AlleleRef=" +   cRef + 
 										";AlleleAlt=" + charAtPos + al2 +
-										";Position=" +  pos.getPos() +
+										";Position=" +  pos.getPosition() +
 										";Synonymous=" + synstr +
 										 splicestr + colormode +
 										";order=" + order +
 										"\n";	
 								
-								listGFF.add(new GFF( chr + "\tIRIC\tsnp\t", line_right,  pos.getPos().longValue() , pos.getPos().longValue(), pos.getPos().longValue() ));
+								listGFF.add(new GFF( chr + "\tIRIC\tsnp\t", line_right,  pos.getPosition().longValue() , pos.getPosition().longValue(), pos.getPosition().longValue() ));
 							}
 						}						
 
@@ -3612,7 +3739,7 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 							Character var2Nuc = var2variants.getVarnuc().charAt(ipos);
 							Character var1Nuc = var1variants.getVarnuc().charAt(ipos);
 							
-							String strPos = listPos.get(ipos).getPos().toString().replace(".00", "").replace(".0", "");
+							String strPos = listPos.get(ipos).getPosition().toString().replace(".00", "").replace(".0", "");
 									
 							if(!mismatchOnly || ! var2Nuc.equals(var1Nuc) ) {
 								buff.append(chr); buff.append("\tIRIC\tsnp\t");
@@ -3679,9 +3806,9 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 		gfffile=null;
 		
 		String org = this.listboxReference.getSelectedItem().getLabel(); 
-		/*
+		
 		if(org.equals(AppContext.getDefaultOrganism())) 
-			chrpad = "loc=" + chr + AppContext.getJbrowseContigSuffix(); //"|msu7";
+			chrpad = "loc=" + chr;  // + AppContext.getJbrowseContigSuffix(); //"|msu7";
 		else if(org.equals("IR64-21"))
 			chrpad = "data=ir6421v1&loc="+  chr + "|ir6421v1";
 		else if(org.equals("93-11"))
@@ -3690,17 +3817,19 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 			chrpad = "data=dj123v1&loc=" + chr + "|dj123v1";
 		else if(org.equals("Kasalath"))
 			chrpad = "data=kasv1&loc=" + chr + "|kasv1";
-			*/
-		if(org.equals(AppContext.getDefaultOrganism())) 
+		
+		/*
+		if(org.equals(Organism.REFERENCE_NIPPONBARE)) 
 			chrpad = "loc=" + chr ;
-		else if(org.equals("IR64-21"))
+		else if(org.equals(Organism.REFERENCE_IR64))
 			chrpad = "data=ir6421v1&loc="+  chr ;
-		else if(org.equals("93-11"))
+		else if(org.equals(Organism.REFERENCE_9311))
 			chrpad =  "data=9311v1&loc=" + chr ;
-		else if(org.equals("DJ123"))
+		else if(org.equals(Organism.REFERENCE_DJ123))
 			chrpad = "data=dj123v1&loc=" + chr ;
-		else if(org.equals("Kasalath"))
+		else if(org.equals(Organism.REFERENCE_KASALATH))
 			chrpad = "data=kasv1&loc=" + chr ;
+		*/
 		
 		if (iframeJbrowse==null) throw new RuntimeException("jbrowse==null");
 		
@@ -3752,6 +3881,7 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 				
 				if(org.equals(AppContext.getDefaultOrganism())) 
 						{}
+				/*
 				else if(org.equals("IR64-21"))
 					showTracks = "IR64-21%20DNA,ir6421v1rengff,alignir6421v1vsmsu7%2C";
 				else if(org.equals("93-11"))
@@ -3760,7 +3890,15 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 					showTracks = "DJ123%20DNA%2C,dj123v1rengff,aligndj123v1vsmsu7%2C";
 				else if(org.equals("Kasalath"))
 						showTracks = "Kasalath%20DNA%2Ckasrapv1rengff,";
-				
+						*/
+				else if(org.equals("IR64-21"))
+					showTracks = "DNA,ir6421v1gffv2,";
+				else if(org.equals("93-11"))
+					showTracks  = "DNA%2C9311v1gffv2,";
+				else if(org.equals("DJ123"))
+					showTracks = "DNA%2C,dj123v1gffv2,";
+				else if(org.equals("Kasalath"))
+						showTracks = "DNA%2Ckasv1gffrapv2,";				
 				
 				//urljbrowse= AppContext.getHostname() + "/" + AppContext.getJbrowseDir() + "/?loc=chr"  + chrpad + "|msu7:" + start + ".." + end +   "&tracks=DNA%2Cmsu7gff%2Csnp3k%2C" + snp3kcore + "SNP%20Genotyping&addStores={%22url%22%3A{%22type%22%3A%22JBrowse%2FStore%2FSeqFeature%2FGFF3Variety%22%2C%22urlTemplate%22%3A%22" + urltemplate +
 				
@@ -3787,13 +3925,13 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 				if(org.equals(AppContext.getDefaultOrganism())) 
 					{} 
 				else if(org.equals("IR64-21"))
-					showTracks = "IR64-21%20DNA,ir6121v1rengff,alignir6421v1vsmsu7";
+					showTracks = "DNA,ir6421v1gff,";
 				else if(org.equals("93-11"))
-					showTracks  = "9311%20DNA,9311v1rengff";
+					showTracks  = "DNA%2C9311v1gff,";
 				else if(org.equals("DJ123"))
-					showTracks = "DJ123%20DNA%2Cdj123v1rengff,aligndj123v1vsmsu7";
+					showTracks = "DNA%2C,dj123v1gff,";
 				else if(org.equals("Kasalath"))
-						showTracks = "Kasalath%20DNA,kasrapv1rengff";
+						showTracks = "DNA%2Ckasrapv1rengff,";			
 				
 				
 				// for 2 varieties
@@ -4067,7 +4205,7 @@ private void downloadBigListbox(String filename, String delimiter) {
 	
 	try {
 	
-	Object2StringMatrixModel matrixmodel = (Object2StringMatrixModel)biglistboxArray.getModel();
+	Object2StringMultirefsMatrixModel matrixmodel = (Object2StringMultirefsMatrixModel)biglistboxArray.getModel();
 	VariantAlignmentTableArraysImpl  table = (VariantAlignmentTableArraysImpl)matrixmodel.getData();
 	
 	
@@ -4119,7 +4257,7 @@ private void downloadBigListbox(String filename, String delimiter) {
 		String refnuc = refs[i]; 
 		if(refnuc==null || refnuc.isEmpty()) {
 			//tabledata.getIndelstringdata().getMapIndelIdx2Refnuc().get(colIndex-frozenCols);
-			BigDecimal pos = table.getVariantStringData().getListPos().get(i).getPos();
+			BigDecimal pos = table.getVariantStringData().getListPos().get(i).getPosition();
 			if(table.getVariantStringData().getIndelstringdata()!=null && table.getVariantStringData().getIndelstringdata().getMapIndelpos2Refnuc()!=null)
 				refnuc = table.getVariantStringData().getIndelstringdata().getMapIndelpos2Refnuc().get(pos);
 		}
@@ -4152,7 +4290,7 @@ private void downloadBigListbox(String filename, String delimiter) {
 			String refnuc = refs[i]; 
 			if(refnuc.isEmpty()) {
 				//tabledata.getIndelstringdata().getMapIndelIdx2Refnuc().get(colIndex-frozenCols);
-				BigDecimal pos = table.getVariantStringData().getListPos().get(i).getPos();
+				BigDecimal pos = table.getVariantStringData().getListPos().get(i).getPosition();
 				if(table.getVariantStringData().getIndelstringdata()!=null && table.getVariantStringData().getIndelstringdata().getMapIndelpos2Refnuc()!=null)
 					refnuc = table.getVariantStringData().getIndelstringdata().getMapIndelpos2Refnuc().get(pos);
 			}
@@ -4170,7 +4308,7 @@ private void downloadBigListbox(String filename, String delimiter) {
 		 String allrefsalleles[][] = table.getAllrefalleles();
 		 String refnames[] = table.getAllrefallelesnames();
 		 for(int iref=0; iref<refnames.length; iref++) {
-			 buff.append(refnames[iref]).append(delimiter).append(delimiter).append(delimiter).append(delimiter);
+			 buff.append("REF " + refnames[iref]).append(delimiter).append(delimiter).append(delimiter).append(delimiter);
 
 			String irefs[] = allrefsalleles[iref];
 			for(int i=0; i<refs.length; i++) {
@@ -4184,7 +4322,9 @@ private void downloadBigListbox(String filename, String delimiter) {
 						refnuc = table.getVariantStringData().getIndelstringdata().getMapIndelpos2Refnuc().get(pos);
 				}
 				*/
-				buff.append(refnuc);
+				if(refnuc==null)
+					buff.append("-");
+				else buff.append(refnuc);
 				if(i<refs.length-1) buff.append(delimiter);
 			}
 			buff.append("\n");
@@ -4278,7 +4418,7 @@ private void downloadBigListboxPlinkZip(String filename) {
 	String chr= this.selectChr.getValue();
 	
 	
-	Object2StringMatrixModel matrixmodel = (Object2StringMatrixModel)biglistboxArray.getModel();
+	Object2StringMultirefsMatrixModel matrixmodel = (Object2StringMultirefsMatrixModel)biglistboxArray.getModel();
 	VariantAlignmentTableArraysImpl  table = (VariantAlignmentTableArraysImpl)matrixmodel.getData();
 	
 	
@@ -4534,7 +4674,7 @@ public void onclickDownloadFasta() {
 		Map<String, Map<String, Map<String,Integer>>> mapPos2Subpop2Allele2Count=new TreeMap();
 		Map<String, Map<String, Map<String,Integer>>> mapPos2Subpop2Genotype2Count=new TreeMap();
 		
-		Object2StringMatrixModel model = (Object2StringMatrixModel)this.biglistboxArray.getModel();
+		Object2StringMultirefsMatrixModel model = (Object2StringMultirefsMatrixModel)this.biglistboxArray.getModel();
 		int poscol=-1;
 		List listPos = (List)model.getHeadAt(0);
 		Set subpops = new LinkedHashSet();
@@ -4859,28 +4999,34 @@ public void onclickDownloadFasta() {
 			
 		}
 		
-	    PlotLine plotLine = new PlotLine();
-	    plotLine.setValue(0);
-	    plotLine.setWidth(1);
-	    plotLine.setColor("#808080");
-	    chartAlleleFrequency.getYAxis().addPlotLine(plotLine);
-	    
+		
+
 	    AxisLabels xlabels = chartAlleleFrequency.getXAxis().getLabels();
 	    xlabels.setRotation(-75);
 	    xlabels.setAlign("right");
 	    chartAlleleFrequency.getXAxis().setTickInterval(null);
 	    
-	    double min = 0;
-	    double max = chartAlleleFrequency.getXAxisSize();
-	    long interval = Math.max(1,  Double.valueOf(  Math.ceil( Double.valueOf((max-min)/nAllelefreqLabels)) ).longValue() );
-		xlabels.setStep( interval );
+
 		
+	    PlotLine plotLine = new PlotLine();
+	    plotLine.setValue(0);
+	    plotLine.setWidth(1);
+	    plotLine.setColor("#808080");
+	    chartAlleleFrequency.getYAxis().addPlotLine(plotLine);
 		
 	     Legend legend = chartAlleleFrequency.getLegend();
 	     legend.setLayout("vertical");
 	     legend.setAlign("right");
 	     legend.setVerticalAlign("middle");
 	     legend.setBorderWidth(0);
+	     
+	    double min = 0;
+	    double max = queryRawResult.getListPos().size(); //  genotypefreqlines.linecountmajormodel.getSeries(0). //chartAlleleFrequency.getXAxisSize();
+	    long interval = Math.max(1,  Double.valueOf(  Math.ceil( Double.valueOf((max-min)/nAllelefreqLabels)) ).longValue() );
+	    AppContext.debug( "max=" + max + "  min=" + min + "  (max-min)/" + nAllelefreqLabels +"=" +  Double.valueOf(  Math.ceil( Double.valueOf((max-min)/nAllelefreqLabels)) ).longValue() + " allelefrqchart xlabelsteps=" + interval);
+		xlabels.setStep( interval );
+		
+
 	}
 
 
@@ -4947,7 +5093,7 @@ public void onclickDownloadFasta() {
 				
 				AppContext.debug("sorting biglist from header");
 				
-				Object2StringMatrixModel model =  (Object2StringMatrixModel)biglistboxArray.getModel();
+				Object2StringMultirefsMatrixModel model =  (Object2StringMultirefsMatrixModel)biglistboxArray.getModel();
 				model.sort(cmpr, ascending);
 				
 				} catch(Exception ex) {
@@ -5058,6 +5204,41 @@ public void onclickDownloadFasta() {
 
 		// **************************************************   HANDLE VISTA TAB EVENTS ************************************************************
 
+
+		
+		
+		private void  updateVistaSubtabs(String ref,  String contig, long start, long end,  String org1, String org2,String org3,String org4) {
+			this.tabVista1.setLabel(ref  + " vs " + org1);
+			this.tabVista2.setLabel(ref  + " vs " + org2);
+			this.tabVista3.setLabel(ref  + " vs " + org3);
+			this.tabVista4.setLabel(ref  + " vs " + org4);
+			
+			/*
+			this.iframeVista1.setSrc( createVistaRef2Othersurl(ref, contig, start, end, org1));
+			this.iframeVista2.setSrc( createVistaRef2Othersurl(ref, contig, start, end, org2));
+			this.iframeVista3.setSrc( createVistaRef2Othersurl(ref, contig, start, end, org3));
+			this.iframeVista4.setSrc( createVistaRef2Othersurl(ref, contig, start, end, org4));
+			*/
+			
+			vistaurl1= createVistaRef2Othersurl(ref, contig, start, end, org1);
+			vistaurl2= createVistaRef2Othersurl(ref, contig, start, end, org2);
+			vistaurl3= createVistaRef2Othersurl(ref, contig, start, end, org3);
+			vistaurl4= createVistaRef2Othersurl(ref, contig, start, end, org4);
+
+			
+			tabVista1.setSelected(true);
+			this.iframeVista1.setSrc(vistaurl1);
+		}
+		 
+		private void updateVistaTab(String ref, String contig, long start, long end) {
+			if(ref.equals(Organism.REFERENCE_NIPPONBARE))  updateVistaSubtabs(ref, contig, start, end,  Organism.REFERENCE_9311, Organism.REFERENCE_IR64, Organism.REFERENCE_KASALATH, Organism.REFERENCE_DJ123); 
+			else if(ref.equals(Organism.REFERENCE_9311))  updateVistaSubtabs(ref, contig, start, end,  Organism.REFERENCE_NIPPONBARE, Organism.REFERENCE_IR64, Organism.REFERENCE_KASALATH, Organism.REFERENCE_DJ123); 
+			else if(ref.equals(Organism.REFERENCE_IR64))  updateVistaSubtabs(ref, contig, start, end,  Organism.REFERENCE_9311, Organism.REFERENCE_NIPPONBARE, Organism.REFERENCE_KASALATH, Organism.REFERENCE_DJ123); 
+			else if(ref.equals(Organism.REFERENCE_KASALATH))  updateVistaSubtabs(ref, contig, start, end,  Organism.REFERENCE_9311, Organism.REFERENCE_IR64, Organism.REFERENCE_NIPPONBARE, Organism.REFERENCE_DJ123); 
+			else if(ref.equals(Organism.REFERENCE_DJ123))  updateVistaSubtabs(ref, contig, start, end,  Organism.REFERENCE_9311, Organism.REFERENCE_IR64, Organism.REFERENCE_KASALATH, Organism.REFERENCE_NIPPONBARE); 
+		}
+		
+		/*
 		@Listen("onClick =#tabVista")
 		public void onclickTabvista() {
 			if(this.vistaurl!=null) {
@@ -5067,7 +5248,47 @@ public void onclickDownloadFasta() {
 				this.vistaurl=null;
 			}
 		}
+		*/
+		
 
+		@Listen("onClick =#tabVista1")
+		public void onclickTabVista1() {
+			AppContext.debug("displaying: " + vistaurl1);
+			this.iframeVista1.setSrc(vistaurl1);
+		}
+		@Listen("onClick =#tabVista2")
+		public void onclickTabVista2() {
+			AppContext.debug("displaying: " + vistaurl2);
+			this.iframeVista2.setSrc(vistaurl2);
+		}
+		@Listen("onClick =#tabVista3")
+		public void onclickTabVista3() {
+			AppContext.debug("displaying: " + vistaurl3);
+			this.iframeVista3.setSrc(vistaurl3);
+		}
+		@Listen("onClick =#tabVista4")
+		public void onclickTabVista4() {
+			AppContext.debug("displaying: " + vistaurl4);
+			this.iframeVista4.setSrc(vistaurl4);
+		}
+		
+
+		@Listen("onClick =#tabVista")
+		public void onclickTabvista() {
+			
+			updateVistaTab(this.listboxReference.getSelectedItem().getLabel(), this.selectChr.getValue(), this.intStart.getValue(), this.intStop.getValue());
+			
+			/*
+			if(this.vistaurl!=null) {
+				this.iframeVista.setSrc(vistaurl);
+				AppContext.debug("displaying: " + vistaurl);
+				
+				this.vistaurl=null;
+			}
+			*/
+		}
+
+		
 		@Listen("onClick =#tabVistaRev")
 		public void onclickTabvistaRev() {
 			if(this.vistaurlrev!=null) {
@@ -5079,6 +5300,8 @@ public void onclickDownloadFasta() {
 		}
 
 		private String createVistaNPBurl(String org, String npbcontig, long npbstart, long npbend ) {
+			//return createVistaRef2Othersurl(Organism.REFERENCE_NIPPONBARE, npbcontig, npbstart, npbend, org);
+			
 			String url="";
 			if(org.equalsIgnoreCase("DJ123")) {
 				 //vistaurl = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat12&run=21641-znnYkRUW#&base=4153&run=21641-znnYkRUW&pos=" + origcontig + ":" + start + "-" + end + "&genes=user&indx=0&cutoff=50";
@@ -5099,7 +5322,70 @@ public void onclickDownloadFasta() {
 
 			AppContext.debug("displaying: " + url);
 			return url;
+			
 		}
+		
+		
+		private String createVistaRef2Othersurl(String ref, String refcontig, long refstart, long refend, String target) {
+			String url="";
+			if(ref.equals(Organism.REFERENCE_NIPPONBARE)) {
+				if(target.equals(Organism.REFERENCE_9311))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=37668-Nvvq15gS";
+				else if(target.equals(Organism.REFERENCE_IR64))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=37870-HIlpnZhn";
+				else if(target.equals(Organism.REFERENCE_KASALATH))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=37665-aKx0cjrR";
+				else if(target.equals(Organism.REFERENCE_DJ123))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=21641-znnYkRUW";
+			} 
+			else if(ref.equals(Organism.REFERENCE_9311)) {
+				if(target.equals(Organism.REFERENCE_NIPPONBARE))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&run=37668-Nvvq15gS&base=4144";
+				else if(target.equals(Organism.REFERENCE_IR64))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&run=36371-uPgcWnIQ";
+				else if(target.equals(Organism.REFERENCE_KASALATH))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&run=37794-jmPy8pl6";
+				else if(target.equals(Organism.REFERENCE_DJ123))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&run=36169-RyFxrjyS";
+			} 
+			else if(ref.equals(Organism.REFERENCE_IR64)) {
+				if(target.equals(Organism.REFERENCE_9311))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&run=36371-uPgcWnIQ&base=4146";
+				else if(target.equals(Organism.REFERENCE_NIPPONBARE))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&run=37870-HIlpnZhn&base=4146";
+				else if(target.equals(Organism.REFERENCE_KASALATH))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&run=35323-HjDgoi3o";
+				else if(target.equals(Organism.REFERENCE_DJ123))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&run=36564-IOIuXPnh";
+			} 
+			else if(ref.equals(Organism.REFERENCE_KASALATH)) {
+				if(target.equals(Organism.REFERENCE_9311))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&run=37794-jmPy8pl6&base=3591";
+				else if(target.equals(Organism.REFERENCE_IR64))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&run=35323-HjDgoi3o&base=3591";
+				else if(target.equals(Organism.REFERENCE_NIPPONBARE))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&run=37665-aKx0cjrR&base=3591";
+				else if(target.equals(Organism.REFERENCE_DJ123))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&run=38038-R0ShkWBi";
+			} 
+			else if(ref.equals(Organism.REFERENCE_DJ123)) {
+				if(target.equals(Organism.REFERENCE_9311))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=36169-RyFxrjyS&base=4153";
+				else if(target.equals(Organism.REFERENCE_IR64))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=36564-IOIuXPnh&base=4153";
+				else if(target.equals(Organism.REFERENCE_KASALATH))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=38038-R0ShkWBi&base=4153";
+				else if(target.equals(Organism.REFERENCE_NIPPONBARE))
+					url="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=21641-znnYkRUW&base=4153";
+			} 
+			
+			url += "&pos=" + refcontig + ":" + refstart + "-" + refend + "&genes=user&indx=0&cutoff=50";
+			
+			
+			return url;
+					
+		}
+		
 
 		@Listen("onClick =#tabVistaNPB")
 		public void onclickTabVistaNPB() {
@@ -5127,76 +5413,76 @@ public void onclickDownloadFasta() {
 			
 		}
 
-		
-		private void updateVista(GenotypeQueryParams params, VariantTable vartable) {
-			
-			if(!AppContext.isIRRILAN()) {
-				
-				//tabVista.setVisible(false);
-				//tabVistaRev.setVisible(false);
-				//tabVistaNPB.setVisible(false);
-				return;
-			}
-			
-			String org = params.getOrganism();
-			List<SnpsAllvarsPos> listpos = vartable.getVariantStringData().getListPos();
-					
-			if(!org.equals(AppContext.getDefaultOrganism()) && listpos.size()>1 ) {
-				String origcontig = params.getsChr();
-				Long start = params.getlStart();
-				Long end= params.getlEnd();
-				String npbcontig= listpos.get(0).getContig();
-				Long npbstart= listpos.get(0).getPos().longValue();
-				Long npbend=listpos.get(listpos.size()-1).getPos().longValue();
-				//vistaurl = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=21641-znnYkRUW#&base=4143&run=21641-znnYkRUW&pos=chr09:1-100000&genes=user&indx=0&cutoff=50";
-				vistaurl = null;
-				vistaurlrev= null;
-				
-				
-				// base nippo 4143 orySat06, 9311 4144 orySat07, 1r64 4146 orySat08, kasalath 3591 orySat11, dj123 4153 orySat12
-				if(org.equalsIgnoreCase("DJ123")) {
-					 vistaurl = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat12&run=21641-znnYkRUW#&base=4153&run=21641-znnYkRUW&pos=" + origcontig + ":" + start + "-" + end + "&genes=user&indx=0&cutoff=50";
-					 vistaurlrev = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=21641-znnYkRUW#&base=4143&run=21641-znnYkRUW&pos=" + npbcontig + ":" + npbstart + "-" + npbend + "&genes=user&indx=0&cutoff=50";
-				}
-				else if(org.equalsIgnoreCase("IR64-21")) {
-					vistaurl = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&run=37870-HIlpnZhn#&base=4146&run=37870-HIlpnZhn&pos=" + origcontig + ":" + start + "-" + end + "&genes=user&indx=0&cutoff=50";
-					vistaurlrev = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=37870-HIlpnZhn#&base=4143&run=37870-HIlpnZhn&pos=" + npbcontig + ":" + npbstart + "-" + npbend + "&genes=user&indx=0&cutoff=50";
-				}
-				else if(org.equalsIgnoreCase("93-11")) {
-					vistaurl = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&run=37668-Nvvq15gS#&base=4144&run=37668-Nvvq15gS&pos=" + origcontig + ":" + start + "-" + end + "&genes=user&indx=0&cutoff=50";
-					vistaurlrev = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=37668-Nvvq15gS#&base=4143&run=37668-Nvvq15gS&pos=" + npbcontig + ":" + npbstart + "-" + npbend + "&genes=user&indx=0&cutoff=50";
-				}
-				else if(org.equalsIgnoreCase("Kasalath")) {
-					vistaurl = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&run=37665-aKx0cjrR#&base=3591&run=37665-aKx0cjrR&pos=" + origcontig + ":" + start + "-" + end + "&genes=user&indx=0&cutoff=50";
-					vistaurlrev = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=37665-aKx0cjrR#&base=4143&run=37665-aKx0cjrR&pos=" + npbcontig + ":" + npbstart + "-" + npbend + "&genes=user&indx=0&cutoff=50";
-				}
-				
-				//http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=21641-znnYkRUW#&base=4143&run=21641-znnYkRUW&pos=chr09:1-100000&genes=user&indx=0&cutoff=50
-				
-				this.tabVistaNPB.setLabel("Compare " + org + " vs. Nipponbare");
-				this.tabVistaRev.setLabel( "Compare Nipponbare vs. " + org );
-				if(vistaurl!=null) {
-					//tabVista.setVisible(true);
-					//tabVistaRev.setVisible(true);
-					tabVistaNPB.setVisible(true);
-				}
-
-				
-					
-			}
-			else {
-				vistaurl=null;
-				vistaurlrev=null;
-				tabVista.setVisible(false);
-				tabVistaRev.setVisible(false);
-				
-				if( listpos.size()<2) return;
-				if(selectChr.getValue()!=null && !selectChr.getValue().isEmpty()) tabVistaNPB.setVisible(true);
-				
-			}
-			  
-		}
-	
+//		
+//		private void updateVista(GenotypeQueryParams params, VariantTable vartable) {
+//			
+//			if(!AppContext.isIRRILAN()) {
+//				
+//				//tabVista.setVisible(false);
+//				//tabVistaRev.setVisible(false);
+//				//tabVistaNPB.setVisible(false);
+//				return;
+//			}
+//			
+//			String org = params.getOrganism();
+//			List<SnpsAllvarsPos> listpos = vartable.getVariantStringData().getListPos();
+//					
+//			if(!org.equals(AppContext.getDefaultOrganism()) && listpos.size()>1 ) {
+//				String origcontig = params.getsChr();
+//				Long start = params.getlStart();
+//				Long end= params.getlEnd();
+//				String npbcontig= listpos.get(0).getContig();
+//				Long npbstart= listpos.get(0).getPosition().longValue();
+//				Long npbend=listpos.get(listpos.size()-1).getPosition().longValue();
+//				//vistaurl = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=21641-znnYkRUW#&base=4143&run=21641-znnYkRUW&pos=chr09:1-100000&genes=user&indx=0&cutoff=50";
+//				vistaurl = null;
+//				vistaurlrev= null;
+//				
+//				
+//				// base nippo 4143 orySat06, 9311 4144 orySat07, 1r64 4146 orySat08, kasalath 3591 orySat11, dj123 4153 orySat12
+//				if(org.equalsIgnoreCase("DJ123")) {
+//					 vistaurl = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat12&run=21641-znnYkRUW#&base=4153&run=21641-znnYkRUW&pos=" + origcontig + ":" + start + "-" + end + "&genes=user&indx=0&cutoff=50";
+//					 vistaurlrev = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=21641-znnYkRUW#&base=4143&run=21641-znnYkRUW&pos=" + npbcontig + ":" + npbstart + "-" + npbend + "&genes=user&indx=0&cutoff=50";
+//				}
+//				else if(org.equalsIgnoreCase("IR64-21")) {
+//					vistaurl = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&run=37870-HIlpnZhn#&base=4146&run=37870-HIlpnZhn&pos=" + origcontig + ":" + start + "-" + end + "&genes=user&indx=0&cutoff=50";
+//					vistaurlrev = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=37870-HIlpnZhn#&base=4143&run=37870-HIlpnZhn&pos=" + npbcontig + ":" + npbstart + "-" + npbend + "&genes=user&indx=0&cutoff=50";
+//				}
+//				else if(org.equalsIgnoreCase("93-11")) {
+//					vistaurl = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&run=37668-Nvvq15gS#&base=4144&run=37668-Nvvq15gS&pos=" + origcontig + ":" + start + "-" + end + "&genes=user&indx=0&cutoff=50";
+//					vistaurlrev = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=37668-Nvvq15gS#&base=4143&run=37668-Nvvq15gS&pos=" + npbcontig + ":" + npbstart + "-" + npbend + "&genes=user&indx=0&cutoff=50";
+//				}
+//				else if(org.equalsIgnoreCase("Kasalath")) {
+//					vistaurl = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&run=37665-aKx0cjrR#&base=3591&run=37665-aKx0cjrR&pos=" + origcontig + ":" + start + "-" + end + "&genes=user&indx=0&cutoff=50";
+//					vistaurlrev = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=37665-aKx0cjrR#&base=4143&run=37665-aKx0cjrR&pos=" + npbcontig + ":" + npbstart + "-" + npbend + "&genes=user&indx=0&cutoff=50";
+//				}
+//				
+//				//http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=21641-znnYkRUW#&base=4143&run=21641-znnYkRUW&pos=chr09:1-100000&genes=user&indx=0&cutoff=50
+//				
+//				this.tabVistaNPB.setLabel("Compare " + org + " vs. Nipponbare");
+//				this.tabVistaRev.setLabel( "Compare Nipponbare vs. " + org );
+//				if(vistaurl!=null) {
+//					//tabVista.setVisible(true);
+//					//tabVistaRev.setVisible(true);
+//					tabVistaNPB.setVisible(true);
+//				}
+//
+//				
+//					
+//			}
+//			else {
+//				vistaurl=null;
+//				vistaurlrev=null;
+//				tabVista.setVisible(false);
+//				tabVistaRev.setVisible(false);
+//				
+//				if( listpos.size()<2) return;
+//				if(selectChr.getValue()!=null && !selectChr.getValue().isEmpty()) tabVistaNPB.setVisible(true);
+//				
+//			}
+//			  
+//		}
+//	
 		
 }
 
@@ -5380,7 +5666,7 @@ private void downloadBigListboxPlink(String filename) {
 	String chr= this.selectChr.getValue();
 	
 	
-	Object2StringMatrixModel matrixmodel = (Object2StringMatrixModel)biglistboxArray.getModel();
+	Object2StringMultirefsMatrixModel matrixmodel = (Object2StringMultirefsMatrixModel)biglistboxArray.getModel();
 	VariantAlignmentTableArraysImpl  table = (VariantAlignmentTableArraysImpl)matrixmodel.getData();
 	
 	

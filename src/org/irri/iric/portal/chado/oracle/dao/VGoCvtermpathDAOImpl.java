@@ -25,8 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage VGoCvtermpath entities.
  * 
  */
-//@Repository("VGoCvtermpathDAO")
-@Repository("CvTermPathDAO")
+@Repository("VGoCvtermpathDAO")
+//@Repository("CvTermPathDAO")
+
 @Transactional
 public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 		implements VGoCvtermpathDAO {

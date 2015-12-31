@@ -16,7 +16,7 @@ import org.zkoss.zul.SimpleListModel;
 @Scope("session")
 public class ListboxPhenotype extends Listbox {
 
-	Listbox listboxPhenValue;
+	public Listbox listboxPhenValue;
 	Listbox listboxComparator;
 	VarietyFacade variety;
 	private Integer phenotype_type;

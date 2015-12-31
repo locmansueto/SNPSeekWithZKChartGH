@@ -228,7 +228,7 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 				//
 				if(index>=frozenCols) {
 					SnpsAllvarsPos snppos = listSnpsAllvarsPos.get(index-frozenCols);
-					return snppos.getPos().toString() ;
+					return snppos.getPosition().toString() ;
 				}
 				else if(index==2)
 					return "Mismatch";

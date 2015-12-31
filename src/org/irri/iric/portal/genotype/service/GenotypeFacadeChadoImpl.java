@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,8 +28,8 @@ import org.irri.iric.portal.domain.Organism;
 import org.irri.iric.portal.domain.Position;
 
 
+import org.irri.iric.portal.domain.Scaffold;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
-
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.variety.VarietyFacade;
 import org.irri.iric.portal.genotype.GenotypeFacade;
@@ -166,7 +165,12 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 		return this.listitemsDAO.getFeatureLength(feature, organism).intValue();
 	}
 	
+	@Override
+	public Scaffold getFeature(String feature, String organism) {
+		return this.listitemsDAO.getFeature(feature, organism);
+	}
 
+	
 	@Override
 	public List getReferenceGenomes() throws Exception {
 		// TODO Auto-generated method stub
@@ -475,7 +479,7 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 				Iterator<SnpsAllvarsPos> itPos =  varstrchr.getListPos().iterator();
 				while(itPos.hasNext()) {
 					SnpsAllvarsPos posnuc=itPos.next();
-					buffMap.append(posnuc.getPos());
+					buffMap.append(posnuc.getPosition());
 				}				
 				
 				//File file = new File(filenames[ichr-1]  + ".map");

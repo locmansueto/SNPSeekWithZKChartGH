@@ -1,5 +1,6 @@
 package org.irri.iric.portal.chado.oracle.dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  * DAO to manage Organism entities.
@@ -207,7 +209,7 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 	 *
 	 */
 	@Transactional
-	public Organism findOrganismByOrganismId(Integer organismId) throws DataAccessException {
+	public Organism findOrganismByOrganismId(BigDecimal organismId) throws DataAccessException {
 
 		return findOrganismByOrganismId(organismId, -1, -1);
 	}
@@ -217,8 +219,9 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 	 *
 	 */
 
+
 	@Transactional
-	public Organism findOrganismByOrganismId(Integer organismId, int startResult, int maxRows) throws DataAccessException {
+	public Organism findOrganismByOrganismId(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findOrganismByOrganismId", startResult, maxRows, organismId);
 			return (org.irri.iric.portal.chado.oracle.domain.Organism) query.getSingleResult();
@@ -275,8 +278,9 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 	 * JPQL Query - findOrganismByPrimaryKey
 	 *
 	 */
+	@Override
 	@Transactional
-	public Organism findOrganismByPrimaryKey(Integer organismId) throws DataAccessException {
+	public Organism findOrganismByPrimaryKey(BigDecimal organismId) throws DataAccessException {
 
 		return findOrganismByPrimaryKey(organismId, -1, -1);
 	}
@@ -287,7 +291,7 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 	 */
 
 	@Transactional
-	public Organism findOrganismByPrimaryKey(Integer organismId, int startResult, int maxRows) throws DataAccessException {
+	public Organism findOrganismByPrimaryKey(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findOrganismByPrimaryKey", startResult, maxRows, organismId);
 			return (org.irri.iric.portal.chado.oracle.domain.Organism) query.getSingleResult();
@@ -342,11 +346,13 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 		return mapName2Organism;
 	}
 
+
 	@Override
 	public org.irri.iric.portal.domain.Organism getOrganismByID(Integer id) {
 		// TODO Auto-generated method stub
-		return this.findOrganismByOrganismId(id) ;
+		return findOrganismByOrganismId(BigDecimal.valueOf(id));
 	}
+
 	
 	
 	

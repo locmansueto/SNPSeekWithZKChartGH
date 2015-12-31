@@ -90,16 +90,16 @@ public class VariantIndelStringData extends VariantStringData {
 			//mapIndelIdx2Refnuc = new HashMap();
 			mapIndelpos2Refnuc = new TreeMap();
 			
-			int firstPos = this.listPos.get(0).getPos().intValue();
+			int firstPos = this.listPos.get(0).getPosition().intValue();
 			Iterator<SnpsAllvarsPos> itPos2 = listPos.iterator();
 			while(itPos2.hasNext()) {
 				SnpsAllvarsPos pos2 = itPos2.next();
 				if(pos2.getRefnuc()==null || pos2.getRefnuc().isEmpty()) {
-					String refnuc= sequence.substring(pos2.getPos().intValue() - firstPos, pos2.getPos().intValue() - firstPos +1 );
-					AppContext.debug("setting indelpos ref at " + pos2.getPos() + " to "+  refnuc);
+					String refnuc= sequence.substring(pos2.getPosition().intValue() - firstPos, pos2.getPosition().intValue() - firstPos +1 );
+					AppContext.debug("setting indelpos ref at " + pos2.getPosition() + " to "+  refnuc);
 					pos2.setRefnuc( refnuc);
 				}
-				mapIndelpos2Refnuc.put(pos2, String.valueOf( sequence.charAt( (pos2.getPos().intValue() - firstPos ) )));
+				mapIndelpos2Refnuc.put(pos2, String.valueOf( sequence.charAt( (pos2.getPosition().intValue() - firstPos ) )));
 			}
 			
 			// get maximum insertion length for each indel positions

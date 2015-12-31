@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.LocalAlignmentImpl;
+import org.irri.iric.portal.domain.MarkerAnnotation;
 
 /**
  * Gene loci query 
@@ -68,6 +69,8 @@ public interface LocusService {
 	 */
 	public List getLocusByCvTerm(String goterm, String organism, String cvname);
 	List getLocusByCvTerm(String goterm, String organism, String cvname, String genemodel);
+
+	public List<MarkerAnnotation> getMarkerAnnotsByContigPositions(String contig, Collection colPos, String genemodel, Integer plusminus);
 	
 
 }
