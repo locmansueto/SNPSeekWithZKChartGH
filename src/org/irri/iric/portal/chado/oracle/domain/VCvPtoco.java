@@ -28,7 +28,7 @@ import org.irri.iric.portal.domain.CvTerm;
 		@NamedQuery(name = "findVCvPtocoByDefinition", query = "select myVCvPtoco from VCvPtoco myVCvPtoco where myVCvPtoco.definition = ?1"),
 		@NamedQuery(name = "findVCvPtocoByDefinitionContaining", query = "select myVCvPtoco from VCvPtoco myVCvPtoco where myVCvPtoco.definition like ?1"),
 		@NamedQuery(name = "findVCvPtocoByPrimaryKey", query = "select myVCvPtoco from VCvPtoco myVCvPtoco where myVCvPtoco.cvtermId = ?1") })
-@Table(schema = "IRIC", name = "V_CV_PTOCO_PATH")
+@Table( name = "V_CV_PTOCO_PATH")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VCvPtoco")
 public class VCvPtoco implements Serializable, CvTerm {

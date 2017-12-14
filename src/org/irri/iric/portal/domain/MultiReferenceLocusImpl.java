@@ -1,5 +1,9 @@
 package org.irri.iric.portal.domain;
 
+import java.math.BigDecimal;
+
+//import org.irri.iric.portal.chado.oracle.domain.VLocusNotes;
+
 /**
  * Implementation of MultiReferenceLocus
  * @author LMansueto
@@ -80,9 +84,9 @@ public class MultiReferenceLocusImpl implements  MultiReferenceLocus {
 	}
 
 	@Override
-	public String getChr() {
+	public Long getChr() {
 		// TODO Auto-generated method stub
-		return getContig();
+		return Long.valueOf(getContig());
 	}
 
 	@Override
@@ -90,7 +94,60 @@ public class MultiReferenceLocusImpl implements  MultiReferenceLocus {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	@Override
+	public BigDecimal getFeatureId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
+
+	/**
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		//result = (int) (prime * result + ((featureId == null) ? 0 : featureId.hashCode()));
+		result = (int) (prime * result + ((organism == null) ? 0 : organism.hashCode()));
+		result = (int) (prime * result + ((contig == null) ? 0 : contig.hashCode()));
+		result = (int) (prime * result + ((start == null) ? 0 : start.hashCode()));
+		result = (int) (prime * result + ((end == null) ? 0 : end.hashCode()));
+		return result;
+	}
+	
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		Locus l1=(Locus)this;
+		Locus l2=(Locus)o;
+		//int ret = l1.getOrganismId().compareTo(l2.getOrganismId());
+		//if(ret!=0) return ret;
+		int ret = l1.getContig().compareTo(l2.getContig());
+		if(ret!=0) return ret;
+		ret = l1.getFmin().compareTo(l2.getFmin());
+		if(ret!=0) return ret;
+		ret = l1.getFmax().compareTo(l2.getFmax());
+		return ret;
+		
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return compareTo(obj)==0;
+	}
+	/*
+	@Override
+	public String printFields(String delimiter) {
+		// TODO Auto-generated method stub=
+		return getUniquename() + delimiter + getContig() + delimiter + getFmin() + delimiter + getFmax() + delimiter
+				+ getStrand() + delimiter + getOrganism() + delimiter + getDescription();
+	}
+	*/
+	@Override
+	public String getFeatureType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

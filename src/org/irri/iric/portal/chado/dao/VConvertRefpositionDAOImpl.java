@@ -423,8 +423,8 @@ public class VConvertRefpositionDAOImpl extends AbstractJpaDao<VConvertRefpositi
 			sql += " order by TO_POSITION" ;
 						
 		}
-		
-		return executeSQL(sql);
+		return AppContext.executeSQL(entityManager, retclass, sql);
+		//return executeSQL(sql);
 		
 	}
 	

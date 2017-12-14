@@ -1,19 +1,22 @@
 package org.irri.iric.portal.genotype.zkui;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.domain.MultiReferencePosition;
+import org.irri.iric.portal.domain.MultiReferencePositionImplAllelePvalue;
 import org.irri.iric.portal.domain.Position;
+import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zkmax.zul.MatrixRenderer;
-
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantStringData;
-
 import org.irri.iric.portal.variety.service.Data;
 
 /**
@@ -26,10 +29,11 @@ public class Object2StringMultirefsMatrixRenderer implements MatrixRenderer, SNP
 	private VariantStringData tabledata;
 	private GenotypeQueryParams params;
 	
-	private int frozenCols = 4;
+	private int frozenCols = AppContext.getSnpMatrixFrozenCols(); //5;
 		
+	private Map<String,String> mapPos2Queryallele;
 	private Map<Position,Set<Character>> mapPos2NonsynAlleles;
-	private Set<Position> setSnpInExonPos;
+	//private Set<Position> setSnpInExonPos;
 	private Set<Position> setDonorPos;
 	private Set<Position> setAcceptorPos;
 	private Map<Integer,Position> mapIdx2Pos;
@@ -55,11 +59,22 @@ public class Object2StringMultirefsMatrixRenderer implements MatrixRenderer, SNP
 		if(hasPhenotype) frozenCols++;
 		
 		
+		if( params.isbIndel() && params.isbAlignIndels() ) {
+			setPosGapRegion = tabledata.getIndelstringdata().getSetPosGapRegion();
+			setPosDeletionRegion=  tabledata.getIndelstringdata().getSetPosDeletionRegion();
+		}
+		
+		mapIdx2Pos=new HashMap();
 		if(params.isbSNP() && tabledata.getSnpstringdata()!=null) {
 			if(params.isbHighlightNonsynSnps() || params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) {
 				mapPos2NonsynAlleles =   tabledata.getSnpstringdata().getMapPos2NonsynAlleles(); // .getMapIdx2NonsynAlleles();
-				setSnpInExonPos = tabledata.getSnpstringdata().getSetSnpInExonPos();
+				//setSnpInExonPos = tabledata.getSnpstringdata().getSetSnpInExonPos();
+				if(params.isbIndel() && params.isbAlignIndels()) {
+					mapPos2NonsynAlleles.putAll( tabledata.getMapPos2NonsynAlleles());
+				}
 			}
+			
+				
 			//if(params.isbColorSpliceSNP()) {
 			if(true) {
 				setDonorPos = tabledata.getSnpstringdata().getSetSnpSpliceDonorPos();
@@ -67,13 +82,44 @@ public class Object2StringMultirefsMatrixRenderer implements MatrixRenderer, SNP
 				
 				AppContext.debug( "setDonorPos=" + setDonorPos.size() + "; setAcceptorPos=" + setAcceptorPos.size());
 			}
+
+			/*
+			if(params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) {
+				Iterator<SnpsAllvarsPos> itPos= data.getListPos().iterator();
+				int iidx=0;
+				while(itPos.hasNext()) {
+					SnpsAllvarsPos pos=itPos.next();
+					Set setchars = mapPos2NonsynAlleles.get(pos);
+					boolean nonsyn=setchars!=null && setchars.size()>0;
+					if( (params.isbNonsynSnps() && nonsyn ) ||  (params.isbNonsynPlusSpliceSnps() && (nonsyn || setDonorPos.contains(pos) || setAcceptorPos.contains(pos))) 
+							||  ( params.isbIndel() && params.isbAlignIndels() && (setPosGapRegion.contains(pos)||setPosDeletionRegion.contains(pos) ) )  ) {
+						mapIdx2Pos.put(iidx, pos);
+						iidx++;
+					}
+				}
+			} else
+				mapIdx2Pos=data.getMapIdx2Pos();
+			*/
+			mapIdx2Pos=data.getMapIdx2Pos();
+			
+			
+				
+
+			/*
+			AppContext.debug("mapIdx2Pos");
+			AppContext.debug("data.getMapIdx2Pos()=" + data.getMapIdx2Pos().size() + ", mapIdx2Pos=" + mapIdx2Pos.size()) ;
+			
+			Iterator<Integer> itIdx=mapIdx2Pos.keySet().iterator();
+			while(itIdx.hasNext()) {
+				Integer idx=itIdx.next();
+				Position pos=mapIdx2Pos.get(idx);
+				AppContext.debug(idx + " " + pos.getPosition() + " " +  (mapPos2NonsynAlleles!=null && mapPos2NonsynAlleles.containsKey(pos)? "nonsyn" : "") + " " + (setPosGapRegion!=null && setPosGapRegion.contains(pos)? "gap":"") + " " + (setPosDeletionRegion!=null && setPosDeletionRegion.contains(pos)?"del":"")); 
+			}
+			*/
 			
 		}
 		
-		if( params.isbIndel() && params.isbAlignIndels() ) {
-			setPosGapRegion = tabledata.getIndelstringdata().getSetPosGapRegion();
-			setPosDeletionRegion=  tabledata.getIndelstringdata().getSetPosDeletionRegion();
-		}
+		
 		
 //		if(!data.isNipponbareReference()) {
 //			mapRefPos2MSU7Pos = new HashMap();
@@ -124,9 +170,21 @@ public class Object2StringMultirefsMatrixRenderer implements MatrixRenderer, SNP
 //			
 //		}
 				
-		mapIdx2Pos = data.getMapIdx2Pos();
+		
 		mapPos2Refnuc =   new TreeMap();
 
+		if(params.isbAlleleFilter() || params.isVarAlleleFilter()) {
+			mapPos2Queryallele=new HashMap();
+			Iterator<Position> itPos=params.getPoslist().iterator();
+			while(itPos.hasNext()) {
+				MultiReferencePositionImplAllelePvalue  pos= (MultiReferencePositionImplAllelePvalue)itPos.next();
+				mapPos2Queryallele.put(pos.getContig()+"-"+pos.getPosition(), pos.getAllele());
+			}
+			
+			AppContext.debug("rederer mapPos2Queryallele:" + mapPos2Queryallele);
+		}
+		
+		
 		AppContext.debug("Object2StringMatrixRenderer..started");
 	}
 	
@@ -193,24 +251,51 @@ public class Object2StringMultirefsMatrixRenderer implements MatrixRenderer, SNP
 			
 			if(params.isbColorByMismatch()) {
 			
-				//if(cellval.equals("*") || cellval.equals("-") || cellval.equals("&#151;") || cellval.equals( tabledata.getListPos().get(tableidx).getRefnuc() ) || (indelposref!=null && cellval.equals(indelposref)) )
+				if(params.isbAlleleFilter() || params.isVarAlleleFilter()) {
+					//if(cellval.equals("*") || cellval.equals("-") || cellval.equals("&#151;") || cellval.equals(this.mapPos2Queryallele.get(snppos.getContig()+"-"+snppos.getPosition()) ) ) 					
+					//if(cellval.equals(this.mapPos2Queryallele.get(snppos.getContig()+"-"+snppos.getPosition()) ) )
 					
-				//Position snppos = mapIdx2Pos.get(tableidx);
-				if(cellval.equals("*") || cellval.equals("-") || cellval.equals("&#151;") || cellval.equals(mapPos2Refnuc.get(snppos) ) || (!indelposref.isEmpty() && cellval.equals(indelposref)) )					
-					return  "<div    style=\"text-align:center\">" +  cellval + "</div>";
-				else {
-					
-					//if(params.isbSNP() && params.isbColorSpliceSNP()) {
-					if(params.isbSNP()) {
-						if( setDonorPos.contains( mapIdx2Pos.get(tableidx) ) ) {
-							return  "<div   style=\"" + STYLE_SPLICE_DONOR + "\">" +  cellval + "</div>";
-						}
-						if( setAcceptorPos.contains( mapIdx2Pos.get(tableidx))) {
-							return  "<div  style=\"" + STYLE_SPLICE_ACCEPTOR + "\">" +  cellval + "</div>";
-						}
+					if(!mapPos2Queryallele.containsKey(snppos.getContig()+"-"+snppos.getPosition())) {
+						throw new RuntimeException(snppos.getContig()+"-"+snppos.getPosition() + " not in " + mapPos2Queryallele);
 					}
 					
-					return  "<div   style=\"" + STYLE_MISMATCH + "\">" +  cellval + "</div>";
+					if(cellval.contains(this.mapPos2Queryallele.get(snppos.getContig()+"-"+snppos.getPosition()) ) )
+						return  "<div   style=\"" + STYLE_MATCH + "\">" +  cellval + "</div>";
+					else {
+						
+						//if(params.isbSNP() && params.isbColorSpliceSNP()) {
+						if(params.isbSNP()) {
+							if( setDonorPos.contains( mapIdx2Pos.get(tableidx) ) ) {
+								return  "<div   style=\"" + STYLE_SPLICE_DONOR + "\">" +  cellval + "</div>";
+							}
+							if( setAcceptorPos.contains( mapIdx2Pos.get(tableidx))) {
+								return  "<div  style=\"" + STYLE_SPLICE_ACCEPTOR + "\">" +  cellval + "</div>";
+							}
+						}
+						return  "<div    style=\"text-align:center\">" +  cellval + "</div>";
+					}
+
+				} else {
+					
+					//if(cellval.equals("*") || cellval.equals("-") || cellval.equals("&#151;") || cellval.equals( tabledata.getListPos().get(tableidx).getRefnuc() ) || (indelposref!=null && cellval.equals(indelposref)) )
+						
+					//Position snppos = mapIdx2Pos.get(tableidx);
+					if(cellval.equals("*") || cellval.equals("-") || cellval.equals("&#151;") || cellval.equals(mapPos2Refnuc.get(snppos) ) || (!indelposref.isEmpty() && cellval.equals(indelposref)) )					
+						return  "<div    style=\"text-align:center\">" +  cellval + "</div>";
+					else {
+						
+						//if(params.isbSNP() && params.isbColorSpliceSNP()) {
+						if(params.isbSNP()) {
+							if( setDonorPos.contains( mapIdx2Pos.get(tableidx) ) ) {
+								return  "<div   style=\"" + STYLE_SPLICE_DONOR + "\">" +  cellval + "</div>";
+							}
+							if( setAcceptorPos.contains( mapIdx2Pos.get(tableidx))) {
+								return  "<div  style=\"" + STYLE_SPLICE_ACCEPTOR + "\">" +  cellval + "</div>";
+							}
+						}
+						
+						return  "<div   style=\"" + STYLE_MISMATCH + "\">" +  cellval + "</div>";
+					}
 				}
 			} else if(params.isbColorByAllele()) {
 				
@@ -250,24 +335,34 @@ public class Object2StringMultirefsMatrixRenderer implements MatrixRenderer, SNP
 			
 			Object[] obj=(Object[])((List)data).get(colIndex);
 			if(obj==null) {
-				AppContext.debug("Object[]==null at ("+ rowIndex+","+colIndex+")");
+				//AppContext.debug("Object[]==null at ("+ rowIndex+","+colIndex+")");
 				return "";
 			}
 			if(obj[colIndex]==null) {
-				AppContext.debug("Object[colIndex]==null at ("+ rowIndex+","+colIndex+")");
+				//AppContext.debug("Object[colIndex]==null at ("+ rowIndex+","+colIndex+")");
 				return "";
 			}
 			
 			
-			if(colIndex==2)  { // subpop
+			if(colIndex==3)  { // subpop
 				
 				return "<div   style=\"background:" + Data.getSubpopulationColor( (String)obj[colIndex]) +  "\">" +  obj[colIndex] + "</div>"; 
 			}
 				
-			
+			/*
 			if(obj[colIndex] instanceof Number) return String.valueOf(obj[colIndex]);
 			return obj[colIndex].toString();
-		
+			*/
+
+			if(obj[colIndex] instanceof String) return  (String)obj[colIndex];
+			//else return String.format("%.2f", (Number)obj[colIndex]).replace(".00","");
+			else if(obj[colIndex] instanceof Long || obj[colIndex] instanceof Integer)
+				return obj[colIndex].toString();
+			else if(obj[colIndex] instanceof Number)
+				//return Double.valueOf( ((Number)obj[colIndex]).doubleValue()).toString().replace(".00",""); //   Math.round(a)  obj[colIndex].toString();
+				return Double.valueOf( ((Number)obj[colIndex]).doubleValue()).toString(); //.replace(".00",""); //   Math.round(a)  obj[colIndex].toString();
+			else return obj[colIndex].toString().replace(".00","");
+
 		}			
 		
 		} catch(Exception ex) {
@@ -392,6 +487,13 @@ public class Object2StringMultirefsMatrixRenderer implements MatrixRenderer, SNP
 		int tableidx=colIndex-frozenCols;
 		
 		if(rowIndex==0 || (rowIndex==2 && params.isbShowNPBPositions())) {
+			//Position posobj =  ((List<Position>)data).get(colIndex);
+			
+			//String posvalue=posobj.getContig();
+			//if(!posvalue.isEmpty()) posvalue+="-"+posobj.getPosition().stripTrailingZeros().toString();
+
+			//posobj.getPosition().
+			
 			String posvalue = ((List)data).get(colIndex).toString();
 			//AppContext.debug( posvalue);
 			
@@ -440,44 +542,50 @@ public class Object2StringMultirefsMatrixRenderer implements MatrixRenderer, SNP
 			
 			if(colIndex>=frozenCols) {
 				
-			Position snppos=mapIdx2Pos.get(colIndex-frozenCols);
- 
-			if(snppos==null) {
-				AppContext.debug( "snppos==null at " + (colIndex-frozenCols));
-			}
-			
-			if(rowIndex==1) {
-				if(refnuc==null)
-					mapPos2Refnuc.put(snppos , "");
-				else mapPos2Refnuc.put(snppos , refnuc.trim());
-			}
-			
-			if(refnuc==null) return "";
-			 
-			if(colIndex>=frozenCols && !mapPos2Refnuc.get(snppos).equals(refnuc) ) {
-			 	if(refnuc.equals("-") || refnuc.equals("")) refnuc="&#151;"; // "&#151;"
-			 	
-			 	String ttt = "<div align=\"center\" style=\"" + STYLE_MISMATCH + "\" >" +  refnuc.replace("null", "").trim()  + "</div>" ;
-			 	//String ttt = "<label  align=\"center\"  style=\"" + STYLE_MISMATCH + "\" >" +  refnuc.replace("null", "").trim()  + "</label>" ;
-			 			
-			 	//String ttt = "<div style=\"" + STYLE_MISMATCH + "\" tooltip=\"headertooltip_" + colIndex + "\">" +  refnuc.replace("null", "").trim()  + "</div>" +
-				//		"<popup id=\"headertooltip_" + colIndex + "\"><include src=\"biglistbox_headerpopup.zul\" colIdx=\"" + colIndex + "\"/></popup>";
-			 	//AppContext.debug(ttt);
-				return	 ttt; 
-						
-		 	} else {
-				if(refnuc.equals("-") || refnuc.equals("")) refnuc="&#151;"; // "&#151;"
-				String ttt = "<div align=\"center\" >" + refnuc.replace("null", "").trim() + "</div>" ;
-				//String ttt = "<label align=\"center\"  >" + refnuc.replace("null", "").trim() + "</label>" ;
+				Position snppos=mapIdx2Pos.get(colIndex-frozenCols);
+	 
+				if(snppos==null) {
+					AppContext.debug( "snppos==null at " + (colIndex-frozenCols));
+				}
 				
-			 	//String ttt = "<div align=center tooltip=\"headertooltip_" + colIndex + "\">" + refnuc.replace("null", "").trim() + "</div>" + 
-			 	//		"<popup id=\"headertooltip_" + colIndex + "\"><include src=\"biglistbox_headerpopup.zul\" colIdx=\"" + colIndex + "\"/></popup>" ;
-			 	//AppContext.debug(ttt);
-				return	 ttt; 
-			 	
-			 	
-		 	}
+				if(rowIndex==1) {
+					if(refnuc==null)
+						mapPos2Refnuc.put(snppos , "");
+					else mapPos2Refnuc.put(snppos , refnuc.trim());
+				}
+				
+				if(refnuc==null) return "";
+				 
+				if(colIndex>=frozenCols && !mapPos2Refnuc.get(snppos).equals(refnuc) ) {
+				 	if(refnuc.equals("-") || refnuc.equals("")) refnuc="&#151;"; // "&#151;"
+				 	
+				 	String ttt = "<div align=\"center\" style=\"" + STYLE_MISMATCH + "\" >" +  refnuc.replace("null", "").trim()  + "</div>" ;
+				 	//String ttt = "<label  align=\"center\"  style=\"" + STYLE_MISMATCH + "\" >" +  refnuc.replace("null", "").trim()  + "</label>" ;
+				 			
+				 	//String ttt = "<div style=\"" + STYLE_MISMATCH + "\" tooltip=\"headertooltip_" + colIndex + "\">" +  refnuc.replace("null", "").trim()  + "</div>" +
+					//		"<popup id=\"headertooltip_" + colIndex + "\"><include src=\"biglistbox_headerpopup.zul\" colIdx=\"" + colIndex + "\"/></popup>";
+				 	//AppContext.debug(ttt);
+					return	 ttt; 
+							
+			 	} else {
+					if(refnuc.equals("-") || refnuc.equals("")) refnuc="&#151;"; // "&#151;"
+					String ttt = "<div align=\"center\" >" + refnuc.replace("null", "").trim() + "</div>" ;
+					//String ttt = "<label align=\"center\"  >" + refnuc.replace("null", "").trim() + "</label>" ;
+					
+				 	//String ttt = "<div align=center tooltip=\"headertooltip_" + colIndex + "\">" + refnuc.replace("null", "").trim() + "</div>" + 
+				 	//		"<popup id=\"headertooltip_" + colIndex + "\"><include src=\"biglistbox_headerpopup.zul\" colIdx=\"" + colIndex + "\"/></popup>" ;
+				 	//AppContext.debug(ttt);
+					return	 ttt; 
+				 	
+				 	
+			 	}
 			
+			} else {
+				if(colIndex==3) {
+					String matchval=((List)data).get(colIndex).toString();
+					if(matchval!=null) return matchval;
+				}
+				 
 			}
 
 			

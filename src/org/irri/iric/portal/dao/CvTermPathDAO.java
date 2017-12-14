@@ -1,6 +1,7 @@
 package org.irri.iric.portal.dao;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CvTermPathDAO extends CvTermUniqueValuesDAO {
 	/**
@@ -16,8 +17,12 @@ public interface CvTermPathDAO extends CvTermUniqueValuesDAO {
 	 * Decendants of cv tern
 	 * @param cv
 	 * @param term
+	 * @param dataset 
 	 * @return
 	 */
-	List getDescendants(String cv, String term);
+	List getDescendants(String cv, String term, Set dataset);
+
+
+	//List getDescendants(String cv, String term, String dataset);
 
 }

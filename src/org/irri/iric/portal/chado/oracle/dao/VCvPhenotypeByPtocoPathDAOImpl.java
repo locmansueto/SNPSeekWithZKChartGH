@@ -33,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class VCvPhenotypeByPtocoPathDAOImpl extends AbstractJpaDao<VCvPhenotypeByPtocoPath>
 		implements VCvPhenotypeByPtocoPathDAO {
 
+	private String dataset="3k";
+	
 	/**
 	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
 	 *
@@ -709,17 +711,17 @@ public class VCvPhenotypeByPtocoPathDAOImpl extends AbstractJpaDao<VCvPhenotypeB
 	}
 
 	@Override
-	public List getDescendants(String cv, String term) {
+	public List getDescendants(String cv, String term, Set dataset) {
 		// TODO Auto-generated method stub
 		List list = new ArrayList();
 		Set set = new TreeSet();
 
 		
-		Query query = createNamedQuery("findVCvPhenotypeByPtocoPathByObjCvtermPosDist", -1,-1, cv, term);
+		Query query = createNamedQuery("findVCvPhenotypeByPtocoPathByObjCvtermPosDist", -1,-1, cv, term, dataset);
 		List resultlist =  query.getResultList();
 		
 		
-		//String sql = "select * from  iric.V_CV_PHENOTYPE_BY_PTOCO_PATH where obj_cvname = '" + cv + "' and obj_cvterm='" + term + "' and (PATHDISTANCE>0 or PATHDISTANCE is null)";
+		//String sql = "select * from  " + AppContext.getDefaultSchema() + ".V_CV_PHENOTYPE_BY_PTOCO_PATH where obj_cvname = '" + cv + "' and obj_cvterm='" + term + "' and (PATHDISTANCE>0 or PATHDISTANCE is null)";
 		//List resultlist=executeSQL(sql);
 		//Iterator<VCvPhenotypeByPtocoPath> itPtoco = resultlist.iterator();
 		Iterator<CvTerm> itPtoco = resultlist.iterator();
@@ -732,16 +734,23 @@ public class VCvPhenotypeByPtocoPathDAOImpl extends AbstractJpaDao<VCvPhenotypeB
 			//AppContext.debug( cvterm.toString());
 		}
 		list.addAll(set);
-		AppContext.debug(resultlist.size() + ",   " +  list.size() + " descendants for " + cv + " - " + term );
+		AppContext.debug(resultlist.size() + ",   " +  list.size() + " descendants for " + cv + " - " + term + " - " + dataset);
 		return list;
 	}
 
+
 	@Override
-	public Set getUniqueValues(BigDecimal typeId) {
+	public Set getUniqueValues(BigDecimal typeId, Set dataset) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+	/*
+	@Override
+	public List getDescendants(String cv, String term) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	*/
 	
 	
 	

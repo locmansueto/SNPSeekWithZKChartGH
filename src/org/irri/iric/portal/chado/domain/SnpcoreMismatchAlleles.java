@@ -2,7 +2,6 @@ package org.irri.iric.portal.chado.domain;
 
 import java.io.BufferedReader;
 import java.io.Serializable;
-
 import java.math.BigDecimal;
 import java.sql.Clob;
 import java.util.Map;
@@ -249,6 +248,24 @@ public class SnpcoreMismatchAlleles implements Serializable, SnpsStringAllvars {
 
 	@Override
 	public String getContig() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SnpsStringAllvars copy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setVarnuc(String varnuc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Set getSynPosset() {
 		// TODO Auto-generated method stub
 		return null;
 	}

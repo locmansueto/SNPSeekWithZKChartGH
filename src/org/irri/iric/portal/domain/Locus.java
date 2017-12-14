@@ -1,5 +1,7 @@
 package org.irri.iric.portal.domain;
 
+import java.math.BigDecimal;
+
 
 
 /**
@@ -7,7 +9,7 @@ package org.irri.iric.portal.domain;
  * @author LMansueto
  *
  */
-public interface Locus {
+public interface Locus extends Comparable {
 
 	/**
 	 * Locus name
@@ -19,7 +21,7 @@ public interface Locus {
 	 * Chromosome name
 	 * @return
 	 */
-	public String getChr();
+	public Long getChr();
 	
 	/**
 	 * Locus start position
@@ -50,6 +52,13 @@ public interface Locus {
 	 * @return
 	 */
 	public String getDescription();
+	
+	public BigDecimal getFeatureId();
+	
+	//public String printFields(String delimiter);
+	
+	public String getFeatureType();
+	
 	
 }
 

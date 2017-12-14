@@ -1,6 +1,6 @@
 <?page title="Module" contentType="text/html;charset=UTF-8"?>
 <zk>
-<zscript>
+<!--  zscript>
 	// initialization 
     import org.zkoss.zkplus.spring.SpringUtil;      
  	import org.irri.iric.portal.blank_module.BlankModuleFacade;
@@ -10,8 +10,8 @@
  	import org.irri.iric.portal.variety.VarietyFacade;
  	import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
  	VarietyFacade variety = (VarietyFacade)SpringUtil.getBean("VarietyFacade"); 
- 	List listVariety = variety.getSubpopulations();
-</zscript>
+ 	List listVariety = variety.getSubpopulations("3k");
+</zscript -->
 <window border="none" apply="org.irri.iric.portal.blank_module.zkui.BlankModuleController">
 
 <!--  DISPLAY SAMPLE OPTION FROM BlankModuleFacade -->
@@ -21,10 +21,10 @@
 <label value="Select BlankModule options " />
 <vbox width="50px"/>
 <listbox id="listboxOptions" mold="select"/>
-<zscript><![CDATA[
+<!--  zscript><![CDATA[
  	    	listboxOptions.setModel(new SimpleListModel(options));
  	    	listboxOptions.setSelectedIndex(0);
-			]]></zscript>
+			]]></zscript -->
 </hbox>
 
 <!--  DISPLAY SUBPOPULATION OPTION FROM VarietyFacade -->
@@ -34,10 +34,10 @@
 <label value="Select subpopulation " />
 <vbox width="50px"/>
 <listbox id="listboxSubpopulation" mold="select"/>
-<zscript><![CDATA[
+<!--  zscript><![CDATA[
  	    	listboxSubpopulation.setModel(new SimpleListModel(listVariety));
  	    	listboxSubpopulation.setSelectedIndex(0);
-			]]></zscript>
+			]]></zscript -->
 <vbox width="100px"/>
 <button id="buttonSearch" style="font-size:14px;font-weight:bold;color:gray;" label="Search" />
 </hbox>
@@ -53,9 +53,9 @@
 			<listheader  sort="auto"></listheader>
 		</listhead>		
 	</listbox>
-	<zscript><![CDATA[
+	<!--  zscript><![CDATA[
  	    	listboxVariety.setItemRenderer(new VarietyListItemRenderer());
-			]]></zscript>
+			]]></zscript -->
 			   			
 </window>
 </zk>

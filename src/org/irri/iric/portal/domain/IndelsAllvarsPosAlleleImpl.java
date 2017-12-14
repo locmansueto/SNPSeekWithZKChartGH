@@ -195,6 +195,18 @@ public class IndelsAllvarsPosAlleleImpl implements IndelsAllvarsPos {
 	}
 
 	
-	
+
+	@Override
+	public void setAltnuc(String altnuc) {
+		// TODO Auto-generated method stub
+		//this.altcall=altnuc;
+	}
+
+	@Override
+	public String getAltnuc() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

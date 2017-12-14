@@ -18,8 +18,7 @@ public class IndelsAllvarsStrImpl implements IndelsAllvarsStr {
 	private BigDecimal allele2;
 	
 	
-	public IndelsAllvarsStrImpl(BigDecimal varId, BigDecimal pos, String refnuc,
-			String varnuc, String contig, Long chr, String allele1,  String allele2) {
+	public IndelsAllvarsStrImpl(BigDecimal varId, BigDecimal pos, String refnuc, String varnuc, String contig, Long chr, String allele1,  String allele2) {
 		super();
 		this.varId = varId;
 		this.pos = pos;
@@ -170,10 +169,7 @@ public class IndelsAllvarsStrImpl implements IndelsAllvarsStr {
 		IndelsAllvarsStrImpl obj=(IndelsAllvarsStrImpl)o;
 		int ret=this.getContig().compareTo(obj.getContig());
 		if(ret==0) ret=this.getPosition().compareTo(obj.getPosition());
-		
-		if(o instanceof IndelsAllvarsStrImpl) {
-			if(ret==0)  ret=this.getVar().compareTo(  ((IndelsAllvarsStrImpl)obj).getPosition());
-		}
+		if(ret==0)  ret=this.getVar().compareTo( obj.getVar() );
 		
 		return ret;
 	}

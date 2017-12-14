@@ -3,7 +3,7 @@
 
 <zscript>
         import org.irri.iric.portal.AppContext;      
-        String paramstr=AppContext.getJBrowseDefaulttracks();
+        String paramstr=AppContext.getJBrowseDefaulttracks(AppContext.getDefaultDataset());
         //DNA,msu7gff,snp3k
 </zscript>        
 
@@ -14,14 +14,14 @@
 <a target="_blank" href="http://iric.irri.org" image="/images/iric/iric_logo.png"/>
 <vbox width="20px"/>
 <vbox align="stretch" height="80px">
-	<label pre="true" value="           Rice SNP-Seek Database            " width="80%" 
+	<label pre="true" value="                    Rice SNP-Seek Database               " width="100%" 
 	style="color:green;background-color:white;font-weight:bold;font-family:arial;font-size:30px" />
 	<hbox>
 	<menubar id="menubar" width="100%" orient="horizontal" autodrop="true"  style="background-color:white">
 		<menuitem src="/images/iric/home4.png" label="Home" href="index.zul"/>
 		<menu label="Search" src="/images/iric/query.png">
 			<menupopup>
-				<menuitem src="/images/iric/gene1.png" label="SNPs" href="_snp.zul"/>
+				<menuitem src="/images/iric/gene1.png" label="Genotype" href="_snp.zul"/>
 				<menuitem src="/images/iric/var5.png" label="Varieties" href="_variety.zul"/>
 				<menuitem src="/images/iric/genelocus.png" label="Gene Loci" href="_locus.zul"/>
 			</menupopup>
@@ -32,11 +32,17 @@
 
 				<menu label="Genome" src="/images/iric/genome1.png">
 					<menupopup>
-					<menuitem src="/images/iric/genome1.png" label="Nipponbare" href="_jbrowse.zul?tracks=${paramstr}"/>
+					<menuitem src="/images/iric/genome1.png" label="Nipponbare" href="_ideo.zul?tracks=${paramstr}&amp;app=jbrowse"/>
+					<!--  menuitem src="/images/iric/genome1.png" label="Nipponbare" href="_jbrowse.zul?tracks=${paramstr}"/ -->
+					<!--  menuitem src="/images/iric/genome1.png" label="Nipponbare" href="_ideo.zul?tracks=${paramstr}&amp;app=jbrowse-dev2"/ -->
 					<menuitem src="/images/iric/genome1.png" label="93-11" href="_jbrowse.zul?data=9311v1&amp;tracks=DNA,9311v1gffv2"/>
-					<menuitem src="/images/iric/genome1.png" label="IR64-21" href="_jbrowse.zul?data=ir6421v1&amp;tracks=DNA,ir6421v1gffv2"/>
-					<menuitem src="/images/iric/genome1.png" label="Kasalath" href="_jbrowse.zul?data=kasv1&amp;tracks=DNA,kav1gffrapv2"/>
-					<menuitem src="/images/iric/genome1.png" label="DJ123" href="_jbrowse.zul?data=dj123v1&amp;tracks=DNA,dj123v1gffv2"/>
+					<menuitem src="/images/iric/genome1.png" label="IR 64" href="_jbrowse.zul?data=ir6421v1&amp;tracks=DNA,ir6421v1gffv2"/>
+					<menuitem src="/images/iric/genome1.png" label="Kasalath" href="_jbrowse.zul?data=kasv1&amp;tracks=DNA,kasv1gffrapv2"/>
+					<!--  menuitem src="/images/iric/genome1.png" label="DJ123" href="_jbrowse.zul?data=dj123v1&amp;tracks=DNA,dj123v1gffv2"/>
+					<menuitem src="/images/iric/genome1.png" label="MH63" href="_jbrowse.zul?data=mh63v1&amp;tracks=MH63 DNA,mh63v1gff"/>
+					<menuitem src="/images/iric/genome1.png" label="ZS97" href="_jbrowse.zul?data=zs97v1&amp;tracks=Zhenshan 97 DNA,zs97v1gff"/>
+					<menuitem src="/images/iric/genome1.png" label="N22" href="_jbrowse.zul?data=n22v1&amp;tracks=N22 DNA,n22v1gff"/>
+					<menuitem src="/images/iric/genome1.png" label="IR 8" href="_jbrowse.zul?data=ir8v1&amp;tracks=IR8 DNA,ir8v1gff"/ -->
 					</menupopup>
 				</menu>
 				<!-- menuitem src="/images/iric/tree1.png" label="Tree (static)" href="_phylotree.zul"/ -->
@@ -50,13 +56,35 @@
 					<menupopup>
 					<menuitem src="/images/iric/tree1.png" label="K9 groups" href="_variety.zul?irisid=alltree"/>
 					<menuitem src="/images/iric/tree1.png" label="K15 groups" href="_variety.zul?irisid=alltree2"/>
+					
+					
 					</menupopup>
 				</menu>				
-				
-				<menuitem src="/images/iric/mds_plot.png" label="MDS Plot" href="_variety.zul?irisid=allmds"/>
+
+				<menu src="/images/iric/mds_plot.png" label="MDS Plots">				
+					<menupopup>
+					<menuitem src="/images/iric/mds_plot.png" label="3k MDS Plot" href="_variety.zul?irisid=allmds"/>
+					<menuitem src="/images/iric/mds_plot.png" label="HDRA MDS Plot" href="_variety.zul?irisid=allmdshdra"/>
+					</menupopup>
+				</menu>
+
+
 				<!--  menuitem src="/images/iric/mds_plot.png" label="GWAS Plots" href="_gwas.zul"/ -->
 
-<!--  base nippo 4143, 9311 4144, 1r64 4146, kasalath 3591, dj123 4153 -->
+
+				<menu id="menuTestplots" src="/images/iric/mds_plot.png" label="Test plots" visible="false"> 
+					<menupopup>					
+						<menuitem src="/images/iric/tree1.png" label="Tree 1" href="treeBrowser3023K15_dndtree.html"  target="_test"/>
+						<menuitem src="/images/iric/tree1.png" label="Tree 2" href="treeBrowser3023K15_radial.html"  target="_test"/>
+						<menuitem src="/images/iric/mds_plot.png" label="3D MDS Plot 1" href="3d_scatter_plotly.html" target="_test"/>
+						<menuitem src="/images/iric/mds_plot.png" label="3D MDS Plot 2" href="scatter_plot_3d_demo.html" target="_test"/>
+					
+					</menupopup>
+				</menu>
+				
+				
+
+
 		<menu label="Genome alignments" src="/images/iric/synteny.png">
 			<menupopup>
 				<menuitem label="Select Reference" disabled="true"/>
@@ -66,42 +94,42 @@
 						<menuitem label="Select Alignment" disabled="true"/>
 						<menuseparator/>
 					
-						<menuitem  src="/images/iric/var5.png" label="DJ123" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&amp;run=21641-znnYkRUW"/>
-						<menuitem  src="/images/iric/var5.png" label="Kasalath" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&amp;run=37665-aKx0cjrR"/>
-						<menuitem  src="/images/iric/var5.png" label="93-11" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&amp;run=37668-Nvvq15gS"/>
-						<menuitem  src="/images/iric/var5.png" label="IR64-21" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&amp;run=37870-HIlpnZhn"/>
+						<menuitem  src="/images/iric/var5.png" label="DJ123" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&amp;run=21641"/>
+						<menuitem  src="/images/iric/var5.png" label="Kasalath" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&amp;run=37665"/>
+						<menuitem  src="/images/iric/var5.png" label="93-11" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&amp;run=37668"/>
+						<menuitem  src="/images/iric/var5.png" label="IR 64" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&amp;run=37870"/>
 					</menupopup>
 				</menu>
 				<menu  src="/images/iric/var5.png" label="93-11 vs.">
 					<menupopup>
 						<menuitem label="Select Alignment" disabled="true"/>
 						<menuseparator/>
-						<menuitem  src="/images/iric/var5.png" label="DJ123" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&amp;run=36169-RyFxrjyS"/>
-						<menuitem  src="/images/iric/var5.png" label="IR64-21" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&amp;run=36371-uPgcWnIQ"/>
-						<menuitem  src="/images/iric/var5.png" label="Kasalath" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&amp;run=37794-jmPy8pl6"/>
-						<menuitem  src="/images/iric/var5.png" label="Nipponbare" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&amp;run=37668-Nvvq15gS&amp;base=4144"/>
+						<menuitem  src="/images/iric/var5.png" label="DJ123" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&amp;run=36169"/>
+						<menuitem  src="/images/iric/var5.png" label="IR 64" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&amp;run=36371"/>
+						<menuitem  src="/images/iric/var5.png" label="Kasalath" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&amp;run=37794"/>
+						<menuitem  src="/images/iric/var5.png" label="Nipponbare" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&amp;run=37668&amp;base=4144"/>
 
 					</menupopup>
 				</menu>
-				<menu  src="/images/iric/var5.png" label="IR64-21 vs.">
+				<menu  src="/images/iric/var5.png" label="IR 64 vs.">
 					<menupopup>
 						<menuitem label="Select Alignment" disabled="true"/>
 						<menuseparator/>
-						<menuitem  src="/images/iric/var5.png"  label="Kasalath" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=35323-HjDgoi3o"/>
-						<menuitem src="/images/iric/var5.png"  label="DJ123" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=36564-IOIuXPnh"/>
-						<menuitem  src="/images/iric/var5.png" label="Nipponbare" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=37870-HIlpnZhn&amp;base=4146"/>
-						<menuitem  src="/images/iric/var5.png" label="93-11" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=36371-uPgcWnIQ&amp;base=4146"/>
+						<menuitem  src="/images/iric/var5.png"  label="Kasalath" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=35323"/>
+						<menuitem src="/images/iric/var5.png"  label="DJ123" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=36564"/>
+						<menuitem  src="/images/iric/var5.png" label="Nipponbare" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=37870&amp;base=4146"/>
+						<menuitem  src="/images/iric/var5.png" label="93-11" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&amp;run=36371&amp;base=4146"/>
 					</menupopup>
 				</menu>
 				<menu  src="/images/iric/var5.png" label="Kasalath vs.">
 					<menupopup>
 						<menuitem label="Select Alignment" disabled="true"/>
 						<menuseparator/>
-						<menuitem  src="/images/iric/var5.png" label="DJ123" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&amp;run=38038-R0ShkWBi"/>
+						<menuitem  src="/images/iric/var5.png" label="DJ123" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&amp;run=38038"/>
 
-						<menuitem  src="/images/iric/var5.png" label="Nipponbare" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&amp;run=37665-aKx0cjrR&amp;base=3591"/>
-						<menuitem  src="/images/iric/var5.png" label="93-11" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&amp;run=37794-jmPy8pl6&amp;base=3591"/>
-						<menuitem  src="/images/iric/var5.png"  label="IR64-21" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&amp;run=35323-HjDgoi3o&amp;base=3591"/>
+						<menuitem  src="/images/iric/var5.png" label="Nipponbare" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&amp;run=37665&amp;base=3591"/>
+						<menuitem  src="/images/iric/var5.png" label="93-11" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&amp;run=37794&amp;base=3591"/>
+						<menuitem  src="/images/iric/var5.png"  label="IR 64" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&amp;run=35323&amp;base=3591"/>
 
 					</menupopup>
 				</menu>
@@ -110,29 +138,43 @@
 					<menupopup>
 						<menuitem label="Select Alignment" disabled="true"/>
 						<menuseparator/>
-						<menuitem  src="/images/iric/var5.png" label="Nipponbare" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=21641-znnYkRUW&amp;base=4153"/>
-						<menuitem  src="/images/iric/var5.png" label="93-11" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=36169-RyFxrjyS&amp;base=4153"/>
-						<menuitem src="/images/iric/var5.png"  label="IR64-21" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=36564-IOIuXPnh&amp;base=4153"/>
-						<menuitem  src="/images/iric/var5.png" label="Kasalath" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=38038-R0ShkWBi&amp;base=4153"/>
+						<menuitem  src="/images/iric/var5.png" label="Nipponbare" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=21641&amp;base=4153"/>
+						<menuitem  src="/images/iric/var5.png" label="93-11" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=36169&amp;base=4153"/>
+						<menuitem src="/images/iric/var5.png"  label="IR 64" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=36564&amp;base=4153"/>
+						<menuitem  src="/images/iric/var5.png" label="Kasalath" target="_vista" href="http://pipeline.lbl.gov/tbrowser/tbrowser/?run=38038&amp;base=4153"/>
 
 					</menupopup>
 				</menu>
 			</menupopup>
 		</menu>
-
+		
+			<menuitem  src="/images/iric/traitgenes.png" label="Trait genes" href="_ideo.zul?tracks=${paramstr}&amp;app=rice-ideogram"/>
+		
 			</menupopup>
+			
+		
 		</menu>
 		<menuitem src="/images/iric/mylist.png" label="My Lists" href="_workspace.zul"/>
+		
+		<menuitem src="/images/iric/var5.png" label="Order Seeds" href="_seed.zul"/>
+		
+		
 		<!--  menuitem src="/images/iric/download.png" label="Download" target="_blank" href="http://oryzasnp-atcg-irri-org.s3-website-ap-southeast-1.amazonaws.com"/ -->
 		<menuitem src="/images/iric/download.png" label="Download" href="_download.zul"/>
 		<menu label="Help" src="/images/iric/help.png">
 			<menupopup>
 				<menuitem src="/images/iric/users_manual.png" label="User's Manual" href="_help.zul"/>	
-				<menuitem src="/images/iric/faq2.png" label="FAQ" href="_faq.zul"/>
+				<menuitem src="/images/iric/users_manual.png" label="NAR Supplementary Materials" href="suppl/index.html" target="suppl"/>
+				<menuitem src="/images/iric/users_manual.png" label="Legacy Web Services" href="swagger-ui/index.html" target="swagger"/>
+				<menuitem src="/images/iric/users_manual.png" label="BrAPI v1 Web Services" href="swagger-brapi/index.html"  target="swagger"/>
+				<menuitem id="menuitemLegacydev" src="/images/iric/users_manual.png" label="Legacy Web Services Pollux" href="swagger-ui-dev/index.html" target="swagger" visible="false"/>
+				<menuitem id="menuitemBrapidev" src="/images/iric/users_manual.png" label="BrAPI v1 Web Services Localhost" href="swagger-brapi-dev/index.html"  target="swagger" visible="false"/>
+								
+				<!-- menuitem src="/images/iric/faq2.png" label="FAQ" href="_faq.zul"/ -->
 				<menuitem src="/images/iric/bug-32.ico" label="Report bugs" target="_blank" href="https://riceinfo.atlassian.net/secure/CreateIssue!default.jspa?pid=10601"/>
 				<!-- menuitem src="/images/iric/bug-32.ico" label="Report bugs/Suggest features,improvements" href="_bugs.zul"/ -->
 				<menuitem src="/images/iric/email.png" label="Contact Us" href="_contactus.zul"/>
-				<menuitem src="/images/iric/about.png" label="About/Updates" href="_about.zul"/>	
+				<menuitem src="/images/iric/about.png" label="Publications/Updates" href="_about.zul"/>	
 			</menupopup>
 		</menu>
 		
@@ -148,11 +190,25 @@
 
 <vbox width="100%" height="3px"/>
 <hbox align="center" pack="center">
-<vbox width="600px"/><label value="SITE IS CURRENTLY UNDER MAINTENANCE" style="font-size:13px;color:white"/>
+<vbox width="600px"/><hbox><label value="SNP-Seek is moving to " style="font-size:13px;color:white" /><a href="http://snp-seek.irri.org"   style="font-size:13px;color:white">http://snp-seek.irri.org</a></hbox>
 </hbox>
 <vbox width="100%" height="3px"/>
+
+<!--  vbox width="100%" height="3px"/>
+<hbox align="center" pack="center">
+<vbox width="600px"/><label value="SITE IS CURRENTLY UNDER MAINTENANCE" style="font-size:13px;color:white"/>
+</hbox>
+<vbox width="100%" height="3px"/ -->
 </div>
 
+<zscript>
+import org.irri.iric.portal.AppContext;
+if(AppContext.isIRRILAN()) {
+ menuTestplots.setVisible(true);
+ menuitemBrapidev.setVisible(true);
+ menuitemLegacydev.setVisible(true);
+}
+</zscript>
 
 </zk>
 			

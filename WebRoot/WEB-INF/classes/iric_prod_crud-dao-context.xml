@@ -8,13 +8,13 @@
 	xmlns:lang="http://www.springframework.org/schema/lang"
 	xmlns:security="http://www.springframework.org/schema/security"
     xsi:schemaLocation="http://www.springframework.org/schema/beans 
-	   http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	   http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
        http://www.springframework.org/schema/aop 
-       http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+       http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
 	   http://www.springframework.org/schema/tx 
-	   http://www.springframework.org/schema/tx/spring-tx-3.1.xsd   
+	   http://www.springframework.org/schema/tx/spring-tx-3.2.xsd   
 	   http://www.springframework.org/schema/context 
-	   http://www.springframework.org/schema/context/spring-context-3.1.xsd   
+	   http://www.springframework.org/schema/context/spring-context-3.2.xsd   
 	   http://www.springframework.org/schema/jee 
 	   http://www.springframework.org/schema/jee/spring-jee-3.1.xsd	   
 	   http://www.springframework.org/schema/lang
@@ -32,14 +32,18 @@
 	
 	<!-- context:component-scan base-package="org.irri.iric.portal.genomics.dao" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.flatfile.dao" scoped-proxy="interfaces" />
+	<context:component-scan base-package="org.irri.iric.portal.admin" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.admin.dao" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.hdf5.dao" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.dao" scoped-proxy="interfaces" / -->
 		
 		
+	<!-- context:component-scan base-package="org.irri.iric.portal.chado.postgres.daobackup" scoped-proxy="interfaces" / -->		
 	<!-- context:component-scan base-package="org.irri.iric.portal.chado.postgres.dao" scoped-proxy="interfaces" / -->
 	<context:component-scan base-package="org.irri.iric.portal.chado.oracle.dao" scoped-proxy="interfaces" />
-	<context:component-scan base-package="org.irri.iric.portal.chado.dao" scoped-proxy="interfaces" />
+	<!-- context:component-scan base-package="org.irri.iric.portal.chado.dao" scoped-proxy="interfaces" / -->
+	<!--  context:component-scan base-package="org.irri.iric.portal.gwas.dao" scoped-proxy="interfaces" / -->
+	
 	
 
 		
@@ -59,6 +63,8 @@
 		<bean id="transactionManagerIRICProduction"  class="org.springframework.orm.jpa.JpaTransactionManager" >
 			<property name="entityManagerFactory" ref="IRIC_Production" />
 		</bean>
+
+
 	
  	<!-- ******************************************************************** -->
 	<!-- Setup a data source -->
@@ -66,15 +72,6 @@
 
 			
 				<!--  comment/uncomment based on which web-server this will be deployed -->
-				<!-- IRRI local -->
-				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
-					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-					<property name="username" value="iricguest"/>
-					<property name="password" value="iricguest"/>
-					<property name="url" value="jdbc:oracle:thin:@172.29.4.231:1521:orcl"/>
-					<property name="maxIdle" value="16"/>
-					<property name="maxActive" value="32"/>
-				</bean>
 
 
 				<!-- IRRI local pollux -->
@@ -88,7 +85,7 @@
 					<property name="maxActive" value="32"/>
 				</bean -->
 				
-				<!-- AWS -->
+				<!-- AWS or ASTI -->
 				<!--  bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
 					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 					<property name="username" value="iricguest"/>
@@ -98,14 +95,54 @@
 					<property name="maxActive" value="32"/>
 				</bean -->			
 	
-				<!-- Configure a JPA vendor adapter for Oracle -->
+				<!-- IRRI local -->
+				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS">
+					<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+					<property name="username" value="iricguest"/>
+					<property name="password" value="iricguest"/>
+					<property name="url" value="jdbc:oracle:thin:@172.29.4.231:1521:orcl"/>
+					<property name="maxIdle" value="16"/>
+					<property name="maxActive" value="32"/>
+					<property name="validationQuery" value="select 1 from dual"/>
+				</bean>
+				
+	
 				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" id="IRIC_ProductionJPAVendorAdapter">
 					<property name="showSql" value="true"/>
 					<property name="generateDdl" value="false"/>
 					<property name="databasePlatform" value="org.hibernate.dialect.Oracle10gDialect"/>
 				</bean>
 				
+				<bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="IRIC_Production_Oracle">
+					<property name="dataSource" ref="IRIC_ProductionDS"/>
+					<property name="persistenceUnitName" value="IRIC_Production_Oracle"/>
+					<property name="jpaVendorAdapter" ref="IRIC_ProductionJPAVendorAdapter"/>
+					
+					<property name="jpaProperties">
+			       <props>
+			            <prop key="hibernate.hbm2ddl.auto">none</prop>
+			            <prop key="hibernate.default_schema">iric</prop>
+			       </props>
+				   </property>
+				</bean>
 				
+				<tx:annotation-driven transaction-manager="transactionManagerIRICProduction_Oracle" />
+				<bean id="transactionManagerIRICProduction_Oracle"  class="org.springframework.orm.jpa.JpaTransactionManager" >
+					<property name="entityManagerFactory" ref="IRIC_Production_Oracle" />
+				</bean>
+
+				<bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="IRIC_Production">
+					<property name="dataSource" ref="IRIC_ProductionDS"/>
+					<property name="persistenceUnitName" value="IRIC_Production"/>
+					<property name="jpaVendorAdapter" ref="IRIC_ProductionJPAVendorAdapter"/>
+					
+					<property name="jpaProperties">
+			       <props>
+			            <prop key="hibernate.hbm2ddl.auto">none</prop>
+			            <prop key="hibernate.default_schema">iric</prop>
+			       </props>
+				   </property>
+				</bean>
 				
 				
 
@@ -123,43 +160,61 @@ VM_IRIC.minPoolSize=1
 				<!-- VM postgres -->
 				<!-- property name="url" value="jdbc:postgresql://localhost:5432/iric6"/ -->
 									
+				<!--  AWS-RDS Beanstalk -->
+				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
+					<property name="driverClassName" value="org.postgresql.Driver"/>
+					<property name="username" value="postgres"/>
+					<property name="password" value="1rRl-4Bi0"/>
+					<property name="url" value="jdbc:postgresql://iric-rds-singapore-01.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric"/>
+ 
+					<property name="maxIdle" value="1"/>
+					<property name="maxActive" value="10"/>
+				</bean -->
+
+
+									
+				<!--  vm local  -->									
 				<!--  bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
 					<property name="driverClassName" value="org.postgresql.Driver"/>
 					<property name="username" value="postgres"/>
 					<property name="password" value="iric-dev"/>
-					<property name="url" value="jdbc:postgresql://172.29.4.26:5432/iric7"/>
+					<property name="url" value="jdbc:postgresql://172.29.4.26:5432/iric9"/>
  
 					<property name="maxIdle" value="1"/>
 					<property name="maxActive" value="10"/>
-				</bean>
-				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" id="IRIC_ProductionJPAVendorAdapter_PG">
+				</bean -->
+				
+				<!--   localhost  -->									
+				<!--  bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
+					<property name="driverClassName" value="org.postgresql.Driver"/>
+					<property name="username" value="postgres"/>
+					<property name="password" value="iric-dev"/>
+					<property name="url" value="jdbc:postgresql://localhost:5432/iric6"/>
+ 
+					<property name="maxIdle" value="1"/>
+					<property name="maxActive" value="10"/>
+				</bean -->
+				
+				<!--  bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" id="IRIC_ProductionJPAVendorAdapter_PG">
 					<property name="showSql" value="true"/>
 					<property name="generateDdl" value="false"/>
 					<property name="databasePlatform" value="org.hibernate.dialect.PostgreSQLDialect"/>
-				</bean -->
-				
-				
-				
-	<!-- ******************************************************************** -->
-	<!-- Setup each persistence unit -->
-	<!-- ******************************************************************** -->
-
-
-			
-				
-				
-				<!-- EntityManager Factory that brings together the persistence unit, datasource, and JPA Vendor -->
-				<bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="IRIC_Production">
-					<property name="dataSource" ref="IRIC_ProductionDS"/>
-					<property name="persistenceUnitName" value="IRIC_Production"/>
-					<property name="jpaVendorAdapter" ref="IRIC_ProductionJPAVendorAdapter"/>
 				</bean>
-				
-				<!--  bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="IRIC_Production_PG">
+
+				<bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="IRIC_Production">
 					<property name="dataSource" ref="IRIC_ProductionDS_PG"/>
-					<property name="persistenceUnitName" value="IRIC_Production_PG"/>
+					<property name="persistenceUnitName" value="IRIC_Production"/>
 					<property name="jpaVendorAdapter" ref="IRIC_ProductionJPAVendorAdapter_PG"/>
+					<property name="jpaProperties">
+			       <props>
+			            <prop key="hibernate.hbm2ddl.auto">none</prop>
+			            <prop key="hibernate.default_schema">public</prop>
+			       </props>
+				   </property>
+
 				</bean -->
 
+				
+		
 		
 </beans>

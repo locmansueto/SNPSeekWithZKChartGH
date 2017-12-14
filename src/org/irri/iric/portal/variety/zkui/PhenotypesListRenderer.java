@@ -27,8 +27,8 @@ public class PhenotypesListRenderer implements ListitemRenderer {
 	        listitem.setValue(value);
 
 	        String val = "";
-	        if (item.getQualValue()!=null) val= item.getQualValue().toString();
-	        if (item.getQuanValue()!=null) val= item.getQuanValue().toString();
+	        if (item.getQualValue()!=null) val= item.getQualValue().toString().replaceAll("\\.0+$","");
+	        if (item.getQuanValue()!=null) val= String.format("%.2f" , item.getQuanValue()).replaceAll("\\.0+$","");  //.ro .toString().replaceAll("\\.0+","");
 	        
 	        addListcell(listitem, item.getDefinition());
 	        addListcell(listitem, item.getName());

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.irri.iric.portal.dao.IndelStringDAO;
 import org.irri.iric.portal.dao.IndelsAllvarsDAO;
 import org.irri.iric.portal.dao.IndelsAllvarsPosDAO;
 import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
+import org.irri.iric.portal.domain.GenotypeRunPlatform;
 import org.irri.iric.portal.domain.IndelsAllvars;
 import org.irri.iric.portal.domain.IndelsAllvarsPos;
 import org.irri.iric.portal.domain.IndelsAllvarsPosAlleleImpl;
@@ -27,6 +29,9 @@ import org.irri.iric.portal.domain.IndelsStringAllvarsImpl;
 import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
+import org.irri.iric.portal.hdf5.H5Dataset;
+import org.irri.iric.portal.hdf5.H5ReadStringmatrix;
+import org.irri.iric.portal.hdf5.dao.IndelAllvarsHDF5DAOImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -39,6 +44,7 @@ import org.springframework.stereotype.Repository;
  * @author LMansueto
  *
  */
+//@Repository("IndelStringNormalizedDynamicDAO")
 @Repository("IndelStringNormalizedDAO")
 @Scope(value= "prototype")
 //@Scope("value=session")
@@ -46,36 +52,46 @@ import org.springframework.stereotype.Repository;
 public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 
 	
-	@Autowired
-	@Qualifier("IndelsAllvarsPosDAO")
+
 	private IndelsAllvarsPosDAO indelsAllvarsPosDAO;
-	
-	@Autowired
-	//@Qualifier("IndelCallDAO")
-	//@Qualifier("IndelAllvarsDAOOracle")
-	@Qualifier("IndelAllvarsDAOHDF5") 
-	private IndelsAllvarsDAO indelsAllvarsDAO;
-	
 	
 	
 	private Map<BigDecimal, IndelsAllvarsPos> mapAlleleId2Indel;
-	private Map<Integer, BigDecimal> mapIdx2Pos;
+	//private Map<Integer, BigDecimal> mapIdx2Pos;
+	private Map<Integer, Position> mapIdx2Pos;
 	private Map<BigDecimal, Integer> mapVariety2Order;
 	private Map<BigDecimal, Double> mapVariety2Mismatch;
-	private Set sortedPos;
+	//private Set<BigDecimal> sortedPos;
+	private Set<Position> sortedPos;
 	private List<SnpsAllvarsPos> listPos;
 	private List<SnpsStringAllvars> listResult;
 	private boolean isMismatchOnly=false;
 	
+	private Map mapIdx2Sample;
+	private GenotypeRunPlatform run;
 	
 	// use positions instead on index
 	
+	public IndelStringNormalizedDAOImpl(IndelsAllvarsPosDAO indelsAllvarsPosDAO, GenotypeRunPlatform run, Map mapIdx2Sample) {
+		super();
+		this.run = run;
+		this.indelsAllvarsPosDAO=indelsAllvarsPosDAO;
+		this.mapIdx2Sample=mapIdx2Sample;
+	}
+	
+	/*public IndelStringNormalizedDAOImpl() {
+		super();
+		// TODO Auto-generated constructor stub
+	}*/
+
 	@Override
 	public Map<BigDecimal, IndelsStringAllvars> readSNPString(String chr, int startPos, int endPos) {
 		// TODO Auto-generated method stub
 		return  readIndelsAllvars(chr, BigDecimal.valueOf( startPos) ,
 				BigDecimal.valueOf(endPos), null, null);
 	}
+
+	
 
 	@Override
 	public Map<BigDecimal, IndelsStringAllvars> readSNPString(String chr, int[] pos) {
@@ -137,7 +153,12 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 		return mapAlleleId2Indel;
 	}
 
+	/*
 	public Map<Integer, BigDecimal> getMapIdx2Pos() {
+		return mapIdx2Pos;
+	}
+	*/
+	public Map<Integer, Position> getMapIdx2Pos() {
 		return mapIdx2Pos;
 	}
 
@@ -174,7 +195,10 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 	 */
 	private Map<BigDecimal, IndelsStringAllvars> readIndelsAllvars(String chr, BigDecimal start, BigDecimal end, Collection varList, Collection posList) {
 		
-		indelsAllvarsDAO = (IndelsAllvarsDAO)AppContext.checkBean(indelsAllvarsDAO, "IndelAllvarsDAOHDF5");
+		//indelsAllvarsDAO = (IndelsAllvarsDAO)AppContext.checkBean(indelsAllvarsDAO, "IndelAllvarsDAOHDF5");
+		
+		IndelsAllvarsDAO indelsAllvarsDAO = new IndelAllvarsHDF5DAOImpl( new H5Dataset( run.getLocation()+"_1", new H5ReadStringmatrix(), mapIdx2Sample), 
+				new H5Dataset( run.getLocation()+"_2", new H5ReadStringmatrix(), mapIdx2Sample));
 		
 		Map<BigDecimal, Map<Position, IndelsAllvars>> mapVar2AlleleCall;
 		
@@ -185,7 +209,11 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 		
 			// given chr, start end
 			
-			listPos = indelsAllvarsPosDAO.getSNPs(chr, start.intValue(), end.intValue(), SnpsAllvarsPosDAO.TYPE_3KALLINDEL_V2 );
+			Set vs=new HashSet();
+			vs.add(run.getVariantset());
+			//ds.add( SnpsAllvarsPosDAO.TYPE_3KALLINDEL_V2  );
+			//ds.add( "3kindel" );
+			listPos = indelsAllvarsPosDAO.getSNPs(chr, start.intValue(), end.intValue(), vs );
 			
 			if(listPos.size()==0) return new HashMap();
 
@@ -204,11 +232,17 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 			}
 			
 			
+			
 		} else if(posList!=null) {
 			
 			// given list of positions
 
-			listPos = indelsAllvarsPosDAO.getSNPsInChromosome(chr,posList, SnpsAllvarsPosDAO.TYPE_3KALLINDEL_V2 );
+			Set ds=new HashSet();
+			ds.add( run.getDataset());
+			//ds.add("3kindel");
+			//ds.add( SnpsAllvarsPosDAO.TYPE_3KALLINDEL_V2  );
+			//SnpsAllvarsPosDAO.TYPE_3KALLINDEL_V2
+			listPos = indelsAllvarsPosDAO.getSNPsInChromosome(chr,posList,ds );
 			if(listPos.size()==0) return new HashMap();
 			
 			// optimize HDF5 query, by joining adjacent positions into range			
@@ -303,6 +337,12 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 		while(itIndelcalls.hasNext()) {
 			IndelsAllvarsStr indelcall = (IndelsAllvarsStr)itIndelcalls.next();
 			
+			/*
+			if(indelcall.getPosition().intValue()==69957) {
+				AppContext.debug(this.getClass().getCanonicalName() + "; pos=69957: " + indelcall);
+			}
+			*/
+			
 			if(varList!=null && !varList.contains(indelcall.getVar())) continue;
 			//if(posList!=null && !posList.contains(indelcall.getPos())) continue;
 			IndelsAllvarsPos posidx= (IndelsAllvarsPos)mappos2indelpos.get(indelcall.getContig() + "-" +  indelcall.getPosition()); 
@@ -334,6 +374,15 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 				mapVar2AlleleCall.put(indelcall.getVar(), var2calls);
 			}
 			var2calls.put( posidx , indelcall );
+			
+			/*
+			if(posidx.getPosition().intValue()==69957) {
+				AppContext.debug("pos=chr01-69957; indelcall=" + indelcall +";  posidx=" + posidx );
+			}
+			if(posidx.getPosition().intValue()==69778) {
+				AppContext.debug("pos=chr01-69778; indelcall=" + indelcall +";  posidx=" + posidx );
+			}
+			*/
 			
 			Integer dellen1=null;
 			Integer inslen1=null;
@@ -372,7 +421,8 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 			else
 				mapVar2MismatchCount.put(indelcall.getVar(), prevcount + Math.max( indelmismatch, indelmismatch2));
 			
-			sortedPos.add(indelcall.getPosition());
+			//sortedPos.add(indelcall.getPosition());
+			sortedPos.add(indelcall);
 		}
 		
 		
@@ -380,16 +430,26 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 		
 		mapAlleleId2Indel= newmapAlleleId2Indel;
 		mapIdx2Pos = new TreeMap();
+		
+		/*
 		Iterator<BigDecimal> itIdx = sortedPos.iterator();
 		int idxcount=0;
-		
 		while(itIdx.hasNext()) {
 			BigDecimal pos =  itIdx.next();
 			mapIdx2Pos.put(idxcount  , pos);
 			idxcount++;
 		}
+		*/
 		
-		mapVariety2Mismatch = new HashMap();
+		Iterator<Position> itIdx = sortedPos.iterator();
+		int idxcount=0;
+		while(itIdx.hasNext()) {
+			Position pos =  itIdx.next();
+			mapIdx2Pos.put(idxcount  , pos);
+			idxcount++;
+		}
+		
+		mapVariety2Mismatch = new LinkedHashMap();
 		Set sortedVarieties = new TreeSet(new IndelsStringAllvarsImplSorter());
 		Iterator<BigDecimal> itVar = mapVar2AlleleCall.keySet().iterator();
 		while(itVar.hasNext()) {
@@ -407,7 +467,7 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 		// sort varieties by sumof lengths of ins and dels
 		listResult = new ArrayList();
 		// sort included varieties
-		mapVariety2Order = new HashMap();
+		mapVariety2Order = new LinkedHashMap();
 		Map mapVarId2IndelsStringAllvars  = new LinkedHashMap();
 		int ordercount = 0;
 		Iterator itSorVars =  sortedVarieties.iterator();
@@ -419,7 +479,7 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 			ordercount++;
 		}
 
-		
+		/*
 		StringBuffer buffia=new StringBuffer();
 		Iterator<BigDecimal> itIndelAllele = newmapAlleleId2Indel.keySet().iterator();
 		while(itIndelAllele.hasNext()) {
@@ -428,13 +488,57 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 		}
 		AppContext.debug("new indelalleles:\n");
 		AppContext.debug(buffia.toString());
+		*/
 		
 
 		return mapVarId2IndelsStringAllvars;
 	}
 	
 
-	
+	@Override
+	public Map readSNPString(String chr, int starvarid, int endvarid, int[][] posstartendIdxs) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map readSNPString(String chr, int[] posIdxs, int starvarid,
+			int endvarid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
+
+	@Override
+	public Map[] readSNPString(List<SnpsAllvarsPos> listpos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map[] readSNPString(GenotypeRunPlatform run, String chr, List<SnpsAllvarsPos> listpos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
+
+	@Override
+	public Map[] readSNPString(GenotypeRunPlatform run,Set<BigDecimal> colVarids, String chr,
+			List<SnpsAllvarsPos> listpos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
+
 	/**
 	 * Sorts variety by mismatch desc, subpopulation, then country, then id
 	 * Used in Mismatch ordering for the same number of mismatch,
@@ -476,165 +580,4 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 	}
 }
 	
-//private Map readIndelsAllvarsOracle(String chr, BigDecimal start, BigDecimal end, Collection varList, Collection posList) {
-//		
-//		//private Map<BigDecimal, Map<BigDecimal, IndelsAllvars>> mapVar2AlleleCall;
-//		Map<BigDecimal, Map<BigDecimal, IndelsAllvars>> mapVar2AlleleCall;
-//		
-//		
-//		AppContext.debug("getting indelpos in " + chr + " [" + start + "-" + end + "]");
-//		
-//		Set setSnps=null;
-//		if(start!=null && end!=null) {
-//			mapAlleleId2Indel = indelsAllvarsPosDAO.getMapIndelId2Indels(chr.toString(), start.intValue(), end.intValue());
-//			List listPos=new ArrayList();
-//			listPos.addAll(mapAlleleId2Indel.keySet());
-//			
-//			
-//			
-//			
-//			if(varList!=null && varList.size()<10)
-//			{
-//				AppContext.debug("getting indelcallsbyvar in " + chr + " [" + start + "-" + end + "]");
-//				setSnps = indelsAllvarsDAO.findIndelAllvarsByVarChrPosBetween(varList, chr, start, end);
-//			} else {
-//				AppContext.debug("getting indelcalls in " + chr + " [" + start + "-" + end + "]");
-//				setSnps = indelsAllvarsDAO.findIndelAllvarsByChrPosBetween( chr, start, end);
-//			}
-//			
-//			
-//			
-//		} else if(posList!=null) {
-//			mapAlleleId2Indel = indelsAllvarsPosDAO.getMapIndelId2Indels(chr.toString(), posList);
-//			
-//			List listIdx=new ArrayList();
-//			Iterator<BigDecimal> itPos=mapAlleleId2Indel.keySet().iterator();
-//			while(itPos.hasNext()) {
-//				listIdx.add(   mapAlleleId2Indel.get(itPos.next()).getAlleleIndex()  );
-//			}
-//			if(varList!=null && varList.size()<10)
-//			{
-//				AppContext.debug("getting indelcallsbyvar in " + chr  + "  " + posList.size());
-//				setSnps = indelsAllvarsDAO.findIndelAllvarsByVarChrPosIn(varList, null, listIdx);
-//			} else {
-//				AppContext.debug("getting indelcalls in " + chr  + "  " + posList.size());
-//				setSnps = indelsAllvarsDAO.findIndelAllvarsByChrPosIn( null,  listIdx);
-//			}
-//
-//			
-//			/*
-//			if(varList!=null && varList.size()<10)
-//			{
-//				AppContext.debug("getting indelcallsbyvar in " + chr  + "  " + posList.size());
-//				setSnps = indelsAllvarsDAO.findIndelAllvarsByVarChrPosIn(varList, chr, posList);
-//			} else {
-//				AppContext.debug("getting indelcalls in " + chr  + "  " + posList.size());
-//				setSnps = indelsAllvarsDAO.findIndelAllvarsByChrPosIn( chr,  posList);
-//			}
-//			*/
-//			
-//		}
-//		
-//		
-//		if(varList!=null) AppContext.debug("limiting to " + varList.size() + " varieties"); 
-//		
-//		if(setSnps==null)
-//			AppContext.logger("setSnps==null");
-//		else 
-//			AppContext.logger("setSnps.size = " + setSnps.size());
-//		
-//		if(mapAlleleId2Indel==null)
-//			AppContext.logger("mapAlleleId2Indel==null");
-//		else
-//			AppContext.logger("mapAlleleId2Indel.size = " + mapAlleleId2Indel.size());
-//			
-//		
-//		
-//		Map<BigDecimal, Integer> mapVar2MismatchCount = new HashMap();
-//		
-//		mapVar2AlleleCall = new HashMap();
-//		sortedPos = new TreeSet();
-//		Iterator itIndelcalls = setSnps.iterator();
-//		while(itIndelcalls.hasNext()) {
-//			IndelsAllvars indelcall = (IndelsAllvars)itIndelcalls.next();
-//			
-//			if(varList!=null && !varList.contains(indelcall.getVar())) continue;
-//			//if(posList!=null && !posList.contains(indelcall.getPos())) continue;
-//			
-//			Map<BigDecimal, IndelsAllvars> var2calls = mapVar2AlleleCall.get(indelcall.getVar());
-//			if(var2calls==null) {
-//				var2calls = new TreeMap();
-//				mapVar2AlleleCall.put(indelcall.getVar(), var2calls);
-//			}
-//			var2calls.put( indelcall.getPos() , indelcall );
-//			
-//			IndelsAllvarsPos indelalelle =  mapAlleleId2Indel.get( indelcall.getAllele1() ); 
-//			int indelmismatch  = indelalelle.getDellength();
-//			if(indelmismatch==0 && indelalelle.getInsString()!=null) indelmismatch = indelalelle.getInsString().length();
-//			
-//			int indelmismatch2 = 0;
-//			if(indelcall.getAllele2()!=null) {
-//				indelalelle =  mapAlleleId2Indel.get( indelcall.getAllele2() );
-//				indelmismatch2  = indelalelle.getDellength();
-//				if(indelmismatch2==0 && indelalelle.getInsString()!=null) indelmismatch2 = indelalelle.getInsString().length();
-//			}
-//			
-//			Integer prevcount = mapVar2MismatchCount.get(indelcall.getVar());
-//			if(prevcount==null) 
-//				mapVar2MismatchCount.put(indelcall.getVar(), Integer.valueOf( indelmismatch + indelmismatch2 ));
-//			else
-//				mapVar2MismatchCount.put(indelcall.getVar(), prevcount + indelmismatch + indelmismatch2);
-//			
-//			sortedPos.add(indelcall.getPos());
-//		}
-//		mapIdx2Pos = new TreeMap();
-//		Iterator<BigDecimal> itIdx = sortedPos.iterator();
-//		int idxcount=0;
-//		
-//		listPos = new ArrayList();
-//		while(itIdx.hasNext()) {
-//			BigDecimal pos =  itIdx.next();
-//			mapIdx2Pos.put(idxcount  , pos);
-//			listPos.add(new SnpsAllvarsPosImpl(pos, ""));
-//			idxcount++;
-//			
-//		}
-//		
-//		
-//		
-//		mapVariety2Mismatch = new HashMap();
-//		Set sortedVarieties = new TreeSet(new IndelsStringAllvarsImplSorter());
-//		Iterator<BigDecimal> itVar = mapVar2AlleleCall.keySet().iterator();
-//		while(itVar.hasNext()) {
-//			BigDecimal var = itVar.next();
-//			
-//			if( isMismatchOnly  && mapVar2MismatchCount.get(var)==0) continue;
-//			
-//			Map<BigDecimal, IndelsAllvars> mapPos2Indelallvars=  mapVar2AlleleCall.get(var);
-//			//sortedVarieties.add( new IndelsStringAllvarsImpl(var, mapPos2Indelallvars, BigDecimal.valueOf(mapVar2MismatchCount.get(var)), Long.valueOf(AppContext.guessChrFromString(chr) ) ));
-//			sortedVarieties.add( new IndelsStringAllvarsImpl(var, mapPos2Indelallvars, BigDecimal.valueOf(mapVar2MismatchCount.get(var)), null ));
-//			
-//			mapVariety2Mismatch.put(var, Double.valueOf(mapVar2MismatchCount.get(var)));
-//		}
-//		
-//		
-//		// sort varieties by sumof lengths of ins and dels
-//		listResult = new ArrayList();
-//		// sort included varieties
-//		mapVariety2Order = new HashMap();
-//		Map mapVarId2IndelsStringAllvars  = new LinkedHashMap();
-//		int ordercount = 0;
-//		Iterator itSorVars =  sortedVarieties.iterator();
-//		while(itSorVars.hasNext()) {
-//			IndelsStringAllvars snpstrvar = (IndelsStringAllvars)itSorVars.next();
-//			listResult.add( snpstrvar );
-//			mapVariety2Order.put(snpstrvar.getVar() ,ordercount);
-//			mapVarId2IndelsStringAllvars.put(snpstrvar.getVar() , snpstrvar);
-//			ordercount++;
-//		}
-//
-//		return mapVarId2IndelsStringAllvars;
-//	}
-//		
-//	
 	

@@ -1,8 +1,14 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
-
 import java.math.BigDecimal;
+
+
+
+
+
+
+
 
 
 import javax.persistence.Id;
@@ -11,9 +17,10 @@ import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.*;
 import javax.persistence.*;
 
-
+import org.irri.iric.portal.domain.StockByPhenotype;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.domain.VarietyPlus;
+import org.irri.iric.portal.variety.VarietyFacade;
 
 /**
  */
@@ -32,18 +39,41 @@ import org.irri.iric.portal.domain.VarietyPlus;
 
 		
 		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQuanLessthan", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and " +
-				" myVIricstocksByPhenotype.quanValue < ?2 order by myVIricstocksByPhenotype.quanValue, myVIricstocksByPhenotype.name"),
+				" myVIricstocksByPhenotype.quanValue <= ?2 order by myVIricstocksByPhenotype.quanValue, myVIricstocksByPhenotype.name"),
 		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQuanGreaterthan", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and " +
-				" myVIricstocksByPhenotype.quanValue > ?2 order by myVIricstocksByPhenotype.quanValue, myVIricstocksByPhenotype.name"),
+				" myVIricstocksByPhenotype.quanValue >= ?2 order by myVIricstocksByPhenotype.quanValue, myVIricstocksByPhenotype.name"),
+
+		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQualLessthan", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and " +
+				" myVIricstocksByPhenotype.qualValue <= ?2 order by myVIricstocksByPhenotype.qualValue, myVIricstocksByPhenotype.name"),
+		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQualGreaterthan", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and " +
+				" myVIricstocksByPhenotype.qualValue >= ?2 order by myVIricstocksByPhenotype.qualValue, myVIricstocksByPhenotype.name"),
+
+		
 		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQuanEquals", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and " +
 				" myVIricstocksByPhenotype.quanValue = ?2 order by  myVIricstocksByPhenotype.name"),
 		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQualEquals", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and " +
 				" myVIricstocksByPhenotype.qualValue = ?2 order by  myVIricstocksByPhenotype.name"),
-					
-
-				
-				
 		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeId", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1"),
+		
+
+		
+		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQuanLessthanDataset", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and  myVIricstocksByPhenotype.dataset in (?2) and " +
+				" myVIricstocksByPhenotype.quanValue <= ?3 order by myVIricstocksByPhenotype.quanValue, myVIricstocksByPhenotype.name"),
+		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQuanGreaterthanDataset", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and  myVIricstocksByPhenotype.dataset in (?2) and " +
+				" myVIricstocksByPhenotype.quanValue >= ?3 order by myVIricstocksByPhenotype.quanValue, myVIricstocksByPhenotype.name"),
+		
+		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQualLessthanDataset", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and  myVIricstocksByPhenotype.dataset in (?2) and " +
+				" myVIricstocksByPhenotype.qualValue <= ?3 order by myVIricstocksByPhenotype.qualValue, myVIricstocksByPhenotype.name"),
+		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQualGreaterthanDataset", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and  myVIricstocksByPhenotype.dataset in (?2) and " +
+				" myVIricstocksByPhenotype.qualValue >= ?3 order by myVIricstocksByPhenotype.qualValue, myVIricstocksByPhenotype.name"),
+		
+		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQuanEqualsDataset", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and  myVIricstocksByPhenotype.dataset in (?2) and " +
+				" myVIricstocksByPhenotype.quanValue = ?3  order by  myVIricstocksByPhenotype.name"),
+		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdQualEqualsDataset", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1 and  myVIricstocksByPhenotype.dataset in (?2) and " +
+				" myVIricstocksByPhenotype.qualValue = ?3 order by  myVIricstocksByPhenotype.name"),
+		@NamedQuery(name = "findVIricstocksByPhenotypeByPhenotypeIdDataset", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.phenotypeId = ?1  and myVIricstocksByPhenotype.dataset in (?2)"),
+
+		
 		@NamedQuery(name = "findVIricstocksByPhenotypeByPrimaryKey", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.iricStockPhenotypeId = ?1"),
 		@NamedQuery(name = "findVIricstocksByPhenotypeByQualValue", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.qualValue = ?1"),
 		@NamedQuery(name = "findVIricstocksByPhenotypeByQualValueContaining", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.qualValue like ?1"),
@@ -56,10 +86,11 @@ import org.irri.iric.portal.domain.VarietyPlus;
 		@NamedQuery(name = "findVIricstocksByPhenotypeBySubpopulationContaining", query = "select myVIricstocksByPhenotype from VIricstocksByPhenotype myVIricstocksByPhenotype where myVIricstocksByPhenotype.subpopulation like ?1") })
 
 
-@Table(schema = "IRIC", name = "V_IRICSTOCKS_BY_PHENOTYPE")
+//@Table( name = "V_IRICSTOCKS_BY_PHENOTYPE")
+@Table( name = "V_STOCK_BY_PHENOTYPE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstocksByPhenotype")
-public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
+public class VIricstocksByPhenotype implements  StockByPhenotype { // Serializable, VarietyPlus {
 	private static final long serialVersionUID = 1L;
 	
 	//private String valuename;
@@ -96,6 +127,12 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 	/**
 	 */
 
+	@Column(name = "BOX_CODE", length = 4000)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String boxCode;
+
+	
 	@Column(name = "ORI_COUNTRY", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -110,6 +147,13 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 	/**
 	 */
 
+	
+	@Column(name = "GS_ACCESSION", length = 4000)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String gsAccession;
+
+	
 	@Column(name = "QUAL_VALUE")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -128,7 +172,14 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	BigDecimal phenotypeId;
+	
+	@Column(name = "DATASET")
+	@Basic(fetch = FetchType.EAGER)
+	@Id
+	@XmlElement
+	String dataset;
 
+	
 	/**
 	 */
 	public void setIricStockPhenotypeId(BigDecimal iricStockPhenotypeId) {
@@ -237,6 +288,12 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 		return this.phenotypeId;
 	}
 
+	
+	
+	public void setDataset(String dataset) {
+		this.dataset = dataset;
+	}
+
 	/**
 	 */
 	public VIricstocksByPhenotype() {
@@ -256,6 +313,7 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 		setQualValue(that.getQualValue());
 		setQuanValue(that.getQuanValue());
 		setPhenotypeId(that.getPhenotypeId());
+		setDataset(that.getDataset());
 	}
 
 	/**
@@ -275,6 +333,7 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 		buffer.append("qualValue=[").append(qualValue).append("] ");
 		buffer.append("quanValue=[").append(quanValue).append("] ");
 		buffer.append("phenotypeId=[").append(phenotypeId).append("] ");
+		buffer.append("dataset=[").append(dataset).append("] ");
 
 		return buffer.toString();
 	}
@@ -306,6 +365,7 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 		final int prime = 31;
 		int result = 1;
 		result = (int) (prime * result + ((getVarietyId() == null) ? 0 : getVarietyId().hashCode()));
+		result = (int) (prime * result + ((getDataset() == null) ? 0 : getDataset().hashCode()));
 		return result;
 	}
 
@@ -325,6 +385,10 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 		if ((getVarietyId() == null && equalCheck.getVarietyId() != null) || (getVarietyId() != null && equalCheck.getVarietyId() == null))
 			return false;
 		if (getVarietyId() != null && !getVarietyId().equals(equalCheck.getVarietyId()))
+			return false;
+		if ((getDataset() == null && equalCheck.getDataset() != null) || (getDataset() != null && equalCheck.getDataset() == null))
+			return false;
+		if (getDataset() != null && !getDataset().equals(equalCheck.getDataset()))
 			return false;
 		return true;
 		
@@ -386,6 +450,8 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 		int ret = getName().compareTo( ((Variety)o).getName() ); 
 		if(ret==0)
 			ret = getVarietyId().compareTo( ((Variety)o).getVarietyId() );
+		if(ret==0)
+			ret = getDataset().compareTo( ((Variety)o).getDataset() );
 			
 		return ret;
 	}
@@ -401,17 +467,56 @@ public class VIricstocksByPhenotype implements Serializable, VarietyPlus {
 				if(cntr==null) cntr="";
 				String strvalue = qualValue;
 				if(strvalue==null) strvalue = quanValue.toString();
+				String acc = this.getAccession();
+				if(acc==null) acc="";
+
 				
-				return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr + delimiter + strvalue;
+				//return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr + delimiter + strvalue;
+				return "\""+ this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter + "\""  + acc + "\"" + delimiter + "\""  + subpop + "\"" + delimiter + "\"" + cntr + "\"" + delimiter + strvalue   ;
+
+
 	}
 
 	@Override
 	public String getBoxCode() {
 		// TODO Auto-generated method stub
-		return null;
+		return boxCode;
+	}
+
+	@Override
+	public void setValue(Object value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getAccession() {
+		// TODO Auto-generated method stub
+		try {
+			Integer.valueOf(gsAccession );
+			return "IRGC" + this.gsAccession;
+		} catch(Exception ex) {
+			return gsAccession;
+		}
 	}
 	
+	@Override
+	public String getDataset() {
+		// TODO Auto-generated method stub
+		//return VarietyFacade.DATASET_SNPINDELV2_IUPAC;
+		return dataset;
+	}
+
+	@Override
+	public void setAccession(String accession) {
+		// TODO Auto-generated method stub
+		this.gsAccession=accession;
+	}
 	
+	@Override
+	public BigDecimal getStockId() {
+		return getIricStockId();
+	}
 	
 	
 }

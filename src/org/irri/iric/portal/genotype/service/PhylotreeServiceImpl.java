@@ -2,8 +2,12 @@ package org.irri.iric.portal.genotype.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +17,7 @@ import org.biojava3.phylo.TreeConstructor;
 import org.forester.evoinference.matrix.distance.BasicSymmetricalDistanceMatrix;
 import org.forester.io.parsers.PhylogenyParser;
 import org.forester.io.parsers.util.ParserUtils;
+import org.forester.io.writers.PhylogenyWriter;
 import org.forester.phylogeny.Phylogeny;
 import org.forester.phylogeny.PhylogenyMethods;
 import org.forester.phylogeny.PhylogenyNode;
@@ -20,10 +25,16 @@ import org.forester.phylogeny.iterators.PhylogenyNodeIterator;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.Snps2VarsCountMismatchDAO;
 import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
+import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.Snps2VarsCountmismatch;
+import org.irri.iric.portal.domain.Snps2VarsCountmismatchImpl;
+import org.irri.iric.portal.domain.SnpsStringAllvars;
+import org.irri.iric.portal.domain.SnpsStringAllvarsImpl;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.domain.VarietyDistance;
 import org.irri.iric.portal.genotype.PhylotreeQueryParams;
 import org.irri.iric.portal.genotype.PhylotreeService;
+import org.irri.iric.portal.genotype.VariantStringData;
 import org.irri.iric.portal.variety.VarietyFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -56,10 +67,10 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 		@Override
 		public Object[] constructPhylotree(PhylotreeQueryParams params, String requestid) {
 			
-			
+			AppContext.debug("executing: constructPhylotree(PhylotreeQueryParams params, String requestid)");
 			if(params.getMethod().equals(PHYLOTREE_METHOD_TOPN))
 				return constructPhylotreeTopN( Double.toString( params.getScale() ) , params.getGenotype().getsChr(), params.getGenotype().getlStart().intValue(),  params.getGenotype().getlEnd().intValue() ,  params.getTopN(), requestid,
-					 (Set)params.getGenotype().getColVarIds() , params.getGenotype().isbCoreonly());
+					 (Set)params.getGenotype().getColVarIds() , params.getGenotype().getSnpSet().contains("3kcore"), params.getDataset());
 			//else if (params.getMethod().equals(PHYLOTREE_METHOD_MINDIST))
 //					return (String[])constructPhylotreeMindist(  Double.toString(params.getScale())  , params.getGenotype().getsChr(), params.getGenotype().getlStart().intValue(),  params.getGenotype().getlEnd().intValue() , Double.toString( params.getMinDist()));
 			
@@ -68,91 +79,220 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 
 
 		@Override
-		public Object[] constructPhylotree(String scale, String chr, int start, int end, String requestid) {
-			return constructPhylotreeTopN(scale, chr, start, end, -1, requestid, null, false);
+		public Object[] constructPhylotree(String scale, String chr, int start, int end, String requestid,Set dataset) {
+			AppContext.debug("executing: constructPhylotree(String scale, String chr, int start, int end, String requestid,String dataset");
+
+			return constructPhylotreeTopN(scale, chr, start, end, -1, requestid, null, false, dataset);
 		}	
+		
 
-
-
-		private Object[] constructPhylotreeTopN(String scale, String chr, int start, int end, int topN,  String requestid, Set limitVarIds, boolean isCore) {
+		@Override
+		public Object[] constructPhylotree(VariantStringData data, PhylotreeQueryParams params) {
+		
 			
-			int varids=0;
-			if(limitVarIds!=null) varids=limitVarIds.size();
+//			 AppContext.debug("executing: constructPhylotree(VariantStringData data, PhylotreeQueryParams params)");
+//			 
+//			 AppContext.debug("data=" + data);
+//			 if(data!=null) AppContext.debug("getListVariantsString()=" + data.getListVariantsString().size());
+//			
+//			List<Snps2VarsCountmismatch> listmis=new ArrayList();
+//			Iterator<SnpsStringAllvars> itallvars1=data.getListVariantsString().iterator();
+//			while(itallvars1.hasNext()) {
+//				SnpsStringAllvars varsnps1 = itallvars1.next();
+//				Map<Position,Character>  var1allele2str=varsnps1.getMapPos2Allele2();
+//				Iterator<SnpsStringAllvars> itallvars2=data.getListVariantsString().iterator();
+//				while(itallvars2.hasNext()) {
+//					SnpsStringAllvars varsnps2 = itallvars2.next();
+//					if(varsnps1.getVar().intValue()>varsnps2.getVar().intValue()) continue;
+//					
+//					
+//					double mismatch[] = SnpsStringMultiHDF5nRDBMSHybridService.countVarpairMismatch(data.getListPos(), varsnps1.getVarnuc() , varsnps2.getVarnuc(), false, var1allele2str, varsnps2.getMapPos2Allele2() ,	
+//					data.getMapPos2NonsynAlleles(), data.getSetSnpInExonPos(), new HashSet(), params.getGenotype().isbNonsynPlusSpliceSnps(),
+//					params.getGenotype().isbCountMissingAs05());
+//					listmis.add( new Snps2VarsCountmismatchImpl(varsnps1.getVar(), varsnps2.getVar(), BigDecimal.valueOf(mismatch[0])));
+//				}
+//			}
 			
-			AppContext.debug("constructPhylotreeTopN: scale=" + scale + ", chr=" + chr + ", start="+ start +", end=" + end + ", topN=" + topN + ", limitVarIds=" + varids + ", core=" + isCore);
-			AppContext.startTimer();
-			//return new String[]{};
+			List listmis=this.calculateDistancePair(data, params);			
+			//return  new Object[] { calculateTree(listmis, data.getListPos().size(), params.getDataset()),listmis};
 			
-			//snpcount2linesService = (Snps2VarsCountMismatchDAO)AppContext.checkBean(snpcount2linesService, "Snps2VarsCountMismatchDAO");
-			snpcount2linesService = (Snps2VarsCountMismatchDAO)AppContext.checkBean(snpcount2linesService, "SnpsString2VarsCountMismatchDAO");
-			
-			//mapVariety2PhyloOrder = null;
-			
-			List<Snps2VarsCountmismatch>  mismatches = null;
-			
-			AppContext.startTimer();
-			
-			if(topN>0) {
-				
-				if(limitVarIds!=null && !limitVarIds.isEmpty())
-					mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topN, limitVarIds);
-				else	
-					mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topN);
-				
-				AppContext.debug(mismatches.size() + " mismatch pairs");
-				
-				// get varieties in topN
-				java.util.Iterator<Snps2VarsCountmismatch>  itdist = mismatches.iterator();		
-				Set topVars =new java.util.HashSet();
-				while(itdist.hasNext())
-				{
-					Snps2VarsCountmismatch dist3k = itdist.next();
-					topVars.add( dist3k.getVar1());
-					topVars.add( dist3k.getVar2());
-				}
-				mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topVars);
-				AppContext.resetTimer(" topN distance calc");
-				
-			}
-			else {
-				if(limitVarIds!=null && !limitVarIds.isEmpty())
-					mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), limitVarIds);
-				else
-					mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end));
-				
-				
-				
-				AppContext.resetTimer(" all distance calc");
-			}
-			
+			return   calculateTree(listmis, data.getListPos().size(), params.getDataset());
 	
+		}
+
+		@Override
+		public Object[] constructPhylotree(List<Snps2VarsCountmismatch> listmis, int n, PhylotreeQueryParams params ) {
+			return calculateTree(listmis, n, params.getDataset());
+		}
+		
+		
+
+		/* @Override
+		public Object[] constructMDS(String scale, String chr, int start, int end, String requestid,String dataset) {
+			AppContext.debug("executing: constructPhylotree(String scale, String chr, int start, int end, String requestid,String dataset");
+
+			return null; //constructMDS(scale, chr, start, end, -1, requestid, null, false, dataset);
+		}	*/
+
+		
+
+		@Override
+		public List<Snps2VarsCountmismatch> calculateDistancePair(VariantStringData data, PhylotreeQueryParams params) {
+			List<Snps2VarsCountmismatch> listmis=new ArrayList();
+			Iterator<SnpsStringAllvars> itallvars1=data.getListVariantsString().iterator();
+			while(itallvars1.hasNext()) {
+				SnpsStringAllvars varsnps1 = itallvars1.next();
+				Map<Position,Character>  var1allele2str=varsnps1.getMapPos2Allele2();
+				Iterator<SnpsStringAllvars> itallvars2=data.getListVariantsString().iterator();
+				while(itallvars2.hasNext()) {
+					SnpsStringAllvars varsnps2 = itallvars2.next();
+					if(varsnps1.getVar().intValue()>varsnps2.getVar().intValue()) continue;
+					
+					
+					double mismatch[] = SnpsStringMultiHDF5nRDBMSHybridService.countVarpairMismatch(data.getListPos(), varsnps1.getVarnuc() , varsnps2.getVarnuc(), false, var1allele2str, varsnps2.getMapPos2Allele2() ,	
+					data.getMapPos2NonsynAlleles(),  new HashSet(), params.getGenotype().isbNonsynPlusSpliceSnps(),
+					params.getGenotype().isbCountMissingAs05());
+					listmis.add( new Snps2VarsCountmismatchImpl(varsnps1.getVar(), varsnps2.getVar(), BigDecimal.valueOf(mismatch[0])));
+				}
+			}
+			return listmis;
+		}
+		@Override
+		public double[][] constructMDS(Map<BigDecimal,Integer> mapVarid2Row, VariantStringData data, PhylotreeQueryParams params) {
+		
 			
-			int snps = -1;
-			//List snps = null;
-			snpstringallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpstringallvarsposService, "VSnpRefposindexDAO") ; 
-			//if(isCore) {
-			if(false) {
-				//snpcoreallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpcoreallvarsposService, "MvCoreSnpsDAO") ; 
-				//snps = snpcoreallvarsposService.getSNPs(chr, start, end, null ).size();
-				
-				
-				snps = snpstringallvarsposService.getSNPs(chr, start, end,  SnpsAllvarsPosDAO.TYPE_3KCORESNP  ).size();
-				
-				 
-			 }
-			 else {
-				snps = snpstringallvarsposService.getSNPs(chr, start, end,  SnpsAllvarsPosDAO.TYPE_3KALLSNP   ).size();
-				 //snpallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpallvarsposService, "SnpsAllvarsPosDAO") ; 
-				 // snps = snpallvarsposService.getSNPs(chr, start, end ,null ).size();
-			 }
+			 AppContext.debug("executing: constructPhylotree(VariantStringData data, PhylotreeQueryParams params)");
 			 
-			 
-			AppContext.debug(mismatches.size() + " mismatch pairs, " + snps + " snp pos");
+			 AppContext.debug("data=" + data);
+			 if(data!=null) AppContext.debug("getListVariantsString()=" + data.getListVariantsString().size());
 			
-			 if(snps==0) return new Object[] {"", 0,0,null};
+			 List listmis= calculateDistancePair( data,  params);
+			
+			return constructMDS( mapVarid2Row, listmis,  "1");
+		}
+		
+
+		
+		@Override
+		public double[][] constructMDS(Map<BigDecimal,Integer> mapVarid2Row, List<VarietyDistance> listdist,  String scale)  {
+			
+			
+			
+			int i=mapVarid2Row.size();
+			java.util.Iterator<VarietyDistance>  itdist = listdist.iterator();
+			double input[][] = new double[i][i];
+			int distscale =  Integer.parseInt(scale);
+			// construct the distance matrix
+			
+			AppContext.debug("constructing mds from snpregion for " + i+ " vars, " + listdist.size() + " distances");
+			
+			while(itdist.hasNext())
+			{
+				
+				VarietyDistance dist3k = itdist.next();
+
+				if(!mapVarid2Row.containsKey(dist3k.getVar1()) ) continue ; //throw new RuntimeException("No key " + dist3k.getVar1() + " in mapVarid2Row");
+				if(!mapVarid2Row.containsKey(dist3k.getVar2()) ) continue ; //throw new RuntimeException("No key " + dist3k.getVar2() + " in mapVarid2Row");
+
+				Double dist = dist3k.getDist().doubleValue()*distscale; // Double.valueOf( dist3k.getDist().toString() )*distscale;;
+				
+				input[ mapVarid2Row.get(dist3k.getVar1() )][mapVarid2Row.get(dist3k.getVar2())] = dist ;
+				input[ mapVarid2Row.get(dist3k.getVar2() )][mapVarid2Row.get(dist3k.getVar1())] = dist ;
+			}
+			
+			itdist = null;
+			listdist = null;
+			MemoryMXBean bean = ManagementFactory.getMemoryMXBean(); 
+			AppContext.debug("heap space used MB:" +   bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
+			bean.gc();
+			AppContext.debug("GC successful: heap space used MB:" +  bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
+			return mdsj.MDSJ.classicalScaling(input);
+		}
+		
+		private Object[] constructPhylotreeTopN(String scale, String chr, int start, int end, int topN,  String requestid, Set limitVarIds, boolean isCore, Set dataset) {
+			
+//			int varids=0;
+//			if(limitVarIds!=null) varids=limitVarIds.size();
+//			
+//			AppContext.debug("constructPhylotreeTopN: scale=" + scale + ", chr=" + chr + ", start="+ start +", end=" + end + ", topN=" + topN + ", limitVarIds=" + varids + ", core=" + isCore);
+//			AppContext.startTimer();
+//			//return new String[]{};
+//			
+//			//snpcount2linesService = (Snps2VarsCountMismatchDAO)AppContext.checkBean(snpcount2linesService, "Snps2VarsCountMismatchDAO");
+//			snpcount2linesService = (Snps2VarsCountMismatchDAO)AppContext.checkBean(snpcount2linesService, "SnpsString2VarsCountMismatchDAO");
+//			
+//			//mapVariety2PhyloOrder = null;
+//			
+//			List<Snps2VarsCountmismatch>  mismatches = null;
+//			
+//			AppContext.startTimer();
+//			
+//			if(topN>0) {
+//				
+//				if(limitVarIds!=null && !limitVarIds.isEmpty())
+//					mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topN, limitVarIds);
+//				else	
+//					mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topN);
+//				
+//				AppContext.debug(mismatches.size() + " mismatch pairs");
+//				
+//				// get varieties in topN
+//				java.util.Iterator<Snps2VarsCountmismatch>  itdist = mismatches.iterator();		
+//				Set topVars =new java.util.HashSet();
+//				while(itdist.hasNext())
+//				{
+//					Snps2VarsCountmismatch dist3k = itdist.next();
+//					topVars.add( dist3k.getVar1());
+//					topVars.add( dist3k.getVar2());
+//				}
+//				mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), topVars);
+//				AppContext.resetTimer(" topN distance calc");
+//				
+//			}
+//			else {
+//				if(limitVarIds!=null && !limitVarIds.isEmpty())
+//					mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end), limitVarIds);
+//				else
+//					mismatches =  snpcount2linesService.countMismatch(Integer.valueOf(chr), BigDecimal.valueOf(start), BigDecimal.valueOf(end));
+//				
+//				
+//				
+//				AppContext.resetTimer(" all distance calc");
+//			}
+//			
+//	
+//			
+//			int snps = -1;
+//			//List snps = null;
+//			snpstringallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpstringallvarsposService, "VSnpRefposindexDAO") ; 
+//			//if(isCore) {
+//			if(false) {
+//				//snpcoreallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpcoreallvarsposService, "MvCoreSnpsDAO") ; 
+//				//snps = snpcoreallvarsposService.getSNPs(chr, start, end, null ).size();
+//				
+//				
+//				snps = snpstringallvarsposService.getSNPs(chr, start, end,  SnpsAllvarsPosDAO.TYPE_3KCORESNP  ).size();
+//				
+//				 
+//			 }
+//			 else {
+//				snps = snpstringallvarsposService.getSNPs(chr, start, end,  SnpsAllvarsPosDAO.TYPE_3KALLSNP_HDF5_V2   ).size();
+//				 //snpallvarsposService = (SnpsAllvarsPosDAO)AppContext.checkBean(snpallvarsposService, "SnpsAllvarsPosDAO") ; 
+//				 // snps = snpallvarsposService.getSNPs(chr, start, end ,null ).size();
+//			 }
+//			 
+//			 
+//			AppContext.debug(mismatches.size() + " mismatch pairs, " + snps + " snp pos");
+//			
+//			 if(snps==0) return new Object[] {"", 0,0,null};
 			
 			//germplasms
+			 return calculateTree(new ArrayList(), 0, dataset);
 			
+		}
+		
+		//private  Object[] calculateTree(List<Snps2VarsCountmismatch>  mismatches, Integer snps, String dataset) {
+		private  Object[] calculateTree(List<Snps2VarsCountmismatch>  mismatches, Integer snps, Set dataset) {
 			
 			java.util.Map<BigDecimal, Integer> mapName2Row = new java.util.HashMap<BigDecimal, Integer>();
 			
@@ -176,7 +316,7 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 			AppContext.debug( setWithMismatch.size() + " unique names with mismatch");
 			
 			varietyfacade = (VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade");
-			Map<BigDecimal,Variety> mapVarid2Variety = varietyfacade.getMapId2Variety();
+			Map<BigDecimal,Variety> mapVarid2Variety = varietyfacade.getMapId2Variety(dataset);
 			
 			int i=0;
 			Iterator<BigDecimal> itgerm = setWithMismatch.iterator();
@@ -229,15 +369,18 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 					org.biojava3.phylo.TreeConstructionAlgorithm.PID ,
 				//	null);
 					new org.biojava3.phylo.ProgessListenerStub());
-					tree.process();
 
+				tree.process();
+				
 					AppContext.debug("process done");
 				String newick = tree.getNewickString(false, true);
+				Phylogeny phy = tree.getP();
+				PhylogenyWriter w = new PhylogenyWriter();
+			    String phyloxml = w.toPhyloXML(phy, 1).toString();
 				
-			
-				
-				
-				Map<BigDecimal,Variety> mapId2Variety = varietyfacade.getMapId2Variety();
+				//String phyloxml="";
+
+				Map<BigDecimal,Variety> mapId2Variety = varietyfacade.getMapId2Variety(dataset);
 				
 				//AppContext.debug(newick);
 				Iterator<BigDecimal> itgerm2 = setWithMismatch.iterator();
@@ -251,16 +394,19 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 					if( var.getIrisId()!=null) irisid=var.getIrisId();
 					//newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0] + "/" + irisid + "/" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
 					newick = newick.replace("varid_" + c + ":",(var.getName().split("::")[0].replace(", ","_") + "|" + irisid + "|" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + ":"  );
+					phyloxml = phyloxml.replace(">varid_" + c +"<", ">" + (var.getName().split("::")[0].replace(", ","_") + "|" + irisid + "|" + subpop).replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") + "<" );
+					
 				
 				}
 				//AppContext.debug(newick);
 				
 				AppContext.resetTimer("phylotree construction");
 				
-				Map mapVariety2Order = this.sortByPhylogeny( tree.getP() );
+				Map mapVariety2Order = sortByPhylogeny( tree.getP(), dataset );
+				//Map mapVariety2Order = this.sortByPhylogeny( phy, dataset );
 				 
 				//return new String[] {newick, Integer.toString(symdistmatrix.getSize()), Integer.toString( mismatches.size()) };
-				return new Object[] {newick, symdistmatrix.getSize(), mismatches.size(), mapVariety2Order};
+				return new Object[] {newick, symdistmatrix.getSize(), mismatches.size(), mapVariety2Order, phyloxml};
 				
 			} catch(Exception ex)
 			{
@@ -1308,9 +1454,9 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 //	}
 //			
 	
-		private Map<BigDecimal,Integer> sortByPhylogeny(Phylogeny phy) {
+		private Map<BigDecimal,Integer> sortByPhylogeny(Phylogeny phy, Set dataset) {
 			varietyfacade = (VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade");
-		    Map<String,Variety> varname2var = varietyfacade.getMapVarname2Variety();
+		    Map<String,Variety> varname2var = varietyfacade.getMapVarname2Variety(dataset);
 	        Map<String,Variety> irisid2var = varietyfacade.getIrisId2Variety();
 	        
 	        Map mapVariety2PhyloOrder = new HashMap<BigDecimal,Integer>(); 
@@ -1355,13 +1501,13 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 		}
 	
 		@Override
-		public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile)
+		public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile, Set dataset)
 		{
-			 return orderVarietiesFromPhylotree(tmpfile, null);
+			 return orderVarietiesFromPhylotree(tmpfile, null, dataset);
 		}
 	
 		@Override
-		public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile, String newick)
+		public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile, String newick, Set dataset)
 		{
 
 			//if(mapVariety2PhyloOrder!=null) return mapVariety2PhyloOrder;
@@ -1387,14 +1533,14 @@ public class PhylotreeServiceImpl implements PhylotreeService {
 
 			        
 				        AppContext.debug("Newick postorder listing:");
-				        Map<String,Variety> varname2var = varietyfacade.getMapVarname2Variety();
+				        Map<String,Variety> varname2var = varietyfacade.getMapVarname2Variety(dataset);
 				        Map<String,Variety> irisid2var = varietyfacade.getIrisId2Variety();
 				     
 				        int leafcount = 0;
 				        for(int iphy=0; iphy<phys.length; iphy++)
 				        {
 				        	
-				        	mapVariety2PhyloOrder.putAll(sortByPhylogeny(phys[iphy]));
+				        	mapVariety2PhyloOrder.putAll(sortByPhylogeny(phys[iphy], dataset));
 				        	
 //					        for(PhylogenyNodeIterator it = phys[iphy].iteratorPostorder(); it.hasNext(); ) {
 //					        	PhylogenyNode node = it.next();

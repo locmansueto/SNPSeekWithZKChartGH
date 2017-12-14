@@ -119,9 +119,9 @@ public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstock
 	 *
 	 */
 	@Transactional
-	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(BigDecimal phenotypeId) throws DataAccessException {
+	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(BigDecimal phenotypeId, String dataset) throws DataAccessException {
 
-		return findVIricstockPhenotypeQuanvalByPhenotypeId(phenotypeId, -1, -1);
+		return findVIricstockPhenotypeQuanvalByPhenotypeId(phenotypeId,dataset,  -1, -1);
 	}
 
 	/**
@@ -131,8 +131,15 @@ public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstock
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(BigDecimal phenotypeId, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVIricstockPhenotypeQuanvalByPhenotypeId", startResult, maxRows, phenotypeId);
+	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(BigDecimal phenotypeId,  String dataset, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVIricstockPhenotypeQuanvalByPhenotypeId", startResult, maxRows, phenotypeId, dataset);
+		return new LinkedHashSet<VIricstockPhenotypeQuanval>(query.getResultList());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeIdDataset(BigDecimal phenotypeId,  Set dataset, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVIricstockPhenotypeQuanvalByPhenotypeIdDataset", startResult, maxRows, phenotypeId, dataset);
 		return new LinkedHashSet<VIricstockPhenotypeQuanval>(query.getResultList());
 	}
 
@@ -168,10 +175,27 @@ public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstock
 		return true;
 	}
 
+
+
 	@Override
-	public Set getUniqueValues(BigDecimal typeId) {
+	public Set getUniqueValues(BigDecimal typeId, Set dataset) {
 		// TODO Auto-generated method stub
-		return this.findVIricstockPhenotypeQuanvalByPhenotypeId(typeId);
+		return this.findVIricstockPhenotypeQuanvalByPhenotypeIdDataset(typeId, dataset,-1,-1);
+	}
+
+	@Override
+	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(
+			BigDecimal phenotypeId_1) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(
+			BigDecimal phenotypeId_1, int startResult, int maxRows)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

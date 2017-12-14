@@ -28,6 +28,48 @@ import org.springframework.transaction.annotation.Transactional;
 public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco>
 		implements VIricstocksByPtocoDAO {
 
+	@Override
+	public List findVarietyByQuanPhenotypeLessThan(BigDecimal object, Set dataset, double value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List findVarietyByQuanPhenotypeGreaterThan(BigDecimal object, Set dataset, double value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List findVarietyByQuanPhenotypeEquals(BigDecimal object, Set dataset, double value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List findVarietyByQualPhenotypeEquals(BigDecimal object, Set dataset, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List findVarietyByQualPhenotypeLessThan(BigDecimal object, Set dataset, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List findVarietyByQualPhenotypeGreaterThan(BigDecimal object, Set dataset, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List findVarietyByPhenotype(BigDecimal phen, Set dataset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
 	 *
@@ -639,48 +681,55 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	findVIricstocksByPhenotypeByPhenotypeIdQualEquals
 	*/
 	
-	@Override
-	@Transactional
-	public List findVarietyByQuanPhenotypeLessThan(BigDecimal phen, double value) {
-		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstocksByPtocoByPhenotypeIdQuanLessthan", -1,-1, phen, BigDecimal.valueOf(Double.valueOf(value)));
-		return query.getResultList();
-	}
-
-	@Override
-	@Transactional
-	public List findVarietyByQuanPhenotypeGreaterThan(BigDecimal phen,
-			double value) {
-		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstocksByPtocoByPhenotypeIdQuanGreaterthan", -1, -1, phen, BigDecimal.valueOf(value));
-		return query.getResultList();
-	}
-
-	@Override
-	@Transactional
-	public List findVarietyByQuanPhenotypeEquals(BigDecimal phen, double value) {
-		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstocksByPtocoByPhenotypeIdQuanEquals", -1, -1, phen, BigDecimal.valueOf(value));
-		return query.getResultList();
-	}
-
-	@Override
-	@Transactional
-	public List findVarietyByQualPhenotypeEquals(BigDecimal phen, String value) {
-		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstocksByPtocoByPhenotypeIdQualEquals", -1, -1, phen, value);
-		return query.getResultList();
-	}
-
-	@Override
-	public List findVarietyByPhenotype(BigDecimal phen) {
-		// TODO Auto-generated method stub
-		
-		List listVars = new ArrayList();
-		listVars.addAll( findVIricstocksByPtocoByPhenotypeId(phen));
-		return listVars;
-		
-	}
+	
+//
+//	@Override
+//	public List findVarietyByQuanPhenotypeLessThan(BigDecimal phen,
+//			String dataset, double value) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List findVarietyByQuanPhenotypeGreaterThan(BigDecimal phen,
+//			String dataset, double value) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List findVarietyByQuanPhenotypeEquals(BigDecimal phen,
+//			String dataset, double value) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List findVarietyByQualPhenotypeEquals(BigDecimal phen,
+//			String dataset, String value) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List findVarietyByPhenotype(BigDecimal phen, String dataset) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List findVarietyByQualPhenotypeLessThan(BigDecimal phen, String dataset, String value) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List findVarietyByQualPhenotypeGreaterThan(BigDecimal phen, String dataset, String value) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//	
+//	
 	
 	
 }

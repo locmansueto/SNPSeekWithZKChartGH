@@ -27,7 +27,7 @@ import javax.persistence.*;
 		@NamedQuery(name = "findOrganismByPrimaryKey", query = "select myOrganism from Organism myOrganism where myOrganism.organismId = ?1"),
 		@NamedQuery(name = "findOrganismBySpecies", query = "select myOrganism from Organism myOrganism where myOrganism.species = ?1"),
 		@NamedQuery(name = "findOrganismBySpeciesContaining", query = "select myOrganism from Organism myOrganism where myOrganism.species like ?1") })
-@Table(schema = "IRIC", name = "V_ORGANISM")
+@Table( name = "V_ORGANISM")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "Organism")
 public class Organism implements Serializable , org.irri.iric.portal.domain.Organism {
@@ -72,7 +72,7 @@ public class Organism implements Serializable , org.irri.iric.portal.domain.Orga
 	/**
 	 */
 
-	@Column(name = "COMMENT_")
+	@Column(name = "COMMENT")
 	@Basic(fetch = FetchType.EAGER)
 	@Lob
 	@XmlElement

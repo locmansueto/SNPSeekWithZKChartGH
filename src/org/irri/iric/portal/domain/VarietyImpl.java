@@ -2,6 +2,8 @@ package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
 
+import org.irri.iric.portal.variety.VarietyFacade;
+
 /**
  * Implementation of Variety
  * @author LMansueto
@@ -14,6 +16,7 @@ public class VarietyImpl implements Variety {
 	protected String irisId;
 	protected String country;
 	protected String subpopulation;
+	protected String accession;
 	
 	@Override
 	public String getName() {
@@ -101,7 +104,11 @@ public class VarietyImpl implements Variety {
 		if(subpop==null) subpop="";
 		String cntr = getCountry();
 		if(cntr==null) cntr="";
-		return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr;
+		String acc = this.getAccession();
+		if(acc==null) acc="";
+		
+		//return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr;
+		return "\""+ this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter + "\"" + acc + "\"" + delimiter +  "\"" + subpop + "\"" + delimiter + "\"" + cntr + "\"";
 	}
 
 	@Override
@@ -109,8 +116,31 @@ public class VarietyImpl implements Variety {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public String getAccession() {
+		// TODO Auto-generated method stub
+		return accession;
+	}
 	
 	
-	
+	@Override
+	public String getDataset() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		this.name=name;
+	}
+
+	@Override
+	public void setAccession(String accession) {
+		// TODO Auto-generated method stub
+		this.accession=accession;
+		
+	}
 	
 }

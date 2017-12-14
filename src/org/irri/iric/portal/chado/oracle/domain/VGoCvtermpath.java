@@ -39,7 +39,7 @@ import org.irri.iric.portal.domain.CvTermUniqueValues;
 		@NamedQuery(name = "findVGoCvtermpathBySubjAccContaining", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.subjAcc like ?1"),
 		@NamedQuery(name = "findVGoCvtermpathBySubjCvterm", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.subjCvterm = ?1"),
 		@NamedQuery(name = "findVGoCvtermpathBySubjCvtermContaining", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.subjCvterm like ?1") })
-@Table(schema = "IRIC", name = "V_GO_CVTERMPATH")
+@Table( name = "V_GO_CVTERMPATH")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VGoCvtermpath")
 public class VGoCvtermpath implements Serializable , CvTermUniqueValues {

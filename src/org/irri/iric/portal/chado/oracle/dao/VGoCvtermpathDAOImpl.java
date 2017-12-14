@@ -390,12 +390,20 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 		return true;
 	}
 
+
 	@Override
-	public Set getUniqueValues(BigDecimal typeId) {
+	public Set getUniqueValues(BigDecimal typeId, Set dataset) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+/*
+	@Override
+	public List getDescendants(String cv, String term, String dataset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+*/
 	@Override
 	public List getAncestors(String cv, String term) {
 		// TODO Auto-generated method stub
@@ -412,7 +420,7 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 	}
 
 	@Override
-	public List getDescendants(String cv, String term) {
+	public List getDescendants(String cv, String term,  Set dataset) {
 		// TODO Auto-generated method stub
 		Query query = createNamedQuery("findVGoCvtermpathByObjCvtermPosDist", -1,-1, cv, term);
 		List list = new ArrayList();

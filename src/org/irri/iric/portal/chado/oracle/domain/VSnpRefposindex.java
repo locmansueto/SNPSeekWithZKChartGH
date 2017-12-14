@@ -1,7 +1,6 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
@@ -9,7 +8,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.*;
 import javax.persistence.*;
-
 
 import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
@@ -19,23 +17,40 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 @IdClass(org.irri.iric.portal.chado.oracle.domain.VSnpRefposindexChrposPK.class)
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "findAllVSnpRefposindexs", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex"),
-		@NamedQuery(name = "findVSnpRefposindexByAlleleIndex", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.alleleIndex = ?1"),
-		@NamedQuery(name = "findVSnpRefposindexByChromosome", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.chromosome = ?1"),
-		@NamedQuery(name = "findVSnpRefposindexByPosition", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.position = ?1"),
+		@NamedQuery(name = "findAllVSnpRefposindexs", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex  order by myVSnpRefposindex.chromosome, myVSnpRefposindex.position"),
+		@NamedQuery(name = "findVSnpRefposindexByAlleleIndex", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.alleleIndex = ?1  order by myVSnpRefposindex.chromosome, myVSnpRefposindex.position"),
+		@NamedQuery(name = "findVSnpRefposindexByChromosome", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.chromosome = ?1  order by myVSnpRefposindex.chromosome, myVSnpRefposindex.position"),
+		@NamedQuery(name = "findVSnpRefposindexByPosition", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.position = ?1  order by myVSnpRefposindex.chromosome, myVSnpRefposindex.position"),
 		
 		
 		@NamedQuery(name = "findVSnpRefposindexByChrPosBetween", query = "select mySnpcoreRefposindex from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and mySnpcoreRefposindex.position between ?2 and ?3 and  mySnpcoreRefposindex.typeId=?4 order by mySnpcoreRefposindex.position" ),
+		@NamedQuery(name = "findVSnpRefposindexByChr", query = "select mySnpcoreRefposindex from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and  mySnpcoreRefposindex.typeId=?2 order by mySnpcoreRefposindex.position" ),
 		@NamedQuery(name = "findVSnpRefposindexByChrPosIn", query = "select mySnpcoreRefposindex from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and mySnpcoreRefposindex.position in(?2) and mySnpcoreRefposindex.typeId=?3  order by mySnpcoreRefposindex.position" ),
+		@NamedQuery(name = "countVSnpRefposindexByChrPosBetween", query = "select count(mySnpcoreRefposindex.snpFeatureId) from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and mySnpcoreRefposindex.position between ?2 and ?3 and  mySnpcoreRefposindex.typeId=?4" ),
+		@NamedQuery(name = "countVSnpRefposindexByChrPosIn", query = "select count(mySnpcoreRefposindex.snpFeatureId) from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and mySnpcoreRefposindex.position in(?2) and mySnpcoreRefposindex.typeId=?3" ),
+		@NamedQuery(name = "countVSnpRefposindexByChr", query = "select count(mySnpcoreRefposindex.snpFeatureId) from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and  mySnpcoreRefposindex.typeId=?2" ),
+
+
+		@NamedQuery(name = "findVSnpRefposindexByChrPosBetweenVariantset", query = "select mySnpcoreRefposindex from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and mySnpcoreRefposindex.position between ?2 and ?3 and  mySnpcoreRefposindex.variantset in (?4) order by mySnpcoreRefposindex.position" ),
+		@NamedQuery(name = "findVSnpRefposindexByChrVariantset", query = "select mySnpcoreRefposindex from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and  mySnpcoreRefposindex.variantset in (?2) order by mySnpcoreRefposindex.position" ),
+		@NamedQuery(name = "findVSnpRefposindexByChrPosInVariantset", query = "select mySnpcoreRefposindex from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and mySnpcoreRefposindex.position in(?2) and mySnpcoreRefposindex.variantset in (?3)  order by mySnpcoreRefposindex.position" ),
+		@NamedQuery(name = "countVSnpRefposindexByChrPosBetweenVariantset", query = "select count(mySnpcoreRefposindex.snpFeatureId) from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and mySnpcoreRefposindex.position between ?2 and ?3 and  mySnpcoreRefposindex.variantset in (?4)" ),
+		@NamedQuery(name = "countVSnpRefposindexByChrPosInVariantset", query = "select count(mySnpcoreRefposindex.snpFeatureId) from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and mySnpcoreRefposindex.position in(?2) and mySnpcoreRefposindex.variantset in (?3)" ),
+		@NamedQuery(name = "countVSnpRefposindexByChrVariantset", query = "select count(mySnpcoreRefposindex.snpFeatureId) from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and  mySnpcoreRefposindex.variantset in (?2)" ),
+
 		
+		@NamedQuery(name = "findVSnpRefposindexByPrimaryKey", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.snpFeatureId = ?1 and myVSnpRefposindex.typeId = ?2  order by myVSnpRefposindex.chromosome, myVSnpRefposindex.position"),
+		@NamedQuery(name = "findVSnpRefposindexByRefcall", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.refcall = ?1  order by myVSnpRefposindex.chromosome, myVSnpRefposindex.position"),
+		@NamedQuery(name = "findVSnpRefposindexByRefcallContaining", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.refcall like ?1  order by myVSnpRefposindex.chromosome, myVSnpRefposindex.position"),
+		@NamedQuery(name = "findVSnpRefposindexBySnpFeatureId", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.snpFeatureId = ?1  order by myVSnpRefposindex.chromosome, myVSnpRefposindex.position"),
 		
-		@NamedQuery(name = "findVSnpRefposindexByPrimaryKey", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.snpFeatureId = ?1 and myVSnpRefposindex.typeId = ?2"),
-		@NamedQuery(name = "findVSnpRefposindexByRefcall", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.refcall = ?1"),
-		@NamedQuery(name = "findVSnpRefposindexByRefcallContaining", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.refcall like ?1"),
-		@NamedQuery(name = "findVSnpRefposindexBySnpFeatureId", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.snpFeatureId = ?1"),
-		@NamedQuery(name = "findVSnpRefposindexByTypeId", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.typeId = ?1") })
-@Table(schema = "IRIC", name = "V_SNP_REFPOSINDEX_V2")
-//@Table(schema = "IRIC", name = "MV_SNP_POSINDEX")
+		@NamedQuery(name = "findVSnpRefposindexByTypeId", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.typeId = ?1  order by myVSnpRefposindex.chromosome, myVSnpRefposindex.position"),
+		@NamedQuery(name = "findVSnpRefposindexByVariantset", query = "select myVSnpRefposindex from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.variantset in (?1)  order by myVSnpRefposindex.chromosome, myVSnpRefposindex.position"),
+		@NamedQuery(name = "countVSnpRefposindexByTypeId", query = "select count(myVSnpRefposindex.snpFeatureId) from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.typeId = ?1"),
+		@NamedQuery(name = "countVSnpRefposindexByVariantset", query = "select count(myVSnpRefposindex.snpFeatureId) from VSnpRefposindex myVSnpRefposindex where myVSnpRefposindex.variantset in (?1)")
+		})
+@Table( name = "V_SNP_REFPOSINDEX_V2")
+//@Table( name = "MV_SNP_POSINDEX")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/flatfile/domain", name = "VSnpRefposindex")
 public class VSnpRefposindex implements Serializable , SnpsAllvarsPos, Comparable {
@@ -52,6 +67,12 @@ public class VSnpRefposindex implements Serializable , SnpsAllvarsPos, Comparabl
 	/**
 	 */
 
+	@Column(name = "VARIANTSET", nullable = false)
+	@Basic(fetch = FetchType.EAGER)
+	//@Id
+	@XmlElement
+	String variantset;
+	
 	@Column(name = "TYPE_ID", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	//@Id
@@ -80,6 +101,14 @@ public class VSnpRefposindex implements Serializable , SnpsAllvarsPos, Comparabl
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String refcall;
+	
+	
+	@Column(name = "ALTCALL", length = 1)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String altcall;
+
+	
 	/**
 	 */
 
@@ -200,7 +229,7 @@ public class VSnpRefposindex implements Serializable , SnpsAllvarsPos, Comparabl
 		int result = 1;
 		result = (int) (prime * result + ((chromosome == null) ? 0 : chromosome.hashCode()));
 		result = (int) (prime * result + ((position == null) ? 0 : position.hashCode()));
-		result = (int) (prime * result + (( snpFeatureId== null) ? 0 : snpFeatureId.hashCode()));
+		//result = (int) (prime * result + (( snpFeatureId== null) ? 0 : snpFeatureId.hashCode()));
 		return result;
 	}
 
@@ -231,19 +260,19 @@ public class VSnpRefposindex implements Serializable , SnpsAllvarsPos, Comparabl
 	@Override
 	public BigDecimal getPosition() {
 		// TODO Auto-generated method stub
-		return getPosition();
+		return this.position;
 	}
 
 	@Override
 	public String getRefnuc() {
 		// TODO Auto-generated method stub
-		return getRefcall();
+		return this.refcall;
 	}
 
 	@Override
 	public void setRefnuc(String refnuc) {
 		// TODO Auto-generated method stub
-		
+		this.refcall=refnuc;
 	}
 
 	@Override
@@ -256,13 +285,14 @@ public class VSnpRefposindex implements Serializable , SnpsAllvarsPos, Comparabl
 		return ret;
 		*/
 		Position pos=(Position)o;
-		int ret=this.getContig().compareTo(pos.getContig());
+		//int ret=this.getContig().compareTo(pos.getContig());
+		int ret=this.getChr().compareTo(pos.getChr());
 		if(ret==0) ret=this.getPosition().compareTo(pos.getPosition());
-		
+		/*
 		if(o instanceof  VSnpRefposindex) {
 			if(ret==0) ret=  snpFeatureId.compareTo( ((VSnpRefposindex) o).getSnpFeatureId() );
 		}
-		
+		*/
 		return ret;
 	}
 
@@ -287,5 +317,19 @@ public class VSnpRefposindex implements Serializable , SnpsAllvarsPos, Comparabl
 		return getChromosome().longValue();
 	}
 
+	@Override
+	public void setAltnuc(String altnuc) {
+		// TODO Auto-generated method stub
+		this.altcall=altnuc;
+	}
+
+	@Override
+	public String getAltnuc() {
+		// TODO Auto-generated method stub
+		return altcall;
+	}
+
+	
+	
 	
 }

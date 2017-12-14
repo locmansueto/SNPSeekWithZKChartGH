@@ -22,8 +22,10 @@ import org.irri.iric.portal.chado.oracle.domain.VLocusCvtermCvtermpath;
 import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.domain.CvTerm;
 import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.domain.TextSearchOptions;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +42,7 @@ public class VLocusCvtermCvtermpathDAOImpl extends AbstractJpaDao<VLocusCvtermCv
 		implements VLocusCvtermCvtermpathDAO {
 
 	@Autowired
+	@Qualifier("ListItems")
 	private ListItemsDAO listitemsdao;
 	
 	/**
@@ -804,6 +807,12 @@ public class VLocusCvtermCvtermpathDAOImpl extends AbstractJpaDao<VLocusCvtermCv
 	
 	
 	@Override
+	public Collection getLocusByName(Collection<String> name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public List getLocusByDescription(String goterm, Integer organismId, Integer cvId) {
 		// TODO Auto-generated method stub
 		
@@ -815,7 +824,7 @@ public class VLocusCvtermCvtermpathDAOImpl extends AbstractJpaDao<VLocusCvtermCv
 	}
 
 	@Override
-	public List<Locus> getLocusByDescription(String goterm, String organism) {
+	public List<Locus> getLocusByDescription(TextSearchOptions goterm, String organism) {
 		// TODO Auto-generated method stub
 		
 		return null;
@@ -827,14 +836,14 @@ public class VLocusCvtermCvtermpathDAOImpl extends AbstractJpaDao<VLocusCvtermCv
 		*/
 	}
 	
-
+/*
 	@Override
 	public List<Locus> getLocusByRegion(String contig, Long start, Long end,
 			String organism) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+*/
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset,
 			String organism, Integer plusminus) {
@@ -850,7 +859,7 @@ public class VLocusCvtermCvtermpathDAOImpl extends AbstractJpaDao<VLocusCvtermCv
 	}
 
 	@Override
-	public List<Locus> getLocusByDescription(String description,
+	public List<Locus> getLocusByDescription(TextSearchOptions description,
 			String organism, String genemodel) {
 		// TODO Auto-generated method stub
 		return null;
@@ -858,11 +867,78 @@ public class VLocusCvtermCvtermpathDAOImpl extends AbstractJpaDao<VLocusCvtermCv
 
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset,
-			String organism, String genemodel,  Integer plusminus) {
+			String organism,  Integer plusminus, String genemodel) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	
+	
+	@Override
+	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel,
+			String featuretype) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus,
+			String genemodel, String featuretype) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym,
+			String organism) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym,
+			String organism, String genemodel) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Locus> filterLocusWithCvterm(Collection<Locus> colLoc,
+			Integer organismId, Integer cvId) {
+		// TODO Auto-generated method stub
+		Set locisId=new TreeSet();
+		Iterator<Locus> itLoc = colLoc.iterator();
+		while(itLoc.hasNext()) locisId.add( itLoc.next().getFeatureId() );
+
+		Query query = createNamedQuery("findVLocusCvtermCvtermpathByCvOrgInFeatureId", -1,-1, BigDecimal.valueOf(cvId), BigDecimal.valueOf(organismId), locisId);
+		return query.getResultList();
+
+
+		/*
+		Set featureIds[] = AppContext.setSlicer(locisId);
+		List filtered=new ArrayList();
+		for(int i=0; i<featureIds.length; i++) {
+			Query query = createNamedQuery("findVLocusCvtermCvtermpathByCvOrgInFeatureId", -1,-1, BigDecimal.valueOf(cvId), BigDecimal.valueOf(organismId), featureIds[i]);
+			filtered.addAll(query.getResultList());
+		}
+		return filtered;
+		*/
+	}
+
+	@Override
+	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus,
+			String genemodel, Set featuretype) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel,
+			Set featuretype) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 }

@@ -18,11 +18,13 @@ import org.irri.iric.portal.domain.CvTermUniqueValues;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "findAllVIricstockPhenotypeQualvals", query = "select myVIricstockPhenotypeQualval from VIricstockPhenotypeQualval myVIricstockPhenotypeQualval"),
-		@NamedQuery(name = "findVIricstockPhenotypeQualvalByPhenotypeId", query = "select myVIricstockPhenotypeQualval from VIricstockPhenotypeQualval myVIricstockPhenotypeQualval where myVIricstockPhenotypeQualval.phenotypeId = ?1"),
+		@NamedQuery(name = "findVIricstockPhenotypeQualvalByPhenotypeId", query = "select myVIricstockPhenotypeQualval from VIricstockPhenotypeQualval myVIricstockPhenotypeQualval where myVIricstockPhenotypeQualval.phenotypeId = ?1 and  myVIricstockPhenotypeQualval.dataset in ( ?2)"),
+		@NamedQuery(name = "findVIricstockPhenotypeQualvalByPhenotypeIdDataset", query = "select myVIricstockPhenotypeQualval from VIricstockPhenotypeQualval myVIricstockPhenotypeQualval where myVIricstockPhenotypeQualval.phenotypeId = ?1 and  myVIricstockPhenotypeQualval.dataset in (?2)"),
 		@NamedQuery(name = "findVIricstockPhenotypeQualvalByPrimaryKey", query = "select myVIricstockPhenotypeQualval from VIricstockPhenotypeQualval myVIricstockPhenotypeQualval where myVIricstockPhenotypeQualval.qualValue = ?1 and myVIricstockPhenotypeQualval.phenotypeId = ?2"),
-		@NamedQuery(name = "findVIricstockPhenotypeQualvalByQualValue", query = "select myVIricstockPhenotypeQualval from VIricstockPhenotypeQualval myVIricstockPhenotypeQualval where myVIricstockPhenotypeQualval.qualValue = ?1"),
-		@NamedQuery(name = "findVIricstockPhenotypeQualvalByQualValueContaining", query = "select myVIricstockPhenotypeQualval from VIricstockPhenotypeQualval myVIricstockPhenotypeQualval where myVIricstockPhenotypeQualval.qualValue like ?1") })
-@Table(schema = "IRIC", name = "V_IRICSTOCK_PHENOTYPE_QUALVAL")
+		@NamedQuery(name = "findVIricstockPhenotypeQualvalByQualValue", query = "select myVIricstockPhenotypeQualval from VIricstockPhenotypeQualval myVIricstockPhenotypeQualval where myVIricstockPhenotypeQualval.qualValue = ?1  and  myVIricstockPhenotypeQualval.dataset in ( ?2)"),
+		@NamedQuery(name = "findVIricstockPhenotypeQualvalByQualValueContaining", query = "select myVIricstockPhenotypeQualval from VIricstockPhenotypeQualval myVIricstockPhenotypeQualval where myVIricstockPhenotypeQualval.qualValue like ?1  and  myVIricstockPhenotypeQualval.dataset in (?2)") })
+//@Table( name = "V_IRICSTOCK_PHENOTYPE_QUALVAL")
+@Table( name = "V_STOCK_PHENOTYPE_QUALVAL")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockPhenotypeQualval")
 public class VIricstockPhenotypeQualval implements Serializable, CvTermUniqueValues {
@@ -44,6 +46,23 @@ public class VIricstockPhenotypeQualval implements Serializable, CvTermUniqueVal
 	@Id
 	@XmlElement
 	BigDecimal phenotypeId;
+
+	@Column(name = "DATASET", nullable = false)
+	@Basic(fetch = FetchType.EAGER)
+	@Id
+	@XmlElement
+	String dataset;
+
+	
+	
+	
+	public String getDataset() {
+		return dataset;
+	}
+
+	public void setDataset(String dataset) {
+		this.dataset = dataset;
+	}
 
 	/**
 	 */
@@ -81,6 +100,7 @@ public class VIricstockPhenotypeQualval implements Serializable, CvTermUniqueVal
 	public void copy(VIricstockPhenotypeQualval that) {
 		setQualValue(that.getQualValue());
 		setPhenotypeId(that.getPhenotypeId());
+		setDataset(that.getDataset());
 	}
 
 	/**
@@ -93,6 +113,7 @@ public class VIricstockPhenotypeQualval implements Serializable, CvTermUniqueVal
 
 		buffer.append("qualValue=[").append(qualValue).append("] ");
 		buffer.append("phenotypeId=[").append(phenotypeId).append("] ");
+		buffer.append("dataset=[").append(dataset).append("] ");
 
 		return buffer.toString();
 	}
@@ -105,6 +126,7 @@ public class VIricstockPhenotypeQualval implements Serializable, CvTermUniqueVal
 		int result = 1;
 		result = (int) (prime * result + ((qualValue == null) ? 0 : qualValue.hashCode()));
 		result = (int) (prime * result + ((phenotypeId == null) ? 0 : phenotypeId.hashCode()));
+		result = (int) (prime * result + ((dataset == null) ? 0 : dataset.hashCode()));
 		return result;
 	}
 
@@ -123,6 +145,10 @@ public class VIricstockPhenotypeQualval implements Serializable, CvTermUniqueVal
 		if ((phenotypeId == null && equalCheck.phenotypeId != null) || (phenotypeId != null && equalCheck.phenotypeId == null))
 			return false;
 		if (phenotypeId != null && !phenotypeId.equals(equalCheck.phenotypeId))
+			return false;
+		if ((dataset == null && equalCheck.dataset != null) || (dataset != null && equalCheck.dataset == null))
+			return false;
+		if (dataset != null && !dataset.equals(equalCheck.dataset))
 			return false;
 		return true;
 	}

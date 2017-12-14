@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  * @author LMansueto
  *
  */
-public interface SnpsSpliceAcceptor extends Snp {
+public interface SnpsSpliceAcceptor extends Position, Snp {
 
 
 	
@@ -15,5 +15,5 @@ public interface SnpsSpliceAcceptor extends Snp {
 	 * Nipponbare Position
 	 * @return
 	 */
-	public BigDecimal getPos();
+	//public BigDecimal getPos();
 }

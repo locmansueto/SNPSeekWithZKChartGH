@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 
 
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import org.irri.iric.portal.AppContext;
 
 
 
@@ -40,6 +43,16 @@ public class IndelsStringAllvarsImpl implements IndelsStringAllvars {
 	public BigDecimal getAllele1(Position pos) {
 		// TODO Auto-generated method stub
 		IndelsAllvars indel = mapPos2IndelCalls.get(pos);
+		
+		/*
+		if(pos.getPosition().equals(BigDecimal.valueOf(69957))) {
+			if(indel==null) AppContext.debug("getAllele1(): indel=null ; mapPos2IndelCalls=" + mapPos2IndelCalls);
+			else if (indel.getAllele1()==null) {
+				 AppContext.debug("getAllele1(): indel.getAllele1()=null ; indel=" + indel);
+			}
+		}
+		*/
+		
 		if(indel!=null) return indel.getAllele1();
 		return null;
 	}
@@ -183,6 +196,7 @@ public class IndelsStringAllvarsImpl implements IndelsStringAllvars {
 		return snpstring.getNonsynPosset();
 	}
 
+	
 
 	@Override
 	public String getContig() {
@@ -204,9 +218,34 @@ public class IndelsStringAllvarsImpl implements IndelsStringAllvars {
 	}
 
 
-	
+	@Override
+	public SnpsStringAllvars copy() {
+		// TODO Auto-generated method stub
+		return new  IndelsStringAllvarsImpl( var,  new HashMap(mapPos2IndelCalls),  mismatch,  contig) ;
+	}
 
-	
+
+	@Override
+	public void setVarnuc(String varnuc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setMismatch(BigDecimal mismatch) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public Set getSynPosset() {
+		// TODO Auto-generated method stub
+		if(snpstring==null) return null;
+		return snpstring.getSynPosset();
+	};	
+
 	
 	
 }

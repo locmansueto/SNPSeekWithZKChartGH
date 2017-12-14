@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
-
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantStringData;
 import org.irri.iric.portal.genotype.VariantTable;
@@ -42,7 +42,7 @@ import org.zkoss.zul.ext.Sortable;
 public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header> extends
 		AbstractListModel<Row> implements MatrixModel<Row, Head, Cell, Header>, Sortable , VariantTable {
 	
-	private int frozenCols=3;
+	private int frozenCols=AppContext.getSnpMatrixFrozenCols(); // 3;
 	private VariantStringData data;
 	private String message;
 	private Set<Position> setGapPos;
@@ -338,6 +338,15 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 	@Override
 	public Header getHeaderAt(Head headData, int columnIndex) {
 		return (Header) headData.get(columnIndex);
+	}
+
+	
+	
+	@Override
+	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params, List listCDS)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

@@ -1,47 +1,108 @@
 package org.irri.iric.portal.genomics.zkui;
 
 //import org.irri.iric.portal.chado.domain.VLocusNotes;
-import org.irri.iric.portal.domain.Locus;
+import java.util.Iterator;
 
+import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.domain.MarkerAnnotation;
+import org.irri.iric.portal.domain.MergedLoci;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
+import org.zkoss.zul.Row;
 
 public class LocusListItemRenderer implements ListitemRenderer {
 	
+	//private Map mapUniquename2Description;
+	
+	private String prefixDesc="";
+	
 	private static String STYLE_INTERESTING = "font-weight:bold;color:red";
 	private static String STYLE_BORING = "";
+	boolean showoverlap=true;
+	
+	/*
+	public LocusGridRenderer(Map mapUniquename2Description) {
+		super();
+		this.mapUniquename2Description = mapUniquename2Description;
+	}
+	*/
+
+	
 
 	@Override
-	public void render(Listitem listitem, Object value, int index) throws Exception {
-		// TODO Auto-generated method stub
-		Locus  item = (Locus)value;
-		
-		if(item==null || listitem==null) return;
+	public void render(Listitem listitem, Object data, int index) throws Exception {
 
-        // keep value in listitem
-        listitem.setValue(value);
-        addListcell(listitem, item.getUniquename());
-        addListcell(listitem, item.getContig());
-        addListcell(listitem, item.getFmin().toString());
-        addListcell(listitem, item.getFmax().toString());
-        addListcell(listitem, item.getDescription());
-        
-        /*
-        if( item instanceof VLocusNotes) {
-        	addListcell(listitem, ((VLocusNotes)item).getNotes());
-        }
-        */
+			Locus locus = (Locus)data;
+			listitem.setValue(locus);
+			
+			addListcell(listitem, locus.getUniquename());
+	        addListcell(listitem, locus.getContig());
+	        addListcell(listitem, locus.getFmin().toString());
+	        addListcell(listitem, locus.getFmax().toString());
+	        addListcell(listitem, locus.getStrand().toString());
+	        
+			
+			if(locus instanceof MergedLoci) {
+				MergedLoci ml=(MergedLoci)locus;
+				StringBuffer loci=new StringBuffer();
+				if(ml.getMSU7Name()!=null && !locus.getUniquename().startsWith("LOC_") ) loci.append(ml.getMSU7Name());
+				if(ml.getRAPRepName()!=null  && ! (locus.getUniquename().startsWith("Os0") || locus.getUniquename().startsWith("Os1")) ) {
+					if(loci.length()>0) loci.append(",");
+					loci.append(ml.getRAPRepName());
+				}
+				if(ml.getRAPPredName()!=null && ! (locus.getUniquename().startsWith("Os0") || locus.getUniquename().startsWith("Os1")) ) {
+					if(loci.length()>0) loci.append(",");
+					loci.append(ml.getRAPPredName());
+				}
+				if(ml.getIRICName()!=null && ! locus.getUniquename().startsWith("OsNippo")) {
+					if(loci.length()>0) loci.append(",");
+					loci.append(ml.getIRICName());
+				}
+				
+				if(loci.length()==0 && ml.getFGeneshName()!=null) loci.append(ml.getFGeneshName()); 
+				addListcell(listitem, loci.toString());
+			} else addListcell(listitem, "");
+			
+			 if(locus.getDescription()==null) {
+				 addListcell(listitem, ""); 
+			 }
+			 else {
+				 if(prefixDesc==null) {
+					 addListcell(listitem, locus.getDescription().split("\\s+", 2)[1]);
+				 }
+				 else {
+					 addListcell(listitem, prefixDesc + locus.getDescription());
+				 }
+			 }
+	}
+			 
+
+	
+	public LocusListItemRenderer(boolean showoverlap) {
+		super();
+		this.showoverlap = showoverlap;
 	}
 
-	
-	
+	public LocusListItemRenderer() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public LocusListItemRenderer(String prefixDesc) {
+		super();
+		this.prefixDesc = prefixDesc;
+	}
+
+
+
 	private void addListcell (Listitem listitem, String value) {
 		addListcell ( listitem,  value, STYLE_BORING );
 	}
 
-    private void addListcell (Listitem listitem, String value, String style) {
+    private void addListcell (Listitem listitem, String  value, String style) {
         Listcell lc = new Listcell ();
         Label lb = new Label(value);
         if(!style.isEmpty()) 

@@ -1,7 +1,6 @@
 package org.irri.iric.portal.chado.domain;
 
 import java.io.Serializable;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
@@ -11,6 +10,7 @@ import javax.xml.bind.annotation.*;
 import javax.persistence.*;
 
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.variety.VarietyFacade;
 
 /**
  */
@@ -270,13 +270,31 @@ public class IricStock implements Serializable , Variety {
 		if(subpop==null) subpop="";
 		String cntr = getCountry();
 		if(cntr==null) cntr="";
-		return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr;
+		return "\""+ this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter + "\"" + subpop + "\"" + delimiter + "\"" + cntr + "\"";
 	}
 
 	@Override
 	public String getBoxCode() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getAccession() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDataset() {
+		// TODO Auto-generated method stub
+		return VarietyFacade.DATASET_SNPINDELV2_IUPAC;
+	}
+
+	@Override
+	public void setAccession(String accession) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

@@ -8,6 +8,18 @@
  xmlns:mvc="http://www.springframework.org/schema/mvc"
  
  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+       http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd   
+             http://www.zkoss.org/2008/zkspring/core 
+             http://www.zkoss.org/2008/zkspring/core/zkspring-core.xsd  
+                  http://www.springframework.org/schema/security
+                   http://www.springframework.org/schema/security/spring-security-3.1.xsd   
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd" > 
+ 
+ <!--  xsi:schemaLocation="http://www.springframework.org/schema/beans 
      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
        http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.0.xsd   
@@ -17,20 +29,24 @@
                    http://www.springframework.org/schema/security/spring-security-3.0.xsd   
     http://www.springframework.org/schema/aop 
     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd" > 
+    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd" --> 
+ 
     
     <!-- default-autowire-candidates="*Postges" -->
 	
+	<!--  xmlns:zksp="http://www.zkoss.org/2008/zkspring/core"
+             http://www.zkoss.org/2008/zkspring/core 
+             http://www.zkoss.org/2008/zkspring/core/zkspring-core.xsd -->  
+ 
+	<bean id="contextApplicationContextProvider" class="org.irri.iric.portal.ApplicationContextProvider" />
 	
-	<bean id="contextApplicationContextProvider" class="org.irri.iric.portal.ApplicationContextProvider"></bean>
 	
-	
-			
+	<!--  bean id="Standalone" class="org.irri.iric.portal.backend.Standalone"/ -->
 	
 		<!-- from Swagger-master -->	
 		
 	
-	<context:component-scan base-package="org.irri.iric.portal.admin"/>
+	<!--  context:component-scan base-package="org.irri.iric.portal.admin"/ -->
 	<context:component-scan base-package="org.zkoss.zkspringessentials,org.zkoss.spring.beans.zkcomponents"/>
 
 	
@@ -52,23 +68,23 @@
 	<context:component-scan base-package="org.irri.iric.portal.genotype.service"/>
 	<context:component-scan base-package="org.irri.iric.portal.variety.service"/>
 	<context:component-scan base-package="org.irri.iric.portal.genomics.service"/>
+	<context:component-scan base-package="org.irri.iric.portal.email"/>
 	
 	
 	<!-- bean id="VarietyFacade" class="org.irri.iric.portal.variety.service.VarietyFacadeChadoImpl"  scope="session">
 	 	<aop:scoped-proxy/>
 	</bean -->
 
-	<bean id="VarietyFacade" class="org.irri.iric.portal.variety.service.VarietyFacadeChadoImpl" />
-	
-	<bean id="GenotypeFacade" class="org.irri.iric.portal.genotype.service.GenotypeFacadeChadoImpl"  scope="session">
+
+	<!-- bean id="UserSessionListsManager" class="org.irri.iric.portal.admin.UserSessionListsManager" scope="prototype" / -->
+	<!-- bean id="VarietyFacade" class="org.irri.iric.portal.variety.service.VarietyFacadeChadoImpl" />
+	<bean id="GenotypeFacade" class="org.irri.iric.portal.genotype.service.GenotypeFacadeChadoImpl"/>
+	<bean id="GenomicsFacade" class="org.irri.iric.portal.genomics.service.GenomicsFacadeImpl"/>
+	<bean id="GwasFacade" class="org.irri.iric.portal.gwas.service.GwasFacadeImpl"/>
+	<bean id="WorkspaceFacade" class="org.irri.iric.portal.admin.WorkspaceFacadeSessionScopedImpl"   scope="session">
 	 	<aop:scoped-proxy/>
-	</bean>
-	<bean id="WorkspaceFacade" class="org.irri.iric.portal.admin.WorkspaceFacadeSessionScopedImpl" scope="session">
-	 	<aop:scoped-proxy/>
-	</bean>
-	<bean id="GenomicsFacade" class="org.irri.iric.portal.genomics.service.GenomicsFacadeImpl" scope="session">
-	 	<aop:scoped-proxy/>
-	</bean>
+	</bean -->
+
 	
 
 
@@ -95,6 +111,7 @@
 	<context:component-scan base-package="org.irri.iric.portal.variety.zkui"/>
     <context:component-scan base-package="org.irri.iric.portal.admin.zkui"/>
     <context:component-scan base-package="org.irri.iric.portal.genomics.zkui"/>
+    <context:component-scan base-package="org.irri.iric.portal.seed.zkui"/>
    
 
    <!-- for the phylotree generator in org.irri.iric.portal.variety.web.GermplasmController  -->

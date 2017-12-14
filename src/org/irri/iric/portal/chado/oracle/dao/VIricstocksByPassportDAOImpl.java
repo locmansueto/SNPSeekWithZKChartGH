@@ -418,9 +418,9 @@ public class VIricstocksByPassportDAOImpl extends AbstractJpaDao<VIricstocksByPa
 	
 	@Override
 	@Transactional
-	public List findVarietyByPassportEquals(BigDecimal type_id, String value) {
+	public List findVarietyByPassportEquals(BigDecimal type_id, Set dataset, String value) {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstocksByPassportByTypeIdValueEquals", -1, -1 , type_id, value);
+		Query query = createNamedQuery("findVIricstocksByPassportByTypeIdValueEquals", -1, -1 , type_id, dataset, value);
 		return query.getResultList();
 	}
 	

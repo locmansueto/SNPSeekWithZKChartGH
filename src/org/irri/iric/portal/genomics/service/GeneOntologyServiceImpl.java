@@ -25,6 +25,7 @@ import java.net.*;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 @Service("GeneOntologyService")
 public class GeneOntologyServiceImpl implements GeneOntologyService{
@@ -34,6 +35,7 @@ public class GeneOntologyServiceImpl implements GeneOntologyService{
 	@Autowired
 	private  CvTermLocusCountDAO cvtermlocuscountdao;
 	@Autowired
+	@Qualifier("ListItems")
 	private ListItemsDAO listitemsdao;
 	
 	@Override
@@ -68,7 +70,13 @@ public class GeneOntologyServiceImpl implements GeneOntologyService{
 		 return cvtermlocuscountdao.getCvTermLocusCount( listitemsdao.getOrganismByName(organism).getOrganismId(), genelist, cv);
 		 
 	}
-
+/*
+	@Override
+	public String overRepresentationTest(String organism, Collection genelist, String enrichmentType)  throws Exception
+	{
+		
+	}
+	*/
 	@Override
 	public String overRepresentationTest(String organism, Collection genelist, String enrichmentType)  throws Exception
 	{
@@ -119,6 +127,8 @@ public class GeneOntologyServiceImpl implements GeneOntologyService{
             // PANTHER does not use the ID type
             //method.addParameter("IdType", "UniProt");
             
+            //client.
+            
             // Execute and print response
             client.executeMethod( method );
             response = method.getResponseBodyAsString( );
@@ -142,14 +152,25 @@ public class GeneOntologyServiceImpl implements GeneOntologyService{
 		return cvtermpathDAO.getAncestors(cv, term);
 	}
 
-
 	@Override
 	public List getCVtermDescendants(String cv, String term) {
 		// TODO Auto-generated method stub
-		cvtermpathDAO = (CvTermPathDAO)AppContext.checkBean(cvtermpathDAO, "CvTermPathDAO");
-		return cvtermpathDAO.getDescendants(cv, term);
+		return null;
 	}
-
+	
+	@Override
+	public List getCVtermDescendants(String cv, String term, Set dataset) {
+		// TODO Auto-generated method stub
+		cvtermpathDAO = (CvTermPathDAO)AppContext.checkBean(cvtermpathDAO, "CvTermPathDAO");
+		return cvtermpathDAO.getDescendants(cv, term, dataset);
+	}
+/*
+	@Override
+	public List getCVtermDescendants(String cv, String term, String dataset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+*/
         
 	
 	

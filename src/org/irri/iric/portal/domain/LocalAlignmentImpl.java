@@ -22,7 +22,8 @@ public class LocalAlignmentImpl  implements LocalAlignment {
 	Double percentMatches;
 	Long matches;
 	Long mismatches;
-	
+	String ssequence;
+	String qsequence;
 	
 	
 	public LocalAlignmentImpl() {
@@ -238,6 +239,34 @@ public class LocalAlignmentImpl  implements LocalAlignment {
 
 	public void setMismatches(Long mismatches) {
 		this.mismatches = mismatches;
+	}
+
+
+	@Override
+	public String getQSequence() {
+		// TODO Auto-generated method stub
+		return qsequence;
+	}
+
+
+	@Override
+	public String getSSequence() {
+		// TODO Auto-generated method stub
+		return ssequence;
+	}
+
+
+	@Override
+	public void setQSequence(String seq) {
+		// TODO Auto-generated method stub
+		qsequence=seq;
+	}
+
+
+	@Override
+	public void setSSequence(String seq) {
+		// TODO Auto-generated method stub
+		ssequence=seq;
 	}
 	
 	

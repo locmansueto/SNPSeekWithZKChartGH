@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 public class IndelUni3024VarietiesAllele1v2DAO extends H5Dataset  {
 
 	public IndelUni3024VarietiesAllele1v2DAO() {
-		super(AppContext.getFlatfilesDir() + "INDELuni_1", new H5ReadStringmatrix());
+		super( "INDELuni_1", new H5ReadStringmatrix(), null);
 		// TODO Auto-generated constructor stub
 	}
 

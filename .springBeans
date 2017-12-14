@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beansProjectDescription>
 	<version>1</version>
-	<pluginVersion><![CDATA[3.3.0.me201310081624]]></pluginVersion>
+	<pluginVersion><![CDATA[3.7.1.me201602031002]]></pluginVersion>
 	<configSuffixes>
 		<configSuffix><![CDATA[xml]]></configSuffix>
 	</configSuffixes>
@@ -9,15 +9,18 @@
 	<configs>
 		<config>src/applicationContext-spring.xml</config>
 	</configs>
+	<autoconfigs>
+		<config>WebRoot/WEB-INF/applicationContext.xml</config>
+		<config>src/applicationContext-business.xml</config>
+	</autoconfigs>
 	<configSets>
 		<configSet>
 			<name><![CDATA[all-beans]]></name>
 			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
 			<incomplete>true</incomplete>
 			<configs>
-				<config>WebRoot/WEB-INF/applicationContext.xml</config>
 				<config>src/applicationContext-spring.xml</config>
-				<config>WebRoot/WEB-INF/applicationContext-security.xml</config>
+				<config>WebRoot/WEB-INF/applicationContext.xml</config>
 			</configs>
 			<profiles>
 			</profiles>

@@ -10,7 +10,7 @@ window.Boot_progressbox = function (){}
         arg0="/template.zul"?>
 <zk>
 
- 		<zscript>         
+ 		<!--  zscript>         
  			String fromview="";
 	        String from=Executions.getCurrent().getParameter("from");
 	        if(from==null || from.isEmpty())
@@ -18,8 +18,14 @@ window.Boot_progressbox = function (){}
 	        } else
 	        	fromview= "?from=" + from;
 	        	
+        </zscript -->
+        
+        <zscript>
+ 			import org.irri.iric.portal.AppContext;
+	        String moduleparams="";
+	        moduleparams=AppContext.convertParams2URL(Executions.getCurrent().getParameterMap());	
         </zscript>
 
 
-      <include self="@define(content)" src="/genotype.zul${fromview}"/>
+      <include self="@define(content)" src="/genotype.zul${moduleparams}"/>
 </zk>

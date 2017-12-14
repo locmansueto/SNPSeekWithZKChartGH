@@ -319,7 +319,7 @@ public class H5 implements java.io.Serializable {
                         isLibraryLoaded = false;
                     }
                     finally {
-                    	log.info("HDF5 library: ");
+                    	log.info("HDF5 library: H5PATH_PROPERTY_KEY " + filename);
                     	log.debug(filename);
                     	log.info((isLibraryLoaded ? "" : " NOT")
                                 + " successfully loaded.");
@@ -420,6 +420,53 @@ public class H5 implements java.io.Serializable {
 			      e.printStackTrace();
 		    }
         }
+        
+        if (!isLibraryLoaded) {
+	        try {
+	        	String libpath = "lib-prod3";
+	        	if(AppContext.isDev())
+	        		libpath = "lib-dev2";
+	        	
+	        	if(AppContext.isWindows()) 
+		    		System.load( AppContext.getFlatfilesDir() +  libpath + "/jhdf5.dll" );
+		    	else
+		    		System.load(  AppContext.getFlatfilesDir() + libpath + "/libjhdf5.so");
+	        	isLibraryLoaded = true;
+	        	AppContext.debug("Native code library loaded successfully from.." + AppContext.getFlatfilesDir() +  libpath );
+	        	
+	        } catch (UnsatisfiedLinkError e) {
+		      System.err.println("Native code library failed to load.\n" + e);
+		      System.err.println(e.getMessage());
+		      e.printStackTrace();
+		    } catch (Exception e) {
+			      System.err.println(e.getMessage());
+			      e.printStackTrace();
+		    }
+        }
+        
+        if (!isLibraryLoaded) {
+	        try {
+	        	String libpath = "lib-prod4";
+	        	if(AppContext.isDev())
+	        		libpath = "lib-dev2";
+	        	
+	        	if(AppContext.isWindows()) 
+		    		System.load( AppContext.getFlatfilesDir() +  libpath + "/jhdf5.dll" );
+		    	else
+		    		System.load(  AppContext.getFlatfilesDir() + libpath + "/libjhdf5.so");
+	        	isLibraryLoaded = true;
+	        	AppContext.debug("Native code library loaded successfully from.." + AppContext.getFlatfilesDir() +  libpath );
+	        	
+	        } catch (UnsatisfiedLinkError e) {
+		      System.err.println("Native code library failed to load.\n" + e);
+		      System.err.println(e.getMessage());
+		      e.printStackTrace();
+		    } catch (Exception e) {
+			      System.err.println(e.getMessage());
+			      e.printStackTrace();
+		    }
+        }
+        
         
 
         /* Important! Exit quietly */

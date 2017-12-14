@@ -33,8 +33,8 @@ import org.irri.iric.portal.domain.VarietyDistance;
 		
 		
 		@NamedQuery(name = "findVIricstockDistanceByVar2", query = "select myVIricstockDistance from VIricstockDistance myVIricstockDistance where myVIricstockDistance.var2 = ?1") })
-@Table(schema = "IRIC", name = "V_IRICSTOCK_DISTANCE")
-//@Table(schema = "IRIC", name = "IRIC_STOCK_DISTANCE")
+@Table( name = "V_IRICSTOCK_DISTANCE")
+//@Table( name = "IRIC_STOCK_DISTANCE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockDistance")
 public class VIricstockDistance implements Serializable, VarietyDistance {

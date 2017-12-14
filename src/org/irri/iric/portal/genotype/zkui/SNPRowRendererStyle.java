@@ -3,6 +3,7 @@ package org.irri.iric.portal.genotype.zkui;
 public interface SNPRowRendererStyle {
 
 	public static String STYLE_HETERO = "font-weight:bold;color:yellow;align:center";
+
 	public static String STYLE_A = "color:green;align:center";
 	public static String STYLE_T = "color:red;align:center";
 	public static String STYLE_G = "color:orange;align:center";
@@ -14,6 +15,7 @@ public interface SNPRowRendererStyle {
 	public static String STYLE_SPLICE_DONOR="text-align:center;color:aqua;font-weight:bold";
 	public static String STYLE_SPLICE_ACCEPTOR="text-align:center;color:chartreuse;font-weight:bold";
 	public static String STYLE_MISMATCH="text-align:center;color:red";
+	public static String STYLE_MATCH="text-align:center;color:blue";
 	
 	public static short COLOR_MISMATCH = 0;
 	public static short COLOR_NUCLEOTIDE = 1;

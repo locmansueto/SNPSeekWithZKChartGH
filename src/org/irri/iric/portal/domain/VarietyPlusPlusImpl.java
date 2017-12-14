@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.irri.iric.portal.variety.VarietyFacade;
+
 /**
  * Implementation of VarietyPlusPlus
  * @author LMansueto
@@ -15,6 +17,15 @@ public class VarietyPlusPlusImpl  implements VarietyPlusPlus  {
 	private Variety varplus;
 	private Map mapValues;
 
+	public VarietyPlusPlusImpl(Variety variety, String val2name, Object value) {
+		super();
+		// TODO Auto-generated constructor stub
+		this.varplus = variety;
+		mapValues = new LinkedHashMap();
+		mapValues.put( val2name, value);
+	}
+	
+	
 	public VarietyPlusPlusImpl(VarietyPlus varietyplus2, String val2name) {
 		super();
 		// TODO Auto-generated constructor stub
@@ -36,7 +47,7 @@ public class VarietyPlusPlusImpl  implements VarietyPlusPlus  {
 	@Override
 	public Object getValue() {
 		// TODO Auto-generated method stub
-		return  mapValues.values();
+		return  mapValues.get("value"); // .values();
 	}
 	
 /*
@@ -57,6 +68,10 @@ public class VarietyPlusPlusImpl  implements VarietyPlusPlus  {
 		return mapValues.get(field);
 	}
 
+	public void setValue(Object value) {
+		// TODO Auto-generated method stub
+		mapValues.put("value",value);
+	}
 	
 	@Override
 	public BigDecimal getVarietyId() {
@@ -160,10 +175,13 @@ public class VarietyPlusPlusImpl  implements VarietyPlusPlus  {
 		if(subpop==null) subpop="";
 		String cntr = getCountry();
 		if(cntr==null) cntr="";
-		
+		String acc = this.getAccession();
+		if(acc==null) acc="";
+
 	
 		StringBuffer buff = new StringBuffer();	
-		buff.append(this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr);
+		//buff.append(this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr);
+		buff.append( "\""+ this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter +  "\"" + acc + "\"" + delimiter +    "\"" + subpop + "\"" + delimiter + "\"" + cntr + "\"" );
 		Iterator<String> itName =  mapValues.keySet().iterator();
 		if(itName.hasNext()) buff.append(delimiter);
 		while(itName.hasNext()) {
@@ -180,8 +198,34 @@ public class VarietyPlusPlusImpl  implements VarietyPlusPlus  {
 		// TODO Auto-generated method stub
 		return varplus.getBoxCode();
 	}
+
+
+	@Override
+	public String getAccession() {
+		// TODO Auto-generated method stub
+		return varplus.getAccession();
+	}
 	
 	
+	@Override
+	public String getDataset() {
+		// TODO Auto-generated method stub
+		return varplus.getDataset();
+	}
+
+
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		varplus.setName(name);
+	}
+
+
+	@Override
+	public void setAccession(String accession) {
+		// TODO Auto-generated method stub
+		varplus.setAccession(accession);
+	}
 	
 	
 }

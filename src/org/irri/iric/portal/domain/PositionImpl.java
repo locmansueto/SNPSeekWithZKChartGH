@@ -21,6 +21,7 @@ public class PositionImpl implements Position  {
 	protected String contig;
 	private String refcall;
 	protected BigDecimal position;
+	protected Integer chr;
 	
 	
 	
@@ -37,19 +38,39 @@ public class PositionImpl implements Position  {
 		position = BigDecimal.valueOf(Long.valueOf(fields[1].trim()));
 		if(fields.length>2)
 			refcall = fields[2].trim();
+		Integer guesschr=null;
+		try {
+			guesschr=Integer.valueOf( AppContext.guessChrFromString(contig) );
+			this.chr=guesschr;
+		} catch(Exception ex) {};
 	}
+
+	public PositionImpl(String contig, BigDecimal position, Integer chr)  {
+		this(contig, position, null,chr);
+	}
+
 	
-	public PositionImpl(String contig,
-			 BigDecimal position)  {
-		this(contig, position, null);
+	public PositionImpl(String contig, BigDecimal position)  {
+		this(contig, position, null,null);
+		Integer guesschr=null;
+		try {
+			guesschr=Integer.valueOf( AppContext.guessChrFromString(contig) );
+			this.chr=guesschr;
+		} catch(Exception ex) {};
 	}
 
 	public PositionImpl(String contig,
-			 BigDecimal position, String refcall)  {
+			 BigDecimal position, String refcall, Integer chr)  {
 		super();
 		this.contig = contig;
 		this.refcall = refcall;
 		this.position = position;
+		this.chr=chr;
+		
+		if(contig==null && chr!=null) {
+			if(chr<10) this.contig="chr0" + chr;
+			else this.contig="chr" + chr;
+		}
 	}
 
 

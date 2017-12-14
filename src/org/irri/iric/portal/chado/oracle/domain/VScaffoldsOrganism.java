@@ -36,7 +36,7 @@ import org.irri.iric.portal.domain.Scaffold;
 		@NamedQuery(name = "findVScaffoldsOrganismByTypeId", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where myVScaffoldsOrganism.typeId = ?1"),
 		@NamedQuery(name = "findVScaffoldsOrganismByUniquename", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where upper(myVScaffoldsOrganism.uniquename) = upper(?1)"),
 		@NamedQuery(name = "findVScaffoldsOrganismByUniquenameContaining", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where upper(myVScaffoldsOrganism.uniquename) like upper(?1)") })
-@Table(schema = "IRIC", name = "V_SCAFFOLDS_ORGANISM")
+@Table( name = "V_SCAFFOLDS_ORGANISM")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VScaffoldsOrganism")
 public class VScaffoldsOrganism implements Serializable, Scaffold {
@@ -265,7 +265,7 @@ public class VScaffoldsOrganism implements Serializable, Scaffold {
 	@Override
 	public long getLength() {
 		// TODO Auto-generated method stub
-		return 0;
+		return seqlen.longValue();
 	}
 	
 	

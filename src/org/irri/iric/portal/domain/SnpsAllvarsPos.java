@@ -12,6 +12,9 @@ public interface SnpsAllvarsPos extends Position, Snp {
 	
 		
 		public void setRefnuc(String refnuc);
+		
+		public void setAltnuc(String altnuc);
+		public String getAltnuc();
 
 		
 		/**

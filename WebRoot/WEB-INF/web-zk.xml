@@ -24,8 +24,10 @@
 			/WEB-INF/applicationContext-security.xml
 		</param-value>
   </context-param>
-  <listener>
-    <listener-class>org.zkoss.spring.web.context.CoreContextListener</listener-class>
+   <listener>
+    <!-- listener-class>org.zkoss.spring.web.context.CoreContextListener</listener-class -->
+    <!-- listener-class>org.zkoss.zk.ui.util.GenericForwardComposer</listener-class -->
+    <listener-class>org.zkoss.zk.ui.select.SelectorComposer</listener-class>
   </listener>
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

@@ -14,7 +14,7 @@ public class SnpsAllvarsPosImpl implements SnpsAllvarsPos, Comparable {
 	private BigDecimal pos;
 	private String refnuc;
 	private String contig;
-	
+	private String altcall;
 	
 	
 	public SnpsAllvarsPosImpl(BigDecimal pos, String refnuc, String contig) {
@@ -120,5 +120,17 @@ public class SnpsAllvarsPosImpl implements SnpsAllvarsPos, Comparable {
 	}
 
 	
-	
+
+	@Override
+	public void setAltnuc(String altnuc) {
+		// TODO Auto-generated method stub
+		this.altcall=altnuc;
+	}
+
+	@Override
+	public String getAltnuc() {
+		// TODO Auto-generated method stub
+		return altcall;
+	}
+
 }

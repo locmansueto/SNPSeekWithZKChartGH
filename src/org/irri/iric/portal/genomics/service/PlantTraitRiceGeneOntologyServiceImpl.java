@@ -2,6 +2,7 @@ package org.irri.iric.portal.genomics.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.CvTermLocusCountDAO;
@@ -15,6 +16,13 @@ import org.springframework.stereotype.Service;
 @Service("PATOGenesOntologyService")
 public class PlantTraitRiceGeneOntologyServiceImpl implements OntologyService {
 
+	@Override
+	public List getCVtermDescendants(String cv, String term) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 	@Autowired
 	//@Qualifier("CvTermPathDAO")
 	
@@ -23,6 +31,7 @@ public class PlantTraitRiceGeneOntologyServiceImpl implements OntologyService {
 	@Autowired
 	private  CvTermLocusCountDAO cvtermlocuscountdao;
 	@Autowired
+	@Qualifier("ListItems")
 	private ListItemsDAO listitemsdao;
 
 	
@@ -56,12 +65,18 @@ public class PlantTraitRiceGeneOntologyServiceImpl implements OntologyService {
 
 
 	@Override
-	public List getCVtermDescendants(String cv, String term) {
+	public List getCVtermDescendants(String cv, String term, Set dataset) {
 		// TODO Auto-generated method stub
 		cvtermpathDAO = (CvTermPathDAO)AppContext.checkBean(cvtermpathDAO, "CvTermPathDAO");
-		return cvtermpathDAO.getDescendants(cv, term);
+		return cvtermpathDAO.getDescendants(cv, term, dataset);
 	}
-
+/*
+	@Override
+	public List getCVtermDescendants(String cv, String term, String dataset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+*/
         
 
 }

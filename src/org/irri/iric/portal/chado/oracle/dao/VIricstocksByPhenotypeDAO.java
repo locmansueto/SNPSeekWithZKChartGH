@@ -1,6 +1,7 @@
 package org.irri.iric.portal.chado.oracle.dao;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 import org.irri.iric.portal.chado.oracle.domain.VIricstocksByPhenotype;
@@ -206,5 +207,7 @@ public interface VIricstocksByPhenotypeDAO extends
 	 *
 	 */
 	public Set<VIricstocksByPhenotype> findAllVIricstocksByPhenotypes(int startResult, int maxRows) throws DataAccessException;
+
+	
 
 }

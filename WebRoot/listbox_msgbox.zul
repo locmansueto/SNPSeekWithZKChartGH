@@ -1,0 +1,54 @@
+<?page title="Select variety" contentType="text/html;charset=UTF-8"?>
+<zk>
+<!--  window id="windowSelectVariety" title="Select variety" border="normal"  width="460px"
+    apply="org.irri.iric.portal.genotype.zkui.VarietySelectorDialog"
+    position="center,center" closable="false" popup="true" mode="modal"
+    action="show: slideDown;hide: slideUp">
+<vlayout>
+<listbox id="listboxOptions"/>
+<button id="buttonClose" label="Close" />
+</vlayout>
+</window -->
+
+
+<window title="${arg.title}"  width="300pt" closable="true" popup="true" mode="modal" border="normal"
+    use="org.zkoss.zul.impl.MessageboxDlg" apply="org.irri.iric.portal.zk.ListboxMessageBox">
+                     <hbox>
+                <div class="${arg.icon}" />
+                <div sclass="z-messagebox" width="100%">
+                    <label multiline="true" value="${arg.message}"
+                        sclass="word-wrap" width="100%" />
+                </div>
+                <div width="10px" />
+                <listbox id="listboxOptions">
+                <listitem label="item1"/>
+                <listitem label="item2"/>
+                <listitem label="item3"/>
+                </listbox>
+                
+            </hbox>
+	
+    <separator bar="true" />
+    <hbox style="margin-left:auto; margin-right:auto">
+        <button id="btn1" identity="${arg.OK}" sclass="z-messagebox-btn"
+            use="org.zkoss.zul.impl.MessageboxDlg$Button" if="${!empty arg.OK}" />
+        <button identity="${arg.CANCEL}" sclass="z-messagebox-btn"
+            use="org.zkoss.zul.impl.MessageboxDlg$Button"
+            if="${!empty arg.CANCEL}" />
+        <button identity="${arg.YES}" sclass="z-messagebox-btn"
+            use="org.zkoss.zul.impl.MessageboxDlg$Button" if="${!empty arg.YES}" />
+        <button identity="${arg.NO}" sclass="z-messagebox-btn"
+            use="org.zkoss.zul.impl.MessageboxDlg$Button" if="${!empty arg.NO}" />
+        <button identity="${arg.RETRY}" sclass="z-messagebox-btn"
+            use="org.zkoss.zul.impl.MessageboxDlg$Button"
+            if="${!empty arg.RETRY}" />
+        <button identity="${arg.ABORT}" sclass="z-messagebox-btn"
+            use="org.zkoss.zul.impl.MessageboxDlg$Button"
+            if="${!empty arg.ABORT}" />
+        <button identity="${arg.IGNORE}" sclass="z-messagebox-btn"
+            use="org.zkoss.zul.impl.MessageboxDlg$Button"
+            if="${!empty arg.IGNORE}" />
+    </hbox>
+    
+</window>
+</zk>

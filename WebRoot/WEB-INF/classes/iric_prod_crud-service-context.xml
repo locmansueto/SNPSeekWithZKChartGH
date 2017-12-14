@@ -29,6 +29,8 @@
 	<context:component-scan base-package="org.irri.iric.portal.genomics.service" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.admin" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.blank_module.service" scoped-proxy="interfaces" />
+	<context:component-scan base-package="org.irri.iric.portal.gwas.service" scoped-proxy="interfaces" />
+	<context:component-scan base-package="org.irri.iric.portal.webclient" scoped-proxy="interfaces" />
 	
 	<!-- ******************************************************************** -->
 	<!-- Mark bean transactions as annotation driven -->

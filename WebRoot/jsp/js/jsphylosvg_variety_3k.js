@@ -1542,12 +1542,22 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 						case 'ind3': variety_color='#339910'; break;
 						case 'trop1': variety_color='steelblue'; break;
 						case 'trop2': variety_color='#2045c0'; break;
+						case 'trop': variety_color='steelblue'; break;
+						case 'subtrop': variety_color='#2045c0'; break;
 						case 'aro': variety_color='purple'; break;
 						case 'temp': variety_color='lightskyblue'; break;
 						case 'aus': variety_color='orange'; break;
 						case 'admix': variety_color='gray'; break;
 						case 'japx': variety_color='#acacfc'; break;
 						case 'indx': variety_color='#9cbb9c'; break;
+						
+						case 'admixed': variety_color='gray'; break;
+						case 'admixed-indica': variety_color='#9cbb9c'; break;
+						case 'admixed-japonica': variety_color='#acacfc'; break;
+						case 'aromatic': variety_color='purple'; break;
+						case 'indica': variety_color='#60e0c0'; break;
+						case 'temperate-japonica': variety_color='lightskyblue'; break;
+						case 'tropical-japonica': variety_color='steelblue'; break;
 						
 						}
 

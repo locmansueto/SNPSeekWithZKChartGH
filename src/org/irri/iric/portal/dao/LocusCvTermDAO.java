@@ -1,9 +1,13 @@
 package org.irri.iric.portal.dao;
 
+import java.util.Collection;
 import java.util.List;
 
-public interface LocusCvTermDAO {
+import org.irri.iric.portal.domain.CvTerm;
+import org.irri.iric.portal.domain.Locus;
 
+public interface LocusCvTermDAO {
+/*
 	public static String GENEMODEL_ALL="all";
 	public static String GENEMODEL_IRIC="iric";
 	public static String GENEMODEL_MSU7="msu7";
@@ -13,7 +17,7 @@ public interface LocusCvTermDAO {
 	public static String QTL_ALL="all";
 	public static String QTL_QTARO="qtaro";
 	public static String QTL_GRAMENE="gramene";
-
+*/
 	
 	/**
 	 * Get locus with CV term in organism and CV
@@ -22,6 +26,15 @@ public interface LocusCvTermDAO {
 	 * @param cvId
 	 * @return
 	 */
-	List getLocusByDescription(String desc, Integer organismId, Integer cvId);
+	List<Locus> getLocusByDescription(String desc, Integer organismId, Integer cvId);
+
+	/**
+	 * Get the Cv Terms associated with list of loci
+	 * @param colLoc
+	 * @param organismId
+	 * @param cvId
+	 * @return
+	 */
+	List<Locus> filterLocusWithCvterm(Collection<Locus> colLoc, Integer organismId, Integer cvId);
 
 }

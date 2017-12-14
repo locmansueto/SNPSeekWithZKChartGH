@@ -35,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class VCvPhenotypeByPtocoDAOImpl extends AbstractJpaDao<VCvPhenotypeByPtoco>
 		implements VCvPhenotypeByPtocoDAO {
 
+
 	/**
 	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
 	 *
@@ -720,7 +721,7 @@ public class VCvPhenotypeByPtocoDAOImpl extends AbstractJpaDao<VCvPhenotypeByPto
 	}
 
 	@Override
-	public List getDescendants(String cv, String term) {
+	public List getDescendants(String cv, String term, Set dataset) {
 		// TODO Auto-generated method stub
 
 		List list = new ArrayList();
@@ -731,7 +732,7 @@ public class VCvPhenotypeByPtocoDAOImpl extends AbstractJpaDao<VCvPhenotypeByPto
 		List resultlist =  query.getResultList();
 		*/
 		
-		String sql = "select * from  iric.V_CV_PHENOTYPE_BY_PTOCO_PATH where obj_cvname = '" + cv + "' and obj_cvterm='" + term + "' and (PATHDISTANCE>0 or PATHDISTANCE is null)";
+		String sql = "select * from  " + AppContext.getDefaultSchema() + ".V_CV_PHENOTYPE_BY_PTOCO_PATH where obj_cvname = '" + cv + "' and obj_cvterm='" + term + "' and (PATHDISTANCE>0 or PATHDISTANCE is null)";
 		List resultlist=executeSQL(sql);
 		Iterator<VCvPhenotypeByPtoco> itPtoco = resultlist.iterator();
 		while(itPtoco.hasNext()) {
@@ -746,11 +747,14 @@ public class VCvPhenotypeByPtocoDAOImpl extends AbstractJpaDao<VCvPhenotypeByPto
 		
 	}
 
+
 	@Override
-	public Set getUniqueValues(BigDecimal typeId) {
+	public Set getUniqueValues(BigDecimal typeId, Set dataset) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
 /*
 	@NamedQuery(name = "findVCvPhenotypeByPtocoByObjCvtermPosMaxdist", query = "select myVCvPhenotypeByPtoco from VCvPhenotypeByPtoco myVCvPhenotypeByPtoco where myVCvPhenotypeByPtoco.cvName=?1 and  myVCvPhenotypeByPtoco.objCvterm = ?2 and ((myVCvPhenotypeByPtoco.pathdistance>0 and myVCvPhenotypeByPtoco.pathdistance<=?3) or myVCvPhenotypeByPtoco.pathdistance is null) order by myVCvPhenotypeByPtoco.pathdistance, myVCvPhenotypeByPtoco.subjCvterm"),
 	@NamedQuery(name = "findVCvPhenotypeByPtocoByObjCvtermNegMaxdist", query = "select myVCvPhenotypeByPtoco from VCvPhenotypeByPtoco myVCvPhenotypeByPtoco where  myVCvPhenotypeByPtoco.cvName=?1 and  myVCvPhenotypeByPtoco.objCvterm = ?2 and myVCvPhenotypeByPtoco.pathdistance<0 and myVCvPhenotypeByPtoco.pathdistance>=?3 order by myVCvPhenotypeByPtoco.pathdistance desc, myVCvPhenotypeByPtoco.subjCvterm"),
@@ -798,7 +802,13 @@ public class VCvPhenotypeByPtocoDAOImpl extends AbstractJpaDao<VCvPhenotypeByPto
 	
 	
 	 */
-
+/*
+	@Override
+	public List getDescendants(String cv, String term, String dataset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+*/
 	private Session getSession() {
 		return entityManager.unwrap(Session.class);
 	}

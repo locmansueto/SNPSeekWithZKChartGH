@@ -14,6 +14,8 @@ import javax.xml.bind.annotation.*;
 import javax.persistence.*;
 
 import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.domain.ConvertposAny2Allrefs;
+import org.irri.iric.portal.domain.Organism;
 import org.irri.iric.portal.domain.SnpsAllvarsMultirefsPos;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 
@@ -57,10 +59,10 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 		@NamedQuery(name = "findVConvertposAny2allrefsByRice9311RefcallContaining", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.rice9311Refcall like ?1"),
 		@NamedQuery(name = "findVConvertposAny2allrefsBySnpFeatureId", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.snpFeatureId = ?1"),
 		@NamedQuery(name = "findVConvertposAny2allrefsByTypeId", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.typeId = ?1") })
-@Table(schema = "IRIC", name = "V_CONVERTPOS_ANY2ALLREFS")
+@Table( name = "V_CONVERTPOS_ANY2ALLREFS")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VConvertposAny2allrefs")
-public class VConvertposAny2allrefs implements Serializable, SnpsAllvarsMultirefsPos {
+public class VConvertposAny2allrefs implements ConvertposAny2Allrefs { //Serializable, SnpsAllvarsMultirefsPos {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -348,6 +350,7 @@ public class VConvertposAny2allrefs implements Serializable, SnpsAllvarsMultiref
 
 	/**
 	 */
+	@Override
 	public BigDecimal getNbContigId() {
 		return this.nbContigId;
 	}
@@ -360,6 +363,7 @@ public class VConvertposAny2allrefs implements Serializable, SnpsAllvarsMultiref
 
 	/**
 	 */
+	@Override
 	public BigDecimal getNbPosition() {
 		return this.nbPosition;
 	}
@@ -656,7 +660,15 @@ public class VConvertposAny2allrefs implements Serializable, SnpsAllvarsMultiref
 	}
 	
 
+	@Override
 	public String getNBContigName() {
+		/*
+		if(this.nbContigName!=null) {
+			if(nbContigName.length()==4)
+				return this.nbContigName.replace("Chr","chr0");
+			else return this.nbContigName.replace("Chr","chr");
+		}
+		*/
 		return this.nbContigName; 
 	}
 	
@@ -750,6 +762,20 @@ public class VConvertposAny2allrefs implements Serializable, SnpsAllvarsMultiref
 	}
 
 	
+	
+	
+	
+	@Override
+	public String getAllele(String organism) {
+		// TODO Auto-generated method stub
+		if(organism.equals(Organism.REFERENCE_NIPPONBARE)) return  this.nbRefcall;
+		else if(organism.equals(Organism.REFERENCE_9311)) return  this.rice9311Refcall;
+		else if(organism.equals(Organism.REFERENCE_IR64)) return  this.ir64Refcall;
+		else if(organism.equals(Organism.REFERENCE_DJ123)) return  this.dj123Refcall;
+		else if(organism.equals(Organism.REFERENCE_KASALATH)) return this.kasalathRefcall;
+		return null;
+	}
+
 	@Override
 	public Long getChr() {
 		// TODO Auto-generated method stub
@@ -798,6 +824,18 @@ public class VConvertposAny2allrefs implements Serializable, SnpsAllvarsMultiref
 	public BigDecimal getFileId() {
 		// TODO Auto-generated method stub
 		return this.typeId;
+	}
+
+	@Override
+	public void setAltnuc(String altnuc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getAltnuc() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

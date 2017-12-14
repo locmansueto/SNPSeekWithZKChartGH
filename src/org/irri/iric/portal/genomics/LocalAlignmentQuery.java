@@ -11,6 +11,8 @@ public class LocalAlignmentQuery {
 	String dbname;
 	double evalue;
 	String querytype;
+	boolean tophitonly=false;
+	boolean sequence=false;
 	
 	public LocalAlignmentQuery(String queryseq, String dbname, String querytype) {
 		super();
@@ -36,6 +38,28 @@ public class LocalAlignmentQuery {
 
 	public String getQuerytype() {
 		return querytype;
+	}
+
+	public boolean isTophitonly() {
+		return tophitonly;
+	}
+
+	public void setTophitonly(boolean tophitonly) {
+		this.tophitonly = tophitonly;
+	}
+
+	public boolean isSequence() {
+		return sequence;
+	}
+
+	public void setSequence(boolean sequence) {
+		this.sequence = sequence;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "LocalAlignmentQuery: db=" + dbname + ";type=" + querytype + ";length=" + queryseq.length();
 	}
 
 	

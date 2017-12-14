@@ -3,6 +3,10 @@ package org.irri.iric.portal.genotype;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+
+import org.irri.iric.portal.domain.SnpsAllvarsPos;
+import org.irri.iric.portal.domain.SnpsEffect;
 
 
 
@@ -35,6 +39,7 @@ public interface VariantStringService {
 	 * @throws Exception
 	 */
 	VariantStringData getVariantString(GenotypeQueryParams params) throws Exception;
+	long countVariantString(GenotypeQueryParams params);
 
 	/**
 	 * Check if positions have variants
@@ -43,7 +48,19 @@ public interface VariantStringService {
 	 * @param type
 	 * @return positions with variant
 	 */
-	List checkSNPsInChromosome(String chr, Collection posset, BigDecimal type);
+	//List checkSNPsInChromosome(String chr, Collection posset, BigDecimal type);
+	List checkSNPsInChromosome(String chr, Collection posset, Set variantset);
 	
+	/**
+	 * Get snps effect for list of positions
+	 * @param positions
+	 * @return
+	 */
+	
+	List<SnpsEffect> getSnpsEffects(List positions);
+
+	List<SnpsAllvarsPos> getSNPPoslist(GenotypeQueryParams params);
+
+	long countSNPPoslist(GenotypeQueryParams params);
 	
 }

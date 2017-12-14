@@ -2,15 +2,19 @@
 <%@ page import="org.irri.iric.portal.genotype.GenotypeFacade" %>
 <%@ page import="org.irri.iric.portal.genotype.PhylotreeQueryParams" %>
 <%@ page import="org.irri.iric.portal.genotype.GenotypeQueryParams" %>
+<%@ page import="org.irri.iric.portal.genotype.VariantStringData" %>
+<%@ page import="org.irri.iric.portal.genotype.VariantTable" %>
 
 <%@ page import="org.irri.iric.portal.AppContext" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="java.lang.Long" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.util.Enumeration" %>
 
 <%@ page import="org.irri.iric.portal.domain.Variety" %>
+
 
 
 
@@ -31,6 +35,9 @@
             
 <%
 	
+	
+		System.out.println("in jsp/phylotreeGermplasms.jsp  " + request.getRequestURL() +  " map=" + request.getParameterMap());
+	
 		String newick = "";
 
 		int nvars = 3023; 
@@ -40,8 +47,8 @@
 		Object[] newicknodes = null;
 
 				
-		session.removeAttribute("phyloorder");
-		session.removeAttribute("newick");
+		request.getSession().removeAttribute("phyloorder");
+		request.getSession().removeAttribute("newick");
 					
 		if(request.getParameter("varid")!=null) {
 			
@@ -56,17 +63,84 @@
 				//System.out.println(request.getParameter("nsftvid"));
 				
 				String varlist = (String)request.getParameter("varid");
+
+				if(varlist.equals("session")) {
+					varlist =  (String)request.getSession().getAttribute("varlist");
+					request.getSession().removeAttribute("varlist");
+				}	
 				
 				if(!varlist.equals("all"))
 					nvars = varlist.split(",").length;
+					
 				
 				//String newick =   variety.constructPhylotree( varlist.replace("-", "_").replace(" ", "_").replace("'","").replace("(", "").replace(")", "").replace("\"", "") );
-				newick =   variety.constructPhylotree( varlist, request.getParameter("scale") , request.getParameter("topn") ,request.getParameter("requestid") );
-
+				String newickxml[] =   variety.constructPhylotree( varlist, request.getParameter("scale") , request.getParameter("topn") ,request.getParameter("requestid"), VarietyFacade.DATASET_SNPINDELV2_IUPAC );
+				newick=newickxml[0];
+				
+		} 
+		else if(request.getParameter("dataset")!=null || request.getParameter("phyloid")!=null) {
+		
+			VariantStringData dataset = null; PhylotreeQueryParams params=null; GenotypeFacade genotype=null;
+		
+			if(request.getParameter("dataset")!=null) {
+		
+				//dataset =  (VariantStringData)request.getSession().getAttribute("variantdata");
+				dataset =  ((VariantTable)request.getSession().getAttribute("variantTable")).getVariantStringData();
+				params= (PhylotreeQueryParams)request.getSession().getAttribute("queryparams");
+			
+				//request.getSession().removeAttribute("variantdata");
+				//request.getSession().removeAttribute("queryparams");
+		
+				//genotype = (GenotypeFacade)request.getSession().getAttribute("GenotypeFacade");
+				genotype = (GenotypeFacade)AppContext.checkBean(genotype, "GenotypeFacade");
+				
+			}
+			
+			if(request.getParameter("phyloid")!=null) {
+			
+					//VariantTable varianttable = (VariantTable)request.getSession().getAttribute("variantTable");
+		
+		 			Long phyloid= Long.valueOf(request.getParameter("phyloid"));
+					dataset =  (VariantStringData)AppContext.popSessionAttr(phyloid, "variantdata");
+					params= (PhylotreeQueryParams)AppContext.popSessionAttr(phyloid, "queryparams");
+					genotype = (GenotypeFacade)AppContext.popSessionAttr(phyloid, "GenotypeFacade");
+			}
+			
+			if(dataset==null) AppContext.debug("dataset==null");
+			else if(dataset.getListVariantsString()==null)  AppContext.debug( "getListVariantsString==null");
+			else  AppContext.debug( "getListVariantsString.size()=" + dataset.getListVariantsString().size());
+			if(genotype==null)  AppContext.debug("genotype==null");
+			
+			
+				newicknodes = genotype.constructPhylotree(dataset, params);
+				newick = (String)newicknodes[0];
+				
+				if(!newick.isEmpty()) {
+				
+					//nvars = Integer.valueOf( (String)newicknodes[1] );
+					//pairs = Long.valueOf( (String)newicknodes[2]  );
+					
+					nvars =Integer.valueOf(newicknodes[1].toString());
+					pairs =Integer.valueOf(newicknodes[2].toString());
+					
+					if(request.getParameter("phyloid")!=null) {
+						Long phyloid = Long.valueOf(request.getParameter("phyloid"));
+						AppContext.addSessionAttr( phyloid, "phyloorder",newicknodes[3]);
+						
+					}
+					
+					if(request.getParameter("dataset")!=null) {
+						request.getSession().setAttribute("phyloorder",newicknodes[3]);
+						request.getSession().putValue("phyloorder",newicknodes[3]);
+					}
+					
+					System.out.println("jsp: newick file available");
+				}
+				
+				
 				
 		} else if(request.getParameter("chr")!=null && request.getParameter("start")!=null && request.getParameter("end")!=null) {
 				
-			 	
 					 
 				GenotypeFacade genotype = (GenotypeFacade)request.getSession().getAttribute("GenotypeFacade");
 				genotype =  (GenotypeFacade)AppContext.checkBean(genotype, "GenotypeFacade");
@@ -86,7 +160,8 @@
 				//										Integer.parseInt(request.getParameter("end")), topn, "");
 				
 				GenotypeQueryParams genotypeparams = new  GenotypeQueryParams(null, request.getParameter("chr"), Long.valueOf( request.getParameter("start") ),
-						Long.valueOf( request.getParameter("end") ), true, false, true, true, null, null, null, false, false);
+						Long.valueOf( request.getParameter("end") ), true, false, GenotypeQueryParams.SNP_FILTERED, true, null, null, null, false, false);
+						genotypeparams.setDataset( VarietyFacade.DATASET_SNPINDELV2_IUPAC);
 				PhylotreeQueryParams phyloparams = new PhylotreeQueryParams(genotypeparams, "topn", topn, -1, Double.valueOf( request.getParameter("scale") ));
 				newicknodes = genotype.constructPhylotree(phyloparams, "");
 
@@ -100,7 +175,7 @@
 					nvars =Integer.valueOf(newicknodes[1].toString());
 					pairs =Integer.valueOf(newicknodes[2].toString());
 					
-					session.setAttribute("phyloorder",newicknodes[3]);
+					request.getSession().setAttribute("phyloorder",newicknodes[3]);
 					 
 					
 					/*
@@ -120,7 +195,7 @@
 				
 			
 				
-		}
+		} 
 					
 		//System.out.println(newick);		
 		//newick=	"'" + newick.replace("'", "").replace("\"", "").replace("-","").replace("_","-") + "'" ; 
@@ -135,10 +210,23 @@
 		
 		//newick=newick.replace("-","");
 		
-		session.setAttribute("newick",newick);
+		
+		
+			if(request.getParameter("dataset")!=null) {
+					request.getSession().setAttribute("newick",newick);
+					request.getSession().putValue("newick",newick);
+					
+					//Button butnewick= (Button)request.getSession().getAttribute("buttonnewick");
+					//butnewick.setVisible(true);
+			}
+			if(request.getParameter("phyloid")!=null) {
+		 			Long phyloid= Long.valueOf(request.getParameter("phyloid"));
+		 			AppContext.addSessionAttr(phyloid, "newick",newick);
+		 	}
+		
 		
 		StringBuffer buffnames=new StringBuffer();
-		for (Enumeration<String> e = session.getAttributeNames(); e.hasMoreElements();)
+		for (Enumeration<String> e = request.getSession().getAttributeNames(); e.hasMoreElements();)
 			buffnames.append(e.nextElement() + ", ");
 		AppContext.debug("session attribute names: " + buffnames);
 		
@@ -227,7 +315,7 @@ else
 		
 		VarietyFacade varietyfacade = (VarietyFacade)request.getSession().getAttribute("VarietyFacade");
 		varietyfacade =  (VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade");
-		Map<BigDecimal,Variety> mapVarid2Var = varietyfacade.getMapId2Variety();
+		Map<BigDecimal,Variety> mapVarid2Var = varietyfacade.getMapId2Variety(VarietyFacade.DATASET_SNPINDELV2_IUPAC);
 
 		
 		out.println("<br/><br/><br/>Node Groups Members<br/></br>");

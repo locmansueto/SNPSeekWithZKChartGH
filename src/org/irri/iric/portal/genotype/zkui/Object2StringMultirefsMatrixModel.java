@@ -26,19 +26,25 @@ import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.chado.oracle.domain.VConvertposAny2allrefs;
+//import org.irri.iric.portal.chado.oracle.domain.VConvertposAny2allrefs;
+import org.irri.iric.portal.domain.ConvertposAny2Allrefs;
 import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.dao.ScaffoldDAO;
+//import org.irri.iric.portal.domain.ConvertposAny2Allrefs;
 import org.irri.iric.portal.domain.MultiReferencePosition;
+import org.irri.iric.portal.domain.MultiReferencePositionImplAllelePvalue;
 import org.irri.iric.portal.domain.Organism;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
+import org.irri.iric.portal.domain.StockSample;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantTable;
 import org.irri.iric.portal.genotype.service.VariantAlignmentTableArraysImpl;
 import org.irri.iric.portal.genotype.service.VariantTableArraysImpl;
 import org.irri.iric.portal.genotype.zkui.SNPQueryController.Object2StringMatrixComparatorProvider.Object2StringComparator;
+import org.irri.iric.portal.variety.VarietyFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.zkoss.lang.Objects;
 import org.zkoss.zkmax.zul.MatrixModel;
@@ -60,27 +66,30 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 	
 	
 	private Map contigid2name=new HashMap();
-	private int frozenCols=4;
+	private int frozenCols=AppContext.getSnpMatrixFrozenCols();// 6;
 	private VariantTable data;
 	private String message;
 	private GenotypeQueryParams params;
-	private Map<BigDecimal,Variety> mapVarid2Variety;
+	private Map<BigDecimal,StockSample> mapVarid2Variety;
 	private Grid gridHeader;
 	private int biglistboxRows, lastY;
 	private Map<BigDecimal, Object> mapVarid2Phenotype;
 	private String sPhenotype;
+	private Map<String,Double> mapRef2Match;
 	
 	//private Map<BigDecimal, MultiReferencePosition> mapMSU7Pos2ConvertedPos;
 	
 	private List<String> listOtherRefs;
 	private Map<String, Map<BigDecimal, MultiReferencePosition>> mapOrg2MSU7Pos2ConvertedPos;
 	private Map<String, Map<BigDecimal, MultiReferencePosition>> mapOrg2RefPos2ConvertedPos;
+	private Map<String, String> mapMSU7Pos2FilterAllele;
 
 	@Autowired
+	@Qualifier("ListItems")
 	private ListItemsDAO listitemdao;
 	
-	@Autowired
-	private ScaffoldDAO scaffolddao;
+	//@Autowired
+	//private ScaffoldDAO scaffolddao;
 
 	// a rendering function
 	private interface Fun<T> {
@@ -170,6 +179,8 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 	private List<String> _headerDataAlleles3;
 	private List<String> _headerDataAlleles4;
 	
+	private List<String> _headerFilterDataAlleles;
+	
 	
 	private Comparator<Cell> _sorting;
 
@@ -242,30 +253,44 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 		this.mapVarid2Variety=mapVarid2Variety;
 		this.gridHeader=gridHeader;
 		this.mapVarid2Phenotype=mapVarid2Phenotype;
-		this.sPhenotype=sPhenotype;
 		
 		if(mapVarid2Phenotype!=null) { frozenCols++;
-			sPhenotype = sPhenotype.substring(0, 15);
+			if(sPhenotype.length()>15)
+				sPhenotype = sPhenotype.substring(0,  15);
 		}
 		
+		this.sPhenotype=sPhenotype;
 
 		//mapMSU7Pos2ConvertedPos = data.getVariantStringData().getMapMSU7Pos2ConvertedPos();
 		mapOrg2MSU7Pos2ConvertedPos=data.getVariantStringData().getMapOrg2MSU7Pos2ConvertedPos();
 		mapOrg2RefPos2ConvertedPos = data.getVariantStringData().getMapOrg2RefPos2ConvertedPos();
 
+		mapRef2Match=data.getVariantStringData().getMapReference2Mismatch();
+		AppContext.debug("mapRef2Match=" + mapRef2Match);
+		//mapVar2Mismatch = data.getVariantStringData().getMapVariety2Mismatch();
 		
 		if(params.isbShowAllRefAlleles()) {
 		if( params.getOrganism().equals(AppContext.getDefaultOrganism()) ) {
 				listOtherRefs=new ArrayList();
-				listOtherRefs.addAll( mapOrg2MSU7Pos2ConvertedPos.keySet()  );
+				if(mapOrg2MSU7Pos2ConvertedPos.size()>0) listOtherRefs.addAll( mapOrg2MSU7Pos2ConvertedPos.keySet()  );
 				listOtherRefs.remove( Organism.REFERENCE_NIPPONBARE );
 		} else {
 				listOtherRefs=new ArrayList();
-				listOtherRefs.addAll( mapOrg2RefPos2ConvertedPos.keySet()  );
+				if(mapOrg2RefPos2ConvertedPos.size()>0) listOtherRefs.addAll( mapOrg2RefPos2ConvertedPos.keySet()  );
 				listOtherRefs.remove( params.getOrganism() );
 		}
 		}
 
+		if(params.isbAlleleFilter() || params.isVarAlleleFilter()) {
+			mapMSU7Pos2FilterAllele=new HashMap();
+			Iterator<MultiReferencePositionImplAllelePvalue> itPos= params.getPoslist().iterator();
+			while(itPos.hasNext()) {
+				MultiReferencePositionImplAllelePvalue posallele=itPos.next();
+				mapMSU7Pos2FilterAllele.put( posallele.getContig()+"-"+posallele.getPosition() , posallele.getAllele());
+			}
+			
+			AppContext.debug("model mapMSU7Pos2FilterAllele:" + mapMSU7Pos2FilterAllele);
+		}
 		
 		//AppContext.debug("Object2StringMultirefsMatrixModel getMapMSU7Pos2ConvertedPos="  + mapMSU7Pos2ConvertedPos + ";" +  );
 		 _Object2StringMatrixModel();
@@ -276,7 +301,16 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 	}
 	
 	
+	String getIrisIdLabel() {
+		/*
+		if(this.params.getDataset().equals("hdra")) return "GSOR ID";
+		else return "IRIS ID";*/
+		return "Assay";
+	}
+	
 	private void  _Object2StringMatrixModel() {
+		
+		final DecimalFormat df = new DecimalFormat("0.00");
 		
 		Map<BigDecimal,Number> mapVar2Mismatch = data.getVariantStringData().getMapVariety2Mismatch();
 
@@ -292,12 +326,23 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 					
 			
 					BigDecimal varid = BigDecimal.valueOf(tabledata.getVarid()[i]);
-					Variety var = this.mapVarid2Variety.get(varid);
+					StockSample var = this.mapVarid2Variety.get(varid);
 					Object phen=mapVarid2Phenotype.get(var.getVarietyId());
+
+					/*
+					AppContext.debug( var.toString() );
+					AppContext.debug( (phen!=null?phen.toString():"phen=null") );
+					AppContext.debug("var.getName()=" + var.getName());
+					*/
 					
+					/*
 					if(phen!=null)
-						listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid), phen }, objtable[i] ));
-					else listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid) ,""}, objtable[i] ));
+						listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), (var.getIrisId()!=null?var.getIrisId():var.getAccession()),  var.getSubpopulation(),  var.getDataset(),mapVar2Mismatch.get(varid), phen }, objtable[i] ));
+					else listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(),  (var.getIrisId()!=null?var.getIrisId():var.getAccession()), var.getSubpopulation(),  var.getDataset(),mapVar2Mismatch.get(varid) ,""}, objtable[i] ));
+					*/
+					if(phen!=null)
+						listStrArray.add( ArrayUtils.addAll(new Object[]{ (var.getName()==null?"":var.getName().toUpperCase()), (var.getAssay()!=null?var.getAssay():""),  (var.getAccession()!=null?var.getAccession():""), var.getSubpopulation(),  var.getDataset(),mapVar2Mismatch.get(varid), phen }, objtable[i] ));
+					else listStrArray.add( ArrayUtils.addAll(new Object[]{ (var.getName()==null?"":var.getName().toUpperCase()), (var.getAssay()!=null?var.getAssay():""),  (var.getAccession()!=null?var.getAccession():""), var.getSubpopulation(),  var.getDataset(),mapVar2Mismatch.get(varid) ,""}, objtable[i] ));
 				}
 			}
 			else { 
@@ -305,8 +350,8 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 						
 					BigDecimal varid = BigDecimal.valueOf(tabledata.getVarid()[i]);
 					
-					Variety var = this.mapVarid2Variety.get(varid);
-					listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid) }, objtable[i] ));
+					StockSample var = this.mapVarid2Variety.get(varid);
+					listStrArray.add( ArrayUtils.addAll(new Object[]{(var.getName()==null?"":var.getName().toUpperCase()),  (var.getAssay()!=null?var.getAssay():""),  (var.getAccession()!=null?var.getAccession():""), var.getSubpopulation(), var.getDataset(), mapVar2Mismatch.get(varid) }, objtable[i] ));
 				}
 			}
 			_listSnpString = listStrArray;
@@ -322,21 +367,21 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 				if(this.mapVarid2Phenotype!=null) {
 					for(int i=0; i<objtable.length; i++) {
 						BigDecimal varid = BigDecimal.valueOf(tabledata.getVarid()[i]);
-						Variety var = this.mapVarid2Variety.get(varid);	
+						StockSample var = this.mapVarid2Variety.get(varid);	
 						Object phen = mapVarid2Phenotype.get(var.getVarietyId());
 						
 						if(phen!=null )
-							listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid), phen},  objtable[i] ));
-						else listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid), "" }, objtable[i] ));
+							listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), (var.getAssay()!=null?var.getAssay():""),  (var.getAccession()!=null?var.getAccession():""), var.getSubpopulation(), var.getDataset(), mapVar2Mismatch.get(varid), phen},  objtable[i] ));
+						else listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(),  (var.getAssay()!=null?var.getAssay():""),  (var.getAccession()!=null?var.getAccession():""), var.getSubpopulation(),var.getDataset(), mapVar2Mismatch.get(varid), "" }, objtable[i] ));
 					}
 				}
 				else {
 					for(int i=0; i<objtable.length; i++) {
 						
 						BigDecimal varid = BigDecimal.valueOf(tabledata.getVarid()[i]);
-						Variety var = this.mapVarid2Variety.get(varid);	
+						StockSample var = this.mapVarid2Variety.get(varid);	
 						
-						listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(), var.getIrisId(), var.getSubpopulation(), mapVar2Mismatch.get(varid)}, objtable[i] ));
+						listStrArray.add( ArrayUtils.addAll(new Object[]{var.getName().toUpperCase(),(var.getAssay()!=null?var.getAssay():""),  (var.getAccession()!=null?var.getAccession():""), var.getSubpopulation(), var.getDataset(), mapVar2Mismatch.get(varid)}, objtable[i] ));
 	
 					}
 				}
@@ -360,6 +405,7 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 						
 						if(data.getVariantStringData().isNipponbareReference()) {
 							out += df.format(  snppos.getPosition() ).replace(".00","");
+							//out += df.format(  snppos.getPosition() ).replaceAll("\\.0+","");
 							if(out.endsWith(".0")) out=out.replace(".0", "");
 							
 							if(data.getContigs()!=null && !out.isEmpty())
@@ -405,10 +451,13 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 							else {
 								out += df.format(snppos.getPosition()).replace(".00","");
 								if(out.endsWith(".0")) out=out.replace(".0", "");
+								//out += df.format(  snppos.getPosition() ).replaceAll("\\.0+","");
 							}
 							
 							if(data.getContigs()!=null && !out.isEmpty())
 								out = data.getContigs()[index-frozenCols] + "-" + out;
+							
+							out = out.replaceAll("\\.0+","");
 							
 						}
 						
@@ -423,15 +472,33 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 						
 					}
 					
+					else if(index==5) {
+						if(params.isbAlleleFilter() || params.isVarAlleleFilter())
+							return "Match";
+						else return "Mismatch";
+					}
+					else if(index==4)
+						return "Dataset";
 					else if(index==3)
-						return "Mismatch";
-					else if(index==2)
 						return "Subpopulation";
 					else if(index==1)
-						return "IRIS ID";
+						//return "IRIS ID";
+						return getIrisIdLabel();
+					else if(index==2)
+						return "Accession";
+
+					/*
+					else if(index==1)
+						if(params.getDataset().equals(VarietyFacade.DATASET_SNP_HDRA))
+							return "Accession";
+						else if(params.getDataset().equals(VarietyFacade.DATASET_SNPINDELV2_IUPAC))
+							return "IRIS ID";
+						else
+							return "IRIS ID/Accession";
+							*/
 					else if(index==0)
 						return "Variety";
-					else if(mapVarid2Phenotype!=null && index==4)
+					else if(mapVarid2Phenotype!=null && index==6)
 						return sPhenotype;
 					else return "";
 
@@ -445,9 +512,9 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 				if(index>=frozenCols) {
 					SnpsAllvarsPos snppos = data.getVariantStringData().getListPos().get(index-frozenCols);
 					if(data.getVariantStringData().isNipponbareReference()) {
-						return snppos.getRefnuc() ;
+						return snppos.getRefnuc().substring(0,1)  ;
 					} else {
-						String multiref =snppos.getRefnuc(); 
+						String multiref =snppos.getRefnuc().substring(0,1); 
 						if(multiref==null) {
 							return "";
 						}
@@ -468,6 +535,12 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 				else if(index==0)
 					//return "Reference";
 					return params.getOrganism();
+				else if(index==5) {
+					//return "mismatch";
+					if(mapRef2Match!=null)
+						return df.format(mapRef2Match.get(params.getOrganism())); // params.getOrganism();
+					else return "";
+				}								
 				else
 					return "";
 			}});
@@ -485,27 +558,42 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 							SnpsAllvarsPos snppos = data.getVariantStringData().getListPos().get(index-frozenCols);
 
 							BigDecimal pos=null;
-							if(snppos instanceof VConvertposAny2allrefs) {
-								pos = ((VConvertposAny2allrefs)snppos).getNbPosition(); 
-								out +=  ((VConvertposAny2allrefs)snppos).getNBContigName() + "-" + pos.toString();
-								/*
-								
-								DecimalFormat df = new DecimalFormat("0.00");
-								out += df.format(pos ).replace(".00","");
-								if(out.endsWith(".0")) out=out.replace(".0", "");
-								*/
+
+							if(snppos instanceof ConvertposAny2Allrefs) {
+								pos = ((ConvertposAny2Allrefs)snppos).getNbPosition(); 
+								out +=  ((ConvertposAny2Allrefs)snppos).getNBContigName() + "-" + pos.toString();
+								out = out.replaceAll("\\.0+","");
 							}
+
+								
+//							if(snppos instanceof VConvertposAny2allrefs) {
+//								pos = ((VConvertposAny2allrefs)snppos).getNbPosition(); 
+//								out +=  ((VConvertposAny2allrefs)snppos).getNBContigName() + "-" + pos.toString();
+//								/*
+//								
+//								DecimalFormat df = new DecimalFormat("0.00");
+//								out += df.format(pos ).replace(".00","");
+//								if(out.endsWith(".0")) out=out.replace(".0", "");
+//								*/
+//							}
 							return out;
 						}
+						else if(index==5) {
+							if(params.isbAlleleFilter() || params.isVarAlleleFilter())
+								return "Match";
+							else return "Mismatch";
+						}
+						else if(index==4)
+							return "Dataset";
 						else if(index==3)
-							return "Mismatch";
-						else if(index==2)
 							return "Subpopulation";
+						else if(index==2)
+							return "Accession";
 						else if(index==1)
 							return "IRIS ID";
 						else if(index==0)
 							return "Variety";
-						else if(mapVarid2Phenotype!=null && index==4)
+						else if(mapVarid2Phenotype!=null && index==6)
 							return sPhenotype;
 						else return "";
 				}});
@@ -517,9 +605,17 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 					if(index>=frozenCols) {
 						SnpsAllvarsPos snppos = data.getVariantStringData().getListPos().get(index-frozenCols);
 						String ref="";
+
+						if(snppos instanceof ConvertposAny2Allrefs) {
+							ref = ((ConvertposAny2Allrefs)snppos).getNbRefcall(); 
+						}
+
+						/*
 						if(snppos instanceof VConvertposAny2allrefs) {
 							ref = ((VConvertposAny2allrefs)snppos).getNbRefcall(); 
 						}
+						*/
+						
 						return ref;
 					}
 					else if(index==0)
@@ -566,6 +662,18 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 								else if(index==0)
 									//return "Reference";
 									return listOtherRefs.get(0); // params.getOrganism();
+								else if(index==5) {
+									//return "mismatch";
+									try {
+										if(mapRef2Match!=null)  // && mapRef2Match.get(listOtherRefs.get(0))!=null)
+											return df.format(mapRef2Match.get(listOtherRefs.get(0))); // params.getOrganism();
+										else return "";
+									} catch (Exception ex ) {
+										mapRef2Match.get(listOtherRefs.get(0));
+										AppContext.debug("listOtherRefs.get(0)=" + listOtherRefs.get(0) + " , " + mapRef2Match.get(listOtherRefs.get(0)));
+									}
+									return "";
+								}								
 								else
 									return "";
 							}});
@@ -596,6 +704,12 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 								else if(index==0)
 									//return "Reference";
 									return listOtherRefs.get(1); // params.getOrganism();
+								else if(index==5) {
+									//return "Reference";
+									if(mapRef2Match!=null)
+										return df.format(mapRef2Match.get(listOtherRefs.get(1))); // params.getOrganism();
+									else return "";
+								}								
 								else
 									return "";
 							}});
@@ -625,6 +739,12 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 								else if(index==0)
 									//return "Reference";
 									return listOtherRefs.get(2); // params.getOrganism();
+								else if(index==5) {
+									//return "Reference";
+									if(mapRef2Match!=null)
+										return df.format(mapRef2Match.get(listOtherRefs.get(2))); // params.getOrganism();
+									else return "";
+								}								
 								else
 									return "";
 							}});
@@ -654,12 +774,39 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 								else if(index==0)
 									//return "Reference";
 									return listOtherRefs.get(3); // params.getOrganism();
+								else if(index==5) {
+									//return "Reference";
+									if(mapRef2Match!=null)
+										return df.format(mapRef2Match.get(listOtherRefs.get(3))); // params.getOrganism();
+									else return "";
+								}
 								else
 									return "";
 							}});
 				  }				  
 				  
 			//}
+		}
+		
+		if(this.mapMSU7Pos2FilterAllele!=null) {
+			this._headerFilterDataAlleles= new FakerKeyList<String>( _colSize, 8, new Fun() {
+				@Override
+				public Object apply(int index) {
+					//return "Header x = " + index;
+					//
+					if(index>=frozenCols) {
+						SnpsAllvarsPos snppos = data.getVariantStringData().getListPos().get(index-frozenCols);
+						return mapMSU7Pos2FilterAllele.get(snppos.getContig()+"-"+ snppos.getPosition());
+					}
+					/*
+					else if(index==0)
+						//return "Reference";
+						return "Query Alleles"; // params.getOrganism();
+					
+					*/
+					else
+						return "";
+				}});
 		}
 	}
 	
@@ -709,24 +856,97 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 
 	@Override
 	public int getHeadSize() {
+
+		int heads=2;
+		if(params.isbShowNPBPositions()) heads++;
+		if(params.isbShowAllRefAlleles()) heads+=4;
+		if(params.isbAlleleFilter() || params.isVarAlleleFilter()) heads++;
 		
+		return heads;
+		/*
 		if(params.isbShowNPBPositions()) {
 			if(params.isbShowAllRefAlleles()) {
-				return 7;
+				if(params.isbAlleleFilter())
+					return 8;
+				else return 7;
 			}
-			else return 4;
+			else {
+				if(params.isbAlleleFilter())
+					return 5;
+				else return 4;
+			}
 		}
 		else {
 			if(params.isbShowAllRefAlleles()) {
-				return 6;
+				if(params.isbAlleleFilter())
+					return 7;
+				else return 6;
 			}
-			else return 2;
+			else {
+				if(params.isbAlleleFilter())
+					return 3;
+				else return 2;
+			}
 		}
+		*/
+		
+		/*
+		if(params.isbShowNPBPositions()) {
+			if(params.isbShowAllRefAlleles()) {
+				if(params.isbAlleleFilter())
+					return 8;
+				else return 7;
+			}
+			else {
+				if(params.isbAlleleFilter())
+					return 5;
+				else return 4;
+			}
+		}
+		else {
+			if(params.isbShowAllRefAlleles()) {
+				if(params.isbAlleleFilter())
+					return 7;
+				else return 6;
+			}
+			else {
+				if(params.isbAlleleFilter())
+					return 3;
+				else return 2;
+			}
+		}
+		*/
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Head getHeadAt(int rowIndex) {
+		/*
+		if(params.isbShowNPBPositions()) {
+			if(params.isbShowAllRefAlleles()) {
+				if(params.isbAlleleFilter())
+					return 8;
+				else return 7;
+			}
+			else {
+				if(params.isbAlleleFilter())
+					return 5;
+				else return 4;
+			}
+		}
+		else {
+			if(params.isbShowAllRefAlleles()) {
+				if(params.isbAlleleFilter())
+					return 7;
+				else return 6;
+			}
+			else {
+				if(params.isbAlleleFilter())
+					return 3;
+				else return 2;
+			}
+		}
+		*/
 		
 		
 		if(params.isbShowAllRefAlleles()) {
@@ -748,6 +968,10 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 					return (Head) _headerDataAlleles3;
 				else if(rowIndex==7)
 					return (Head) _headerDataAlleles4;
+				
+				if( (params.isbAlleleFilter() || params.isVarAlleleFilter()) && rowIndex==8)
+					return (Head)this._headerFilterDataAlleles;
+				
 			} else {
 				if(rowIndex==2)
 					return (Head) _headerDataAlleles1;
@@ -757,6 +981,9 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 					return (Head) _headerDataAlleles3;
 				else if(rowIndex==5)
 					return (Head) _headerDataAlleles4;
+				if( (params.isbAlleleFilter()|| params.isVarAlleleFilter()) && rowIndex==6)
+					return (Head)this._headerFilterDataAlleles;
+
 			}
 			
 		} else {
@@ -764,11 +991,27 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 				return (Head) _headerData;
 			else if(rowIndex==1) 
 				return (Head) _headerData2;
-			else if(rowIndex==2) 
+				
+			if(params.isbShowNPBPositions()) {
+				if(rowIndex==2) 
+					return (Head) _headerData3;
+				else if(rowIndex==3)
+					return (Head) _headerData4;
+				if( (params.isbAlleleFilter() || params.isVarAlleleFilter()) && rowIndex==4)
+					return (Head)this._headerFilterDataAlleles;
+
+			} else {
+				if( (params.isbAlleleFilter() || params.isVarAlleleFilter()) && rowIndex==2)
+					return (Head)this._headerFilterDataAlleles;
+			}
+				/*
 				return (Head) _headerData3;
-			else 
+			else if(rowIndex==3) 
 				return (Head) _headerData4;
+			*/
+
 		}
+		
 		
 		return null;
 		
@@ -803,7 +1046,8 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 		// TODO Auto-generated method stub
 		listitemdao = (ListItemsDAO)AppContext.checkBean(listitemdao,"ListItems");
 		//Map<BigDecimal,Variety> mapVarId2Var = listitemsdao.getMapId2Variety();
-		Map<String,Variety> mapVarname2Var = listitemdao.getMapVarname2Variety();
+		//Map<String,Variety> mapVarname2Var = listitemdao.getMapVarname2Variety(params.getDataset());
+		//Map<BigDecimal,Variety> mapVarid2Var = listitemdao.getMapId2Variety(params.getDataset());
 		List list = new ArrayList();
 		
 		int lastIdx=firstRow + nRows;
@@ -811,22 +1055,37 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 			lastIdx=getSize();
 		}
 		
-		if(this.mapVarid2Phenotype==null) {
-			for(int i=firstRow; i<lastIdx; i++) {
-				Object[] rowarr = (Object[])_listSnpString.get(i);
-				Variety var = mapVarname2Var.get( rowarr[0].toString() );
-				list.add( new Object[]{var.getName() , var.getIrisId(), var.getSubpopulation(), rowarr[3] });
-			}
-		} else {
-			for(int i=firstRow; i<lastIdx; i++) {
-				Object[] rowarr = (Object[])_listSnpString.get(i);
-				Variety var = mapVarname2Var.get( rowarr[0].toString() );
-				Object phen=mapVarid2Phenotype.get(var.getVarietyId());
-				if(phen!=null)
-					list.add( new Object[]{var.getName() , var.getIrisId(), var.getSubpopulation(), rowarr[3], phen });
-				else list.add( new Object[]{var.getName() , var.getIrisId(), var.getSubpopulation(),rowarr[3],  "" });
-			}
+		for(int i=firstRow; i<lastIdx; i++) {
+			Object[] rowarr = (Object[])_listSnpString.get(i);
+			list.add( rowarr );
 		}
+		
+		
+//		if(this.mapVarid2Phenotype==null) {
+//			for(int i=firstRow; i<lastIdx; i++) {
+//				Object[] rowarr = (Object[])_listSnpString.get(i);
+//				
+//				//Variety var = mapVarname2Var.get( rowarr[0].toString() );
+//				
+//				//list.add( new Object[]{var.getName() ,(var.getIrisId()!=null?var.getIrisId():"") , (var.getAccession()!=null?var.getAccession():"") , var.getSubpopulation(),  var.getDataset(),rowarr[4] });
+//				//list.add( new Object[]{var.getName() , (var.getIrisId()!=null?var.getIrisId():var.getAccession()) , var.getSubpopulation(),  var.getDataset(),rowarr[4] });
+//				list.add( rowarr );
+//			}
+//		} else {
+//			for(int i=firstRow; i<lastIdx; i++) {
+//				Object[] rowarr = (Object[])_listSnpString.get(i);
+//				Variety var = mapVarname2Var.get( rowarr[0].toString() );
+//				Object phen=mapVarid2Phenotype.get(var.getVarietyId());
+//				/*
+//				if(phen!=null)
+//					list.add( new Object[]{var.getName() , (var.getIrisId()!=null?var.getIrisId():var.getAccession()) , var.getSubpopulation(), var.getDataset(), rowarr[4], phen });
+//				else list.add( new Object[]{var.getName() , (var.getIrisId()!=null?var.getIrisId():var.getAccession()) , var.getSubpopulation(), var.getDataset(),rowarr[4],  "" });
+//				*/
+//				if(phen!=null)
+//					list.add( new Object[]{rowarr[0],rowarr[1],rowarr[2],rowarr[3],rowarr[4],rowarr[5], phen });
+//				else list.add(new Object[]{rowarr[0],rowarr[1],rowarr[2],rowarr[3],rowarr[4],rowarr[5], ""});
+//			}
+//		}
 		
 		return list;
 	}
@@ -842,6 +1101,7 @@ public class Object2StringMultirefsMatrixModel<Head extends  List, Row extends L
 		}
 		return listHeads;
 	}
+	
 }
 
 // PAST CODE TERAINED

@@ -4,9 +4,6 @@ import java.io.Serializable;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.*;
 import javax.persistence.*;
 
@@ -20,24 +17,47 @@ import org.irri.iric.portal.domain.SnpsSpliceDonor;
 		@NamedQuery(name = "findAllVSnpSplicedonors", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor"),
 		@NamedQuery(name = "findVSnpSplicedonorByChr", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.chr = ?1"),
 		@NamedQuery(name = "findVSnpSplicedonorByChrContaining", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.chr like ?1"),
-		@NamedQuery(name = "findVSnpSplicedonorByOrganismId", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.organismId = ?1"),
+//		@NamedQuery(name = "findVSnpSplicedonorByOrganismId", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.organismId = ?1"),
 		@NamedQuery(name = "findVSnpSplicedonorByPosition", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.position = ?1"),
 
 		
-		@NamedQuery(name = "findVSnpSplicedonorByChrPositionBetween", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.chr=?1 and myVSnpSplicedonor.position between ?2 and  ?3"),
-		@NamedQuery(name = "findVSnpSplicedonorByChrPositionIn", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.chr=?1 and myVSnpSplicedonor.position in (?2)"),
+		//@NamedQuery(name = "findVSnpSplicedonorByChrPositionBetween", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.chr=?1 and myVSnpSplicedonor.position between ?2 and  ?3"),
+		//@NamedQuery(name = "findVSnpSplicedonorByChrPositionIn", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.chr=?1 and myVSnpSplicedonor.position in (?2)"),
+
+		@NamedQuery(name = "findVSnpSplicedonorByChrPositionBetween", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.chr=?1 and myVSnpSplicedonor.position+1 between ?2 and  ?3"),
+		@NamedQuery(name = "findVSnpSplicedonorByChrPositionIn", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.chr=?1 and myVSnpSplicedonor.position+1 in (?2)"),
+		@NamedQuery(name = "findVSnpSplicedonorByChrPositionBetweenSnpset", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.chr=?1 and myVSnpSplicedonor.position+1 between ?2 and  ?3 and myVSnpSplicedonor.variantset in (?4)"),
+		@NamedQuery(name = "findVSnpSplicedonorByChrPositionInSnpset", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.chr=?1 and myVSnpSplicedonor.position+1 in (?2) and myVSnpSplicedonor.variantset in (?3)"),
 
 		
+		@NamedQuery(name = "findVSnpSplicedonorBySnpFeatureIdIn", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.snpFeatureId in (?1) order by  myVSnpSplicedonor.chr,  myVSnpSplicedonor.position"),
+
+
 		@NamedQuery(name = "findVSnpSplicedonorByPrimaryKey", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.snpFeatureId = ?1"),
-		@NamedQuery(name = "findVSnpSplicedonorBySnpFeatureId", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.snpFeatureId = ?1"),
-		@NamedQuery(name = "findVSnpSplicedonorBySrcfeatureId", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.srcfeatureId = ?1") })
+		@NamedQuery(name = "findVSnpSplicedonorBySnpFeatureId", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.snpFeatureId = ?1")
+//		@NamedQuery(name = "findVSnpSplicedonorBySrcfeatureId", query = "select myVSnpSplicedonor from VSnpSplicedonor myVSnpSplicedonor where myVSnpSplicedonor.srcfeatureId = ?1")
+		})
 
 
 
-@Table(schema = "IRIC", name = "V_SNP_SPLICEDONOR_V2")
+@Table( name = "V_SNP_SPLICEDONOR_V2")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VSnpSplicedonor")
 public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor, Comparable {
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getRefnuc() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -51,12 +71,12 @@ public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor, Comparabl
 	/**
 	 */
 
-	@Column(name = "SRCFEATURE_ID")
-	@Basic(fetch = FetchType.EAGER)
-	@XmlElement
-	BigDecimal srcfeatureId;
-	/**
-	 */
+//	@Column(name = "SRCFEATURE_ID")
+//	@Basic(fetch = FetchType.EAGER)
+//	@XmlElement
+//	BigDecimal srcfeatureId;
+//	/**
+//	 */
 
 	@Column(name = "POSITION")
 	@Basic(fetch = FetchType.EAGER)
@@ -65,37 +85,42 @@ public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor, Comparabl
 	/**
 	 */
 
-	@Column(name = "CHR", length = 20)
+	@Column(name = "CHROMOSOME", length = 20)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
-	String chr;
+	Long chr;
 	/**
 	 */
+//
+//	@Column(name = "ORGANISM_ID", precision = 10)
+//	@Basic(fetch = FetchType.EAGER)
+//	@XmlElement
+//	BigDecimal organismId;
 
-	@Column(name = "ORGANISM_ID", precision = 10)
+	
+	@Column(name = "VARIANTSET", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
-	BigDecimal organismId;
-
+	String variantset;
 	/**
 	 */
 	public void setSnpFeatureId(BigDecimal snpFeatureId) {
 		this.snpFeatureId = snpFeatureId;
 	}
 
-
-
-	/**
-	 */
-	public void setSrcfeatureId(BigDecimal srcfeatureId) {
-		this.srcfeatureId = srcfeatureId;
-	}
-
-	/**
-	 */
-	public BigDecimal getSrcfeatureId() {
-		return this.srcfeatureId;
-	}
+//
+//
+//	/**
+//	 */
+//	public void setSrcfeatureId(BigDecimal srcfeatureId) {
+//		this.srcfeatureId = srcfeatureId;
+//	}
+//
+//	/**
+//	 */
+//	public BigDecimal getSrcfeatureId() {
+//		return this.srcfeatureId;
+//	}
 
 	/**
 	 */
@@ -111,27 +136,27 @@ public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor, Comparabl
 
 	/**
 	 */
-	public void setChr(String chr) {
+	public void setChr(Long chr) {
 		this.chr = chr;
 	}
 
 	/**
 	 */
-	public String getChr() {
+	public Long getChr() {
 		return this.chr;
 	}
 
-	/**
-	 */
-	public void setOrganismId(BigDecimal organismId) {
-		this.organismId = organismId;
-	}
-
-	/**
-	 */
-	public BigDecimal getOrganismId() {
-		return this.organismId;
-	}
+//	/**
+//	 */
+//	public void setOrganismId(BigDecimal organismId) {
+//		this.organismId = organismId;
+//	}
+//
+//	/**
+//	 */
+//	public BigDecimal getOrganismId() {
+//		return this.organismId;
+//	}
 
 	/**
 	 */
@@ -144,10 +169,10 @@ public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor, Comparabl
 	 */
 	public void copy(VSnpSplicedonor that) {
 		setSnpFeatureId(that.getSnpFeatureId());
-		setSrcfeatureId(that.getSrcfeatureId());
+		//setSrcfeatureId(that.getSrcfeatureId());
 		setPosition(that.getPosition());
 		setChr(that.getChr());
-		setOrganismId(that.getOrganismId());
+		//setOrganismId(that.getOrganismId());
 	}
 
 	/**
@@ -159,10 +184,10 @@ public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor, Comparabl
 		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("snpFeatureId=[").append(snpFeatureId).append("] ");
-		buffer.append("srcfeatureId=[").append(srcfeatureId).append("] ");
+		//buffer.append("srcfeatureId=[").append(srcfeatureId).append("] ");
 		buffer.append("position=[").append(position).append("] ");
 		buffer.append("chr=[").append(chr).append("] ");
-		buffer.append("organismId=[").append(organismId).append("] ");
+		//buffer.append("organismId=[").append(organismId).append("] ");
 
 		return buffer.toString();
 	}
@@ -198,12 +223,6 @@ public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor, Comparabl
 		return snpFeatureId;
 	}
 
-	@Override
-	public BigDecimal getPos() {
-		// TODO Auto-generated method stub
-		return this.position;
-	}
-	
 	
 
 	@Override

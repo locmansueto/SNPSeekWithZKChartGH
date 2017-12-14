@@ -25,15 +25,19 @@ import org.irri.iric.portal.domain.SnpsNonsynAllele;
 		@NamedQuery(name = "findVSnpNonsynallelePosByPosition", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.position = ?1"),
 		@NamedQuery(name = "findVSnpNonsynallelePosByPrimaryKey", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.snpFeatureId = ?1 and myVSnpNonsynallelePos.typeId = ?2"),
 		@NamedQuery(name = "findVSnpNonsynallelePosBySnpFeatureId", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.snpFeatureId = ?1"),
-
-		@NamedQuery(name = "findVSnpNonsynallelePosByPositionBetween", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.chr = ?1 and myVSnpNonsynallelePos.position between ?2 and ?3 and myVSnpNonsynallelePos.typeId=?4"),
-		@NamedQuery(name = "findVSnpNonsynallelePosByPositionIn", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.chr = ?1 and  myVSnpNonsynallelePos.position in(?2)  and myVSnpNonsynallelePos.typeId=?3"),
-		@NamedQuery(name = "findVSnpNonsynallelePosBySnpFeatureIdBetween", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.snpFeatureId between ?1 and ?2 and myVSnpNonsynallelePos.typeId=?3"),
-		@NamedQuery(name = "findVSnpNonsynallelePosBySnpFeatureIdIn", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.snpFeatureId in (?1) and myVSnpNonsynallelePos.typeId=?2"),
+		
+		@NamedQuery(name = "findVSnpNonsynallelePosByPositionBetween", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.chr = ?1 and myVSnpNonsynallelePos.position between ?2 and ?3 and myVSnpNonsynallelePos.typeId=?4 order by  myVSnpNonsynallelePos.chr , myVSnpNonsynallelePos.position"),
+		@NamedQuery(name = "findVSnpNonsynallelePosByPositionBetweenSnpset", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.chr = ?1 and myVSnpNonsynallelePos.position between ?2 and ?3 and myVSnpNonsynallelePos.typeId=?4 and  myVSnpNonsynallelePos.variantset in (?5) order by  myVSnpNonsynallelePos.chr , myVSnpNonsynallelePos.position"),
+		
+		@NamedQuery(name = "findVSnpNonsynallelePosByPositionIn", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.chr = ?1 and  myVSnpNonsynallelePos.position in(?2)  and myVSnpNonsynallelePos.typeId=?3 order by  myVSnpNonsynallelePos.chr , myVSnpNonsynallelePos.position"),
+		@NamedQuery(name = "findVSnpNonsynallelePosBySnpFeatureIdBetween", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.snpFeatureId between ?1 and ?2 and myVSnpNonsynallelePos.typeId=?3 order by  myVSnpNonsynallelePos.chr , myVSnpNonsynallelePos.position"),
+		@NamedQuery(name = "findVSnpNonsynallelePosBySnpFeatureIdBetweenSnpset", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.snpFeatureId between ?1 and ?2 and myVSnpNonsynallelePos.typeId=?3 and myVSnpNonsynallelePos.variantset in (?4) order by  myVSnpNonsynallelePos.chr , myVSnpNonsynallelePos.position"),
+		
+		@NamedQuery(name = "findVSnpNonsynallelePosBySnpFeatureIdIn", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.snpFeatureId in (?1) and myVSnpNonsynallelePos.typeId=?2 order by  myVSnpNonsynallelePos.chr , myVSnpNonsynallelePos.position"),
 		
 		
 		@NamedQuery(name = "findVSnpNonsynallelePosByTypeId", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.typeId = ?1") })
-@Table(schema = "IRIC", name = "V_SNP_NONSYNALLELE_POS")
+@Table( name = "V_SNP_NONSYNALLELE_POS")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VSnpNonsynallelePos")
 public class VSnpNonsynallelePos implements Serializable, SnpsNonsynAllele, Comparable {
@@ -55,10 +59,18 @@ public class VSnpNonsynallelePos implements Serializable, SnpsNonsynAllele, Comp
 	
 	@XmlElement
 	BigDecimal typeId;
+
+	@Column(name = "VARIANTSET", nullable = false)
+	@Basic(fetch = FetchType.EAGER)
+	
+	@XmlElement
+	String variantset;
+
+	
 	/**
 	 */
 
-	@Column(name = "CHR")
+	@Column(name = "CHROMOSOME")
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	@XmlElement

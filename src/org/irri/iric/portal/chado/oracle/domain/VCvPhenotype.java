@@ -24,7 +24,7 @@ import org.irri.iric.portal.domain.CvTerm;
 		@NamedQuery(name = "findVCvPhenotypeByName", query = "select myVCvPhenotype from VCvPhenotype myVCvPhenotype where myVCvPhenotype.name = ?1"),
 		@NamedQuery(name = "findVCvPhenotypeByNameContaining", query = "select myVCvPhenotype from VCvPhenotype myVCvPhenotype where myVCvPhenotype.name like ?1"),
 		@NamedQuery(name = "findVCvPhenotypeByPrimaryKey", query = "select myVCvPhenotype from VCvPhenotype myVCvPhenotype where myVCvPhenotype.cvTermId = ?1") })
-@Table(schema = "IRIC", name = "V_CV_PHENOTYPE")
+@Table( name = "V_CV_PHENOTYPE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VCvPhenotype")
 public class VCvPhenotype implements Serializable, CvTerm {

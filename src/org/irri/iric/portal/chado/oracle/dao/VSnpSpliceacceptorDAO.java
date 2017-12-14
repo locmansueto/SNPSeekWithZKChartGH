@@ -13,7 +13,8 @@ import org.springframework.dao.DataAccessException;
  * DAO to manage VSnpSpliceacceptor entities.
  * 
  */
-public interface VSnpSpliceacceptorDAO extends JpaDao<VSnpSpliceacceptor>, SnpsSpliceAcceptorDAO {
+//public interface VSnpSpliceacceptorDAO extends JpaDao<VSnpSpliceacceptor>, SnpsSpliceAcceptorDAO {
+public interface VSnpSpliceacceptorDAO extends SnpsSpliceAcceptorDAO {
 
 	/**
 	 * JPQL Query - findVSnpSpliceacceptorByPosition

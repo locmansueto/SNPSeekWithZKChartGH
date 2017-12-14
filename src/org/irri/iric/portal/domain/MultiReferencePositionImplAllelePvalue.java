@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  *
  */
 public class MultiReferencePositionImplAllelePvalue extends
-		MultiReferencePositionImpl {
+		MultiReferencePositionImpl implements PositionAllele, PositionLogPvalue {
 
 	private String allele;
 	private Double pvalue;
@@ -74,8 +74,15 @@ public class MultiReferencePositionImplAllelePvalue extends
 		return allele;
 	}
 
-	public Double getPvalue() {
+	public Double getMinusLogPvalue() {
 		return pvalue;
+	}
+
+	@Override
+	public void setMinusLogPvalue(Double pval) {
+		// TODO Auto-generated method stub
+		pvalue=pval;
+		
 	}
 	
 	

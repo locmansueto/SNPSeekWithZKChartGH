@@ -12,10 +12,10 @@
 	
 -->
   
- <!-- error-page>
+ <error-page>
  <exception-type>java.lang.Throwable</exception-type>
- <location>/_error.zul</location>
-</error-page -->
+ <location>/error.zul</location>
+</error-page>
 
   <system-config>
     <disable-event-thread>false</disable-event-thread>
@@ -31,9 +31,9 @@
 		<description>ZK Exception Translation Listener</description>
 		<listener-class>org.zkoss.spring.security.ui.ZkExceptionTranslationListener</listener-class>
 	</listener>
-	<listener>
+	<!-- listener>
 		<listener-class>org.zkoss.zkspringessentials.init.ExampleWebAppInit</listener-class>
-	</listener>
+	</listener -->
 	
 	
 	<listener> 
@@ -117,6 +117,6 @@
 </library-property -->
 
 
-	<custom-attributes org.zkoss.zul.listbox.initRodSize="30"/>
+	<!-- custom-attributes org.zkoss.zul.listbox.initRodSize="30"/ -->
 	
 </zk>

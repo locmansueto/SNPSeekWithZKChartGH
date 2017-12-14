@@ -13,7 +13,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.hibernate.Session;
-
 import org.irri.iric.portal.chado.oracle.domain.VIricstockPhenotype;
 import org.irri.iric.portal.domain.Phenotype;
 import org.irri.iric.portal.domain.Snps2VarsCountmismatch;
@@ -185,15 +184,33 @@ public class VIricstockPhenotypeDAOImpl extends AbstractJpaDao<VIricstockPhenoty
 			return null;
 		}
 	}
+	
+	
+	
+
+	@Override
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByIricStockId(
+			BigDecimal iricStockId) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return findVIricstockPhenotypeByIricStockId(iricStockId, -1, -1);
+	}
+
+	@Override
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByIricStockId( BigDecimal iricStockId, int startResult, int maxRows)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVIricstockPhenotypeByIricStockIdAll", startResult, maxRows, iricStockId);
+		return new LinkedHashSet<VIricstockPhenotype>(query.getResultList());
+	}
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByIricStockId
 	 *
 	 */
 	@Transactional
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByIricStockId(java.math.BigDecimal iricStockId) throws DataAccessException {
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByIricStockId(java.math.BigDecimal iricStockId, String dataset) throws DataAccessException {
 
-		return findVIricstockPhenotypeByIricStockId(iricStockId, -1, -1);
+		return findVIricstockPhenotypeByIricStockId(iricStockId,dataset, -1, -1);
 	}
 
 	/**
@@ -203,10 +220,26 @@ public class VIricstockPhenotypeDAOImpl extends AbstractJpaDao<VIricstockPhenoty
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByIricStockId(java.math.BigDecimal iricStockId, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVIricstockPhenotypeByIricStockId", startResult, maxRows, iricStockId);
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByIricStockId(java.math.BigDecimal iricStockId, String dataset, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVIricstockPhenotypeByIricStockId", startResult, maxRows, iricStockId, dataset);
 		return new LinkedHashSet<VIricstockPhenotype>(query.getResultList());
 	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public VIricstockPhenotype findVIricstockPhenotypeByIricStockId(java.math.BigDecimal iricStockId, String dataset, BigDecimal phenId) throws DataAccessException {
+		Query query = createNamedQuery("findVIricstockPhenotypeByIricStockIdPhenId", -1, -1, iricStockId, phenId, dataset);
+		return (VIricstockPhenotype)query.getSingleResult();
+		//return new LinkedHashSet<VIricstockPhenotype>(query.getResultList());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List  findVIricstockPhenotypeByPhenId(BigDecimal phenId, String dataset) throws DataAccessException {
+		Query query = createNamedQuery("findVIricstockPhenotypesByPhenId", -1, -1, phenId, dataset);
+		return query.getResultList();
+	}
+
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByDefinition
@@ -329,14 +362,14 @@ public class VIricstockPhenotypeDAOImpl extends AbstractJpaDao<VIricstockPhenoty
 	}
 
 	@Override
-	public List findPhenotypesByVariety(Variety var) {
+	public List findPhenotypesByVariety(Variety var, Set ds) {
 		// TODO Auto-generated method stub
 		List list = new java.util.ArrayList();
 		list.addAll(this.findVIricstockPhenotypeByIricStockId(var.getVarietyId()));
 		return list;
 	
 	/*	String sql = "select irp.iric_stock_phenotype_id, irs.iric_stock_id, ct.name, ct.definition, irp.quan_value, irp.qual_value " +
-		 "from iric.iric_stock irs, iric.iric_stock_phenotype irp, iric.cvterm ct " +
+		 "from " + AppContext.getDefaultSchema() + ".iric_stock irs, " + AppContext.getDefaultSchema() + ".iric_stock_phenotype irp, " + AppContext.getDefaultSchema() + ".cvterm ct " +
 		 "where irs.iric_stock_id=irp.iric_stock_id " +
 		 "and irp.phenotype_id=ct.cvterm_id " +
 		 "and irs.iric_stock_id=" + var.getVarietyId() +
@@ -345,8 +378,23 @@ public class VIricstockPhenotypeDAOImpl extends AbstractJpaDao<VIricstockPhenoty
 	
 	}
 	
+	@Override
+	public Phenotype findPhenotypesByVariety(Variety var, String dataset, String phenId) {
+		// TODO Auto-generated method stub
+		return findVIricstockPhenotypeByIricStockId(var.getVarietyId(), dataset, BigDecimal.valueOf(Long.valueOf(phenId)));
+
+	}
+	
+
+	
+	@Override
+	public List findPhenotypesByVariety(String phenId, String dataset) {
+		// TODO Auto-generated method stub
+		return findVIricstockPhenotypeByPhenId(BigDecimal.valueOf(Long.valueOf(phenId)), dataset);
+	}
 	
 	
+
 	public List findPhenotypesByVarietyNameLike(String name) {
 		// TODO Auto-generated method stub
 		List list = new java.util.ArrayList();
@@ -354,7 +402,7 @@ public class VIricstockPhenotypeDAOImpl extends AbstractJpaDao<VIricstockPhenoty
 		return list;
 	
 	/*	String sql = "select irp.iric_stock_phenotype_id, irs.iric_stock_id, ct.name, ct.definition, irp.quan_value, irp.qual_value " +
-		 "from iric.iric_stock irs, iric.iric_stock_phenotype irp, iric.cvterm ct " +
+		 "from " + AppContext.getDefaultSchema() + ".iric_stock irs, " + AppContext.getDefaultSchema() + ".iric_stock_phenotype irp, " + AppContext.getDefaultSchema() + ".cvterm ct " +
 		 "where irs.iric_stock_id=irp.iric_stock_id " +
 		 "and irp.phenotype_id=ct.cvterm_id " +
 		 "and irs.iric_stock_id=" + var.getVarietyId() +
@@ -363,8 +411,7 @@ public class VIricstockPhenotypeDAOImpl extends AbstractJpaDao<VIricstockPhenoty
 	
 	}
 	
-	
-	 
+
 		private List<Phenotype> executeSQL(String sql) {
 			//System.out.println("executing :" + sql);
 			//log.info("executing :" + sql);

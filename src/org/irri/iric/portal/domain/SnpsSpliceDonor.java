@@ -7,12 +7,12 @@ import java.math.BigDecimal;
  * @author LMansueto
  *
  */
-public interface SnpsSpliceDonor extends Snp {
+public interface SnpsSpliceDonor extends Position, Snp {
 
 	
 	/**
 	 * Nipponbare position
 	 * @return
 	 */
-	public BigDecimal getPos();
+	//public BigDecimal getPos();
 }

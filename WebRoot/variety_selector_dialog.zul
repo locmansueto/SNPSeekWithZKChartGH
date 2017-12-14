@@ -1,0 +1,12 @@
+<?page title="Select variety" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="windowSelectVariety" title="Select variety" border="normal"  width="460px"
+    apply="org.irri.iric.portal.genotype.zkui.VarietySelectorDialog"
+    position="center,center" closable="false" popup="true" mode="modal"
+    action="show: slideDown;hide: slideUp">
+<vlayout>
+<listbox id="listboxVariety"/>
+<button id="buttonClose" label="Close" />
+</vlayout>
+</window>
+</zk>

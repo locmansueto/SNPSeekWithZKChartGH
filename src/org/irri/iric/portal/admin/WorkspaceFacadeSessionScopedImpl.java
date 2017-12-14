@@ -3,23 +3,35 @@ package org.irri.iric.portal.admin;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpSession;
+//import javax.servlet.http.HttpSession;
+
 
 import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.domain.VarietyPlus;
+import org.irri.iric.portal.domain.VarietyPlusPlus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Filedownload;
+//import org.zkoss.zk.ui.Sessions;
+//import org.zkoss.zul.Filedownload;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.zkoss.zkmax.zul.Filedownload;
+import org.zkoss.zul.Messagebox;
 
 @Service("WorkspaceFacade")
 @Scope(value="session",  proxyMode = ScopedProxyMode.INTERFACES)
 public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
-	@Autowired
+	
+
+
+	//@Autowired
 	private UserSessionListsManager sessionmgr;
 
 	public WorkspaceFacadeSessionScopedImpl() {
@@ -29,61 +41,6 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 		AppContext.debug("created WorkspaceFacadeSessionScopedImpl:" + this);
 	}
 	
-
-	private HttpSession getHttpSession() {
-		return ((HttpSession)Sessions.getCurrent().getNativeSession());
-	}
-	
-	
-/*	
-	private UserSessionListsManager getSessionManager(HttpSession session) {
-		return null;
-	}
-	
-	@Override
-	public Set getVarietylistNames(HttpSession session) {
-		return null;
-	}
-
-	@Override
-	public Set getVarieties(HttpSession session, String listname) {
-		return null;
-	}
-
-
-	@Override
-	public boolean addVarietyList(HttpSession session, String name, Set varietylist) {
-		return false;
-	}
-
-	@Override
-	public void deleteVarietyList(HttpSession session, String listname) {
-
-	}
-
-
-
-	@Override
-	public Set getSnpPositions(HttpSession nativeSession, String trim) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public boolean addSnpPositionList(HttpSession nativeSession,
-			String trim, Set setMatched) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public Set getSnpPositionListNames(HttpSession nativeSession) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-*/	
 	
 
 	@Override
@@ -99,8 +56,10 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 		
 		//UserSessionListsManager sessionmgr = (UserSessionListsManager)session.getAttribute("manager");
 		
-		sessionmgr = (UserSessionListsManager)AppContext.checkBean(sessionmgr , "UserSessionListsManager");
+		//sessionmgr = (UserSessionListsManager)AppContext.checkBean(sessionmgr , "UserSessionListsManager");
+		if(sessionmgr==null) sessionmgr=new UserSessionListsManager();
 		
+		/*
 		if(sessionmgr==null) {
 			sessionmgr = new UserSessionListsManager();
 		
@@ -110,6 +69,8 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 			session.setAttribute("manager", sessionmgr);
 			AppContext.debug("UserSessionManager created for session " + session.getId() + "  created at:" + session.getCreationTime() );
 		}
+		*/
+		
 		return sessionmgr;
 	}
 	
@@ -117,7 +78,9 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	public Set getVarietylistNames()
 	{
 		UserSessionListsManager sessionmgr = getSessionManager();
-		return sessionmgr.getVarietylistNames();
+		Set s=sessionmgr.getVarietylistNames();
+		AppContext.debug("varlist=" + s.size());
+		return s;
 	}
 
 	@Override
@@ -126,14 +89,27 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 		return sessionmgr.getVarieties(listname);
 	}
 
-
 	@Override
-	public boolean addVarietyList(String name, Set varietylist) {
+	public boolean addVarietyList(String name, Set setVarieties, Set dataset) {
 		// TODO Auto-generated method stub
 		UserSessionListsManager sessionmgr = getSessionManager();
-		return sessionmgr.addVarietyList(name, varietylist);
+		return sessionmgr.addVarietyList(name, setVarieties,  dataset);
 	}
 
+
+	@Override
+	public boolean addVarietyList(String name, Set setVarieties, Set dataset, int hasPhenotype, List phenname, Map<BigDecimal, Object[]> mapVarid2Phen) {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		boolean suc=true;
+		for(Object ds:dataset) {
+			suc=suc && sessionmgr.addVarietyList(name, setVarieties,  (String)ds, hasPhenotype,phenname, mapVarid2Phen);
+		}
+		return suc;
+	}
+	
+	
+	
 	@Override
 	public void deleteVarietyList(String listname) {
 		UserSessionListsManager sessionmgr = getSessionManager();
@@ -149,7 +125,9 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	public Set getLocuslistNames()
 	{
 		UserSessionListsManager sessionmgr = getSessionManager();
-		return sessionmgr.getLocuslistNames();
+		Set s=sessionmgr.getLocuslistNames();
+		AppContext.debug("loclist=" + s.size());
+		return s;
 	}
 
 	@Override
@@ -181,7 +159,9 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	public Set getSnpPositions(String chromosome, String name) {
 		// TODO Auto-generated method stub
 		UserSessionListsManager sessionmgr = getSessionManager();
-		return sessionmgr.getSNPs(chromosome, name);
+		Set s=sessionmgr.getSNPs(chromosome, name);
+		AppContext.debug("snplist=" + s.size());
+		return s;
 	}
 
 
@@ -234,18 +214,64 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	}
 
 	
+	
+	
+	@Override
+	public Set getVarietyQuantPhenotypelistNames(String dataset) {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		return sessionmgr.getVarietyQuantPhenotypelistNames(dataset);
+	}
+
+	@Override
+	public Set getVarietyCatPhenotypelistNames(String dataset) {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		return sessionmgr.getVarietyCatPhenotypelistNames(dataset);
+	}
+
+
+	@Override
+	public Collection getVarietyQuantPhenotypelistNames() {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		return sessionmgr.getVarietyQuantPhenotypelistNames();
+	}
+
+	@Override
+	public Collection getVarietyCatPhenotypelistNames() {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		return sessionmgr.getVarietyCatPhenotypelistNames();
+	}
+	
+	
+
+	@Override
+	public Map getVarietylistPhenotypeValues(String phenotype, String dataset) {
+		// TODO Auto-generated method stub
+		UserSessionListsManager sessionmgr = getSessionManager();
+		Map m=sessionmgr.getVarietyPhenotypeValues(phenotype.split("\\:\\:")[0], dataset, phenotype.split("\\:\\:")[1]);
+		AppContext.debug("1phenvalues for " + phenotype + " , " + m.size());
+		m=sessionmgr.getVarietyPhenotypeValues(phenotype.split("\\:\\:")[0], dataset, phenotype.split("\\:\\:")[1]);
+		AppContext.debug("1phenvalues for " + phenotype + " , " + m.size());
+		return m;
+	}
+	
+	/*
 	@Override
 	public Set getLocusListNames() {
 		// TODO Auto-generated method stub
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.getLocuslistNames();
 	}
-
+*/
 
 	@Override
-	public void uploadLists(String mylist) throws Exception {
+	public boolean uploadLists(String mylist) throws Exception {
+		//Messagebox.show("Temporarily disabled");
 		 UserSessionListsManager sessionmgr = getSessionManager();
-		 sessionmgr.uploadList(mylist);
+		 return sessionmgr.uploadList(mylist);
 	}
 	
 	
@@ -275,7 +301,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	public void downloadLists() {
 		// TODO Auto-generated method stub
 		UserSessionListsManager sessionmgr = getSessionManager();
-		String filename = "mylists-" + AppContext.createTempFilename()+ ".txt";
+		String filename = AppContext.getTempDir() + "mylists-" + AppContext.createTempFilename()+ ".txt";
 		
 		try {
 			
@@ -290,6 +316,8 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 			
 			try {
 				String filetype = "text/plain";
+				//Filedownload.save(  new File(filename), filetype);
+				
 				Filedownload.save(  new File(filename), filetype);
 				} catch(Exception ex)
 				{
@@ -308,7 +336,8 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 		UserSessionListsManager sessionmgr = getSessionManager();
 		sessionmgr.deleteSNPList(chromosome, listname);  
 	}
-	
-	
+
+
+
 	
 }

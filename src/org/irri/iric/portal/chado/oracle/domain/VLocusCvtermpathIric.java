@@ -1,8 +1,9 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
-
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -10,8 +11,8 @@ import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.*;
 import javax.persistence.*;
 
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.CvTerm;
-
 import org.irri.iric.portal.domain.MergedLoci;
 
 /**
@@ -50,6 +51,7 @@ import org.irri.iric.portal.domain.MergedLoci;
 		@NamedQuery(name = "findVLocusCvtermpathIricByObjCvtermContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.objCvterm like ?1"),
 		
 		@NamedQuery(name = "findVLocusCvtermpathIricByObjCvtermCvOrg", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.objCvterm = ?1 and myVLocusCvtermpathIric.cvId=?2 and myVLocusCvtermpathIric.organismId=?3"),
+		@NamedQuery(name = "findVLocusCvtermpathIricByCvOrgInFeatureId", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.cvId=?1 and myVLocusCvtermpathIric.organismId=?2 and myVLocusCvtermpathIric.featureId in (?3)"),
 		
 		
 		@NamedQuery(name = "findVLocusCvtermpathIricByOrganismId", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.organismId = ?1"),
@@ -64,7 +66,7 @@ import org.irri.iric.portal.domain.MergedLoci;
 		@NamedQuery(name = "findVLocusCvtermpathIricBySubjAccContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.subjAcc like ?1"),
 		@NamedQuery(name = "findVLocusCvtermpathIricBySubjCvterm", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.subjCvterm = ?1"),
 		@NamedQuery(name = "findVLocusCvtermpathIricBySubjCvtermContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.subjCvterm like ?1") })
-@Table(schema = "IRIC", name = "V_LOCUS_CVTERM_CVTERMPATH_IRIC")
+@Table( name = "V_LOCUS_CVTERM_CVTERMPATH_IRIC")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VLocusCvtermpathIric")
 public class VLocusCvtermpathIric implements Serializable, MergedLoci, CvTerm, Comparable  {
@@ -668,9 +670,10 @@ public class VLocusCvtermpathIric implements Serializable, MergedLoci, CvTerm, C
 	}
 
 	@Override
-	public String getChr() {
+	public Long getChr() {
 		// TODO Auto-generated method stub
-		return contigName;
+		//return Long.valueOf(getContig());
+		return Long.valueOf(AppContext.guessChrFromString(getContig()));
 	}
 
 	@Override
@@ -725,6 +728,31 @@ public class VLocusCvtermpathIric implements Serializable, MergedLoci, CvTerm, C
 	public String getFGeneshName() {
 		// TODO Auto-generated method stub
 		return this.fgenesh;
+	}
+
+	@Override
+	public Set<String> getOverlappingGenes() {
+		// TODO Auto-generated method stub
+		
+		StringBuffer buff=new StringBuffer();
+		buff.append(  this.name );
+		if(getMSU7Name()!=null && !getMSU7Name().isEmpty()) buff.append(" " + getMSU7Name());
+		if(getRAPRepName()!=null && !getRAPRepName().isEmpty()) buff.append( " " + getRAPRepName());
+		if(getRAPPredName()!=null && !getRAPPredName().isEmpty()) buff.append(" " + getRAPPredName());
+		
+		Set locnamesets=new HashSet();
+		String names[]=buff.toString().trim().split("\\s+|,");
+		for(int i=0; i<names.length; i++)
+			locnamesets.add( names[i].trim() );
+		locnamesets.remove("");
+		return locnamesets;
+		
+	}
+
+	@Override
+	public String getFeatureType() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

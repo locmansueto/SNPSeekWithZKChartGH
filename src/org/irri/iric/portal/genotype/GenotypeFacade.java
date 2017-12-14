@@ -7,10 +7,16 @@ import java.util.List;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Future;
 
+import org.irri.iric.portal.admin.AsyncJobReport;
 import org.irri.iric.portal.domain.Gene;
+import org.irri.iric.portal.domain.GenotypeRunPlatform;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.Scaffold;
+import org.irri.iric.portal.domain.SnpsAllvarsPos;
+import org.irri.iric.portal.domain.SnpsEffect;
+import org.irri.iric.portal.domain.VarietyDistance;
 
 /**
  * API functions used mostly by SNP Query Controller
@@ -44,14 +50,16 @@ public interface GenotypeFacade {
 	 * Get list of variety names
 	 * @return
 	 */
-	public java.util.List<String> getVarnames();
+	//public java.util.List<String> getVarnames();
+	public java.util.List<String> getVarnames(String dataset);
+	public java.util.List<String> getVaraccessions(String dataset);
 	
 	/**
 	 * Get variety subpopulations
 	 * @return
 	 */
-	public java.util.List<String> getSubpopulations();
-	
+	//public java.util.List<String> getSubpopulations();
+	public List<String> getSubpopulations(String dataset);
 	
 	/**
 	 * Get list of gene names
@@ -73,7 +81,9 @@ public interface GenotypeFacade {
 	 * @param subpopulation
 	 * @return
 	 */
-	public Set getVarietiesForSubpopulation(String subpopulation);
+	//public Set getVarietiesForSubpopulation(String subpopulation);
+	public Set getVarietiesForSubpopulation(String subpopulation, String dataset);
+	
 		
 	
 	// Query for Gene instance
@@ -83,6 +93,7 @@ public interface GenotypeFacade {
 	 * @return
 	 */
 	public Gene getGeneFromName(String name, String organism);
+	public List<Gene> getGeneFromNames(Collection names, String organism);
 	
 
 	
@@ -95,8 +106,10 @@ public interface GenotypeFacade {
 	 * @param end
 	 * @return
 	 */
-	public Object[] constructPhylotree(String scale, String chr, int start, int end, String requestid);
+	//public Object[] constructPhylotree(String scale, String chr, int start, int end, String requestid);
+	Object[] constructPhylotree(VariantStringData dataset, PhylotreeQueryParams params);
 	Object[] constructPhylotree(PhylotreeQueryParams params, String requestid);
+	Object[] constructPhylotree(String scale, String chr, int start, int end, String requestid, Set dataset);
 
 	
 	/**
@@ -105,8 +118,9 @@ public interface GenotypeFacade {
 	 * @param newick
 	 * @return
 	 */
-	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile, String newick);
-	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile);
+	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile, String newick, Set dataset);
+	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile, Set dataset);
+	
 
 	// Query for MyList definition
 	/**
@@ -116,7 +130,9 @@ public interface GenotypeFacade {
 	 * @param type
 	 * @return
 	 */
-	public Set checkSNPInChromosome(String chr, Set setSNP, BigDecimal type);
+	//public Set checkSNPInChromosome(String chr, Set setSNP, BigDecimal type);
+	public Set checkSNPInChromosome(String chr, Set setSNP, Set type);
+	
 
 
 	/**
@@ -134,7 +150,8 @@ public interface GenotypeFacade {
 	 * @throws Exception
 	 */
 	VariantStringData queryGenotype(GenotypeQueryParams params) throws Exception;
-	
+	public List<SnpsAllvarsPos> getSNPPoslist(GenotypeQueryParams params);
+	public long  countSNPPoslist(GenotypeQueryParams params);
 
 	/**
 	 * Download the genotype (SNP/Indels) for the entire genome 
@@ -143,6 +160,12 @@ public interface GenotypeFacade {
 	 */
 	void downloadGenotypeGenome(GenotypeQueryParams params) throws Exception;
 
+	
+	/**
+	 * Query and download genotype asynchronously
+	 */
+	public Future<AsyncJobReport> querydownloadGenotypeAsync(GenotypeQueryParams params) throws Exception;
+	
 
 	/**
 	 * Populate the variant table VariantTable with query result VariantStringData
@@ -212,6 +235,31 @@ public interface GenotypeFacade {
 	 * @throws Exception
 	 */
 	void downloadFastaMSAPerLocus(GenotypeQueryParams param, Locus loc, String locusfilename) throws Exception;
+
+	
+	public List<SnpsEffect> getSnpEffects(List poslist);
+	long countGenotype(GenotypeQueryParams params) throws Exception;
+	//Object[] constructMDS(VariantStringData dataset, PhylotreeQueryParams params);
+	public Object[] constructMDS(Map mapVarid2Row, VariantStringData dataset, PhylotreeQueryParams params);
+	public Object[] constructMDS(Map<BigDecimal, Integer> mapVarid2Row, List<VarietyDistance> listdist, String scale);
+	//boolean displayHapotypeImage(String pedfilenameonly, String imageformat); 
+	boolean displayHapotypeImage(String pedfilenameonly, String imageformat, boolean genome_coords,GenotypeQueryParams params, double localWeight, double resFactor, int kgroups, int kheight, String autogroup, String imagesize);
+	//boolean displayHapotypeImage(String pedfilenameonly, String imageformat,  boolean genome_coords, GenotypeQueryParams params, double  localWeight, double resFactor, int kgroups, int kheight, String autogroup);
+	boolean displayHapotypeTreeImage(String haplofilename, String string, double kheight, Integer imagesize);
+	public double getMaxLog2treeheight(String haplofilename);
+	public double[] getMinMaxLog2treeheight(String string);
+	 
+
+	public List<GenotypeRunPlatform> getGenotyperuns(String type);
+	public Set getVarietiesForSubpopulation(String label, Set dataset);
+	public List getVaraccessions(Set dataset);
+	public List getVarnames(Set dataset);
+	public boolean hasNonsyn(Set vs);
+	public List getVarietysets();
+	//public List getVariantsets(Set varietyset);
+	public List getVariantsets(Set varietyset, String type);
+	public Collection getGenotyperuns(Set setds, Set setvs, String varianttype);
+	public List getVariantsets(String dsi, String type);
 
 	
 }

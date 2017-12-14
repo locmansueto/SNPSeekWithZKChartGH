@@ -39,6 +39,12 @@ public interface Variety extends Comparable {
 	 */
 	public String getSubpopulation();
 	
+	/**
+	 * Accession, from whatever source
+	 * @return
+	 */
+	public String getAccession();
+	
 	
 	/**
 	 * Used for query by example
@@ -46,6 +52,8 @@ public interface Variety extends Comparable {
 	 */
 	public void setCountry(String country);
 	public void setSubpopulation(String subpopulation);
+	public void setName(String name);
+	public void setAccession(String accession);
 	
 	/**
 	 * Print fields using delimiter
@@ -59,5 +67,11 @@ public interface Variety extends Comparable {
 	 * @return
 	 */
 	public String getBoxCode();
+	
+	/**
+	 * dataset, defined in VarietyFacade.DATASET_*
+	 * @return
+	 */
+	public String getDataset();
 	
 }

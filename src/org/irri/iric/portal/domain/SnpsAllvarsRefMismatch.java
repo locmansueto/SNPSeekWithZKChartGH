@@ -21,5 +21,8 @@ public interface SnpsAllvarsRefMismatch {
 	 * @return
 	 */
 	public BigDecimal getMismatch();
+	
+	public void setMismatch(BigDecimal mismatch);
+	
 
 }

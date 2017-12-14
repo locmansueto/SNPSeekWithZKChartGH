@@ -3,6 +3,7 @@ package org.irri.iric.portal.ws.rest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,18 +14,20 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jettison.json.JSONException;
+//import org.codehaus.jackson.map.ObjectMapper;
+//import org.codehaus.jettison.json.JSONException;
 import org.irri.iric.portal.AppContext;
-
+import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
+import org.irri.iric.portal.domain.Phenotype;
 import org.irri.iric.portal.variety.VarietyFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Controller;
 
 
 
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Controller("VarietyWebService")
@@ -34,8 +37,10 @@ public class VarietyWS {
 	@Autowired
 	private VarietyFacade variety;
 	private Map mapVarReplace;
-	
+	private String dataset=VarietyFacade.DATASET_SNPINDELV2_IUPAC;
 
+	
+	
 	public VarietyWS() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -60,7 +65,7 @@ public class VarietyWS {
 	  public Response getVarieties() throws JSONException {
 			
 		  try {
-		Set vars =  variety.getGermplasm() ;
+		Set vars =  variety.getGermplasm(dataset) ;
 		
 		ObjectMapper mapper = new ObjectMapper();
 		return Response.status(200).entity( AppContext.replaceString(mapper.writeValueAsString(vars), mapVarReplace )).build();
@@ -78,7 +83,7 @@ public class VarietyWS {
 
 	  public Response getVarietiesById(@PathParam("id") long lId) throws JSONException {
 		  try {
-			return Response.status(200).entity( AppContext.replaceString( new ObjectMapper().writeValueAsString( variety.getMapId2Variety().get(BigDecimal.valueOf(lId)) ), mapVarReplace )).build();
+			return Response.status(200).entity( AppContext.replaceString( new ObjectMapper().writeValueAsString( variety.getMapId2Variety(dataset).get(BigDecimal.valueOf(lId)) ), mapVarReplace )).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
@@ -91,7 +96,7 @@ public class VarietyWS {
 	  public Response getVarietiesBySubpopulation(@PathParam("subpop") String sSubpop) throws JSONException {
  
 		  try {
-			return Response.status(200).entity( AppContext.replaceString( new ObjectMapper().writeValueAsString( variety.getGermplasmBySubpopulation(sSubpop) ), mapVarReplace )).build();
+			return Response.status(200).entity( AppContext.replaceString( new ObjectMapper().writeValueAsString( variety.getGermplasmBySubpopulation(sSubpop,dataset) ), mapVarReplace )).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
@@ -104,7 +109,7 @@ public class VarietyWS {
 	  public Response getVarietiesSubpopulation() throws JSONException {
  
 		  try {
-			return Response.status(200).entity(  new ObjectMapper().writeValueAsString( variety.getSubpopulations() )).build();
+			return Response.status(200).entity(  new ObjectMapper().writeValueAsString( variety.getSubpopulations(dataset) )).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
@@ -117,7 +122,9 @@ public class VarietyWS {
 	  public Response getVarietiesByCountry(@PathParam("country") String sCountry) throws JSONException {
  
 		  try {
-			return Response.status(200).entity( AppContext.replaceString( new ObjectMapper().writeValueAsString(variety.getGermplasmByCountry(sCountry) ), mapVarReplace )).build();
+			  Set s=new HashSet(); s.add(dataset);
+
+			return Response.status(200).entity( AppContext.replaceString( new ObjectMapper().writeValueAsString(variety.getGermplasmByCountry(sCountry, s) ), mapVarReplace )).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
@@ -129,7 +136,7 @@ public class VarietyWS {
 	  public Response getVarietiesCountry() throws JSONException {
  
 		  try {
-			return Response.status(200).entity(  new ObjectMapper().writeValueAsString( variety.getCountries() ) ).build();
+			return Response.status(200).entity(  new ObjectMapper().writeValueAsString( variety.getCountries(dataset) ) ).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
@@ -141,7 +148,9 @@ public class VarietyWS {
 	  public Response getVarietiesNames() throws JSONException {
  
 		  try {
-			return Response.status(200).entity( new ObjectMapper().writeValueAsString( variety.getVarietyNames() )).build();
+			  Set s=new HashSet();
+			  s.add(dataset);
+			return Response.status(200).entity( new ObjectMapper().writeValueAsString( variety.getVarietyNames(s) )).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
@@ -153,7 +162,9 @@ public class VarietyWS {
 	  public Response getVarietiesNameLike(@PathParam("name") String sName) throws JSONException {
  
 		  try {
-			return Response.status(200).entity( new ObjectMapper().writeValueAsString( variety.getGermplasmByNameLike( sName + "%") )).build();
+			  Set s=new HashSet(); s.add(dataset);
+
+			return Response.status(200).entity( new ObjectMapper().writeValueAsString( variety.getGermplasmByNameLike( sName + "%",s) )).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
@@ -169,7 +180,7 @@ public class VarietyWS {
 	  public Response getPhenotypes() throws JSONException {
 			
 		  try {
-			Map pnenotypeId =  variety.getPhenotypeDefinitions();
+			Map pnenotypeId =  variety.getPhenotypeDefinitions(dataset);
 			
 			ObjectMapper mapper = new ObjectMapper();
 			return Response.status(200).entity( AppContext.replaceString(mapper.writeValueAsString(pnenotypeId), mapVarReplace )).build();
@@ -185,7 +196,7 @@ public class VarietyWS {
 	  public Response getPhenotype4AllVarieties(@PathParam("phenid") String sPhenId) throws JSONException {
 			
 		  try {
-			List vars =  variety.getVarietyByPhenotype( sPhenId);
+			List vars =  variety.getVarietyByPhenotype( sPhenId, dataset);
 			
 			ObjectMapper mapper = new ObjectMapper();
 			return Response.status(200).entity( AppContext.replaceString(mapper.writeValueAsString(vars), mapVarReplace )).build();
@@ -195,8 +206,36 @@ public class VarietyWS {
 		  }
 	  }
 
+	  @GET
+	  @Path("/all/phenotypes/{phenid}")
+	  @Produces("application/json")
+	  public Response getVarietyPhenotype( @PathParam("phenid") String sPhenId) throws JSONException {
+			
+		  try {
+			List pnenotypes =  variety.getPhenotypesByGermplasm( sPhenId , dataset );
+			ObjectMapper mapper = new ObjectMapper();
+			return Response.status(200).entity( AppContext.replaceString(mapper.writeValueAsString(pnenotypes), mapVarReplace )).build();
+		  } catch(Exception ex)
+		  {
+			  throw new JSONException(ex);
+		  }
+	  }
 	  
 	  
+	  @GET
+	  @Path("/{varid}/phenotypes/{phenid}")
+	  @Produces("application/json")
+	  public Response getVarietyPhenotypes(@PathParam("varid") String sVarId, @PathParam("phenid") String sPhenId) throws JSONException {
+			
+		  try {
+			Phenotype pnenotypes =  variety.getPhenotypesByGermplasm(  variety.getMapId2Variety(dataset).get( BigDecimal.valueOf(Long.valueOf(sVarId)) ), dataset, sPhenId  );
+			ObjectMapper mapper = new ObjectMapper();
+			return Response.status(200).entity( AppContext.replaceString(mapper.writeValueAsString(pnenotypes), mapVarReplace )).build();
+		  } catch(Exception ex)
+		  {
+			  throw new JSONException(ex);
+		  }
+	  }
 	  
 	  @GET
 	  @Path("/{varid}/phenotypes")
@@ -204,7 +243,9 @@ public class VarietyWS {
 	  public Response getVarietyPhenotypes(@PathParam("varid") String sVarId) throws JSONException {
 			
 		  try {
-			List pnenotypes =  variety.getPhenotypesByGermplasm(  variety.getMapId2Variety().get( BigDecimal.valueOf(Long.valueOf(sVarId)) )  );
+			  Set s=new HashSet(); s.add(dataset);
+
+			List pnenotypes =  variety.getPhenotypesByGermplasm(  variety.getMapId2Variety(dataset).get( BigDecimal.valueOf(Long.valueOf(sVarId)) ) , s );
 			
 			ObjectMapper mapper = new ObjectMapper();
 			return Response.status(200).entity( AppContext.replaceString(mapper.writeValueAsString(pnenotypes), mapVarReplace )).build();
@@ -221,7 +262,7 @@ public class VarietyWS {
 	  public Response getPassports() throws JSONException {
 			
 		  try {
-			Map passportId =   variety.getPassportDefinitions();
+			Map passportId =   variety.getPassportDefinitions(dataset);
 			ObjectMapper mapper = new ObjectMapper();
 			return Response.status(200).entity( AppContext.replaceString(mapper.writeValueAsString(passportId), mapVarReplace )).build();
 		  } catch(Exception ex)
@@ -239,8 +280,9 @@ public class VarietyWS {
 		  try {
 			//List passports =  variety.getPhenotypesByGermplasm(  variety.getMapId2Variety().get( BigDecimal.valueOf(Long.valueOf(sVarId)) )  );
 			  List passports=new ArrayList();
-			  
-			  passports.addAll(  variety.getPassportByVarietyid( BigDecimal.valueOf(Long.valueOf(sVarId)) )  );
+			  Set s=new HashSet(); s.add(dataset);
+
+			  passports.addAll(  variety.getPassportByVarietyid( BigDecimal.valueOf(Long.valueOf(sVarId)) ) );
 			
 			ObjectMapper mapper = new ObjectMapper();
 			return Response.status(200).entity( AppContext.replaceString(mapper.writeValueAsString(passports), mapVarReplace )).build();

@@ -14,7 +14,10 @@ import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.chado.oracle.domain.Feature;
+import org.irri.iric.portal.chado.oracle.domain.FeaturePostgres;
+//import org.irri.iric.portal.chado.oracle.domain.Feature;
+//import org.irri.iric.portal.chado.oracle.domain.FeaturePostgres;
+import org.irri.iric.portal.domain.Feature;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -24,7 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage Feature entities.
  * 
  */
+//@Repository("FeatureDAOOracle")
+//@Repository("FeatureDAOOld")
 @Repository("FeatureDAO")
+//@Transactional("transactionManagerIRICProduction_Oracle")
 @Transactional
 public class FeatureDAOImpl extends AbstractJpaDao<Feature> implements
 		FeatureDAO {
@@ -33,12 +39,13 @@ public class FeatureDAOImpl extends AbstractJpaDao<Feature> implements
 	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { Feature.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { org.irri.iric.portal.chado.oracle.domain.Feature.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Production
 	 *
 	 */
+	private boolean alwaysOracle=false;
 	@PersistenceContext(unitName = "IRIC_Production")
 	private EntityManager entityManager;
 
@@ -454,7 +461,11 @@ public class FeatureDAOImpl extends AbstractJpaDao<Feature> implements
 		//System.out.println("executing :" + sql);
 		AppContext.debug("executing :" + sql);
 		
-		return getSession().createSQLQuery(sql).addEntity(  Feature.class ).list();
+		if(AppContext.isOracle())
+			return getSession().createSQLQuery(sql).addEntity(  Feature.class ).list();
+		else 
+			return getSession().createSQLQuery(sql).addEntity(  FeaturePostgres.class ).list();
+		
 		
 		//return getSession().get	
 	}
@@ -473,6 +484,15 @@ public class FeatureDAOImpl extends AbstractJpaDao<Feature> implements
 	@Override
 	public String getSubSequence(String featurename, long start, long stop, int organismId) throws Exception {
 		// TODO Auto-generated method stub
+	
+		//return getSubSequenceOracle( featurename,  start,  stop,  organismId);
+		
+		if(AppContext.isOracle() || alwaysOracle) return getSubSequenceOracle( featurename,  start,  stop,  organismId);
+		else if(AppContext.isPostgres()) return getSubSequencePostgres( featurename,  start,  stop,  organismId);
+		return null;
+	}
+	
+	private String getSubSequenceOracle(String featurename, long start, long stop, int organismId) throws Exception {
 		
 
 		String sql = "select feature_id, dbxref_id, organism_id, name, "
@@ -485,10 +505,29 @@ public class FeatureDAOImpl extends AbstractJpaDao<Feature> implements
 		if(listFeature.size()==0) throw new RuntimeException("Empty feature with name " + featurename);
 		else if(listFeature.size()>1) throw new RuntimeException("Non-unique feature with name " + featurename);
 		Feature feature = (Feature)listFeature.get(0);
-		return  AppContext.clobStringConversion(feature.getResidues());
+		//return  AppContext.clobStringConversion(feature.getResidues());
+		return  feature.getResidues();
 		
 	}
 
+	
+	private String getSubSequencePostgres(String featurename, long start, long stop, int organismId) throws Exception {
+		
+
+		String sql = "select feature_id, dbxref_id, organism_id, name, "
+				+ "substring(residues," + start +", " + (stop-start+1) + ") residues, "  
+				+ " seqlen, md5checksum, type_id, is_analysis, is_obsolete, timeaccessioned, timelastmodified, uniquename "
+				+ " from public.feature where upper(uniquename)= '" + featurename.toUpperCase() + "'"
+				+ " and organism_id=" + organismId;
+		List listFeature=executeSQL(sql);
+
+		if(listFeature.size()==0) throw new RuntimeException("Empty feature with name " + featurename);
+		else if(listFeature.size()>1) throw new RuntimeException("Non-unique feature with name " + featurename);
+		FeaturePostgres feature = (FeaturePostgres)listFeature.get(0);
+		//return  AppContext.clobStringConversion(feature.getResidues());
+		return  feature.getResidues();
+		
+	}
 	/*
 	@Override
 	public String getSubSequence(BigDecimal featureid, long start, long stop)
@@ -497,7 +536,7 @@ public class FeatureDAOImpl extends AbstractJpaDao<Feature> implements
 		String sql = "select feature_id, dbxref_id, organism_id, name, "
 				+ "substr(residues," + start + ", " + (stop-start+1) + ") residues, "  
 				+ " seqlen, md5checksum, type_id, is_analysis, is_obsolete, timeaccessioned, timelastmodified, uniquename "
-				+ " from iric.feature where feature_id=" + featureid ;
+				+ " from " + AppContext.getDefaultSchema() + ".feature where feature_id=" + featureid ;
 		List listFeature=executeSQL(sql);
 
 		if(listFeature.size()==0) throw new RuntimeException("Empty feature with id " + featureid);

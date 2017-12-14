@@ -14,11 +14,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.Future;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.admin.AsyncJobReport;
+import org.irri.iric.portal.admin.JobsFacade;
 import org.irri.iric.portal.dao.ListItemsDAO;
+import org.irri.iric.portal.dao.LocusDAO;
 import org.irri.iric.portal.dao.SequenceDAO;
 import org.irri.iric.portal.domain.Gene;
 
@@ -30,22 +34,32 @@ import org.irri.iric.portal.domain.Position;
 
 import org.irri.iric.portal.domain.Scaffold;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
+import org.irri.iric.portal.domain.SnpsEffect;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.domain.VarietyDistance;
+import org.irri.iric.portal.genomics.GenomicsFacade;
 import org.irri.iric.portal.variety.VarietyFacade;
 import org.irri.iric.portal.genotype.GenotypeFacade;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
+import org.irri.iric.portal.genotype.HaplotypeImageService;
 import org.irri.iric.portal.genotype.PhylotreeQueryParams;
 import org.irri.iric.portal.genotype.PhylotreeService;
 import org.irri.iric.portal.genotype.VariantStringData;
 import org.irri.iric.portal.genotype.VariantTable;
 import org.irri.iric.portal.genotype.VariantTableArray;
 import org.irri.iric.portal.genotype.VarietiesGenotypeService;
+import org.irri.iric.portal.genotype.zkui.Object2StringMultirefsMatrixModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 
 
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+//import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 import org.irri.iric.portal.CreateZipMultipleFiles;
 
@@ -57,28 +71,76 @@ import org.irri.iric.portal.CreateZipMultipleFiles;
 //@Scope(value="session",  proxyMode = ScopedProxyMode.INTERFACES)
 //@Scope(value="session",  proxyMode = ScopedProxyMode.INTERFACES)
 
+//@EnableAsync
 public class GenotypeFacadeChadoImpl implements GenotypeFacade {
+
+
+
+	@Override
+	public List getVarietysets() {
+		// TODO Auto-generated method stub
+		
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
+		List l=new ArrayList(); l.addAll(listitemsDAO.getDatasets("SNP"));
+		return l;
+		
+	}
+
+
+
+	@Override
+	public List getVariantsets(Set varietyset, String type) {
+		// TODO Auto-generated method stub
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
+		List l=new ArrayList(); l.addAll(listitemsDAO.getSnpsets(varietyset, type));
+		return l;
+	}
+	@Override
+	public List getVariantsets(String varietyset, String type) {
+		// TODO Auto-generated method stub
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
+		List l=new ArrayList(); l.addAll(listitemsDAO.getSnpsets(varietyset, type));
+		return l;
+	}
+
+
+	@Override
+	public boolean hasNonsyn(Set vs) {
+		// TODO Auto-generated method stub
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
+		return listitemsDAO.hasNonsynData(vs);
+	}
+
 
 	private static final Log log = LogFactory.getLog(GenotypeFacadeChadoImpl.class);
 	
 	@Autowired
+	@Qualifier("FeatureDAO")
 	private SequenceDAO sequenceDAO;
 	
-	@Autowired
-	@Qualifier("VarietyFacade")
-	private VarietyFacade varietyfacade;
+	//@Autowired
+	//@Qualifier("VarietyFacade")
+	//private VarietyFacade varietyfacade;
 
 	@Autowired
 	@Qualifier("ListItems")
 	private ListItemsDAO listitemsDAO;
 	
 	@Autowired
+	@Qualifier("VarietiesGenotypeService")
 	private VarietiesGenotypeService genotypeservice;
+
+	@Autowired
+	@Qualifier("VarietiesGenotypeAsyncService")
+	VarietiesGenotypeService genotypeasyncservice;
 	
 	@Autowired
 	@Qualifier("PhylotreeService")
 	private PhylotreeService phyloservice;
-	
+
+	@Autowired
+	@Qualifier("LocusNotesDAO")
+	private LocusDAO locusDAO;
 	
 	public GenotypeFacadeChadoImpl() {
 		super();
@@ -90,13 +152,34 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	
 // ************************************* Methods for UI Listboxes *******************************************************
 
-
 	@Override
-	public Set getVarietiesForSubpopulation(String subpopulation) {
-		// TODO Auto-generated method stub
-		return varietyfacade.getGermplasmBySubpopulation(subpopulation);
+	public List getGenotyperuns(String type) {
+		List l=new ArrayList();
+		l.addAll(listitemsDAO.getPlatforms(type));
+		return l;
 	}
 	
+	@Override
+	public List getGenotyperuns(Set setds, Set setvs, String type) {
+		List l=new ArrayList();
+		l.addAll(listitemsDAO.getPlatforms(setds, setvs, type));
+		return l;
+	}
+	
+
+
+	
+	@Override
+	public Set getVarietiesForSubpopulation(String subpopulation,String dataset) {
+		// TODO Auto-generated method stub
+		return listitemsDAO.getGermplasmBySubpopulation(subpopulation, dataset);
+	}
+	@Override
+	public Set getVarietiesForSubpopulation(String subpopulation, Set dataset) {
+		// TODO Auto-generated method stub
+		return listitemsDAO.getGermplasmBySubpopulation(subpopulation, dataset); // .getGermplasmBySubpopulation(subpopulation, dataset);
+	}
+
 	
 	/**
 	 * Get Gene object from name
@@ -107,23 +190,56 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 		return listitemsDAO.findGeneFromName( name, organism);
 	}
 
+	@Override
+	public List<Gene> getGeneFromNames(Collection names, String organism) {
+		// TODO Auto-generated method stub
+		return listitemsDAO.findGeneFromName(names, organism);
+	}
+
 	/**
 	 * Get varietry names 
 	 */
 	
 	@Override
-	public List<String> getVarnames() {
+	public List<String> getVarnames(String dataset) {
 		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
-		return listitemsDAO.getVarietyNames();
+		return listitemsDAO.getVarietyNames(dataset);
 		
 	}
 	
 	@Override
-	public List<String>getSubpopulations() {
+	public List getVarnames(Set dataset) {
+		// TODO Auto-generated method stub
 		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
-		return listitemsDAO.getSubpopulations();
+		return listitemsDAO.getVarietyNames(dataset);
+	}
+
+	
+	@Override
+	public List<String> getVaraccessions(String dataset) {
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
+		return listitemsDAO.getAccessions(dataset);
+		
+	}
+
+	@Override
+	public List getVaraccessions(Set dataset) {
+		// TODO Auto-generated method stub
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
+		return listitemsDAO.getAccessions(dataset); // . .getVarietyAccessions(dataset);
+	}
+
+	
+
+	@Override
+	public List<String>getSubpopulations(String dataset) {
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
+		return listitemsDAO.getSubpopulations(dataset);
 	}
 	 
+	
+	
+	
 	/**
 	 * Get all gene names
 	 */
@@ -194,12 +310,75 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	
 // ************************************* Methods for Phylogenetic tree construction ********************************************************************************	
 
+	
+	
 	@Override
-	public Object[] constructPhylotree(String scale, String chr, int start, int end, String requestid) {
+	public Object[] constructPhylotree(String scale, String chr, int start, int end, String requestid, Set dataset) {
 		
 		phyloservice = (PhylotreeService)AppContext.checkBean(phyloservice, "PhylotreeService");
-		return phyloservice.constructPhylotree(scale, chr, start, end, requestid);
+		return phyloservice.constructPhylotree(scale, chr, start, end, requestid,  dataset);
 	}	
+
+
+
+	@Override
+	public Object[] constructMDS(Map mapVarid2Row , VariantStringData dataset,
+			PhylotreeQueryParams params) {
+		// TODO Auto-generated method stub
+		phyloservice = (PhylotreeService)AppContext.checkBean(phyloservice, "PhylotreeService");
+		List listdist = phyloservice.calculateDistancePair(dataset, params);
+		return new Object[] { phyloservice.constructMDS(mapVarid2Row, listdist, "1"), listdist};
+	}
+	
+	
+
+	@Override
+	//public double[][] constructMDS(Map<BigDecimal, Integer> mapVarid2Row, List<VarietyDistance> listdist,
+	public Object[] constructMDS(Map<BigDecimal, Integer> mapVarid2Row, List<VarietyDistance> listdist, String scale) {
+		// TODO Auto-generated method stub
+		phyloservice = (PhylotreeService)AppContext.checkBean(phyloservice, "PhylotreeService");
+		
+		return new Object[] { phyloservice.constructMDS(mapVarid2Row, listdist, scale), listdist};
+	}
+
+/*	
+	@Override
+	public boolean displayHapotypeImage(String pedfilenameonly, String imageformat, boolean genomecoord,
+			GenotypeQueryParams params) {
+		// TODO Auto-generated method stub
+		return displayHapotypeImage( pedfilenameonly,  imageformat,  genomecoord,  params, 0.85, 100, 0, 0, "pamk","2"); 
+	}
+*/
+
+
+	@Override
+	public boolean displayHapotypeImage(String pedfilenameonly, String imageformat, boolean genomecoord, GenotypeQueryParams params,  double localWeight, double resFactor, int kgroups, int kheight, String autogroup, String imagesize) {
+		HaplotypeImageService hi = new HaplotypeImageRHeatmapServiceImpl(AppContext.getTempDir());
+		
+			List listCDS=new ArrayList();
+			locusDAO=(LocusDAO)AppContext.checkBean(locusDAO, "LocusNotesDAO");
+			if(params.hasChrPosRange()) {
+				listCDS=locusDAO.getLocusByRegion(params.getsChr()  , params.getlStart(), params.getlEnd(),params.getOrganism(),GenomicsFacade.GENEMODEL_MSU7_ONLY,GenomicsFacade.FEATURETYPE_GENE);
+				listCDS.addAll(locusDAO.getLocusByRegion(params.getsChr()  , params.getlStart(), params.getlEnd(),params.getOrganism(),GenomicsFacade.GENEMODEL_MSU7_ONLY,GenomicsFacade.FEATURETYPE_CDS));
+			} else if( params.hasSnpList() ) {
+				listCDS=null;
+				//listCDS=locusDAO.getLocusByContigPositions(params.getsChr(), params.getPoslist(), params.getOrganism(), 0,  GenomicsFacade.GENEMODEL_MSU7,GenomicsFacade.FEATURETYPE_GENE);
+				//listCDS.addAll(locusDAO.getLocusByContigPositions(params.getsChr(), params.getPoslist(), params.getOrganism(), 0,  GenomicsFacade.GENEMODEL_MSU7,GenomicsFacade.FEATURETYPE_CDS));
+			}
+			AppContext.debug("genes and cds:" + listCDS);
+			return hi.createImage( pedfilenameonly+".ped"  , pedfilenameonly+".map" , pedfilenameonly + ".summary.txt", imageformat,listCDS, genomecoord, resFactor, localWeight, kgroups, kheight, autogroup, imagesize);
+	}
+	
+	
+	
+	@Override
+	public Object[] constructPhylotree(VariantStringData dataset, PhylotreeQueryParams params) {
+		// TODO Auto-generated method stub
+		phyloservice = (PhylotreeService)AppContext.checkBean(phyloservice, "PhylotreeService");
+		return phyloservice.constructPhylotree(dataset, params);
+	}
+
+
 
 	@Override
 	public Object[] constructPhylotree(PhylotreeQueryParams params, String requestid) {
@@ -210,17 +389,17 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 
 	
 	@Override
-	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile)
+	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile, Set dataset)
 	{
 		phyloservice = (PhylotreeService)AppContext.checkBean(phyloservice, "PhylotreeService");
-		return phyloservice.orderVarietiesFromPhylotree(tmpfile);
+		return phyloservice.orderVarietiesFromPhylotree(tmpfile, dataset);
 	}
 		
 	@Override
-	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile, String newick)
+	public Map<BigDecimal,Integer> orderVarietiesFromPhylotree(String tmpfile, String newick, Set dataset)
 	{
 		phyloservice = (PhylotreeService)AppContext.checkBean(phyloservice, "PhylotreeService");
-		return phyloservice.orderVarietiesFromPhylotree(tmpfile, newick);
+		return phyloservice.orderVarietiesFromPhylotree(tmpfile, newick, dataset);
 	}
 		
 	
@@ -240,17 +419,97 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	}
 
 	@Override
+	public List<SnpsAllvarsPos> getSNPPoslist(GenotypeQueryParams params ) {
+		genotypeservice = (VarietiesGenotypeService)AppContext.checkBean(genotypeservice , "VarietiesGenotypeService");
+		return genotypeservice.getSNPPoslist(params);
+	}
+	
+	@Override
+	public long countSNPPoslist(GenotypeQueryParams params) {
+		genotypeservice = (VarietiesGenotypeService)AppContext.checkBean(genotypeservice , "VarietiesGenotypeService");
+		return genotypeservice.countSNPPoslist(params);
+		
+	}
+	
+	
+	@Override
 	public VariantStringData queryGenotype(GenotypeQueryParams params ) throws Exception {
 		genotypeservice = (VarietiesGenotypeService)AppContext.checkBean(genotypeservice , "VarietiesGenotypeService");
 		return genotypeservice.queryVariantStringData(params);
 	}
 
 	@Override
+	public long countGenotype(GenotypeQueryParams params ) throws Exception {
+		genotypeservice = (VarietiesGenotypeService)AppContext.checkBean(genotypeservice , "VarietiesGenotypeService");
+		return genotypeservice.countVariantStringData(params);
+	}
+
+	
+	@Override
 	public VariantTable fillGenotypeTable(VariantTable table, VariantStringData data, GenotypeQueryParams params ) throws Exception {
 		genotypeservice = (VarietiesGenotypeService)AppContext.checkBean(genotypeservice , "VarietiesGenotypeService");
 		return genotypeservice.fillVariantTable( table , data, params);
 	}
 	
+
+	
+
+	@Override
+	public List<SnpsEffect> getSnpEffects(List poslist) {
+		// TODO Auto-generated method stub
+		genotypeservice = (VarietiesGenotypeService)AppContext.checkBean(genotypeservice , "VarietiesGenotypeService");
+		return genotypeservice.getSnpEffects( poslist);
+	}
+
+
+
+	@Override
+	public Future<AsyncJobReport> querydownloadGenotypeAsync(GenotypeQueryParams params)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+		genotypeasyncservice= (VarietiesGenotypeService)AppContext.checkBean(genotypeasyncservice , "VarietiesGenotypeAsyncService");
+		
+		String finalfilename=params.getFilename();
+		
+		//params.setFilename(finalfilename+".tmp");
+		
+		//VarietiesGenotypeAsyncService asyncserv=(VarietiesGenotypeAsyncService)genotypeasyncservice;
+		//VarietiesGenotypeAsyncService asyncserv=(VarietiesGenotypeAsyncService)genotypeasyncservice;
+		//Future future = asyncserv.queryVariantStringDataAsync(params);
+		
+		//Future future = asyncserv.queryVariantStringDataAsync(params);
+		
+		
+		return genotypeasyncservice.queryVariantStringDataAsync(params);
+		
+		/*
+		
+		String fname=new File(finalfilename).getName();
+		
+		
+		//String url= AppContext.getHostname() + "/" + AppContext.getHostDirectory() + "/_jobs.zul?jobid=" + fname;
+		//return new AsyncJobReport(fname , vardata.getMessage(), url, null);
+		
+		/*
+		//Thread.sleep(1000);
+		String fname=new File(finalfilename).getName();
+		//String url=  future.getMessage(); //  AppContext.getHostname() + "/" +  AppContext.getHostDirectory() + "/" + AppContext.getTempFolder() + fname + ".zip";
+		//String url=  f //  AppContext.getHostname() + "/" +  AppContext.getHostDirectory() + "/" + AppContext.getTempFolder() + fname + ".zip";
+		//AppContext.debug("VarietiesGenotypeAsyncService result=" +  future.get());
+
+
+		
+		AppContext.debug("genotypefacade, querydownloadGenotypeAsync vardata= " + (vardata==null?"null":vardata.getMessage()));
+		
+		String url= AppContext.getHostname() + "/" + AppContext.getHostDirectory() + "/_jobs.zul?jobid=" + fname;
+		AsyncJobReport resultReport=new AsyncJobReport(fname , JobsFacade.JOBSTATUS_DONE, url, null);
+		return new AsyncResult<AsyncJobReport>(resultReport); 
+
+		*/
+	}
+
+
 
 	@Override
 	public VariantStringData compare2Varieties(BigDecimal var1, BigDecimal var2,
@@ -265,7 +524,7 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	public void downloadFastaMSAPerLocus(GenotypeQueryParams param, Locus loc, String locusfilename) throws Exception {		
 		
 		
-		sequenceDAO = (SequenceDAO)AppContext.checkBean(sequenceDAO,"sequenceDAO");
+		sequenceDAO = (SequenceDAO)AppContext.checkBean(sequenceDAO,"FeatureDAO");
 		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO,"ListItemsDAO");
 
 	  	boolean showAllRefsAllele=false;
@@ -278,15 +537,16 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	  		} else locusid = locusid +"|" + loc.getChr() + ":" + loc.getFmin() + ".."  + loc.getFmax();
 
 	  		// query genotype
-			GenotypeQueryParams params = new GenotypeQueryParams(param.getColLoci(), loc.getChr(), loc.getFmin().longValue(), loc.getFmax().longValue(), param.isbSNP(), param.isbIndel(), param.isbCoreonly() ,
-				 param.isbMismatchonly(), param.getPoslist(), param.getsSubpopulation(), loc.getUniquename(), param.isbAlignIndels(), showAllRefsAllele );			
+
+			GenotypeQueryParams params = new GenotypeQueryParams(param.getColLoci(), loc.getChr().toString(), loc.getFmin().longValue(), loc.getFmax().longValue(), param.isbSNP(), param.isbIndel(),
+					param.getSnpSet() , param.getDataset(), param.getSetRun(),  param.isbMismatchonly(), param.getPoslist(), param.getsSubpopulation(), loc.getUniquename(), param.isbAlignIndels(), showAllRefsAllele );			
 			VariantStringData queryRawResult = queryGenotype( params);
 			Set setvars= new TreeSet(queryRawResult.getMapVariety2Order().keySet());
 			
 			// format into table
 			VariantTableArray varianttable =  new VariantAlignmentTableArraysImpl();
 			varianttable = (VariantTableArray)fillGenotypeTable(varianttable , queryRawResult, params) ;
-			String locusseq = sequenceDAO.getSubSequence( loc.getChr(), loc.getFmin().longValue() , loc.getFmax().longValue(), listitemsDAO.getOrganismByName(param.getOrganism()).getOrganismId().intValue());
+			String locusseq = sequenceDAO.getSubSequence( loc.getChr().toString(), loc.getFmin().longValue() , loc.getFmax().longValue(), listitemsDAO.getOrganismByName(param.getOrganism()).getOrganismId().intValue());
 			
 			if(varianttable.getPosition().length != varianttable.getReference().length ) throw new RuntimeException();
 			if(varianttable.getPosition().length != varianttable.getVaralleles()[0].length ) throw new RuntimeException();
@@ -393,7 +653,7 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 				
 				Object ivaralleles[]=alleles[ivar];
 				
-				Variety var = listitemsDAO.getMapVarname2Variety().get(varnames[ivar].toUpperCase());
+				Variety var = listitemsDAO.getMapVarname2Variety(params.getDataset()).get(varnames[ivar].toUpperCase());
 				if(var==null) throw new RuntimeException("can't find variety " + varnames[ivar].toUpperCase());
 						
 				buff=new StringBuffer();
@@ -430,6 +690,11 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 			throws Exception {
 		// TODO Auto-generated method stub
 		
+		if(!params.getOrganism().equals(AppContext.getDefaultOrganism())) {
+			throw new RuntimeException("Available only for reference Nipponbare");
+			
+		}
+		
 		boolean bSplitAllele2=false;
 		boolean hasRowHeader=true;
 		boolean hasColHeader=true;
@@ -461,13 +726,17 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 		
 		for(int ichr=1; ichr<=12; ichr++) {
 			//Integer chrlen = getFeatureLength( Integer.toString(ichr));
+			/*
 			String chrstr= Integer.toString(ichr);
 			if(ichr<10)
 				chrstr = "0" + Integer.toString(ichr);
-			Integer chrlen = getFeatureLength( chrstr, params.getOrganism());
-			params.setlStart(0L);
+				*/
+			Integer chrlen = getFeatureLength( "chr" + ichr, params.getOrganism());
+			params.setlStart(1L);
 			params.setlEnd(Long.valueOf(chrlen));
-			params.setsChr( String.valueOf(ichr));
+			//params.setsChr( String.valueOf(ichr));
+			params.setsChr("chr" + ichr);
+			
 			VariantStringData varstrchr = queryGenotype(params);
 			
 			
@@ -524,7 +793,7 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 
 
 	@Override
-	public Set checkSNPInChromosome(String chr, Set setSNP, BigDecimal type) {
+	public Set checkSNPInChromosome(String chr, Set setSNP, Set type) {
 		
 		// TODO Auto-generated method stub
 		
@@ -536,459 +805,34 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 		
 		genotypeservice = (VarietiesGenotypeService)AppContext.checkBean( genotypeservice, "VarietiesGenotypeService");
 		return new HashSet(genotypeservice.checkSNPsInChromosome(chr, listtmp, type));
+	}
+
+	
+	@Override
+	public boolean displayHapotypeTreeImage(String haplofilename, String format, double kheight, Integer imagesize) {
+		// TODO Auto-generated method stub
+		HaplotypeImageService hi = new HaplotypeImageRHeatmapServiceImpl(AppContext.getTempDir());
+		return hi.displayHapotypeTreeImage(haplofilename, format, kheight, imagesize);
 		
 	}
+
+	@Override
+	 public double getMaxLog2treeheight(String haplofilename) {
+		HaplotypeImageService hi = new HaplotypeImageRHeatmapServiceImpl(AppContext.getTempDir());
+		return hi.getMaxLog2treeheight(haplofilename);
+		
+	}
+	
+
+	@Override
+	 public double[] getMinMaxLog2treeheight(String haplofilename) {
+		HaplotypeImageService hi = new HaplotypeImageRHeatmapServiceImpl(AppContext.getTempDir());
+		return hi.getMinMaxLog2treeheight(haplofilename);
+		
+	}
+	
+
+
+
 }
-	
-//
-//	/**
-//	 * Count mismatch between nucelotide sequences, based on several criteria
-//	 * @param var1	variety 1 allele1 string
-//	 * @param var2	variety 2 allele1 string
-//	 * @param var1isref	variety 1 is reference
-//	 * @param var1allele2str	variety 1 allele2 string
-//	 * @param var2allele2str	variety 2 allele2 string
-//	 * @param mapIdx2NonsynAlleles	map table index 2 nonsysynonymous nucleotide set
-//	 * @param setSnpInExonTableIdx	set of table indices in exon
-//	 * @param setNonsynIdx		set of table indices with nonsynonymous (return value)
-//	 * @param isNonsynOnly	include only nonsynonymous
-//	 * @param isColorSynGray	color nonsynonymous as gray
-//	 * @return
-//	 */
-//  public static double countVarpairMismatch(String var1, String var2, boolean var1isref, Map<Integer,Character> var1allele2str, Map<Integer,Character> var2allele2str,	
-//				Map<Integer,Set<Character>> mapIdx2NonsynAlleles, Set setSnpInExonTableIdx, Set setNonsynIdx, boolean isNonsynOnly) {
-//
-//		double misCount = 0;
-//		for(int iStr=0; iStr<var2.length(); iStr++) {
-//			char var1char = var1.charAt(iStr);
-//			char var2char = var2.charAt(iStr);
-//			boolean snpInExon = false;
-//			if(setSnpInExonTableIdx!=null && setSnpInExonTableIdx.contains(iStr)) snpInExon=true;
-//			
-//			Boolean isNonsyn[] = new Boolean[2];
-//			isNonsyn[0] = false;
-//			isNonsyn[1] = false;
-//			Character var1allele2 = null;
-//			if(!var1isref && var1allele2str!=null) var1allele2 =  var1allele2str.get(iStr);
-//			
-//			Character var2allele2 = null;
-//			if(var2allele2str!=null) var2allele2 = var2allele2str.get(iStr);
-//			Set setNonsyns = null;
-//			if(mapIdx2NonsynAlleles!=null) setNonsyns = mapIdx2NonsynAlleles.get(iStr);
-//			
-//			misCount += countVarpairMismatchNuc( var1.charAt(iStr),  var2.charAt(iStr),  var1isref, var1allele2, var2allele2,
-//					setNonsyns, snpInExon,  isNonsyn,  isNonsynOnly);
-//					
-//			if(isNonsyn[0] || isNonsyn[1]) setNonsynIdx.add(iStr);					
-//		}
-//		return misCount;
-//  }
-//	  
-//  public static double countVarpairMismatchNuc(char var1char, char var2char , boolean var1isref,Character var1allele2, Character var2allele2,	
-//		Set<Character> setNonsynAlleles, boolean snpInExon, Boolean isNonsyn[], boolean isNonsynOnly) {
-//		double misCount = 0;
-//			
-//				isNonsyn[0]=false;
-//				isNonsyn[1]=false;
-//				//boolNonsyn = false;
-//				
-//				if( var2allele2 != null) {
-//					if(var2allele2=='*') var2allele2 = var2char;
-//					else if( var2allele2=='0' || var2allele2=='.') var2allele2=null;
-//				}
-//				if( var1allele2 != null) {
-//					if(var1allele2=='*') var1allele2 = var1char; 
-//					else if(var1allele2=='0' || var1allele2=='.') var1allele2=null;
-//				}
-//				
-//				
-//				if(var2char=='0' || var2char=='.'  || var2char == '*')
-//					{}
-//				else if(!var1isref && (var1char=='0' || var1char=='.'  || var1char == '*')) 
-//					{}
-//				else {
-//					if(snpInExon) {
-//						// idx in exon
-//						if(setNonsynAlleles!=null && (setNonsynAlleles.contains(var2char) || (var2allele2!=null && setNonsynAlleles.contains(var2allele2) ) ) )
-//							// var2 allele1 or allele2 in nonsynonymous
-//							isNonsyn[1]=true;
-//						
-//						if(!var1isref && setNonsynAlleles!=null && (setNonsynAlleles.contains(var1char) || (var1allele2!=null && setNonsynAlleles.contains(var1allele2) ) ) )
-//							// var1 is not reference, and var1 allele1 or allele2 in nonsynonymous
-//							isNonsyn[0]=true;
-//					} 
-//					else {
-//						// not in exon, OR no exon information, include in nonsynonymous
-//						isNonsyn[0]=true; 
-//						isNonsyn[1]=true;
-//					}
-//				}
-//				
-//				if(isNonsynOnly && !isNonsyn[0]  && !isNonsyn[0]) return 0;
-//
-//				
-//				if(var1isref) {
-//					// compare with reference
-//					
-//					// assump: no 0 * . $ characters in reference
-//					// if homozygous, mismatch allele1, miscount +1
-//					// if heterozygous, match allele1 or allele2, miscount +0.5
-//					// if not nonsynonymos and isNonsynOnly , no count 
-//					if(var1char==var2char) {
-//						if(var2allele2!=null && var2allele2!=var2char ) misCount+=0.5;
-//					}
-//					else if(var2char!='0' && var2char!='.'  &&  var2char!='*' &&  var2char!='$') {
-//						//check with allele 2
-//						if(var2allele2!=null &&  var2allele2==var1char) misCount+=0.5;
-//						else misCount +=1.0;
-//					}
-//					
-//				} else {
-//					// pairwise comparison
-//					
-//					// check all pairs
-//					if(var1char=='0' || var2char=='0' ||  var1char=='.' || var2char=='.' ||  var1char=='*' || var2char=='*' ) {}
-//					else if(var1char==var2char) {
-//						if(var2allele2!=null && var1char!= var2allele2)
-//							misCount+=0.5;
-//						if(var1allele2!=null && var2char!= var1allele2)
-//							misCount+=0.5;
-//						
-//					}
-//					else {
-//						//var1 allele1 != var2 allele1
-//						if(var1allele2==null && var2allele2==null) misCount+=1;  
-//						else {
-//							//if(var1allele2==null || var2allele2==null) misCount+=0.5;
-//							if(var1allele2!=null && var2char!=var1allele2)
-//								misCount+=0.5;
-//							if(var2allele2!=null && var1char!=var2allele2)
-//								misCount+=0.5;
-//						}
-//					}
-//				}
-//				
-//		return misCount;
-//	}
 
-
-
-// ******************* backup DAO references ******************
-/*
-@Autowired
-private GeneDAO geneservice; // = new org.irri.iric.portal.genotype.service.GeneServiceImpl();
-//@Autowired 
-//@Qualifier("VarietyDAO")
-//private VarietyDAO varservice;
-
-@Autowired
-private ListItemsDAO listitemsDAO;
-
-@Autowired
-@Qualifier("Snps2VarsDAO")
-private  Snps2VarsDAO snp2linesService; // = new Snp2linesHome();
-
-//private  org.irri.iric.portal.genotype.views.ISnp2linesHome snp2linesService; // = new Snp2linesHome();
-
-//@Autowired
-//			//@Qualifier("SnpsAllvarsDAO")
-//@Qualifier("VSnpAllvarsMinDAO")  // no snp_genotype_id
-//private  SnpsAllvarsDAO snpallvarsService; // = new Snp2linesHome();
-
-@Autowired
-@Qualifier("SnpsAllvarsPosDAO")
-private  SnpsAllvarsPosDAO snpallvarsposService; // = new Snp2linesHome();
-
-//@Autowired
-//@Qualifier("MvCoreSnpsDAO")		// using core snps
-//private SnpsAllvarsPosDAO snpcoreallvarsposService;
-
-
-@Autowired
-@Qualifier("SnpsAllvarsRefMismatchDAO")
-private  SnpsAllvarsRefMismatchDAO snpcountallvarsService;
-
-@Autowired 
-//@Qualifier("Snps2VarsCountMismatchDAO")
-@Qualifier("SnpsString2VarsCountMismatchDAO")
-private  Snps2VarsCountMismatchDAO snpcount2linesService; // = new Snp2linesHome();
-
-
-@Autowired
-@Qualifier("SnpcoreMismatchAllelesDAO")	
-private SnpsStringAllvarsDAO snpstringAllvarsDao; // using core snps, allelestring in database
-
-//@Autowired
-//@Qualifier("SnpstringAllelesFileDAO")	// using core snps, allelestring in flatfile
-//private SnpsStringAllvarsDAO snpstringallelesfileDao;
-
-
-@Autowired
-@Qualifier("VSnpRefposindexDAO")		// using core snps, allelestring in database
-private SnpsAllvarsPosDAO snpstringallvarsposService;
-
-@Autowired
-@Qualifier("MismatchCountDAO")
-private SnpsAllvarsRefMismatchDAO refmismatchDAO;
-
-@Autowired
-SnpsHeteroAllvarsDAO snpsheteroDAO;
-
-@Autowired
-SnpsNonsynAllvarsDAO snpsnonsynDAO;
-
-@Autowired
-@Qualifier("VarietyFacade")
-private VarietyFacade varietyfacade;
-
-	//@Autowired
-	//@Qualifier("Snps2VarsDAO")
-	//private  Snps2VarsDAO snp2linesService; 
-	
-	//@Autowired 
-	//@Qualifier("Snps2VarsCountMismatchDAO")
-	//@Qualifier("SnpsString2VarsCountMismatchDAO")
-	//private  Snps2VarsCountMismatchDAO snpcount2linesService; 
-	
-	//@Autowired
-	//@Qualifier("VSnpRefposindexDAO")		// snps reference, allele position file index
-	//private SnpsAllvarsPosDAO snpstringallvarsposService;
-	
-	
-*/
-
-
-
-///**
-// * Contains nucleotide string sequences for each variety based on query criteria
-// * before mismatch (reference or pairwise) counting
-// * @author lmansueto
-// *
-// */
-//class SNPsStringData {
-//	
-//	private String  strRef;
-//	private Map<BigDecimal,String>  mapVarid2Snpsstr;
-//	private Map<BigDecimal, Map<Integer,Character>> mapVarid2SnpsAllele2str;
-//	private Map<BigDecimal, Set<Character>> mapIdx2NonsynAlleles;
-//	private Set<Integer> setSnpInExonTableIdx;
-//	
-//	public SNPsStringData(String strRef, Map mapVarid2Snpsstr,
-//			Map mapVarid2SnpsAllele2str, Map mapIdx2NonsynAlleles,
-//			Set setSnpInExonTableIdx) {
-//		super();
-//		//if(strRef.length()==0) throw new RuntimeException("SNPsStringData: reference has zreo length");
-//		//if(mapVarid2Snpsstr.size()==0) throw new RuntimeException("SNPsStringData: no variety");
-//		//if( ((String)mapVarid2Snpsstr.values().iterator().next()).length()==0) throw new RuntimeException("SNPsStringData: first variety has zero length Snpsstr");
-//		
-//		this.strRef = strRef;
-//		this.mapVarid2Snpsstr = mapVarid2Snpsstr;
-//		this.mapVarid2SnpsAllele2str = mapVarid2SnpsAllele2str;
-//		this.mapIdx2NonsynAlleles = mapIdx2NonsynAlleles;
-//		this.setSnpInExonTableIdx = setSnpInExonTableIdx;
-//	}
-//	public String getStrRef() {
-//		return strRef;
-//	}
-//	public Map<BigDecimal,String> getMapVarid2Snpsstr() {
-//		return mapVarid2Snpsstr;
-//	}
-//	public Map getMapVarid2SnpsAllele2str() {
-//		return mapVarid2SnpsAllele2str;
-//	}
-//	public Map getMapIdx2NonsynAlleles() {
-//		return mapIdx2NonsynAlleles;
-//	}
-//	public Set getSetSnpInExonTableIdx() {
-//		return setSnpInExonTableIdx;
-//	}
-//	
-//}
-//
-//class IndelsStringData {
-//	
-//	private String  strRef;
-//	private Map<BigDecimal,String>  mapVarid2Snpsstr;
-//	private Map<BigDecimal, Map<Integer,Character>> mapVarid2SnpsAllele2str;
-//	
-//	public IndelsStringData(String strRef, Map mapVarid2Snpsstr,
-//			Map mapVarid2SnpsAllele2str) {
-//		super();
-//		//if(strRef.length()==0) throw new RuntimeException("SNPsStringData: reference has zreo length");
-//		//if(mapVarid2Snpsstr.size()==0) throw new RuntimeException("SNPsStringData: no variety");
-//		//if( ((String)mapVarid2Snpsstr.values().iterator().next()).length()==0) throw new RuntimeException("SNPsStringData: first variety has zero length Snpsstr");
-//		
-//		this.strRef = strRef;
-//		this.mapVarid2Snpsstr = mapVarid2Snpsstr;
-//		this.mapVarid2SnpsAllele2str = mapVarid2SnpsAllele2str;
-//	}
-//	public String getStrRef() {
-//		return strRef;
-//	}
-//	public Map<BigDecimal,String> getMapVarid2Snpsstr() {
-//		return mapVarid2Snpsstr;
-//	}
-//	public Map getMapVarid2SnpsAllele2str() {
-//		return mapVarid2SnpsAllele2str;
-//	}
-//	
-//}
-//
-
-//
-//	class Snps2VarsSorter implements Comparator {
-//
-//		@Override
-//		public int compare(Object o1, Object o2) {
-//			// TODO Auto-generated method stub
-//			return ((Snps2Vars)o1).getPos().compareTo(  ((Snps2Vars)o2).getPos() );
-//		}
-//	}
-//
-//	class SnpsAllvarsPosSorter implements Comparator {
-//
-//		@Override
-//		public int compare(Object o1, Object o2) {
-//			// TODO Auto-generated method stub
-//			return ((SnpsAllvarsPos)o1).getPos().compareTo(  ((SnpsAllvarsPos)o2).getPos() );
-//		}
-//	}
-	
-
-//
-//	class SnpsAllvarsPosComparator implements Comparator {
-//		@Override
-//		public int compare(Object o1, Object o2) {
-//			// TODO Auto-generated method stub
-//			SnpsAllvarsPos pos1 = (SnpsAllvarsPos)o1;
-//			SnpsAllvarsPos pos2 = (SnpsAllvarsPos)o2;
-//			return pos1.getPos().compareTo(pos2.getPos());
-//		}
-//	}
-//	
-//	/**
-//	 * Sorts variety by mismatch desc, subpopulation, then country, then id
-//	 * Used in Mismatch ordering for the same number of mismatch,
-//	 * assuming variety from same subpopulation, then country will be closer relative than random 
-//	 * @author lmansueto
-//	 *
-//	 */
-//	class  SnpsStringAllvarsImplSorter implements Comparator {
-//		@Override
-//		public int compare(Object o1, Object o2) {
-//			// TODO Auto-generated method stub
-//			SnpsStringAllvars s1 = (SnpsStringAllvars)o1; 
-//			SnpsStringAllvars s2 = (SnpsStringAllvars)o2;
-//			int ret = -s1.getMismatch().compareTo(s2.getMismatch());
-//			if(ret==0) {
-//				//return s1.getVar().compareTo( s2.getVar());
-//				if(s1 instanceof IndelsStringAllvars && s2 instanceof IndelsStringAllvars) {
-//					IndelsStringAllvars is1 = (IndelsStringAllvars)s1; 
-//					IndelsStringAllvars is2 = (IndelsStringAllvars)s2;
-//					//if(is1.getMapPos2Indels().size()<is2.getMapPos2Indels().size()) ret = 1;
-//					//else if(is1.getMapPos2Indels().size()>is2.getMapPos2Indels().size()) ret = -1;
-//					
-//					//int sumIns1 = 0;
-//					//int sumIns2 = 0;
-//					//int sumDel1 = 0;
-//					//int sumDel2 = 0;
-//					
-//					Set setAlleles1 = new HashSet();
-//					Set setAlleles2 = new HashSet();
-//					Iterator<IndelsAllvars> itIndels1 = is1.getMapPos2Indels().values().iterator();
-//					Iterator<IndelsAllvars> itIndels2 = is1.getMapPos2Indels().values().iterator();
-//					while(itIndels1.hasNext()) {
-//						IndelsAllvars indel = itIndels1.next();
-//						setAlleles1.add( indel.getAllele1() );
-//					}
-//					while(itIndels2.hasNext()) {
-//						IndelsAllvars indel = itIndels2.next();
-//						setAlleles2.add( indel.getAllele1() );
-//					}
-//					Set allele1notin2 = new HashSet(setAlleles1);
-//					allele1notin2.removeAll(setAlleles2);
-//					Set allele2notin1 = new HashSet(setAlleles2);
-//					allele2notin1.removeAll(setAlleles1);
-//					Set uniques = new HashSet(allele1notin2);
-//					uniques.addAll(allele2notin1);
-//					if(allele1notin2.size()>allele2notin1.size())
-//						ret = uniques.size();
-//					else if(allele1notin2.size()<allele2notin1.size())
-//						ret = -uniques.size();
-//					else if(uniques.size()!=0) {
-//						if(setAlleles1.size()>setAlleles2.size())
-//							return setAlleles1.size();
-//						else if(setAlleles1.size()<setAlleles2.size())
-//							return -setAlleles2.size();
-//						else ret = 0;
-//					} else ret=0;
-//				}
-//				
-//				if(ret==0)
-//				{
-//				
-//					Variety v1 =varietyfacade.getMapId2Variety().get(s1.getVar());
-//					Variety v2 =varietyfacade.getMapId2Variety().get(s2.getVar());
-//					if(v1.getSubpopulation()!=null && v2.getSubpopulation()!=null)
-//					{
-//						ret=v1.getSubpopulation().compareTo(v2.getSubpopulation());
-//						if( ret==0 ) {
-//							if(v1.getCountry()!=null && v2.getCountry()!=null) {
-//								ret = v1.getCountry().compareTo(v2.getCountry());
-//								if(ret==0) return v1.getVarietyId().compareTo(v2.getVarietyId());
-//								else return ret;
-//							}
-//						} else return ret;
-//					} else if(v1.getCountry()!=null && v2.getCountry()!=null) {
-//							ret = v1.getCountry().compareTo(v2.getCountry());
-//							if(ret==0) return v1.getVarietyId().compareTo(v2.getVarietyId());
-//							else return ret;
-//					} return v1.getVarietyId().compareTo(v2.getVarietyId());
-//					
-//				} else return ret;
-//				
-//				
-//			} else return ret;
-//		}
-//	}
-//	
-//	/**
-//	 * Sort pairs descending
-//	 * @author lmansueto
-//	 *
-//	 */
-//	class  SnpsString2VarsImplSorter implements Comparator {
-//		@Override
-//		public int compare(Object o1, Object o2) {
-//			// TODO Auto-generated method stub
-//			Snps2VarsCountmismatch s1 = (Snps2VarsCountmismatch)o1; 
-//			Snps2VarsCountmismatch s2 = (Snps2VarsCountmismatch)o2;
-//			return -s1.getMismatch().compareTo(s2.getMismatch());
-//		}
-//	}
-//	
-//	
-//	class VarSubpopCntrySorter implements Comparator {
-//		@Override
-//		public int compare(Object o1, Object o2) {
-//			// TODO Auto-generated method stub
-//			Variety v1 =(Variety)o1;
-//			Variety v2 =(Variety)o2;
-//			if(v1.getSubpopulation()!=null && v2.getSubpopulation()!=null)
-//			{
-//				int ret=v1.getSubpopulation().compareTo(v2.getSubpopulation());
-//				if( ret==0 ) {
-//					if(v1.getCountry()!=null && v2.getCountry()!=null) {
-//						ret = v1.getCountry().compareTo(v2.getCountry());
-//						if(ret==0) return v1.getVarietyId().compareTo(v2.getVarietyId());
-//						else return ret;
-//					}
-//				} else return ret;
-//			} else if(v1.getCountry()!=null && v2.getCountry()!=null) {
-//					int ret = v1.getCountry().compareTo(v2.getCountry());
-//					if(ret==0) return v1.getVarietyId().compareTo(v2.getVarietyId());
-//					else return ret;
-//			} return v1.getVarietyId().compareTo(v2.getVarietyId());
-//		}
-//	}
-//	

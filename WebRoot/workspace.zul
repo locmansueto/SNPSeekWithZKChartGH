@@ -1,0 +1,178 @@
+<?page title="My Workspace" contentType="text/html;charset=UTF-8"?>
+<?link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" ?>
+<?link rel="icon" href="/favicon.ico" type="image/x-icon" ?>
+
+<?component name="tipBox" macroURI="tipBox.zul"?>
+
+<?script type="text/javascript"><![CDATA[
+window.Boot_progressbox = function (){}
+]]>?>
+
+
+<zk>
+<window  id="winWorkspace2" border="none">
+
+
+<zscript>
+		import org.zkoss.zkplus.spring.SpringUtil;     
+		import org.irri.iric.portal.admin.WorkspaceFacade;
+		import javax.servlet.http.HttpSession;
+		
+		import org.zkoss.zul.SimpleListModel;
+		import org.zkoss.zk.ui.Sessions;
+
+		import org.irri.iric.portal.AppContext;
+		import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
+		import org.irri.iric.portal.genomics.zkui.LocusListItemRenderer;
+		import org.irri.iric.portal.admin.zkui.SNPChrPositionListitemRenderer;
+		import java.util.*;
+		
+
+
+       	WorkspaceFacade workspace = (WorkspaceFacade)SpringUtil.getBean("WorkspaceFacade");
+       	List listVarlistNames = new ArrayList();
+       	//if(listVarlistNames.size()==0) listVarlistNames.add("");
+       	//listVarlistNames.addAll( workspace.getVarietylistNames( (HttpSession)Sessions.getCurrent().getNativeSession()  ));
+       	listVarlistNames.addAll( workspace.getVarietylistNames(  ));
+       	AppContext.debug("listVarlistNames=" + listVarlistNames.size());
+
+		List listContigs =  new ArrayList();
+			listContigs.add("");listContigs.add("chr01");listContigs.add("chr02");listContigs.add("chr03");listContigs.add("chr04");listContigs.add("chr05");listContigs.add("chr06");
+		listContigs.add("chr07");listContigs.add("chr08");listContigs.add("chr09");listContigs.add("chr10");listContigs.add("chr11");listContigs.add("chr12");listContigs.add("ANY");
+	
+		AppContext.debug("myworkspace.zul init done..")
+	
+</zscript>
+
+
+<hbox height="20px"/>
+
+<div align="center">
+<label value="My Lists" style="font-size:20px;font-weight:bold;color:green;"/>
+<hbox height="10px" />
+<vbox>
+<label value="NOTE: Lists are not saved in the server and available only for this session." style="font-size:12px;color:blue" />
+<label value="Click Download button to save your created lists for future reference." style="font-size:12px;color:blue" />
+<label value="Click Upload button to recreate your list from previously downloaded MyList file." style="font-size:12px;color:blue" />
+</vbox>
+</div>
+
+
+<hbox height="10px"/>
+<hbox>
+<vbox width="200px"/>
+
+<!--  left side panes  -->
+<vbox>
+<hbox>
+<label value="List Type:  " pre="true" style="font-size:14px;font-weight:bold;color:gray;"/> 
+<radiogroup visible="true">
+    <hlayout>
+      <radio id="radioVariety" label="Variety" selected="true"/>
+      <radio id="radioSNP" label="SNP"/>
+      <radio id="radioLocus" label="Locus"/>
+    </hlayout>
+</radiogroup>
+</hbox>
+
+<hbox height="5px"/>
+
+<label value="Select list:  " pre="true" style="font-size:14px;font-weight:bold;color:gray;"/>
+<listbox id="listboxListnames" width="200px" height="100px"  checkmark="false" multiple="true" seltype="multiple"/>
+<zscript><![CDATA[			
+	 SimpleListModel listmodel =  new SimpleListModel(listVarlistNames);
+	 listmodel.setMultiple(true);
+	 listboxListnames.setModel(listmodel);
+ ]]></zscript>
+
+<hbox>
+<button id="buttonCreate" label="Create"/>
+<button id="buttonSave" label="Save" visible="false"/>
+<button id="buttonCancel" label="Cancel" visible="false"/>
+<button id="buttonDelete" label="Delete" disabled="true" />
+</hbox>
+<!-- button id="buttonQueryIric" label="Query IRIC" visible="false"/ -->
+
+<hbox height="20px"/>
+<label value="Set Operations:  " pre="true" style="font-size:14px;font-weight:bold;color:gray;"/>
+<label value="(enabled on multiple list selection,"/>
+<label value="press Ctrl+click to select multiple items)"/>
+
+<div id="divSetOps" visible="false">
+<hbox height="5px"/>
+<hbox>
+<label value="Result list name: " pre="true"/>
+<textbox id="textboxResultSet" value=""/>
+</hbox>
+<hbox>
+<button id="buttonUnion" label="Union"/>
+<vbox width="30px"/>
+<button id="buttonIntersect" label="Intersect"/>
+</hbox>
+</div>
+<hbox height="5px"/>
+<button id="buttonAminusB" label="A minus B" visible="false"/>
+<hbox height="5px"/>
+<button id="buttonBminusA" label="B minus A"  visible="false"/>
+
+
+<hbox height="20px"/>
+<hbox>
+<button id="buttonDownload" label="Download"/>
+<hbox width="20px"/>
+<button id="buttonUpload" label="Upload"/>
+<!--  fileupload label="Upload"/ -->
+</hbox>
+<hbox height="10px"/>
+<hbox>
+<label value="Save list on this computer "  pre="true" visible="false"/>
+<checkbox id="checkboxSavedata" checked="false" visible="false"/>
+</hbox>
+</vbox>
+
+<!--  right side panes -->
+
+
+<vbox width="80px"/>
+<vbox id="vboxListMembers" visible="false">
+<label id="labelNItems" visible="true"/>
+
+<listbox id="listboxVarieties" width="700px" height="500px" visible="false" mold="paging" pageSize="50">
+<listhead sizable="true">
+           <listheader label="NAME" />
+           <listheader label="IRIS ID" />
+           <listheader label="ACCESSION" />
+           <listheader label="SUBPOPULATION" />
+           <listheader label="COUNTRY" />
+           <listheader id="listheaderPhenotype" label="PHENOTYPE VALUE" visible="false"/>
+</listhead>
+</listbox>
+<listbox id="listboxPositions" width="500px" height="500px" visible="false" mold="paging" pageSize="50">
+<listhead sizable="true">
+           <listheader id="listheaderPosition" label="CHR : POSITION" />
+</listhead>
+</listbox>
+<listbox id="listboxLocus" width="700px" height="500px" visible="false" mold="paging" pageSize="50">
+<listhead sizable="true">
+           <listheader label="NAME" />
+           <listheader label="CONTIG" />
+           <listheader label="START" />
+           <listheader label="STOP" />
+           <listheader label="STRAND" />
+           <listheader label="DESCRIPTION" />
+</listhead>
+</listbox>
+</vbox>
+			    <zscript><![CDATA[
+			        listboxPositions.setItemRenderer( new SNPChrPositionListitemRenderer());
+			        listboxVarieties.setItemRenderer( new VarietyListItemRenderer());
+			        listboxLocus.setItemRenderer( new LocusListItemRenderer());
+			    ]]></zscript>
+			    
+			    
+
+</hbox>
+
+
+</window>
+</zk>

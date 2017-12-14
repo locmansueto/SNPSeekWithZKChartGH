@@ -24,9 +24,11 @@
 		</param-value>
 	</context-param>
 	<listener>
-		<listener-class>
-			org.zkoss.spring.web.context.CoreContextListener
-		</listener-class>
+    <!-- listener-class>org.zkoss.spring.web.context.CoreContextListener</listener-class -->
+    <!--  listener-class>org.zkoss.zk.ui.util.GenericForwardComposer</listener-class -->
+    <listener-class>org.zkoss.zk.ui.select.SelectorComposer</listener-class>
+	 </listener>
+  
 	</listener>
 	<listener>
 		<listener-class>

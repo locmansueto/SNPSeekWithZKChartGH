@@ -7,15 +7,15 @@ package org.irri.iric.portal.ws.rest;
 
 
 import java.math.BigDecimal;
-
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 
 
 
@@ -27,24 +27,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-
 import javax.ws.rs.core.Response;
 
 
 
-import org.codehaus.jackson.map.ObjectMapper;
 
-import org.codehaus.jettison.json.JSONException;
-
+//import org.codehaus.jackson.map.ObjectMapper;
+//import org.codehaus.jettison.json.JSONException;
 import org.irri.iric.portal.AppContext;
-
-
-
-
-
-
-
-
+import org.irri.iric.portal.admin.WorkspaceFacade;
+import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
 import org.irri.iric.portal.genotype.GenotypeFacade;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantStringData;
@@ -65,6 +57,9 @@ import org.irri.iric.portal.ws.entity.VariantTableWS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
@@ -85,18 +80,24 @@ public class GenotypeWS {
 	@Autowired
 	@Qualifier("GenotypeFacade")
 	private GenotypeFacade genotype;
+	@Autowired
+	private WorkspaceFacade workspace;
+
 	
 	@Autowired
 	private VarietyFacade variety;
 	
+	private String dataset=VarietyFacade.DATASET_SNPINDELV2_IUPAC;
 	
 	private Map<String,String> mapVarReplace = new HashMap(); 
+	
 	
 	public GenotypeWS() {
 		super();
 		// TODO Auto-generated constructor stub
 		genotype = (GenotypeFacade)AppContext.checkBean(genotype, "GenotypeFacade");
 		variety = (VarietyFacade)AppContext.checkBean(variety, "VarietyFacade");
+		workspace = (WorkspaceFacade)AppContext.checkBean(workspace, "WorkspaceFacade");
 		AppContext.debug("GenotypeWS started");
 
 		// rename some variable names
@@ -105,6 +106,19 @@ public class GenotypeWS {
 		mapVarReplace.put("oriCountry", "country");
 		
 	}
+	
+	
+	
+/*
+	private String getDataset() {
+		return dataset;
+	}
+	*/
+
+	private Set getDataset() {
+		Set s=new HashSet(); s.add(dataset);
+		return s;
+	}
 
 	  @GET
 	  @Path("/variety")
@@ -112,7 +126,9 @@ public class GenotypeWS {
 	  public Response getVarieties() throws JSONException {
 			
 	  try {
-		Set vars =  variety.getGermplasm() ;
+		//Set vars =  variety.getGermplasm(getDataset()) ;
+				
+		List vars =  variety.getVarietyNames(getDataset()) ;
 		
 		ObjectMapper mapper = new ObjectMapper();
 		return Response.status(200).entity( AppContext.replaceString(mapper.writeValueAsString(vars), mapVarReplace )).build();
@@ -130,7 +146,7 @@ public class GenotypeWS {
 	  public Response getVarietiesById(@PathParam("id") long lId) throws JSONException {
  
 		  try {
-			return Response.status(200).entity( AppContext.replaceString( new ObjectMapper().writeValueAsString( variety.getMapId2Variety().get(BigDecimal.valueOf(lId)) ), mapVarReplace )).build();
+			return Response.status(200).entity( AppContext.replaceString( new ObjectMapper().writeValueAsString( variety.getMapId2Variety(dataset).get(BigDecimal.valueOf(lId)) ), mapVarReplace )).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
@@ -143,7 +159,7 @@ public class GenotypeWS {
 	  public Response getVarietiesBySubpopulation(@PathParam("subpop") String sSubpop) throws JSONException {
  
 		  try {
-			return Response.status(200).entity( AppContext.replaceString( new ObjectMapper().writeValueAsString( variety.getGermplasmBySubpopulation(sSubpop) ), mapVarReplace )).build();
+			return Response.status(200).entity( AppContext.replaceString( new ObjectMapper().writeValueAsString( variety.getGermplasmBySubpopulation(sSubpop, getDataset() ) ), mapVarReplace )).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
@@ -156,7 +172,7 @@ public class GenotypeWS {
 	  public Response getVarietiesSubpopulation() throws JSONException {
  
 		  try {
-			return Response.status(200).entity(  new ObjectMapper().writeValueAsString( variety.getSubpopulations() )).build();
+			return Response.status(200).entity(  new ObjectMapper().writeValueAsString( variety.getSubpopulations( getDataset() ) )).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
@@ -169,7 +185,8 @@ public class GenotypeWS {
 	  public Response getVarietiesByCountry(@PathParam("country") String sCountry) throws JSONException {
  
 		  try {
-			return Response.status(200).entity( AppContext.replaceString( new ObjectMapper().writeValueAsString(variety.getGermplasmByCountry(sCountry) ), mapVarReplace )).build();
+			  Set s=new HashSet(); s.add(dataset);
+			return Response.status(200).entity( AppContext.replaceString( new ObjectMapper().writeValueAsString(variety.getGermplasmByCountry(sCountry, s) ), mapVarReplace )).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
@@ -181,7 +198,7 @@ public class GenotypeWS {
 	  public Response getVarietiesCountry() throws JSONException {
  
 		  try {
-			return Response.status(200).entity(  new ObjectMapper().writeValueAsString( variety.getCountries() ) ).build();
+			return Response.status(200).entity(  new ObjectMapper().writeValueAsString( variety.getCountries(dataset) ) ).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
@@ -193,7 +210,7 @@ public class GenotypeWS {
 	  public Response getVarietiesNames() throws JSONException {
  
 		  try {
-			return Response.status(200).entity( new ObjectMapper().writeValueAsString( variety.getVarietyNames() )).build();
+			return Response.status(200).entity( new ObjectMapper().writeValueAsString( variety.getVarietyNames( getDataset() ) )).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
@@ -205,14 +222,49 @@ public class GenotypeWS {
 	  public Response getVarietiesNameLike(@PathParam("name") String sName) throws JSONException {
  
 		  try {
-			return Response.status(200).entity( new ObjectMapper().writeValueAsString( variety.getGermplasmByNameLike( sName + "%") )).build();
+			return Response.status(200).entity( new ObjectMapper().writeValueAsString( variety.getGermplasmByNameLike( sName + "%", getDataset() ) )).build();
 		  } catch(Exception ex) {
 			  throw new JSONException(ex);
 		  }
 		
 	  }
 
-
+	  @GET
+	  @Path("/snp/list")
+	  @Produces("application/json")
+	  @ResponseBody
+	  public Response getGeneLists() throws JSONException {
+		  
+		  try {
+			  List listnames=new ArrayList();
+			  listnames.addAll(workspace.getSnpPositionListNames());
+			  ObjectMapper mapper = new ObjectMapper();
+			  return Response.status(200).entity( AppContext.replaceString(mapper.writeValueAsString(listnames), mapVarReplace )).build();
+		  } catch(Exception ex)
+		  {
+			  throw new JSONException(ex);
+		  }
+		  
+	  }
+	  
+	  @GET
+	  @Path("/gene/list/{name}")
+	  @Produces("application/json")
+	  @ResponseBody
+	  public Response getGeneInLists(@PathParam("name") String listname) throws JSONException {
+		  
+		  try {
+			  List listloc=new ArrayList();
+			  listloc.addAll(workspace.getSnpPositions("any", listname));
+			  ObjectMapper mapper = new ObjectMapper();
+			  return Response.status(200).entity( AppContext.replaceString(mapper.writeValueAsString(listloc), mapVarReplace )).build();
+		  } catch(Exception ex)
+		  {
+			  throw new JSONException(ex);
+		  }
+		  
+	  }
+	  
 	  @Path("/gettable")
 	  @GET
 	  @Produces("application/json")
@@ -323,10 +375,26 @@ public class GenotypeWS {
 				 boolean bCoreonly, boolean bMismatchonly, Collection poslist, String sSubpopulation, String sLocus, boolean bAlignIndels) throws Exception {
 		  
 		  		boolean showAllRefsAllele=false;
-				GenotypeQueryParams params = new GenotypeQueryParams(colVarIds,sChr, lStart, lEnd, bSNP, bIndel, bCoreonly ,
-					bMismatchonly, poslist,  sSubpopulation, sLocus, bAlignIndels, showAllRefsAllele );			
-				
+				//GenotypeQueryParams params = new GenotypeQueryParams(colVarIds,sChr, lStart, lEnd, bSNP, bIndel, (bCoreonly?GenotypeQueryParams.SNP_CORE:GenotypeQueryParams.SNP_FILTERED) ,
+				//	bMismatchonly, poslist,  sSubpopulation, sLocus, bAlignIndels, showAllRefsAllele );			
+
+		  		Set sVS=new HashSet();
+		  		if(bCoreonly) sVS.add("3kcore");
+		  		else  sVS.add("3kfiltered");
+		  		Set sVar=new HashSet();
+		  		sVar.add("3k");
+		  		Set sRun=new HashSet();
+		  		sRun.add("3kfiltered");
+		  		
+		  		
+				GenotypeQueryParams params = new GenotypeQueryParams(colVarIds,sChr, lStart, lEnd, bSNP, bIndel, sVS , sVar, sRun, 
+				bMismatchonly, poslist,  sSubpopulation, sLocus, bAlignIndels, showAllRefsAllele );			
+
+		  		
+				params.setDataset(dataset);
 				VariantTableArray varianttable =  new VariantAlignmentTableArraysImpl();
+				
+				AppContext.logQuery("WS " + params.toString());
 				
 				VariantStringData queryRawResult = genotype.queryGenotype( params);
 				varianttable = new VariantTableWS( (VariantTableArray)genotype.fillGenotypeTable(varianttable , queryRawResult, params) );

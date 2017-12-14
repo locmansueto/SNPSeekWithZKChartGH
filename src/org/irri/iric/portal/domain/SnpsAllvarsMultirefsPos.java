@@ -35,4 +35,13 @@ public interface SnpsAllvarsMultirefsPos extends SnpsAllvarsPos {
 	 */
 	Integer getAlignCount(String organism);
 	
+	/**
+	 * Get allele for reference
+	 * @param organism
+	 * @return
+	 */
+	String getAllele(String organism);
+
+	
+	
 }

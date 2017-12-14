@@ -28,7 +28,7 @@ import org.irri.iric.portal.domain.Snp;
 
 
 
-@Table(schema = "IRIC", name = "V_SNP_IN_EXON")
+@Table( name = "V_SNP_IN_EXON")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VSnpInExon")
 public class VSnpInExon implements Serializable, Snp, Comparable {

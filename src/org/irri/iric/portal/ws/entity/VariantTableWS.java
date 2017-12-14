@@ -3,6 +3,8 @@ package org.irri.iric.portal.ws.entity;
 
 
 
+import java.util.List;
+
 import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantStringData;
@@ -75,6 +77,15 @@ public class VariantTableWS implements org.irri.iric.portal.genotype.VariantTabl
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+
+	@Override
+	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params, List listCDS)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public VariantStringData getVariantStringData() {
@@ -86,6 +97,12 @@ public class VariantTableWS implements org.irri.iric.portal.genotype.VariantTabl
 	public String[] getContigs() {
 		// TODO Auto-generated method stub
 		return table.getContigs();
+	}
+
+	@Override
+	public String[] getSNPGenomicAnnotation(GenotypeQueryParams params) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

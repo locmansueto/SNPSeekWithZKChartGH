@@ -295,6 +295,18 @@ public class IndelAllele implements Serializable, IndelsAllvarsPos {
 		//return 0;
 		throw new RuntimeException("Unexpected IndelAllele.compareTo()");
 	}
+
+	@Override
+	public void setAltnuc(String altnuc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getAltnuc() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

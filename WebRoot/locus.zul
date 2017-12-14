@@ -5,37 +5,9 @@
 
 <!--  *********************   INITIALIZE DISPLAY VARIABLES  *********************************************************************************** -->
 
-<zscript>
-        import org.zkoss.zkplus.spring.SpringUtil;      
-		import org.irri.iric.portal.genomics.GenomicsFacade;
-		import org.irri.iric.portal.admin.WorkspaceFacade;
-		import org.irri.iric.portal.AppContext;
-		import org.irri.iric.portal.domain.Scaffold;
-		import java.util.Iterator;
-		
-		WorkspaceFacade workspace  = (WorkspaceFacade)SpringUtil.getBean("WorkspaceFacade");
-				
-		GenomicsFacade genomics = (GenomicsFacade)SpringUtil.getBean("GenomicsFacade");
-		List listOrgs = genomics.getOrganisms();
-		
-		
-		List listLocuslist = new ArrayList();
-		listLocuslist.add("");
-		listLocuslist.addAll( workspace.getLocuslistNames() );
-		listLocuslist.add("create new list...");
-		
-		List listMySnps = new ArrayList();
-		listMySnps.add("");
-		listMySnps.addAll( workspace.getSnpPositionListNames());
-		listMySnps.add("create new list...");
-		
-		
-		
-		
-</zscript>
 
 
-<window border="none" apply="org.irri.iric.portal.genomics.zkui.LocusQueryController">
+<window id="winLocus" border="none" apply="org.irri.iric.portal.genomics.zkui.LocusQueryController">
 
 <hbox height="260px" >
 <grid id="gridQuery" width="100%" height="300px">
@@ -52,24 +24,21 @@
 <hbox>
 <label value="Reference genome:" style="font-size:14px;font-weight:bold;color:gray;"/>
 <vbox width="10px"/>
-<listbox id="listboxOrganism" mold="select" disabled="false"/>
-    <zscript><![CDATA[			
-					listOrgs.add("ALL");  
-			        listboxOrganism.setModel(new SimpleListModel(listOrgs));
-			        listboxOrganism.setSelectedIndex(0);
-			        //listboxOrganism.setDisabled(true);
-			    ]]></zscript>
+<listbox id="listboxOrganism" class="reference-genome" mold="select" disabled="false"/>
+
 <vbox width="30px"/>			    
 <label value="Search by:" style="font-size:14px;font-weight:bold;color:gray;"/>
 <vbox width="10px"/>
-<listbox id="listboxSearchby" mold="select">
-<listitem selected="true" label="Gene function"/>
+<listbox id="listboxSearchby" class="search-by"  mold="select">
+<listitem  label="Annotation (by source)"/>
+<listitem selected="true" label="Gene name/symbol/function"/>
 <listitem  label="Gene Ontology term"/>
 <!--  listitem  label="Plant and Trait Ontology term"/ -->
 <listitem  label="Trait"/>
 <listitem  label="Region"/>
 <listitem  id="listitemSequence" label="Sequence"/>
-<listitem  label="My SNP List"/>
+<listitem  label="SNP Annotator (My SNP List)"/>
+<listitem  label="Gene set/networks"/>
 </listbox>
 
 <div id="divGeneModel">
@@ -77,9 +46,9 @@
 <vbox width="30px"/>			    
 <label value="Gene model:" style="font-size:14px;font-weight:bold;color:gray;"/>
 <vbox width="10px"/>
-<listbox id="listboxAnnotation" mold="select">
-<listitem  value="msu7" label="MSU7" selected="true"/>
-<listitem  value="rap" label="RAP"/>
+<listbox id="listboxAnnotation" class="gene-model" mold="select">
+<listitem  value="msu7only" label="MSU7" selected="true"/>
+<listitem  value="raponly" label="RAP"/>
 <listitem  value="iric" label="Merged MSU7,RAP,FGenesh (by IRIC)"/>
 <!--  listitem  value="all" label="All"/ -->
 </listbox>
@@ -94,18 +63,48 @@
 </row>
    
 <!--  *********************   QUERY BY GENE FUNCTION  *********************************************************************************** -->   
-<row spans="4" id="rowGeneFunction" visible="true">
+<row spans="4" id="rowGeneFunction" visible="false">
 
 <!--  label value="Gene function" style="font-size:14px;font-weight:bold;color:gray;"/ -->
 <hbox>
-<vbox width="100px"/>
-<textbox id="textboxGenefunction" width="300px" />
-<vbox width="20px"/>
-<button id="searchGenefunctionButton" label="Search by function"   style="font-size:14px;font-weight:bold;color:gray;"
+<vbox width="50px"/>
+<textbox id="textboxGenefunction" class="input1-keyword" width="300px" />
+<vbox width="50px"/>
+<listbox id="listboxGenefunctionMatch" mold="select" class="gene-function-select" width="150px">
+<listitem label="whole word only" selected="true"/>
+<listitem label="substring"/>
+<listitem label="exact match"/>
+<listitem label="regular expression"/>
+</listbox>
+<vbox width="10px"/>
+<button id="searchGenefunctionButton" label="Search by annotation"   style="font-size:14px;font-weight:bold;color:gray;"
   width="200px" height="30px"  autodisable="self"
   />
 </hbox>
 </row>
+
+<!--  *********************   QUERY BY GENE NAME/SYMBOLS  *********************************************************************************** -->   
+<row spans="4" id="rowGeneName" visible="true">
+
+<hbox>
+<vbox width="50px"/>
+<textbox id="textboxGenename" class="input2-keyword" width="300px" />
+<vbox width="50px"/>
+<listbox id="listboxGenenameMatch" class="gene-name-select" mold="select" width="150px">
+<listitem label="whole word only" selected="true"/>
+<listitem label="substring"/>
+<listitem label="exact match"/>
+<listitem label="regular expression"/>
+</listbox>
+<vbox width="10px"/>
+<button id="searchGenenameButton" class="search-button" label="Search by name/symbol/function"   style="font-size:14px;font-weight:bold;color:gray;"
+  width="300px" height="30px"  autodisable="self"
+  />
+  
+</hbox>
+</row>
+
+
 
 <!--  *********************   QUERY BY GENE ONTOLOGY TERM  *********************************************************************************** -->
 <row spans="4" id="rowGoTerm" visible="false">
@@ -174,7 +173,7 @@
 </vbox>
 <vbox width="20px"/>		
 
- <button id="searchPatoButton" label="Search PATO term"   style="font-size:14px;font-weight:bold;color:gray;"
+ <button id="searchPatoButton" label="Search Plant/Trait term"   style="font-size:14px;font-weight:bold;color:gray;"
   width="150px" height="30px"  autodisable="self"/>
   <hbox height="15px"/>
 </hbox>
@@ -206,13 +205,11 @@
 <!--  *********************   QUERY FROM SNP LIST  *********************************************************************************** -->
 
 <row spans="4" id="rowMySnpList" visible="false">
+<vbox>
 <hbox>
-<label value="My SNP List " pre="true"/>
+<label value="My SNP List" pre="true"/>
 <listbox id="listboxMySNPList" mold="select" />
- <zscript><![CDATA[			
-			        listboxMySNPList.setModel(new SimpleListModel(listMySnps));
-			        listboxMySNPList.setSelectedIndex(0);
-			    ]]></zscript>
+
 <vbox width="20px"/>
 <label value="+/-" />
 <intbox id="intboxPlusMinusBP" value="0" width="80px"/>
@@ -222,18 +219,79 @@
   width="150px" height="30px"  autodisable="self"
   />
 </hbox>
+<hbox height="20px"/>
+<div id="divAdvancedOptions" visible="false">
+<hbox>
+<label value="Maximum interacting loci   " pre="true"/>
+<textbox id="textboxMaxInteracting" value=""/>
+</hbox>
+</div>
+<hbox>
+<checkbox id="checkboxIncludeInteractions" label="Include gene interactions (RiceNetv2, PRIN) (slow)"/>
+<checkbox id="checkboxIncludePromoters" label="FGenesh++, PlantPromDB"/>
+<checkbox id="checkboxIncludeGO" label="Gene Ontology"/>
+<checkbox id="checkboxIncludePOTO" label="PO, TO, Q-TARO"/>
+<checkbox id="checkboxIncludeQTL" label="Q-TARO QTLs"/>
+</hbox>
+
+
+</vbox>
+
 </row>
+
+
+<!--  *********************   QUERY FROM GENE ENRICHMENT/SET ANALYSIS  *********************************************************************************** -->
+
+<row spans="4" id="rowGeneset" visible="false">
+<vbox>
+<hbox>
+<label value="My Locus List " pre="true"/>
+<listbox id="listboxMyLocusListGeneset" mold="select" />
+
+<vbox width="20px"/>
+<vbox>
+<hbox><label value="Ricenetv2 direct neighbors  " pre="true"/><checkbox id="checkboxRicenetv2direct"/><button label="GO" disabled="true" id="buttonRicenetv2direct" target="_ricenetnga"/></hbox>
+<hbox><label value="Ricenetv2 context hubs  " pre="true"/><checkbox id="checkboxRicenetv2context"/><button label="GO" disabled="true" id="buttonRicenetv2context"  target="_ricenetcontext"/></hbox>
+<hbox><label value="String-DB prot-prot interaction  " pre="true"/><checkbox id="checkboxStringDB"/><button label="GO" disabled="true" id="buttonStringDB"  target="_stringdb"/></hbox>
+<hbox><label value="CARMO functional Annotation  " pre="true"/><checkbox id="checkboxCarmoFunctional"/><button label="GO" disabled="true" id="buttonCarmoFunctional"  target="_carmofunctional"/></hbox>
+<hbox><label value="Plant GSEA  " pre="true"/><checkbox id="checkboxPlantGSEA"/><button label="GO" disabled="true" id="buttonPlantGSEA"  target="_plantgsea"/></hbox>
+<hbox><label value="AgriGO  " pre="true"/><checkbox id="checkboxAgriGO"/><button label="GO" disabled="true" id="buttonAgriGO"  target="_agrigo"/></hbox>
+<hbox><label value="IC4R Expression (RAP loci only)  " pre="true"/><checkbox id="checkboxIC4RExpr"/><button label="GO" disabled="true" id="buttonIC4RExpr"  target="_ic4rexpr"/></hbox>
+<hbox><label value="IC4R Coexpression  (RAP loci only)" pre="true"/><checkbox id="checkboxIC4RCoexpr"/><button label="GO" disabled="true" id="buttonIC4RCoexpr"  target="_ic4rcoexpr"/></hbox>
+</vbox>
+
+
+<vbox width="20px">
+<button id="buttonMyLocusList" label="Gene set/enrichment"   style="font-size:14px;font-weight:bold;color:gray;"
+  width="250px" height="30px"  autodisable="self"
+  />
+  <checkbox id="checkboxQueryinbackground" label="  Submit in background   " checked="true"/>
+  <textbox id="textboxMsgWebclient" readonly="true" value="" width="250px" rows="4"/>
+  </vbox>
+</hbox>
+<hbox height="20px"/>
+<timer id="timerCheckUrls" delay="5000" repeats="true"/>
+
+
+</vbox>
+
+</row>
+
+
 
 <!--  *********************   QUERY BY SEQUENCE (BLAST) *********************************************************************************** -->
 <row spans="4" id="rowSequence" visible="false">
 <!--  label value="Sequence" style="font-size:14px;font-weight:bold;color:gray;"/ -->
 <hbox>
 <vbox>
-<textbox id="textboxSequence" rows="7" cols="80"/>
+<textbox id="textboxSequence" class="blast-input-field" rows="7" cols="80"/>
+<hbox><button id="buttonUploadSequence" upload="true,-1" autodisable="self" label="Upload FASTA"/>
+<label id="labelUploadSequence"/>
+</hbox>
 <label id="labelBlastType" value="Search rice genome using a nucleotide query"/>
 <hbox>
 <label value="Query type " pre="true"/>
-<listbox id="listboxBlastType" mold="select">
+<listbox id="listboxBlastType" class="blast-dropdown" mold="select">
 <listitem label="" selected="true"/>
 <listitem label="blastn"/>
 <listitem label="blastp" />
@@ -244,7 +302,7 @@
 <vbox width="20px"/>
 
 <label value="Database type " pre="true"/>
-<listbox id="listboxBlastDBType" mold="select">
+<listbox id="listboxBlastDBType" class="database-type-select" mold="select">
 <listitem label="" selected="true"/>
 <listitem label="dna"/>
 <listitem label="cds"/>
@@ -253,12 +311,20 @@
 </listbox>
 <vbox width="20px"/>
 <label value="Max Evalue" pre="true"/>
-<textbox id="textboxEvalue" value="10" width="50px"/>
+<textbox id="textboxEvalue" value="10" width="50px"  class="z-max-evalue"/>
+</hbox>
+<hbox>
+<label value="Top hit per query sequence only  " pre="true"/>
+<checkbox id="checkboxTopSequencehit" checked="false"/>
+<div id="divIncludeSequence" visible="false">
+<label value="     Include aligned sequence  " pre="true"/>
+<checkbox id="checkboxIncludeSequence" checked="false"/>
+ </div>
 </hbox>
  
 </vbox>
 <vbox width="20px"/>
-<button id="searchByBlast" label="BLAST sequence"   style="font-size:14px;font-weight:bold;color:gray;"
+<button id="searchByBlast" label="BLAST sequence" class="blast-sequence-button" style="font-size:14px;font-weight:bold;color:gray;"
   width="150px" height="30px"  autodisable="self"
   />
  </hbox>
@@ -273,10 +339,7 @@
 <hbox>
 <label value="My locus list  " pre="true"/>
 <listbox id="listboxMyLocusList2" mold="select"/>
-  <zscript><![CDATA[			
-			        listboxMyLocusList2.setModel(new SimpleListModel(listLocuslist));
-			        listboxMyLocusList2.setSelectedIndex(0);
-			    ]]></zscript>
+
 </hbox>
 <hbox>
 <label value="PANTHER  " pre="true"/>
@@ -302,11 +365,7 @@
 	
 <hbox>
 <label value="My locus list  " pre="true"/>
-<listbox id="listboxMyLocusList" mold="select"/>
-  <zscript><![CDATA[			
-			        listboxMyLocusList.setModel(new SimpleListModel(listLocuslist));
-			        listboxMyLocusList.setSelectedIndex(0);
-			    ]]></zscript>
+<listbox id="listboxMyLocusListOntology" mold="select"/>
 
 
 <vbox width="30px"/>
@@ -338,23 +397,61 @@
 		details1= "  Select reference genome" 
 		details2= "  Select search criterion:"
 		details3= "     a. gene function"
-		details4= "     b. GO term"
-		details5= "     c. contig and region" 
-		details6= "     d. sequence" 
-		details7= "     e. SNP positions list"
-		details8= "  Click the Search Button "
-		details9= ""
-		details10= "  Result Table: List of matching loci"
+		details4= "     b. gene name/symbols"
+		details5= "     c. GO term"
+		details6= "     d. contig and region" 
+		details7= "     e. sequence" 
+		details8= "     f. SNP positions list"
+		details9= "     g. Gene set"
+		details10= "  Click the Search Button "
+		details11= ""
+		details12= "  Result Table: List of matching loci"
 		/>
 </hbox>
 
+<separator bar="true" visible="false" id="separator" width="100%"/>
+<vbox pack="start" width="100%">
 
+<vbox>
+<grid id="gridLocusInfo" visible="true"  width="100%">
+	        	<!-- columns>
+                <column label="" width="200px"/>
+                <column label="" width="600px"/>
+            	</columns -->
+		<rows>
+		<row spans="4"/>
+		<row spans="1,3"><label value="Locus name"/><textbox id="textboxLocusname" readonly="true"  width="500px"/></row>
+		<row spans="1,3"><label value="Position"/><textbox id="textboxPosition" readonly="true"  width="500px"/></row>
+		<row spans="1,3"><label value="Function (source annotation)"/><textbox id="textboxFunction" readonly="true" width="500px"/></row>
+		<row spans="1,3"><label value="External links"/>
+			
+		<hbox>
+		<a id="aMSU7" target="_xlocus" href="localhost" label="MSU7  " visible="false" style="font-size:12px;font-weight:bold"/><vbox width="15px"/>
+		<a id="aRAP" target="_xlocus" href="localhost" label="RAP  " visible="false" style="font-size:12px;font-weight:bold"/><vbox width="15px"/>
+		<a id="aPhytozome" target="_xlocus" href="localhost" label="Phytozome  "  visible="false" style="font-size:12px;font-weight:bold"/><vbox width="15px"/>
+		<a id="aOryzabase" target="_xlocus" href="localhost" label="Oryzabase  "  visible="false" style="font-size:12px;font-weight:bold"/><vbox width="15px"/>
+		<a id="aGramene" target="_xlocus" href="localhost" label="Gramene  "  visible="false" style="font-size:12px;font-weight:bold"/><vbox width="15px"/>
+		<a id="aKegg" target="_xlocus" href="localhost" label="KEGG  "  visible="false" style="font-size:12px;font-weight:bold"/><vbox width="15px"/>
+		
+		<a id="aUniprot" target="_xlocus" href="localhost" label="Uniprot  "  visible="false" style="font-size:12px;font-weight:bold"/><vbox width="15px"/>
+		<a id="aNCBI" target="_xlocus" href="localhost" label="NCBI  "  visible="false" style="font-size:12px;font-weight:bold"/><vbox width="15px"/>
+		<a id="aIC4RLit" target="_xlocus" href="localhost" label="IC4R Lit  "  visible="false" style="font-size:12px;font-weight:bold"/>
+		
+		</hbox>
+		</row>
+		<row  spans="1,3"><label value="Overlapping genes"/><listbox id="listboxOverlappinggenes" width="500px"/></row>
+		</rows>
+</grid>
+
+<iframe id= "iframeJbrowse"  align="left" visible="true" style="width:95%;height:600px;border:0px inset;" src="${jbrowsestart}" />
+</vbox>
+
+<splitter id="splitter" collapse="before" open="false" width="100%" />
+
+<vbox width="100%">
+
+<hbox height="20px"/>
 <hbox>
-<hbox id="hboxAddtolist" visible="false">
-  <button id="buttonAddToList" label="Create List:"  autodisable="self" tooltip="popupCreateList"/>
-  <label value="   List Name  " pre="true"/>
-  <textbox id="txtboxListname" width="200px"/>
-</hbox>
 <hbox id="hboxDownload" visible="false">
  <label value="    Download:  " pre="true"/>
  <button id="buttonDownloadCSV" label="CSV"/>
@@ -362,27 +459,74 @@
  <button id="buttonDownloadTab" label="Tab"/>
  <hbox width="25px"/>
 </hbox>
+
+<hbox id="hboxAddtolist" visible="false">
+  <vbox width="20px"/>
+  <button id="buttonAddToList" label="Create Gene List:"  autodisable="self" tooltip="popupCreateList"/>
+  <label value="   List Name  " pre="true"/>
+  <textbox id="txtboxListname" width="200px"/>
+</hbox>
+
+
+</hbox>
+
+<hbox id="hboxGenesetAnalysis" visible="false">
+<label value="Gene set analysis:"/>
+<vbox width="20px"/>
+<button id="buttonRicenetV1" label="RiceNet V1 Interactions"/>
+<vbox width="20px"/>
+<button id="buttonRicenetV2DirectNeighbors" label="RiceNet V2 Direct Neighborhood"/>
+<vbox width="20px"/>
+<button id="buttonRicenetV2ContextHubs" label="RiceNet V2 Context Associated Hubs"/>
+<vbox width="20px"/>
+<button id="buttonPantherOverrep" label="Panther Overrepresentation Test"/>
 </hbox>
  
  
  
  <!--  *********************   GENE LOCUS QUERY RESULTS DISPLAY  *********************************************************************************** -->
+<zscript>
+		import org.irri.iric.portal.genomics.zkui.LocusListItemComparator;
+       Comparator lasc0 = new LocusListItemComparator(true,0,0);        
+       Comparator ldsc0 = new LocusListItemComparator(false,0,0);
+       Comparator lasc1 = new LocusListItemComparator(true,1,0);        
+       Comparator ldsc1 = new LocusListItemComparator(false,1,0);
+       Comparator lasc2 = new LocusListItemComparator(true,2,1);        
+       Comparator ldsc2 = new LocusListItemComparator(false,2,1);
+       Comparator lasc3 = new LocusListItemComparator(true,3,1);        
+       Comparator ldsc3 = new LocusListItemComparator(false,3,1);
+       Comparator lasc4 = new LocusListItemComparator(true,4,1);        
+       Comparator ldsc4 = new LocusListItemComparator(false,4,1);
+       Comparator lasc6 = new LocusListItemComparator(true,6,0);        
+       Comparator ldsc6 = new LocusListItemComparator(false,6,0);
+</zscript>
  
-<grid id="gridLocus" width="100%"   mold="paging" pageSize="100" visible="false" >
+					
+<listbox id="listboxLocus" fixedLayout="true" mold="paging" pageSize="100" visible="false" >
+	        	<listhead>
+                <listheader label="LOCUS" width="180px"  sortAscending="${lasc0}" sortDescending="${ldsc0}" />
+                <listheader label="CONTIG" width="120px"  sortAscending="${lasc1}" sortDescending="${ldsc1}" />
+                <listheader label="START"  width="100px"   sortAscending="${lasc2}" sortDescending="${ldsc2}" />
+                <listheader label="STOP"  width="100px"  sortAscending="${lasc3}" sortDescending="${ldsc3}" />
+                <listheader label="STRAND"  width="60px"  sortAscending="${lasc4}" sortDescending="${ldsc4}" />
+                <listheader id="listheaderOverlapping" label="OVERLAPPING GENE MODELS"  width="300px" sort="auto" />
+                <listheader label="DESCRIPTION"    sortAscending="${lasc6}" sortDescending="${ldsc6}" />
+            	</listhead>
+</listbox>		
+
+<!--  grid id="gridLocus" width="100%"   mold="paging" pageSize="100" visible="false" >
 	        	<columns>
                 <column label="LOCUS" width="180px"  sort="auto" />
                 <column label="CONTIG" width="120px"  sort="auto" />
                 <column label="START"  width="100px" sort="auto" />
                 <column label="STOP"  width="100px" sort="auto" />
                 <column label="STRAND"  width="60px" sort="auto" />
-                
                 <column label="OVERLAPPING GENE MODELS"  width="300px" sort="auto" />
-                
                 <column label="DESCRIPTION"  sort="auto" />
             	</columns>
-</grid>		
+</grid -->		
 
-<grid id="gridMarker" width="100%"   mold="paging" pageSize="100" visible="false" >
+<!--  grid id="gridMarker" width="100%"   mold="paging" pageSize="100" visible="false" >
 	        	<columns>
 	        	<column label="CONTIG" width="100px"  sort="auto" />
 	        	<column label="POSITION" width="100px"  sort="auto" />
@@ -390,8 +534,60 @@
                 <column label="QTARO QTLs" width="500px"  sort="auto" />
                 <column label="GRAMENE QTLs" width="500px"  sort="auto" />
             	</columns>
-</grid>		
+</grid -->		
 
+<zscript>
+import org.irri.iric.portal.genomics.zkui.MarkerAnnotationSorter;
+	Comparator masc0=new MarkerAnnotationSorter(true,0);
+	Comparator mdsc0=new MarkerAnnotationSorter(false,0);
+	Comparator masc1=new MarkerAnnotationSorter(true,1);
+	Comparator mdsc1=new MarkerAnnotationSorter(false,1);
+</zscript>
+
+<!--  listbox id="listboxMarker" width="100%"   mold="paging" pageSize="100" visible="false" >
+	        	<listhead>
+	        	<listheader label="CONTIG" width="100px"   sort="auto"/>
+	        	<listheader label="POSITION" width="100px"  sort="auto" />
+                <listheader label="GENE MODELS" width="350px"  sort="auto" />
+                <listheader label="QTARO QTLs" width="500px"  sort="auto" />
+                <listheader label="GRAMENE QTLs" width="500px"  sort="auto" />
+            	</listhead>
+</listbox -->
+
+
+<borderlayout id="borderMarkerVar" height="800px" width="100%" visible="false">
+<north>
+<hbox>
+<hbox>
+<label value="Group by  " pre="true" style="font-weight:bold"/>
+<radiogroup id="rgAnnotGroups" />
+<label pre="true" value="   Marker/Position"/><radio id="radioGroupbyMarker" radiogroup="rgAnnotGroups" selected="true"/>
+<label pre="true" value="   Gene locus"/><radio id="radioGroupbyGene" radiogroup="rgAnnotGroups"/>
+<label pre="true" value="   QTL"/><radio id="radioGroupbyQtl" radiogroup="rgAnnotGroups"/>
+</hbox>
+
+<hbox style="font-weight:bold">
+  <label pre="true" value=" Include:"/>
+  <checkbox id="checkboxListModel" label="gene model" checked="true"/>
+  <vbox width="10px"/>
+  <checkbox id="checkboxListPromoter" label="in promoter" checked="false"/>
+  <vbox width="10px"/>
+  <checkbox id="checkboxListRicenet" label="ricenet interaction" checked="false"/>
+  <vbox width="10px"/>
+  <checkbox  id="checkboxListPrin" label="prin interaction" checked="false"/>
+</hbox>
+</hbox>
+
+</north>
+<center border="0">
+<listbox id="listboxMarkerVar" width="100%"   mold="paging" pageSize="100" visible="false"  vflex="1" hflex="1">
+	        	<listhead sizable="true">
+	        	<listheader label="CONTIG-POSITION" width="100px"  sortAscending="${masc0}" sortDescending="${mdsc0}" />
+	        	<!--  listheader label="POSITION" width="100px"   sortAscending="${masc1}" sortDescending="${mdsc1}" / -->
+            	</listhead>
+</listbox>
+</center>
+</borderlayout>
 
 
 <grid id="gridGOTerms" width="100%"   mold="paging" pageSize="100" visible="false" >
@@ -405,43 +601,44 @@
 
 <!--  *********************   GENE LOCUS ALIGNMENT RESULTS DISPLAY  *********************************************************************************** -->
 
-<grid id="gridAlignment"  mold="paging" pageSize="100" width="100%" visible="false">
-	        	<columns>
-                <column label="QUERY" width="150px"  sort="auto" />
-                <column label="Q START" width="100px"  sort="auto" />
-                <column label="Q END"  width="100px"  sort="auto" />
-                <column label="SUBJECT"  width="180px" sort="auto" />
-                <column label="S START"  width="100px" sort="auto" />
-                <column label="S END"  width="100px"  sort="auto" />
-                <column label="S STRAND"  width="100px"  sort="auto" />
-                <column label="MATCHES"  width="150px"  sort="auto" />
-                <column label="E VALUE"  width="100px"  sort="auto" />
-            	</columns>
-</grid>		
-
 <zscript>
-    gridAlignment.pagingChild.mold =  "os";
-	gridAlignment.pagingPosition = "both";
-    gridLocus.pagingChild.mold =  "os";
-	gridLocus.pagingPosition = "both";
-	
-	
-	listitemSequence.setVisible( !AppContext.isUsingsharedData() );
-		         
-       String from=Executions.getCurrent().getParameter("from");
-       if(from!=null) { 
-			if(from.equals("snplist")) {
-       			listboxMySNPList.setSelectedIndex( listboxMySNPList.getItemCount()-2 );
-       			this.listboxSearchby.setSelectedIndex(4);
-       			//this.listboxSearchby.setSelectedItem( listboxSearchby.getItemAtIndex(4));
-       			this.rowMySnpList.setVisible(true);
-       		}
-       }
-       
-       
-		        
-	        
+import org.irri.iric.portal.genomics.zkui.LocalAlignmentSorter;
+       Comparator aasc0 = new LocalAlignmentSorter(true,0,0);        
+       Comparator adsc0 = new LocalAlignmentSorter(false,0,0);
+       Comparator aasc1 = new LocalAlignmentSorter(true,1,2);        
+       Comparator adsc1 = new LocalAlignmentSorter(false,1,2);
+       Comparator aasc2 = new LocalAlignmentSorter(true,2,2);        
+       Comparator adsc2 = new LocalAlignmentSorter(false,2,2);
+       Comparator aasc3 = new LocalAlignmentSorter(true,3,0);        
+       Comparator adsc3 = new LocalAlignmentSorter(false,3,0);
+       Comparator aasc4 = new LocalAlignmentSorter(true,4,2);        
+       Comparator adsc4 = new LocalAlignmentSorter(false,4,2);
+       Comparator aasc5 = new LocalAlignmentSorter(true,5,2);        
+       Comparator adsc5 = new LocalAlignmentSorter(false,5,2);
+       Comparator aasc6 = new LocalAlignmentSorter(true,6,1);        
+       Comparator adsc6 = new LocalAlignmentSorter(false,6,1);
+       Comparator aasc7 = new LocalAlignmentSorter(true,7,2);        
+       Comparator adsc7 = new LocalAlignmentSorter(false,7,2);
+       Comparator aasc8 = new LocalAlignmentSorter(true,8,3);        
+       Comparator adsc8 = new LocalAlignmentSorter(false,8,3);
 </zscript>
+
+<listbox id="listboxAlignment" class="blast-table" mold="paging" pageSize="100" width="100%" visible="false">
+	        	<listhead>
+                <listheader label="QUERY" width="400px"  sortAscending="${aasc0}" sortDescending="${adsc0}" />
+                <listheader label="Q START" width="100px"  sortAscending="${aasc1}" sortDescending="${adsc1}" />
+                <listheader label="Q END"  width="100px"  sortAscending="${aasc2}" sortDescending="${adsc2}" />
+                <listheader label="SUBJECT"  width="180px"  sortAscending="${aasc3}" sortDescending="${adsc3}" />
+                <listheader label="S START"  width="100px" sortAscending="${aasc4}" sortDescending="${adsc4}" />
+                <listheader label="S END"  width="100px"   sortAscending="${aasc5}" sortDescending="${adsc5}" />
+                <listheader label="S STRAND"  width="100px"  sortAscending="${aasc6}" sortDescending="${adsc6}" />
+                <listheader label="MATCHES"  width="150px"   sortAscending="${aasc7}" sortDescending="${adsc7}" />
+                <listheader label="E VALUE"  width="100px"  sortAscending="${aasc8}" sortDescending="${adsc8}" />
+            	</listhead>
+</listbox>
+</vbox>		
+</vbox>
+
 
 
 <popup id="popupDescendants" width="300px">

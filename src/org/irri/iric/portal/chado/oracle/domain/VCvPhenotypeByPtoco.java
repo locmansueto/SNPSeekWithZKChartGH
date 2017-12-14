@@ -53,7 +53,7 @@ import org.irri.iric.portal.domain.CvTermUniqueValues;
 		@NamedQuery(name = "findVCvPhenotypeByPtocoBySubjDbContaining", query = "select myVCvPhenotypeByPtoco from VCvPhenotypeByPtoco myVCvPhenotypeByPtoco where myVCvPhenotypeByPtoco.subjDb like ?1"),
 		@NamedQuery(name = "findVCvPhenotypeByPtocoBySubjDefinition", query = "select myVCvPhenotypeByPtoco from VCvPhenotypeByPtoco myVCvPhenotypeByPtoco where myVCvPhenotypeByPtoco.subjDefinition = ?1"),
 		@NamedQuery(name = "findVCvPhenotypeByPtocoBySubjDefinitionContaining", query = "select myVCvPhenotypeByPtoco from VCvPhenotypeByPtoco myVCvPhenotypeByPtoco where myVCvPhenotypeByPtoco.subjDefinition like ?1") })
-@Table(schema = "IRIC", name = "V_CV_PHENOTYPE_BY_PTOCO_PATH")
+@Table( name = "V_CV_PHENOTYPE_BY_PTOCO_PATH")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VCvPhenotypeByPtoco")
 public class VCvPhenotypeByPtoco implements Serializable, CvTermUniqueValues {

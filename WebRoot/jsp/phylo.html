@@ -1,0 +1,133 @@
+<html>
+<head>
+	
+	<link rel="stylesheet" type="text/css" href="css/doublescroll.css">
+
+    <script type="text/javascript" src="js/raphael-min.js" ></script>
+    <script type="text/javascript" src="js/jsphylosvg_variety_3k.js"></script>
+    <!--  script type="text/javascript" src="js/jsphylosvg-min.js"></script -->
+    <script type="text/javascript" src="js/spin.js"></script>
+    
+    <script src="http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
+    
+	
+    <script type="text/javascript">
+    
+    function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+  
+    window.onload = function(){
+    	
+    	var opts = {
+    			  lines: 13, // The number of lines to draw
+    			  length: 20, // The length of each line
+    			  width: 10, // The line thickness
+    			  radius: 30, // The radius of the inner circle
+    			  corners: 1, // Corner roundness (0..1)
+    			  rotate: 0, // The rotation offset
+    			  direction: 1, // 1: clockwise, -1: counterclockwise
+    			  color: '#000', // #rgb or #rrggbb or array of colors
+    			  speed: 1, // Rounds per second
+    			  trail: 60, // Afterglow percentage
+    			  shadow: false, // Whether to render a shadow
+    			  hwaccel: false, // Whether to use hardware acceleration
+    			  className: 'spinner', // The CSS class to assign to the spinner
+    			  zIndex: 2e9, // The z-index (defaults to 2000000000)
+    			  top: 100, // Top position relative to parent
+    			  left: '50%' // Left position relative to parent
+    			};
+    			var target = document.getElementById('foo');
+    			
+    			
+    			var urlvars = getUrlVars();
+    			var newickfile= urlvars["newick"];
+    			if(newickfile!=null) {
+    			
+			    	YUI().use('oop', 'json-stringify', 'io-base', 'event', 'event-delegate', function(Y){
+						//var uri =  "http://snp-seek.irri.org/temp/" +  newickfile; // //  request.getParameter("newick")[0]; // "/trees/2-coffee.xml";
+						var uri =  "/temp/" +  newickfile; // //  request.getParameter("newick")[0]; // "/trees/2-coffee.xml";
+						console.log("fetching " + uri);
+						
+						function complete(id, o, args) {
+							var data = o.responseText; // .responseXML; // Response data.
+							
+							console.log("fetching result: " + data.toString().substr(0,20 ));
+							
+							var dataObject = {
+										newick: data,
+										fileSource: true
+									};		
+							phylocanvas = new Smits.PhyloCanvas(
+								dataObject,
+								'svgCanvas', 
+								1600, 180				
+							);
+						};
+						Y.on('io:complete', complete, Y);
+						
+						//var spinner = new Spinner(opts).spin(target);
+    					//var spinner = new Spinner(opts).spin();
+						var request = Y.io(uri);
+						//spinner.stop();
+					});
+	    		}
+	    		else {
+	    			alert("No newick file available");
+	    		}
+    			
+    			
+		/*    			
+        //var dataObject = { newick:  '(((((((IET_14720|IRIS_313-15909|aro:0.052083333333333336,(ARC_14663|IRIS_313-11270|aro:0.0,SADRI_RICE_1|CX104|aro:0.0):0.052083333333333336):0.03125,DOM_ZARD|IRIS_313-8747|aro:0.03125):0.03125,UP15|CX110|aro:0.0):0.0,KARNAL_LOCAL|CX149|aro:0.0):0.0,DOMSIAH|CX65|aro:0.0):0.0,TAROM_MOLAII|CX66|aro:0.0):0.0,BINAM|CX67|aro:0.0);' };
+		var dataObject={newic}
+
+        phylocanvas = new Smits.PhyloCanvas(
+            dataObject,
+            'svgCanvas',
+            1600 ,  180
+        );
+        */
+        
+        
+     
+	};
+
+
+	function onClicknode(param) {
+		alert(param + ' clicked');
+		 (function(window){
+	        	window.zAu.send(new window.zk.Event(window.zk.Widget.$('$winVariety'), "onUser","Node " + param + " clicked"));
+	     })(parent);
+	}
+	
+	</script>
+	
+
+</head>
+<body>
+<!--  div style="font-family:arial;font-size:12">
+Tree is constructed using all non-zero distance pairs, having 9 nodes.<BR>
+</div -->
+
+
+
+
+<div id="foo"/>
+<div id="double-scroll">
+	<div id="svgCanvas"/>
+</div>
+
+
+
+
+</body>
+</html>    

@@ -1,18 +1,18 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
-
 import java.lang.StringBuilder;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-
 import javax.xml.bind.annotation.*;
-
 import javax.persistence.*;
+
+import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.domain.VarietyPlus;
+import org.irri.iric.portal.variety.VarietyFacade;
 
 /**
  */
@@ -58,10 +58,10 @@ import javax.persistence.*;
 		@NamedQuery(name = "findVIricstocksByPtocoByQuanValue", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.quanValue = ?1"),
 		@NamedQuery(name = "findVIricstocksByPtocoBySubpopulation", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.subpopulation = ?1"),
 		@NamedQuery(name = "findVIricstocksByPtocoBySubpopulationContaining", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.subpopulation like ?1") })
-@Table(schema = "IRIC", name = "V_IRICSTOCKS_BY_PTOCO")
+@Table( name = "V_IRICSTOCKS_BY_PTOCO")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VIricstocksByPtoco")
-public class VIricstocksByPtoco implements Serializable {
+public class VIricstocksByPtoco implements Serializable, VarietyPlus {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -131,6 +131,13 @@ public class VIricstocksByPtoco implements Serializable {
 	/**
 	 */
 
+	
+	@Column(name = "BOX_CODE", length = 4000)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String boxCode;
+
+	
 	@Column(name = "ORI_COUNTRY", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -144,6 +151,11 @@ public class VIricstocksByPtoco implements Serializable {
 	String subpopulation;
 	/**
 	 */
+
+	@Column(name = "GS_ACCESSION", length = 4000)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String gsAccession;
 
 	@Column(name = "QUAL_VALUE")
 	@Basic(fetch = FetchType.EAGER)
@@ -408,4 +420,74 @@ public class VIricstocksByPtoco implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public BigDecimal getVarietyId() {
+		// TODO Auto-generated method stub
+		return this.iricStockId;
+	}
+
+	@Override
+	public String getIrisId() {
+		// TODO Auto-generated method stub
+		if(irisUniqueId!=null) return irisUniqueId;
+		return boxCode;
+	}
+
+	@Override
+	public String getCountry() {
+		// TODO Auto-generated method stub
+		return this.oriCountry;
+	}
+
+	@Override
+	public void setCountry(String country) {
+		// TODO Auto-generated method stub
+		this.oriCountry=country;
+		
+	}
+
+	@Override
+	public String printFields(String delimiter) {
+		// TODO Auto-generated method stub
+		return this.toString();
+	}
+
+	@Override
+	public String getBoxCode() {
+		// TODO Auto-generated method stub
+		return this.boxCode;
+	}
+
+	@Override
+	public String getDataset() {
+		// TODO Auto-generated method stub
+		return VarietyFacade.DATASET_SNPINDELV2_IUPAC;
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		Variety v=(Variety)arg0;
+		return getVarietyId().compareTo(v.getVarietyId());
+	}
+
+	@Override
+	public void setValue(Object value) {
+		// TODO Auto-generated method stub
+		if(value instanceof String) this.qualValue=(String)value;
+		else this.quanValue= BigDecimal.valueOf( Long.valueOf(value.toString()));
+		
+	}
+
+	@Override
+	public Object getValue() {
+		// TODO Auto-generated method stub
+		if(qualValue!=null) return qualValue;
+		return quanValue;
+	}
+	
+	
+	
+	
 }

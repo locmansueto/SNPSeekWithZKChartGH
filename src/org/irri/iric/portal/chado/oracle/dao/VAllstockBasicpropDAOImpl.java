@@ -1,0 +1,903 @@
+package org.irri.iric.portal.chado.oracle.dao;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.hibernate.Session;
+import org.irri.iric.portal.AppContext;
+//import org.irri.iric.portal.chado.domain.VIricstockBasicprop;
+//import org.irri.iric.portal.chado.oracle.domain.VHdrastockBasicprop;
+import org.irri.iric.portal.chado.oracle.domain.VAllstockBasicprop;
+//import org.irri.iric.portal.chado.oracle.domain.VSnpRefposindex;
+import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.variety.VarietyFacade;
+import org.skyway.spring.util.dao.AbstractJpaDao;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * DAO to manage VAllstockBasicprop entities.
+ * 
+ */
+//@Repository("VAllstockBasicpropDAO")
+//@Repository("VarietyBasicprop2DAO")
+@Repository("VarietyDAO")
+@Transactional
+public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop>
+		implements VAllstockBasicpropDAO {
+
+
+
+	@Override
+	public Set<Variety> getIRGCStocks() {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByGsaccessionLike", -1, -1, "IRGC %");
+		List list=query.getResultList();
+		Set s = new HashSet();
+		for(Object o:list) {
+			Variety v=(Variety)o;
+			if(v.getAccession()!=null && v.getAccession().startsWith("IRGC")) s.add(v);
+		}
+		return s;
+	}
+
+	/**
+	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 *
+	 */
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VAllstockBasicprop.class }));
+
+	/**
+	 * EntityManager injected by Spring for persistence unit Production
+	 *
+	 */
+	@PersistenceContext(unitName = "IRIC_Production")
+	private EntityManager entityManager;
+
+	/**
+	 * Instantiates a new VAllstockBasicpropDAOImpl
+	 *
+	 */
+	public VAllstockBasicpropDAOImpl() {
+		super();
+	}
+
+	/**
+	 * Get the entity manager that manages persistence unit 
+	 *
+	 */
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
+
+	/**
+	 * Returns the set of entity classes managed by this DAO.
+	 *
+	 */
+	public Set<Class<?>> getTypes() {
+		return dataTypes;
+	}
+
+	/**
+	 * JPQL Query - findAllVAllstockBasicprops
+	 *
+	 */
+	@Transactional
+	public Set<VAllstockBasicprop> findAllVAllstockBasicprops() throws DataAccessException {
+
+		return findAllVAllstockBasicprops(-1, -1);
+	}
+
+	/**
+	 * JPQL Query - findAllVAllstockBasicprops
+	 *
+	 */
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VAllstockBasicprop> findAllVAllstockBasicprops(int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findAllVAllstockBasicprops", startResult, maxRows);
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByIrisUniqueIdContaining
+	 *
+	 */
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByIrisUniqueIdContaining(String irisUniqueId) throws DataAccessException {
+
+		return findVAllstockBasicpropByIrisUniqueIdContaining(irisUniqueId, -1, -1);
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByIrisUniqueIdContaining
+	 *
+	 */
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByIrisUniqueIdContaining(String irisUniqueId, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVAllstockBasicpropByIrisUniqueIdContaining", startResult, maxRows, irisUniqueId);
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByOriCountryContaining
+	 *
+	 */
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByOriCountryContaining(String oriCountry) throws DataAccessException {
+
+		return findVAllstockBasicpropByOriCountryContaining(oriCountry, -1, -1);
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByOriCountryContaining
+	 *
+	 */
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByOriCountryContaining(String oriCountry, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVAllstockBasicpropByOriCountryContaining", startResult, maxRows, oriCountry);
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByBoxCode
+	 *
+	 */
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByBoxCode(String boxCode) throws DataAccessException {
+
+		return findVAllstockBasicpropByBoxCode(boxCode, -1, -1);
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByBoxCode
+	 *
+	 */
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByBoxCode(String boxCode, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVAllstockBasicpropByBoxCode", startResult, maxRows, boxCode);
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByNameContaining
+	 *
+	 */
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByNameContaining(String name) throws DataAccessException {
+
+		return findVAllstockBasicpropByNameContaining(name, -1, -1);
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByNameContaining
+	 *
+	 */
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByNameContaining(String name, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVAllstockBasicpropByNameContaining", startResult, maxRows, name);
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByBoxCodeContaining
+	 *
+	 */
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByBoxCodeContaining(String boxCode) throws DataAccessException {
+
+		return findVAllstockBasicpropByBoxCodeContaining(boxCode, -1, -1);
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByBoxCodeContaining
+	 *
+	 */
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByBoxCodeContaining(String boxCode, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVAllstockBasicpropByBoxCodeContaining", startResult, maxRows, boxCode);
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByPrimaryKey
+	 *
+	 */
+	@Transactional
+	public VAllstockBasicprop findVAllstockBasicpropByPrimaryKey(BigDecimal allStockId) throws DataAccessException {
+
+		return findVAllstockBasicpropByPrimaryKey(allStockId, -1, -1);
+	}
+
+	
+	
+	/**
+	 * JPQL Query - findVAllstockBasicpropByPrimaryKey
+	 *
+	 */
+
+	@Transactional
+	public VAllstockBasicprop findVAllstockBasicpropByPrimaryKey(BigDecimal allStockId, int startResult, int maxRows) throws DataAccessException {
+		try {
+			Query query = createNamedQuery("findVAllstockBasicpropByPrimaryKey", startResult, maxRows, allStockId);
+			return (org.irri.iric.portal.chado.oracle.domain.VAllstockBasicprop) query.getSingleResult();
+		} catch (NoResultException nre) {
+			return null;
+		}
+	}
+	
+
+	@Override
+	public Collection findVarietyByIds(Set setQueryVarobj) {
+		// TODO Auto-generated method stub
+		try {
+			Query query = createNamedQuery("findVAllstockBasicpropByPrimaryKeys", -1,-1, setQueryVarobj);
+			return  query.getResultList();
+		} catch (NoResultException nre) {
+			return null;
+		}
+	}
+	
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByIrisUniqueId
+	 *
+	 */
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByIrisUniqueId(String irisUniqueId) throws DataAccessException {
+
+		return findVAllstockBasicpropByIrisUniqueId(irisUniqueId, -1, -1);
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByIrisUniqueId
+	 *
+	 */
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByIrisUniqueId(String irisUniqueId, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVAllstockBasicpropByIrisUniqueId", startResult, maxRows, irisUniqueId);
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByOriCountry
+	 *
+	 */
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByOriCountry(String oriCountry) throws DataAccessException {
+
+		return findVAllstockBasicpropByOriCountry(oriCountry, -1, -1);
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByOriCountry
+	 *
+	 */
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByOriCountry(String oriCountry, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVAllstockBasicpropByOriCountry", startResult, maxRows, oriCountry);
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByallStockId
+	 *
+	 */
+	@Transactional
+	public VAllstockBasicprop findVAllstockBasicpropByallStockId(BigDecimal allStockId) throws DataAccessException {
+
+		return findVAllstockBasicpropByallStockId(allStockId, -1, -1);
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByallStockId
+	 *
+	 */
+
+	@Transactional
+	public VAllstockBasicprop findVAllstockBasicpropByallStockId(BigDecimal allStockId, int startResult, int maxRows) throws DataAccessException {
+		try {
+			Query query = createNamedQuery("findVAllstockBasicpropByallStockId", startResult, maxRows, allStockId);
+			return (org.irri.iric.portal.chado.oracle.domain.VAllstockBasicprop) query.getSingleResult();
+		} catch (NoResultException nre) {
+			return null;
+		}
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByName
+	 *
+	 */
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByName(String name) throws DataAccessException {
+
+		return findVAllstockBasicpropByName(name, -1, -1);
+	}
+
+	/**
+	 * JPQL Query - findVAllstockBasicpropByName
+	 *
+	 */
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByName(String name, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVAllstockBasicpropByName", startResult, maxRows, name);
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+	}
+
+	/**
+	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * @see store
+	 * 
+	 *
+	 */
+	public boolean canBeMerged(VAllstockBasicprop entity) {
+		return true;
+	}
+	
+	
+
+	@Override
+	public Set findAllVariety() {
+		// TODO Auto-generated method stub
+		return this.findAllVAllstockBasicprops();
+	}
+
+	@Override
+	public Set findAllVarietyByCountry(String country) {
+		// TODO Auto-generated method stub
+		return this.findVAllstockBasicpropByOriCountry(country);
+	}
+
+	@Override
+	public Set findAllVarietyBySubpopulation(String subpopulation) {
+		// TODO Auto-generated method stub
+		return this.findVAllstockBasicpropBySubpopulation(subpopulation);
+	}
+	
+	
+	@Override
+	public Set findAllVarietyByCountryAndSubpopulation(String country, String subpopulation, Set dataset) {
+		if(!dataset.equals(VarietyFacade.DATASET_SNPINDELV2_IUPAC)) throw new RuntimeException("!dataset.equals(VarietyFacade.DATASET_SNPINDELV2_IUPAC in allStockbasicpropdao");
+		return this.findVAllstockBasicpropByOriCountrySubpopulation(country, subpopulation);
+		
+	}
+	
+	
+	/*
+	@Override
+	public Set findAllVarietyByCountryAndSubpopulation(String country, String subpopulation, String dataset) {
+		// TODO Auto-generated method stub
+		if(!dataset.equals(VarietyFacade.DATASET_SNPINDELV2_IUPAC)) throw new RuntimeException("!dataset.equals(VarietyFacade.DATASET_SNPINDELV2_IUPAC in allStockbasicpropdao");
+		return this.findVAllstockBasicpropByOriCountrySubpopulation(country, subpopulation);
+	}
+	*/
+	
+
+
+
+	
+
+	@Override
+	public Variety findVarietyByIrisId(String name) {
+		// TODO Auto-generated method stub
+		//return this.findVallStockBasicpropByIrisUniqueId(name);
+		
+		Set setVarieties =  this.findVAllstockBasicpropByIrisUniqueId(name);
+		if(setVarieties.size()>1)
+			throw new RuntimeException("Multiple varieties with IRIS ID " + name);
+		else if(setVarieties.isEmpty())
+			return null;
+		return (Variety)setVarieties.iterator().next();		
+		
+	}
+
+	@Override
+	public Variety findVarietyByName(String name) {
+		// TODO Auto-generated method stub
+		Set setNames =  this.findVAllstockBasicpropByName(name);
+		if(setNames.size()>1)
+			throw new RuntimeException("Multiple varities with name " + name);
+		else if(setNames.isEmpty())
+			return null;
+		return (Variety)setNames.iterator().next();
+	}
+
+	@Override
+	public Variety findVarietyById(BigDecimal id) {
+		// TODO Auto-generated method stub
+		return this.findVAllstockBasicpropByPrimaryKey(id);
+	}
+	
+	
+	
+	@Override
+	public Variety findVarietyByNameLike(String name) {
+		// TODO Auto-generated method stub
+		Set setNames =  this.findVAllstockBasicpropByNameContaining(name);
+		if(setNames.size()>1)
+			throw new RuntimeException("Multiple varieties with name like " + name);
+		else if(setNames.isEmpty())
+			return null;
+		return (Variety)setNames.iterator().next();
+	}
+
+	
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropBySubpopulation(String subpopulation) throws DataAccessException {
+		Query query = createNamedQuery("findVAllstockBasicpropBySubpopulation", -1, -1, subpopulation);
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByOriCountrySubpopulation(String country, String subpopulation) throws DataAccessException {
+		Query query = createNamedQuery("findVAllstockBasicpropByOriCountrySubpopulation", -1, -1, country, subpopulation);
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+	}
+
+	@Override
+	public Variety findVarietyByAccession(String name) {
+		// TODO Auto-generated method stub
+		Set setNames =  findVarietiesByAccession(name);
+		if(setNames.size()>1)
+			throw new RuntimeException("Multiple varieties with accession " + name);
+		else if(setNames.isEmpty())
+			return null;
+		return (Variety)setNames.iterator().next();
+		
+	}
+
+	@Override
+	public List<Variety> findVarietyByNamesLike(Collection names) {
+		if(AppContext.isOracle()) return findVarietyByNamesLikeOracle( names);
+		else if(AppContext.isPostgres()) return findVarietyByNamesLikePostgres( names);
+		return null;
+		
+	}
+	
+
+	
+	private  List<Variety> findVarietyByNamesLikeOracle(Collection names) {
+		// TODO Auto-generated method stub
+		List listVars=new ArrayList();
+		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(names),900);
+		for(int i=0; i<setnames.length; i++) {
+			StringBuffer buffnames=new StringBuffer();
+			Iterator<String> itNames=setnames[i].iterator();
+			while(itNames.hasNext()) {
+				String name=itNames.next();
+				try {
+					Integer.valueOf(name);
+					buffnames.append("'").append(name).append("'");
+				} catch(Exception ex) {
+					buffnames.append("'%").append(name.replace("'","''")).append("%'");
+				}
+				if(itNames.hasNext()) buffnames.append(",");
+			}
+			String sql = "select v.* from  " + AppContext.getDefaultSchema() + ".V_allStock_BASICPROP v,  table (sys.ODCIVarchar2List (" + buffnames + ")) n where v.name like n.column_value";
+			listVars.addAll(executeSQL(sql)); 
+		}
+		return listVars;
+	}
+	
+
+	private  List<Variety> findVarietyByNamesLikePostgres(Collection names) {
+		// TODO Auto-generated method stub
+		List listVars=new ArrayList();
+		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(names),900);
+		for(int i=0; i<setnames.length; i++) {
+			StringBuffer buffnames=new StringBuffer();
+			Iterator<String> itNames=setnames[i].iterator();
+			while(itNames.hasNext()) {
+				String name=itNames.next().toUpperCase();
+				try {
+					Integer.valueOf(name);
+					buffnames.append("'").append(name).append("'");
+				} catch(Exception ex) {
+					buffnames.append("'%").append(name.replace("'","''")).append("%'");
+				}
+				if(itNames.hasNext()) buffnames.append(",");
+			}
+			String sql = "select v.* from  " + AppContext.getDefaultSchema() + ".V_allStock_BASICPROP v,   (select t.column_value from ( select unnest(ARRAY[" + buffnames + "]) column_value) t) n where upper(v.name) like n.column_value";
+			listVars.addAll(executeSQL(sql)); 
+		}
+		return listVars;
+	}
+	
+
+	
+	@Override
+	public List<Variety> findVarietyByNames(Collection names) {
+		// TODO Auto-generated method stub
+		if(AppContext.isOracle()) return  findVarietyByNamesOracle(names);
+		else if(AppContext.isPostgres()) return  findVarietyByNamesPostgres(names);
+		return null;
+		
+	}
+
+	private  List<Variety> findVarietyByNamesOracle(Collection names) {
+		// TODO Auto-generated method stub
+		
+		List listVars=new ArrayList();
+		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(names),900);
+		for(int i=0; i<setnames.length; i++) {
+			StringBuffer buffnames=new StringBuffer();
+			Iterator<String> itNames=setnames[i].iterator();
+			while(itNames.hasNext()) {
+				String name=itNames.next();
+				if(name.startsWith("IRGC")) name=name.substring(4).trim();
+				buffnames.append("'").append(name.replace("'","''")).append("'");
+				if(itNames.hasNext()) buffnames.append(",");
+			}
+			//select v.* from   public.V_allStock_BASICPROP v,  (select t.column_value from ( select unnest(ARRAY['NIPPONBARE','IR 64']) column_value) t) n where n.column_value=v.name or n.column_value=v.gs_accession;
+			
+			String sql = "select v.* from   " + AppContext.getDefaultSchema() + ".V_allStock_BASICPROP v,  table (sys.ODCIVarchar2List (" + buffnames + ")) n where n.column_value=v.name or n.column_value=v.gs_accession";
+			//String sql = "select v.* from   " + AppContext.getDefaultSchema() + ".V_allStock_BASICPROP v,  (select t.column_value from ( select unnest(ARRAY[" + buffnames + "]) column_value) t) n where n.column_value=v.name or n.column_value=v.gs_accession";
+			listVars.addAll(executeSQL(sql)); 
+		}
+		
+		return listVars;
+				
+		
+		/*
+		select emp.* from  emp,
+		table (sys.ODCIVarchar2List ('SCOTT','ALLEN','KING','KINGDOM'))
+		where column_value=ename 
+		*/
+		//return null;
+	}
+	
+	private  List<Variety> findVarietyByNamesPostgres(Collection names) {
+		// TODO Auto-generated method stub
+		
+		List listVars=new ArrayList();
+		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(names),900);
+		for(int i=0; i<setnames.length; i++) {
+			StringBuffer buffnames=new StringBuffer();
+			Iterator<String> itNames=setnames[i].iterator();
+			while(itNames.hasNext()) {
+				String name=itNames.next().toUpperCase();
+				if(name.startsWith("IRGC")) name=name.substring(4).trim();
+				buffnames.append("'").append(name.replace("'","''")).append("'");
+				if(itNames.hasNext()) buffnames.append(",");
+			}
+			//select v.* from   public.V_allStock_BASICPROP v,  (select t.column_value from ( select unnest(ARRAY['NIPPONBARE','IR 64']) column_value) t) n where n.column_value=v.name or n.column_value=v.gs_accession;
+			
+			//String sql = "select v.* from   " + AppContext.getDefaultSchema() + ".V_allStock_BASICPROP v,  table (sys.ODCIVarchar2List (" + buffnames + ")) n where n.column_value=v.name or n.column_value=v.gs_accession";
+			String sql = "select v.* from   " + AppContext.getDefaultSchema() + ".V_allStock_BASICPROP v,  (select t.column_value from ( select unnest(ARRAY[" + buffnames + "]) column_value) t) n where n.column_value=upper(v.name) or n.column_value=upper(v.gs_accession)";
+			listVars.addAll(executeSQL(sql)); 
+		}
+		
+		return listVars;
+				
+		
+		/*
+		select emp.* from  emp,
+		table (sys.ODCIVarchar2List ('SCOTT','ALLEN','KING','KINGDOM'))
+		where column_value=ename 
+		*/
+		//return null;
+	}
+
+	@Override
+	public List<Variety> findVarietyByIrisIds(Collection names) {
+		if(AppContext.isOracle()) return  findVarietyByIrisIdsOracle(names);
+		else if(AppContext.isPostgres()) return  findVarietyByIrisIdsPostgres(names);
+		return null;
+
+	}
+	
+	private List<Variety> findVarietyByIrisIdsOracle(Collection names) {
+
+			// TODO Auto-generated method stub
+		
+		List listVars=new ArrayList();
+		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(names),900);
+		for(int i=0; i<setnames.length; i++) {
+			StringBuffer buffnames=new StringBuffer();
+			Iterator<String> itNames=setnames[i].iterator();
+			while(itNames.hasNext()) {
+				String name=itNames.next();
+				name="IRIS " + name.toUpperCase().replace("IRIS", "").replace("_", "").trim();
+				buffnames.append("'").append(name.replace("'","''")).append("'");
+				if(itNames.hasNext()) buffnames.append(",");
+			}
+			String sql = "select v.* from  " + AppContext.getDefaultSchema() + ".V_allStock_BASICPROP v,  table (sys.ODCIVarchar2List (" + buffnames + ")) n where n.column_value=v.IRIS_UNIQUE_ID";
+			listVars.addAll(executeSQL(sql)); 
+		}
+		
+		return listVars;
+
+	}
+	
+	private List<Variety> findVarietyByIrisIdsPostgres(Collection names) {
+		// TODO Auto-generated method stub
+		
+		List listVars=new ArrayList();
+		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(names),900);
+		for(int i=0; i<setnames.length; i++) {
+			StringBuffer buffnames=new StringBuffer();
+			Iterator<String> itNames=setnames[i].iterator();
+			while(itNames.hasNext()) {
+				String name=itNames.next().toUpperCase();
+				name="IRIS " + name.toUpperCase().replace("IRIS", "").replace("_", "").trim();
+				buffnames.append("'").append(name.replace("'","''")).append("'");
+				if(itNames.hasNext()) buffnames.append(",");
+			}
+			String sql = "select v.* from  " + AppContext.getDefaultSchema() + ".V_allStock_BASICPROP v,  (select t.column_value from ( select unnest(ARRAY[" + buffnames + "]) column_value) t) n where n.column_value=upper(v.IRIS_UNIQUE_ID)";
+			listVars.addAll(executeSQL(sql)); 
+		}
+		
+		return listVars;
+
+	}
+	
+	private List executeSQL(String sql) 
+	{	if(AppContext.isLocalhost()) AppContext.debug("executing :" + sql);
+		//log.info("executing :" + sql);
+		return  getSession().createSQLQuery(sql).addEntity(VAllstockBasicprop.class).list();
+	}
+	
+
+	private Session getSession() {
+		return entityManager.unwrap(Session.class);
+	}
+
+	@Override
+	public Set findVarietiesByIrisId(String irisid) {
+		// TODO Auto-generated method stub
+		return findVAllstockBasicpropByIrisUniqueId(irisid);
+	}
+
+	@Override
+	public Set findVarietiesByAccession(String accession)  throws DataAccessException {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByGsaccession", -1, -1, accession.toUpperCase().replace("IRGC","").trim());
+		List list=query.getResultList();
+		if(list.size()==0) {
+			query = createNamedQuery("findVAllstockBasicpropByBoxCode", -1, -1, accession.toUpperCase().trim());
+			list=query.getResultList();
+		}
+		return new LinkedHashSet<VAllstockBasicprop>(list);
+
+	}
+	
+	
+
+
+	public Set findVAllstockBasicpropByDataset(String dataset)  throws DataAccessException  {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByDataset", -1,-1, dataset);
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+
+	}
+
+	@Override
+	public Set findVarietiesByName(String names) {
+		// TODO Auto-generated method stub
+		return findVAllstockBasicpropByName(names);
+	}
+	
+	@Override
+	public Set findVarietiesByNameAccession(String varname, String accession)  throws DataAccessException  {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByNameGsaccession", -1,-1, varname, accession.toUpperCase().replace("IRGC","").trim());
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+
+	}
+
+	@Override
+	public Set findAllVarietyByCountry(String country, Set dataset)  throws DataAccessException {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByOriCountryDataset", -1,-1,country, AppContext.toUpperCase(dataset));
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+	}
+
+	@Override
+	public Set findAllVarietyBySubpopulation(String subpopulation, Set dataset)  throws DataAccessException  {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropBySubpopulationDataset", -1,-1,subpopulation, AppContext.toUpperCase(dataset));
+		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
+	}
+
+	/*
+	@Override
+	public Set findAllVarietyByCountryAndSubpopulation(String country, String subpopulation, Set dataset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	*/
+
+	/*
+	@Override
+	public Variety findVarietyByName(String name, Set dataset)  throws DataAccessException {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByNameDataset", -1,-1,name, AppContext.toUpperCase(dataset));
+		return  (VAllstockBasicprop)query.getSingleResult();
+	}
+	*/
+	@Override
+	public List<Variety> findVarietyByName(String name, Set dataset)  throws DataAccessException {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByNameDataset", -1,-1,name, AppContext.toUpperCase(dataset));
+		return  query.getResultList();
+	}
+
+	@Override
+	public Variety findVarietyByNameLike(String name, Set dataset)  throws DataAccessException {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByNameContainingDataset", -1,-1,name, AppContext.toUpperCase(dataset));
+		return  (VAllstockBasicprop)query.getSingleResult();
+	}
+
+	@Override
+	public Variety findVarietyByIrisId(String name, Set dataset)  throws DataAccessException {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByIrisUniqueIdDataset", -1,-1,name, AppContext.toUpperCase(dataset));
+		return  (VAllstockBasicprop)query.getSingleResult();
+	}
+
+	@Override
+	public Variety findVarietyByAccession(String name, Set dataset)  throws DataAccessException {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByGsaccessionDataset", -1,-1,name, AppContext.toUpperCase(dataset));
+		return  (VAllstockBasicprop)query.getSingleResult();
+	}
+
+	@Override
+	public List<Variety> findVarietyByNamesLike(Collection names, Set dataset)  throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Variety> findVarietyByNames(Collection names, Set dataset)  throws DataAccessException {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByNamesDataset", -1,-1,AppContext.toUpperCase(names), AppContext.toUpperCase(dataset));
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Variety> findVarietyByIrisIds(Collection names, Set dataset)  throws DataAccessException {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByIrisUniqueIdsDataset", -1,-1,AppContext.toUpperCase(names), AppContext.toUpperCase(dataset));
+		return query.getResultList();
+	}
+
+	@Override
+	public Set<Variety> findVarietiesByIrisId(String irisid, Set dataset)  throws DataAccessException {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByIrisUniqueIdDataset", -1,-1,irisid, AppContext.toUpperCase(dataset));
+		return new LinkedHashSet<Variety>(query.getResultList());
+	}
+/*
+	@Override
+	public Variety findVarietyByAccession(String accession, Set dataset)  throws DataAccessException  {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByGsaccessionDataset", -1,-1,accession, AppContext.toUpperCase(dataset));
+		return new LinkedHashSet<Variety>(query.getResultList());
+	}
+*/
+	@Override
+	public Set<Variety> findVarietiesByName(String names, Set dataset)  throws DataAccessException  {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByNameDataset", -1,-1,names, AppContext.toUpperCase(dataset));
+		return new LinkedHashSet<Variety>(query.getResultList());
+	}
+
+	@Override
+	public Set<Variety> findVarietiesByNameAccession(String varname, String accession, Set dataset)  throws DataAccessException  {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByNameGsaccessionDataset", -1,-1,varname, accession, AppContext.toUpperCase(dataset));
+		return new LinkedHashSet<Variety>(query.getResultList());
+	}
+
+	@Override
+	public Collection<Variety> findVarietyByIds(Set setQueryVarobj, Set dataset)  throws DataAccessException {
+		// TODO Auto-generated method stub
+		
+		Query query = createNamedQuery("findVAllstockBasicpropByPrimaryKeysDataset", -1,-1,AppContext.toUpperCase(setQueryVarobj), AppContext.toUpperCase(dataset));
+		return new LinkedHashSet<Variety>(query.getResultList());
+	}
+
+	@Override
+	public Collection<Variety> findVarietiesByDataset(String dataset)  throws DataAccessException  {
+		// TODO Auto-generated method stub
+		
+		AppContext.debug("findVarietiesByDataset(String dataset) :" + dataset);
+		
+		Query query = createNamedQuery("findVAllstockBasicpropByDataset", -1,-1,dataset);
+		List l=query.getResultList();
+		AppContext.debug(l.size() + " samples: " + query.getClass());
+		return new LinkedHashSet<Variety>(l);
+		
+		//String sql="select * from v_allstock_basicprop where upper(dataset)='" + dataset.toUpperCase() +"'";
+		//return AppContext.executeSQL(entityManager, VAllstockBasicprop.class, sql);
+
+	}
+
+	@Override
+	public Collection<Variety> findVarietiesByDatasets(Set dataset)  throws DataAccessException  {
+		// TODO Auto-generated method stub
+		
+		Query query = createNamedQuery("findAllVAllstockBasicpropsDatasets", -1,-1, AppContext.toUpperCase(dataset));
+		AppContext.debug("findVarietiesByDataset(Set dataset) :" + dataset + "  " + query.getClass());
+		return new LinkedHashSet<Variety>(query.getResultList());
+	}
+
+	@Override
+	public Set findAllVarietyByExample(Variety germplasm, Set dataset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set findAllVarietyByCountryAndSubpopulationDatasets(String country, String subpopulation, Set dataset) {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findAllVarietyByCountryAndSubpopulationDataset", -1,-1, country, subpopulation, AppContext.toUpperCase(dataset));
+		return new LinkedHashSet<Variety>(query.getResultList());
+	}
+
+	@Override
+	public Set findAllVarietyByCountryAndSubpopulation(String country, String subpopulation) {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findAllVarietyByCountryAndSubpopulation", -1,-1, country, subpopulation);
+		return new LinkedHashSet<Variety>(query.getResultList());
+	}
+
+	@Override
+	public Variety findVarietyById(BigDecimal id, Set dataset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+	@Override
+	public Set findAllVariety(Set dataset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set findAllVarietyByExample(Variety germplasm) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	
+	
+}

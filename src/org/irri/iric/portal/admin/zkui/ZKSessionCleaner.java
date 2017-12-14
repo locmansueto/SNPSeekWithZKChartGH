@@ -33,6 +33,10 @@ public class ZKSessionCleaner implements SessionCleanup {
 	
 	@Override
 	public void cleanup(org.zkoss.zk.ui.Session zksession) throws Exception {
+		
+	}
+	
+	public void cleanupOld(org.zkoss.zk.ui.Session zksession) throws Exception {
 		// TODO Auto-generated method stub
 		
 		// cancel running queries here
@@ -67,8 +71,10 @@ public class ZKSessionCleaner implements SessionCleanup {
 			System.out.println("manager removed from getNativeSession and freed");
 		}
 		
+		
+		if(AppContext.isIRRILAN())
 		//System.out.println("Cleaning onClose session " + zksession.getRemoteHost() + "  "  +  zksession.getRemoteAddr()  + "  id=" + ((HttpSession)Sessions.getCurrent().getNativeSession()).getId() );
-		System.out.println("Cleaning onClose session " + zksession.getRemoteHost() + "  "  +  zksession.getRemoteAddr()  + "  id=" + ((HttpSession)zksession.getNativeSession()).getId() + " stostring=" + zksession.getNativeSession() );
+			AppContext.debug("Cleaning onClose session " + zksession.getRemoteHost() + "  "  +  zksession.getRemoteAddr()  + "  id=" + ((HttpSession)zksession.getNativeSession()).getId() + " stostring=" + zksession.getNativeSession() );
 
 		
 		if(!getSession().isConnected() ) 
@@ -78,10 +84,11 @@ public class ZKSessionCleaner implements SessionCleanup {
 		else {
 			try {
 				getSession().cancelQuery();
-				System.out.println("getSession().cancelQuery() success");
+				if(AppContext.isIRRILAN())
+					AppContext.debug("getSession().cancelQuery() success");
 			}
 			catch(Exception ex) {
-				System.out.println("getSession().cancelQuery() failed");
+				AppContext.debug("getSession().cancelQuery() failed");
 				ex.printStackTrace();
 			}
 		}

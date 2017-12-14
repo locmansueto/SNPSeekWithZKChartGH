@@ -637,7 +637,7 @@ public class Biglistbox extends XulElement {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <T> MatrixRenderer<T> getRealMatrixRenderer() {
 		final MatrixRenderer renderer = getMatrixRenderer();
-		return renderer != null ? renderer : _defMTRend;
+		return renderer != null ? renderer : (MatrixRenderer<T>)_defMTRend;
 	}
 
 	private void postOnInitRender() {

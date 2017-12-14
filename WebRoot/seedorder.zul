@@ -1,0 +1,37 @@
+<?page title="Module" contentType="text/html;charset=UTF-8"?>
+<zk>
+
+<window border="none" >
+
+	<div apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.irri.iric.portal.seed.InlineEditingViewModel')">
+		<grid hflex="min" model="@load(vm.allSeeds)">
+			<columns height="22px">
+				<column width="100px" label="Accession" align="center" />
+				<column width="150px" label="Variety name" align="center"/>
+				<column width="100px" label="Quantity (grams)" align="center"/>
+				<column width="100px" label="Price/gram (US$)" align="center"/>
+				<column width="100px" label="Price (US$)" align="center"/>
+			</columns>
+			<template name="model">
+				<row>
+					<textbox  inplace="true"
+						value="@bind(each.accession)" width="99%" />
+					<textbox  inplace="true"
+						value="@bind(each.varname)" width="99%" />
+					<div class='text-center'>
+						<spinner inplace="true"
+							value="@bind(each.gram)" width="98%"/>
+					</div>
+					<textbox  inplace="true"
+						value="@bind(each.pricePerGram)" width="99%" />
+					<textbox  inplace="true"
+						value="@bind(each.price)" width="99%" />
+				</row>
+			</template>
+		</grid>
+	</div>
+
+			   			
+</window>
+</zk>

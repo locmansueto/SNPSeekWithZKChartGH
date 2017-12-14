@@ -26,10 +26,10 @@ public class Object2StringMatrixRenderer implements MatrixRenderer, SNPRowRender
 	private VariantStringData tabledata;
 	private GenotypeQueryParams params;
 	
-	private int frozenCols = 4;
+	private int frozenCols = AppContext.getSnpMatrixFrozenCols(); // 4;
 		
 	private Map<Position,Set<Character>> mapPos2NonsynAlleles;
-	private Set<Position> setSnpInExonPos;
+	//private Set<Position> setSnpInExonPos;
 	private Set<Position> setDonorPos;
 	private Set<Position> setAcceptorPos;
 	private Map<Integer,Position> mapIdx2Pos;
@@ -58,7 +58,7 @@ public class Object2StringMatrixRenderer implements MatrixRenderer, SNPRowRender
 		if(params.isbSNP() && tabledata.getSnpstringdata()!=null) {
 			if(params.isbHighlightNonsynSnps() || params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) {
 				mapPos2NonsynAlleles =   tabledata.getSnpstringdata().getMapPos2NonsynAlleles(); // .getMapIdx2NonsynAlleles();
-				setSnpInExonPos = tabledata.getSnpstringdata().getSetSnpInExonPos();
+				//setSnpInExonPos = tabledata.getSnpstringdata().getSetSnpInExonPos();
 			}
 			//if(params.isbColorSpliceSNP()) {
 			if(true) {

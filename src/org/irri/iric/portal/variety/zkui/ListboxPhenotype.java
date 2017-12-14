@@ -20,13 +20,17 @@ public class ListboxPhenotype extends Listbox {
 	Listbox listboxComparator;
 	VarietyFacade variety;
 	private Integer phenotype_type;
+	//private String dataset;
+	private Set dataset;
 	
-	 public ListboxPhenotype(Listbox values, VarietyFacade varietyfacade, Listbox comparator) {
+
+	public ListboxPhenotype(Listbox values, VarietyFacade varietyfacade, Listbox comparator, Set set) {
 		super();
 		// TODO Auto-generated constructor stub
 		listboxPhenValue = values;
 		variety=varietyfacade;
 		listboxComparator=comparator;
+		this.dataset=set;
 
 	}
 
@@ -36,7 +40,7 @@ public class ListboxPhenotype extends Listbox {
 	}
 	
 	
-	private void setPhenotypeConstraint() {
+	void setPhenotypeConstraint() {
 		
 		List listValues = new java.util.ArrayList();
 		
@@ -45,7 +49,7 @@ public class ListboxPhenotype extends Listbox {
 		if(!getSelectedItem().getLabel().trim().isEmpty())
 		{
 			//Iterator<CvTermUniqueValues> itValues = variety.getPhenotypeUniqueValues( getSelectedItem().getLabel() ).iterator();
-			Object retobj[] = variety.getPhenotypeUniqueValues( getSelectedItem().getLabel() );
+			Object retobj[] = variety.getPhenotypeUniqueValues( getSelectedItem().getLabel(), dataset );
 			phenotype_type = (Integer)retobj[1];
 			Iterator<CvTermUniqueValues> itValues = ((Set)retobj[0]).iterator(); // variety.getPhenotypeUniqueValues( getSelectedItem().getLabel() ).iterator();
 			while(itValues.hasNext()) {

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Set;
 
-import org.irri.iric.portal.chado.oracle.domain.Feature;
+import org.irri.iric.portal.domain.Feature;
 import org.irri.iric.portal.dao.SequenceDAO;
 import org.skyway.spring.util.dao.JpaDao;
 import org.springframework.dao.DataAccessException;

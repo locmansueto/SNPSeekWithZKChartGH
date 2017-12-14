@@ -4,7 +4,7 @@
 	<title>SNP Query</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="generator" content="HelpNDoc Personal Edition 4.5.0.497">
-	<meta name="keywords" content="CSV, Tab, query SNPs, , All Varieties result, Two varieties result, Gene">
+	<meta name="keywords" content="Querying Indels">
 	
 	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
 	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
@@ -51,7 +51,7 @@
 				
 				<a href="WebInterface.html"><img src="img/arrow_left.png" alt="Previous"/></a>
 				
-				<a href="StepsinSNPQuery.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				<a href="VarietyQuery.html"><img src="img/arrow_right.png" alt="Next"/></a>
 				
 				</div>
 			<div class="clear"></div>
@@ -59,75 +59,164 @@
 	<div id="topic_content">
 		
 <p></p>
-<p class="rvps7"><span class="rvts14"><br/></span></p>
-<p class="rvps8"><span class="rvts15"><br/></span></p>
-<p class="rvps8"><img width="629" height="416" alt="" style="padding : 1px;" src="lib/NewItem27.png"/></p>
-<p class="rvps8"><span class="rvts15"><br/></span></p>
-<p class="rvps7"><span class="rvts15"><br/></span></p>
-<p class="rvps12"><span class="rvts15">The SNP Query interface has two functionalities, to compare alleles between two specified varieties, and to compare all varieties with the reference genome. In both cases the query region can be specified either by chromosomal position, or by gene locus.</span></p>
-<h1 class="rvps10"><a name="StepsinSNPQuery"></a>
-<span class="rvts0"><span class="rvts17"><br/></span></span></h1>
-<h1 class="rvps10"><span class="rvts0"><span class="rvts17">Steps to query SNPs</span></span></h1>
-<p class="rvps2"><span class="rvts15"><br/></span></p>
+<p class="rvps10"><span class="rvts15"><br/></span></p>
+<p class="rvps11"><span class="rvts16"><br/></span></p>
+<p class="rvps11"><img width="911" height="307" alt="" style="padding : 1px;" src="lib/figure_5.png"/></p>
+<p class="rvps10"><span class="rvts16"><br/></span></p>
+<p class="rvps14"><span class="rvts16">The SNP Query interface has two functionalities, to compare alleles between two specified varieties, and to compare multiple varieties with a reference genome. In both either case, the query region can be specified either by chromosomal region, by gene locus, or by a list of positions.</span></p>
+<h1 class="rvps13"><a name="StepsinSNPQuery"></a>
+<span class="rvts0"><span class="rvts18"><br/></span></span></h1>
+<h1 class="rvps13"><span class="rvts0"><span class="rvts18">Steps to query SNPs</span></span></h1>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
 <ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
-<li class="rvps2"><span class="rvts15">Specifiy varieties</span></li>
+<li class="rvps2"><span class="rvts16">Specifiy varieties</span></li>
 <ol style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: lower-alpha;">
-<li class="rvps11" style="margin-left: 0px"><span class="rvts15">To compare alleles between </span><span class="rvts18">two varieties</span><span class="rvts15"> - type the </span><span class="rvts18">Variety</span><span class="rvts15"> names in the two boxes. The text boxes have auto-completion feature so one only needs to type the first few characters then select from the drop-down list.</span></li>
-<li class="rvps11" style="margin-left: 0px"><span class="rvts15">To compare reference with </span><span class="rvts18">all varieties</span><span class="rvts15"> - check the </span><span class="rvts18">All varieties</span><span class="rvts15"> checkbox. Varieties selected in the two text boxes are ignored if this is checked.</span></li>
-<li class="rvps11" style="margin-left: 0px"><span class="rvts15">To compare reference with a </span><span class="rvts18">subpopulation</span><span class="rvts15"> - type the subpopulation in the box with auto-completion feature.</span></li>
-<li class="rvps11" style="margin-left: 0px"><span class="rvts15">To compare reference with a</span><span class="rvts18"> list of varieties</span><span class="rvts15"> - select the variety list name in </span><span class="rvts18">My Variety List</span><span class="rvts15">, which are defined in </span><span class="rvts18">My Lists</span><span class="rvts15">.</span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts16">To compare alleles between two varieties - in the two </span><span class="rvts19">pairwise</span><span class="rvts16"> boxes, type or select from the drop-down list the varieties to compare. The text boxes have auto-completion feature so you only need to type the first few characters then select from the drop-down list. The choice items and recognized terms can be the</span><span class="rvts19"> variety name</span><span class="rvts16"> or </span><span class="rvts19">accession</span><span class="rvts16"> based on the selected button at the right.</span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts16">To compare the reference with a </span><span class="rvts19">subpopulation</span><span class="rvts16"> - select the subpopulation from the listbox. Some items in a choices is a group of more than one subpopulation, </span><span class="rvts19">all indica</span><span class="rvts16"> (ind1,ind2,ind3,indx), </span><span class="rvts19">all japonica</span><span class="rvts16"> (temp,trop,temp/trop,trop/temp) and &nbsp;</span><span class="rvts19">all varieties</span><span class="rvts16"> </span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts16">To compare reference with a</span><span class="rvts19"> list of varieties</span><span class="rvts16"> - select the variety list name in </span><span class="rvts19">My Variety List</span><span class="rvts16">, which are defined in </span><span class="rvts19">My Lists</span><span class="rvts16">.</span></li>
 </ol>
-<li class="rvps2"><span class="rvts15">Specify genome region</span></li>
+<!-- /ol -->
+<p class="rvps6"><span class="rvts16"><br/></span></p>
+<!-- ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;" -->
+<li class="rvps2"><span class="rvts16">Specify genome region</span></li>
 <ol style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: lower-alpha;">
-<li class="rvps11" style="margin-left: 0px"><span class="rvts15">To sepecify chromosome region - select the </span><span class="rvts18">chromosome</span><span class="rvts15"> number, type the </span><span class="rvts18">start</span><span class="rvts15"> and </span><span class="rvts18">end</span><span class="rvts15"> base positions. The interface will checks if the entries are valid.</span></li>
-<li class="rvps11" style="margin-left: 0px"><span class="rvts15">To specify Gene locus - type the </span><span class="rvts18">Gene</span><span class="rvts15"> locus name in the text box. We are using the MSU Rice Genome &nbsp;Annotation Project annotations (</span><a class="rvts19" href="http://rice.plantbiology.msu.edu/">http://rice.plantbiology.msu.edu/</a><span class="rvts15">), so gene loci names are of the form LOC_OSXXgYYYYY. &nbsp;The gene text box also has auto-completion feature. When a locus is selected, the chromosomal position boxes are filled by the selected gene's position. </span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts16">Select the </span><span class="rvts19">Reference Genome</span><span class="rvts16"> - select among the five sequenced rice genomes to use as reference genome (Japonica Nipponbare, 93-11, IR64-21, DJ123, Kasalath). The chromosome/scaffold and gene locus selections depends on the selected reference genome. </span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts16">Check</span><span class="rvts19"> Show all reference alleles</span><span class="rvts16"> – to display the alleles of all 5 reference genomes for each SNP position. The alleles and position conversions between reference genomes are based on pairwise alignment results.</span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts16">To sepecify </span><span class="rvts19">Chromosome/Scaffold region</span><span class="rvts16"> - select the </span><span class="rvts19">chromosome/scaffold</span><span class="rvts16"> name, type the </span><span class="rvts19">start</span><span class="rvts16"> and </span><span class="rvts19">end</span><span class="rvts16"> base positions. Chromosome is avaiable when a fully assembled genome (Nipponbare, Kasalath) is selected, otherwise (IR64-21, DJ123) scaffold is used. 93-11 has both chromosomes and scaffolds.</span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts16">To specify Gene locus - type the </span><span class="rvts19">Gene</span><span class="rvts16"> locus name in the text box. For Nipponbare, we are using the MSUv7 (LOC_OSXXgYYYYYY), RAP (OsXXgYYYYYY), and our merged MSUv71,RAP,FGenesh++ (OsNippoXXgYYYYYY) gene loci names described in NAR Supplementary Materials. &nbsp;For the other 4 reference genomes, we are proposing a new locus naming convention also described below. The gene text box also has auto-completion feature. When a locus is selected, the chromosomal position boxes are automatically filled with the selected gene's region. </span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts16">To use a list of SNP positions, select the </span><span class="rvts19">SNP List</span><span class="rvts16"> previously defined.</span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts16">To use a list of gene loci, select the </span><span class="rvts19">Locus List</span><span class="rvts16"> previously defined.</span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts16">A genotype can be defined from a SNP List with allele value for each position. You can </span><span class="rvts19">Match Genotype</span><span class="rvts16"> between this list and all varieties in the selected dataset. The resulting varieties are ranked by the number of matches with the SNP List. Instead of providing a SNP Liist, the genotype could be that of the selected </span><span class="rvts19">Variety</span><span class="rvts16"> at the specified region. &nbsp;</span></li>
 </ol>
-<li class="rvps2"><span class="rvts15">Set options</span></li>
+<!-- /ol -->
+<p class="rvps6"><span class="rvts16"><br/></span></p>
+<!-- ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;" -->
+<li class="rvps2"><span class="rvts16">Set options</span></li>
 <ol style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: lower-alpha;">
-<li class="rvps11" style="margin-left: 0px"><span class="rvts18">SNP coloring</span><span class="rvts15"> determines the color of alleles as displayed in the table and in the Genome Browser. Options are:</span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts19">Include indels</span><span class="rvts16"> - include indels in the query</span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts19">Show phenotype</span><span class="rvts16"> - include the values of the selected phenotype in the results table </span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts19">Dataset </span><span class="rvts16">- select the dataset to query (3kRGP, HDRA, both). If </span><span class="rvts19">both</span><span class="rvts16"> is selected, there is addition option to use either the </span><span class="rvts19">union</span><span class="rvts16"> or </span><span class="rvts19">intersection</span><span class="rvts16"> of the SNP positions.</span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts19">SNP coloring</span><span class="rvts16"> determines the color of alleles as displayed in the table and in the Genome Browser. Options are:</span></li>
 <ol style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: lower-roman;">
-<li class="rvps13" style="margin-left: 0px"><span class="rvts15">Reference mismatch – SNPs which have polymorphism with the reference are colored red, while the rest is white.</span></li>
-<li class="rvps13" style="margin-left: 0px"><span class="rvts15">Nucleotide – SNPs are colored based on the base nucleotide: A green, T red, G orange, C blue. This follows the JBrowse color code.</span></li>
+<li class="rvps7" style="margin-left: 0px"><span class="rvts16">Reference mismatch – SNPs which have polymorphism with the reference are colored red, while the rest is white.</span></li>
+<li class="rvps7" style="margin-left: 0px"><span class="rvts16">Nucleotide – SNPs are colored based on the base nucleotide: A green, T red, G orange, C blue. This follows the JBrowse color code.</span></li>
 </ol>
-<li class="rvps11" style="margin-left: 0px"><span class="rvts18">Core SNPs only</span><span class="rvts15"> -- if checked, will query only the Core SNPs (500,000) instead of the SNP universe (20M). The core set was generated using statistical criteria.</span></li>
-<li class="rvps11" style="margin-left: 0px"><span class="rvts18">Mismatch Only</span><span class="rvts15"> -- if checked, only SNPs having allele mismatches are fetched in the two-variety comparison</span></li>
-<li class="rvps11" style="margin-left: 0px"><span class="rvts18">Phylotree topN</span><span class="rvts15"> -- generating the distance matrix and computing phylogenetic tree is expensive for a large set. To reduce computing time, only the </span><span class="rvts18">topN</span><span class="rvts15"> distance pairs are used to generate the matrix.</span></li>
-<li class="rvps11" style="margin-left: 0px"><span class="rvts18">Reset</span><span class="rvts15"> button is provided to clear all input fields.</span></li>
-</ol>
-<li class="rvps2"><span class="rvts15">Display or Download</span></li>
-</ol>
-<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;"><ol style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: lower-alpha;">
-<li class="rvps9" style="margin-left: 0px"><span class="rvts15">To download the result, click the </span><span class="rvts18">CSV</span><span class="rvts15"> or </span><span class="rvts18">Tab</span><span class="rvts15"> button to get the given format.</span></li>
-<li class="rvps9" style="margin-left: 0px"><span class="rvts15">To Display the result in a Table, or view in JBrowse or a Tree, click the </span><span class="rvts18">Search</span><span class="rvts15"> button. </span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts19">3k SNP Set </span><span class="rvts16">- select the subset of the 3kRGP SNPs to query (All 32M, Base 18M, Filtered 4.8M, Core 400k). The subsetting criteria is described below.</span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts19">Mismatch Only</span><span class="rvts16"> -- if checked, only SNPs having allele mismatches are fetched in the pairwise comparison, or having mismatch with the reference in the multiple comparison.</span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts19">Include SNPs</span><span class="rvts16"> -- select to include/exclude/highlight </span><span class="rvts19">Non-synonymous</span><span class="rvts16"> SNPs.</span></li>
+<li class="rvps6" style="margin-left: 0px"><span class="rvts19">Missing allele</span><span class="rvts16"> - specify how missing allele is to be counted (ignore means 0 match, 0 mismatch; or 0.5 match 0.5 mismatch)</span></li>
 </ol></ol>
-<p class="rvps9"><span class="rvts15"><br/></span></p>
-<p class="rvps7"><a name="AllVarietiesresult"></a>
-<span class="rvts15"><br/></span></p>
-<h1 class="rvps10"><span class="rvts0"><span class="rvts17">All Varieties result views </span></span></h1>
-<p class="rvps12"><span class="rvts15">Three views are available for SNP query results</span></p>
-<p class="rvps7"><span class="rvts15"><br/></span></p>
-<p class="rvps14"><span class="rvts20">Table</span><span class="rvts16"> &nbsp;- this view displays the Alleles for each variety in a row, for all SNP positions within &nbsp;the specified region or gene. The color is based on SNP coloring selected. The table is displayed in several pages, depending on the number of returned varieties. Note that only varieties having at least one reference mismatch are returned, and the varieties are sorted by decreasing number of allele mismatches. Due to its typlical large size, the result is displayed in several pages and the number of varieties per page depends on the length of the query region.</span></p>
-<p class="rvps8"><img width="615" height="331" alt="" style="padding : 1px;" src="lib/NewItem8.png"/></p>
-<p class="rvps7"><span class="rvts15"><br/></span></p>
-<p class="rvps9"><span class="rvts18">JBrowse</span><span class="rvts15"> – the JBrowse genome browser lays out the SNP genotyping result in the SNP Genotyping track. Each variety is represented as a thin row in the track, and sorted in the same order as in the table. This track is dynamically generated from the query result, and covers only the queried region or locus. Zooming out from the initial region gives empty rows at both sides. To view a wider region, do a query again specifying the new wider region. Unlike in the Table view where results are displayed in several pages, Jbrowse displays all varieties having allele mismatch in the queried region at once.</span></p>
-<p class="rvps9"><span class="rvts15"><br/></span></p>
-<p class="rvps8"><img width="607" height="318" alt="" style="padding : 1px;" src="lib/NewItem7.png"/></p>
-<p class="rvps7"><span class="rvts15"><br/></span></p>
-<p class="rvps14"><span class="rvts20">PhyloTree</span><span class="rvts16"> -- Using the number of allele mismatches between varieties within the queried region or gene to compute for distance, the phylogenetic tree is constructed by Neighbor-Joining alorithm. Note that this operation takes some time (~3 minutes for a typical gene length).</span></p>
+<p class="rvps6"><span class="rvts16"><br/></span></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li class="rvps2"><span class="rvts19">Search</span><span class="rvts16"> - to perform query and display the result in a Table, or view in JBrowse or a Tree</span></li>
+</ol>
+<p class="rvps4"><span class="rvts16">For queries above 50kb region, or 5000 SNPs, or 10 gene loci, the results are not displayed but available for download only.</span></p>
+<p class="rvps4"><span class="rvts16">Maximum allowed queries are 5Mb region, or 500k SNPs, or 1000 gene loci.</span></p>
+<p class="rvps4"><span class="rvts16"><br/></span></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li class="rvps2"><span class="rvts19">Reset</span><span class="rvts16"> - &nbsp;clear all input fields.</span></li>
+</ol>
+<p class="rvps10"><span class="rvts19"><br/></span></p>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<h1 class="rvps13"><a name="varresult"></a>
+<span class="rvts0"><span class="rvts18">All Varieties result views </span></span></h1>
+<p class="rvps14"><span class="rvts16">Several views are available for SNP query results</span></p>
+<p class="rvps10"><span class="rvts16"><br/></span></p>
+<p class="rvps15"><span class="rvts20">Table</span><span class="rvts17"> &nbsp;- this view displays the Alleles for each variety in a row, for all SNP positions within &nbsp;the specified region or gene. The color is based on SNP coloring selected. The varieties are sorted by decreasing number of allele mismatches by default. The resulting table can be filtered using any of the column values, and sorted based on any column value by clicking &nbsp;the column header.</span></p>
+<p class="rvps16"><span class="rvts16">To download the result, click the </span><span class="rvts19">CSV, Tab, Plink </span><span class="rvts16">or</span><span class="rvts19"> Flapjack</span><span class="rvts16"> button to get the given format.</span></p>
+<p class="rvps11"><img width="909" height="599" alt="" style="padding : 1px;" src="lib/NewItem54.png"/></p>
+<p class="rvps12"><span class="rvts16"><br/></span></p>
+<p class="rvps12"><span class="rvts16">At the bottom of the table is the plot showing the allele/genotype frequencies/counts for all SNP positions in the queried region.</span></p>
+<p class="rvps10"><span class="rvts16"><br/></span></p>
+<p class="rvps11"><img width="923" height="301" alt="" style="padding : 1px;" src="lib/NewItem55.png"/></p>
+<p class="rvps10"><span class="rvts16"><br/></span></p>
+<p class="rvps12"><span class="rvts19">JBrowse</span><span class="rvts16"> – the JBrowse genome browser lays out the SNP genotyping result in the SNP Genotyping track. Each variety is represented as a thin row in the track, and sorted in the same order as in the table. This track is dynamically generated from the query result, and covers only the queried region or locus. Zooming out from the initial region gives empty rows at both sides. To view a wider region, do a query again specifying the new wider region. Unlike in the Table view where results are displayed in several pages, Jbrowse displays all varieties having allele mismatch in the queried region at once.</span></p>
+<p class="rvps12"><span class="rvts16"><br/></span></p>
+<p class="rvps11"><img width="607" height="318" alt="" style="padding : 1px;" src="lib/NewItem7.png"/></p>
+<p class="rvps10"><span class="rvts16"><br/></span></p>
+<p class="rvps15"><span class="rvts17"><br/></span></p>
+<p class="rvps15"><span class="rvts20">PhyloTree</span><span class="rvts17"> -- Using the number of allele mismatches between varieties within the queried region or gene to compute for distance, the phylogenetic tree is constructed by Neighbor-Joining alorithm. Note that this operation takes some time (~5 minutes for a typical gene length).</span></p>
+<p class="rvps15"><span class="rvts17"><br/></span></p>
+<p class="rvps15"><span class="rvts20">Compare genomes </span><span class="rvts17">-- Displays the alignment of the selected reference and region with the 4 other reference genomes in Vista.</span></p>
+<p class="rvps17"><img width="844" height="633" alt="" style="padding : 1px;" src="lib/NewItem53.png"/></p>
+<p class="rvps15"><span class="rvts20"><br/></span></p>
+<p class="rvps15"><span class="rvts20">Alignment </span><span class="rvts17">– view the results in the familiar multiple sequence alignment format. But not that the positions here are not contiguous. It uses the JSAV library.</span></p>
+<p class="rvps17"><img width="839" height="448" alt="" style="padding : 1px;" src="lib/NewItem56.png"/></p>
+<h1 class="rvps13"><span class="rvts0"><span class="rvts18"><br/></span></span></h1>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps2"><a name="queryindels"></a>
+<span class="rvts19">Querying Indels - </span><span class="rvts16">include INDELs in the query, check the </span><span class="rvts19">Include Indels</span><span class="rvts16"> checkbox. The indels are displayed in multiple sequence alignment format along with te SNPs. For insertions, the insertion string is inserted in each variety while the reference sequence is shifted right with gaps (-) equal to the longest insertion. For deletion, the reference alleles are inserted to the reference of length equal to the longest deletion, while gaps (-) are inserted to the varieties. The positions are colored green and blue for insertion and deletion regions, respectively.</span></p>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps3"><img width="753" height="565" alt="" style="padding : 1px;" src="lib/NewItem40.png"/></p>
+<p class="rvps3"><span class="rvts16"><br/></span></p>
+<p class="rvps3"><span class="rvts16"><br/></span></p>
+<p class="rvps3"><span class="rvts16"><br/></span></p>
+<p class="rvps3"><img width="749" height="501" alt="" style="padding : 1px;" src="lib/NewItem33.png"/></p>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps2"><a name="multipleref"></a>
+<span class="rvts19">Multiple Reference Genome</span></p>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li class="rvps2"><span class="rvts16">Select the reference genome to use as coordinate (Japonica Nipponbare, IR64-21, DJ123, 93-11, Kasalath)</span></li>
+</ol>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li class="rvps2"><span class="rvts16">Check </span><span class="rvts19">Show all reference alleles</span><span class="rvts16"> - display the alleles in the queried region of the 5 reference genomes</span></li>
+</ol>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps3"><img width="770" height="483" alt="" style="padding : 1px;" src="lib/NewItem30.png"/></p>
+<p class="rvps3"><span class="rvts19"><br/></span></p>
+<p class="rvps2"><span class="rvts19"><br/></span></p>
+<p class="rvps2"><span class="rvts19"><br/></span></p>
+<p class="rvps3"><span class="rvts19"><br/></span></p>
+<h1 class="rvps13"><a name="twovarieties"></a>
+<span class="rvts0"><span class="rvts18">Two varieties result views</span></span></h1>
+<p class="rvps14"><span class="rvts16">For two varieties query, results can be viewed in a table or in JBrowse.</span></p>
+<p class="rvps10"><span class="rvts16"><br/></span></p>
+<p class="rvps12"><span class="rvts19">Table</span><span class="rvts16"> - when two varieties are compared, the result is a list of SNP position within the specified region. The allele of the reference, and the two varieties for each position are displayed in a row. Polymorphism between the two varieties is highlighted with color red.</span></p>
+<p class="rvps11"><img width="645" height="501" alt="" style="padding : 1px;" src="lib/NewItem6.png"/></p>
+<p class="rvps10"><span class="rvts16"><br/></span></p>
+<p class="rvps12"><span class="rvts19">JBrowse</span><span class="rvts16"> – the JBrowse tab displays the SNPs of the two varieties within the genome, along with the genes. The boxes are colored based on the selected SNP coloring option.</span></p>
+<p class="rvps11"><img width="651" height="410" alt="" style="padding : 1px;" src="lib/NewItem5.png"/></p>
+<p class="rvps11"><span class="rvts15"><br/></span></p>
+<p class="rvps10"><span class="rvts15"><br/></span></p>
+<p class="rvps2"><span class="rvts21"><br/></span></p>
+<p class="rvps2"><span class="rvts19">from NAR 2016, Supplementary Materials</span></p>
+<p class="rvps2"><span class="rvts19"><br/></span></p>
+<p class="rvps18"><a name="mergednbgenes"></a>
+<span class="rvts20"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Nipponbare merged gene models and names</span></p>
+<p class="rvps19"><span class="rvts16">Four major annotations for Nipponbare – MSU v7 (16), RAP-representative, RAP-predicted (17) and Fgenesh++ (18) – were added as tracks in JBrowse (http://snp-seek.irri.org/_jbrowse.zul). To facilitate curating results, we merged these four annotations into one set of loci. Having a single set of loci simplifies query and analysis of genome and variant features, like non-synonymous SNPs. The strategy for merging gene loci was:</span></p>
+<ol style="text-indent: 0px; margin-left: 72px; list-style-position: outside; list-style-type: decimal;">
+<li class="rvps20" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">Collect all gene (locus) features from all 4 annotations.</span></li>
+<li class="rvps20" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">Sort all loci by chromosome and by start and end positions.</span></li>
+<li class="rvps20" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">Determine loci that have at least 50% overlap for the coding region (CDS) and merge those from the same strand into a common, new locus.</span></li>
+<li class="rvps21" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">The merged locus is named using the convention described in Supplement II with the form OsNippo{YY}g{NNNNNN}, where YY is the chromosome number (01-12), and NNNNNN is the locus count for the chromosome, starting from 10050, with increment of 50. Each locus is also referenced back to their original ID using the Dbxref attribute. Synonyms and Ontology terms (GO, PO, TO) collected from Oryzabase (21) are also added to the created locus in the Alias and Ontology term attributes. These synonyms and ontology attributes are loaded in the CHADO database. The gene function from MSU7 is used for the merged locus, unless it is ‘hypothetical’, ‘unknown’, or ‘expressed’. &nbsp;For these cases, the functional annotation from RAP is used.</span></li>
+</ol>
+<p class="rvps23"><a name="locusnames"></a>
+<span class="rvts20">Reference genomes gene locus names</span></p>
+<p class="rvps10"><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16">We used the gene models published with each of the genomes. These models use the name originally provided by their respective gene prediction/curation pipelines. To avoid displaying these cryptic names in the viewers and queries, we define a naming convention for rice gene models for any newly sequenced reference genome. </span></p>
+<ol style="text-indent: 0px; margin-left: 72px; list-style-position: outside; list-style-type: decimal;">
+<li class="rvps20" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">Collect all gene (locus) features from the original source.</span></li>
+<li class="rvps20" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">Sort all loci by chromosome and start and end positions.</span></li>
+<li class="rvps20" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">Gene names start with “Os” for Oryza sativa, and the next five characters define the variety: “Nippo” (Nipponbare), “9311_” (93-11), “Kasal” (Kasalath), “DJ123” (DJ 123) and “IR64_” (IR 64).</span></li>
+<li class="rvps20" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">Assign chromosome or contig number:</span></li>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: lower-alpha;">
+<li class="rvps22" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">If there is chromosome assembly, the next 2 digits are the chromosome number (“01”-“12”).</span></li>
+<li class="rvps22" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">If there is no chromosome assembly, then the next 5 digits are the contig number. The contig number is a rank given to the contigs sorted by decreasing length, where the longest is assigned “00001”. If contigs are of the same length, they are sorted by the sequence in alphabetical order. </span></li>
+</ol>
+<li class="rvps20" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">The next character is “g”, which stands for genomic DNA. &nbsp;Instead of “g”, it can be “m” for mitochondrial or “c” for chloroplast DNA.</span></li>
+<li class="rvps20" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">With genes sorted by start and then by end positions, the next 6 digits are the gene number in the chromosome or contig with an increment of 50. The first gene is assigned number “010050”, the second “010100”, the third “010150”, etc. Gene names in the chromosomes will be preserved in future versions of annotations. Gene names in scaffolds/contigs are for temporary use.</span></li>
+<li class="rvps20" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">Each locus is also referenced back to their original ID as provided by the source in the Dbxref attribute. If available, synonyms and Ontology terms (GO, PO, TO) are also added to the created locus in the Alias and Ontology term attributes.</span></li>
+<li class="rvps20" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">Alternatively spliced gene models or different versions of the same gene prediction are distinguished by a number added at the end of the gene after the dot. Here are some examples: “OsNippo01g210150.1”, “OsIR64_00342g210150.1”, “Os9311_11g210150.1”, “OsDJ12_00342g210150.1”.</span></li>
+<li class="rvps20" style="margin-left: 0px; text-indent: 0px"><span class="rvts17">Each mRNA has its own list of features (CDS, exon, 3’-UTR and 5’-UTR) collected from the original annotation source, with descriptors following the transcript name. &nbsp;The transcript name is followed by “:” (colon), then the feature type using Sequence Ontology terms (“cds”, “exon”, “five_prime_UTR”, “three_pime_UTR”), a “.” (dot), and the last two digits are the order number. Examples are: &nbsp;“OsNippo01g210150.1:cds.01” and “Os9311_11g210150.2:exon.01”.</span></li>
+</ol>
+<p class="rvps10"><span class="rvts16"><br/></span></p>
 <p class="rvps14"><span class="rvts16"><br/></span></p>
-<h1 class="rvps10"><a name="2Varietiesresult"></a>
-<span class="rvts0"><span class="rvts17"><br/></span></span></h1>
-<h1 class="rvps10"><span class="rvts0"><span class="rvts17">Two varieties result views</span></span></h1>
-<p class="rvps12"><span class="rvts15">For two varieties query, results can be viewed in a table or in JBrowse.</span></p>
-<p class="rvps7"><span class="rvts15"><br/></span></p>
-<p class="rvps9"><span class="rvts18">Table</span><span class="rvts15"> - when two varieties are compared, the result is a list of SNP position within the specified region. The allele of the reference, and the two varieties for each position are displayed in a row. Polymorphism between the two varieties is highlighted with color red.</span></p>
-<p class="rvps8"><img width="534" height="415" alt="" style="padding : 1px;" src="lib/NewItem6.png"/></p>
-<p class="rvps7"><span class="rvts15"><br/></span></p>
-<p class="rvps9"><span class="rvts18">JBrowse</span><span class="rvts15"> – the JBrowse tab displays the SNPs of the two varieties within the genome, along with the genes. The boxes are colored based on the selected SNP coloring option.</span></p>
-<p class="rvps8"><img width="528" height="333" alt="" style="padding : 1px;" src="lib/NewItem5.png"/></p>
-<p class="rvps7"><span class="rvts14"><br/></span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
 <p></p>
-<p class="rvps6"><span class="rvts12">Created with the Personal Edition of HelpNDoc: </span><a class="rvts13" href="http://www.helpndoc.com/feature-tour/iphone-website-generation">Create iPhone web-based documentation</a></p>
+<p class="rvps9"><span class="rvts13">Created with the Personal Edition of HelpNDoc: </span><a class="rvts14" href="http://www.helpndoc.com/help-authoring-tool">Free help authoring environment</a></p>
 </div>
 	
 	<div id="topic_footer">

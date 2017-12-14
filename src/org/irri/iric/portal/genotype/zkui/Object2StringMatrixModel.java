@@ -36,6 +36,7 @@ import org.irri.iric.portal.genotype.service.VariantAlignmentTableArraysImpl;
 import org.irri.iric.portal.genotype.service.VariantTableArraysImpl;
 import org.irri.iric.portal.genotype.zkui.SNPQueryController.Object2StringMatrixComparatorProvider.Object2StringComparator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.zkoss.lang.Objects;
 import org.zkoss.zkmax.zul.MatrixModel;
 import org.zkoss.zul.AbstractListModel;
@@ -54,7 +55,7 @@ import org.zkoss.zul.ext.Sortable;
 public class Object2StringMatrixModel<Head extends  List, Row extends List, Cell, Header> extends
 		AbstractListModel<Row> implements MatrixModel<Row, Head, Cell, Header>, Sortable , ListModelExt {
 	
-	private int frozenCols=4;
+	private int frozenCols=AppContext.getSnpMatrixFrozenCols();
 	private VariantTable data;
 	private String message;
 	private GenotypeQueryParams params;
@@ -70,6 +71,7 @@ public class Object2StringMatrixModel<Head extends  List, Row extends List, Cell
 	private Map<String, Map<BigDecimal, MultiReferencePosition>> mapOrg2MSU7Pos2ConvertedPos;
 
 	@Autowired
+	@Qualifier("ListItems")
 	private ListItemsDAO listitemdao;
 	
 	// a rendering function
@@ -726,7 +728,7 @@ public class Object2StringMatrixModel<Head extends  List, Row extends List, Cell
 		// TODO Auto-generated method stub
 		listitemdao = (ListItemsDAO)AppContext.checkBean(listitemdao,"ListItems");
 		//Map<BigDecimal,Variety> mapVarId2Var = listitemsdao.getMapId2Variety();
-		Map<String,Variety> mapVarname2Var = listitemdao.getMapVarname2Variety();
+		Map<String,Variety> mapVarname2Var = listitemdao.getMapVarname2Variety(params.getDataset());
 		List list = new ArrayList();
 		
 		int lastIdx=firstRow + nRows;

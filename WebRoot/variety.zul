@@ -57,58 +57,9 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 </zscript>
 
 
-<zscript>
+
 
 <!--  *********************   INITIALIZE DISPLAY VARIABLES  *********************************************************************************** -->
-
-        import org.zkoss.zkplus.spring.SpringUtil;      
-		import org.irri.iric.portal.variety.VarietyFacade;
-		import org.irri.iric.portal.admin.WorkspaceFacade;
-		import org.springframework.beans.factory.annotation.Autowired;
-		import org.irri.iric.portal.AppContext;
-
-       
-       	VarietyFacade variety = (VarietyFacade)SpringUtil.getBean("VarietyFacade");
-        java.util.List varnames = variety.getVarietyNames();
-        java.util.List irisIds = variety.getIrisIds();
-        java.util.List countries = variety.getCountries();
-        java.util.List subpopulation = variety.getSubpopulations();
-        
-                  
-        Set setPassport = variety.getPassportDefinitions().keySet();
-        Set setPhenotype = variety.getPhenotypeDefinitions().keySet();
-        Set setPtoco= variety.getPtocoDefinitions().keySet();
-        
-        WorkspaceFacade workspace = (WorkspaceFacade)SpringUtil.getBean("WorkspaceFacade");
-        
-        java.util.List listMyVarieties = new ArrayList(); 
-        listMyVarieties.add("");
-        listMyVarieties.addAll( workspace.getVarietylistNames());
-        
-        String msg =varnames.size() + " varieties, " + irisIds.size() + " IRIS IDs, "  + countries.size() + " countries, " +
-         subpopulation.size() +  " subpopulations, " +  setPassport.size() +  " passport fields, " + setPhenotype.size() + " phenotypes, "  + 
-         setPtoco.size() + " rice trait terms, for selection";
-         
-        java.util.List listPassport = new java.util.ArrayList();
-        listPassport.add("");
-        listPassport.addAll( setPassport );
-        java.util.List listPhenotype = new java.util.ArrayList();
-        listPhenotype.add("");
-        listPhenotype.addAll( setPhenotype );
-        
-        java.util.List listPtocoterm = new java.util.ArrayList();
-        listPtocoterm.add("");
-        listPtocoterm.addAll( setPtoco );
-
-         
-        
-       	subpopulation = AppContext.createUniqueUpperLowerStrings( subpopulation, false, true);
-		countries  = AppContext.createUniqueUpperLowerStrings( countries, true, false);
-		varnames  = AppContext.createUniqueUpperLowerStrings( varnames, true, false);
-		irisIds  = AppContext.createUniqueUpperLowerStrings( irisIds, true, false);
-        
-                
-</zscript>
 
       
 
@@ -117,8 +68,10 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 <hbox>
 <!--  grid id="gridQuery" width="600px" height="250px" -->
 <!-- grid id="gridQuery" width="100%" height="340px" -->
-<grid id="gridQuery" width="100%" height="360px">
+<!--  grid id="gridQuery" width="100%" height="360px" -->
 
+<vbox  height="400px">
+<grid id="gridQuery" width="100%">
 <rows>
 
 <!--  *********************   MESSAGEBOX  *********************************************************************************** -->
@@ -127,36 +80,45 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 	</row>
    
 <!--  *********************   VARIETY QUERY OPTIONS  *********************************************************************************** -->   
+	
+	<row spans="1,3" visible="true">
+		<label value="Variety set" style="font-size:14px;font-weight:bold;color:gray;"/>
+		<!--  listbox id="listboxDataset" class="z-dataset-dropdown" mold="select" width="200px"/ -->
+		
+		
+		<!--  listitem value="3k" label="3k Rice Genome Project" selected="true"/>
+		<listitem value="hdra" label="HDRA - High Density Rice Array"/>
+		<listitem value="gq92" label="GQ92 - Grain Quality Lab 92 Lines"/>
+		<listitem value="wissuwa" label="WISSUWA 9 Lines"/>
+		</listbox -->
+		
+		<bandbox id="bandboxVarietyset"  autodrop="true" readonly="true">
+					           <bandpopup width="200px">
+							  <listbox id="listboxDataset" checkmark="true" multiple="true" seltype="multiple"  width="200px">
+					             </listbox>
+					          </bandpopup>
+		</bandbox>
+		
+	</row>
+	
 	<row spans="1,3">
-		<label value="Variety name" style="font-size:14px;font-weight:bold;color:gray;"/>
+		<label value="Designation" style="font-size:14px;font-weight:bold;color:gray;"/>
 		
 		<hbox>
-		   <combobox id="comboVarname" autodrop="true" buttonVisible="false" width="150px"/>
-		   <label pre="true" value="(ex. loto)" style="font-size:10px"/>
+		   <combobox id="comboVarname" autodrop="true" buttonVisible="false" width="150px" class="z-combobox-designation"/>
+		   <label pre="true" value="(ex. loto::gervex 104-c1)" style="font-size:10px" id="labelExampleVarname"/>
 		   </hbox>
-		   <zscript><![CDATA[			
-		       comboVarname.setModel(new SimpleListModel(varnames));
-		   ]]></zscript>
-	</row>
-	
-	<row  spans="1,3">
-		<label value="IRIS ID" style="font-size:14px;font-weight:bold;color:gray;"/>
 		
-			<hbox>
-		    <combobox id="comboIrisId" autodrop="true" buttonVisible="false" width="150px"/>
-		    <label pre="true" value="(ex. iris 313-10000)" style="font-size:10px"/>
-		    </hbox>
-		    <zscript><![CDATA[			
-		        comboIrisId.setModel(new SimpleListModel(irisIds));
-		    ]]></zscript>
 	</row>
 	
-	<row  spans="1,3">
-		<label value="Country" style="font-size:14px;font-weight:bold;color:gray;"/>
-	    <combobox id="comboCountry" autodrop="true" buttonVisible="false" width="150px"/>
-	    <zscript><![CDATA[		
-	        comboCountry.setModel( new SimpleListModel(countries));
-	    ]]></zscript>
+	<row  spans="1,3" visible="true">
+		<label value="Accession" style="font-size:14px;font-weight:bold;color:gray;"/>
+			<hbox>
+		    <combobox id="comboAccession" class="z-combobox-accession" autodrop="true" buttonVisible="false" width="150px"/>
+		    <label id="labelExampleAccession" pre="true" value="(ex. IRGC 122151)" style="font-size:10px"/>
+		    </hbox>
+		
+		    
 	</row>
 	
 	
@@ -164,14 +126,27 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		<label value="Subpopulation" style="font-size:14px;font-weight:bold;color:gray;"/>
 	
 		<hbox>
-	    <!--  combobox id="comboSubpopulation" autocomplete="false" autodrop="false" buttonVisible="true" width="150px"/ -->
-	    <listbox id="listboxSubpopulation"  mold="select" width="150px"/>
-	    <label pre="true" value="(ex. trop)" style="font-size:10px"/>
+	    <!--  combobox id="comboSubpopulation" class="z-subpopulation-dropdown" autocomplete="false" autodrop="false" buttonVisible="true" width="150px"/ -->
+	    <listbox id="listboxSubpopulation" class="z-subpopulation-dropdown" mold="select" width="150px"/>
+	    <label pre="true" value="(ex. trop)" style="font-size:10px"  id="labelExampleSubpop"/>
 	    </hbox>
-	    <zscript><![CDATA[
-	        listboxSubpopulation.setModel( new SimpleListModel(subpopulation));
-	        listboxSubpopulation.setSelectedIndex(0);
-	    ]]></zscript>
+	   
+	</row>
+	
+	<row  spans="1,3">
+		<label  value="Assay ID" style="font-size:14px;font-weight:bold;color:gray;"/>
+		
+			<hbox>
+		    <combobox id="comboIrisId" class="z-combobox-irisid" autodrop="true" buttonVisible="false" width="150px"/>
+		    <label id="labelExampleIrisId" pre="true" value="(ex. iris 313-10000)" style="font-size:10px"/>
+		    </hbox>
+		   
+	</row>
+	
+	<row  spans="1,3">
+		<label value="Country" style="font-size:14px;font-weight:bold;color:gray;"/>
+	    <combobox id="comboCountry" class="z-combobox-country" autodrop="true" buttonVisible="false" width="150px"/>
+	  
 	</row>
 
 	
@@ -181,9 +156,9 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 	</hbox>	
 		<vbox id="vboxPassportConstraints">
 		<hbox>
-		<listbox id="listboxPassport"  mold="select"  rows="1" width="300px"/>
+		<listbox id="listboxPassport" class="z-passport-dropdown"  mold="select"  rows="1" width="300px"/>
 		<label pre="true" value = " = "/>
-		<listbox id="listboxPassportValue"  mold="select"  rows="1"/>
+		<listbox id="listboxPassportValue" class="z-passport-arrow" mold="select"  rows="1"/>
 		<button id="buttonAddPassConstraint" label="Add" tooltip="popupAddPassport"/>
 		</hbox>
 		</vbox>
@@ -196,16 +171,22 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		</hbox>	
 
 		<vbox>
-		<hbox>
-			<label pre="true" value="Rice Crop/Trait Ontology term " style="font-size:12px;font-weight:bold;color:gray;"/>
-			<listbox id="listboxPtocoterm"  mold="select"  rows="1" width="300px" tooltip="popupListboxPtoco"/>
+		<hbox visible="false">
+			<!--  label pre="true" value="Rice Crop/Trait Ontology term " style="font-size:12px;font-weight:bold;color:gray;"/ -->
+			<!--  label pre="true" value="Rice Crop/Trait Ontology term " style="font-size:12px;font-weight:bold;color:gray;"/ -->
+			<a id="aCO" href="http://www.cropontology.org/ontology/CO_320/Rice" label="Rice Crop" style="font-size:12px;font-weight:bold" target="_ontologies" />
+			<label value="/"  style="font-size:12px;font-weight:bold" />
+			<!--  a id="aTO" href="http://palea.cgrb.oregonstate.edu/trait_ontology/cgi-bin/trait_amigo/term_details?term=TO:0000387" target="_ontologies" label="Plant Trait"  style="font-size:12px;font-weight:bold"/ -->
+			<a id="aTO" href="http://browser.planteome.org/amigo/term/TO:0000387" target="_ontologies" label="Plant Trait"  style="font-size:12px;font-weight:bold"/>
+			<label pre="true" value=" Ontology  "  style="font-size:12px;font-weight:bold"/>
+			<listbox id="listboxPtocoterm" class="z-phenotype-ontology" mold="select"  rows="1" width="250px" tooltip="popupListboxPtoco"/>
 		</hbox>
 		<vbox id="vboxPhenConstraints">
 		<hbox>
-		<listbox id="listboxPhenotypes"  mold="select"  rows="1" width="300px"/>
-		<listbox id="listboxPhenComparator" mold="select" width="40px" rows="1"/>
-		<listbox id="listboxPhenValue"  mold="select"  rows="1"/>
-		<button id="buttonAddPhenConstraint" label="Add" tooltip="popupAddPhenotype"/>
+		<listbox id="listboxPhenotypes" class="z-phenotype-dropdown"  mold="select"  rows="1" width="300px"/>
+		<listbox id="listboxPhenComparator" class="z-phenotype-check" mold="select" width="40px" rows="1"/>
+		<listbox id="listboxPhenValue" class="z-phenotype-empty" mold="select"  rows="1"/>
+		<button id="buttonAddPhenConstraint" class="z-phenotype-add" label="Add" tooltip="popupAddPhenotype"/>
 		</hbox>
 		</vbox>
 		</vbox>
@@ -213,6 +194,24 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		
 	</row>
 
+	
+	
+	</rows>
+</grid>
+
+	
+<grid width="100%">
+<rows>
+	<row  spans="1,3" visible="false">
+		<label value="Genotype" style="font-size:14px;font-weight:bold;color:gray;"/>
+	
+		<hbox>
+	    <listbox id="listboxAlleleFilter" mold="select" rows="1"/>
+	    <label pre="true" value=" (rank varieties by neighborhood to set of snp-alleles)" style="font-size:10px"/>
+	    </hbox>
+	   
+	</row>
+	
 	<row  spans="1,3">
 		<label value="My Variety List" style="font-size:14px;font-weight:bold;color:gray;"/>
 	
@@ -220,31 +219,28 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 	    <listbox id="listboxMyVariety" mold="select" rows="1"/>
 	    <label pre="true" value=" (return only varieties in my list)" style="font-size:10px"/>
 	    </hbox>
-	    <zscript><![CDATA[
-	        listboxMyVariety.setModel( new SimpleListModel(listMyVarieties));
-	    ]]></zscript>
+	   
 	</row>
 	
+	
+	
 	<row  spans="1,3">
-		<label id="lb1" pre="true" style="font-size:12px;"/>
-        <zscript><![CDATA[
-            lb1.value="(If Variety name or IRIS Id is specified,\nthe other filters are ignored)";
-        ]]>
-        </zscript>
+		<label id="lb1" pre="true" style="font-size:12px;" value="(If Variety name or IRIS Id is specified,\nthe other filters are ignored)"/>
+     
         
 	 		<hbox>
-	 		    <button id="buttonSearch" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
+	 		    <button id="buttonSearch" class="z-selectbutton" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
 	    	   width="100px" height="50px"  autodisable="self"
 	    	   xmlns:w="http://www.zkoss.org/2005/zk/client"			    	   			    	   
 	    	   w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();"
 	    	   />
 	    	   <vbox width="10px"/>	
 	 		    <button id="buttonReset" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;"
-	    	   width="75px" height="30px"  autodisable="self"
+	    	   width="100px" height="30px"  autodisable="self"
 	    	   />	
 		
 	 		    <button id="showallButton" label="Show All"   style="font-size:14px;font-weight:bold;color:gray;"
-	    	   width="75px" height="30px"  autodisable="self" visible="true"
+	    	   width="100px" height="30px"  autodisable="self" visible="true"
 	    	   />	
 	    	    <vbox width="10px"/>
 	    	</hbox>
@@ -252,6 +248,8 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 	
 </rows>
 </grid>
+
+</vbox>
 
  	<tipBox height="230px" width="400px" desc="    VARIETY QUERY" 
 		details1= "  A. Select Variety Name or IRIS ID"
@@ -271,21 +269,6 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 </hbox>
 
 
- <zscript><![CDATA[
-        listboxPassport.setModel( new SimpleListModel(listPassport));
-        listboxPhenotypes.setModel( new SimpleListModel(listPhenotype));
-        listboxPtocoterm.setModel( new SimpleListModel(listPtocoterm));
-        
-        List listQuanOperator = new ArrayList();
-        listQuanOperator.add(VarietyFacade.COMPARATOR_EQUALS); listQuanOperator.add(VarietyFacade.COMPARATOR_LESSTHAN);listQuanOperator.add(VarietyFacade.COMPARATOR_GREATERTHAN);
-        listboxPhenComparator.setModel(new SimpleListModel(listQuanOperator));
-        listboxPhenComparator.setSelectedIndex(0);
-        
-        
-        
-			    ]]>
-</zscript>
-			    
 </vbox>    	   
 
     	
@@ -296,8 +279,10 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
  
  <!--  *********************   VARIETY INFORMATION DISPLAY  *********************************************************************************** -->
  
-                 
- 	<grid id="gridGermplasm" visible="false" width="100%"  >
+
+	
+					
+ 	<grid id="gridGermplasm" class="gridview-visible" visible="false" width="100%"  >
 	        	<columns>
                 <column label="PASSPORT DATA"/>
                 <column label="PHENOTYPES" />
@@ -310,8 +295,9 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		<vbox pack="start">
 		<grid>
 		<rows>
-		<row> Variety name<textbox id="textboxGermAccession" readonly="true"/></row>
-		<row> IRIS ID<textbox id="textboxIRISId" readonly="true"/></row>
+		<row> Designation<textbox id="textboxGermDesignation" class="designation-content" readonly="true"/></row>
+		<row> Accession<textbox id="textboxGermAccession" class="accession-content" readonly="true"/></row>
+		<row><label id="labelIRISId" value="IRIS ID"/><textbox id="textboxIRISId" class="irisidcontent" readonly="true"/></row>
 		<row> Subpopulation<textbox id="textboxGermSubpopulation" readonly="true"/></row>
 		<row> Country<textbox id="textboxGermCountry" readonly="true"/></row>
 		</rows>
@@ -336,11 +322,15 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		</listbox>
 		<separator bar="true"/>		
 		<hbox height="30px"/>
+
+		<checkbox id="checkboxShowMDSNeighbors"  checked="false" label="Show MDS Plot"/>
+		<div id="divMDSNeighbors" visible="false">
 		<label value="CLOSE RELATIVES (MDS Plot)" style="font-size:14;font-weight:bold"/>
         <label value = "Drag area to zoom."/>
         <charts id="chartMDSNeighbors" type="scatter" zoomType="xy"
         	title="Neighboring varieties" width="500" height= "500" />
 		<hbox height="100%"/>
+		</div>
 		</vbox>
 		</cell>
 		
@@ -357,15 +347,7 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 			</listhead>		
 		</listbox>
 		</cell>
-				<zscript><![CDATA[
-			        listboxGermPassport.setItemRenderer(new org.irri.iric.portal.variety.zkui.PassportListItemRenderer() );
-			        listboxGermPassport.setModel(new SimpleListModel(new java.util.ArrayList()));
-			    ]]></zscript>
-			    		
-					<zscript><![CDATA[
-			        listboxGermPhenotypes.setItemRenderer(new org.irri.iric.portal.variety.zkui.PhenotypesListRenderer() );
-			        listboxGermPhenotypes.setModel(new SimpleListModel(new java.util.ArrayList()));
-			    ]]></zscript>
+
 			    
 		</row>
 		</rows>
@@ -404,7 +386,7 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 				 </hbox>
 				 
 				 
-				 <listbox id="varietyresult" fixedLayout="true" mold="paging" pageSize="100" visible="true"  >
+				 <listbox id="listboxVarietyresult" class="listview-visible" fixedLayout="true" mold="paging" pageSize="100" visible="true"  >
 						<listhead>
 							<listheader  sort="auto"></listheader>
 							<listheader  sort="auto"></listheader>
@@ -430,8 +412,10 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 				<label value="ind1B" style="color:aquamarine"/>
 				<label value="ind2" style="color:#336622"/>
 				<label value="ind3" style="color:#339910"/>
-				<label value="trop1" style="color:steelblue"/>
-				<label value="trop2" style="color:#2045c0"/>
+				<!--  label value="trop1" style="color:steelblue"/>
+				<label value="trop2" style="color:#2045c0"/ -->
+				<label value="trop" style="color:steelblue"/>
+				<label value="subtrop" style="color:#2045c0"/>
 				<label value="aro" style="color:purple"/>
 				<label value="temp" style="color:lightskyblue"/>
 				<label value="aus" style="color:orange"/>
@@ -441,6 +425,35 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 				</hbox>
 
 				<hbox id="hboxSubpopColor2" visible="false">	
+				<label value="ind1" style="color:#60e0c0"/>	
+				<label value="ind1A" style="color:#60e0c0"/>	
+				<label value="ind1B" style="color:#65e5c5"/>	
+				<label value="ind1B-1" style="color:#50aa99"/>	
+				<label value="ind1B-2" style="color:#306600"/>	
+				<label value="ind2" style="color:#336622"/>	
+				<label value="ind2A" style="color:#306600"/>	
+				<label value="ind2B" style="color:#507755"/>	
+				<label value="ind3" style="color:#339910"/>	
+				<label value="ind3A" style="color:#339910"/>	
+				<label value="ind3B" style="color:#299506"/>	
+				<label value="ind3B-1" style="color:#a2cd5a"/>	
+				<label value="ind3B-2" style="color:#33cc77"/>	
+				<label value="trop" style="color:#4682b4"/>	
+				<label value="tropA" style="color:#4f94cd"/>	
+				<label value="tropB" style="color:#3163aa"/>	
+				<label value="subtrop" style="color:#2045c0"/>	
+				<label value="aro" style="color:purple"/>	
+				<label value="temp" style="color:lightskyblue"/>	
+				<label value="aus1" style="color:#ee9a00"/>	
+				<label value="aus2" style="color:#ad6020"/>	
+				<label value="ausx" style="color:#b07060"/>	
+				<label value="admix" style="color:gray"/>	
+				<label value="japx" style="color:#acacfc"/>	
+				<label value="indx" style="color:#9cbb9c"/>	
+				</hbox>
+					
+					
+				<!--  hbox id="hboxSubpopColor2" visible="false">	
 				<label value="ind1" style="color:#60e0c0"/>	
 				<label value="ind1.1" style="color:#60e0c0"/>	
 				<label value="ind1.2" style="color:#65e5c5"/>	
@@ -466,7 +479,7 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 				<label value="admix" style="color:gray"/>	
 				<label value="japx" style="color:#acacfc"/>	
 				<label value="indx" style="color:#9cbb9c"/>	
-				</hbox>
+				</hbox -->
 					
 				
 				<!--  hbox v1>
@@ -547,10 +560,31 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		 
 		 
 		        <vbox>
+			
+			<hbox>
 		        <label value = "Drag area to zoom."/>
 		        <checkbox id="checkboxShowMDSLabel" label = "Show variety names" checked="true" visible="false"/>
+			<vbox width="400px"/><label value="Highlight variety:  " pre="true" />
+			<listbox id="listboxHighlightVariety"   mold="select" width="200px"/>
+			<vbox width="50px"/><label value="list:  "  pre="true"/>
+<listbox id="listboxHighlightVarietyList" mold="select" width="150px"/><button id="buttonHighlight" label="Highlight variety" visible="false"/>
+
+
+
+			</hbox>
+<hbox>
+<label value="Size by phenotype value: " pre="true"/>
+<listbox id="listboxMDSPhenotype"   mold="select" width="200px"/>
+<label id="labelMDSPhenotype"/>
+
+
+</hbox>
+
+
 		        <charts id="chartMDS" type="scatter" zoomType="xy"
 		        	title="Varieties MDS plot" width="800" height= "800"  />
+		        <label value="Variety distance based on IBS using core SNPs"/>
+
 		        </vbox>
          </tabpanel>
 
@@ -562,88 +596,8 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 	  <!--  *********************   INITIALIZATIONS OF DISPLAY COMPONENTS  *********************************************************************************** -->
 	
 	
-		<zscript><![CDATA[
-	        varietyresult.pagingChild.mold =  "os";
-	        varietyresult.pagingPosition = "both";
-
-	        import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
-	       // ListModel snpListModel= new SimpleListModel(listSNPs);
-	        VarietyListItemRenderer rend =  new VarietyListItemRenderer();
-	        rend.setBasic(false);
-	        varietyresult.setItemRenderer(rend );
-	        varietyresult.setModel(new SimpleListModel(new java.util.ArrayList()));
-	    ]]></zscript>
 	    
 		<!-- iframe id="iframePhylotree" style="height:1000px" widths="100%"/ -->
-
-       <zscript>         
-       
-       		AppContext.debug("AppContext.isIRRILAN()=" + AppContext.isIRRILAN() + 
-       			"  AppContext.isAWS()=" + AppContext.isAWS() +  
-       			"  AppContext.isLocalhost()=" + AppContext.isLocalhost() + 
-       		  " AppContext.isPollux()=" + AppContext.isPollux()  );
-       
-       		if(AppContext.isIRRILAN()) {
-       			hboxRawfiles.setVisible(true);
-       		}
-       
-       		AppContext.debug( Executions.getCurrent().getParameterMap().toString() );
-
-
-	        String varid=Executions.getCurrent().getParameter("irisid");
-	        if(varid==null || varid.isEmpty()) {
-	        	String varname=Executions.getCurrent().getParameter("name");
-	        	if(varname==null || varname.isEmpty()) {
-	        	} 
-	        	else
-	        	{
-			        comboVarname.setValue(varname.toUpperCase());
-		        	Events.postEvent("onClick", buttonSearch, null);        	
-	        	}
-	        }
-	        else {
-	        	if(varid.equals("alltree") || varid.equals("alltree2")) {
-	        	
-	        		iframePhylotree.setStyle("height:1500px;width:1500px");
-					iframePhylotree.setScrolling("yes");
-					String url =  "treeBrowser3023.html"; //"jsp/phylotreeGermplasms.jsp?scale=1&amp;varid=all" ; //   "treeBrowser3k.htm"; // //"treeBrowser1k.htm";
-					if(varid.equals("alltree2")) {
-	        		    hboxSubpopColor1.setVisible(false);
-       					hboxSubpopColor2.setVisible(true);
-       					url="treeBrowser3023color2.html";
-	        		}
-					
-					System.out.println( url );
-					iframePhylotree.setSrc( url );
-					iframePhylotree.setVisible(true);
-	        		
-	        		tabPhylo.setSelected(true);
-	        		tabTable.setVisible(false);
-	        		tabMDS.setVisible(false);
-	        		
-	        		//varietyresult.setVisible(false);
-	        		hboxQuery.setVisible(false);
-	        		
-
-	        	}
-	        	else if(varid.equals("allmds")) {
-	        		//showmds_allvars();
-	        		
-	        		Events.postEvent("onShowAllMDS", winVariety, null); 
-	        		tabPhylo.setSelected(false);
-	        		tabTable.setVisible(false);
-	        		hboxQuery.setVisible(false);
-	        		tabMDS.setSelected(true);
-				}	        	
-	        	else {
-		        	comboIrisId.setValue(varid);
-		        	Events.postEvent("onClick", buttonSearch, null);
-		        }
-	        }
-	        
-
-	        
-        </zscript>
 
   <!--  *********************   POPUP DEFINITIONS  *********************************************************************************** -->
 

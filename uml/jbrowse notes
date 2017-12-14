@@ -232,7 +232,7 @@ bin/remove-track.pl --dir ir6421v1  --trackLabel ir6421v1gff --delete
 
 // NEW SETS FOR NEW JBROWSE
 
-bin/flatfile-to-json.pl   --gff /home/lmansueto/jbrowse/JBrowse-1.11.6-dev/loaded_gff/all_rep.gff   --trackLabel raprepv1gff  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'RAP Representative Genes'   --metadata '{"description": "RAP representative gene models." }' --maxLookback 500000
+/u	s --maxLookback 500000
 bin/flatfile-to-json.pl   --gff /home/lmansueto/jbrowse/JBrowse-1.11.6-dev/loaded_gff/all_pred.gff   --trackLabel rappredv1gff  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'RAP Predicted Genes'   --metadata '{"description": "RAP predicted gene models." }' --maxLookback 500000
 bin/flatfile-to-json.pl   --gff /home/lmansueto/jbrowse/JBrowse-1.11.6-dev/loaded_gff/msu7_all.gff3   --trackLabel msu7gff  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'MSUv7 Genes'   --metadata '{"description": "MSU7 gene models." }' --maxLookback 500000
 bin/flatfile-to-json.pl   --gff /home/lmansueto/jbrowse/JBrowse-1.11.6-dev/loaded_gff/all_fgeneshuniqueids.gff3  --trackLabel fgeneshv1gff  --trackType  JBrowse/View/Track/CanvasFeatures  --key 'FGenesh++ Genes'   --metadata '{"description": "FGenesh++ gene models (local annotation)." }' --maxLookback 500000
@@ -250,7 +250,19 @@ bin/generate-names.pl --out kasv1  --tracks kasv1gffrap,kasv1gffrapv2  --hashBit
 bin/generate-names.pl --out 9311v1 --tracks 9311v1gff,9311v1gffv2  --hashBits 16
 bin/generate-names.pl --out dj123v1 --tracks dj123v1gff,dj123v1gffv2 --hashBits 16
 
+bin/flatfile-to-json.pl  --gff   --nameAttributes "ID,Name,Description" --type promoter,TSS --trackLabel promoter_iric  --key 'Promoters (-1kb) for FGenesh++ models by IRRI' --getSubs --cssclass generic_parent --subfeatureClasses '{"TSS": "generic_part_a", "sequence_motif": "generic_part_a"}'
 
 
+bin/flatfile-to-json.pl  --gff   --nameAttributes "ID,Name,Description" --type promoter,sequence_motif,TSS --trackLabel plantpromdbver  --key 'Verified promoters from PlantPromDB'  --trackType JBrowse/View/Track/HTMLFeatures --metadata '{"subfeatures":"true", "subfeature_classes": {"TSS":"TSS", "sequence_motif", "sequence_motif"}}' 
 
+bin/flatfile-to-json.pl  --gff   --nameAttributes "ID,Name,Description" --type promoter,sequence_motif,TSS --trackLabel plantpromdbver  --key 'Verified promoters from PlantPromDB' --getSubs --cssclass generic_parent --subfeatureClasses '{"TSS": "generic_part_a", "sequence_motif": "generic_part_a"}'
 
+bin/flatfile-to-json.pl  --gff   --nameAttributes "ID,Name,Description" --type promoter,sequence_motif,TSS --trackLabel plantpromdbpred  --key 'Predicted promoters from PlantPromDB' --getSubs --cssclass generic_parent --subfeatureClasses '{"TSS": "generic_part_a", "sequence_motif": "generic_part_a"}'
+bin/flatfile-to-json.pl  --gff   --nameAttributes "ID,Name,Description" --type promoter,sequence_motif,TSS --trackLabel plantpromdbnsite  --key 'Predicted promoters from NSITE PlantPromDB' --getSubs --cssclass generic_parent --subfeatureClasses '{"TSS": "generic_part_a", "sequence_motif": "generic_part_a"}'
+
+bin/flatfile-to-json.pl \
+    --gff /home/gmod/Documents/Data/maker/example2_pyu/finished.maker.output/gff/scf1117875582023.gff \
+    --type match --getSubs --tracklabel "gff_match" --key "GFF match" \
+    --cssclass generic_parent --subfeatureClasses '{"match_part": "generic_part_a"}'
+
+bin/flatfile-to-json.pl  --bed   --nameAttributes "ID,Name,Description" --trackLabel gwas3k_grwt100_emmax_all  --key 'Manhattan Plot Grain Weight (all varieties) 3k'

@@ -2,8 +2,10 @@ package org.irri.iric.portal.chado.dao;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -343,7 +345,7 @@ public class VIricstockBoxcodeDAOImpl extends AbstractJpaDao<VIricstockBoxcode>
 
 	@Override
 	public Set findAllVarietyByCountryAndSubpopulation(String country,
-			String subpopulation) {
+			String subpopulation, String dataset) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -387,6 +389,60 @@ public class VIricstockBoxcodeDAOImpl extends AbstractJpaDao<VIricstockBoxcode>
 	public Variety findVarietyById(BigDecimal id) {
 		// TODO Auto-generated method stub
 		return this.findVIricstockBoxcodeByPrimaryKey(id);
+	}
+
+	@Override
+	public Variety findVarietyByAccession(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Variety> findVarietyByNamesLike(Collection names) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Variety> findVarietyByNames(Collection names) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Variety> findVarietyByIrisIds(Collection names) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<Variety> findVarietiesByIrisId(String irisid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<Variety> findVarietiesByAccession(String accession) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<Variety> findVarietiesByName(String names) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set findVarietiesByNameAccession(String varname, String accession) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection findVarietyByIds(Set setQueryVarobj) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

@@ -11,6 +11,7 @@ import org.irri.iric.portal.dao.ListItemsDAO;
 
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
+import org.irri.iric.portal.domain.StockSample;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
 
@@ -18,10 +19,12 @@ import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantStringData;
 import org.irri.iric.portal.genotype.VariantTable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 public class VariantTableArraysImpl implements VariantTable {
 
 	@Autowired
+	@Qualifier("ListItems")
 	private ListItemsDAO lisitemdao;
 	
 	private String message;
@@ -35,6 +38,16 @@ public class VariantTableArraysImpl implements VariantTable {
 	
 	private VariantStringData data;
 	
+	
+	
+	@Override
+	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params, List listCDS)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	@Override
 	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params) {
 		// TODO Auto-generated method stub
@@ -54,7 +67,7 @@ public class VariantTableArraysImpl implements VariantTable {
 		
 		lisitemdao = (ListItemsDAO)AppContext.checkBean(lisitemdao, "ListItems");
 		
-		Map<BigDecimal, Variety> mapVarid2Variety = lisitemdao.getMapId2Variety();
+		Map<BigDecimal, StockSample> mapVarid2Sample = lisitemdao.getMapId2Sample(params.getDataset());
 		List listTable= data.getListVariantsString();
 		varnames = new String[listTable.size()];
 		varids = new Long[listTable.size()];
@@ -67,7 +80,7 @@ public class VariantTableArraysImpl implements VariantTable {
 			SnpsStringAllvars snpstr = itSnpstring.next();
 			
 			varmismatch[varcount]=snpstr.getMismatch().doubleValue();
-			varnames[varcount]=mapVarid2Variety.get( snpstr.getVar() ).getName();
+			varnames[varcount]=mapVarid2Sample.get( snpstr.getVar() ).getName();
 			varids[varcount]= snpstr.getVar().longValue();
 			
 			allelestring[varcount] = IndelStringHDF5nRDBMSHybridService.createVarietyString(snpstr,data);

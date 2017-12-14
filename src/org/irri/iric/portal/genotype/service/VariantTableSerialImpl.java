@@ -14,10 +14,12 @@ import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantStringData;
 import org.irri.iric.portal.genotype.VariantTable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 public class VariantTableSerialImpl implements VariantTable {
 
 	@Autowired
+	@Qualifier("ListItems")
 	private ListItemsDAO listitemdao;
 	
 	private String delimiter;
@@ -35,6 +37,18 @@ public class VariantTableSerialImpl implements VariantTable {
 		this.hasColHeader=hasColHeader;
 	}
 	
+	
+	
+
+	@Override
+	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params, List listCDS)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 
 	@Override
 	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params) throws Exception{
@@ -70,7 +84,7 @@ public class VariantTableSerialImpl implements VariantTable {
 		
 		
 		listitemdao = (ListItemsDAO)AppContext.checkBean(listitemdao, "ListItems");
-		Map<BigDecimal, Variety> mapVarid2Variety = listitemdao.getMapId2Variety();
+		Map<BigDecimal, Variety> mapVarid2Variety = listitemdao.getMapId2Variety(params.getDataset());
 		List listTable= data.getListVariantsString();
 	
 		Iterator<SnpsStringAllvars> itSnpstring = listTable.iterator();

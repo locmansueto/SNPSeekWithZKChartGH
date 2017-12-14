@@ -1,7 +1,6 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
@@ -12,6 +11,7 @@ import javax.persistence.*;
 
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.domain.VarietyPlus;
+import org.irri.iric.portal.variety.VarietyFacade;
 
 /**
  */
@@ -33,8 +33,8 @@ import org.irri.iric.portal.domain.VarietyPlus;
 		@NamedQuery(name = "findVIricstocksByPassportByTypeId", query = "select myVIricstocksByPassport from VIricstocksByPassport myVIricstocksByPassport where myVIricstocksByPassport.typeId = ?1"),
 		@NamedQuery(name = "findVIricstocksByPassportByValue", query = "select myVIricstocksByPassport from VIricstocksByPassport myVIricstocksByPassport where myVIricstocksByPassport.value = ?1"),
 
-		@NamedQuery(name = "findVIricstocksByPassportByTypeIdValueEquals", query = "select myVIricstocksByPassport from VIricstocksByPassport myVIricstocksByPassport where myVIricstocksByPassport.typeId = ?1 and upper(myVIricstocksByPassport.value) = upper(?2)"),
-		@NamedQuery(name = "findVIricstocksByPassportByTypeIdValueContaining", query = "select myVIricstocksByPassport from VIricstocksByPassport myVIricstocksByPassport where myVIricstocksByPassport.typeId = ?1 and upper(myVIricstocksByPassport.value) like upper(?2)"),
+		@NamedQuery(name = "findVIricstocksByPassportByTypeIdValueEquals", query = "select myVIricstocksByPassport from VIricstocksByPassport myVIricstocksByPassport where myVIricstocksByPassport.typeId = ?1 and  myVIricstocksByPassport.dataset in (?2) and upper(myVIricstocksByPassport.value) = upper(?3)"),
+		@NamedQuery(name = "findVIricstocksByPassportByTypeIdValueContaining", query = "select myVIricstocksByPassport from VIricstocksByPassport myVIricstocksByPassport where myVIricstocksByPassport.typeId = ?1 and  myVIricstocksByPassport.dataset in (?2) and upper(myVIricstocksByPassport.value) like upper(?3)"),
 		
 		
 		@NamedQuery(name = "findVIricstocksByPassportByValueContaining", query = "select myVIricstocksByPassport from VIricstocksByPassport myVIricstocksByPassport where myVIricstocksByPassport.value like ?1") })
@@ -42,7 +42,8 @@ import org.irri.iric.portal.domain.VarietyPlus;
 
 
 
-@Table(schema = "IRIC", name = "V_IRICSTOCKS_BY_PASSPORT")
+//@Table( name = "V_IRICSTOCKS_BY_PASSPORT")
+@Table( name = "V_STOCK_BY_PASSPORT")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstocksByPassport")
 public class VIricstocksByPassport implements Serializable, VarietyPlus {
@@ -96,12 +97,29 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 	/**
 	 */
 
+	@Column(name = "GS_ACCESSION", length = 4000)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String gsAccession;
+
+	@Column(name = "BOX_CODE", length = 4000)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String boxCode;
+
+	
 	@Column(name = "VALUE", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String value;
 	/**
 	 */
+	
+	@Column(name = "DATASET", length = 4000)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String dataset;
+
 
 	@Column(name = "TYPE_ID", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
@@ -153,7 +171,7 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 	/**
 	 */
 	public String getIrisUniqueId() {
-		return this.irisUniqueId;
+		return irisUniqueId;
 	}
 
 	/**
@@ -204,6 +222,12 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 		return this.typeId;
 	}
 
+	
+	
+	public void setDataset(String dataset) {
+		this.dataset = dataset;
+	}
+
 	/**
 	 */
 	public VIricstocksByPassport() {
@@ -222,6 +246,7 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 		setSubpopulation(that.getSubpopulation());
 		setValue(that.getValue());
 		setTypeId(that.getTypeId());
+		setDataset(that.getDataset());
 	}
 
 	/**
@@ -240,6 +265,7 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 		buffer.append("subpopulation=[").append(subpopulation).append("] ");
 		buffer.append("value=[").append(value).append("] ");
 		buffer.append("typeId=[").append(typeId).append("] ");
+		buffer.append("dataset=[").append(dataset).append("] ");
 
 		return buffer.toString();
 	}
@@ -272,6 +298,7 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 		final int prime = 31;
 		int result = 1;
 		result = (int) (prime * result + ((getVarietyId() == null) ? 0 : getVarietyId().hashCode()));
+		result = (int) (prime * result + ((getDataset() == null) ? 0 : getDataset().hashCode()));
 		return result;
 	}
 
@@ -292,6 +319,12 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 			return false;
 		if (getVarietyId() != null && !getVarietyId().equals(equalCheck.getVarietyId()))
 			return false;
+		if ((getDataset() == null && equalCheck.getDataset() != null) || (getDataset() != null && equalCheck.getDataset() == null))
+			return false;
+		if (getDataset() != null && !getDataset().equals(equalCheck.getDataset()))
+			return false;
+		
+		
 		return true;
 		
 	}
@@ -344,6 +377,8 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 		int ret = getName().compareTo( ((Variety)o).getName() ); 
 		if(ret==0)
 			ret = getVarietyId().compareTo( ((Variety)o).getVarietyId() );
+		if(ret==0)
+			ret = getDataset().compareTo( ((Variety)o).getDataset() );
 			
 		return ret;
 	}
@@ -358,15 +393,45 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 		if(cntr==null) cntr="";
 		String strvalue = value;
 		if(strvalue==null) strvalue = "";
-		return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr + delimiter + strvalue;
+		
+		String acc = this.getAccession();
+		if(acc==null) acc="";
+		
+		//return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr + delimiter + strvalue;
+		return "\""+ this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter + "\""  + acc + "\"" + delimiter + "\""  + subpop + "\"" + delimiter + "\"" + cntr + "\"" + delimiter + strvalue   ;
+
 	}
 
 	@Override
 	public String getBoxCode() {
 		// TODO Auto-generated method stub
-		return null;
+		return boxCode;
+	}
+
+	@Override
+	public String getAccession() {
+		// TODO Auto-generated method stub
+		try {
+			Integer.valueOf(gsAccession);
+			return "IRGC" + gsAccession;
+		} catch(Exception ex) {
+			return gsAccession;
+		}
 	}
 	
+	
+	@Override
+	public String getDataset() {
+		// TODO Auto-generated method stub
+		//return VarietyFacade.DATASET_SNPINDELV2_IUPAC;
+		return dataset;
+	}
+
+	@Override
+	public void setAccession(String accession) {
+		// TODO Auto-generated method stub
+		gsAccession=accession;
+	}
 	
 	
 	

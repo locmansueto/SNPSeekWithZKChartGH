@@ -24,7 +24,7 @@ import org.irri.iric.portal.domain.CvTerm;
 		@NamedQuery(name = "findVCvPassportByName", query = "select myVCvPassport from VCvPassport myVCvPassport where myVCvPassport.name = ?1"),
 		@NamedQuery(name = "findVCvPassportByNameContaining", query = "select myVCvPassport from VCvPassport myVCvPassport where myVCvPassport.name like ?1"),
 		@NamedQuery(name = "findVCvPassportByPrimaryKey", query = "select myVCvPassport from VCvPassport myVCvPassport where myVCvPassport.cvTermId = ?1") })
-@Table(schema = "IRIC", name = "V_CV_PASSPORT")
+@Table( name = "V_CV_PASSPORT")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VCvPassport")
 public class VCvPassport implements Serializable, CvTerm {

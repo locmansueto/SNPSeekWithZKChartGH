@@ -1,5 +1,8 @@
 package org.irri.iric.portal.dao;
 
+import java.util.List;
+import java.util.Set;
+
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.MultiReferenceLocus;
 import org.irri.iric.portal.domain.MultiReferenceConversion;

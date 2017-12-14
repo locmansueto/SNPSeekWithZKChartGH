@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.CvTermPathDAO;
@@ -37,11 +38,19 @@ public class PlantTraitRiceVarietyOntologyService implements OntologyService {
 		return cvtermpathDAO.getAncestors(cv, term);
 	}
 
+	
+	
 	@Override
 	public List getCVtermDescendants(String cv, String term) {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List getCVtermDescendants(String cv, String term, Set dataset) {
+		// TODO Auto-generated method stub
 		cvtermpathDAO= (CvTermPathDAO)AppContext.checkBean(cvtermpathDAO, "VCvPhenotypeByPtocoPathDAO");
-		return cvtermpathDAO.getDescendants(cv, term);	}
+		return cvtermpathDAO.getDescendants(cv, term, dataset);	}
 
 	@Override
 	public List countLociInTerms(String organism, Collection genelist, String cv)

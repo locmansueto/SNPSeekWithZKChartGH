@@ -1,0 +1,46 @@
+2017-05-25 07:17:00,948 ERROR [org.irri.iric.portal.AppContext] - <scafold=chr10, organism=9>
+Hibernate: select vscaffolds0_.FEATURE_ID as FEATURE1_34_, vscaffolds0_.COMMON_NAME as COMMON2_34_, vscaffolds0_.NAME as NAME34_, vscaffolds0_.ORGANISM_ID as ORGANISM4_34_, vscaffolds0_.SEQLEN as SEQLEN34_,
+vscaffolds0_.TYPE as TYPE34_, vscaffolds0_.TYPE_ID as TYPE7_34_, vscaffolds0_.UNIQUENAME as UNIQUENAME34_ from public.V_SCAFFOLDS_ORGANISM vscaffolds0_ where upper(vscaffolds0_.NAME)=upper(?) and vscaffolds0
+_.ORGANISM_ID=?
+java.lang.ClassCastException: org.irri.iric.portal.genotype.zkui.FakerMatrixModel cannot be cast to org.irri.iric.portal.genotype.zkui.Object2StringMultirefsMatrixModel
+        at org.irri.iric.portal.genotype.zkui.SNPQueryController.onclickcolorAllele(SNPQueryController.java:2202)
+        at sun.reflect.GeneratedMethodAccessor971.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:606)
+   
+
+
+2017-05-25 07:29:49,028 ERROR [org.irri.iric.portal.AppContext] - <TIMER: 4226 ms (system),  4226 ms (date) : using readIndelString2 end>
+2017-05-25 07:29:49,028 ERROR [org.irri.iric.portal.AppContext] - <executing :select feature_id, dbxref_id, organism_id, name, substring(residues,3928639, 14939) residues,  seqlen, md5checksum, type_id, is_a
+nalysis, is_obsolete, timeaccessioned, timelastmodified, uniquename  from public.feature where upper(uniquename)= 'CHR08' and organism_id=9>
+Hibernate: select feature_id, dbxref_id, organism_id, name, substring(residues,3928639, 14939) residues,  seqlen, md5checksum, type_id, is_analysis, is_obsolete, timeaccessioned, timelastmodified, uniquename
+  from public.feature where upper(uniquename)= 'CHR08' and organism_id=9
+2017-05-25 07:29:50,756 ERROR [org.hibernate.util.JDBCExceptionReporter] - <Bad value for type int : f>
+org.hibernate.exception.DataException: could not execute query
+        at org.hibernate.exception.SQLStateConverter.convert(SQLStateConverter.java:102)
+        at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:66)
+        at org.hibernate.loader.Loader.doList(Loader.java:2297)
+        at org.hibernate.loader.Loader.listIgnoreQueryCache(Loader.java:2172)
+        at org.hibernate.loader.Loader.list(Loader.java:2167)
+        at org.hibernate.loader.custom.CustomLoader.list(CustomLoader.java:316)
+        at org.hibernate.impl.SessionImpl.listCustomQuery(SessionImpl.java:1832)
+        at org.hibernate.impl.AbstractSessionImpl.list(AbstractSessionImpl.java:165)
+        at org.hibernate.impl.SQLQueryImpl.list(SQLQueryImpl.java:179)
+        at org.irri.iric.portal.chado.oracle.dao.FeatureDAOImpl.executeSQL(FeatureDAOImpl.java:467)
+        at org.irri.iric.portal.chado.oracle.dao.FeatureDAOImpl.getSubSequencePostgres(FeatureDAOImpl.java:522)
+        at org.irri.iric.portal.chado.oracle.dao.FeatureDAOImpl.getSubSequence(FeatureDAOImpl.java:491)
+
+
+   at org.zkoss.zk.ui.impl.UiEngineImpl.processEvent(UiEngineImpl.java:1765)
+        ... 30 more
+Caused by: java.lang.NullPointerException
+        at java.util.TreeMap.put(TreeMap.java:556)
+        at java.util.TreeSet.add(TreeSet.java:255)
+        at java.util.AbstractCollection.addAll(AbstractCollection.java:334)
+        at java.util.TreeSet.addAll(TreeSet.java:312)
+        at java.util.TreeSet.<init>(TreeSet.java:160)
+        at org.irri.iric.portal.chado.oracle.dao.VSnpeffDAOImpl.getSNPsByFeatureidInPostgres(VSnpeffDAOImpl.java:506)
+        at org.irri.iric.portal.chado.oracle.dao.VSnpeffDAOImpl.getSNPsByFeatureidIn(VSnpeffDAOImpl.java:481)
+        at sun.reflect.GeneratedMethodAccessor1010.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:606)

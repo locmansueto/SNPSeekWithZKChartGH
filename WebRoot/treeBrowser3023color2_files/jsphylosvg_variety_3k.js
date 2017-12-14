@@ -1538,6 +1538,46 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 
 						
 						case 'ind1': variety_color='#60e0c0'; break;
+						case 'ind1A': variety_color='#60e0c0'; break;
+						case 'ind1B': variety_color='#65e5c5'; break;
+						case 'ind1B-1': variety_color='#50aa99'; break;
+						case 'ind1B-2': variety_color='#306600'; break;
+
+						case 'ind1B': variety_color='aquamarine'; break;
+
+						case 'ind2': variety_color='#336622'; break;
+						case 'ind2A': variety_color='#306600'; break;
+						case 'ind2B': variety_color='#507755'; break;
+
+						case 'ind3': variety_color='#339910'; break;
+						case 'ind3A': variety_color='#339910'; break;
+						case 'ind3B': variety_color='#299506'; break;
+						case 'ind3B-1': variety_color='#a2cd5a'; break;
+						case 'ind3B-2': variety_color='#33cc77'; break;
+
+						case 'trop1': variety_color='#4682b4'; break;
+						case 'tropA': variety_color='#4f94cd'; break;
+						case 'tropB': variety_color='#3163aa'; break;
+
+						case 'subtrop': variety_color='#2045c0'; break;
+
+						case 'aro': variety_color='purple'; break;
+						case 'temp': variety_color='lightskyblue'; break;
+
+						case 'aus1': variety_color='#ee9a00'; break;
+						case 'aus2': variety_color='#ad6020'; break;
+						case 'ausx': variety_color='#b07060'; break;
+
+						case 'admix': variety_color='gray'; break;
+						case 'japx': variety_color='#acacfc'; break;
+						case 'indx': variety_color='#9cbb9c'; break;
+						
+						}
+
+		/* old names
+		
+		
+						case 'ind1': variety_color='#60e0c0'; break;
 						case 'ind1.1': variety_color='#60e0c0'; break;
 						case 'ind1.2': variety_color='#65e5c5'; break;
 						case 'ind1.2.1': variety_color='#50aa99'; break;
@@ -1572,7 +1612,7 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 						case 'japx': variety_color='#acacfc'; break;
 						case 'indx': variety_color='#9cbb9c'; break;
 						
-						}
+		*/
 
 						/*
 						//v1

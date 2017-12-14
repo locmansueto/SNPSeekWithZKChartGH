@@ -1,0 +1,301 @@
+package org.irri.iric.portal.domain;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.irri.iric.portal.AppContext;
+
+public class MarkerAnnotationByLocusImpl extends MarkerAnnotationImpl implements Locus {
+
+	private Locus locus;
+	private int plusminus=0;
+
+	public MarkerAnnotationByLocusImpl(Locus locus, int plusminus) {
+		//String contig, Long chr, BigDecimal pos
+		//super(locus.getContig(), locus.getChr(), BigDecimal.valueOf(locus.getFmin()));
+		super();
+		// TODO Auto-generated constructor stub
+		this.locus=locus;
+		this.plusminus=plusminus;
+	}
+
+	@Override
+	public String getUniquename() {
+		// TODO Auto-generated method stub
+		return locus.getUniquename();
+	}
+
+	@Override
+	public Integer getFmin() {
+		// TODO Auto-generated method stub
+		return locus.getFmin();
+	}
+
+	@Override
+	public Integer getFmax() {
+		// TODO Auto-generated method stub
+		return locus.getFmax();
+	}
+
+	@Override
+	public Integer getStrand() {
+		// TODO Auto-generated method stub
+		return locus.getStrand();
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return locus.getDescription();
+	}
+
+	@Override
+	public BigDecimal getFeatureId() {
+		// TODO Auto-generated method stub
+		return locus.getFeatureId();
+	}
+
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		Locus obj=((MarkerAnnotationByLocusImpl)o).locus;
+		return locus.compareTo(obj);
+	}
+
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return locus.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return locus.equals(obj);
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return locus.toString();
+	}
+
+	
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		return locus.getContig();
+	}
+
+	@Override
+	public Long getChr() {
+		// TODO Auto-generated method stub
+		return locus.getChr();
+	}
+
+	private Collection filterOverlap(Collection col) {
+		Set included=new TreeSet();
+		if(col==null) return included;
+		
+		Iterator itLoc=col.iterator();
+		while(itLoc.hasNext()) {
+			Object marker=itLoc.next();
+			if(marker instanceof Locus) included.addAll(filterOverlap((Locus)marker));
+			else if(marker instanceof Position)  included.addAll(filterOverlap((Position)marker));
+		}
+		/*
+		Iterator<Locus> itLoc=col.iterator();
+		while(itLoc.hasNext()) {
+			Locus l=itLoc.next();
+			if( locus.getContig().equals(l.getContig())) {
+				if(l.getFmin()>=locus.getFmin() && l.getFmin()<=locus.getFmax() )
+					included.add(l);
+				else if(l.getFmax()>=locus.getFmin() && l.getFmax()<=locus.getFmax() )
+					included.add(l);
+				else if(l.getFmax()<=locus.getFmax() && l.getFmin()>=locus.getFmin() )
+					included.add(l);
+				else if(locus.getFmax()<=l.getFmax() && locus.getFmin()>=l.getFmin() )
+					included.add(l);
+			}
+		}
+		*/
+		
+		return included;
+	}
+
+	private Collection filterOverlap(Position p) {
+		Set included=new TreeSet();
+		if(p==null) return included;
+			if( locus.getContig().equals(p.getContig())) {
+				if(plusminus==0) {
+					if(p.getPosition().intValue()>=locus.getFmin() && p.getPosition().intValue()<=locus.getFmax() )
+						included.add(p);
+				} else {
+					int pmin=p.getPosition().intValue()-plusminus;
+					int pplus=p.getPosition().intValue()+plusminus;
+					if(pmin>=locus.getFmin() && pmin<=locus.getFmax() )
+						included.add(p);
+					else if(pplus>=locus.getFmin() && pplus<=locus.getFmax() )
+						included.add(p);
+					else if(pplus<=locus.getFmax() && pmin>=locus.getFmin() )
+						included.add(p);
+					else if(locus.getFmax()<=pplus && locus.getFmin()>=pmin )
+						included.add(p);
+					
+				}
+			}
+		return included;
+	}
+
+	
+	private Collection filterOverlap(Locus l) {
+		Set included=new TreeSet();
+		if(l==null) return included;
+		
+			if( locus.getContig().equals(l.getContig())) {
+					if(l.getFmin()>=locus.getFmin() && l.getFmin()<=locus.getFmax() )
+						included.add(l);
+					else if(l.getFmax()>=locus.getFmin() && l.getFmax()<=locus.getFmax() )
+						included.add(l);
+					else if(l.getFmax()<=locus.getFmax() && l.getFmin()>=locus.getFmin() )
+						included.add(l);
+					else if(locus.getFmax()<=l.getFmax() && locus.getFmin()>=l.getFmin() )
+						included.add(l);
+			}
+			
+		return included;
+	}
+
+	@Override
+	public void addQTL(String name, Locus loc) {
+		// TODO Auto-generated method stub
+		//super.addQTL(name, filterOverlap(loc));
+		super.addQTL(name, loc);
+	}
+
+
+	@Override
+	public void addTraitGene(String name, Locus loc) {
+		// TODO Auto-generated method stub
+		//super.addTraitGene(name, filterOverlap(loc));
+		super.addTraitGene(name, loc);
+	}
+
+
+	@Override
+	public void addNetworkGene(String name, Locus loc) {
+		// TODO Auto-generated method stub
+		//super.addNetworkGene(name, filterOverlap(loc));
+		super.addNetworkGene(name, loc);
+	}
+
+
+	@Override
+	public void addGene(String name, Locus loc) {
+		// TODO Auto-generated method stub
+		//super.addGene(name, filterOverlap(loc));
+		super.addGene(name, loc);
+	}
+
+	@Override
+	public void addMarker(String name, Locus loc) {
+		// TODO Auto-generated method stub
+		Collection col=filterOverlap(loc);
+		if(col.size()==0) AppContext.debug(loc.toString() + " not added to " + this.getUniquename());
+		super.addMarker(name, filterOverlap(loc));
+	}
+
+	
+	@Override
+	public void addOntologyGene(String name, Locus loc) {
+		// TODO Auto-generated method stub
+		//super.addOntologyGene(name, filterOverlap(loc));
+		super.addOntologyGene(name, loc);
+	}
+
+
+	@Override
+	public void addPromoterGene(String name, Locus loc) {
+		// TODO Auto-generated method stub
+		//super.addPromoterGene(name, filterOverlap(loc));
+		super.addPromoterGene(name, loc);
+	}
+
+
+
+	@Override
+	public void addTraitGene(String name, Collection loc) {
+		// TODO Auto-generated method stub
+		//super.addTraitGene(name, filterOverlap(loc));
+		super.addTraitGene(name, loc);
+	}
+	
+	@Override
+	public void addNetworkGene(String name, Collection loc) {
+		// TODO Auto-generated method stub
+		//super.addNetworkGene(name, filterOverlap(loc));
+		super.addNetworkGene(name, loc);
+	}
+
+
+	@Override
+	public void addOntologyGene(String name, Collection loc) {
+		// TODO Auto-generated method stub
+		//super.addOntologyGene(name, filterOverlap(loc));
+		super.addOntologyGene(name, loc);
+	}
+
+
+	@Override
+	public void addPromoterGene(String name, Collection loc) {
+		// TODO Auto-generated method stub
+		//super.addPromoterGene(name, filterOverlap(loc));
+		super.addPromoterGene(name, loc);
+	}
+
+
+	@Override
+	public void addQTL(String name, Collection loc) {
+		// TODO Auto-generated method stub
+		//super.addQTL(name, filterOverlap(loc));
+		super.addQTL(name, loc);
+	}
+
+
+	@Override
+	public void addGene(String name, Collection loc) {
+		// TODO Auto-generated method stub
+		//super.addGene(name, filterOverlap(loc));
+		super.addGene(name, loc);
+	}
+
+	@Override
+	public void addMarker(String name, Collection loc) {
+		// TODO Auto-generated method stub
+		Collection col=filterOverlap(loc);
+		if(col.size()==0) AppContext.debug(loc.toString() + " not added to " + this.getUniquename());
+		super.addMarker(name, col);
+	}
+
+	@Override
+	public Position getContigPosition() {
+		// TODO Auto-generated method stub
+		return super.getContigPosition();
+	}
+
+	@Override
+	public String getFeatureType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+}

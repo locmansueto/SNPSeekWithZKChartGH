@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Set;
 
 
+import java.util.TreeSet;
+
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.IndelsAllvarsDAO;
 import org.irri.iric.portal.domain.IndelsAllvars;
@@ -17,6 +19,7 @@ import org.irri.iric.portal.domain.IndelsAllvarsPos;
 import org.irri.iric.portal.hdf5.H5Dataset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -25,8 +28,10 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository("IndelAllvarsDAOHDF5")
+@Scope("prototype")
 public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 
+	/*
 	@Autowired
 	@Qualifier("H5IndelUniAllele1V2DAO")
 	private H5Dataset indelallele1;
@@ -34,10 +39,27 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 	@Autowired
 	@Qualifier("H5IndelUniAllele2V2DAO")
 	private H5Dataset indelallele2;
+	*/
 	
+	private H5Dataset indelallele1;
+	private H5Dataset indelallele2;
+	private boolean bAutowire=true;
+
+	
+	
+	public IndelAllvarsHDF5DAOImpl(H5Dataset indelallele1, H5Dataset indelallele2) {
+		super();
+		this.indelallele1 = indelallele1;
+		this.indelallele2 = indelallele2;
+		bAutowire=false;
+	}
+
+
 	private void checkBeans() {
+		if(bAutowire) {
 		indelallele1 = (H5Dataset)AppContext.checkBean(indelallele1, "H5IndelUniAllele1V2DAO");
 		indelallele2 = (H5Dataset)AppContext.checkBean(indelallele2, "H5IndelUniAllele2V2DAO");
+		}
 	}
 
 	
@@ -104,8 +126,14 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 	}
 	
 	private Set<IndelsAllvars> createIndelsAllvars(Map<BigDecimal,String[]> allele1, Map<BigDecimal,String[]> allele2, List listpos) {
-		Set setSnps = new HashSet();
-		if(allele1.size()!=allele2.size()) throw new RuntimeException("allele1.size()!=allele2.size(): " +allele1.size() + "  "  + allele2.size() );
+		Set setSnps = new TreeSet();
+		try {
+			if(allele1.size()!=allele2.size()) throw new RuntimeException("allele1.size()!=allele2.size(): " +allele1.size() + "  "  + allele2.size() );
+		
+		} catch(Exception ex) {
+			AppContext.debug("allele1=" + allele1  + "  allele2=" + allele2);
+			throw new RuntimeException(ex);
+		}
 		Iterator<BigDecimal> itVarid= allele1.keySet().iterator();
 		
 		
@@ -115,7 +143,12 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 			
 			String varallele2[] = allele2.get(varid);
 			
-			if(varallele1.length!=varallele2.length) throw new RuntimeException("varallele1.length!=varallele2.length: " +varallele1.length + "  "  + varallele2.length );
+			if(varallele1.length!=varallele2.length || listpos.size()!=varallele1.length || listpos.size()!=varallele2.length ) {
+				AppContext.debug(this.getClass().getCanonicalName() +  ".createIndelsAllvars : varallele1.length!=varallele2.length " +varallele1.length + "  "  + varallele2.length + ", listpos.size=" + listpos.size()  + "; varid="  +varid);
+				//throw new RuntimeException(this.getClass().getCanonicalName() +  ".createIndelsAllvars : varallele1.length!=varallele2.length " +varallele1.length + "  "  + varallele2.length + ", listpos.size=" + listpos.size()  + "; varid="  +varid);
+			} else {
+				//AppContext.debug(getClass().getCanonicalName() + ".correct indel cols for varid=" + varid);
+			}
 
 			
 			//long prevdel1=0;
@@ -134,9 +167,12 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 				if(!allele1idx.equals(allele2idx)) {
 					//AppContext.debug( "var=" + varid + " i=" + idx + " pos=" +pos.getPos() + "  allele1=" + allele1idx + ";  allele2=" + allele2idx );
 					
+					
 					if(AppContext.isIgnoreHeteroIndels()) {
 						allele1idx="?";
 						allele2idx="?";
+					} else {
+						
 					}
 				}
 				
@@ -162,7 +198,10 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 						
 						if(isdel) {
 							//if(prevdel1!=null &&  prevdel1>-1) throw new RuntimeException("var=" + varid + " pos=" + pos.getPos() + ": past deletion at " + prevdel1pos + " extend here but allele1=" +allele1idx);
-							if(prevdel1!=null &&  prevdel1>0) throw new RuntimeException("var=" + varid + " pos=" + pos.getPosition() + ": past deletion at " + prevdel1pos + " extend here but allele1=" +allele1idx);
+							if(prevdel1!=null &&  prevdel1>0) {
+								//throw new RuntimeException("var=" + varid + " pos=" + pos.getPosition() + ": past deletion at " + prevdel1pos + " extend here but allele1=" +allele1idx);
+								AppContext.debug("var=" + varid + " pos=" + pos.getPosition() + ": past deletion at " + prevdel1pos + " extend here but allele1=" +allele1idx);
+							}
 							//if(prevdel1>0) throw new RuntimeException("var=" + varid + " pos=" + pos + ": past deletion at " + prevdel1pos + " extend here but allele1=" +allele1idx);
 							try{
 								//del=Integer.valueOf(allele1idx.replace("del","").trim());
@@ -177,7 +216,7 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 							if(!allele1idx.equals("?"))
 							{
 								//throw new RuntimeException("var=" + varid + "pos=" + pos + ": past deletion at " + prevdel1pos + " extend here but allele1=" + allele1idx);
-								AppContext.debug("var=" + varid + "pos=" + pos.getPosition() + " prevdel1=" + prevdel1 +  "  : past deletion at " + prevdel1pos + " extend here but allele1=" + allele1idx);
+								AppContext.debug("var=" + varid + " pos=" + pos.getPosition() + " prevdel1=" + prevdel1 +  "  : past deletion at " + prevdel1pos + " extend here but allele1=" + allele1idx);
 							} 
 							if(prevdel1>0) allele1idx="-" + prevdel1;
 							else if(prevdel1==0) {
@@ -214,7 +253,10 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 						
 						if(isdel) {
 							//if(prevdel2!=null && prevdel2>-1) throw new RuntimeException("var=" + varid + " pos=" + pos.getPos() + ": past deletion at " + prevdel2pos + " extend here but allele2=" + allele2idx);
-							if(prevdel2!=null && prevdel2>0) throw new RuntimeException("var=" + varid + " pos=" + pos.getPosition() + ": past deletion at " + prevdel2pos + " extend here but allele2=" + allele2idx);
+							
+							//if(prevdel2!=null && prevdel2>0) throw new RuntimeException("var=" + varid + " pos=" + pos.getPosition() + ": past deletion at " + prevdel2pos + " extend here but allele2=" + allele2idx);
+							if(prevdel2!=null && prevdel2>0) AppContext.debug("var=" + varid + " pos=" + pos.getPosition() + ": past deletion at " + prevdel2pos + " extend here but allele2=" + allele2idx);
+							
 							//AppContext.debug("Illegal?? pos=" + pos + ": past deletion at " + prevdel2pos + " extend here but allele2=" + allele2idx);
 							try{
 								prevdel2 =Integer.valueOf(allele2idx);
@@ -246,12 +288,22 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 						varnuc+=allele2idx;
 					}
 
-					if(prevdel1!=null &&  prevdel1>100) throw new RuntimeException("var=" + varid +  "prevdel1>100 "  +prevdel1 + "; prevdel1pos=" + prevdel1pos + "; curpos=" + pos);
-					if(prevdel2!=null &&   prevdel2>100) throw new RuntimeException("var=" + varid + "prevdel2>100 "  +prevdel2 + "; prevdel1pos=" + prevdel1pos + "; curpos=" + pos);
+					if(prevdel1!=null &&  prevdel1>100) AppContext.debug("var=" + varid +  " prevdel1>100 "  +prevdel1 + "; prevdel1pos=" + prevdel1pos + "; curpos=" + pos.getContig() + "-" + pos.getPosition());
+					if(prevdel2!=null &&   prevdel2>100) AppContext.debug("var=" + varid + " prevdel2>100 "  +prevdel2 + "; prevdel1pos=" + prevdel1pos + "; curpos=" + pos.getContig() + "-" + pos.getPosition());
 
 					
+					/*
+					if(prevdel1!=null &&  prevdel1>100) throw new RuntimeException("var=" + varid +  " prevdel1>100 "  +prevdel1 + "; prevdel1pos=" + prevdel1pos + "; curpos=" + pos);
+					if(prevdel2!=null &&   prevdel2>100) throw new RuntimeException("var=" + varid + " prevdel2>100 "  +prevdel2 + "; prevdel1pos=" + prevdel1pos + "; curpos=" + pos);
+					*/
+
+					//if( pos.getPosition().intValue()==69957) 
+					// AppContext.debug(this.getClass().getCanonicalName() + ".createIndelsAllvars(): pos=69957: varid=" + varid + "; allele1idx="+ allele1idx +"; allele2idx=" + allele2idx + "; varnuc=" + varnuc + "; pos.refnuc" + pos.getRefnuc()); 
+					 
 					
 				//if(varnuc.equals("/")) continue;
+				
+					//IndelsAllvarsStrImpl(BigDecimal varId, BigDecimal pos, String refnuc, String varnuc, String contig, Long chr, String allele1,  String allele2) {
 				setSnps.add(new IndelsAllvarsStrImpl(varid, pos.getPosition(), pos.getRefnuc(), varnuc, pos.getContig() ,  Long.valueOf(AppContext.guessChrFromString(pos.getContig())), allele1idx, allele2idx));
 						
 				//setSnps.add(  new IndelsAllvarsStrImpl(varid, pos.getPos(), pos.getRefnuc(), varnuc, pos.getContig() , Long.valueOf(AppContext.guessChrFromString(pos.getContig()))) );

@@ -85,6 +85,11 @@ public interface LocalAlignment {
 	 */
 	public Long getMismatches();
 
+
+	public String getQSequence();
+	public String getSSequence();
+	public void setQSequence(String seq);
+	public void setSSequence(String seq);
 	
 	/* blast result tabular result columns
 	score Raw score

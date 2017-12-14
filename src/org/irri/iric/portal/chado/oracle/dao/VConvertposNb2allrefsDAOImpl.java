@@ -18,8 +18,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.chado.dao.VConvertRefposPrecompDAOImpl.MultiReferenceToPositionSorter;
+//import org.irri.iric.portal.chado.dao.VConvertRefposPrecompDAOImpl.MultiReferenceToPositionSorter;
 import org.irri.iric.portal.chado.oracle.domain.VConvertposNb2allrefs;
+import org.irri.iric.portal.dao.OrganismDAO;
 import org.irri.iric.portal.dao.ScaffoldDAO;
 import org.irri.iric.portal.domain.MultiReferenceConversion;
 import org.irri.iric.portal.domain.MultiReferenceLocus;
@@ -294,16 +295,18 @@ public class VConvertposNb2allrefsDAOImpl extends AbstractJpaDao<VConvertposNb2a
 		orgdao = (OrganismDAO)AppContext.checkBean(orgdao, "OrganismDAO");
 		scaffolddao = (ScaffoldDAO)AppContext.checkBean(scaffolddao, "ScaffoldDAO");
 		
-		Map<BigDecimal, String> mapOrgId2Name=new HashMap();
 		Organism npborg = orgdao.getMapName2Organism().get( fromOrganism );
-		
+
+		/*
+		Map<BigDecimal, String> mapOrgId2Name=new HashMap();
 		Iterator<Organism> itOrgs = orgdao.getMapName2Organism().values().iterator();
 		while(itOrgs.hasNext()) {
 			Organism org = itOrgs.next();
 			mapOrgId2Name.put( org.getOrganismId(), org.getName());
 		}
+		*/
 		
-		Scaffold npbcontig = scaffolddao.getScaffold( contig  , fromOrganism );
+		Scaffold npbcontig = scaffolddao.getScaffold( contig  , npborg.getOrganismId() );
 		return findVConvertposNb2allrefsByFromOrgIdContigIdPosBetween(npborg.getOrganismId(), npbcontig.getFeatureId(), start,  end );
 	}
 	
@@ -438,7 +441,12 @@ public class VConvertposNb2allrefsDAOImpl extends AbstractJpaDao<VConvertposNb2a
 			mapOrgId2Name.put( org.getOrganismId(), org.getName());
 		}
 		
-		Scaffold npbcontig = scaffolddao.getScaffold( npbMultirefLocus.getContig()  , npbMultirefLocus.getOrganism() );
+		orgdao = (OrganismDAO)AppContext.checkBean(orgdao, "OrganismDAO");
+		Map mapOrgname2Org=orgdao.getMapName2Organism();
+		BigDecimal orgid=null;
+
+		
+		Scaffold npbcontig = scaffolddao.getScaffold( npbMultirefLocus.getContig()  ,  ((Organism)mapOrgname2Org.get(npbMultirefLocus.getOrganism())).getOrganismId() );
 		
 		//variantstringdataNPB.getListPos()
 		

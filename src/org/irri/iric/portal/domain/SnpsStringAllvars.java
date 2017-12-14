@@ -49,4 +49,17 @@ public interface SnpsStringAllvars extends SnpsAllvarsRefMismatch { //, SnpsAllv
 	 */
 	public Long getChr();
 	
+	/**
+	 * 
+	 * @return duplicatepublic 
+	 */
+	public SnpsStringAllvars copy();
+
+	void setVarnuc(String varnuc);
+
+	public Set getSynPosset();
+	
+	
+	
+	
 }

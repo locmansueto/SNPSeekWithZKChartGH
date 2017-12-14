@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -15,8 +16,10 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.Session;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.oracle.domain.VSnpSpliceacceptor;
+import org.irri.iric.portal.dao.SnpsPropertyDAO;
 import org.irri.iric.portal.domain.Locus;
 //import org.irri.iric.portal.domain.MultiReferenceConversion;
 //import org.irri.iric.portal.domain.MultiReferenceConversionImpl;
@@ -35,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository("VSnpSpliceacceptorDAO")
 @Transactional
-public class VSnpSpliceacceptorDAOImpl extends AbstractJpaDao<VSnpSpliceacceptor>
+public class VSnpSpliceacceptorDAOImpl extends SnpsPropertyDAO<VSnpSpliceacceptor> //AbstractJpaDao<VSnpSpliceacceptor>
 		implements VSnpSpliceacceptorDAO {
 
 	/**
@@ -67,6 +70,11 @@ public class VSnpSpliceacceptorDAOImpl extends AbstractJpaDao<VSnpSpliceacceptor
 		return entityManager;
 	}
 
+
+	protected Session getSession() {
+		return entityManager.unwrap(Session.class);
+	}
+	
 	/**
 	 * Returns the set of entity classes managed by this DAO.
 	 *
@@ -187,8 +195,9 @@ public class VSnpSpliceacceptorDAOImpl extends AbstractJpaDao<VSnpSpliceacceptor
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public Set<VSnpSpliceacceptor> findVSnpSpliceacceptorByOrganismId(java.math.BigDecimal organismId, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVSnpSpliceacceptorByOrganismId", startResult, maxRows, organismId);
-		return new LinkedHashSet<VSnpSpliceacceptor>(query.getResultList());
+		//Query query = createNamedQuery("findVSnpSpliceacceptorByOrganismId", startResult, maxRows, organismId);
+		//return new LinkedHashSet<VSnpSpliceacceptor>(query.getResultList());
+		return null;
 	}
 
 	/**
@@ -231,8 +240,9 @@ public class VSnpSpliceacceptorDAOImpl extends AbstractJpaDao<VSnpSpliceacceptor
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public Set<VSnpSpliceacceptor> findVSnpSpliceacceptorBySrcfeatureId(Integer srcfeatureId, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVSnpSpliceacceptorBySrcfeatureId", startResult, maxRows, srcfeatureId);
-		return new LinkedHashSet<VSnpSpliceacceptor>(query.getResultList());
+	//	Query query = createNamedQuery("findVSnpSpliceacceptorBySrcfeatureId", startResult, maxRows, srcfeatureId);
+	//	return new LinkedHashSet<VSnpSpliceacceptor>(query.getResultList());
+		return null;
 	}
 
 	/**
@@ -272,7 +282,10 @@ public class VSnpSpliceacceptorDAOImpl extends AbstractJpaDao<VSnpSpliceacceptor
 	public Set<SnpsSpliceAcceptor> findSnpSpliceAcceptorByChrPosBetween(
 			String chr, Integer start, Integer end) throws DataAccessException {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVSnpSpliceacceptorByChrPositionBetween", -1,-1, "Chr" + chr, BigDecimal.valueOf(start), BigDecimal.valueOf(end) );
+		//Query query = createNamedQuery("findVSnpSpliceacceptorByChrPositionBetween2", -1,-1, "Chr" + chr, BigDecimal.valueOf(start), BigDecimal.valueOf(end) );
+		Query query = createNamedQuery("findVSnpSpliceacceptorByChrPositionBetween2", -1,-1, BigDecimal.valueOf(Long.valueOf(AppContext.guessChrFromString(chr))), BigDecimal.valueOf(start), BigDecimal.valueOf(end) );
+		
+		
 		return new LinkedHashSet<SnpsSpliceAcceptor>(query.getResultList());
 	}
 
@@ -280,55 +293,96 @@ public class VSnpSpliceacceptorDAOImpl extends AbstractJpaDao<VSnpSpliceacceptor
 	public Set<SnpsSpliceAcceptor> findSnpSpliceAcceptorByChrPosIn(String chr,
 			Collection listpos) throws DataAccessException {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVSnpSpliceacceptorByChrPositionIn", -1, -1, "Chr" + chr, listpos);
+		//Query query = createNamedQuery("findVSnpSpliceacceptorByChrPositionIn2", -1, -1, "Chr" + chr, listpos);
+		Query query = createNamedQuery("findVSnpSpliceacceptorByChrPositionIn2", -1, -1, BigDecimal.valueOf(Long.valueOf(AppContext.guessChrFromString(chr))), listpos);
 		return new LinkedHashSet<SnpsSpliceAcceptor>(query.getResultList());
 	}
+//
+//	@Override
+//	public Set<SnpsSpliceAcceptor> getSNPsBetween(String chr, Integer start,
+//			Integer end) throws DataAccessException {
+//		// TODO Auto-generated method stub
+//		return findSnpSpliceAcceptorByChrPosBetween(chr,start,end);
+//	}
+//
+//	
+//
+//	@Override
+//	public Set<SnpsSpliceAcceptor> getSNPsByFeatureidIn(
+//			Collection featureid)
+//			throws DataAccessException {
+//		// TODO Auto-generated method stub
+//		Set sets[]=AppContext.setSlicer((Set)featureid);
+//		Set setAll=new LinkedHashSet();
+//		for(int iset=0; iset<sets.length; iset++) {
+//		Query query = createNamedQuery("findVSnpSpliceacceptorBySnpFeatureIdIn", -1, -1, sets[iset]);
+//			setAll.addAll(query.getResultList());
+//		}
+//		return setAll;
+//
+//	}
+//
+//	
+//	@Override
+//	public Set<SnpsSpliceAcceptor> getSNPsIn(String chr, Collection listpos)
+//			throws DataAccessException {
+//		// TODO Auto-generated method stub
+//		if(chr.toLowerCase().equals("any")) {
+//			
+//			Set setSNP = new TreeSet();
+//			Map<String,Set<BigDecimal>> mapContig2Pos = MultiReferencePositionImpl.getMapContig2SNPPos(listpos);
+//			Iterator<String> itCont = mapContig2Pos.keySet().iterator();
+//			while(itCont.hasNext()) {
+//				String cont = itCont.next();
+//				
+//				Set sets[] = AppContext.setSlicer(mapContig2Pos.get(cont));
+//				for(int iset=0; iset<sets.length; iset++) {
+//					setSNP.addAll(findSnpSpliceAcceptorByChrPosIn(cont, sets[iset]));
+//				}
+//			}
+//			return setSNP;
+//		}
+//		else if(chr.toLowerCase().equals("loci")) {
+//			Iterator<Locus> it = listpos.iterator();
+//			//StringBuffer buff = new StringBuffer();
+//			Set setPos = new TreeSet();
+//			while(it.hasNext()) {
+//				Locus loc=it.next();
+//				setPos.addAll(  getSNPsBetween(loc.getContig(),  loc.getFmin(),  loc.getFmax()) ); 
+//			}
+//			return setPos;
+//		} else {
+//			//return findSnpSpliceAcceptorByChrPosIn(chr,listpos);
+//			Set setSNP = new TreeSet();
+//			Set sets[] = AppContext.setSlicer(new HashSet(listpos));
+//			for(int iset=0; iset<sets.length; iset++) {
+//				setSNP.addAll(findSnpSpliceAcceptorByChrPosIn(chr, sets[iset]));
+//			}
+//			return setSNP;
+//		}
+//	}
 
 	@Override
-	public Set<SnpsSpliceAcceptor> getSNPsBetween(String chr, Integer start,
-			Integer end) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return findSnpSpliceAcceptorByChrPosBetween(chr,start,end);
-	}
-
-	@Override
-	public Set<SnpsSpliceAcceptor> getSNPsIn(String chr, Collection listpos)
-			throws DataAccessException {
-		// TODO Auto-generated method stub
-		if(chr.toLowerCase().equals("any")) {
-			
-			Set setSNP = new TreeSet();
-			Map<String,Set<BigDecimal>> mapContig2Pos = MultiReferencePositionImpl.getMapContig2SNPPos(listpos);
-			Iterator<String> itCont = mapContig2Pos.keySet().iterator();
-			while(itCont.hasNext()) {
-				String cont = itCont.next();
+	public Set<SnpsSpliceAcceptor> getSNPsIn(String chr, Collection listpos,Set variantset) throws DataAccessException {
+		return findSnpsPropertyByChrPosIn(chr, listpos, variantset, "splice_acceptor_variant", "VSnpSpliceacceptor", null, VSnpSpliceacceptor.class);
 				
-				Set sets[] = AppContext.setSlicer(mapContig2Pos.get(cont));
-				for(int iset=0; iset<sets.length; iset++) {
-					setSNP.addAll(findSnpSpliceAcceptorByChrPosIn(cont, sets[iset]));
-				}
-			}
-			return setSNP;
-		}
-		else if(chr.toLowerCase().equals("loci")) {
-			Iterator<Locus> it = listpos.iterator();
-			//StringBuffer buff = new StringBuffer();
-			Set setPos = new TreeSet();
-			while(it.hasNext()) {
-				Locus loc=it.next();
-				setPos.addAll(  getSNPsBetween(loc.getContig(),  loc.getFmin(),  loc.getFmax()) ); 
-			}
-			return setPos;
-		} else {
-			//return findSnpSpliceAcceptorByChrPosIn(chr,listpos);
-			Set setSNP = new TreeSet();
-			Set sets[] = AppContext.setSlicer(new HashSet(listpos));
-			for(int iset=0; iset<sets.length; iset++) {
-				setSNP.addAll(findSnpSpliceAcceptorByChrPosIn(chr, sets[iset]));
-			}
-			return setSNP;
-		}
 	}
+
+	@Override
+	public Set<SnpsSpliceAcceptor> getSNPsBetween(String chr, Integer start, Integer end, Set variantset) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return findSnpsPropertyByChrPosBetween(chr, start, end, variantset, "splice_acceptor_variant", "VSnpSpliceacceptor", null, VSnpSpliceacceptor.class);
+	}
+
+	@Override
+	public Set<SnpsSpliceAcceptor> getSNPsByFeatureidIn(Collection featureid) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return findSnpsPropertyByFeatureidIn(featureid, "splice_acceptor_variant", "VSnpSpliceacceptor", null, VSnpSpliceacceptor.class);
+	
+	}
+
+	
+
 	
 	
 	

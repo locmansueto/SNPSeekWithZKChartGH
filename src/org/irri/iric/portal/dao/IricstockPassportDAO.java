@@ -10,5 +10,7 @@ public interface IricstockPassportDAO {
 	 * @param id
 	 * @return
 	 */
-	public Set findIricstockPassportByIricStockId(BigDecimal id);
+	//public Set findIricstockPassportByIricStockId(BigDecimal id);
+
+	public Set getPassportByStockId(BigDecimal id);
 }

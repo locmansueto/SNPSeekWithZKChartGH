@@ -7,16 +7,24 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
-
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 
 
-import org.irri.iric.portal.AppContext;
 
+
+
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.admin.Query;
 import org.irri.iric.portal.domain.MultiReferenceLocus;
 import org.irri.iric.portal.domain.MultiReferenceLocusImpl;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.variety.VarietyFacade;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 
 /**
@@ -25,7 +33,40 @@ import org.zkoss.zk.ui.Sessions;
  *
  */
 
-public class GenotypeQueryParams {
+public class GenotypeQueryParams extends Query {
+	
+	/*
+	public static String SNP_ALL="all_snp";
+	public static String SNP_BASE="base_snp";
+	public static String SNP_FILTERED="filtered_snp";
+	public static String SNP_CORE="core_snp";
+	public static String SNP_BIALL="biallelic_snp";
+	*/
+		/*
+		<listitem value="all_snp" label="All (32M)"/>
+		<listitem value="base_snp"  label="Base (18M)"/>
+		<listitem value="filtered_snp" selected="true"  label="Filtered (4.8M)"/>
+		<listitem value="core_snp" label="Core (404k)"/>
+		*/
+	
+
+	public void setSetRun(Set setRun) {
+		this.setRun = setRun;
+	}
+
+	public Set getSetRun() {
+		return setRun;
+	}
+
+	public Set getDataset() {
+		return setDataset;
+	}
+
+	public void setDataset(Set setDataset) {
+		this.setDataset = setDataset;
+	}
+
+
 
 	// reference organism
 	private String organism = AppContext.getDefaultOrganism();
@@ -34,9 +75,9 @@ public class GenotypeQueryParams {
 	// contig name
 	private String sChr;
 	// start bp position
-	private Long lStart;
+	private Long lStart=-1L;
 	// end base position
-	private Long lEnd;
+	private Long lEnd=-1L;
 	// include SNPs 
 	private boolean bSNP;
 	// include indels
@@ -45,7 +86,16 @@ public class GenotypeQueryParams {
 	private boolean bHeteroIndel;
 	
 	// use core SNPs only
+	/*
 	private boolean bCoreonly;
+	private boolean bFilteredonly;
+	private boolean bBaseonly;
+	private boolean bBialleliconly;
+	*/
+
+	//private String sSnpSet=SNP_ALL;
+	private Set setSnp=new LinkedHashSet();
+	
 	// query mismatch only
 	private boolean bMismatchonly;
 	// list of positions from SNP list
@@ -58,24 +108,59 @@ public class GenotypeQueryParams {
 	private Collection colLoci;
 	// query is 2-variety comparison
 	private boolean bPairwiseComparison=false;
+	private boolean bPairwiseComparisonAccession=true;
 	// align the indels
 	private boolean bAlignIndels=true;
 	// delimiter in table download 
 	private String delimiter;
-	// filename in download
-	private String filename;
+	
 	// color table alleles base on mismatch with reference
 	private boolean bColorByMismatch=true;
 	// color alleles by value
 	private boolean bColorByAllele=false;
 	// result is fasta format, don't display table
 	private boolean bFastaSequence=false;
+	// count missing as 0.5
+	private boolean bCountMissingAs05=false;
+	// download without displaying
+	private boolean bDownloadOnly=false;
+	
+	// async query
+	private boolean bWaitResult=true;
+	
+	private Integer[] varidStartEnd;
+	
+	// variety genotype filter
+	private BigDecimal varAlleleFilter=null;
+	
+	private VariantStringData variantdata;
+	
+	
+	private boolean bGenerateHapmap=false;
 	
 	// for the following options, query is for all snps and option
 	// affects only the display, change of option after first query 
 	// only redraws the table
 	// display all snps
-	private boolean bAllSnps=true;
+	//private boolean bAllSnps=false;
+	
+	//private String reqstr; 
+	
+	public boolean isbDownloadOnly() {
+		return bDownloadOnly;
+	}
+
+	public boolean hasPreviousData() {
+		return variantdata!=null;	
+	}
+
+
+	public void setbDownloadOnly(boolean bDownloadOnly) {
+		this.bDownloadOnly = bDownloadOnly;
+	}
+
+
+
 	// display all snps, highlight the non-synonymous
 	private boolean bHighlightNonsynSnps=false;
 	// display only non-synonymous
@@ -90,12 +175,28 @@ public class GenotypeQueryParams {
 	private boolean bShowNPBPositions=false;
 	// show alleles for all reference genomes
 	private boolean bShowAllRefAlleles=false;
+	// has allele filters in poslist
+	private boolean bAlleleFilter=false;
+	
 	
 	// display phenotype in table
 	private String phenotype=null;
 
 	// dataset to use, 
-	private Set setDataset=new HashSet();
+	private Set setDataset=new LinkedHashSet();
+
+	// genotyping run 
+	private Set setRun=new LinkedHashSet();
+
+	// dataset position ops
+	private String datasetPosOps=VarietyFacade.DATASET_SNPPOS_INTERSECT;
+	
+	
+	private Date date = new Date();
+	
+	private Long page;
+	private Long pageSize;
+	
 	
 	public void setbAlignIndels(boolean bAlignIndels) {
 		this.bAlignIndels = bAlignIndels;
@@ -120,13 +221,13 @@ public class GenotypeQueryParams {
 	 * @param bShowAllRefAlleles	Show alleles for all reference genomes
 	 */
 	public GenotypeQueryParams(Collection colVarIds, String sChr, Long lStart,
-			Long lEnd, boolean bSNP, boolean bIndel, boolean bCoreonly,
+			Long lEnd, boolean bSNP, boolean bIndel, Set snpset, Set dataset, Set genotyperun,
 			boolean bMismatchonly, Collection poslist, String sSubpopulation,
 			String sLocus, boolean bAlignIndels, boolean bShowAllRefAlleles) {
 		super();
 		
 		
-		setDataset.add(AppContext.getSNPSet());
+		//setDataset.add(AppContext.getSNPSet());
 		//setDataset.add(SnpsAllvarsPosDAO.DATASET_SNPINDELV1);
 		
 		this.sChr = sChr;
@@ -134,7 +235,6 @@ public class GenotypeQueryParams {
 		this.lEnd = lEnd;
 		this.bSNP = bSNP;
 		this.bIndel = bIndel;
-		this.bCoreonly = bCoreonly;
 		this.bMismatchonly = bMismatchonly;
 		this.poslist = poslist;
 		this.sSubpopulation = sSubpopulation;
@@ -142,6 +242,10 @@ public class GenotypeQueryParams {
 		this.bAlignIndels=bAlignIndels;
 		this.bShowAllRefAlleles = bShowAllRefAlleles;
 		this.colVarIds = colVarIds;
+		//setSnpSet(snpset);
+		this.setSnp=snpset;
+		this.setDataset=dataset;
+		this.setRun=genotyperun;
 		
 		if(colVarIds!=null && !colVarIds.isEmpty()) {
 			Set varids = new HashSet();
@@ -160,30 +264,119 @@ public class GenotypeQueryParams {
 			this.colVarIds = varids;
 		}
 		
-		String posvarids = "";
-		if(poslist!=null) posvarids+=";poslist=" + poslist.size();
-		if(colVarIds!=null) posvarids+=";varlist=" + colVarIds.size();
-		if(this.colLoci!=null) posvarids+=";colLoci=" + colLoci.size();
+		 AppContext.info(toString());
 		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Date date = new Date();
-		
-		if(Sessions.getCurrent()!=null) {
-			AppContext.info("QUERY time:" + dateFormat.format(date) + ";locah host=" + Sessions.getCurrent().getLocalAddr() + "; " + Sessions.getCurrent().getLocalName() + ";" +
-			";remote host=" + Sessions.getCurrent().getRemoteAddr() + "; " + Sessions.getCurrent().getRemoteHost() + 
-			";chr=" + sChr +";start=" + lStart + ";end=" + lEnd + ";snp=" + bSNP + ";indel=" + bIndel + ";iscore=" + bCoreonly + ";mismatchonly=" + bMismatchonly + 
-			";subpupulation=" + sSubpopulation + ";locus=" + sLocus + posvarids );
-		} else {
-			AppContext.info("QUERY time:" + dateFormat.format(date) + ";;;;;;" + 
-					"chr=" + sChr +";start=" + lStart + ";end=" + lEnd + ";snp=" + bSNP + ";indel=" + bIndel + ";iscore=" + bCoreonly + ";mismatchonly=" + bMismatchonly + 
-					";subpupulation=" + sSubpopulation + ";locus=" + sLocus + posvarids );
-		}
-		
-		
-		
+		 //this.setDataset(VarietyFacade.DATASET_SNPINDELV2_IUPAC);
+		 
+		 toString();
 	}
 	
 	
+	
+	public BigDecimal getVarAlleleFilter() {
+		return varAlleleFilter;
+	}
+
+	public void setVarAlleleFilter(BigDecimal varAlleleFilter) {
+		this.varAlleleFilter = varAlleleFilter;
+	}
+	
+	public boolean isVarAlleleFilter() {
+		return varAlleleFilter!=null;
+	}
+
+
+	public void addSnpSet(String snpset) {
+		setSnp.add(snpset);
+	}
+	
+	public void setSnpSet(Set snpset) {
+		setSnp=snpset;
+		/*
+		bAllSnps=false;
+		bCoreonly=false;
+		bFilteredonly=false;
+		bBaseonly=false;
+		bBialleliconly=false;
+		
+		if(snpset.equals(SNP_ALL)) {
+			bAllSnps=true;
+		}
+		else if(snpset.equals(SNP_CORE)) {
+			bCoreonly=true;
+		}
+		else if(snpset.equals(SNP_FILTERED)) {
+			bFilteredonly=true;
+		}
+		else if(snpset.equals(SNP_BASE)) {
+			bBaseonly=true;
+		}
+		else if(snpset.equals(SNP_BIALL)) {
+			bBialleliconly=true;
+		}
+		*/
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		
+		
+		
+		String posvarids = ";submitter=" + this.submitter + ";downloadonly=" + this.bDownloadOnly + ";bAlleleFilter=" + bAlleleFilter + ";bCountMissingAs05=" + bCountMissingAs05;
+		if(poslist!=null) posvarids+=";poslist=" + poslist.size();
+		if(colVarIds!=null) posvarids+=";varlist=" + colVarIds.size();
+		if(this.colLoci!=null) posvarids+=";colLoci=" + colLoci.size();
+		posvarids+=";dataset=" + this.setDataset + ";genotyperun=" + this.setRun;
+		posvarids+=";filename=" + filename;
+		 
+		/*
+		if(reqstr==null) {
+			Object req = null;
+			if(Executions.getCurrent()!=null) req= Executions.getCurrent().getNativeRequest();
+			reqstr="";
+			if(req !=null && req instanceof HttpServletRequest) {
+				HttpServletRequest servreq= (HttpServletRequest)req;
+				//reqstr="-"+ servreq.getRemoteAddr() +  "-" + servreq.getRemoteHost();
+				
+				String forwardedfor= servreq.getHeader("x-forwarded-for");
+				if(forwardedfor!=null) reqstr=forwardedfor; //"-" + forwardedfor;
+				else reqstr= servreq.getRemoteAddr() +  "-" + servreq.getRemoteHost();
+			}
+		}
+		*/
+		
+		
+		String snpset="";
+		/*
+		if(this.isbBaseonly()) snpset="base";
+		else if(this.isbAllSnps()) snpset="all";
+		else if(this.isbCoreonly()) snpset="core";
+		else if(this.isbFilteredonly()) snpset="filtered";
+		*/
+		
+
+		String str= "GenotypeQueryParams: " + super.toString() + 
+		";chr=" + sChr +";start=" + lStart + ";end=" + lEnd + ";snp=" + bSNP + ";indel=" + bIndel +  ";mismatchonly=" + bMismatchonly + 
+		(sSubpopulation!=null?";subpupulation="+sSubpopulation:"") + (sLocus!=null?";locus="+sLocus:"")+";reference=" + this.organism + posvarids+";snpset=" + snpset+";hapmap=" + this.bGenerateHapmap + "\n" + 
+		AppContext.getSystemStatus();
+		
+		/*
+		if(Sessions.getCurrent()!=null) {
+			str="QUERY time:" + AppContext.getDateFormat().format(date) + ";local host=" + Sessions.getCurrent().getLocalAddr() + "; " + Sessions.getCurrent().getLocalName() + ";" +
+			";remote host=" + Sessions.getCurrent().getRemoteAddr() + "; " + Sessions.getCurrent().getRemoteHost() + 
+			";chr=" + sChr +";start=" + lStart + ";end=" + lEnd + ";snp=" + bSNP + ";indel=" + bIndel + ";iscore=" + bCoreonly + ";mismatchonly=" + bMismatchonly + 
+			";subpupulation=" + sSubpopulation + ";locus=" + sLocus + posvarids;
+		} else {
+			str="QUERY time:" + AppContext.getDateFormat().format(date) + ";;;;;;" + 
+					"chr=" + sChr +";start=" + lStart + ";end=" + lEnd + ";snp=" + bSNP + ";indel=" + bIndel + ";iscore=" + bCoreonly + ";mismatchonly=" + bMismatchonly + 
+					";subpupulation=" + sSubpopulation + ";locus=" + sLocus + posvarids ;
+		}
+		*/
+		
+		return str;
+	}
+
 	/**
 	 * Change the position
 	 * @param newPos	New position
@@ -217,6 +410,7 @@ public class GenotypeQueryParams {
 	public void setColLoci(Collection colLoci) {
 		if(colLoci!=null && !colLoci.isEmpty())
 			this.colLoci = colLoci;
+
 	}
 
 
@@ -239,13 +433,14 @@ public class GenotypeQueryParams {
 	 * @param bNonsynSnps	Include non-synonymous SNPs only
 	 * @param bNonsynPlusSpliceSnps	Include non-synonymous, splice site donor and acceptor SNPs
 	 */
-	public void setIncludedSnps(boolean bAllSnps, boolean bHighlightNonsynSnps, boolean bNonsynSnps, boolean bNonsynPlusSpliceSnps) {
+	public void setIncludedSnps(boolean bHighlightNonsynSnps, boolean bNonsynSnps, boolean bNonsynPlusSpliceSnps) {
 		
-		this.bAllSnps=bAllSnps;
+		//setSnpSet(snpset);
+		//addSnpSet(snpset);
 		this.bHighlightNonsynSnps=bHighlightNonsynSnps;
 		this.bNonsynSnps=bNonsynSnps;
 		this.bNonsynPlusSpliceSnps=bNonsynPlusSpliceSnps;
-		AppContext.info("QUERY SNP allsnp=" +   bAllSnps + ";highlightnonsyn=" + bHighlightNonsynSnps + ";nonsynonly=" + bNonsynSnps + ";nonsynplussplice" + bNonsynPlusSpliceSnps);
+		AppContext.info("QUERY SNP snpset=" +  setSnp + ";highlightnonsyn=" + bHighlightNonsynSnps + ";nonsynonly=" + bNonsynSnps + ";nonsynplussplice" + bNonsynPlusSpliceSnps);
 	}
 	
 	
@@ -268,9 +463,12 @@ public class GenotypeQueryParams {
 	public boolean isbIndel() {
 		return bIndel;
 	}
+	/*
 	public boolean isbCoreonly() {
-		return bCoreonly;
+		return sSnpSet.equals(SNP_CORE);
 	}
+	*/
+	
 	public boolean isbMismatchonly() {
 		return bMismatchonly;
 	}
@@ -311,16 +509,6 @@ public class GenotypeQueryParams {
 	public void setlEnd(Long lEnd) {
 		this.lEnd = lEnd;
 	}
-	public String getFilename() {
-		return filename;
-	}
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
-	public boolean isbAllSnps() {
-		return bAllSnps;
-	}
-
 
 	public boolean isbHighlightNonsynSnps() {
 		return bHighlightNonsynSnps;
@@ -368,11 +556,11 @@ public class GenotypeQueryParams {
 	 * @param name1
 	 * @param name2
 	 */
-	public void setPairwiseComparison(String name1, String name2) {
+	public void setPairwiseComparison(String name1, String name2, boolean useAccession) {
 		
 		AppContext.info("QUERY PAIRWISE var1=" + name1 + ";var2=" + name2);
 		this.bPairwiseComparison = true;
-		
+		this.bPairwiseComparisonAccession=useAccession;
 	}
 
 	public boolean isbPairwiseComparison() {
@@ -383,6 +571,12 @@ public class GenotypeQueryParams {
 		// TODO Auto-generated method stub
 		return this.colLoci!=null && !this.colLoci.isEmpty();
 	}
+
+	public boolean hasSnpList() {
+		// TODO Auto-generated method stub
+		return this.poslist!=null && !this.poslist.isEmpty();
+	}
+
 
 
 	public String getOrganism() {
@@ -426,7 +620,6 @@ public class GenotypeQueryParams {
 	public boolean isbShowAllRefAlleles() {
 		return bShowAllRefAlleles;
 	}
-	
 	
 	public void addDataset(String setname) {
 		this.setDataset.add(setname);
@@ -472,6 +665,171 @@ public class GenotypeQueryParams {
 
 	public void setbHeteroIndel(boolean bHeteroIndel) {
 		this.bHeteroIndel = bHeteroIndel;
+	}
+
+
+
+	public boolean isbAlleleFilter() {
+		return bAlleleFilter;
+	}
+
+
+
+	public void setbAlleleFilter(boolean bAlleleFilter) {
+		this.bAlleleFilter = bAlleleFilter;
+	}
+
+	public void setVarietyAlleleFilter(BigDecimal varid) {
+		this.bAlleleFilter = bAlleleFilter;
+	}
+
+
+	public boolean isbCountMissingAs05() {
+		return bCountMissingAs05;
+	}
+
+
+
+	public void setbCountMissingAs05(boolean bCountMissingAs05) {
+		this.bCountMissingAs05 = bCountMissingAs05;
+	}
+
+
+
+	public boolean isbWaitResult() {
+		return bWaitResult;
+	}
+
+
+
+	public void setbWaitResult(boolean bWaitResult) {
+		this.bWaitResult = bWaitResult;
+	}
+
+
+
+	public Integer[] getVaridStartEnd() {
+		return varidStartEnd;
+	}
+
+	public boolean hasVaridRange() {
+		return varidStartEnd!=null;  
+	}
+
+	public void setVaridStartEnd(Integer[] varidStartEnd) {
+		this.varidStartEnd = varidStartEnd;
+	}
+
+
+
+	public VariantStringData getVariantdata() {
+		return variantdata;
+	}
+
+
+
+	public void setVariantdata(VariantStringData variantdata) {
+		this.variantdata = variantdata;
+		if(variantdata!=null) {
+		 variantdata.clearVarietyData();
+		}
+	}
+
+
+	public boolean hasVarlist() {
+		return this.colVarIds!=null && !this.colVarIds.isEmpty();
+	}
+	
+	public boolean isRegion() {
+		return this.lEnd!=null && this.lStart!=null;
+	}
+	
+	/*
+	public String getDataset() {
+		return (String)this.setDataset.iterator().next();
+	}
+	*/
+	
+	public void setDataset(String dataset) {
+		setDataset=new HashSet();
+		setDataset.add(dataset);
+	}
+
+	public String getDatasetPosOps() {
+		return datasetPosOps;
+	}
+
+	public void setDatasetPosOps(String datasetPosOps) {
+		this.datasetPosOps = datasetPosOps;
+	}
+	
+	
+
+	/*
+	public boolean isbAllSnps() {
+		return sSnpSet.equals(SNP_ALL);
+	}
+	
+	public boolean isbFilteredonly() {
+		return sSnpSet.equals(SNP_FILTERED);
+	}
+
+	public boolean isbBaseonly() {
+		return sSnpSet.equals(SNP_BASE);
+	}
+
+	public boolean isbBialleliconly() {
+		return sSnpSet.equals(SNP_BIALL);
+	}
+	*/
+	
+	/*
+	public String getSnpSet() {
+		return sSnpSet;
+	}
+	*/
+	
+	public Set getSnpSet() {
+		return setSnp;
+	}
+	
+	public void setPaging(long page, long pageSize) {
+		this.page=page;
+		this.pageSize=pageSize;
+	}
+
+	public Long getPage() {
+		return page;
+	}
+
+	public Long getPageSize() {
+		return pageSize;
+	}
+	
+	public boolean hasPaging() {
+		return page!=null && pageSize!=null;
+	}
+	
+	
+	public boolean hasChrNoPosRange() {
+		return this.sChr!=null && !this.sChr.isEmpty() &&  (this.lEnd==null || this.lEnd==-1 || this.lStart==null || this.lStart==-1);
+	}
+	
+	public boolean hasChrPosRange() {
+		return this.sChr!=null && !this.sChr.isEmpty() && this.lEnd!=null && this.lEnd>-1 && this.lStart!=null && this.lStart>-1;
+	}
+
+	public void setPoslist(String chr, Collection poslist) {
+		this.poslist = poslist;
+		this.sChr=chr;
+	}
+
+	public boolean isbGenerateHapmap() {
+		return bGenerateHapmap;
+	}
+
+	public void setbGenerateHapmap(boolean bGenerateHapmap) {
+		this.bGenerateHapmap = bGenerateHapmap;
 	}
 	
 	

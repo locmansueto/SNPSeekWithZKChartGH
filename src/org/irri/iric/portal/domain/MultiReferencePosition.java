@@ -11,5 +11,6 @@ public interface MultiReferencePosition extends Position {
 
 	String getOrganism();
 
+	
 
 }

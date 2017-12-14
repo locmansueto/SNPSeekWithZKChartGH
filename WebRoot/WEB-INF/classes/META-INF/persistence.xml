@@ -2,56 +2,39 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
 	
 
+	<persistence-unit name="IRIC_Production_Oracle"  >
+			<description>generated-persistence-unit</description>
+			<provider>org.hibernate.ejb.HibernatePersistence</provider>
+			<class>org.irri.iric.portal.chado.oracle.domain.Feature</class>
+			<exclude-unlisted-classes>true</exclude-unlisted-classes>
+	</persistence-unit>
+	
 		<persistence-unit name="IRIC_Production"  >
 			<description>generated-persistence-unit</description>
 					<provider>org.hibernate.ejb.HibernatePersistence</provider>
 
-				<!-- class>org.irri.iric.portal.chado.domain.VSnp2vars</class>
-				<class>org.irri.iric.portal.chado.domain.VSnpAllvarsCountrefmismatch</class>
-				<class>org.irri.iric.portal.chado.domain.VSnpAllvars</class>
-				<class>org.irri.iric.portal.chado.domain.VSnpAllvars2</class>
-				<class>org.irri.iric.portal.chado.domain.VSnp2varsCountmismatch</class>
-				<class>org.irri.iric.portal.chado.domain.VSnpAllvarsPos</class>
-				<class>org.irri.iric.portal.chado.domain.MvCoreSnps</class>
-				<class>org.irri.iric.portal.chado.domain.VSnpAllvarsMin</class>
-				
-				<class>org.irri.iric.portal.chado.domain.VIndelAllvars</class>
-				<class>org.irri.iric.portal.chado.domain.IndelAllele</class>
-				<class>org.irri.iric.portal.chado.domain.IndelCall</class>
-				
-				<class>org.irri.iric.portal.chado.domain.MismatchCount</class>
-				<class>org.irri.iric.portal.chado.domain.SnpcoreMismatchAlleles</class>
-				<class>org.irri.iric.portal.flatfile.domain.SnpcoreRefposindex</class>
-
-				<class>org.irri.iric.portal.chado.domain.VSnpgenotypeAllele2</class -->
+				<class>org.irri.iric.portal.chado.oracle.domain.Feature</class>
+				<!--  class>org.irri.iric.portal.chado.oracle.domain.FeaturePostgres</class -->
 				
 				
-				<class>org.irri.iric.portal.chado.domain.VCvtermDbxref</class>
-				<class>org.irri.iric.portal.chado.domain.VConvertRefposition</class>
-				<class>org.irri.iric.portal.chado.domain.VConvertRefposPrecomp</class>
-				<class>org.irri.iric.portal.chado.domain.VCvtermLocuscount</class>
-				<class>org.irri.iric.portal.chado.domain.IricStock</class>
-				<class>org.irri.iric.portal.chado.domain.VIricstockBoxcode</class>
-
-				
-				
-				<!-- class>org.irri.iric.portal.admin.domain.VOracleSessions</class -->
-
+				<class>org.irri.iric.portal.chado.oracle.domain.VCvtermLocuscount</class>
 				
 				<class>org.irri.iric.portal.chado.oracle.domain.VCvPtoco</class>
-				<class>org.irri.iric.portal.chado.oracle.domain.Feature</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VCvPtocoByDataset</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VCvPhenotype</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VCvPhenotypeByDataset</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VCvPhenotypeByPtoco</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VCvPhenotypeByPtocoPath</class>
 				
 				<class>org.irri.iric.portal.chado.oracle.domain.VGene</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VCvPassport</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VCvPassportByDataset</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VIricstockDistance</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VIricstockPhenotype</class>
       			<class>org.irri.iric.portal.chado.oracle.domain.VIricstockPassport</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VIricstockBasicprop2</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VHdrastockBasicprop</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VIricstockPassportValues</class>
-				<!-- class>org.irri.iric.portal.chado.oracle.domain.VIricstockPhenotypeValues</class -->
 				<class>org.irri.iric.portal.chado.oracle.domain.VIricstockPhenotypeQuanval</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VIricstockPhenotypeQualval</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VIricstocksByPassport</class>
@@ -60,10 +43,10 @@
 				<class>org.irri.iric.portal.chado.oracle.domain.VSnpRefposindex</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VSnpSpliceacceptor</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VSnpSplicedonor</class>
-				<!--  class>org.irri.iric.portal.chado.oracle.domain.VSnpNonsynAllele</class -->
 				
 				
 				<class>org.irri.iric.portal.chado.oracle.domain.VConvertposNb2allrefs</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VConvertposAny2allrefsMV</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VConvertposAny2allrefs</class>
 				
 				<class>org.irri.iric.portal.chado.oracle.domain.VSnpNonsynallelePos</class>
@@ -73,13 +56,15 @@
 				<class>org.irri.iric.portal.chado.oracle.domain.Organism</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.Cv</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VScaffoldsOrganism</class>
-				<!-- class>org.irri.iric.portal.chado.oracle.domain.VLocusCvterm</class -->
 				<class>org.irri.iric.portal.chado.oracle.domain.VGoOrganism</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VLocusCvtermCvtermpath</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VGoCvtermpath</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VPatoOrganism</class>		
 				<class>org.irri.iric.portal.chado.oracle.domain.VIndelRefposindex</class>
-				
+				<class>org.irri.iric.portal.chado.oracle.domain.VSnpGenotypeHdra</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VSnpRefposHdra</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VSnpeff</class>
+
 				
 				<class>org.irri.iric.portal.chado.oracle.domain.VLocusCvtermpathIric</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VLocusCvtermpathMsu7</class>
@@ -87,42 +72,34 @@
 				<class>org.irri.iric.portal.chado.oracle.domain.VLocusMergedNotes</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VQtl</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.VLocusNotesMarker</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VLocusInteraction</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VLocusIntxnRicenetv1</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VLocusIntxnRicenetv2</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VLocusIntxnPrinexpt</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VLocusIntxnPrinpred</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VLocusPromoter</class>
+				
+				<!--  class>org.irri.iric.portal.chado.oracle.domain.VGwasManhattan</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VGwasManhattanBasic</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VGwasRun</class -->
 								
 								
+				<!--  class>org.irri.iric.portal.chado.oracle.domain.VSnpNonsynAllele</class -->
+				<!-- class>org.irri.iric.portal.chado.oracle.domain.VIricstockPhenotypeValues</class -->
+				<!-- class>org.irri.iric.portal.chado.oracle.domain.VLocusCvterm</class -->
+								
 				
-				<!-- class>org.irri.iric.portal.chado.domain.VCvPhenotype</class>
-				<class>org.irri.iric.portal.chado.domain.VGene</class>
-				<class>org.irri.iric.portal.chado.domain.VCvPassport</class>
-				<class>org.irri.iric.portal.chado.domain.VIricstockDistance</class>
-				<class>org.irri.iric.portal.chado.domain.VIricstockPhenotype</class>
-      			<class>org.irri.iric.portal.chado.domain.VIricstockPassport</class>
-				<class>org.irri.iric.portal.chado.domain.VIricstockBasicprop</class>
-				<class>org.irri.iric.portal.chado.domain.VIricstockBasicprop2</class>
-				<class>org.irri.iric.portal.chado.domain.VIricstockPassportValues</class>
-				<class>org.irri.iric.portal.chado.domain.VIricstockPhenotypeValues</class>
-				<class>org.irri.iric.portal.chado.domain.VIricstockPhenotypeQuanval</class>
-				<class>org.irri.iric.portal.chado.domain.VIricstockPhenotypeQualval</class>
-				<class>org.irri.iric.portal.chado.domain.VIricstocksByPassport</class>
-				<class>org.irri.iric.portal.chado.domain.VIricstocksByPhenotype</class>
-				<class>org.irri.iric.portal.flatfile.domain.VSnpRefposindex</class>
-				<class>org.irri.iric.portal.chado.domain.VSnpSpliceacceptor</class>
-				<class>org.irri.iric.portal.chado.domain.VSnpSplicedonor</class>
-				<class>org.irri.iric.portal.chado.domain.VSnpNonsynAllele</class>
-				<class>org.irri.iric.portal.chado.domain.VSnpInExon</class>
-				<class>org.irri.iric.portal.chado.domain.VLocusNotes</class>
-				<class>org.irri.iric.portal.chado.domain.Organism</class>
-				<class>org.irri.iric.portal.chado.domain.VScaffoldsOrganism</class>
-				<class>org.irri.iric.portal.chado.domain.VLocusCvterm</class>
-				<class>org.irri.iric.portal.chado.domain.VGoOrganism</class>
-				<class>org.irri.iric.portal.chado.domain.VLocusCvtermCvtermpath</class>
-				<class>org.irri.iric.portal.chado.domain.VGoCvtermpath</class>
-				<class>org.irri.iric.portal.chado.domain.VPatoOrganism</class -->
 				
-				<!-- class>org.irri.iric.portal.chado.postgres.domain.Organism</class> 
-				<class>org.irri.iric.portal.chado.postgres.domain.OrganismDbxref</class>
-				<class>org.irri.iric.portal.chado.postgres.domain.Organismprop</class -->
+
+   			<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		</persistence-unit>
+
+		<persistence-unit name="IRIC_Production_pg"  >
+			<description>generated-persistence-unit</description>
+					<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
 				
-				<!-- class>org.irri.iric.portal.chado.postgres.domain.VGene</class>
+				<class>org.irri.iric.portal.chado.postgres.domain.VGene</class>
 				<class>org.irri.iric.portal.chado.postgres.domain.VCvPassport</class>
 				<class>org.irri.iric.portal.chado.postgres.domain.VCvPhenotype</class>
 				<class>org.irri.iric.portal.chado.postgres.domain.VGoCvtermpath</class>
@@ -134,7 +111,7 @@
 				<class>org.irri.iric.portal.chado.postgres.domain.VIricstockPhenotypeQuanval</class>
 				<class>org.irri.iric.portal.chado.postgres.domain.VIricstocksByPassport</class>
 				<class>org.irri.iric.portal.chado.postgres.domain.VIricstocksByPhenotype</class>
-				<class>org.irri.iric.portal.chado.postgres.domain.VIricstockBasicprop</class>
+				<class>org.irri.iric.portal.chado.postgres.domain.VIricstockBasicprop2</class>
 				
 				<class>org.irri.iric.portal.chado.postgres.domain.VSnpSpliceacceptor</class>
 				<class>org.irri.iric.portal.chado.postgres.domain.VSnpSplicedonor</class>
@@ -152,20 +129,11 @@
 				<class>org.irri.iric.portal.chado.postgres.domain.VOrganism</class>
 				<class>org.irri.iric.portal.chado.postgres.domain.VScaffoldsOrganism</class>
 				<class>org.irri.iric.portal.chado.postgres.domain.VSnpRefposindex</class>
-				<class>org.irri.iric.portal.chado.postgres.domain.VPatoOrganism</class -->
+				<class>org.irri.iric.portal.chado.postgres.domain.VPatoOrganism</class>
 
 				
-				
-				
-
-				
-				<!-- class>org.irri.iric.portal.flatfile.dao.SnpsStringAllvarsImpl</class -->
-								
-
 
    			<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		</persistence-unit>
-
-	
 	
 </persistence>

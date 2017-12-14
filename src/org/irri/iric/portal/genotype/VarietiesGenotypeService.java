@@ -3,6 +3,11 @@ package org.irri.iric.portal.genotype;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Future;
+
+import org.irri.iric.portal.domain.SnpsAllvarsPos;
+import org.irri.iric.portal.domain.SnpsEffect;
 
 /**
  * Get genotypes for all or list of varieties
@@ -19,8 +24,8 @@ public interface VarietiesGenotypeService {
 	 * @param type
 	 * @return
 	 */
-	public List checkSNPsInChromosome(String chr, Collection posset, BigDecimal type);
-	
+	//public List checkSNPsInChromosome(String chr, Collection posset, BigDecimal type);
+	public List checkSNPsInChromosome(String chr, Collection posset, Set variantset);
 	
 	/**
 	 * Query genotypes based on params
@@ -29,6 +34,7 @@ public interface VarietiesGenotypeService {
 	 * @throws Exception
 	 */
 	public VariantStringData queryVariantStringData(GenotypeQueryParams params) throws Exception;
+	public Future queryVariantStringDataAsync(GenotypeQueryParams params) throws Exception;
 
 	/**
 	 * Query genotypes for two varieties based on params
@@ -49,6 +55,24 @@ public interface VarietiesGenotypeService {
 	 */
 	
 	public VariantTable fillVariantTable(VariantTable table, VariantStringData data, GenotypeQueryParams params) throws Exception;
+
+
+
+	/**
+	 * 
+	 * @param poslist
+	 * @return
+	 */
+	public List<SnpsEffect> getSnpEffects(List poslist);
+
+	public List<SnpsAllvarsPos> getSNPPoslist(GenotypeQueryParams params);
+	public long  countSNPPoslist(GenotypeQueryParams params);
+
+
+	public long countVariantStringData(GenotypeQueryParams params);
+
+
+	
 
 
 }

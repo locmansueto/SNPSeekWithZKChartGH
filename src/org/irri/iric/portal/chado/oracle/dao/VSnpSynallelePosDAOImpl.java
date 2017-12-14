@@ -35,6 +35,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class VSnpSynallelePosDAOImpl extends AbstractJpaDao<VSnpSynallelePos>
 		implements VSnpSynallelePosDAO {
 
+
+
 	/**
 	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
 	 *
@@ -265,8 +267,8 @@ public class VSnpSynallelePosDAOImpl extends AbstractJpaDao<VSnpSynallelePos>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<SnpsSynAllele> findSnpSynAlleleByChrPosBetween(String chr, Integer start, Integer end, BigDecimal dataset) throws DataAccessException {
-		Query query = createNamedQuery("findVSnpSynallelePosByPositionBetween", -1, -1,  BigDecimal.valueOf(Long.valueOf(AppContext.guessChrFromString(chr))), BigDecimal.valueOf(start), BigDecimal.valueOf(end), dataset);
+	public Set<SnpsSynAllele> findSnpSynAlleleByChrPosBetween(String chr, Integer start, Integer end, Set variantset) throws DataAccessException {
+		Query query = createNamedQuery("findVSnpSynallelePosByPositionBetweenSnpset", -1, -1,  BigDecimal.valueOf(Long.valueOf(AppContext.guessChrFromString(chr))), BigDecimal.valueOf(start), BigDecimal.valueOf(end), variantset);
 		java.util.List list=query.getResultList();
 		java.util.Set set=new LinkedHashSet<SnpsSynAllele>(list);
 		AppContext.debug( "findVSnpSynallelePosByPositionBetween list=" + list.size() + " set=" + set.size());
@@ -293,7 +295,7 @@ public class VSnpSynallelePosDAOImpl extends AbstractJpaDao<VSnpSynallelePos>
 
 	@Override
 	public Set<SnpsSynAllele> findSnpSynAlleleByChrPosIn(String chr,
-			Collection poslist, BigDecimal dataset) {
+			Collection poslist, Set variantset) {
 		// TODO Auto-generated method stub
 	
 		Set setSnpfeatureid = new HashSet();
@@ -310,7 +312,7 @@ public class VSnpSynallelePosDAOImpl extends AbstractJpaDao<VSnpSynallelePos>
 				for(int iset=0; iset<sets.length; iset++) {
 					//Query query = createNamedQuery("findVSnpNonsynAlleleBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
 					
-					Query query = createNamedQuery("findVSnpSynallelePosByPositionIn", -1, -1, BigDecimal.valueOf(Long.valueOf( AppContext.guessChrFromString(chrstr))), sets[iset], dataset);
+					Query query = createNamedQuery("findVSnpSynallelePosByPositionInSnpset", -1, -1, BigDecimal.valueOf(Long.valueOf( AppContext.guessChrFromString(chrstr))), sets[iset], variantset);
 					setAll.addAll(query.getResultList());
 				}
 			}
@@ -324,7 +326,7 @@ public class VSnpSynallelePosDAOImpl extends AbstractJpaDao<VSnpSynallelePos>
 			Set setPos = new TreeSet();
 			while(it.hasNext()) {
 				Locus loc=it.next();
-				setPos.addAll(  findSnpSynAlleleByChrPosBetween(loc.getContig(),  loc.getFmin(),  loc.getFmax(), dataset) ); 
+				setPos.addAll(  findSnpSynAlleleByChrPosBetween(loc.getContig(),  loc.getFmin(),  loc.getFmax(), variantset) ); 
 			}
 			return setPos;
 		}
@@ -335,7 +337,7 @@ public class VSnpSynallelePosDAOImpl extends AbstractJpaDao<VSnpSynallelePos>
 			for(int iset=0; iset<sets.length; iset++) {
 				//Query query = createNamedQuery("findVSnpNonsynAlleleBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
 				
-				Query query = createNamedQuery("findVSnpSynallelePosByPositionIn", -1, -1, BigDecimal.valueOf(Long.valueOf( AppContext.guessChrFromString(chr))), sets[iset], dataset);
+				Query query = createNamedQuery("findVSnpSynallelePosByPositionInSnpset", -1, -1, BigDecimal.valueOf(Long.valueOf( AppContext.guessChrFromString(chr))), sets[iset], variantset);
 				setAll.addAll(query.getResultList());
 			}
 			//return new HashSet<SnpsNonsynAllele>(query.getResultList());

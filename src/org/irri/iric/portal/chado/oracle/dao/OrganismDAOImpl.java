@@ -17,6 +17,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.oracle.domain.Organism;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
@@ -33,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 		OrganismDAO {
 	
-	Map<String,org.irri.iric.portal.domain.Organism> mapName2Organism;
+	//Map<String,org.irri.iric.portal.domain.Organism> mapName2Organism;
 
 	/**
 	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
@@ -335,15 +336,13 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 	@Override
 	public Map<String, org.irri.iric.portal.domain.Organism> getMapName2Organism() {
 		// TODO Auto-generated method stub
-		if(mapName2Organism==null) {
-			mapName2Organism=new LinkedHashMap();
+			Map mapName2Organism=new LinkedHashMap();
 			Iterator<Organism> itOrg=this.findAllOrganisms().iterator();
 			while(itOrg.hasNext()) {
 				Organism org=itOrg.next();
 				mapName2Organism.put(org.getName(), org);
 			}
-		}
-		return mapName2Organism;
+			return mapName2Organism;
 	}
 
 

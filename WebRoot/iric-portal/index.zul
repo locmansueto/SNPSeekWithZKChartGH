@@ -1,0 +1,8 @@
+<zk>
+<zscript>
+	 import org.irri.iric.portal.AppContext;
+     String params="";
+     params=AppContext.convertParams2URL(Executions.getCurrent().getParameterMap());
+	 Executions.sendRedirect("http://snp-seek.irri.org" + params); 
+</zscript>
+</zk> 

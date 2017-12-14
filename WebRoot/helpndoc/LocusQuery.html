@@ -1,0 +1,297 @@
+﻿<html>
+	
+<head>
+	<title>Locus Query</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Personal Edition 4.5.0.497">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #00FF00;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "RiceSNP-SeekDatabase.html?" + sTopicUrl;
+			}
+			else if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+			{
+				top.FrameTOC.SelectTocItem("LocusQuery");
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">Locus Query</h1>
+				
+				<div id="topic_breadcrumb">
+					<a href="WebInterface.html">Web Interface</a> &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="WebInterface.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="VarietyQuery.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="MyLists.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<h1 class="rvps29"><img width="1002" height="296" alt="" style="padding : 1px;" src="lib/NewItem63.png"/></h1>
+<p class="rvps2"><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16">The Locus Query returns the list of loci (genes, QTL) using different search criteria. </span></p>
+<h1 class="rvps13"><span class="rvts0"><span class="rvts18">Gene Locus Query</span></span></h1>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li class="rvps2"><span class="rvts16">Select </span><span class="rvts19">Reference Genome </span><span class="rvts16">from the drop-down menu.</span></li>
+<li class="rvps2"><span class="rvts16">Select the criterion to search by from the </span><span class="rvts19">Search by</span><span class="rvts16"> drop-down menu. </span></li>
+</ol>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;"><ul style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps2"><a name="byannotation"></a>
+<span class="rvts16">Annotation (by source) - description/annotation assigned by the source (MSU or RAP)</span></li>
+<li class="rvps2"><span class="rvts16">Gene name/symbol - gene names/symbols assigned from source, plus Oryzabase and Uniprot</span></li>
+</ul></ul>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps3"><img width="778" height="190" alt="" style="padding : 1px;" src="lib/NewItem62.png"/></p>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps2"><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16">The search string may be search as:</span></p>
+<p class="rvps2"><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16">Whole word only - string occurs as a whole word (sorrounded by whitespaces or punctuation only and not by alphanumeric on either side)</span></p>
+<p class="rvps2"><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16">Substring - occurs as a substring, may be sorrounded by any characters</span></p>
+<p class="rvps2"><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16">Exact match - the string occurs exactly (no prefix, no suffix)</span></p>
+<p class="rvps2"><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16">Regular expression - search as a (POSIX) regular expression </span></p>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;"><ul style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps2"><a name="bygo"></a>
+<span class="rvts16">Gene Ontology term - gene loci are annotated by GO terms (BP, CC, MF). The list includes terms that mapped with loci, and ancestors of these terms from the ontology. Selecting a term will display all loci associated with that term, and all its descendants exploiting the transitive closure of the ontology.</span></li>
+</ul></ul>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps3"><img width="759" height="199" alt="" style="padding : 1px;" src="lib/NewItem50.png"/></p>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;"><ul style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps2"><a name="bytopo"></a>
+<span class="rvts16">Trait Ontology term - gene loci are annotated by Q-TARO traits from the QTARO database, Plant Tait and Plant Anatomy terms (TO, PO) from Oryzabase. The list includes terms that mapped with loci, and ancestors of these terms from the ontology. Selecting a term will display all loci associated with that term, and all its descendants exploiting the transitive closure of the ontology.</span></li>
+</ul></ul>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps3"><img width="763" height="203" alt="" style="padding : 1px;" src="lib/NewItem51.png"/></p>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;"><ul style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps2"><a name="byregion"></a>
+<span class="rvts16">Region - query for gene loci within the region defined by the contig, start and end positions. The list of contigs are updated based on the selected reference genome.</span></li>
+</ul></ul>
+<p class="rvps3"><img width="745" height="202" alt="" style="padding : 1px;" src="lib/NewItem52.png"/></p>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;"><ul style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps2"><a name="bysequence"></a>
+<span class="rvts16">Sequence - perform BLAST alignment on the selected reference and feature (dna, cdna, cds, pep)</span></li>
+</ul></ul>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps3"><img width="728" height="225" alt="" style="padding : 1px;" src="lib/NewItem49.png"/></p>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;"><ul style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps2"><a name="snpannotator"></a>
+<span class="rvts16">SNP list - annotate the SNPs in the list with associated genes and its annotations</span></li>
+</ul></ul>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps3"><img width="731" height="187" alt="" style="padding : 1px;" src="lib/NewItem64.png"/></p>
+<p class="rvps32"><span class="rvts16"> &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="rvts16">The result is a table of markers with annotations. The table rows can be </span><span class="rvts19">Grouped by</span><span class="rvts16"> Marker, Gene model or QTL. A </span><span class="rvts19">Gene Locus list</span><span class="rvts16"> can be created from the annotations based on the selection of Gene Models, Gene of promoters, Gene with interaction from RiceNetv2 or PRIN.</span></p>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps3"><img width="1016" height="338" alt="" style="padding : 1px;" src="lib/NewItem65.png"/></p>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps25"><span class="rvts16">The annotations and their sources are listed in this table:</span></p>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps11"><span class="rvts21">Table S3. SNP annotations and sources (from NAR 2016)</span></p>
+<div class="rvps31"><table width="619" border="1" cellpadding="4" cellspacing="-1" style="border-width: 0px; border-collapse: collapse; margin: 0px auto;">
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts21">Annotation</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts21">Description</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><span class="rvts21">URL</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts21">Publication</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6">GENE MODELS</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">Rice gene models</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><span class="rvts6"><br/></span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts6"><br/></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6"><br/></span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">LOC_* MSU gene models</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><span class="rvts6">http://rice.plantbiology.msu.edu/</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps30"><span class="rvts6">(16)</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6"><br/></span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">Os0* Os1* RAP gene models</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><span class="rvts6">http://rapdb.dna.affrc.go.jp/</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts6">(17)</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6"><br/></span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">OsNippo* &nbsp;Merged MSU, RAP and FGenesh++ gene models</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><span class="rvts6">http://snp-seek.irri.org/_jbrowse.zul?tracks=DNA,fgeneshv1gff</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts6"><br/></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6">FGENESH (-1KB) PROMOTER</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">SNP in promoter region (-1kb) of FGenesh gene model described above</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><span class="rvts6"><br/></span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts6">(18)</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6">GO BIOLOGICAL PROCESS, GO CELLULAR COMPONENT, GO MOLECULAR FUNCTION</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">Gene Ontology terms assigned to LOC_* gene models by MSU</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><a class="rvts12" href="http://rice.plantbiology.msu.edu/">http://rice.plantbiology.msu.edu/</a><span class="rvts6">annotation_pseudo_goslim.shtml</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts6">(16)</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6">PLANT ANATOMY GENES,PLANT DEVELOPMENT GENES</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">PO (Plant Ontology) Terms assigned to gene models by Oryzabase</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><a class="rvts12" href="http://shigen.nig.ac.jp/rice/oryzabase/gene/advanced/list">http://shigen.nig.ac.jp/rice/oryzabase/gene/advanced/list</a></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts6">(20)</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6">TRAIT ONTOLOGY GENES</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">TO (Plant Trait Ontology) Terms assigned to gene models by Oryzabase</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><a class="rvts12" href="http://shigen.nig.ac.jp/rice/oryzabase/gene/advanced/list">http://shigen.nig.ac.jp/rice/oryzabase/gene/advanced/list</a></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts6">(20)</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6">PLANTPROMDB PRED (-200) PROMOTER</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">Predicted Rice promoter region aligned with IRGSPv1 genome</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><a class="rvts12" href="http://linux1.softberry.com/data/plantprom/Links/PLPR_predicted_OS.seq">http://linux1.softberry.com/data/plantprom/Links/PLPR_predicted_OS.seq</a></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts6">(25)</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6">QTARO QTL</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">SNP in QTL region from QTARO</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><a class="rvts12" href="http://qtaro.abr.affrc.go.jp/qtab/table">http://qtaro.abr.affrc.go.jp/qtab/table</a></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts6">(26)</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6">QTARO TRAIT GENES</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">SNP in gene model from QTARO-OGRO</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><a class="rvts12" href="http://qtaro.abr.affrc.go.jp/ogro/table">http://qtaro.abr.affrc.go.jp/ogro/table</a></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts6">(21)</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6">RICENETV1 INTERACTIONS, RICENETV2 INTERACTIONS</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">Interacting genes, genes in direct neighborhood with 'GENE MODELS' using interactions from &nbsp;RiceNet database</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><a class="rvts12" href="http://www.inetbio.org/ricenet/Network_nga_form_conv.php">http://www.inetbio.org/ricenet/Network_nga_form_conv.php</a></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts6">(27)</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6">PRIN EXPERIMENTAL, PRIN PREDICTED</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">Interacting proteins, genes coding proteins that interact with proteins coded by 'GENE MODELS', from PRIN database</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><a class="rvts12" href="http://bis.zju.edu.cn/prin/">http://bis.zju.edu.cn/prin/</a></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts6">(28)</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 137px;"><p class="rvps2"><span class="rvts6">SNPEFF</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 164px;"><p class="rvps2"><span class="rvts6">SNP effects detected on MSU gene models, using SNPEff program</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 208px;"><p class="rvps2"><span class="rvts6">http://snpeff.sourceforge.net/ , http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3679285/</span></p>
+</td>
+<td valign="top" style="border-width : 1px; border-color: #000000; border-style: solid; width: 53px;"><p class="rvps2"><span class="rvts6">(25)</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p class="rvps3"><span class="rvts16"><br/></span></p>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;"><ul style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps2"><a name="geneset"></a>
+<span class="rvts16">Locus list/Gene set - submit the list of gene loci to various Gene Set Enrichment Analysis, rice pathway and interaction databases. This feature auto-submit the list to the selected sites and the corresponding GO button is enabled when the result is ready.</span></li>
+</ul></ul>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p class="rvps3"><img width="752" height="218" alt="" style="padding : 1px;" src="lib/NewItem61.png"/></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li class="rvps2"><span class="rvts16">For Nipponbare, select the </span><span class="rvts19">gene model</span><span class="rvts16"> to use. The other gene models are returned as overlapping genes.</span></li>
+</ol>
+<p class="rvps2"><span class="rvts16"><br/></span></p>
+<p></p>
+<p class="rvps9"><span class="rvts13">Created with the Personal Edition of HelpNDoc: </span><a class="rvts14" href="http://www.helpndoc.com/feature-tour/create-ebooks-for-amazon-kindle">Full-featured Kindle eBooks generator</a></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2014 by International Rice Informatics Consortium. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+

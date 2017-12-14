@@ -1,7 +1,6 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
@@ -32,19 +31,23 @@ import org.irri.iric.portal.domain.Position;
 		@NamedQuery(name = "findMvIndelRefposindexByChromosomePosBetween", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.chromosome = ?1 and myMvIndelRefposindex.position between ?2 and ?3 order by myMvIndelRefposindex.chromosome, myMvIndelRefposindex.position"),
 		@NamedQuery(name = "findMvIndelRefposindexByChromosomePosIn", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.chromosome = ?1 and myMvIndelRefposindex.position in (?2)  order by myMvIndelRefposindex.chromosome, myMvIndelRefposindex.position"),
 		@NamedQuery(name = "findMvIndelRefposindexByIndelFeatureIdIn", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.indelFeatureId in (?1)  order by myMvIndelRefposindex.chromosome, myMvIndelRefposindex.position"),
-		
+
+		@NamedQuery(name = "findMvIndelRefposindexByChromosomePosBetweenVS", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.chromosome = ?1 and myMvIndelRefposindex.position between ?2 and ?3 and  myMvIndelRefposindex.variantset in (?4) order by myMvIndelRefposindex.chromosome, myMvIndelRefposindex.position"),
+		@NamedQuery(name = "findMvIndelRefposindexByChromosomePosInVS", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.chromosome = ?1 and myMvIndelRefposindex.position in (?2) and  myMvIndelRefposindex.variantset in (?3) order by myMvIndelRefposindex.chromosome, myMvIndelRefposindex.position"),
+
 		
 		@NamedQuery(name = "findMvIndelRefposindexByPrimaryKey", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.indelFeatureId = ?1"),
 		@NamedQuery(name = "findMvIndelRefposindexByRefcall", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.refcall = ?1"),
 		@NamedQuery(name = "findMvIndelRefposindexByRefcallContaining", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.refcall like ?1"),
 		@NamedQuery(name = "findMvIndelRefposindexByTypeId", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.typeId = ?1") })
-@Table(schema = "IRIC", name = "V_INDEL_REFPOSINDEX")
+@Table( name = "V_INDEL_REFPOSINDEX")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VIndelRefposindex")
 public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 	private static final long serialVersionUID = 1L;
 
 
+	
 	
 	/**
 	 */
@@ -92,6 +95,14 @@ public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 	/**
 	 */
 
+	@Column(name = "VARIANTSET", nullable = false)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String variantset;
+	/**
+	 */
+
+	
 	@Column(name = "ALLELE_INDEX", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -329,7 +340,7 @@ public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 	@Override
 	public String getInsString() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.altcall;
 	}
 
 	@Override
@@ -363,6 +374,18 @@ public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 	public Long getChr() {
 		// TODO Auto-generated method stub
 		return this.chromosome.longValue();
+	}
+
+	@Override
+	public void setAltnuc(String altnuc) {
+		// TODO Auto-generated method stub
+		this.altcall=altnuc;
+	}
+
+	@Override
+	public String getAltnuc() {
+		// TODO Auto-generated method stub
+		return altcall;
 	}
 	
 	

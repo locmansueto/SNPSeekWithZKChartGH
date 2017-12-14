@@ -2,30 +2,33 @@ package org.irri.iric.portal.genotype.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.ListItemsDAO;
-
-
+import org.irri.iric.portal.domain.Locus;
 //import org.irri.iric.portal.domain.MultiReferenceConversion;
 import org.irri.iric.portal.domain.MultiReferencePosition;
+import org.irri.iric.portal.domain.MultiReferencePositionImplAllelePvalue;
 import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
+import org.irri.iric.portal.domain.StockSample;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.genomics.GenomicsFacade;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
-
 import org.irri.iric.portal.genotype.VariantSnpsStringData;
 import org.irri.iric.portal.genotype.VariantStringData;
-
 import org.irri.iric.portal.genotype.VariantTableArray;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 
 
@@ -37,7 +40,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 
 	@Autowired
+	@Qualifier("ListItems")
 	private ListItemsDAO lisitemdao;
+	@Autowired
+	private GenomicsFacade genomics;
+	
 	
 	// message
 	private String message;
@@ -60,10 +67,14 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 	// contig array
 	private String contigarr[];
 	
+	private String queryallele[];
+	private Double allrefallelesmatch[];
 	
 	
 	private VariantStringData data;
 	private String chr;
+	
+	private String geneAnnots[];
 	
 	//@Autowired
 	//private ListItemsDAO listitemsdao;
@@ -86,44 +97,78 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 		this.refnuc = copyfrom.refnuc;
 		this.data = copyfrom.data;
 		this.contigarr = copyfrom.contigarr;
+		this.queryallele= copyfrom.queryallele;
+		this.allrefallelesmatch=copyfrom.allrefallelesmatch;
 	}
-	
-	public VariantAlignmentTableArraysImpl(ListItemsDAO lisitemdao,
-			String message, String[] varnames, String[][] allelestring,
-			Double[] varmismatch, Long[] varids, Position[] posarr,
-			String[] refnuc, VariantStringData data) {
-		super();
-		this.lisitemdao = lisitemdao;
-		this.message = message;
-		this.varnames = varnames;
-		this.allelestring = allelestring;
-		this.varmismatch = varmismatch;
-		this.varids = varids;
-		this.posarr = posarr;
-		this.refnuc = refnuc;
-		this.data = data;
-	}
-
+//	
+//	public VariantAlignmentTableArraysImpl(ListItemsDAO lisitemdao,
+//			String message, String[] varnames, String[][] allelestring,
+//			Double[] varmismatch, Long[] varids, Position[] posarr,
+//			String[] refnuc, VariantStringData data) {
+//		super();
+//		this.lisitemdao = lisitemdao;
+//		this.message = message;
+//		this.varnames = varnames;
+//		this.allelestring = allelestring;
+//		this.varmismatch = varmismatch;
+//		this.varids = varids;
+//		this.posarr = posarr;
+//		this.refnuc = refnuc;
+//		this.data = data;
+//	}
 
 	@Override
 	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params) {
+		 setVariantStringData( data,  params,null);
+	}
+	
+	@Override
+	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params, List listCDS) {
 		// TODO Auto-generated method stub
-		
 
 		this.data=data;
 
-		List<SnpsAllvarsPos> snpsposlist = data.getListPos();
-		posarr = new Position[snpsposlist.size()]; 
-		refnuc = new String[snpsposlist.size()];
-		if(params.isLocusList() || params.isSNPList()) {
-			contigarr =  new String[snpsposlist.size()];
-		}
+		boolean cdsonly=listCDS!=null && (params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) && data.isNipponbareReference(); 
 		
+		
+		List listPosarr=new ArrayList();
+		List listRefnuc=new ArrayList();
+		List listContigarr=new ArrayList();
+		Set<Integer> setRemoveColumns=new HashSet();
+		
+		List<SnpsAllvarsPos> snpsposlist = data.getListPos();
 		Iterator<SnpsAllvarsPos> itPos = snpsposlist.iterator();
+		int origposcount = 0;
 		int poscount = 0;
+		Set<SnpsAllvarsPos> setInclude=new TreeSet();
 		while(itPos.hasNext()) {
 			SnpsAllvarsPos posnuc=itPos.next();
 			//posarr[poscount] = posnuc.getPos().doubleValue(); //.longValue();
+			
+			boolean includepos=true;
+			if(cdsonly) {
+				Iterator<Locus> itLoc=listCDS.iterator();
+				includepos=false;
+				while(itLoc.hasNext()) {
+					Locus loc=itLoc.next();
+					if(  (loc.getChr()!=null && posnuc.getChr()!=null && posnuc.getChr()==loc.getChr()) || posnuc.getContig().equals(loc.getContig())  ) {
+						if(loc.getFmin()<=posnuc.getPosition().intValue() && loc.getFmax()>= posnuc.getPosition().intValue()) {
+							includepos=true;
+							break;
+						}
+					}
+				}
+			}
+			
+			if(includepos)  {
+				setInclude.add(posnuc);
+				listPosarr.add( posnuc );
+				listRefnuc.add( posnuc.getRefnuc() );
+				listContigarr.add( posnuc.getContig());
+			}
+			else setRemoveColumns.add(origposcount);
+			
+			/*
 			posarr[poscount] = posnuc; //posnuc.getPos(); //.doubleValue(); //.longValue();
 			refnuc[poscount] = posnuc.getRefnuc();
 			
@@ -131,17 +176,38 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 				contigarr[poscount]= posnuc.getContig();	
 			}
 			
-			poscount++;
+			*/
+			origposcount++;
 		}
+
+		posarr = (Position[])listPosarr.toArray(new Position[listPosarr.size()]); 
+		refnuc = (String[]) listRefnuc.toArray(new String[listRefnuc.size()]);
+		if(params.isLocusList() || params.isSNPList()) {
+			contigarr =  (String[])listContigarr.toArray(new String[listContigarr.size()]);
+		}
+		poscount=posarr.length;
+		
+		/*
+		posarr = new Position[snpsposlist.size()]; 
+		refnuc = new String[snpsposlist.size()];
+		if(params.isLocusList() || params.isSNPList()) {
+			contigarr =  new String[snpsposlist.size()];
+		}
+		*/
+		
+		//data.getIndelstringdata().getMapPos2NonsynAlleles()
+		Map<Position,Set<Character>> mapPos2Nonsysn = data.getMapPos2NonsynAlleles();
+		Map mapPos2NonsysnSNPOnly= new TreeMap(mapPos2Nonsysn);
 		
 		lisitemdao = (ListItemsDAO)AppContext.checkBean(lisitemdao, "ListItems");
 		
-		Map<BigDecimal, Variety> mapVarid2Variety = lisitemdao.getMapId2Variety();
+		//Map<BigDecimal, Variety> mapVarid2Variety = lisitemdao.getMapId2Variety(params.getDataset());
+		Map<BigDecimal, StockSample> mapVarid2Variety = lisitemdao.getMapId2Sample(params.getDataset());
 		List listTable= data.getListVariantsString();
 		varnames = new String[listTable.size()];
 		varids = new Long[listTable.size()];
 		varmismatch = new Double[listTable.size()];
-		allelestring = new String[listTable.size()][data.getListPos().size()];
+		allelestring = new String[listTable.size()][poscount]; //[data.getListPos().size()];
 	
 		Iterator<SnpsStringAllvars> itSnpstring = listTable.iterator();
 		int varcount = 0;
@@ -149,24 +215,46 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 			SnpsStringAllvars snpstr = itSnpstring.next();
 			
 			varmismatch[varcount]=snpstr.getMismatch().doubleValue();
-			varnames[varcount]=mapVarid2Variety.get( snpstr.getVar() ).getName();
+			StockSample ss=mapVarid2Variety.get( snpstr.getVar() );
+			varnames[varcount]= ss.getName()+"::["+ss.getAssay()+"]";
 			varids[varcount]= snpstr.getVar().longValue();
 			
 			//AppContext.debug( snpstr.getClass() + " " +  snpstr.toString() );
 			
 			if(params.isbIndel()) {
+				//IndelStringHDF5nRDBMSHybridService.isfirstrow=0;
 				if(params.isbAlignIndels())
-					allelestring[varcount] = IndelStringHDF5nRDBMSHybridService.createVarietyStringAligned(snpstr, data);
+					allelestring[varcount] = IndelStringHDF5nRDBMSHybridService.createVarietyStringAligned(snpstr, data,varnames[varcount]);
 				else
 					allelestring[varcount] = IndelStringHDF5nRDBMSHybridService.createVarietyString(snpstr, data);
 			} else if (params.isbSNP()) {
 				allelestring[varcount] = IndelStringHDF5nRDBMSHybridService.createVarietyString(snpstr, data);
 			}
 			
+			if(cdsonly && !setRemoveColumns.isEmpty()) {
+				List<String> listAllstr=new ArrayList();
+				for(int idx=0; idx<allelestring[varcount].length; idx++) {
+					if(!setRemoveColumns.contains(idx)) {
+						listAllstr.add(allelestring[varcount][idx]);
+						SnpsAllvarsPos idxpos=snpsposlist.get(idx);
+						if(!allelestring[varcount][idx].isEmpty() && !idxpos.getRefnuc().equals(allelestring[varcount][idx])) {
+							Set setnonsysns=mapPos2Nonsysn.get(idxpos);
+							if(setnonsysns==null) setnonsysns = new HashSet();
+							setnonsysns.add( allelestring[varcount][idx].charAt(0));
+						}
+					}
+				}
+				allelestring[varcount]= (String[])listAllstr.toArray(new String[listAllstr.size()]);
+			}
+			
 			varcount++;
 		}
 		
 
+		AppContext.debug("CDS: " + listCDS);
+		AppContext.debug("removed columns: " + setRemoveColumns);
+		
+		
 		AppContext.debug(varcount + " varieties aligned into table");
 		
 		message = data.getMessage();
@@ -248,13 +336,27 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 		}
 		
 		
-		
 		Map<String, Map<BigDecimal, MultiReferencePosition>> mapOrg2Posmap = data.getMapOrg2MSU7Pos2ConvertedPos();
 		if(mapOrg2Posmap!=null && !mapOrg2Posmap.isEmpty()) {
 			List listOrgsAllrefs = new ArrayList();
 			listOrgsAllrefs.addAll( mapOrg2Posmap.keySet() );
 			allrefalleles = new String[listOrgsAllrefs.size()][data.getListPos().size()];
 			allrefallelesnames = new String[listOrgsAllrefs.size()];
+			
+			//if(data.getMapReference2Mismatch()!=null) {
+			if(params.isbAlleleFilter()){
+				allrefallelesmatch=new Double[listOrgsAllrefs.size()];
+				queryallele=new String[params.getPoslist().size()];
+				Iterator<SnpsAllvarsPos> itPosA= params.getPoslist().iterator();
+				int ipos=0;
+				while(itPosA.hasNext()) {
+					MultiReferencePositionImplAllelePvalue posa=(MultiReferencePositionImplAllelePvalue)itPosA.next();
+					queryallele[ipos]=posa.getAllele();
+					ipos++;
+				}
+				
+			}; 
+			
 			for(int iref=0; iref<listOrgsAllrefs.size(); iref++) {
 				Map<BigDecimal, MultiReferencePosition> mapPos = mapOrg2Posmap.get(  listOrgsAllrefs.get(iref) );
 				allrefallelesnames[iref]= (String)listOrgsAllrefs.get(iref);
@@ -270,9 +372,39 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 					}
 					newref_poscount++;
 				}
+
+				if(cdsonly && !setRemoveColumns.isEmpty()) {
+					List<String> listAllstr=new ArrayList();
+					for(int idx=0; idx<allrefalleles[iref].length; idx++) {
+						if(!setRemoveColumns.contains(idx))
+							listAllstr.add(allrefalleles[iref][idx]);
+					}
+					allrefalleles[iref]= (String[])listAllstr.toArray(new String[listAllstr.size()]);
+					newref_poscount=allrefalleles.length;
+				}
+
+				if(data.getMapReference2Mismatch()!=null) {
+					allrefallelesmatch[iref]= data.getMapReference2Mismatch().get( listOrgsAllrefs.get(iref) );
+				}
 			}
+			
+		} else {
+			if(params.isbAlleleFilter()){
+				queryallele=new String[params.getPoslist().size()];
+				Iterator<SnpsAllvarsPos> itPosA= params.getPoslist().iterator();
+				int ipos=0;
+				while(itPosA.hasNext()) {
+					MultiReferencePositionImplAllelePvalue posa=(MultiReferencePositionImplAllelePvalue)itPosA.next();
+					queryallele[ipos]=posa.getAllele();
+					ipos++;
+				}
+				allrefallelesmatch=new Double[1];
+				allrefallelesmatch[0]= data.getMapReference2Mismatch().get( params.getOrganism() );
+			}; 
 		}
 	}
+	
+
 
 	
 	public String[] getAllrefallelesnames() {
@@ -358,6 +490,14 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 
 	
 	
+	public String[] getQueryallele() {
+		return queryallele;
+	}
+
+	public Double[] getAllrefallelesmatch() {
+		return allrefallelesmatch;
+	}
+
 	public Position[] getPositionNPB() {
 		
 		List listpos = data.getListPos();
@@ -415,7 +555,169 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 	public Double[] getVarmismatch() {
 		return this.varmismatch;
 	}
+/*
+	@Override
+	public String[] getSNPGenomicAnnotation(GenotypeQueryParams genotypeQueryParams) {
+		return null;
+	}
+	*/
+	@Override
+	public String[] getSNPGenomicAnnotation(GenotypeQueryParams genotypeQueryParams) {
 
+
+		if(geneAnnots==null) {
+			genomics= (GenomicsFacade)AppContext.checkBean(genomics, "GenomicsFacade");
+			
+			//Map<Position,Locus> setAnnots[] =null;
+			Map<Position,List<Locus>> setAnnots[] =null;
+			chr="any";
+			if(genotypeQueryParams.isRegion()) {
+				chr=genotypeQueryParams.getsChr();
+				setAnnots = genomics.getMarkerGenomicsAnnotsByRegion(chr, data.getListPos(), genotypeQueryParams.getlStart(),  genotypeQueryParams.getlEnd(),
+						genotypeQueryParams.getOrganism(), GenomicsFacade.GENEMODEL_MSU7_ONLY);
+			}
+			else if(genotypeQueryParams.isSNPList() || genotypeQueryParams.isLocusList()) {
+				chr="any";
+				setAnnots = genomics.getMarkerGenomicsAnnotsByContigPositions(chr, data.getListPos(), genotypeQueryParams.getOrganism(), GenomicsFacade.GENEMODEL_MSU7_ONLY);
+			}
+			//Map<Position,Locus> setAnnots[] = genomics.getMarkerGenomicsAnnotsByContigPositions(chr, data.getListPos(),AppContext.getDefaultOrganism(), GenomicsFacade.GENEMODEL_MSU7);
+			
+			AppContext.debug("setAnnots[].size()=" + setAnnots[0].size() +"," +  setAnnots[1].size() +"," +  setAnnots[2].size()+"," +  setAnnots[3].size());
+			AppContext.debug("setAnnots=" + setAnnots);
+			
+			if(setAnnots==null) return null;
+			
+			Set setCDS=new HashSet();
+			Set set3p=new HashSet();
+			Set set5p=new HashSet();
+			
+			String annots[]=new String[data.getListPos().size()];
+			Iterator<SnpsAllvarsPos> itPos=data.getListPos().iterator();
+			int ipos=0;
+			while(itPos.hasNext()) {
+				Position pos=itPos.next();
+				String annot="";
+				
+				Set setConsideredGene=new HashSet();
+				if(setAnnots[0].containsKey(pos)) {
+					Iterator<Locus> itloc = setAnnots[0].get(pos).iterator(); 
+					while(itloc.hasNext()) {
+						Locus loc=itloc.next();
+						if(loc.getFeatureType().equals(GenomicsFacade.FEATURETYPE_CDS)) {
+							if(data.getMapPos2NonsynAlleles().containsKey(pos))
+								annot+=GenomicsFacade.SNPANNOT_NONSYNONYMOUS;
+							else annot+=GenomicsFacade.SNPANNOT_SYNONYMOUS;
+							/*
+							else if(data.getMapPos2SynAlleles().containsKey(pos))
+								annot=GenomicsFacade.SNPANNOT_SYNONYMOUS;
+							else annot=GenomicsFacade.SNPANNOT_CDS;
+							*/
+						}
+						else if(loc.getFeatureType().equals(GenomicsFacade.FEATURETYPE_3PUTR)) {
+							annot+=GenomicsFacade.SNPANNOT_3PUTR;
+						}
+						else if(loc.getFeatureType().equals(GenomicsFacade.FEATURETYPE_5PUTR)) {
+							annot+=GenomicsFacade.SNPANNOT_5PUTR;
+						}
+						setConsideredGene.add(loc.getUniquename().split("\\.")[0]);
+					}
+				}
+				
+				if(setAnnots[1].containsKey(pos)) {
+					Iterator<Locus> itloc = setAnnots[1].get(pos).iterator(); 
+					while(itloc.hasNext()) {
+						Locus loc=itloc.next();
+						if(!setConsideredGene.contains(loc.getUniquename().split("\\.")[0])) {
+							annot+=GenomicsFacade.SNPANNOT_EXON;		
+							setConsideredGene.add(loc.getUniquename().split("\\.")[0]);
+						}
+					}
+				}
+
+				if(setAnnots[2].containsKey(pos)) {
+					Iterator<Locus> itloc = setAnnots[2].get(pos).iterator(); 
+					while(itloc.hasNext()) {
+						Locus loc=itloc.next();
+						if(!setConsideredGene.contains(loc.getUniquename().split("\\.")[0])) {
+							annot+=GenomicsFacade.SNPANNOT_GENE;		
+							setConsideredGene.add(loc.getUniquename().split("\\.")[0]);
+						}
+					}
+				}
+				if(setAnnots[3].containsKey(pos)) {
+					Iterator<Locus> itloc = setAnnots[3].get(pos).iterator(); 
+					while(itloc.hasNext()) {
+						Locus loc=itloc.next();
+						if(!setConsideredGene.contains(loc.getUniquename().split("\\.")[0])) {
+							annot+=GenomicsFacade.SNPANNOT_PROMOTER;		
+							setConsideredGene.add(loc.getUniquename().split("\\.")[0]);
+						}
+					}
+				}
+
+				if(data.getSetSnpSpliceAcceptorPos().contains(pos)) {
+					annot+=GenomicsFacade.SNPANNOT_SPLICEACCEPTOR;
+				}
+				
+				if(data.getSetSnpSpliceDonorPos().contains(pos)) {
+					annot+=GenomicsFacade.SNPANNOT_SPLICEDONOR;
+				}
+				
+				annots[ipos]=annot;
+				ipos++;
+				
+				/* for pos->locus
+				if(setAnnots[0].containsKey(pos)) {
+						Locus loc = setAnnots[0].get(pos);
+						if(loc.getFeatureType().equals(GenomicsFacade.FEATURETYPE_CDS)) {
+							if(data.getMapPos2NonsynAlleles().containsKey(pos))
+								annot+=GenomicsFacade.SNPANNOT_NONSYNONYMOUS;
+							else annot+=GenomicsFacade.SNPANNOT_SYNONYMOUS;
+						}
+						else if(loc.getFeatureType().equals(GenomicsFacade.FEATURETYPE_3PUTR)) {
+							annot+=GenomicsFacade.SNPANNOT_3PUTR;
+						}
+						else if(loc.getFeatureType().equals(GenomicsFacade.FEATURETYPE_5PUTR)) {
+							annot+=GenomicsFacade.SNPANNOT_5PUTR;
+						}
+				}
+				
+				if(setAnnots[1].containsKey(pos)) {
+					annot=GenomicsFacade.SNPANNOT_EXON;
+				else if(setAnnots[1].containsKey(pos)) {
+					annot=GenomicsFacade.SNPANNOT_EXON;
+				}
+				else if(setAnnots[2].containsKey(pos)) {
+					annot=GenomicsFacade.SNPANNOT_GENE;
+					
+				} else if(setAnnots[3].containsKey(pos)) {
+					annot=GenomicsFacade.SNPANNOT_PROMOTER;
+				}
+				if(data.getSetSnpSpliceAcceptorPos().contains(pos)) {
+					annot=GenomicsFacade.SNPANNOT_SPLICEACCEPTOR;
+				}
+				else if(data.getSetSnpSpliceDonorPos().contains(pos)) {
+					annot=GenomicsFacade.SNPANNOT_SPLICEDONOR;
+				}
+				*/
+				
+
+			}
+			
+		// cds,utr
+		
+		// exon
+		
+		// gene
+		
+		// prom
+			
+			geneAnnots=annots;
+		}
+		
+		return geneAnnots;
+	}
+	
 
 	@Override
 	public VariantStringData getVariantStringData() {
@@ -541,156 +843,4 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 		return list;
 	}
 }
-
-// ******************* PAST CODES RETAINED *****************************************
-//
-//	public List getCompare2VarsListIdx(String chromosome, GenotypeQueryParams params) {
-//		List list = new ArrayList();
-//		if(allelestring.length==2) {
-//			
-//			String npbContig="";
-//			if(params.isbShowNPBPositions()) {
-//				npbContig = getVariantStringData().getNpbContig();
-//			}
-//			
-//			if(params.isbNonsynSnps() || params.isbNonsynPlusSpliceSnps()) {
-//				
-//
-//				if(params.isbMismatchonly()) {
-//					for(int ipos=0; ipos<this.posarr.length; ipos++) {
-//						Set setNonsynAlleles = data.getSnpstringdata().getMapIdx2NonsynAlleles().get(ipos);
-//						if(setNonsynAlleles==null) continue;
-//						if(    (!allelestring[0][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[0][ipos].charAt(0))) || 
-//								(!allelestring[1][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[1][ipos].charAt(0))) ) {
-//							if(!allelestring[0][ipos].equals(allelestring[1][ipos])) {
-//								if(params.isbShowNPBPositions()) {
-//									SnpsAllvarsPos snppos = data.getListPos().get(ipos);
-//									list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPos(), snppos.getRefnuc(), 
-//											this.allelestring[0][ipos], this.allelestring[1][ipos]} );
-//								}
-//								else list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
-//										this.allelestring[0][ipos], this.allelestring[1][ipos]} );
-//							}
-//						}
-//					}
-//				}
-//				else {
-//						for(int ipos=0; ipos<this.posarr.length; ipos++) {
-//							Set setNonsynAlleles = data.getSnpstringdata().getMapIdx2NonsynAlleles().get(ipos);
-//							if(setNonsynAlleles==null) continue;
-//							if((!allelestring[0][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[0][ipos].charAt(0))) || 
-//									(!allelestring[1][ipos].isEmpty() && setNonsynAlleles.contains( allelestring[1][ipos].charAt(0)))
-//								) {
-//								if(params.isbShowNPBPositions()) {
-//									SnpsAllvarsPos snppos = data.getListPos().get(ipos);
-//									list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPos(), snppos.getRefnuc(), 
-//											this.allelestring[0][ipos], this.allelestring[1][ipos]} );
-//								}
-//								else list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
-//										this.allelestring[0][ipos], this.allelestring[1][ipos]} );
-//							}
-//						}
-//					}
-//				
-//			} else {
-//				if(params.isbMismatchonly()) {
-//					for(int ipos=0; ipos<this.posarr.length; ipos++) {
-//							if(!allelestring[0][ipos].equals(allelestring[1][ipos])) {
-//								if(params.isbShowNPBPositions()) {
-//									SnpsAllvarsPos snppos = data.getListPos().get(ipos);
-//									list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPos(), snppos.getRefnuc(), 
-//											this.allelestring[0][ipos], this.allelestring[1][ipos]} );
-//								}
-//								else list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
-//										this.allelestring[0][ipos], this.allelestring[1][ipos]} );
-//							}
-//						}
-//				}
-//				else {
-//					for(int ipos=0; ipos<this.posarr.length; ipos++) {
-//						if(params.isbShowNPBPositions()) {
-//							SnpsAllvarsPos snppos = data.getListPos().get(ipos);
-//							list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], npbContig, snppos.getPos(), snppos.getRefnuc(), 
-//									this.allelestring[0][ipos], this.allelestring[1][ipos]} );
-//						}
-//						else list.add(new Object[] { chromosome, posarr[ipos], this.refnuc[ipos], 
-//								this.allelestring[0][ipos], this.allelestring[1][ipos]} );
-//					}
-//				}
-//			}
-//			
-//			
-//		}
-//		return list;
-//	}
-
-	/*
-	public List getRowHeaderList() {
-		return getRowHeaderList(varids, varids.length, 0);
-	}
-	public List getRowHeaderList(int nRows) {
-		return getRowHeaderList(varids, nRows, 0);
-	}
-	public List getRowHeaderList(int nRows, int firstRow) {
-		return getRowHeaderList(varids, nRows, firstRow);
-	}
-	*/
-
-	/*
-	public List getRowHeaderList() {
-		return getRowHeaderList(varids, varids.length, 0);
-	}
-	public List getRowHeaderList(Long[] varid) {
-		return getRowHeaderList(varid, varid.length, 0);
-	}
-	
-	public List getRowHeaderList(int nRows) {
-		return getRowHeaderList(varids, nRows, 0);
-	}
-
-	public List getRowHeaderList(Long[] varid, int nRows) {
-		return getRowHeaderList(varid, nRows, 0);
-	}
-*/
-	
-	/*
-	public List getRowHeaderList(Long[] varid, int nRows, int firstRow) {
-		
-		lisitemdao  = (ListItemsDAO)AppContext.checkBean(lisitemdao,"ListItems");
-		Map<BigDecimal,Variety> mapVarId2Var = lisitemdao.getMapId2Variety();
-		
-		int lastIdx=firstRow + nRows;
-		if(lastIdx>varid.length) {
-			lastIdx=varid.length;
-		}
-		
-		List list = new ArrayList();
-		for(int i=firstRow; i<lastIdx; i++) {
-			Variety var = mapVarId2Var.get(BigDecimal.valueOf(varid[i]));
-			//list.add( new Object[]{varnames[i], var.getIrisId(), var.getSubpopulation(), varmismatch[i] });
-			list.add( new Object[]{varnames[i], var.getIrisId(), var.getSubpopulation(), varmismatch[i] });
-		}
-		return list;
-	}
-	*/
-
-	
-/*
-	private String getIndelAlleleString(IndelsAllvarsPos indelpos) {
-		if(indelpos==null) return "";
-		if(indelpos.getDellength()==0) {
-			if(indelpos.getInsString()==null || indelpos.getInsString().trim().isEmpty()) 
-				return "ref";
-			else return indelpos.getInsString();
-		} else {
-			if(indelpos.getInsString()!=null && !indelpos.getInsString().trim().isEmpty() ) {
-				if(indelpos.getInsString().trim().length()==1)
-					return "snp -> " + indelpos.getInsString();
-				else return "del " + indelpos.getDellength() + " -> " + indelpos.getInsString();
-			}
-			else return "del " + indelpos.getDellength();
-		}
-	}
-	*/
-	
 

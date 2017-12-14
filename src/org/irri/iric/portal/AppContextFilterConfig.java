@@ -22,7 +22,11 @@ public class AppContextFilterConfig implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse res,
 			FilterChain chain) throws IOException, ServletException {
 		// TODO Auto-generated method stub
-		chain.doFilter(req, res);
+		try {
+			chain.doFilter(req, res);
+		} catch (Exception ex) {
+			
+		}
 	}
 	
 	

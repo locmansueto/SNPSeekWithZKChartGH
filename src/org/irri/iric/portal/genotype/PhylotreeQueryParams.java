@@ -1,6 +1,6 @@
 package org.irri.iric.portal.genotype;
 
-
+import java.util.Set;
 
 /**
  * Phylogenetic tree construction parameters
@@ -46,6 +46,14 @@ public class PhylotreeQueryParams    {
 		return scale;
 	}
 	
-	
-	
+	/*
+	public String getDataset() {
+		return genotype.getDataset();
+	}
+	*/
+
+	public Set getDataset() {
+		return genotype.getDataset();
+	}
+
 }

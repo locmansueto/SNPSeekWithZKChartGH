@@ -13,8 +13,10 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.oracle.domain.VIricstocksByPhenotype;
 import org.irri.iric.portal.domain.Phenotype;
+import org.irri.iric.portal.variety.VarietyFacade;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -28,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class VIricstocksByPhenotypeDAOImpl extends AbstractJpaDao<VIricstocksByPhenotype>
 		implements VIricstocksByPhenotypeDAO {
+
 
 	/**
 	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
@@ -209,9 +212,9 @@ public class VIricstocksByPhenotypeDAOImpl extends AbstractJpaDao<VIricstocksByP
 	 *
 	 */
 	@Transactional
-	public Set<VIricstocksByPhenotype> findVIricstocksByPhenotypeByPhenotypeId(java.math.BigDecimal phenotypeId) throws DataAccessException {
+	public Set<VIricstocksByPhenotype> findVIricstocksByPhenotypeByPhenotypeId(java.math.BigDecimal phenotypeId, Set dataset) throws DataAccessException {
 
-		return findVIricstocksByPhenotypeByPhenotypeId(phenotypeId, -1, -1);
+		return findVIricstocksByPhenotypeByPhenotypeId(phenotypeId, dataset, -1, -1);
 	}
 
 	/**
@@ -221,9 +224,33 @@ public class VIricstocksByPhenotypeDAOImpl extends AbstractJpaDao<VIricstocksByP
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPhenotype> findVIricstocksByPhenotypeByPhenotypeId(java.math.BigDecimal phenotypeId, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeId", startResult, maxRows, phenotypeId);
-		return new LinkedHashSet<VIricstocksByPhenotype>(query.getResultList());
+	public Set<VIricstocksByPhenotype> findVIricstocksByPhenotypeByPhenotypeId(java.math.BigDecimal phenotypeId, Set dataset, int startResult, int maxRows) throws DataAccessException {
+		Query query=null;
+		if(dataset.equals(VarietyFacade.DATASET_SNP_ALL)) { 
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeId", startResult, maxRows, phenotypeId);
+			return new LinkedHashSet<VIricstocksByPhenotype>(query.getResultList());
+		}
+		/*
+		else if(dataset.contains("+")) {
+			String sets[]=dataset.split("\\+");
+			List l=new ArrayList();
+			for(int iset=0; iset<sets.length; iset++) {
+				query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdDataset", startResult, maxRows, phenotypeId, sets[iset]);
+				List lp=query.getResultList();
+				l.addAll(lp);
+				AppContext.debug(lp.size() + " values for " +  sets[iset]);
+			}
+			Set s=new LinkedHashSet<VIricstocksByPhenotype>(l);
+			
+			AppContext.debug(s.size() + " values for " +  dataset);
+			return s;
+		}
+		*/
+		else {
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdDataset", startResult, maxRows, phenotypeId, dataset);
+			return new LinkedHashSet<VIricstocksByPhenotype>(query.getResultList());
+		}
+		
 	}
 
 	/**
@@ -444,45 +471,102 @@ public class VIricstocksByPhenotypeDAOImpl extends AbstractJpaDao<VIricstocksByP
 	
 	@Override
 	@Transactional
-	public List findVarietyByQuanPhenotypeLessThan(BigDecimal phen, double value) {
+	public List findVarietyByQuanPhenotypeLessThan(BigDecimal phen, Set dataset, double value) {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanLessthan", -1,-1, phen, BigDecimal.valueOf(Double.valueOf(value)));
+		Query query=null;
+		if(dataset.equals(VarietyFacade.DATASET_SNP_ALL ))
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanLessthan", -1,-1, phen,  BigDecimal.valueOf(Double.valueOf(value)));
+		else 
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanLessthanDataset", -1,-1, phen, dataset, BigDecimal.valueOf(Double.valueOf(value)));
 		return query.getResultList();
 	}
 
 	@Override
 	@Transactional
-	public List findVarietyByQuanPhenotypeGreaterThan(BigDecimal phen,
+	public List findVarietyByQuanPhenotypeGreaterThan(BigDecimal phen, Set dataset,
 			double value) {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanGreaterthan", -1, -1, phen, BigDecimal.valueOf(value));
+		Query query=null;
+		if(dataset.equals(VarietyFacade.DATASET_SNP_ALL ))
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanGreaterthan", -1, -1, phen,  BigDecimal.valueOf(value));
+		else 
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanGreaterthanDataset", -1, -1, phen,  dataset,  BigDecimal.valueOf(value));
 		return query.getResultList();
 	}
 
 	@Override
 	@Transactional
-	public List findVarietyByQuanPhenotypeEquals(BigDecimal phen, double value) {
+	public List findVarietyByQualPhenotypeLessThan(BigDecimal phen, Set dataset, String value) {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanEquals", -1, -1, phen, BigDecimal.valueOf(value));
+		Query query=null;
+		if(dataset.equals(VarietyFacade.DATASET_SNP_ALL ))
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQualLessthan", -1,-1, phen,  value);
+		else 
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQualLessthanDataset", -1,-1, phen, dataset,value);
 		return query.getResultList();
 	}
 
 	@Override
 	@Transactional
-	public List findVarietyByQualPhenotypeEquals(BigDecimal phen, String value) {
+	public List findVarietyByQualPhenotypeGreaterThan(BigDecimal phen, Set dataset,
+			String value) {
 		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQualEquals", -1, -1, phen, value);
+		Query query=null;
+		if(dataset.equals(VarietyFacade.DATASET_SNP_ALL ))
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQualGreaterthan", -1, -1, phen,  value);
+		else 
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQualGreaterthanDataset", -1, -1, phen,  dataset,  value);
+		return query.getResultList();
+	}
+
+	
+	@Override
+	@Transactional
+	public List findVarietyByQuanPhenotypeEquals(BigDecimal phen, Set dataset, double value) {
+		// TODO Auto-generated method stub
+		Query query=null;
+		if(dataset.equals(VarietyFacade.DATASET_SNP_ALL ))
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanEquals", -1, -1, phen,  BigDecimal.valueOf(value));
+		else 
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQuanEqualsDataset", -1, -1, phen, dataset, BigDecimal.valueOf(value));
 		return query.getResultList();
 	}
 
 	@Override
-	public List findVarietyByPhenotype(BigDecimal phen) {
+	@Transactional
+	public List findVarietyByQualPhenotypeEquals(BigDecimal phen, Set dataset,  String value) {
+		// TODO Auto-generated method stub
+		Query query=null;
+		if(dataset.equals(VarietyFacade.DATASET_SNP_ALL ))
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQualEquals", -1, -1, phen, value);
+		else 
+			query = createNamedQuery("findVIricstocksByPhenotypeByPhenotypeIdQualEqualsDataset", -1, -1, phen, dataset, value);
+		return query.getResultList();
+	}
+
+	@Override
+	public List findVarietyByPhenotype(BigDecimal phen , Set dataset) {
 		// TODO Auto-generated method stub
 		
 		List listVars = new ArrayList();
-		listVars.addAll( findVIricstocksByPhenotypeByPhenotypeId(phen));
+		listVars.addAll( findVIricstocksByPhenotypeByPhenotypeId(phen, dataset));
 		return listVars;
 		
+	}
+
+	@Override
+	public Set<VIricstocksByPhenotype> findVIricstocksByPhenotypeByPhenotypeId(
+			BigDecimal phenotypeId) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<VIricstocksByPhenotype> findVIricstocksByPhenotypeByPhenotypeId(
+			BigDecimal phenotypeId, int startResult, int maxRows)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

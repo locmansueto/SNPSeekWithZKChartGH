@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  * @author lmansueto
  *
  */
-public interface Snps2VarsCountmismatch {
+public interface Snps2VarsCountmismatch extends VarietyDistance {
 
 		/**
 		 * Variety1 Id

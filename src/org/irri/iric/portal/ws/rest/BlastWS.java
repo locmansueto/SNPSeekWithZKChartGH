@@ -14,14 +14,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jettison.json.JSONException;
+//import org.codehaus.jackson.map.ObjectMapper;
+//import org.codehaus.jettison.json.JSONException;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.LocalAlignmentDAO;
 import org.irri.iric.portal.genomics.LocalAlignmentQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller("BlastWebService")
 @Path("/blast")
@@ -53,6 +55,9 @@ public class BlastWS {
 		  	try {
 				LocalAlignmentQuery query = new LocalAlignmentQuery(sequence, dbname, program);
 				query.setEvalue(maxevalue);
+				
+				AppContext.logQuery("WS " + query.toString());
+				
 			  	List listResult = alignWithDB(query);
 		  		return Response.status(200).entity( new ObjectMapper().writeValueAsString( listResult )).build();
 		  		
@@ -78,6 +83,9 @@ public class BlastWS {
 		  	try {
 				LocalAlignmentQuery query = new LocalAlignmentQuery(sequence, dbname, program);
 				query.setEvalue(maxevalue);
+				
+				AppContext.logQuery("WS " + query.toString());
+				
 			  	List listResult = alignWithDB(query);
 		  		return Response.status(200).entity( new ObjectMapper().writeValueAsString( listResult )).build();
 		  		

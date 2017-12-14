@@ -2,8 +2,10 @@ package org.irri.iric.portal.chado.dao;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -19,6 +21,7 @@ import javax.persistence.criteria.Root;
 import org.irri.iric.portal.chado.domain.VIricstockBasicprop;
 import org.irri.iric.portal.dao.VarietyDAO;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.variety.VarietyFacade;
 import org.skyway.spring.util.dao.AbstractJpaDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -323,8 +326,9 @@ public class VIricstockBasicpropDAOImpl extends AbstractJpaDao<VIricstockBasicpr
 	
 	
 	@Override
-	public Set findAllVarietyByCountryAndSubpopulation(String country, String subpopulation) {
+	public Set findAllVarietyByCountryAndSubpopulation(String country, String subpopulation, String dataset) {
 		// TODO Auto-generated method stub
+		if(!dataset.equals(VarietyFacade.DATASET_SNPINDELV2_IUPAC)) throw new RuntimeException("!dataset.equals(VarietyFacade.DATASET_SNPINDELV2_IUPAC in iricstockbasicprop");
 		return this.findVIricstockBasicpropByOriCountrySubpopulation(country, subpopulation);
 	}
 
@@ -400,6 +404,60 @@ public class VIricstockBasicpropDAOImpl extends AbstractJpaDao<VIricstockBasicpr
 		else if(setNames.isEmpty())
 			return null;
 		return (Variety)setNames.iterator().next();
+	}
+
+	@Override
+	public Variety findVarietyByAccession(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Variety> findVarietyByNamesLike(Collection names) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Variety> findVarietyByNames(Collection names) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Variety> findVarietyByIrisIds(Collection names) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<Variety> findVarietiesByIrisId(String irisid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<Variety> findVarietiesByAccession(String accession) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<Variety> findVarietiesByName(String names) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set findVarietiesByNameAccession(String varname, String accession) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection findVarietyByIds(Set setQueryVarobj) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

@@ -22,24 +22,50 @@
 
 <table>
 <tr>
-<td width="30%"></td><td>   
+<td width="15%"></td><td>   
 
 This site provides Genotype, Phenotype, and Variety Information for rice (Oryza sativa L.). SNP genotyping data (called against 
  <a target="_blank" href="http://rice.plantbiology.msu.edu/annotation_pseudo_current.shtml">Nipponbare reference Os-Nipponbare-Reference-IRGSP-1.0</a>) came from <a target="_blank" href="http://www.gigasciencejournal.com/content/3/1/7"> 3,000 Rice Genomes Project </a>. 
-Phenotype and passport data for the 3,000 rice varieties came from the International Rice Information System (<a target="_blank" href="http://iris.irri.org">IRIS</a>).
+Phenotype and passport data for the 3,000 rice varieties came from the International Rice Genebank Collection Information System (<a target="_blank" href="http://irgcis.irri.org:81/grc/irgcishome.html">IRGCIS</a>).
 We are a part of an ongoing effort by the International Rice Informatics Consortium (<a target="_blank" href="http://iric.irri.org">IRIC</a>) to centralize information access to rice research data and provide computational tools to facilitate rice improvement via discovery of new gene-trait associations and accelerated breeding. 
 
-
  </td>
- <td width="30%"></td>
+ <td width="15%"></td>
  </tr>
  </table>
 
 
-<h3>Updates log</h3>
- 
 </div>
 
+<div style="font-family:sans-serif;color:darkgreen" align="center">
+<h3>Publications</h3>
+</div>
+
+
+<table>
+<tr>
+<td width="15%"></td><td>   
+
+Mansueto, et al. <b>SNP-Seek II: A resource for allele mining and analysis of big genomic data in Oryza sativa</b>.<i>Current Plant Biology</i>(2016). 7-8:16-25<BR>
+doi: <a target="_pub" href="http://doi.org/10.1016/j.cpb.2016.12.003">10.1016/j.cpb.2016.12.003</a><BR>
+<BR>
+
+
+Mansueto, et al. <b>Rice SNP-seek database update: new SNPs, indels, and queries</b>.<i>Nucl. Acids Res.</i> (2017) 45 (D1): D1075-D1081.<BR>
+doi: <a target="_pub" href="http://nar.oxfordjournals.org/content/early/2016/11/29/nar.gkw1135.abstract">10.1093/nar/gkw1135</a><BR>
+<BR>
+
+Alexandrov, et al. <b>SNP-Seek database of SNPs derived from 3000 rice genomes</b>.<i>Nucl. Acids Res.</i>(2015). 43(D1):D1023-D1027<BR>
+doi: <a target="_pub" href="http://doi.org/10.1093/nar/gku1039">10.1093/nar/gku1039</a><BR>
+<BR>
+
+</td><td width="15%"></td></tr>
+</table>
+
+
+<div style="font-family:sans-serif;color:darkgreen" align="center">
+<h3>Updates log</h3>
+</div>
 
 <table>
 <tr>
@@ -125,6 +151,57 @@ We are a part of an ongoing effort by the International Rice Informatics Consort
  <li>Variety phenotypes are mapped and can be queried by Rice Crop Ontology (C0_320) and Plant trait Ontology (TO)</li>
  <li>Locus query for SNP lists returns genes for 3 Nipponbare gene models, QTARO and Gramene QTLs</li>
 </ul> 
+
+
+<h4>02/04/2016</h4>
+<ul style="list-style-type:disc">
+ <li>Search genes using gene names/symbols/accessions</li>
+ <li>Added TO/PO ontology (from Oryzabase) and QTARO trait genes annotation to SNP lists</li>
+ <li>Gene information page and external links</li>
+</ul> 
+
+<h4>03/23/2016</h4>
+<ul style="list-style-type:disc">
+ <li>Increase QNP query length to 5mb region, or lists with 1000 gene loci, or 500k SNP positions (not displayed but for download only)</li>
+ <li>Query and match the 3k varieties using genotypes (SNP list with allele column)</li>
+ <li>Matching option for missing alleles</li>
+ <li>Long downloads are run in the background</li>
+ </ul> 
+
+<h4>05/16/2016</h4>
+<ul style="list-style-type:disc">
+ <li>Option to query SNP set to either (All 32M SNPs in previous version, Base 18M, Filtered 4.8M or Core 404k)</li>
+ <li>Subpopulations renamed: trop1->trop, trop2->subtrop</li>
+ <li>Result for SNP Effect program on MSU7 gene loci</li>
+ <li>More SNP annotations in Locus query by SNP List (promoters, RiceNet and PRIN gene interactions)</li>
+ </ul> 
+
+<h4>09/19/2016</h4>
+<ul style="list-style-type:disc">
+ <li>URL changed to http://snp-seek.irri.org</li>
+ <li>HDRA varieties added with phenotype data from GRIMS</li>
+ <li>Option to use either 3kRGP, HDRA or both datasets</li>
+ <li>Web services documentation made public</li>
+ <li>Alternate sequence download using GATK tool</li>
+</ul>
+
+<h4>12/12/2016</h4>
+<ul style="list-style-type:disc">
+ <li>Query gene loci by SNP list annotates the markers and genes from various sources</li>
+ <li>Genotype similary search with any of the varieties</li>
+ <li>Search and highlight variety or variety list in MDS plot</li>
+ <li>Make MDS points proportional to phenotype value</li>
+ <li>Submit locus list/gene set to enrichment/network analysis sites</li>
+ </ul>
+
+<h4>3/6/2017</h4>
+<ul style="list-style-type:disc">
+ <li>RDBMS migrated to PostgreSQL in AWS-RDS</li>
+ <li>Trait genes browser (all chromosomes viewer/ideogram)</li>
+ <li>Four (MH63,ZS97,N22,IR8) new reference genomes/cdna/cds/pep made available for BLAST search</li>
+ </ul>
+
+
   
 </td>
  <td width="10%"></td>

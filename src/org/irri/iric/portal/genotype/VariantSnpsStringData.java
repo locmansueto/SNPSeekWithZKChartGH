@@ -3,49 +3,55 @@ package org.irri.iric.portal.genotype;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.chado.oracle.domain.VSnpRefposindex;
+//import org.irri.iric.portal.chado.oracle.domain.VSnpRefposindex;
+import org.irri.iric.portal.domain.MultiReferencePositionImplAllelePvalue;
 import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
 import org.irri.iric.portal.domain.SnpsStringAllvarsImpl;
 import org.irri.iric.portal.genotype.service.SnpsStringHDF5nRDBMSHybridService;
 import org.irri.iric.portal.genotype.service.SnpsStringAllvarsImplSorter;
+import org.irri.iric.portal.genotype.service.SnpsStringMultiHDF5nRDBMSHybridService;
 
 public class VariantSnpsStringData extends VariantStringData {
 
 	private VariantSnpsStringData nonsynVariantSnpsStringData;
 	
 
-	
+	private Set dataset;
 	private String  strRef;
 	private Map<BigDecimal, Map<Position,Character>> mapVarid2SnpsAllele2str;
 	//private Map<BigDecimal, Set<Character>> mapIdx2NonsynAlleles;
 	private Map<Position , Set<Character>> mapPos2NonsynAlleles;
-	private Set<Position> setSnpInExonPos;
+	private Map<Position , Set<Character>> mapPos2SynAlleles;
+	//private Set<Position> setSnpInExonPos;
 	//private Map<Integer,Integer> mapMergedIdx2SnpIdx;
 	private Set<Position> setSnpSpliceDonorPos;
 	private Set<Position> setSnpSpliceAcceptorPos;
+	private GenotypeQueryParams param;
 	
 	
-	public VariantSnpsStringData(Map<BigDecimal, Double> mapVariety2Mismatch,
+	
+	public VariantSnpsStringData(  Map<BigDecimal, Double> mapVariety2Mismatch,
 			Map<BigDecimal, Integer> mapVariety2Order,
 			List<SnpsAllvarsPos> listPos, 
 			//Map<Integer, BigDecimal> mapIdx2Pos,
-			List<SnpsStringAllvars> listVariantsString) {
+			List<SnpsStringAllvars> listVariantsString,
+			Map<String,Double> mapReference2Mismatch, Set dataset) {
 		
-		this(mapVariety2Mismatch, mapVariety2Order, listPos,  listVariantsString, null, null, null, null, null,  null);
+		this( mapVariety2Mismatch, mapVariety2Order, listPos,  listVariantsString, null, null, null, null, null,  null, mapReference2Mismatch, dataset);
 	}
 	
 	
-	public VariantSnpsStringData(Map<BigDecimal, Double> mapVariety2Mismatch,
+	public VariantSnpsStringData(  Map<BigDecimal, Double> mapVariety2Mismatch,
 			Map<BigDecimal, Integer> mapVariety2Order,
 			List<SnpsAllvarsPos> listPos, 
 			//Map<Integer, BigDecimal> mapIdx2Pos,
@@ -56,10 +62,12 @@ public class VariantSnpsStringData extends VariantStringData {
 			Map<BigDecimal, Map<Position, Character>> mapVarid2SnpsAllele2str,
 			
 			Map<Position, Set<Character>> mapPos2NonsynAlleles,
-			Set<Position> setSnpInExonPos,
+			Map<Position, Set<Character>> mapPos2SynAlleles,
+			//Set<Position> setSnpInExonPos,
 			//Map<Integer, Integer> mapMergedIdx2SnpIdx, Map<BigDecimal,Set<String>> mapPos2Alleleset, 
 			Set<Position> setSnpSpliceDonorPos,
-			Set<Position> setSnpSpliceAcceptorPos) {
+			Set<Position> setSnpSpliceAcceptorPos,
+			Map<String,Double> mapReference2Mismatch, Set dataset) {
 		super();
 
 		this.mapVariety2Mismatch = mapVariety2Mismatch;
@@ -71,12 +79,18 @@ public class VariantSnpsStringData extends VariantStringData {
 		this.strRef = strRef;
 		this.mapVarid2SnpsAllele2str = mapVarid2SnpsAllele2str;
 		this.mapPos2NonsynAlleles = mapPos2NonsynAlleles;
-		this.setSnpInExonPos = setSnpInExonPos;
+		this.mapPos2SynAlleles = mapPos2SynAlleles;
+		
+		//this.setSnpInExonPos = setSnpInExonPos;
 		//this.mapMergedIdx2SnpIdx = mapMergedIdx2SnpIdx;
 		//this.mapPos2Alleleset = mapPos2Alleleset;
 		
 		this.setSnpSpliceAcceptorPos = setSnpSpliceAcceptorPos;
 		this.setSnpSpliceDonorPos = setSnpSpliceDonorPos;
+		this.mapReference2Mismatch=mapReference2Mismatch;
+		this.dataset=dataset;
+		//param=params;
+		
 	}
 
 
@@ -95,15 +109,30 @@ public class VariantSnpsStringData extends VariantStringData {
 	
 	
 
+	@Override
+	public void clearVarietyData() {
+		// TODO Auto-generated method stub
+		super.clearVarietyData();
+		mapVarid2SnpsAllele2str=null;
+		if(nonsynVariantSnpsStringData!=null) nonsynVariantSnpsStringData.clearVarietyData();
+	}
+
+
 	public Map<Position, Set<Character>> getMapPos2NonsynAlleles() {
 		return mapPos2NonsynAlleles;
 	}
 
+	/*
+	public Map<Position, Set<Character>> getMapPos2SynAlleles() {
+		return mapPos2SynAlleles;
+	}
+	*/
 
+/*
 	public Set<Position> getSetSnpInExonPos() {
 		return setSnpInExonPos;
 	}
-
+*/
 
 	public Set<Position> getSetSnpSpliceDonorPos() {
 		return setSnpSpliceDonorPos;
@@ -130,7 +159,7 @@ public class VariantSnpsStringData extends VariantStringData {
 	}
 */
 	public VariantSnpsStringData getNonsynPlusSpliceSnps() {
-		return getNonsynSpliceSnps(true, false); 
+		return getNonsynSpliceSnps(true, false, dataset); 
 	}
 	
 	/**
@@ -138,14 +167,17 @@ public class VariantSnpsStringData extends VariantStringData {
 	 * @return
 	 */
 	public VariantSnpsStringData getNonsynSnps() {
-		return  getNonsynSpliceSnps(false, true); 
+		return  getNonsynSpliceSnps(false, true,  dataset); 
 	}
 	
 	
-	private VariantSnpsStringData getNonsynSpliceSnps(boolean includeSpliceSites, boolean includeNoncoding) {
+	private VariantSnpsStringData getNonsynSpliceSnps(boolean includeSpliceSites, boolean includeNoncoding, Set dataset) {
 		//if(nonsynVariantSnpsStringData==null) {
+		
+		AppContext.debug("in private VariantSnpsStringData getNonsynSpliceSnps(boolean includeSpliceSites, boolean includeNoncoding)");
+		
 		if(true) {
-			if(this.listPos.size()==0) return null;
+			if(this.listPos.size()==0) new VariantStringData(); //return null;
 			
 			List snpsposlist=this.listPos;
 
@@ -155,7 +187,7 @@ public class VariantSnpsStringData extends VariantStringData {
 
 			Set setInExonAndNonsyn = new TreeSet( this.mapPos2NonsynAlleles.keySet());
 			//setInExonAndNonsyn.retainAll(setSnpInExonTableIdx);
-			AppContext.debug("setInExonAndNonsyn:"+ setInExonAndNonsyn.size() + ":" + setInExonAndNonsyn);
+			//AppContext.debug("setInExonAndNonsyn:"+ setInExonAndNonsyn.size() + ":" + setInExonAndNonsyn);
 			
 			int includeidx=0;
 			//Map<BigDecimal, Map<Integer,Character>> mapVar2Idx2Allele2=new HashMap(); 
@@ -192,7 +224,10 @@ public class VariantSnpsStringData extends VariantStringData {
 			String nonsynRef= buffRef.toString();
 			
 			//List listNonsynVariantsString=new ArrayList();
-			Set sortedVarieties = new TreeSet(new SnpsStringAllvarsImplSorter());
+			Set sortedVarieties = new TreeSet(new SnpsStringAllvarsImplSorter(dataset));
+			
+			
+			 
 			
 			Iterator<SnpsStringAllvars> itAllvars =  listVariantsString.iterator();
 			while(itAllvars.hasNext()) {
@@ -216,14 +251,22 @@ public class VariantSnpsStringData extends VariantStringData {
 				
 				
 				
+				double mismatchCount[] = null;
+				
+				/*
 				double misCount = SnpsStringHDF5nRDBMSHybridService.countVarpairMismatch(listNonsynPos, nonsynRef, varNuc,  true,   null,  varstr.getMapPos2Allele2() ,  
 						//(Map)snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx(), varNonsynIdx,  params.isbExcludeSynonymous() );
 						this.getMapPos2NonsynAlleles() ,  this.getSetSnpInExonPos() , varstr.getNonsynPosset(),   true ); //  .isbExcludeSynonymous() );
+						*/
+				
+				mismatchCount = SnpsStringMultiHDF5nRDBMSHybridService.countVarpairMismatch(listNonsynPos, nonsynRef, varNuc,  true,   null,  varstr.getMapPos2Allele2() ,  
+						//(Map)snpstrdata.getMapIdx2NonsynAlleles(),  snpstrdata.getSetSnpInExonTableIdx(), varNonsynIdx,  params.isbExcludeSynonymous() );
+						this.getMapPos2NonsynAlleles() , varstr.getNonsynPosset(),   true , false); //  .isbExcludeSynonymous() );
 				
 				
 				sortedVarieties.add(  new  SnpsStringAllvarsImpl(varstr.getVar(), varstr.getContig(),   varNuc,
 						//BigDecimal.valueOf(misCount),    varstr.getMapPos2Allele2(),  varstr.getNonsynPosset(), varstr.getDonorPosset(),  varstr.getAcceptorPosset() ));
-						BigDecimal.valueOf(misCount),   mapPos2Allele2,  varstr.getNonsynPosset(), varstr.getDonorPosset(),  varstr.getAcceptorPosset() ));
+						BigDecimal.valueOf(mismatchCount[0]),   mapPos2Allele2,  varstr.getNonsynPosset(), varstr.getSynPosset(),  varstr.getDonorPosset(),  varstr.getAcceptorPosset() ));
 				
 				
 			}
@@ -231,8 +274,8 @@ public class VariantSnpsStringData extends VariantStringData {
 			
 			List<SnpsStringAllvars> listResult = new ArrayList();
 			// sort included varieties
-			Map mapVariety2Order = new HashMap();
-			Map mapVariety2Mismatch = new HashMap();
+			Map mapVariety2Order = new LinkedHashMap();
+			Map mapVariety2Mismatch = new LinkedHashMap();
 			int ordercount = 0;
 			Iterator itSorVars =  sortedVarieties.iterator();
 			while(itSorVars.hasNext()) {
@@ -242,55 +285,7 @@ public class VariantSnpsStringData extends VariantStringData {
 				mapVariety2Mismatch.put( snpstrvar.getVar(), snpstrvar.getMismatch().intValue());
 				ordercount++;
 			}
-			
-			
-			
-			
-//			Map<BigDecimal, Map<Integer,Character>> mapVarid2SnpsAllele2strNonysn=new HashMap();
-//			Map<Integer, Set<Character>> mapIdx2NonsynAllelesNonysn=new HashMap();
-//			Set<Integer> setSnpInExonTableIdxNonysn=new HashSet();
-//			Map<Integer,Integer> mapMergedIdx2SnpIdxNonysn= new HashMap();
-//
-//			Iterator<Integer> itOldIdx = mapOld2NewIdx.keySet().iterator();
-//			while(itOldIdx.hasNext()) {
-//				Integer oldidx=itOldIdx.next();
-//				Integer newidx=mapOld2NewIdx.get(oldidx);
-//				if(newidx==null) continue;
-//				
-//				Set setAlleles = mapIdx2NonsynAlleles.get( oldidx);
-//				if(setAlleles!=null) mapIdx2NonsynAllelesNonysn.put( newidx , setAlleles);
-//				
-//				if(setSnpInExonTableIdx.contains( oldidx )) setSnpInExonTableIdxNonysn.add( newidx );
-//				
-//				
-//				Iterator<BigDecimal> itVars = mapVarid2SnpsAllele2str.keySet().iterator();
-//				while(itVars.hasNext()) {
-//					BigDecimal varid = itVars.next();
-//					Map<Integer,Character>  mapIdx2Allele2 = mapVarid2SnpsAllele2str.get(varid);
-//					Character allele2 = mapIdx2Allele2.get( oldidx );
-//					if(allele2!=null) {
-//						Map<Integer,Character>  mapIdx2Allele2Nonsyn =   mapVarid2SnpsAllele2strNonysn.get(varid);
-//						if(mapIdx2Allele2Nonsyn==null) {
-//							mapIdx2Allele2Nonsyn=new HashMap();
-//							mapVarid2SnpsAllele2strNonysn.put(varid, mapIdx2Allele2Nonsyn);
-//						}
-//						mapIdx2Allele2Nonsyn.put( newidx , allele2);
-//					} 
-//				}
-//				
-//			}
-//			
-//			nonsynVariantSnpsStringData = new VariantSnpsStringData(mapVariety2Mismatch,
-//						mapVariety2Order,
-//						listNonsynPos, mapIdx2PosNonsyn,
-//						listVariantsString,
-//						buffRef.toString(),
-//						mapVarid2SnpsAllele2strNonysn,
-//						mapIdx2NonsynAllelesNonysn,
-//						setSnpInExonTableIdxNonysn,
-//						mapMergedIdx2SnpIdxNonysn , mapPos2Alleleset,
-//						setSnpSpliceDonorPos, setSnpSpliceAcceptorPos);
-			
+	
 			nonsynVariantSnpsStringData = new VariantSnpsStringData(mapVariety2Mismatch,
 					mapVariety2Order,
 					listNonsynPos, 
@@ -298,9 +293,10 @@ public class VariantSnpsStringData extends VariantStringData {
 					buffRef.toString(),
 					mapVarid2SnpsAllele2str,
 					mapPos2NonsynAlleles,
-					setSnpInExonPos,
+					mapPos2SynAlleles,
+					//setSnpInExonPos,
 					setSnpSpliceDonorPos,
-					setSnpSpliceAcceptorPos);
+					setSnpSpliceAcceptorPos,mapReference2Mismatch,dataset);
 			
 		}
 		
@@ -313,8 +309,15 @@ public class VariantSnpsStringData extends VariantStringData {
 	 * @return
 	 */
 	public VariantSnpsStringData getNonsynSnpsPlusNoncoding() {
-		return getNonsynSpliceSnps(true, true); 
+		return getNonsynSpliceSnps(true, true,dataset); 
 	}
+
+
+	public Map<String, Double> getMapReference2Mismatch() {
+		return mapReference2Mismatch;
+	}
+	
+	
 	
 	
 }

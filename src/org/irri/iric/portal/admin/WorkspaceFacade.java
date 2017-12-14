@@ -1,6 +1,10 @@
 package org.irri.iric.portal.admin;
 
 
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -13,14 +17,23 @@ import java.util.Set;
 public interface WorkspaceFacade {
 	
 	
-	public Set getLocusListNames();
+	//public Set getLocusListNames();
 
 	/**
 	 * Variety list functions
 	 */
 	public Set getVarietylistNames() ;
+	public Set getVarietyQuantPhenotypelistNames(String dataset) ;
+	public Set getVarietyCatPhenotypelistNames(String dataset) ;
 	public Set getVarieties(String listname);
-	public boolean addVarietyList(String name, Set setVarieties);
+	
+	//boolean addVarietyList(String name, Set varietylist, boolean hasPhenotype);
+	// detects if has Phenotype value, if instaceof VarietyPlus or VarietyPlusPlus
+	//public boolean addVarietyList(String name, Set setVarieties, String dataset , int hasPhenotype, List phenname, Map<BigDecimal,Object[]> mapVarid2Phen);
+	//public boolean addVarietyList(String name, Set varietylist,  String dataset );
+	public boolean addVarietyList(String name, Set setVarieties, Set dataset , int hasPhenotype, List phenname, Map<BigDecimal,Object[]> mapVarid2Phen);
+	//public boolean addVarietyList(String name, Set varietylist,  Set dataset );
+
 	public void deleteVarietyList(String listname);
 	
 
@@ -42,8 +55,8 @@ public interface WorkspaceFacade {
 	 * Locus list functions
 	 * @return
 	 */
-	Set getLocuslistNames();
-	Set getLoci(String listname);
+	public Set getLocuslistNames();
+	public Set getLoci(String listname);
 	boolean addLocusList(String name, Set varietylist);
 	void deleteLocusList(String listname);
 
@@ -53,22 +66,26 @@ public interface WorkspaceFacade {
 	 * List in string format
 	 * @return
 	 */
-	String getMyLists();
+	public String getMyLists();
 
 	
 	/**
 	 * Download/Upload list
 	 */
 	public void downloadLists();
-	void uploadLists(String mylist) throws Exception;
+	boolean uploadLists(String mylist) throws Exception;
 	String getMyListsCookie();
 	void setMyListsCookie(String mylist);
 	
 	// temp
 	public void queryIric();
+	public Collection getVarietyQuantPhenotypelistNames();
+	public Collection getVarietyCatPhenotypelistNames();
+	public Map getVarietylistPhenotypeValues(String phenotype, String dataset);
+	public boolean addVarietyList(String trim, Set setVarieties, Set dataset);
+	
+	
 
-	
-	
 	
 	
 	

@@ -20,20 +20,40 @@ import org.irri.iric.portal.domain.SnpsSpliceAcceptor;
 		@NamedQuery(name = "findAllVSnpSpliceacceptors", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor"),
 		@NamedQuery(name = "findVSnpSpliceacceptorByChr", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr = ?1"),
 		@NamedQuery(name = "findVSnpSpliceacceptorByChrContaining", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr like ?1"),
-		@NamedQuery(name = "findVSnpSpliceacceptorByOrganismId", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.organismId = ?1"),
+//		@NamedQuery(name = "findVSnpSpliceacceptorByOrganismId", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.organismId = ?1"),
 		@NamedQuery(name = "findVSnpSpliceacceptorByPosition", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.position = ?1"),
 
-		@NamedQuery(name = "findVSnpSpliceacceptorByChrPositionBetween", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position between ?2 and ?3"),
-		@NamedQuery(name = "findVSnpSpliceacceptorByChrPositionIn", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position in (?2)"),
+		//@NamedQuery(name = "findVSnpSpliceacceptorByChrPositionBetween", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position between ?2 and ?3"),
+		//@NamedQuery(name = "findVSnpSpliceacceptorByChrPositionIn", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position in (?2)"),
+
+		@NamedQuery(name = "findVSnpSpliceacceptorByChrPositionBetween", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position-1 between ?2 and ?3"),
+		@NamedQuery(name = "findVSnpSpliceacceptorByChrPositionIn", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position-1 in (?2)"),
+		@NamedQuery(name = "findVSnpSpliceacceptorByChrPositionBetweenSnpset", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position-1 between ?2 and ?3 and myVSnpSpliceacceptor.variantset in (?4)"),
+		@NamedQuery(name = "findVSnpSpliceacceptorByChrPositionInSnpset", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position-1 in (?2) and myVSnpSpliceacceptor.variantset in (?3)"),
+
+		@NamedQuery(name = "findVSnpSpliceacceptorBySnpFeatureIdIn", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.snpFeatureId in (?1) order by  myVSnpSpliceacceptor.chr , myVSnpSpliceacceptor.position"),
 
 		
 		@NamedQuery(name = "findVSnpSpliceacceptorByPrimaryKey", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.snpFeatureId = ?1"),
-		@NamedQuery(name = "findVSnpSpliceacceptorBySnpFeatureId", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.snpFeatureId = ?1"),
-		@NamedQuery(name = "findVSnpSpliceacceptorBySrcfeatureId", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.srcfeatureId = ?1") })
-@Table(schema = "IRIC", name = "V_SNP_SPLICEACCEPTOR_V2")
+		@NamedQuery(name = "findVSnpSpliceacceptorBySnpFeatureId", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.snpFeatureId = ?1")
+//		@NamedQuery(name = "findVSnpSpliceacceptorBySrcfeatureId", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.srcfeatureId = ?1") 
+		})
+@Table( name = "V_SNP_SPLICEACCEPTOR_V2")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VSnpSpliceacceptor")
 public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Comparable {
+	@Override
+	public String getContig() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getRefnuc() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -47,50 +67,57 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 	/**
 	 */
 
-	@Column(name = "SRCFEATURE_ID")
-	@Basic(fetch = FetchType.EAGER)
-	@XmlElement
-	BigDecimal srcfeatureId;
-	/**
-	 */
+//	@Column(name = "SRCFEATURE_ID")
+//	@Basic(fetch = FetchType.EAGER)
+//	@XmlElement
+//	BigDecimal srcfeatureId;
+//	/**
+//	 */
 
 	@Column(name = "POSITION")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
-	BigDecimal position;
+	BigDecimal  position;
 	/**
 	 */
 
-	@Column(name = "CHR", length = 20)
+	@Column(name = "CHROMOSOME", length = 20)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
-	String chr;
+	Long chr;
 	/**
 	 */
+//
+//	@Column(name = "ORGANISM_ID", precision = 10)
+//	@Basic(fetch = FetchType.EAGER)
+//	@XmlElement
+//	BigDecimal organismId;
 
-	@Column(name = "ORGANISM_ID", precision = 10)
+	
+	@Column(name = "VARIANTSET", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
-	BigDecimal organismId;
+	String variantset;
 
+	
 	/**
 	 */
 	public void setSnpFeatureId(BigDecimal snpFeatureId) {
 		this.snpFeatureId = snpFeatureId;
 	}
 
-	
-	/**
-	 */
-	public void setSrcfeatureId(BigDecimal srcfeatureId) {
-		this.srcfeatureId = srcfeatureId;
-	}
-
-	/**
-	 */
-	public BigDecimal getSrcfeatureId() {
-		return this.srcfeatureId;
-	}
+//	
+//	/**
+//	 */
+//	public void setSrcfeatureId(BigDecimal srcfeatureId) {
+//		this.srcfeatureId = srcfeatureId;
+//	}
+//
+//	/**
+//	 */
+//	public BigDecimal getSrcfeatureId() {
+//		return this.srcfeatureId;
+//	}
 
 	/**
 	 */
@@ -106,27 +133,30 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 
 	/**
 	 */
-	public void setChr(String chr) {
+	public void setChr(Long chr) {
 		this.chr = chr;
 	}
 
 	/**
 	 */
-	public String getChr() {
+	public Long getChr() {
 		return this.chr;
 	}
 
-	/**
-	 */
-	public void setOrganismId(BigDecimal organismId) {
-		this.organismId = organismId;
-	}
-
-	/**
-	 */
-	public BigDecimal getOrganismId() {
-		return this.organismId;
-	}
+	
+	
+	
+//	/**
+//	 */
+//	public void setOrganismId(BigDecimal organismId) {
+//		this.organismId = organismId;
+//	}
+//
+//	/**
+//	 */
+//	public BigDecimal getOrganismId() {
+//		return this.organismId;
+//	}
 
 	/**
 	 */
@@ -139,10 +169,10 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 	 */
 	public void copy(VSnpSpliceacceptor that) {
 		setSnpFeatureId(that.getSnpFeatureId());
-		setSrcfeatureId(that.getSrcfeatureId());
+	//	setSrcfeatureId(that.getSrcfeatureId());
 		setPosition(that.getPosition());
 		setChr(that.getChr());
-		setOrganismId(that.getOrganismId());
+	//	setOrganismId(that.getOrganismId());
 	}
 
 	/**
@@ -154,10 +184,10 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("snpFeatureId=[").append(snpFeatureId).append("] ");
-		buffer.append("srcfeatureId=[").append(srcfeatureId).append("] ");
+	//	buffer.append("srcfeatureId=[").append(srcfeatureId).append("] ");
 		buffer.append("position=[").append(position).append("] ");
 		buffer.append("chr=[").append(chr).append("] ");
-		buffer.append("organismId=[").append(organismId).append("] ");
+	//	buffer.append("organismId=[").append(organismId).append("] ");
 
 		return buffer.toString();
 	}
@@ -193,11 +223,7 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 		return snpFeatureId;
 	}
 
-	@Override
-	public BigDecimal getPos() {
-		// TODO Auto-generated method stub
-		return this.position;
-	}
+
 
 	@Override
 	public int compareTo(Object o) {

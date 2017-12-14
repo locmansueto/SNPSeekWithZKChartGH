@@ -19,18 +19,19 @@ import org.irri.iric.portal.domain.CvTermUniqueValues;
 @NamedQueries({
 		@NamedQuery(name = "findAllVIricstockPassportValuess", query = "select myVIricstockPassportValues from VIricstockPassportValues myVIricstockPassportValues"),
 		@NamedQuery(name = "findVIricstockPassportValuesByPrimaryKey", query = "select myVIricstockPassportValues from VIricstockPassportValues myVIricstockPassportValues where myVIricstockPassportValues.value = ?1 and myVIricstockPassportValues.typeId = ?2"),
-		@NamedQuery(name = "findVIricstockPassportValuesByTypeId", query = "select myVIricstockPassportValues from VIricstockPassportValues myVIricstockPassportValues where myVIricstockPassportValues.typeId = ?1"),
+		@NamedQuery(name = "findVIricstockPassportValuesByTypeId", query = "select myVIricstockPassportValues from VIricstockPassportValues myVIricstockPassportValues where myVIricstockPassportValues.typeId = ?1 and myVIricstockPassportValues.dataset in (?2)"),
 
 		
-		@NamedQuery(name = "findVIricstockPassportValuesByValue", query = "select myVIricstockPassportValues from VIricstockPassportValues myVIricstockPassportValues where myVIricstockPassportValues.value = ?1"),
-		@NamedQuery(name = "findVIricstockPassportValuesByValueContaining", query = "select myVIricstockPassportValues from VIricstockPassportValues myVIricstockPassportValues where myVIricstockPassportValues.value like ?1") })
+		@NamedQuery(name = "findVIricstockPassportValuesByValue", query = "select myVIricstockPassportValues from VIricstockPassportValues myVIricstockPassportValues where myVIricstockPassportValues.value = ?1 and myVIricstockPassportValues.dataset in (?2)"),
+		@NamedQuery(name = "findVIricstockPassportValuesByValueContaining", query = "select myVIricstockPassportValues from VIricstockPassportValues myVIricstockPassportValues where myVIricstockPassportValues.value like ?1 and myVIricstockPassportValues.dataset in ( ?2)") })
 
 
 
 
 
 
-@Table(schema = "IRIC", name = "V_IRICSTOCK_PASSPORT_VALUES")
+//@Table( name = "V_IRICSTOCK_PASSPORT_VALUES")
+@Table( name = "V_STOCK_PASSPORT_VALUES")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockPassportValues")
 public class VIricstockPassportValues implements Serializable, CvTermUniqueValues {
@@ -52,6 +53,15 @@ public class VIricstockPassportValues implements Serializable, CvTermUniqueValue
 	@Id
 	@XmlElement
 	BigDecimal typeId;
+	
+	
+	@Column(name = "DATASET", nullable = false)
+	@Basic(fetch = FetchType.EAGER)
+	@Id
+	@XmlElement
+	String dataset;
+	
+	
 
 	/**
 	 */
@@ -76,6 +86,17 @@ public class VIricstockPassportValues implements Serializable, CvTermUniqueValue
 	public BigDecimal getTypeId() {
 		return this.typeId;
 	}
+	
+	
+	
+
+	public String getDataset() {
+		return dataset;
+	}
+
+	public void setDataset(String dataset) {
+		this.dataset = dataset;
+	}
 
 	/**
 	 */
@@ -89,6 +110,7 @@ public class VIricstockPassportValues implements Serializable, CvTermUniqueValue
 	public void copy(VIricstockPassportValues that) {
 		setValue(that.getValue());
 		setTypeId(that.getTypeId());
+		setDataset(that.getDataset());
 	}
 
 	/**
@@ -101,6 +123,7 @@ public class VIricstockPassportValues implements Serializable, CvTermUniqueValue
 
 		buffer.append("value=[").append(value).append("] ");
 		buffer.append("typeId=[").append(typeId).append("] ");
+		buffer.append("dataset=[").append(dataset).append("] ");
 
 		return buffer.toString();
 	}
@@ -113,6 +136,7 @@ public class VIricstockPassportValues implements Serializable, CvTermUniqueValue
 		int result = 1;
 		result = (int) (prime * result + ((value == null) ? 0 : value.hashCode()));
 		result = (int) (prime * result + ((typeId == null) ? 0 : typeId.hashCode()));
+		result = (int) (prime * result + ((dataset == null) ? 0 : dataset.hashCode()));
 		return result;
 	}
 
@@ -131,6 +155,10 @@ public class VIricstockPassportValues implements Serializable, CvTermUniqueValue
 		if ((typeId == null && equalCheck.typeId != null) || (typeId != null && equalCheck.typeId == null))
 			return false;
 		if (typeId != null && !typeId.equals(equalCheck.typeId))
+			return false;
+		if ((dataset == null && equalCheck.dataset != null) || (dataset != null && equalCheck.dataset == null))
+			return false;
+		if (dataset != null && !dataset.equals(equalCheck.dataset))
 			return false;
 		return true;
 	}

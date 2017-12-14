@@ -1,0 +1,176 @@
+﻿<html>
+	
+<head>
+	<title>Use cases</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Personal Edition 4.5.0.497">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #00FF00;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "RiceSNP-SeekDatabase.html?" + sTopicUrl;
+			}
+			else if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+			{
+				top.FrameTOC.SelectTocItem("Usecases");
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">Use cases</h1>
+				
+				</div>
+			<div id="topic_header_nav">
+				<a href="Help.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="Getvariationsinaregion.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<p class="rvps2"><span class="rvts21"><br/></span></p>
+<p class="rvps2"><span class="rvts21"><br/></span></p>
+<p class="rvps2"><a name="usecasea"></a>
+<span class="rvts21">A. Given a region of interest (gene), get similar varieties</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts25">Region of interest: LOC_Os04g57530</span></p>
+<p class="rvps2"><span class="rvts25"><br/></span></p>
+<ol style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: decimal;">
+<li class="rvps35" style="text-indent: 0px"><span class="rvts26">Go to Genotype search page</span></li>
+<p class="rvps5"><img width="771" height="262" alt="" style="padding : 1px;" src="lib/NewItem70.png"/></p>
+<p class="rvps5"><span class="rvts21"><br/></span></p>
+
+<li class="rvps35" style="text-indent: 0px"><span class="rvts26">Supply the known information. Choose all varieties in the </span><span class="rvts27">multiple: Subpopulation</span><span class="rvts26"> drop down menu in the </span><span class="rvts27">Compare Varieties</span><span class="rvts26"> section. Supply the gene locus id in the </span><span class="rvts27">Gene locus</span><span class="rvts26"> query box in the </span><span class="rvts27">Region</span><span class="rvts26"> section.</span></li>
+
+<p class="rvps35"><span class="rvts26"><br/></span></p>
+<p class="rvps37"><img width="769" height="285" alt="" style="padding : 1px;" src="lib/NewItem69.png"/></p>
+<p class="rvps36"><span class="rvts26"><br/></span></p>
+<p class="rvps36"><span class="rvts26"><br/></span></p>
+<p class="rvps36"><span class="rvts26"><br/></span></p>
+
+<li class="rvps35" style="text-indent: 0px"><span class="rvts26">The table matrix showing the accession with variation in the region will be returned. There are 78 varieties that shown variation in this region. The table matrix is downloaded in CSV to further examine the region.</span></li>
+
+<p class="rvps35"><span class="rvts26"><br/></span></p>
+<p class="rvps5"><img width="584" height="358" alt="" style="padding : 1px;" src="lib/NewItem68.png"/></p>
+<p class="rvps5"><span class="rvts6"><br/></span></p>
+<li class="rvps35" style="text-indent: 0px"><span class="rvts26">Results can be downloaded as CSV format by clicking the </span><span class="rvts27">CSV</span><span class="rvts26"> box in the </span><span class="rvts27">Download</span><span class="rvts26"> section.</span></li>
+</ol>
+<p class="rvps2"><span class="rvts21"><br/></span></p>
+<p class="rvps2"><span class="rvts21"><br/></span></p>
+<p class="rvps2"><a name="usecaseb"></a>
+<span class="rvts21">B. Finding varieties from the 3K panel that is similar to a particular variety.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6">Trait: &nbsp;100-grain weight.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<ol style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: decimal;">
+<li class="rvps35" style="text-indent: 0px"><span class="rvts26">Use </span><span class="rvts27">Genotype</span><span class="rvts26"> to search across all varieties. Supply the information for region of interest. Choose 100-grain weight in the </span><span class="rvts27">Show phenotype</span><span class="rvts26"> drop down menu. Untick </span><span class="rvts27">Mismatch only</span><span class="rvts26"> box.</span></li>
+<p class="rvps40"><span class="rvts26"></span><br/><img width="889" height="296" alt="" style="padding : 1px;" src="lib/NewItem75.png"/></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<li class="rvps35" style="text-indent: 0px"><span class="rvts26">The matrix table for 3024 accession will be returned with the 100-grain weight column.</span></li>
+<p class="rvps35"><span class="rvts26"><br/></span></p>
+<p class="rvps5"><img width="692" height="411" alt="" style="padding : 1px;" src="lib/NewItem74.png"/></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<li class="rvps35" style="text-indent: 0px"><span class="rvts26"> Sort the accessions by 100-grain weight phenotype data by clicking on </span><span class="rvts27">100-grain weight column</span><span class="rvts26">.</span></li>
+<p class="rvps35"><span class="rvts26"><br/></span></p>
+<p class="rvps5"><img width="735" height="434" alt="" style="padding : 1px;" src="lib/NewItem73.png"/></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<li class="rvps35" style="text-indent: 0px"><span class="rvts26">Use the accession with the heaviest value as reference for the rest of the 3k panel by choosing the Accession in the </span><span class="rvts27">variety</span><span class="rvts26"> drop down menu in the </span><span class="rvts27">Region</span><span class="rvts26"> section.</span></li>
+<p class="rvps38"><span class="rvts6"><br/></span></p>
+<p class="rvps38"><img width="688" height="434" alt="" style="padding : 1px;" src="lib/NewItem76.png"/></p>
+<p class="rvps38"><span class="rvts6"><br/></span></p>
+<p class="rvps38"><span class="rvts6"><br/></span></p>
+<li class="rvps35" style="text-indent: 0px"><span class="rvts26"> The matrix table for 3024 accession will be returned.</span></li>
+</ol>
+<p class="rvps35"><span class="rvts26"><br/></span></p>
+<p class="rvps38"><img width="727" height="435" alt="" style="padding : 1px;" src="lib/NewItem71.png"/></p>
+<p class="rvps38"><span class="rvts6"><br/></span></p>
+<p class="rvps39"><span class="rvts6"><br/></span></p>
+<h1 class="rvps41"><a name="usecasec"></a>
+<span class="rvts0"><span class="rvts21">C. SNP discovery from a region not found in the Nipponbare reference genome</span></span></h1>
+<h1 class="rvps41"><span class="rvts0"><span class="rvts21"><br/></span></span></h1>
+<p class="rvps2"><span class="rvts6">Region of interest: </span><span class="rvts28">Pstol1</span><span class="rvts6"> gene (chromosome 12, 15.46 mbps to 15.62 mbps) in the Kasalath genome.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps3"><img width="748" height="355" alt="" style="padding : 1px;" src="lib/NewItem78.png"/></p>
+<p class="rvps4"><span class="rvts6">After inputting these information and reference genome setting, the query will return a link that enables downloading of a CSV formatted file SNP x 3k RG accession matrix. Inspecting this downloaded SNP matrix, there were 1,125 SNP positions discovered within this region, while no SNPs (blanks) were seen using Nipponbare genome, as expected. Without the Kasalath reference information, variant discovery would be impossible using the Nipponbare reference genome. These SNP positions can now be further examined and surrounding sequences extracted for </span><span class="rvts28">Pstol1</span><span class="rvts6"> marker assay design.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps3"><img width="1014" height="300" alt="" style="padding : 1px;" src="lib/NewItem77.png"/></p>
+<p class="rvps3"><span class="rvts6"><br/></span></p>
+<p class="rvps3"><span class="rvts6"><br/></span></p>
+<h1 class="rvps41"><span class="rvts0"><span class="rvts6"><br/></span></span></h1>
+<h1 class="rvps41"><span class="rvts0"><span class="rvts6"><br/></span></span></h1>
+<h1 class="rvps41"><a name="usecased"></a>
+<span class="rvts0"><span class="rvts21">D. Given a region of interest (gene), download the fasta sequences of the region for all 3K genomes.</span></span></h1>
+<h1 class="rvps41"><span class="rvts0"><span class="rvts29"><br/></span></span></h1>
+<h1 class="rvps41"><span class="rvts0"><span class="rvts25">Region of interest: LOC_OS04G32850</span></span></h1>
+<h1 class="rvps41"><span class="rvts0"><span class="rvts6"><br/></span></span></h1>
+<h1 class="rvps41"><span class="rvts0"><span class="rvts6"><br/></span></span></h1>
+<h1 class="rvps45"><span class="rvts0"><span class="rvts6">1. Go to </span></span><span class="rvts0"><span class="rvts21">Download</span></span><span class="rvts0"><span class="rvts6"> page.</span></span></h1>
+<h1 class="rvps44"><img alt="" style="padding : 1px;" src="lib/NewItem88.png"/></h1>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps6"><span class="rvts6">2. Go to </span><span class="rvts21">Sequence</span><span class="rvts6"> tab.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps3"><img alt="" style="padding : 1px;" src="lib/NewItem90.png"/></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps6"><span class="rvts6">3. Supply the Reference genome, Locus ID in the Locus drop down menu. By choosing the locus ID from the dropdown menu, the other information will be provided (chromosome/contig, start bp, end bp). Then choose </span><span class="rvts30">all</span><span class="rvts6"> for Variety List dropdown menu, or the list of previously created Variety List. Then click the Download Sequence button to start downloading.</span></p>
+<p class="rvps3"><span class="rvts6"><br/></span></p>
+<p class="rvps3"><img width="669" height="346" alt="" style="padding : 1px;" src="lib/NewItem92.png"/></p>
+<p class="rvps3"><span class="rvts6"><br/></span></p>
+<p class="rvps46"><span class="rvts26">4. The download will run in the background. The site will provide a url where the download progress can be monitored.</span></p>
+<p class="rvps46"><span class="rvts26"><br/></span></p>
+<p class="rvps43"><img width="672" height="374" alt="" style="padding : 1px;" src="lib/NewItem96.png"/></p>
+<p class="rvps43"><span class="rvts26"><br/></span></p>
+<p class="rvps46"><span class="rvts26">5. The progress can be seen in another window. Refreshing the page will update the progress.</span></p>
+<p class="rvps42"><span class="rvts26"><br/></span></p>
+<p class="rvps43"><img width="765" height="252" alt="" style="padding : 1px;" src="lib/NewItem97.png"/></p>
+<p class="rvps43"><span class="rvts26"><br/></span></p>
+<p class="rvps47"><span class="rvts26">6. Once the job is 100%, the sequence s can now be downloaded to the local work station.</span></p>
+<p class="rvps36"><span class="rvts26"><br/></span></p>
+<p class="rvps35"><span class="rvts26"><br/></span></p>
+<p class="rvps35"><span class="rvts26"><br/></span></p>
+<p class="rvps35"><span class="rvts26"><br/></span></p>
+<p class="rvps36"><span class="rvts26"><br/></span></p>
+<p class="rvps3"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p></p>
+<p class="rvps9"><span class="rvts13">Created with the Personal Edition of HelpNDoc: </span><a class="rvts14" href="http://www.helpndoc.com/help-authoring-tool">Single source CHM, PDF, DOC and HTML Help creation</a></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2014 by International Rice Informatics Consortium. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+

@@ -25,7 +25,7 @@ import javax.persistence.*;
 		@NamedQuery(name = "findCvByName", query = "select myCv from Cv myCv where myCv.name = ?1"),
 		@NamedQuery(name = "findCvByNameContaining", query = "select myCv from Cv myCv where myCv.name like ?1"),
 		@NamedQuery(name = "findCvByPrimaryKey", query = "select myCv from Cv myCv where myCv.cvId = ?1") })
-@Table(schema = "IRIC", name = "CV")
+@Table( name = "CV")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "Cv")
 public class Cv implements Serializable, org.irri.iric.portal.domain.Cv {

@@ -29,7 +29,7 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 		@NamedQuery(name = "findVConvertposNb2allrefsByFromRefcallContaining", query = "select myVConvertposNb2allrefs from VConvertposNb2allrefs myVConvertposNb2allrefs where myVConvertposNb2allrefs.fromRefcall like ?1"),
 		@NamedQuery(name = "findVConvertposNb2allrefsByPrimaryKey", query = "select myVConvertposNb2allrefs from VConvertposNb2allrefs myVConvertposNb2allrefs where myVConvertposNb2allrefs.snpFeatureId = ?1"),
 		@NamedQuery(name = "findVConvertposNb2allrefsBySnpFeatureId", query = "select myVConvertposNb2allrefs from VConvertposNb2allrefs myVConvertposNb2allrefs where myVConvertposNb2allrefs.snpFeatureId = ?1") })
-@Table(schema = "IRIC", name = "V_CONVERTPOS_NB2ALLREFS")
+@Table( name = "V_CONVERTPOS_NB2ALLREFS")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VConvertposNb2allrefs")
 public class VConvertposNb2allrefs implements Serializable, SnpsAllvarsPos {
@@ -548,6 +548,18 @@ public class VConvertposNb2allrefs implements Serializable, SnpsAllvarsPos {
 
 	@Override
 	public BigDecimal getAlleleIndex() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setAltnuc(String altnuc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getAltnuc() {
 		// TODO Auto-generated method stub
 		return null;
 	}

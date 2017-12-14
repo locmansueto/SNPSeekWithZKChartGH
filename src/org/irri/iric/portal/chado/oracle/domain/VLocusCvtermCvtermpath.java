@@ -1,7 +1,6 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
@@ -10,6 +9,7 @@ import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.*;
 import javax.persistence.*;
 
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.CvTerm;
 import org.irri.iric.portal.domain.Locus;
 
@@ -23,8 +23,10 @@ import org.irri.iric.portal.domain.Locus;
 		
 //		@NamedQuery(name = "findVLocusCvtermCvtermpathByCvCommonName", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.cvName = ?1 and myVLocusCvtermCvtermpath.commonName = ?2"),
 		@NamedQuery(name = "findVLocusCvtermCvtermpathByCvOrganism", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.cvId = ?1 and myVLocusCvtermCvtermpath.organismId = ?2"),
+		@NamedQuery(name = "findVLocusCvtermCvtermpathByCvOrganismInFeatureId", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.cvId = ?1 and myVLocusCvtermCvtermpath.organismId = ?2 and myVLocusCvtermCvtermpath.featureId in (?3)"),
 //		@NamedQuery(name = "findVLocusCvtermCvtermpathByObjCvtermOrg", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.objCvterm = ?1 and myVLocusCvtermCvtermpath.commonName=?2 order by myVLocusCvtermCvtermpath.contigName, myVLocusCvtermCvtermpath.fmin, myVLocusCvtermCvtermpath.pathdistance"),
 		@NamedQuery(name = "findVLocusCvtermCvtermpathByObjCvtermCvOrg", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.objCvterm = ?1 and myVLocusCvtermCvtermpath.cvId=?2 and myVLocusCvtermCvtermpath.organismId=?3 order by myVLocusCvtermCvtermpath.contigName, myVLocusCvtermCvtermpath.fmin, myVLocusCvtermCvtermpath.pathdistance"),
+		@NamedQuery(name = "findVLocusCvtermCvtermpathByCvOrgInFeatureId", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.cvId=?1 and myVLocusCvtermCvtermpath.organismId=?2 and myVLocusCvtermCvtermpath.featureId in (?3) order by myVLocusCvtermCvtermpath.contigName, myVLocusCvtermCvtermpath.fmin, myVLocusCvtermCvtermpath.pathdistance"),
 				
 		
 		@NamedQuery(name = "findVLocusCvtermCvtermpathByCommonNameContaining", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.commonName like ?1"),
@@ -52,7 +54,7 @@ import org.irri.iric.portal.domain.Locus;
 		@NamedQuery(name = "findVLocusCvtermCvtermpathBySubjAccContaining", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.subjAcc like ?1"),
 		@NamedQuery(name = "findVLocusCvtermCvtermpathBySubjCvterm", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.subjCvterm = ?1"),
 		@NamedQuery(name = "findVLocusCvtermCvtermpathBySubjCvtermContaining", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.subjCvterm like ?1") })
-@Table(schema = "IRIC", name = "V_LOCUS_CVTERM_CVTERMPATH")
+@Table( name = "V_LOCUS_CVTERM_CVTERMPATH")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VLocusCvtermCvtermpath")
 public class VLocusCvtermCvtermpath implements Serializable , Locus, CvTerm, Comparable {
@@ -536,9 +538,10 @@ public class VLocusCvtermCvtermpath implements Serializable , Locus, CvTerm, Com
 	}
 
 	@Override
-	public String getChr() {
+	public Long getChr() {
 		// TODO Auto-generated method stub
-		return this.contigName;
+		//return Long.valueOf(getContig());
+		return Long.valueOf(AppContext.guessChrFromString(getContig()));
 	}
 
 	@Override
@@ -570,6 +573,12 @@ public class VLocusCvtermCvtermpath implements Serializable , Locus, CvTerm, Com
 
 	public void setPathdistance(Integer pathdistance) {
 		this.pathdistance = pathdistance;
+	}
+
+	@Override
+	public String getFeatureType() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

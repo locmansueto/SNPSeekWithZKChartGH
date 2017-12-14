@@ -2,17 +2,19 @@ package org.irri.iric.portal.dao;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 
 public interface VarietyByPassportDAO {
 
 	/**
 	 * Get varieties with passport equal to value 
-	 * @param type_id
+	 * @param object
 	 * @param value
+	 * @param value2 
 	 * @return
 	 */
-	List findVarietyByPassportEquals(BigDecimal type_id, String value);
+	//List findVarietyByPassportEquals(Object object, Set dataset, String value);
 
 	/**
 	 * Get passport values for all varieties
@@ -20,6 +22,8 @@ public interface VarietyByPassportDAO {
 	 * @return
 	 */
 	List findVarietyByPassport(String sPassId);
+
+	List findVarietyByPassportEquals(BigDecimal type_id, Set dataset, String value);
 
 	
 	//List findVIricstocksByPassportByTypeIdValueContaining(BigDecimal type_id, String value);

@@ -2,10 +2,10 @@
 
 ### What is this repository for? ###
 
-This is the repository of IRIC-Portal Web interface. The application is written in Java, using Hibernate for ORM, Spring to manage the beans and configurations and ZK for the viewers. There are separate repositories for the backend Oracle and data generation pipeline scripts.
+This is the README of the SNP-Seek Web interface source code repository site in [http://bitbucket.org/irridev/iric_portal](http://bitbucket.org/irridev/iric_portal). The application is written in Java, using Hibernate for ORM, Spring-MVC framework, and ZK for the viewers. There are separate repositories for the backend Oracle and data generation pipeline scripts. 
 
 * Version 1
-	* Updates are logged in [http://oryzasnp.org/iric-portal/_about.zul](http://oryzasnp.org/iric-portal/_about.zul "updates")
+	* Updates are logged in [http://snp-seek.irri.org/_about.zul](http://snp-seek.irri.org/_about.zul "updates")
 
 
 ### How do I get set up? ###
@@ -59,7 +59,7 @@ This is the repository of IRIC-Portal Web interface. The application is written 
 
 ### Eclipse Project organization ###
 
-The project files are organized in these folders and packages. Javadoc documentation is also available in [http://oryzasnp.org/snpseek-javadoc/](http://oryzasnp.org/snpseek-javadoc/)
+The project files are organized in these folders and packages. Javadoc documentation is also available in [http://snp-seek.irri.org/snpseek-javadoc/](http://snp-seek.irri.org/snpseek-javadoc/)
 
 * /src   
 	the source code	organized into java packages described below. The packages are organized as descibed with the UML class diagrams in /uml
@@ -158,7 +158,7 @@ The web services API are implemented using Spring REST Controller to map URL pat
 
 To hide or add more attributes, or change data types to the response objects, WS-specific entities are implemented to wrap the DAO-generated entities. These web service response objects are defined in **org.irri.iric.portal.ws.entity**
 
-The WADL file [http://oryzasnp.org/iric-portal/ws/application.wadl](http://oryzasnp.org/iric-portal/ws/application.wadl "WADL") which can be used to generate client objects, is generated automatically by Spring from the defined mappings. This file is also used to generate the API documentation. The file /WebRoot/api-docs/application-api-docs.json is such documentation in Swagger-json format, can be viewed by swagger-ui in [http://oryzasnp.org/iric-portal/swagger-ui/index.html](http://oryzasnp.org/iric-portal/swagger-ui/index.html "swagger-ui")   
+The WADL file [http://snp-seek.irri.org/ws/application.wadl](http://snp-seek.irri.org/ws/application.wadl "WADL") which can be used to generate client objects, is generated automatically by Spring from the defined mappings. This file is also used to generate the API documentation. The file /WebRoot/api-docs/application-api-docs.json is such documentation in Swagger-json format, can be viewed by swagger-ui in [http://snp-seek.irri.org/swagger-ui/index.html](http://snp-seek.irri.org/swagger-ui/index.html "swagger-ui")   
 
 
 * Data stores
@@ -191,6 +191,9 @@ This diagram summarizes the different software layers and modules for the web-ap
 
 ![](uml/snpseekarch.png)
 
+The updated genotype module to incorporate INDEL data and HDRA as data storage.
+
+![](uml/genotype-hybrid.png)
 
 * UML diagrams
 

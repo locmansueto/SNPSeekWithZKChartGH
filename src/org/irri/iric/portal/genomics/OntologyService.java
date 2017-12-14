@@ -2,6 +2,7 @@ package org.irri.iric.portal.genomics;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Ontology service
@@ -34,6 +35,7 @@ public interface OntologyService {
 	 * @return
 	 */
 	public List getCVtermDescendants(String cv, String term);
+	public List getCVtermDescendants(String cv, String term, Set dataset);
 	
 	/**
 	 * Count number of loci in organism for cv 
@@ -54,6 +56,11 @@ public interface OntologyService {
 	 * @throws Exception
 	 */
 	public String overRepresentationTest(String organism, Collection genelist, String enrichmentType) throws Exception;
+
+
+
+	
+
 	
 	
 }

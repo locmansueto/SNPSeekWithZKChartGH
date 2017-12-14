@@ -28,6 +28,11 @@ public interface VariantTable {
 	 */
 	//public VariantTable review(GenotypeQueryParams params );
 	void setVariantStringData(VariantStringData data, GenotypeQueryParams params) throws Exception;
+	
+	/*
+	 *  to remove non-CDS positions
+	 */
+	void setVariantStringData(VariantStringData data, GenotypeQueryParams params, List listCDS) throws Exception;
 
 	public String[] getContigs();
 	

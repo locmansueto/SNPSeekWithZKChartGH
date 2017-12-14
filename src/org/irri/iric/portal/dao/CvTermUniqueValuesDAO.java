@@ -9,9 +9,12 @@ public interface CvTermUniqueValuesDAO {
 
 		/**
 		 * Unique values of cvterm 
-		 * @param typeId
+		 * @param object
+		 * @param dataset 
 		 * @return
 		 */
-		public Set getUniqueValues(BigDecimal typeId);
+		//public Set getUniqueValues(Object object, Set dataset);
+
+		public Set getUniqueValues(BigDecimal typeId, Set dataset);
 
 }

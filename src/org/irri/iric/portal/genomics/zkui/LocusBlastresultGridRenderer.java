@@ -14,8 +14,9 @@ public class LocusBlastresultGridRenderer  implements  RowRenderer{
 		// TODO Auto-generated method stub
 		
 
+		
 		LocalAlignment locus = (LocalAlignment)data;
-	
+		row.setValue(locus);
 		//row.setAlign("center");
 		
 		//new Label(locus.getUniquename()).setParent(row);

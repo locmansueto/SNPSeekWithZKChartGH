@@ -35,10 +35,10 @@ import org.irri.iric.portal.domain.CvTerm;
 		@NamedQuery(name = "findVPatoOrganismByCvtermId", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.cvtermId = ?1"),
 		@NamedQuery(name = "findVPatoOrganismByOrganismId", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.organismId = ?1"),
 		@NamedQuery(name = "findVPatoOrganismByPrimaryKey", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.cvtermId = ?1") })
-//@Table(schema = "IRIC", name = "V_PATO_ORGANISM")
-//@Table(schema = "IRIC", name = "V_LOCUS_CVTERM_CVTERMPATH")
+//@Table( name = "V_PATO_ORGANISM")
+//@Table( name = "V_LOCUS_CVTERM_CVTERMPATH")
 
-@Table(schema = "IRIC", name = "V_CVTERM_CVTERMPATH_ORGANISM")
+@Table( name = "V_CVTERM_CVTERMPATH_ORGANISM")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VPatoOrganism")
 public class VPatoOrganism implements Serializable, CvTerm {

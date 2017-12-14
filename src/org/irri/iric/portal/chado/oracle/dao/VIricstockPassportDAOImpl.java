@@ -184,9 +184,9 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 	 *
 	 */
 	@Transactional
-	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(java.math.BigDecimal iricStockId) throws DataAccessException {
+	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(java.math.BigDecimal iricStockId, String dataset) throws DataAccessException {
 
-		return findVIricstockPassportByIricStockId(iricStockId, -1, -1);
+		return findVIricstockPassportByIricStockId(iricStockId, dataset, -1, -1);
 	}
 
 	/**
@@ -196,7 +196,7 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(java.math.BigDecimal iricStockId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(java.math.BigDecimal iricStockId, String dataset, int startResult, int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVIricstockPassportByIricStockId", startResult, maxRows, iricStockId);
 		return new LinkedHashSet<VIricstockPassport>(query.getResultList());
 	}
@@ -299,11 +299,44 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 		return true;
 	}
 
+	
+	
 	@Override
-	public Set findIricstockPassportByIricStockId(BigDecimal id) {
+	public Set getPassportByStockId(BigDecimal id) {
 		// TODO Auto-generated method stub
+		//return null;
 		return findVIricstockPassportByIricStockId(id);
 	}
+
+	@Override
+	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(
+			BigDecimal iricStockId) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return findVIricstockPassportByIricStockId(iricStockId,"");
+	}
+
+	@Override
+	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(
+			BigDecimal iricStockId, int startResult, int maxRows)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+//	@Override
+//	public Set findIricstockPassportByIricStockId(BigDecimal id) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+//	@Override
+//	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(
+//			BigDecimal iricStockId) throws DataAccessException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+	
 	
 	
 	

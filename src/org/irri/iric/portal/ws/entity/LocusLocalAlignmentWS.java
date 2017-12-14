@@ -90,6 +90,33 @@ public class LocusLocalAlignmentWS implements LocalAlignment {
 		return localalignment.getMismatches();
 	}
 
+	@Override
+	public String getQSequence() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getSSequence() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setQSequence(String seq) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSSequence(String seq) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+
 	/*
 	@Override
 	public String getUniquename() {

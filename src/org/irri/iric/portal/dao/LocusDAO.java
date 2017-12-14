@@ -2,8 +2,10 @@ package org.irri.iric.portal.dao;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.irri.iric.portal.domain.Locus;
+import org.irri.iric.portal.domain.TextSearchOptions;
 
 public interface LocusDAO {
 
@@ -15,6 +17,14 @@ public interface LocusDAO {
 	public List<Locus> getLocusByName(String name);
 
 	/**
+	 * Get loci with collection of (capitalized) names
+	 * @param name
+	 * @return
+	 */
+	public Collection getLocusByName(Collection<String> name);
+
+
+	/**
 	 * Get loci within region
 	 * @param contig
 	 * @param start
@@ -22,8 +32,9 @@ public interface LocusDAO {
 	 * @param organism
 	 * @return
 	 */
-	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism);
+	//public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism);
 	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel);
+	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel, String featuretype);
 
 	
 	/**
@@ -34,7 +45,9 @@ public interface LocusDAO {
 	 * @return
 	 */
 	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus);
-	public List getLocusByContigPositions(String contig, Collection posset, String organism, String genemodel, Integer plusminus);
+	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus, String genemodel );
+	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus, String genemodel, String featuretype );
+	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel, Set featuretype);
 	
 	/**
 	 * Get loci with description
@@ -42,8 +55,23 @@ public interface LocusDAO {
 	 * @param organism
 	 * @return
 	 */
-	public List<Locus> getLocusByDescription(String desc, String organism);
-	public List<Locus> getLocusByDescription(String description, String organism, String genemodel);
+	public List<Locus> getLocusByDescription( TextSearchOptions description, String organism);
+	public List<Locus> getLocusByDescription(TextSearchOptions description, String organism, String genemodel);
+
+	/**
+	 * Get loci with name/synonym
+	 * @param desc
+	 * @param organism
+	 * @return
+	 */
+	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym, String organism);
+	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym, String organism, String genemodel);
+
+	List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus,
+			String genemodel, Set featuretype);
+
+	
+
 	
 	
 	

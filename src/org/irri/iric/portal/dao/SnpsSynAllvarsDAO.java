@@ -17,9 +17,13 @@ import org.springframework.dao.DataAccessException;
  */
 public interface SnpsSynAllvarsDAO {
 	
-	
+	/*
 	public Set<SnpsSynAllele> findSnpSynAlleleByChrPosBetween(String chr, Integer start, Integer end, BigDecimal dataset) throws DataAccessException;
 	public Set<SnpsSynAllele> findSnpSynAlleleByChrPosIn(String chr, Collection listpos, BigDecimal dataset)  throws DataAccessException;
+	*/
+	//public Set findSnpSynAlleleByFeatureidIn(Set<BigDecimal> setSnpFeatureId, BigDecimal snptype)  throws DataAccessException;
 
+	public Set<SnpsSynAllele> findSnpSynAlleleByChrPosBetween(String chr, Integer start, Integer end, Set variantset) throws DataAccessException;
+	public Set<SnpsSynAllele> findSnpSynAlleleByChrPosIn(String chr, Collection listpos,  Set variantset)  throws DataAccessException;
 	
 }

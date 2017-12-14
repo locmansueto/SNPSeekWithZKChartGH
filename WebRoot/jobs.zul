@@ -1,0 +1,73 @@
+<?page title="Locus Query" contentType="text/html;charset=UTF-8"?>
+<?component name="tipBox" macroURI="tipBox.zul"?>
+
+<zk>
+
+
+<window id="winJobs" border="none" apply="org.irri.iric.portal.admin.zkui.JobsController">
+
+<hbox height="20px"/>
+
+<div align="center">
+<label value="Jobs progress" style="font-size:20px;font-weight:bold;color:green;"/>
+<hbox height="20px" />
+
+<hbox> 
+<label class="z-label-message" id="labelMessage"/>
+<vbox width="20px" />
+<button id="buttonDownloadResult" label="Download Result" visible="false"/>
+<button id="buttonDownloadMessage" label="Download Error" visible="false"/>
+<button id="buttonUpdateJobstatus" label="Update status" visible="false"/>
+
+
+</hbox>
+
+</div>
+
+<vbox id="vboxAdmin" visible="false">
+
+<vbox width="20px" />
+<hbox>
+<button id="buttonSessionAtts" label="Clear phylosessions"/>
+<textbox id="textboxPhylosessions" readonly="true" width="100px" rows="1"/>
+</hbox>
+
+<button id="buttonSystemStatus" label="System status"/>
+<textbox id="msgbox" readonly="true" width="999px" rows="3"/>
+<vbox width="50px" />
+<hbox>
+<label value="Show jobs: "/>
+<checkbox id="checkboxShowRunning" label="Queued/Running " checked="true"/>
+<checkbox id="checkboxShowDone" label="Done "/>
+<checkbox id="checkboxShowDownloaded" label="Downloaded"/>
+</hbox>
+
+<iframe id="iframejobresults" visible="false" width="100%" height="600px"/>
+
+<vbox width="20px" />
+<listbox id="listboxJobs">
+<listhead sizable="true">
+<listheader label="JOBID" sort="auto"/>
+<listheader label="STATUS" sort="auto"/>
+<listheader label="SUBMITTER" sort="auto"/>
+<listheader label="TERMINATION" sort="auto"/>
+<listheader label="PARAMETERS" sort="auto"/>
+<listheader label="DATE SUBMITTED" sort="auto"/>
+<listheader label="DATE STARTED" sort="auto"/>
+<listheader label="DATE DONE" sort="auto"/>
+<listheader label="WORKER" sort="auto"/>
+</listhead>
+</listbox>
+
+<hbox height="30px"/>
+<hbox>
+<button id="buttonSaveJobs" label="Save jobs"/><vbox width="50px"/>
+<button id="buttonDeleteDownloaded" label="Clear downloaded jobs"/><vbox width="10px"/><checkbox id="checkboxDeleteFiles" label="Delete associated files"/>
+<vbox width="50px"/> <button id="buttonDownloadLog" label="Download jobs list"/>
+<vbox width="50px"/><button id="buttonCancelJob" label="Cancel job" disabled="true"/>
+</hbox>
+</vbox>
+
+</window>
+
+</zk>

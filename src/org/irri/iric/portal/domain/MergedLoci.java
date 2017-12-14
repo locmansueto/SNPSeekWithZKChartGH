@@ -1,5 +1,7 @@
 package org.irri.iric.portal.domain;
 
+import java.util.Set;
+
 /**
  * Merged (Overlapping MSU7, RAP, FGenesh) locus interface
  * @author LMansueto
@@ -37,5 +39,11 @@ public interface MergedLoci extends Locus{
 	 * @return
 	 */
 	public String getFGeneshName();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Set<String> getOverlappingGenes();
 
 }

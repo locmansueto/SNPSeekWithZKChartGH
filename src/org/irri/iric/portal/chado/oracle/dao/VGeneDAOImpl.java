@@ -1,9 +1,14 @@
 package org.irri.iric.portal.chado.oracle.dao;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NamedQuery;
@@ -11,7 +16,10 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.Session;
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.oracle.domain.VGene;
+//import org.irri.iric.portal.chado.oracle.domain.VIricstockBasicprop2;
 import org.irri.iric.portal.dao.GeneDAO;
 import org.irri.iric.portal.domain.Gene;
 import org.skyway.spring.util.dao.AbstractJpaDao;
@@ -321,5 +329,84 @@ public class VGeneDAOImpl extends AbstractJpaDao<VGene> implements VGeneDAO {
 		
 	}
 
+
+	private List executeSQL(String sql) 
+	{	if(AppContext.isLocalhost()) AppContext.debug("executing :" + sql);
+		//log.info("executing :" + sql);
+		return  getSession().createSQLQuery(sql).addEntity(VGene.class).list();
+	}
+	
+
+	private Session getSession() {
+		return entityManager.unwrap(Session.class);
+	}
+	
+
+	@Override
+	public List<Gene> findGeneWithNames(Collection<String> genenames,
+			Integer organismId) {
+		genenames=new TreeSet(genenames);
+		if(AppContext.isOracle()) return  findGeneWithNamesOracle(genenames, organismId);
+		else if(AppContext.isPostgres()) return  findGeneWithNamesPostgres(genenames, organismId);
+		return null;
+
+	}
+	
+	
+	private List<Gene> findGeneWithNamesOracle(Collection<String> genenames,
+			Integer organismId) {
+		// TODO Auto-generated method stub
+		/*
+		Query query = createNamedQuery("findVGeneByNamesOrg", -1,-1, genenames, organismId);
+		return query.getResultList();
+		*/
+		
+		List listVars=new ArrayList();
+		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(genenames),900);
+		for(int i=0; i<setnames.length; i++) {
+			StringBuffer buffnames=new StringBuffer();
+			Iterator<String> itNames=setnames[i].iterator();
+			while(itNames.hasNext()) {
+				String name=itNames.next();
+				buffnames.append("'").append(name).append("'");
+				if(itNames.hasNext()) buffnames.append(",");
+			}
+			 //(select t.column_value from ( select unnest(ARRAY[" + buffnames + "]) column_value) t) 
+			String sql = "select v.* from   " + AppContext.getDefaultSchema() + ".V_GENE v,  table (sys.ODCIVarchar2List (" + buffnames + ")) n where n.column_value=v.name order by v.chr, v.fmin";
+			//String sql = "select v.* from   " + AppContext.getDefaultSchema() + ".V_GENE v,  (select t.column_value from ( select unnest(ARRAY[" + buffnames + "]) column_value) t)  n where n.column_value=v.name";
+			listVars.addAll(executeSQL(sql)); 
+		}
+		
+		return listVars;
+		
+	}
+
+	private List<Gene> findGeneWithNamesPostgres(Collection<String> genenames,
+			Integer organismId) {
+		// TODO Auto-generated method stub
+		/*
+		Query query = createNamedQuery("findVGeneByNamesOrg", -1,-1, genenames, organismId);
+		return query.getResultList();
+		*/
+		
+		List listVars=new ArrayList();
+		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(genenames),900);
+		for(int i=0; i<setnames.length; i++) {
+			StringBuffer buffnames=new StringBuffer();
+			Iterator<String> itNames=setnames[i].iterator();
+			while(itNames.hasNext()) {
+				String name=itNames.next();
+				buffnames.append("'").append(name).append("'");
+				if(itNames.hasNext()) buffnames.append(",");
+			}
+			 //(select t.column_value from ( select unnest(ARRAY[" + buffnames + "]) column_value) t) 
+			//String sql = "select v.* from   " + AppContext.getDefaultSchema() + ".V_GENE v,  table (sys.ODCIVarchar2List (" + buffnames + ")) n where n.column_value=v.name";
+			String sql = "select v.* from   " + AppContext.getDefaultSchema() + ".V_GENE v,  (select t.column_value from ( select unnest(ARRAY[" + buffnames + "]) column_value) t)  n where n.column_value=v.name order by v.chr, v.fmin";
+			listVars.addAll(executeSQL(sql)); 
+		}
+		
+		return listVars;
+		
+	}
 	
 }

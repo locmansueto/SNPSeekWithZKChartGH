@@ -1,9 +1,11 @@
 package org.irri.iric.portal.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -100,6 +102,15 @@ public class MultiReferencePositionImpl implements MultiReferencePosition, Compa
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
 			// TODO Auto-generated method stub
+		 Position p2=(Position)o;
+//		 int ret = getOrganism().compareTo(p2.getOrganism());
+//		 if(ret==0)
+		 int ret = getContig().compareTo(p2.getContig());
+		 if(ret==0)
+			 ret = getPosition().compareTo(p2.getPosition());
+		return ret;
+
+		/*
 			 MultiReferencePosition p2=(MultiReferencePosition)o;
 			 int ret = getOrganism().compareTo(p2.getOrganism());
 			 if(ret==0)
@@ -107,12 +118,14 @@ public class MultiReferencePositionImpl implements MultiReferencePosition, Compa
 			 if(ret==0)
 				 ret = getPosition().compareTo(p2.getPosition());
 			return ret;
+			*/
 	}
 
 	@Override
 	public int hashCode() {
 		// TODO Auto-generated method stub
-		return toString().hashCode();
+		//return toString().hashCode();
+		 return (getContig().toString() + "-" + getPosition().toString()).hashCode();
 	}
 
 	@Override
@@ -125,9 +138,11 @@ public class MultiReferencePositionImpl implements MultiReferencePosition, Compa
 	public String toString() {
 		// TODO Auto-generated method stub
 		if(refcall==null)
-			return "(" + organism + ", " + contig + "," + position + ")" ;
+			//return "(" + organism + ", " + contig + "," + position + ")" ;
+			return "(" +contig + "," + position + ")" ;
 		else
-			return "(" + organism + ", " + contig + "," + position + ","  + refcall + ")" ;
+			//return "(" + organism + ", " + contig + "," + position + ","  + refcall + ")" ;
+			return "(" + contig + "," + position + ","  + refcall + ")" ;
 		
 	}
 	
@@ -137,11 +152,13 @@ public class MultiReferencePositionImpl implements MultiReferencePosition, Compa
 		return Long.valueOf(AppContext.guessChrFromString(contig)); 
 	} 
 	
+	
 	/**
 	 * Convert Collection<MultiReferencePosition> to TreeMap<String, TreeSet> mapChr2Pos
 	 * @param posset
 	 * @return
 	 */
+	/*
 	public static Map<String, Set<BigDecimal>> getMapContig2SNPPos(Collection<MultiReferencePosition> posset) {
 		Iterator<MultiReferencePosition> itMultiPos = posset.iterator();
 		Map<String, Set<BigDecimal>> mapChr2Pos = new TreeMap();
@@ -156,6 +173,53 @@ public class MultiReferencePositionImpl implements MultiReferencePosition, Compa
 		}
 		return mapChr2Pos;
 	}
+	*/
+	public static Map<String, Set<BigDecimal>> getMapContig2SNPPos(Collection<Position> posset) {
+		Iterator<Position> itMultiPos = posset.iterator();
+		Map<String, Set<BigDecimal>> mapChr2Pos = new TreeMap();
+		while(itMultiPos.hasNext()) {
+			Position refpos = itMultiPos.next();
+			Set setPos = mapChr2Pos.get(refpos.getContig());
+			if(setPos==null) {
+				setPos=new TreeSet();
+				mapChr2Pos.put( refpos.getContig() , setPos);
+			}
+			setPos.add(refpos.getPosition() );
+		}
+		return mapChr2Pos;
+	}
+	public static Map<String, List<SnpsAllvarsPos>> getMapContig2SNPPos(List<SnpsAllvarsPos> poslist) {
+		Iterator<SnpsAllvarsPos> itMultiPos = poslist.iterator();
+		Map<String, List<SnpsAllvarsPos>> mapChr2Pos = new TreeMap();
+		while(itMultiPos.hasNext()) {
+			SnpsAllvarsPos refpos = itMultiPos.next();
+			List setPos = mapChr2Pos.get(refpos.getContig());
+			if(setPos==null) {
+				setPos=new ArrayList();
+				mapChr2Pos.put( refpos.getContig() , setPos);
+			}
+			setPos.add(refpos);
+		}
+		return mapChr2Pos;
+	}
+	
+	/*
+	public static Map<String, List<SnpsAllvarsPos>> getMapContig2SNPPos(List<SnpsAllvarsPos> poslist) {
+		Iterator<SnpsAllvarsPos> itMultiPos = poslist.iterator();
+		Map<String, List<SnpsAllvarsPos>> mapChr2Pos = new TreeMap();
+		while(itMultiPos.hasNext()) {
+			SnpsAllvarsPos refpos = itMultiPos.next();
+			List setPos = mapChr2Pos.get(refpos.getContig());
+			if(setPos==null) {
+				setPos=new ArrayList();
+				mapChr2Pos.put( refpos.getContig() , setPos);
+			}
+			setPos.add(refpos.getPosition() );
+		}
+		return mapChr2Pos;
+	}
+	*/
+
 	
 	/**
 	 * Convert Collection<Locus> to TreeMap<String, TreeSet> mapChr2Loci
@@ -179,7 +243,6 @@ public class MultiReferencePositionImpl implements MultiReferencePosition, Compa
 	
 	
 	
-
 	
 	
 }

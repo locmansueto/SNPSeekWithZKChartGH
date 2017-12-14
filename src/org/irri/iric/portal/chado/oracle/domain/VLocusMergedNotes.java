@@ -1,5 +1,8 @@
 package org.irri.iric.portal.chado.oracle.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -72,6 +75,33 @@ public class VLocusMergedNotes extends VLocusNotes implements MergedLoci {
 		return fgenesh;
 	}
 
+	@Override
+	public Set<String> getOverlappingGenes() {
+		// TODO Auto-generated method stub
+		
+		StringBuffer buff=new StringBuffer();
+		buff.append(  this.name );
+		if(getMSU7Name()!=null && !getMSU7Name().isEmpty()) buff.append(" " + getMSU7Name());
+		if(getRAPRepName()!=null && !getRAPRepName().isEmpty()) buff.append( " " + getRAPRepName());
+		if(getRAPPredName()!=null && !getRAPPredName().isEmpty()) buff.append(" " + getRAPPredName());
+	
+		
+		Set locnamesets=new HashSet();
+		String names[]=buff.toString().trim().split("\\s+|,");
+		for(int i=0; i<names.length; i++)
+			locnamesets.add( names[i].trim() );
+		locnamesets.remove("");
+		return locnamesets;
+		
+	}
+/*
+	@Override
+	public String printFields(String delimiter) {
+		// TODO Auto-generated method stub=
+		return getUniquename() + delimiter + getContig() + delimiter + getFmin() + delimiter + getFmax() + delimiter
+				+ getStrand() + delimiter + getOverlappingGenes() + delimiter + getDescription();
+	}
+	*/
 	
 	
 }

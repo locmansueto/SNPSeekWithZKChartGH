@@ -2,6 +2,7 @@ package org.irri.iric.portal.hdf5;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -12,8 +13,10 @@ import java.util.Set;
 
 
 
+
 import org.apache.commons.lang.ArrayUtils;
 import org.irri.iric.portal.AppContext;
+
 
 
 //import ncsa.hdf.hdf5lib.HDF5Constants;
@@ -82,7 +85,8 @@ public class H5ReadStringmatrix implements H5ReadMatrix {
 		} else throw new RuntimeException("No variety indexes");
 
 		
-		if(input.startPosidx !='\0' && input.endPosidx!='\0') {
+		//if(input.startPosidx !='\0' && input.endPosidx!='\0') {
+		if(input.startPosidx>-1 && input.endPosidx>-1) {
 	        // select the subset: starting at (4, 2)
 	        //start[DIM_POSITION] = input.startPosidx-1;
 			start[DIM_POSITION] = input.startPosidx;
@@ -112,33 +116,79 @@ public class H5ReadStringmatrix implements H5ReadMatrix {
 	        	Map<BigDecimal, List<String[]>> mapVarid2Strbuff=new LinkedHashMap();
 	        
 	    	   sizes[DIM_VARIETY] = 1;
-		       for (int i = 0; i < rows ; i++) {
-		    	   if(setVarsIds!=null && !setVarsIds.contains(i+1)) continue;
-		    	   
-		    	   start[DIM_VARIETY] = i;
+
+	    	   if(input.listVaridx!=null && input.listVaridx.length>0) {
+	    	   
+			       for (int i = 0; i < rows ; i++) {
+			    	   if(!setVarsIds.contains(i+1)) continue;
+			    	   
+			    	   start[DIM_VARIETY] = i;
+		               byte[] dataRead = dataset.readBytes();
+		               String[] stringArray = Dataset.byteToString(dataRead,
+		                       dataset.getDatatype().getDatatypeSize());
+				       	
+		               List listVarindels = mapVarid2Strbuff.get(BigDecimal.valueOf(i+1));
+				       	if(listVarindels==null) {
+				       		listVarindels = new ArrayList();
+				       		mapVarid2Strbuff.put( BigDecimal.valueOf(i+1) , listVarindels);
+				       	}
+				       	listVarindels.add(stringArray);
+		               
+		               /*
+				       	String s = new String( java.util.Arrays.copyOfRange(dataRead, i * cols, i * cols+ cols ) );
+				       	//AppContext.debug(s);
+				       	StringBuffer buff = mapVarid2Strbuff.get(BigDecimal.valueOf(i+1));
+				       	//listVarString.put( BigDecimal.valueOf(i+1) , s );
+				       	if(buff==null) {
+				       		buff = new StringBuffer();
+				       		mapVarid2Strbuff.put( BigDecimal.valueOf(i+1) , buff);
+				       	}
+				       	buff.append(s);
+				       	*/
+			       } 	  
+	    	   } else if (input.startendVaridx!=null) {
+	    		   sizes[DIM_VARIETY] = input.startendVaridx[1]-input.startendVaridx[0]+1;
+	    		   start[DIM_VARIETY] = input.startendVaridx[0]-1;
 	               byte[] dataRead = dataset.readBytes();
 	               String[] stringArray = Dataset.byteToString(dataRead,
 	                       dataset.getDatatype().getDatatypeSize());
 			       	
-	               List listVarindels = mapVarid2Strbuff.get(BigDecimal.valueOf(i+1));
-			       	if(listVarindels==null) {
-			       		listVarindels = new ArrayList();
-			       		mapVarid2Strbuff.put( BigDecimal.valueOf(i+1) , listVarindels);
-			       	}
-			       	listVarindels.add(stringArray);
-	               
-	               /*
-			       	String s = new String( java.util.Arrays.copyOfRange(dataRead, i * cols, i * cols+ cols ) );
-			       	//AppContext.debug(s);
-			       	StringBuffer buff = mapVarid2Strbuff.get(BigDecimal.valueOf(i+1));
-			       	//listVarString.put( BigDecimal.valueOf(i+1) , s );
-			       	if(buff==null) {
-			       		buff = new StringBuffer();
-			       		mapVarid2Strbuff.put( BigDecimal.valueOf(i+1) , buff);
-			       	}
-			       	buff.append(s);
-			       	*/
-		       } 	        
+	               int istart=0;
+	               for (int i = 0; i < rows ; i++) {
+		               List listVarindels = mapVarid2Strbuff.get(BigDecimal.valueOf(i+input.startendVaridx[0]));
+				       	if(listVarindels==null) {
+				       		listVarindels = new ArrayList();
+				       		mapVarid2Strbuff.put( BigDecimal.valueOf(i+input.startendVaridx[0]) ,listVarindels);
+				       	}
+				       	//listVarindels.add( Arrays.copyOfRange(stringArray, istart,istart+cols-1) );
+				       	listVarindels.add( Arrays.copyOfRange(stringArray, istart,istart+cols) );
+				       	istart+=cols;
+	               }
+	    	   }
+	    	   else {
+	    		   sizes[DIM_VARIETY] = n_dim_variety;
+	    		   start[DIM_VARIETY] = 0;
+	               byte[] dataRead = dataset.readBytes();
+	               String[] stringArray = Dataset.byteToString(dataRead,
+	                       dataset.getDatatype().getDatatypeSize());
+			       	
+	               int istart=0;
+	               for (int i = 0; i < rows ; i++) {
+		               List listVarindels = mapVarid2Strbuff.get(BigDecimal.valueOf(i+1));
+				       	if(listVarindels==null) {
+				       		listVarindels = new ArrayList();
+				       		mapVarid2Strbuff.put( BigDecimal.valueOf(i+1) ,listVarindels);
+				       	}
+				       	listVarindels.add( Arrays.copyOfRange(stringArray, istart,istart+cols) );
+				       	istart+=cols;
+				       	
+				       	/*
+				       	listVarindels.add( Arrays.copyOfRange(stringArray, istart,istart+cols-1) );
+				       	istart+=cols;
+				       	*/
+	               }
+	    		   
+	    	   }
 		       	BigDecimal varid=null; 
 				Iterator<BigDecimal> itVar = mapVarid2Strbuff.keySet().iterator();
 				while(itVar.hasNext())  {
@@ -169,35 +219,76 @@ public class H5ReadStringmatrix implements H5ReadMatrix {
 			       
 			       //String [][] stringArray = get2dStringArray(dataset); 
 			       
-		    	   sizes[DIM_VARIETY] = 1;
-			       for (int i = 0; i < rows ; i++) {
-			    	   if(setVarsIds!=null && !setVarsIds.contains(i+1)) continue;
-			    	   
-			    	   start[DIM_VARIETY] = i;
+			       //if(setVarsIds!=null && !setVarsIds.isEmpty()){
+			       if(input.listVaridx!=null && input.listVaridx.length>0) {			    	   
+			    	   sizes[DIM_VARIETY] = 1;
+				       for (int i = 0; i < rows ; i++) {
+				    	   //if(setVarsIds!=null && !setVarsIds.contains(i+1)) continue;
+				    	   if(!setVarsIds.contains(i+1)) continue;
+				    	   
+				    	   start[DIM_VARIETY] = i;
+			               byte[] dataRead = dataset.readBytes();
+			               String[] stringArray = Dataset.byteToString(dataRead,
+			                       dataset.getDatatype().getDatatypeSize());
+					       	
+			               List listVarindels = mapVarid2Strbuff.get(BigDecimal.valueOf(i+1));
+					       	if(listVarindels==null) {
+					       		listVarindels = new ArrayList();
+					       		mapVarid2Strbuff.put( BigDecimal.valueOf(i+1) , listVarindels);
+					       	}
+					       	listVarindels.add(stringArray);
+			               
+			               /*
+					       	String s = new String( java.util.Arrays.copyOfRange(dataRead, i * cols, i * cols+ cols ) );
+					       	//AppContext.debug(s);
+					       	StringBuffer buff = mapVarid2Strbuff.get(BigDecimal.valueOf(i+1));
+					       	//listVarString.put( BigDecimal.valueOf(i+1) , s );
+					       	if(buff==null) {
+					       		buff = new StringBuffer();
+					       		mapVarid2Strbuff.put( BigDecimal.valueOf(i+1) , buff);
+					       	}
+					       	buff.append(s);
+					       	*/
+				       } 
+			       }  else if (input.startendVaridx!=null) {
+			    	   sizes[DIM_VARIETY] = input.startendVaridx[1]-input.startendVaridx[0]+1;
+		    		   start[DIM_VARIETY] = input.startendVaridx[0]-1;
 		               byte[] dataRead = dataset.readBytes();
 		               String[] stringArray = Dataset.byteToString(dataRead,
 		                       dataset.getDatatype().getDatatypeSize());
 				       	
-		               List listVarindels = mapVarid2Strbuff.get(BigDecimal.valueOf(i+1));
-				       	if(listVarindels==null) {
-				       		listVarindels = new ArrayList();
-				       		mapVarid2Strbuff.put( BigDecimal.valueOf(i+1) , listVarindels);
-				       	}
-				       	listVarindels.add(stringArray);
-		               
-		               /*
-				       	String s = new String( java.util.Arrays.copyOfRange(dataRead, i * cols, i * cols+ cols ) );
-				       	//AppContext.debug(s);
-				       	StringBuffer buff = mapVarid2Strbuff.get(BigDecimal.valueOf(i+1));
-				       	//listVarString.put( BigDecimal.valueOf(i+1) , s );
-				       	if(buff==null) {
-				       		buff = new StringBuffer();
-				       		mapVarid2Strbuff.put( BigDecimal.valueOf(i+1) , buff);
-				       	}
-				       	buff.append(s);
-				       	*/
-			       } 
-			       
+		               int istart=0;
+		               for (int i = 0; i < rows ; i++) {
+			               List listVarindels = mapVarid2Strbuff.get(BigDecimal.valueOf(i+input.startendVaridx[0]));
+					       	if(listVarindels==null) {
+					       		listVarindels = new ArrayList();
+					       		mapVarid2Strbuff.put( BigDecimal.valueOf(i+input.startendVaridx[0]) ,listVarindels);
+					       	}
+					       	//listVarindels.add( Arrays.copyOfRange(stringArray, istart,istart+cols-1) );
+					       	listVarindels.add( Arrays.copyOfRange(stringArray, istart,istart+cols) );
+					       	istart+=cols;
+		               }
+			       }
+			       else {
+			    	   sizes[DIM_VARIETY] = n_dim_variety;
+		    		   start[DIM_VARIETY] = 0;
+		               byte[] dataRead = dataset.readBytes();
+		               String[] stringArray = Dataset.byteToString(dataRead,
+		                       dataset.getDatatype().getDatatypeSize());
+				       	
+		               int istart=0;
+		               for (int i = 0; i < rows ; i++) {
+			               List listVarindels = mapVarid2Strbuff.get(BigDecimal.valueOf(i+1));
+					       	if(listVarindels==null) {
+					       		listVarindels = new ArrayList();
+					       		mapVarid2Strbuff.put( BigDecimal.valueOf(i+1) ,listVarindels);
+					       	}
+					       	//listVarindels.add( Arrays.copyOfRange(stringArray, istart,istart+cols-1) );
+					       	listVarindels.add( Arrays.copyOfRange(stringArray, istart,istart+cols) );
+					       	istart+=cols;
+		               }
+			       }
+				       
 			       
 			}
 			BigDecimal varid =null;
@@ -261,6 +352,8 @@ public class H5ReadStringmatrix implements H5ReadMatrix {
 
        
 		dataset.clear(); 
+		
+		AppContext.debug(mapVar2Strarray.size() + " vars with indels");
 		
        return new OutputMatrix(mapVar2Strarray);
 	}
