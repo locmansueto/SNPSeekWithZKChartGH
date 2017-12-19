@@ -31,6 +31,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Row;
@@ -39,7 +40,7 @@ import org.zkoss.zul.Spinner;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import com.itextpdf.htmlsamples.chapter07.C07E04_CreateFromURL;
+
 
 import org.zkoss.zkplus.spring.SpringUtil;      
 	import org.irri.iric.portal.blank_module.BlankModuleFacade;
@@ -462,6 +463,7 @@ public class SeedOrderController extends SelectorComposer<Window> {
 		String usercat=listboxCategory.getSelectedItem().getValue();
 		if(usercat.equals("pub")) {
 			if(c.isEmpty()) {
+				Messagebox.show("Select your country first");
 				return;
 			}
 			orderservice=(SeedOrderService)AppContext.checkBean(orderservice, "SeedOrderService");
@@ -472,6 +474,15 @@ public class SeedOrderController extends SelectorComposer<Window> {
 			else if(ccat.equals("lowmid")) textboxCountryCategory.setValue("Public sector in lower middle income country");
 			else if(ccat.equals("upmid")) textboxCountryCategory.setValue("Public sector in upper middle income country");
 			else if(ccat.equals("high")) textboxCountryCategory.setValue("Public sector in high income country");
+		}
+		
+		if(usercat.equals("irri")) {
+			for(Listitem item:listboxCountry.getItems()){
+				if(item.getLabel().equals("Philippines")) {
+					listboxCountry.setSelectedItem(item);
+					break;
+				}
+			}
 		}
 		InlineEditingViewModel vm= (InlineEditingViewModel)BinderUtil.getBinder(divBindgrid).getViewModel(); 
 		orderservice=(SeedOrderService)AppContext.checkBean(orderservice, "SeedOrderService");
@@ -497,15 +508,15 @@ public class SeedOrderController extends SelectorComposer<Window> {
 			return false;
 		}
 
-		/*
 		if(!textboxEmailReq.getValue().trim().matches(".+@.+\\.[a-z]+")) {
 			Messagebox.show("Please enter a valid email for requestor.");
 			return false;
 		}
-
+		
+		
 		if(radioSigned.isSelected()) {
 			if(textboxAutname.getValue().trim().isEmpty() || textboxPosition.getValue().trim().isEmpty() ||
-					textboxPosition.getValue().trim().isEmpty() ) {
+					textboxAutaddress.getValue().trim().isEmpty() ) {
 				Messagebox.show("Incomplete information for Authorized official from your organization.");
 				return false;
 			}
@@ -514,7 +525,7 @@ public class SeedOrderController extends SelectorComposer<Window> {
 				return false;
 			}
 		}
-		*/
+		
 		return true;
 	}
 	

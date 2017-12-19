@@ -6,7 +6,7 @@
 <hbox height="40px"/>
 <hbox>
 	<vbox>
-		<grid id="gridQuery" width="100%" height="100px">
+		<grid id="gridQuery" width="100%" height="170px">
 			<rows>
 			<row  spans="1,4">
 			<label value="Stored GWAS Results: " pre="true" style="font-weight:bold"/>
@@ -16,6 +16,9 @@
 			<vbox width="30px"/>
 			<label value="Select trait   " pre="true"/> 
 			<listbox id="listboxTrait" mold="select"/>
+			<radiogroup id="rgTraitterm"/>
+			<radio id="radioLegacyTrait" selected="true" radiogroup="rgTraitterm" label="Legacy"/> 
+			<radio id="radioCoTrait" radiogroup="rgTraitterm" label="CO Terms"/>
 			</hbox>
 			</row>
 			
@@ -32,9 +35,9 @@
 			
 			<row spans="1,4">
 			<label value="Options: " pre="true" style="font-weight:bold"/>
+			<vbox>
 			<hbox>
 			<label value="Display minimum -log10 P   " pre="true"/> 
-			
 			
 			<!--  combobox id="comboboxMinlogP" autodrop="true" buttonVisible="false" value="5"/ -->
 			<listbox id="comboboxMinlogP" mold="select">
@@ -79,6 +82,8 @@
 			<label value="Show JBrowse   " pre="true"/> 
 			<checkbox id="checkboxJbrowse" checked="false"/>
 			</hbox>
+			</vbox>
+			
 			</row>
 			</rows>
 		</grid>
@@ -155,6 +160,7 @@
   <button id="buttonAddToListGene" label="Create Gene List:"  autodisable="self" tooltip="popupCreateListGenes"/>
   <label value="   List Name  " pre="true"/>
   <textbox id="txtboxListnameGene" width="200px"/>
+  
   <hbox style="font-weight:bold" visible="false">
 	  <label pre="true" value=" Include genes from:"/>
 	  <checkbox id="checkboxListModel" label="gene model" checked="true"/>
@@ -167,6 +173,8 @@
 	</hbox>
 </hbox>
 </vbox>
+
+
 
 
 <zscript>
@@ -191,15 +199,25 @@
 <label pre="true" value="   QTL"/><radio id="radioGroupbyQtl" radiogroup="rgAnnotGroups"/>
 </hbox>
 
-<hbox>
-<label pre="true" value="(Slow) Include annotations from:  "/>
-<checkbox id="checkboxIncludeInteractions" label="Interactions (RiceNetv2,PRIN)"/>
-<checkbox id="checkboxIncludePromoters" label="Promoters (FGenesh++,PlantPromDB)"/>
-<checkbox id="checkboxIncludeGO" label="Gene Ontology"/>
-<checkbox id="checkboxIncludePOTO" label="PO, TO, OGRO"/>
-<checkbox id="checkboxIncludeQTL" label="Q-TARO QTLs"/>
-<button id="buttonUpdateAnnotations" label="Update Annotations"/>
-</hbox>
+
+	<hbox>
+	<label pre="true" value="(Slow) Include annotations from:  " style="font-weight:bold"/>
+				<vbox>
+	<checkbox id="checkboxIncludeInteractions" label="Interactions (RiceNetv2,PRIN)"/>
+	<checkbox id="checkboxIncludePromoters" label="Promoters (FGenesh++,PlantPromDB)"/>
+	</vbox>
+				<vbox>
+	<checkbox id="checkboxIncludeGO" label="Gene Ontology"/>
+	<checkbox id="checkboxIncludePOTO" label="PO, TO, OGRO"/>
+	</vbox>
+	<vbox>
+	<checkbox id="checkboxIncludeQTL" label="Q-TARO QTLs"/>
+	<label value=" "/>
+	</vbox>
+	<button id="buttonUpdateAnnotations" label="Update Annotations" visible="true"/>
+	</hbox>
+
+
 
 </vbox>
 </north>

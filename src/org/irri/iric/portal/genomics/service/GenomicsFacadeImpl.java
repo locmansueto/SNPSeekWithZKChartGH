@@ -476,6 +476,7 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	}
 
 
+	
 	@Override
 	public List<MarkerAnnotation> getMarkerAnnotsByGene(
 			List<MarkerAnnotation> markers, int plusminus) {

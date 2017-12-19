@@ -201,7 +201,7 @@ public class OrderData  {
 				if(v.getAccession()!=null && v.getAccession().startsWith("IRGC")){}else continue;
 				if(setAccessions.contains(v.getAccession())) continue;
 				Seed seed=null;
-				if(category.equals("public")) {
+				if(category.equals("pub")) {
 				 seed=new Seed(v.getAccession(),v.getName(),"PL",
 						 grams,seedpricedao.getPricePer10gram("PL", seedpricedao.getCountryCategory(country) ),
 						seedpricedao.getMaxFreeGram(seedpricedao.getCountryCategory(country)));

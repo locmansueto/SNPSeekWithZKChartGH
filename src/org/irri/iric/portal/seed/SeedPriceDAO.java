@@ -27,6 +27,7 @@ public class SeedPriceDAO {
 		mapPricePL.put("upmid",5.36);
 		mapPricePL.put("high",8.0);
 		mapPricePL.put("priv",32.0);
+		
 		mapPricePBL.put("irri", 11.55);
 		mapPricePBL.put("low",2.64);
 		mapPricePBL.put("lowmid",11.55);

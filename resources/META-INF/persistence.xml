@@ -17,6 +17,7 @@
 
 
 				<class>org.irri.iric.portal.domain.LabelCount</class>
+				<class>org.irri.iric.portal.chado.oracle.domain.VSnpseekSettings</class>
 
 				<class>org.irri.iric.portal.chado.oracle.domain.Feature</class>
 				<class>org.irri.iric.portal.chado.oracle.domain.FeaturePostgres</class>

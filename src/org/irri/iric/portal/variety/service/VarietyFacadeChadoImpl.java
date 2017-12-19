@@ -55,13 +55,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	}
 
 	@Override
-	public List getVarietyByPhenotype(String phenId, String dataset) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
 	public List getIRGCVarietyNames() {
 		// TODO Auto-generated method stub
 		return listitemsDAO.getIRGCVarietyNames();
@@ -478,6 +471,30 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 			return traitvarietyservice.getCVtermDescendants(cv, term, dataset);
 	}
 	
+
+	@Override
+	public List getVarietyByPhenotype(String phenId, String dataset) {
+		// TODO Auto-generated method stub
+		Set s=new HashSet();
+		s.add(dataset);
+		return getVarietyByPhenotype(phenId, s);
+	}
+
+	@Override
+	public List getVarietyByPhenotype(String phenId, Set dataset) {
+		// TODO Auto-generated method stub
+		varbyphenotypedao = (VarietyByPhenotypeDAO)AppContext.checkBean(varbyphenotypedao, "VIricstocksByPhenotypeDAO");
+		listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
+		
+		BigDecimal bdId=null;
+		try {
+			bdId= BigDecimal.valueOf(Long.valueOf(phenId));
+		} catch(Exception ex) {
+			bdId = (BigDecimal)listitemsDAO.getPhenotypeDefinitions(dataset).get(phenId);
+		}
+		return varbyphenotypedao.findVarietyByPhenotype(bdId, dataset);
+				 
+	}
 	
 /*
 	@Override
@@ -661,14 +678,12 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	
 	
 	
-	
-	
 	@Override
 	public Map<BigDecimal, Object> getPhenotypeValues(String phenotype, String dataset) {
 		// TODO Auto-generated method stub
 		Map mapVarid2Value=new HashMap();		
 		AppContext.debug("get phenotype values for " + phenotype +", " + dataset);
-		if(phenotype.contains("::")) {
+		if(phenotype.contains("::") && !phenotype.startsWith("CO_320")) {
 			workspace=(WorkspaceFacade)AppContext.checkBean(workspace, "WorkspaceFacade");
 			mapVarid2Value.putAll( workspace.getVarietylistPhenotypeValues(phenotype,dataset));
 		} else {

@@ -120,9 +120,9 @@ public class AppContext {
 	// set target webserver and compile type
 	 
 	//static WEBSERVER webserver =  AppContext.WEBSERVER.AWS;
-	static WEBSERVER webserver =  AppContext.WEBSERVER.LOCALHOST;
+	//static WEBSERVER webserver =  AppContext.WEBSERVER.LOCALHOST;
 	//static WEBSERVER webserver =   AppContext.WEBSERVER.BEANSTALK;
-	//static WEBSERVER webserver =   AppContext.WEBSERVER.BEANSTALKDEV;
+	static WEBSERVER webserver =   AppContext.WEBSERVER.BEANSTALKDEV;
 	//static WEBSERVER webserver =  AppContext.WEBSERVER.ASTI;
 	//static WEBSERVER webserver =  AppContext.WEBSERVER.POLLUX;
 
@@ -344,7 +344,8 @@ public class AppContext {
     		return "http://localhost:8080";
     	else if(isAWSBeanstalkDev()) 
     		//return "http://devsnpseek-env.ap-southeast-1.elasticbeanstalk.com" ; //"http://snpseek.irri.org";
-    		return "http://testsnpseek01-env.mmnqyywpdc.ap-southeast-1.elasticbeanstalk.com";
+    		//return "http://testsnpseek01-env.mmnqyywpdc.ap-southeast-1.elasticbeanstalk.com";
+    		return "http://prodsnpseek01-env-test.ap-southeast-1.elasticbeanstalk.com";
     		//return "http://testsnpseek.irri.org";
     		//return "http://snp-seek.irri.org";
     		//http://testsnpseek.irri.org/
@@ -355,6 +356,9 @@ public class AppContext {
     		return "http://snp-seek.irri.org";
     		//http://testsnpseek.irri.org/
     		//return "http://devsnpseek2-env.ap-southeast-1.elasticbeanstalk.com"; //index.zul
+    	
+    	
+    	
     	return null;
     }
     

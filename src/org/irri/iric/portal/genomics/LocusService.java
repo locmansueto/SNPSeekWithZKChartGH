@@ -145,6 +145,7 @@ public interface LocusService {
 
 	List<MarkerAnnotation> getMarkerAnnotsByContigPositions(String contig, Collection colPos, Integer plusminus,
 			String genemodel, Set annotations, Integer maxInteractingGenes, Set excludeAnnotation);
-	
+
+
 
 }

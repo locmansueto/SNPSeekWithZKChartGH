@@ -246,6 +246,8 @@ public interface GenomicsFacade {
 	//public List<MarkerAnnotation> getMarkerAnnotsByContigPositions(String contig, Collection colPos, String organism, Integer plusminus, String genemodel, Set annotations, Integer maxInteractingGenes);
 	public List<MarkerAnnotation> getMarkerAnnotsByContigPositions(String contig, Collection colPos, String organism,
 			Integer plusminus, String genemodel, Set annotations, Integer maxInteractingGenes, Set excludeAnnotations);
+	
+	
 	public List<MarkerAnnotation> getMarkerAnnotsByGene(List<MarkerAnnotation> markers, int plusminus);
 	public List<MarkerAnnotation> getMarkerAnnotsByQTL(List<MarkerAnnotation> markers, int plusminus);
 	

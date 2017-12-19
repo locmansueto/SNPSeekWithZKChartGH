@@ -601,106 +601,31 @@ public class LocusServiceImpl implements LocusService {
 		return result;
 	}
 	
-//	
-//	private List<MarkerAnnotation> mergeAnnotations(String contig, Long chr, Collection colPos,  Integer plusminus,  Collection colGenes, Collection colQTL1, Collection colQTL2 ) {
-//		return mergeAnnotations ( contig,  chr,  colPos,   plusminus,   colGenes,  colQTL1,  colQTL2 ,null);
-//	}
-//	
-//	private List<MarkerAnnotation> mergeAnnotations(String contig, Long chr, Collection colPos,  Integer plusminus,  Collection colGenes, Collection colQTL1, Collection colQTL2 , Map<String, Collection> mapName2Col) {
-//		Map<BigDecimal,MarkerAnnotation> mapPos2Annots= new TreeMap();
-//		Iterator<BigDecimal> itPos=colPos.iterator();
-//		while(itPos.hasNext()) {
-//			BigDecimal pos=itPos.next();
-//			if(colGenes!=null) {
-//				Iterator<Locus> itLoc=colGenes.iterator();
-//				while(itLoc.hasNext()) {
-//					Locus loc=itLoc.next();
-//					if(loc.getContig().equals(contig) && loc.getFmin()-plusminus <= pos.intValue()  && loc.getFmax()+plusminus >= pos.intValue()) {
-//						MarkerAnnotation annots = mapPos2Annots.get(pos);
-//						if(annots==null) {
-//							annots = new MarkerAnnotationImpl( contig, chr, pos);
-//							mapPos2Annots.put( pos, annots);
-//						}
-//						annots.addGene( loc );
-//					}
-//				}
-//			}
-//			if(colQTL1!=null) {
-//				Iterator<Locus> itLoc=colQTL1.iterator();
-//				while(itLoc.hasNext()) {
-//					Locus loc=itLoc.next();
-//					if(loc.getContig().equals(contig) && loc.getFmin()-plusminus <= pos.intValue()  && loc.getFmax()+plusminus >= pos.intValue()) {
-//						MarkerAnnotation annots = mapPos2Annots.get(pos);
-//						if(annots==null) {
-//							annots = new MarkerAnnotationImpl( contig, chr, pos);
-//							mapPos2Annots.put( pos, annots);
-//						}
-//						annots.addQTL1( loc );
-//					}
-//				}
-//			}
-//			if(colQTL2!=null) {
-//				Iterator<Locus> itLoc=colQTL2.iterator();
-//				while(itLoc.hasNext()) {
-//					Locus loc=itLoc.next();
-//					if(loc.getContig().equals(contig) && loc.getFmin()-plusminus <= pos.intValue()  && loc.getFmax()+plusminus >= pos.intValue()) {
-//						MarkerAnnotation annots = mapPos2Annots.get(pos);
-//						if(annots==null) {
-//							annots = new MarkerAnnotationImpl( contig, chr, pos);
-//							mapPos2Annots.put( pos, annots);
-//						}
-//						annots.addQTL2( loc );
-//					}
-//				}
-//			}
-//			
-//			if(mapName2Col!=null) {
-//				Iterator<String> itAnnotname=mapName2Col.keySet().iterator();
-//				while(itAnnotname.hasNext()) {
-//					String annotname=itAnnotname.next();
-//					Collection colLocs = mapName2Col.get(annotname);
-//					Iterator<Locus> itLoc=colLocs.iterator();
-//					while(itLoc.hasNext()) {
-//						Locus loc=itLoc.next();
-//						if(loc.getContig().equals(contig) && loc.getFmin()-plusminus <= pos.intValue()  && loc.getFmax()+plusminus >= pos.intValue()) {
-//							MarkerAnnotation annots = mapPos2Annots.get(pos);
-//							if(annots==null) {
-//								annots = new MarkerAnnotationImpl( contig, chr, pos);
-//								mapPos2Annots.put( pos, annots);
-//							}
-//							annots.addOntologyGene(annotname, loc);
-//						}
-//					}
-//				}
-//			}
-//		}
-//		
-//		List result = new ArrayList();
-//		result.addAll(mapPos2Annots.values());
-//		return result;
-//	}
-	/*
-	private List<MarkerAnnotation> getAnnotations( String contig, long start, long end, String genemodel, Set featuretype) {
-
-		listitemsdao=(ListItemsDAO)AppContext.checkBean(listitemsdao,"ListItemsDAO");
-		Map mapCvterm2Loci=new LinkedHashMap();
-		Map<String,Map<String,Collection>> mapGenemodel2Interacting2Loci=new LinkedHashMap();
-		List listLoci = new ArrayList();
-		//Set featuretype=new HashSet();
-		listLoci.addAll( locusnotesDAO.getLocusByRegion(contig, start, end,  Organism.REFERENCE_NIPPONBARE, genemodel, featuretype));
-		//mapCvterm2Loci.put(MarkerAnnotation.GENE_MODEL, listLoci);
-
-	}
-	*/
+	
 	private List<MarkerAnnotation> getAnnotations( String contig, Collection colPos, Integer plusminus, String genemodel, Map<String, Long> mapAnnotcount, Integer maxInteractingGenes, Map<String,PositionLogPvalue> mapPos2Pvalue) {
+		return getAnnotations( null,  contig,  colPos,  plusminus,  genemodel,  mapAnnotcount,  maxInteractingGenes,  mapPos2Pvalue) ;
+	}
+
+	private List<MarkerAnnotation> getAnnotations(Collection loci, Integer plusminus, String genemodel, Map<String, Long> mapAnnotcount, Integer maxInteractingGenes, Map<String,PositionLogPvalue> mapPos2Pvalue) {
+		return getAnnotations( loci,  null, null, plusminus,  genemodel,  mapAnnotcount,  maxInteractingGenes,  mapPos2Pvalue) ;
+	}
+
+	
+	private List<MarkerAnnotation> getAnnotations(Collection loci, String contig, Collection colPos, Integer plusminus, String genemodel, Map<String, Long> mapAnnotcount, Integer maxInteractingGenes, Map<String,PositionLogPvalue> mapPos2Pvalue) {
 	//private List<MarkerAnnotation> getAnnotations( String contig, Collection colPos, Integer plusminus, String genemodel, Map<String, Long> mapAnnotcount, Integer maxInteractingGenes) {
 
 		listitemsdao=(ListItemsDAO)AppContext.checkBean(listitemsdao,"ListItemsDAO");
 		Map mapCvterm2Loci=new LinkedHashMap();
 		Map<String,Map<String,Collection>> mapGenemodel2Interacting2Loci=new LinkedHashMap();
+
 		List listLoci = new ArrayList();
-		listLoci.addAll( locusnotesDAO.getLocusByContigPositions(contig, colPos , Organism.REFERENCE_NIPPONBARE,  plusminus, genemodel) );
-		mapCvterm2Loci.put(MarkerAnnotation.GENE_MODEL, listLoci);
+		if(loci==null) {
+			listLoci.addAll( locusnotesDAO.getLocusByContigPositions(contig, colPos , Organism.REFERENCE_NIPPONBARE,  plusminus, genemodel) );
+			mapCvterm2Loci.put(MarkerAnnotation.GENE_MODEL, listLoci);
+		} else {
+			listLoci.addAll(  new LinkedHashSet(listitemsdao.findGeneFromName(loci, Organism.REFERENCE_NIPPONBARE)) );
+			mapCvterm2Loci.put(MarkerAnnotation.GENE_MODEL, listLoci);
+		}
 		
 		if(listLoci.size()>0) {
 			
@@ -1130,15 +1055,6 @@ public class LocusServiceImpl implements LocusService {
 		return new Map[]{setCDSUTRSnp, setExonSnp, setGeneSnp, setPromSnp};
 	}
 
-	/*
-	@Override
-	public List<MarkerAnnotation> getMarkerGenomicAnnotsByRegion(String contig, Collection colPos, Collection<Locus> colPos, Integer plusminus, String genemodel, Set annotations, Integer maxInteractingGenes) {
-		locusnotesDAO = (LocusDAO)AppContext.checkBean(locusnotesDAO,"LocusNotesDAO");
-		
-		
-	}
-*/
-	
 	@Override
 	public List<MarkerAnnotation> getMarkerAnnotsByContigPositions(String contig, Collection colPos, Integer plusminus, String genemodel, Set annotations, Integer maxInteractingGenes, Set excludeAnnotation) {
 		// TODO Auto-generated method stub
@@ -1393,104 +1309,6 @@ public class LocusServiceImpl implements LocusService {
 			//return mergeAnnotations(contig, strchr,  colPos,   plusminus,  listLoci, listQtlQtaro, listQtlGramene, mapCvterm2Loci, annotations);
 			return mergeAnnotations(contig, strchr,  colPos,   plusminus, mapCvterm2Loci, mapAnnotcount, mapGenemodel2Interacting2Loci, mapPromoterLoci, mapSnpEff);
 		}
-		
-	
-//	
-//	@Override
-//	public List<MarkerAnnotation> getMarkerAnnotsByContigPositions(String contig, Collection colPos, Integer plusminus, String genemodel, Set annotations, Integer maxInteractingGenes) {
-//		// TODO Auto-generated method stub
-//		
-//		qtldao = (QtlDAO) AppContext.checkBean(qtldao,  "QtlDAO");
-//		locusnotesDAO = (LocusDAO)AppContext.checkBean(locusnotesDAO,"LocusNotesDAO");
-//		List listMarkers = new ArrayList();
-//		
-//		Map<String,Long> mapAnnotcount=new LinkedHashMap();
-//		
-//		Map<String,PositionLogPvalue> mapPos2Pval=new HashMap();
-//		Iterator<Position> itPos=colPos.iterator();
-//		while(itPos.hasNext()) {
-//			Position ipos=itPos.next();
-//			if(ipos instanceof PositionLogPvalue) {
-//				mapPos2Pval.put(ipos.getChr()+"-"+ipos.getPosition(), (PositionLogPvalue)ipos);
-//			} else {
-//				AppContext.debug(ipos.getClass() + "  " + ipos);
-//			}
-//		}
-//		if(mapPos2Pval.isEmpty()) mapPos2Pval=null;
-//		if(mapPos2Pval!=null) AppContext.debug("mapPos2Pval " + mapPos2Pval.size() + ":");
-//		
-//		
-//		if(contig.toLowerCase().equals("any")) {
-//			
-//			
-//			Map<String, Set<BigDecimal>> mapChr2Pos = MultiReferencePositionImpl.getMapContig2SNPPos(colPos);
-//			Iterator<String> itChr = mapChr2Pos.keySet().iterator();
-//			while(itChr.hasNext()) {
-//				String chr = itChr.next();
-//				/*
-//				List listLoci = new ArrayList();
-//				List listQtlGramene = new ArrayList();
-//				List listQtlQtaro = new ArrayList();
-//				//listLoci.addAll( locusnotesDAO.getLocusByContigPositions(chr, mapChr2Pos.get(chr) ,  genemodel, plusminus) );
-//				listLoci.addAll( getLocusByContigPositions(chr, mapChr2Pos.get(chr) , Organism.REFERENCE_NIPPONBARE, plusminus , genemodel ) );
-//				listQtlQtaro.addAll( qtldao.getLocusByContigPositions(chr,  mapChr2Pos.get(chr) , Organism.REFERENCE_NIPPONBARE, plusminus, QtlDAO.QTL_QTARO) );
-//				listQtlGramene.addAll( qtldao.getLocusByContigPositions(chr,  mapChr2Pos.get(chr) , Organism.REFERENCE_NIPPONBARE, plusminus, QtlDAO.QTL_GRAMENE) );
-//				Long strchr = Long.valueOf( chr.toLowerCase().replaceAll("chr0","").replaceAll("chr",""));
-//				listMarkers.addAll(mergeAnnotations(chr, strchr,   mapChr2Pos.get(chr),   plusminus,  listLoci, listQtlQtaro, listQtlGramene));
-//				*/
-//				listMarkers.addAll(getAnnotations(chr,  mapChr2Pos.get(chr),  plusminus,  genemodel, mapAnnotcount, maxInteractingGenes, mapPos2Pval));
-//			}
-//			
-//		} else {
-//			listMarkers.addAll(getAnnotations(contig,  colPos,  plusminus,  genemodel, mapAnnotcount, maxInteractingGenes, mapPos2Pval));
-//			/*
-//			List listLoci = new ArrayList();
-//			List listQtlGramene = new ArrayList();
-//			List listQtlQtaro = new ArrayList();
-//			listLoci.addAll( locusnotesDAO.getLocusByContigPositions(contig, colPos , Organism.REFERENCE_NIPPONBARE,  plusminus, genemodel) );
-//			listQtlQtaro.addAll( qtldao.getLocusByContigPositions(contig, colPos, Organism.REFERENCE_NIPPONBARE,  plusminus, QtlDAO.QTL_QTARO) );
-//			listQtlGramene.addAll( qtldao.getLocusByContigPositions(contig, colPos, Organism.REFERENCE_NIPPONBARE, plusminus, QtlDAO.QTL_GRAMENE) );
-//			Long strchr = Long.valueOf( contig.toLowerCase().replaceAll("chr0","").replaceAll("chr",""));
-//			listMarkers.addAll(mergeAnnotations(contig, strchr,  colPos,   plusminus,  listLoci, listQtlQtaro, listQtlGramene));
-//			*/ 
-//		}
-//		
-//		long pvalcnt=0;
-//		if(mapPos2Pval!=null) {
-//			Iterator<MarkerAnnotation> itAnnots=listMarkers.iterator();
-//			while(itAnnots.hasNext()) {
-//				MarkerAnnotation marker=itAnnots.next();
-//				PositionLogPvalue pval= mapPos2Pval.get(marker.getChr()+"-"+marker.getPosition());
-//				if(pval!=null) {
-//					marker.setMinusLogPvalue( pval.getMinusLogPvalue()  );
-//					pvalcnt++;
-//				}
-//			}
-//		}
-//		
-//		AppContext.debug(pvalcnt + " markers with pvalue");
-//		//listMarkers
-//		
-//		if(AppContext.showBlankAnnotations()) {
-//			annotations.addAll( mapAnnotcount.keySet() );
-//		} else {
-//			Iterator<String> itAnnotname= mapAnnotcount.keySet().iterator(); 
-//			while(itAnnotname.hasNext()){
-//				String annotname=itAnnotname.next();
-//				Long anotcnt = mapAnnotcount.get(annotname);
-//				if(anotcnt.longValue()>0) annotations.add(annotname);
-//			}
-//		}
-//		
-//		AppContext.debug(listMarkers.size() + " markers with annotation");
-//		AppContext.debug("mapAnnotcount: " + mapAnnotcount); 
-//		//AppContext.debug( listMarkers.toString());
-//		return  listMarkers;
-//	}
-//
 
-	
-	
-	
 
 }

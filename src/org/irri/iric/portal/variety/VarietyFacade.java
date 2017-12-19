@@ -400,6 +400,8 @@ public interface VarietyFacade {
 
 	public Set getGermplasm(String dataset);
 
+	List getVarietyByPhenotype(String phenId, Set dataset);
+
 	
 
 	

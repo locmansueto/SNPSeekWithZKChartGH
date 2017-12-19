@@ -61,6 +61,7 @@ public class InlineEditingViewModel {
 	@NotifyChange({"totalPrice","totalGram","allSeeds","noItems"})
 	public void updatePrice(Double priceper10gram, Double maxFree) {
 		// TODO Auto-generated method stub
+		AppContext.debug("priceper10gram=" + priceper10gram +" maxFree=" + maxFree);
 		for(Seed s:data.getAllSeeds()) {
 			s.setPricePerGram(priceper10gram);
 			s.setMaxFree(maxFree);

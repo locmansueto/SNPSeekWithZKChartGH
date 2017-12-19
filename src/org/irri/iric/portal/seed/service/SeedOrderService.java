@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.pdfbox.multipdf.PDFMergerUtility;
+
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.CreateZipMultipleFiles;
 import org.irri.iric.portal.email.EmailService;
@@ -31,8 +31,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.google.common.io.Files;
-import com.yeokhengmeng.docstopdfconverter.Converter;
-import com.yeokhengmeng.docstopdfconverter.DocxToPDFConverter;
 
 @Service("IRGCSeedOrderService")
 public class SeedOrderService {
@@ -354,20 +352,30 @@ public class SeedOrderService {
 	}
 	
 	buff.append("<br><h3>List of Accessions</h3>");
-	buff.append("<table><tr><th>Accession</th><th>Variety Designation</th><th>US$ / 10 g</th><th>Quantity (g)</th><th>Price US$</th></tr>\n");
+	buff.append("<table><tr><th>Accession</th><th>    </th><th>Variety Designation</th><th>US$ / 10 g</th><th>Quantity (g)</th><th>Price US$</th></tr>\n");
+	Map<String,Seed> ms=new TreeMap();
 	for(Seed seed:order.getAllSeeds()) {
-		buff.append("<tr><td>"+  seed.getAccession() +"</td><td>" + seed.getVarname() + "</td><td>" +seed.getPricePerGram() + "</td><td><b>" + seed.getGram() +" g</b></td><td>US$ " + seed.getPrice() +"</td></tr>\n" );
+		ms.put(seed.getAccession(),seed);
+	}
+	for(String seedacc:ms.keySet()) {
+		Seed seed=ms.get(seedacc);
+		buff.append("<tr><td>"+  seed.getAccession() +"</td><td>    </td><td>" + seed.getVarname() + "</td><td>" +seed.getPricePerGram() + "</td><td><b>" + seed.getGram() +" g</b></td><td>US$ " + seed.getPrice() +"</td></tr>\n" );
 	}
 	buff.append("</table>\n");
 	
 	buff.append("<br><h3>Order Summary</h3>");
 	buff.append("<br><b>No. of items:</b>" + order.getAllSeeds().size());
 	buff.append("<br><b>Total weight (g):</b>" + order.getTotalGram() );
-	buff.append("<br><b>Price estimate (US$):</b>" + order.getTotalPrice() + " + shipping at cost");
+	buff.append("<br><b>Price estimate (US$):</b>" + AppContext.decf.format(order.getTotalPrice()) + " + shipping at cost");
 	buff.append("<br><br><br><br></html>");
 	
-	lto.add("l.mansueto@irri.org");
 	List lcc=new ArrayList();
+	if(AppContext.isAWSBeanstalk()) {
+		lto.add("m.alana@irri.org");
+		lcc.add("iric@irri.org");
+	} else
+		lto.add("l.mansueto@irri.org");
+	
 	
 	//lcc.add("l.mansueto@irri.org");
 	if(sendEmail(lto, lcc, "Seed order #" + ordercode, buff.toString() ))
@@ -547,6 +555,14 @@ public class SeedOrderService {
 
 	public void updatePrice(InlineEditingViewModel vm, String usercat, String c) {
 		// TODO Auto-generated method stub
-		vm.updatePrice( seedpricedao.getPricePer10gram("PL", getCountryCategory(c)) , seedpricedao.getMaxFreeGram(getCountryCategory(c)) );
+		if(usercat.equals("pub")) {
+			String ccat=getCountryCategory(c);
+			AppContext.debug("pub-" + ccat);
+			vm.updatePrice( seedpricedao.getPricePer10gram("PL",ccat ) , seedpricedao.getMaxFreeGram(ccat) );
+		}
+		else {
+			AppContext.debug(usercat);
+			vm.updatePrice( seedpricedao.getPricePer10gram("PL", usercat) , 0.0 );
+		}
 	}
 }

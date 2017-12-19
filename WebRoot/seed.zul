@@ -14,9 +14,7 @@
 
 	
 
-<label value="Customer Information" style="font-size:20px;font-weight:bold;color:gray;"/>
-
-		
+<label value="Customer Information" style="font-size:20px;font-weight:bold;color:green;"/>
 
 
 <grid  width="100%">
@@ -26,34 +24,40 @@
 		<vbox>
 		<hbox>
 		<label value="Name               " pre="true"/>
-		<textbox id="textboxName" width="500px"/>
+		<textbox id="textboxName" width="500px"/><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
+		<label value="  required field" pre="true" style="color:red;"/>
+		<label value="*" style="font-size:12px;font-weight:bold;color:red;"/>		
+
+
 		</hbox>
 		<hbox>
 		<label value="Institution         " pre="true"/>
-		<textbox id="textboxInstitution" width="500px" />
+		<textbox id="textboxInstitution" width="500px" /><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
 		</hbox>
 		<hbox>
 		<label value="Address Line 1 " pre="true"/>
-		<textbox id="textboxAddress1"  width="500px"/>
+		<textbox id="textboxAddress1"  width="500px"/><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
 		</hbox> 
 		<hbox>
 		<label value="Address Line 2 " pre="true"/>
 		<textbox id="textboxAddress2"  width="500px"/>
 		</hbox> 
-		<hbox>
-		<label value="Email          " pre="true"/>
-		<textbox id="textboxEmailReq"  width="300px"/>
-		<label value="    Phone no   " pre="true"/>
-		<textbox id="textboxPhoneReq" />
-		</hbox> 
-		 
-		<hbox>
-		<label value="Postal code  " pre="true"/>
-		<textbox id="textboxPostalCode"/>
-		<vbox width="30px"/>
-		<label value="Country        " pre="true"/>
-		<listbox id="listboxCountry" mold="select"/>
-		</hbox>
+		
+                <hbox>
+                <label value="Email                " pre="true"/>
+                <textbox id="textboxEmailReq"  width="270px"/><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
+                <label value="    Phone no   " pre="true"/>
+                <textbox id="textboxPhoneReq" width="140px"/>
+                </hbox>
+
+                <hbox>
+                <label value="Postal code      " pre="true"/>
+                <textbox id="textboxPostalCode" width="200px"/>
+                <vbox width="30px"/>
+                <label value="Country        " pre="true"/>
+                <listbox id="listboxCountry" mold="select"/><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
+                </hbox>
+		
 		</vbox>				
 	</row>	
 	<row spans="1,5" visible="true">
@@ -99,24 +103,24 @@
 		</vbox>
 		<vbox>
 		<hbox>
-		<label value="Name               " pre="true"/>
-		<textbox id="textboxAutname"  width="500px"/>
+		<label value="Name              " pre="true"/>
+		<textbox id="textboxAutname"  width="500px"/><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
 		</hbox> 
 		<hbox>
 		<label value="Position           " pre="true"/>
-		<textbox id="textboxPosition" width="300px" />
+		<textbox id="textboxPosition" width="500px" /><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
 		</hbox> 
 		<hbox>
-		<label value="Address            " pre="true"/>
-		<textbox id="textboxAutaddress" width="300px" />
+		<label value="Address           " pre="true"/>
+		<textbox id="textboxAutaddress" width="500px" /><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
 		</hbox> 
 		<hbox>
-		<label value="Phone no           " pre="true"/>
+		<label value="Phone no         " pre="true"/>
 		<textbox id="textboxPhoneAuth" />
 		</hbox> 
 		<hbox>
 		<label value="Email              " pre="true"  />
-		<textbox id="textboxEmailAuth" width="300px"/>
+		<textbox id="textboxEmailAuth" width="270px"/><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
 		</hbox> 
 		</vbox>
 	</row>
@@ -126,7 +130,7 @@
 <hbox height="50px"/>
 
 
-<label value="Create Order List" style="font-size:20px;font-weight:bold;color:gray;"/>
+<label value="Create Order List" style="font-size:20px;font-weight:bold;color:green;"/>
 
 <grid  width="100%">
 <rows>
@@ -135,9 +139,9 @@
 <label value="Add Seeds by:" style="font-size:14px;font-weight:bold;color:gray;"/>
 <hbox height="10px"/>
 <hbox>
-<label value="Accession       " pre="true"  style="font-size:14px;font-weight:bold;color:gray;"/>
+<label value="Accession           " pre="true"  style="font-size:14px;font-weight:bold;color:gray;"/>
 <listbox id="listboxAccession" mold="select" width="200px"/>
-<button id="buttonAddAccession" style="font-size:14px;font-weight:bold;color:gray;" label="Add" /> 
+<button id="buttonAddAccession" style="font-size:14px;font-weight:bold;color:gray;" label="Add" />
 </hbox>
 <hbox>
 <label value="OR Designation  " pre="true"  style="font-size:14px;font-weight:bold;color:gray;"/>
@@ -145,8 +149,7 @@
 <button id="buttonAddVarname" style="font-size:14px;font-weight:bold;color:gray;" label="Add" />
 </hbox>
 <hbox>
-<label value="OR Variety List " pre="true"  style="font-size:14px;font-weight:bold;color:gray;"/>
-<!--  label value="Add varieties from list"/ --><listbox id="listboxVarlists" mold="select"/>
+<label value="OR Variety List   " pre="true"  style="font-size:14px;font-weight:bold;color:gray;"/>
 <button id="buttonAddList" style="font-size:14px;font-weight:bold;color:gray;" label="Add" />
 </hbox>
 <hbox height="20px"/>
@@ -163,7 +166,7 @@
 </vbox>
 <vbox>
 <label value="Seed Pricing" style="font-size:14px;font-weight:bold;color:gray;"/>
-<image src="/images/iric/seedprice.png" width="80%"/>
+<image src="/images/iric/seedprice.png" width="90%"/>
 </vbox>
 </row>
 </rows>

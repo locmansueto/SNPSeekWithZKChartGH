@@ -29,6 +29,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
 		VGwasRunDAO {
 
+	@Override
+	public GWASRun getGWASRunByTrait(String trait) {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVGwasRunByTrait",-1,-1, trait);
+		return (VGwasRun)query.getResultList().iterator().next();
+	}
+
+	@Override
+	public GWASRun getGWASRunByCoterm(String coterm) {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVGwasRunByCoterm",-1,-1, coterm);
+		return (VGwasRun)query.getResultList().iterator().next();
+	}
+
+	@Override
+	public GWASRun getGWASRunByCodefinition(String codefinition) {
+		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVGwasRunByCodefinition",-1,-1, codefinition);
+		return (VGwasRun)query.getResultList().iterator().next();
+	}
+
 	/**
 	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
 	 *

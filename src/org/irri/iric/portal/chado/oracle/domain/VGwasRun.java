@@ -29,13 +29,29 @@ import org.irri.iric.portal.gwas.domain.GWASRun;
 		@NamedQuery(name = "findVGwasRunBySubpopulation", query = "select myVGwasRun from VGwasRun myVGwasRun where myVGwasRun.subpopulation = ?1"),
 		@NamedQuery(name = "findVGwasRunBySubpopulationContaining", query = "select myVGwasRun from VGwasRun myVGwasRun where myVGwasRun.subpopulation like ?1"),
 		@NamedQuery(name = "findVGwasRunBySubpopulationId", query = "select myVGwasRun from VGwasRun myVGwasRun where myVGwasRun.subpopulationId = ?1"),
-		@NamedQuery(name = "findVGwasRunByTrait", query = "select myVGwasRun from VGwasRun myVGwasRun where myVGwasRun.trait = ?1"),
+		@NamedQuery(name = "findVGwasRunByTrait", query = "select myVGwasRun from VGwasRun myVGwasRun where upper(myVGwasRun.trait) = upper(?1)"),
+		@NamedQuery(name = "findVGwasRunByCoterm", query = "select myVGwasRun from VGwasRun myVGwasRun where upper(myVGwasRun.coterm) = upper(?1)"),
+		@NamedQuery(name = "findVGwasRunByCodefinition", query = "select myVGwasRun from VGwasRun myVGwasRun where upper(myVGwasRun.codefinition) = upper(?1)"),
 		@NamedQuery(name = "findVGwasRunByTraitContaining", query = "select myVGwasRun from VGwasRun myVGwasRun where myVGwasRun.trait like ?1"),
 		@NamedQuery(name = "findVGwasRunByTraitId", query = "select myVGwasRun from VGwasRun myVGwasRun where myVGwasRun.traitId = ?1") })
 @Table( name = "V_GWAS_RUN")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VGwasRun")
 public class VGwasRun implements Serializable, GWASRun {
+	@Override
+	public String getCodefinition() {
+		// TODO Auto-generated method stub
+		return codefinition;
+	}
+
+	public BigDecimal getCotermId() {
+		return cotermId;
+	}
+
+	public String getCoterm() {
+		return coterm;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -56,12 +72,29 @@ public class VGwasRun implements Serializable, GWASRun {
 	/**
 	 */
 
-	@Column(name = "TRAIT", length = 4000)
+	@Column(name = "DEFINITION", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String trait;
 	/**
 	 */
+	
+	@Column(name = "COTERM_ID",  precision = 10)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	BigDecimal cotermId;
+
+	@Column(name = "COTERM", length = 4000)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String coterm;
+
+	@Column(name = "CODEFINITION", length = 4000)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String codefinition;
+
+	
 
 	@Column(name = "SUBPOPULATION_ID", nullable = false)
 	@Basic(fetch = FetchType.EAGER)

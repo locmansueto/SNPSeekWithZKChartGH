@@ -2419,31 +2419,38 @@ private List _getLocusByContigPositionsPostgres(String contig, Collection posset
 			return  _getLocusByContigPositions( contig,  posset,  organism, plusminus,genemodel, featuretype);
 		}
 		else if(genemodel.equals( GenomicsFacade.GENEMODEL_IRIC)) {
+			//locuspref=" and f.dbxref_id=dx.dbxref_id and dx.accession='osnippo:all_genes' and dx.db_id=db.db_id and f.type_id in (select cvterm_id from cvterm where name='gene') " ;
 			locuspref = " where  flist.name like 'OsNippo%'"; 
 			locusmapping ="  left join " + AppContext.getDefaultSchema() + ".locus_mapping lm on lm.name=flist.name ";
 		}
 		else if(genemodel.equals( GenomicsFacade.GENEMODEL_MSU7)) {
-			locuspref = " where  flist.name like 'LOC_%'"; 
+			locuspref = " where  flist.name like 'LOC_%'";
+			//locuspref=" and f.dbxref_id=dx.dbxref_id and db.name='msu7_annot' and dx.db_id=db.db_id and f.type_id in (select cvterm_id from cvterm where name='gene') " ;
 			if(exactString)
 				locusmapping ="  left join " + AppContext.getDefaultSchema() + ".locus_mapping lm on lm.msu7=flist.name " ;
 			else locusmapping ="  left join " + AppContext.getDefaultSchema() + ".locus_mapping lm on lm.msu7 like '%' || flist.name || '%' " ;
 		}
 		else if(genemodel.equals( GenomicsFacade.GENEMODEL_RAP)) {
 			locuspref = " where  (flist.name like 'Os0%' or flist.name like 'Os1%') "; 
+			//locuspref=" and f.dbxref_id=dx.dbxref_id and db.name in('raprep_irgsp1_annot','rappred_irgsp1_annot') and dx.db_id=db.db_id and f.type_id in (select cvterm_id from cvterm where name='gene') " ;
 			if(exactString)
 				locusmapping ="  left join " + AppContext.getDefaultSchema() + ".locus_mapping lm on lm.rap_representative=flist.name " ;
 			else locusmapping ="  left join " + AppContext.getDefaultSchema() + ".locus_mapping lm on lm.rap_representative like '%' || flist.name% || '%' " ;
 		}
 		else if(genemodel.equals( GenomicsFacade.GENEMODEL_IRIC_ONLY)) {
-			locuspref = " where  flist.name like 'OsNippo%'"; 
+			locuspref = " where  flist.name like 'OsNippo%'";
+			//locuspref=" and f.dbxref_id=dx.dbxref_id and dx.accession='osnippo:all_genes' and dx.db_id=db.db_id and f.type_id in (select cvterm_id from cvterm where name='gene') " ;
 			sqlselect="select flist.* , flist.name iric, '' msu7, '' rap_rep, '' rap_pred, '' fgenesh from (";
 		}
 		else if(genemodel.equals( GenomicsFacade.GENEMODEL_MSU7_ONLY)) {
 			locuspref = " where  flist.name like 'LOC_%'"; 
+			//locuspref=" and f.dbxref_id=dx.dbxref_id and db.name='msu7_annot' and dx.db_id=db.db_id and f.type_id in (select cvterm_id from cvterm where name='gene') " ;
 			sqlselect="select flist.* , '' iric, flist.name msu7, '' rap_rep, '' rap_pred, '' fgenesh from (";
 		}
 		else if(genemodel.equals( GenomicsFacade.GENEMODEL_RAP_ONLY)) {
-			locuspref = " where  (flist.name like 'Os0%' or flist.name like 'Os1%') "; 
+			locuspref = " where  (flist.name like 'Os0%' or flist.name like 'Os1%') ";
+			//locuspref=" and f.dbxref_id=dx.dbxref_id and db.name in('raprep_irgsp1_annot','rappred_irgsp1_annot') and dx.db_id=db.db_id and f.type_id in (select cvterm_id from cvterm where name='gene') " ;
+			
 			sqlselect="select flist.* , '' iric, '' msu7, flist.name rap_rep, '' rap_pred, '' fgenesh from (";
 		}
 		
@@ -2465,6 +2472,7 @@ private List _getLocusByContigPositionsPostgres(String contig, Collection posset
 		//sql.append(	"select flist.* , lm.name iric, lm.msu7, lm.rap_representative rap_rep, lm.rap_predicted rap_pred, lm.fgenesh from (");
 		sql.append(sqlselect);
 
+		/*
 		sql.append(	"select distinct f.feature_id, f.name , fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, substring(f3.value,1,1000) notes, f.organism_id, o.common_name, cvtype.name feature_type "
 		  + " from " + AppContext.getDefaultSchema() + ".featureloc fl,  " + AppContext.getDefaultSchema() + ".feature fsrc, " + AppContext.getDefaultSchema() + ".organism o, " + AppContext.getDefaultSchema() + ".cvterm cvtype, ");
 		
@@ -2476,8 +2484,24 @@ private List _getLocusByContigPositionsPostgres(String contig, Collection posset
 		         + " where fp.feature_id=f2.feature_id and  fp.type_id=cv.cvterm_id and cv.name='Note') f3"
 		         + " on f.feature_id=f3.feature_id" 
 		  + " where f.feature_id=fl.feature_id ");
+			*/
 
+		sql.append(	"select distinct f.feature_id, f.name , fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, substring(f3.value,1,1000) notes, f.organism_id, o.common_name, cvtype.name feature_type "
+			//	  + " from " + AppContext.getDefaultSchema() + ".db, " + AppContext.getDefaultSchema() + ".dbxref dx, " + AppContext.getDefaultSchema() + ".featureloc fl,  " + AppContext.getDefaultSchema() + ".feature fsrc, " + AppContext.getDefaultSchema() + ".organism o, " + AppContext.getDefaultSchema() + ".cvterm cvtype, ");
+				+ " from " + AppContext.getDefaultSchema() + ".featureloc fl,  " + AppContext.getDefaultSchema() + ".feature fsrc, " + AppContext.getDefaultSchema() + ".organism o, " + AppContext.getDefaultSchema() + ".cvterm cvtype, ");
+				
+				  //sql.append( "  (select distinct column_value pos from table(sys.odcinumberlist(" + AppContext.toCSV(posset)+ "))) postable, ");
+					sql.append( " (select unnest(ARRAY[" +  AppContext.toCSV(posset).replace("[", "").replace("]", "") + "]) pos)  postable, " );
+				
+				sql.append(" " + AppContext.getDefaultSchema() + ".feature f"   
+				  + " left join ( select f2.feature_id, fp.value from " + AppContext.getDefaultSchema() + ".featureprop fp, " + AppContext.getDefaultSchema() + ".cvterm cv, " + AppContext.getDefaultSchema() + ".feature f2" 
+				         + " where fp.feature_id=f2.feature_id and  fp.type_id=cv.cvterm_id and cv.name='Note') f3"
+				         + " on f.feature_id=f3.feature_id" 
+				  + " where f.feature_id=fl.feature_id ");
+				
 			
+				//sql.append(locuspref);
+		
 			String ppm="";
 			String mpm="";
 			if(plusminus!=null && plusminus.intValue()!=0 ) {

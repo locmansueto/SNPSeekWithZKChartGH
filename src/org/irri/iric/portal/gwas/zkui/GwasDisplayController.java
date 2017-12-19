@@ -55,7 +55,6 @@ import org.irri.iric.portal.genotype.VariantTableArray;
 import org.irri.iric.portal.genotype.service.VariantAlignmentTableArraysImpl;
 import org.irri.iric.portal.gwas.GwasFacade;
 import org.irri.iric.portal.gwas.domain.ManhattanPlotImpl;
-import org.irri.iric.portal.gwas.service.GwasFacadeImpl.ScoreFeature;
 import org.irri.iric.portal.variety.VarietyFacade;
 import org.irri.iric.portal.variety.service.Data;
 import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
@@ -123,7 +122,7 @@ import org.zkoss.zul.Window;
 @Scope(value="session")
 public class GwasDisplayController extends SelectorComposer<Window> {
 
-	
+	private int maxAnnotMarkers=50;
 	private int nLabels=25;
 	private int nMarkers=100;
 	private Map<String,Integer> mapChr2Offset=new HashMap();
@@ -339,6 +338,11 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 	
 	@Wire
 	private Listbox listboxChromosome;
+	@Wire
+	private Radio radioLegacyTrait;
+	@Wire
+	private Radio radioCoTrait;
+	
 	
 	private Map<String,Double> mapPos2Values;
 	private Map<String,Integer> mapPos2Index;
@@ -361,6 +365,8 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 
 	private List markerresult;
 	private Set setAnnotations;
+	private int prevMinX=-1;
+	private int prevMaxX=-1;
 	private String urljbrowse;
 	
 	private String dataset=VarietyFacade.DATASET_SNPINDELV2_IUPAC;
@@ -407,7 +413,7 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		        
 		        AppContext.debug("init subpoptrait");
 		        listboxSubpopulation.setModel(new SimpleListModel(AppContext.createUniqueUpperLowerStrings(gwas.getSubpopulations(),false,true)));
-		        listboxTrait.setModel(new SimpleListModel(AppContext.createUniqueUpperLowerStrings(gwas.getTraits("all varieties"),false,true)));
+		        listboxTrait.setModel(new SimpleListModel(AppContext.createUniqueUpperLowerStrings(gwas.getTraits("all varieties", radioCoTrait.isSelected()),false,true)));
 	        
 		        AppContext.debug("set selected");
 		        listboxSubpopulation.setSelectedIndex(3);
@@ -445,8 +451,21 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 	        }
 	        
 	 }
-	
 
+	@Listen("onClick =#radioLegacyTrait")
+	public void onclickLegacy() {
+		if(radioLegacyTrait.isSelected()) 
+	        listboxTrait.setModel(new SimpleListModel(AppContext.createUniqueUpperLowerStrings(
+	        		gwas.getTraits(listboxSubpopulation.getSelectedItem().getLabel()  , radioCoTrait.isSelected()),false,true)));
+		listboxTrait.setSelectedIndex(0);
+	}
+	@Listen("onClick =#radioCoTrait")
+	public void onclickCOTerm() {
+		if(radioCoTrait.isSelected())
+	        listboxTrait.setModel(new SimpleListModel(AppContext.createUniqueUpperLowerStrings(
+	        		gwas.getTraits(listboxSubpopulation.getSelectedItem().getLabel()  , radioCoTrait.isSelected()),false,true)));
+		listboxTrait.setSelectedIndex(0);
+	}
 
 	@Listen("onSelect =#listboxTrait")
 	public void onselectTrait() {
@@ -483,7 +502,7 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 	public void onselectSubpop() {
 		List l=new ArrayList();
 		l.add("");
-		l.addAll(gwas.getTraits(listboxSubpopulation.getSelectedItem().getLabel()));
+		l.addAll(gwas.getTraits(listboxSubpopulation.getSelectedItem().getLabel(), radioCoTrait.isSelected()));
 		listboxTrait.setModel(new SimpleListModel(  l ) );
 		listboxTrait.setSelectedIndex(0);
 		this.chartManhattanXY.setVisible(false);
@@ -581,78 +600,6 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		this.tabPosition.setDisabled(false);
 		
 	}
-	
-	
-	
-//	private void displayManhattan() {
-//	
-//		
-//		String trait= listboxTrait.getSelectedItem().getLabel();
-//		String subpop= this.listboxSubpopulation.getSelectedItem().getLabel();
-//		double minlogp= Double.valueOf(listboxMinlogP.getSelectedItem().getLabel());
-//		
-//		
-//		if(trait==null || trait.isEmpty() || subpop==null || subpop.isEmpty()) return;
-//		
-//		//chartManhattan.getChart().setResetZoomButton(null);
-//		
-//	    AxisLabels xlabels = chartManhattan.getXAxis().getLabels();
-//	    
-//	    xlabels.setRotation(-80);
-//	    xlabels.setAlign("right");
-//	    //xlabels.setMaxStaggerLines(20);
-//	    
-//	    //xlabels.setStaggerLines(10);
-//
-//	    chartManhattan.getXAxis().setMinorTickInterval((Number)null);
-//	    chartManhattan.getXAxis().setShowFirstLabel(true);
-//	    chartManhattan.getXAxis().setShowLastLabel(true);
-//	    //chartManhattan.getXAxis().setTickPixelInterval(200);
-//	    //chartManhattan.getXAxis().setMinorTickInterval("auto");
-//	    //chartManhattan.getXAxis().setMinTickInterval(10);
-//	    //chartManhattan.getXAxis().setTickInterval(null);
-//	    //chartManhattan.getXAxis().getm
-//	    
-//		chartManhattan.getYAxis().setTitle("-logP");
-//		chartManhattan.setTitle("Manhattan plot");
-//
-//		DefaultCategoryModel model=readManhattan(trait,subpop,minlogp);
-//	  	double min = 0;
-//	    //double max = mapPos2Values.size(); //  genotypefreqlines.linecountmajormodel.getSeries(0). //chartAlleleFrequency.getXAxisSize();
-//	  	double max  = this.mapViewPos2Index.size();
-//	    
-//	    long interval = Math.max(1,  Double.valueOf(  Math.ceil( Double.valueOf((max-min)/nLabels)) ).longValue() );
-//	    if(interval>nMarkers)
-//	    	interval=nMarkers/nLabels;
-//	    //chartManhattan.getXAxis().setTickAmount(nLabels);
-//		xlabels.setStep( interval );
-//		
-//		//chartManhattan.getPlotOptions().getScatter().getDataLabels()
-//		chartManhattan.setModel(model);
-//		//AppContext.debug("linewidth=" +  chartManhattan.getPlotOptions().getLine().getLineWidth());
-//		chartManhattan.getPlotOptions().getSeries().setLineWidth(0);
-//		chartManhattan.getPlotOptions().getSeries().getMarker().setWidth(3);
-//		//chartManhattan.getPlotOptions().getLine().set .setLineWidth(0);
-//		//chartManhattan.getPlotOptions().getLine().setColor(color);
-//		
-//
-//		//msgJbrowse.setValue("Select a narrow region in a single contig/chromosome to JBrowse tracks. Click a peak to display allele distributions.");
-//		labelManhattan.setValue(this.mapPos2Index.size() + " markers, select a narrow region to zoom, show JBrowse tracks and marker annotations. Click a marker to display allele distributions and varieties.");
-//		labelManhattan.setVisible(true);
-//		this.tabRegion.setSelected(true);
-//		
-//		borderMarkerVar.setVisible(false);
-//		listboxMarkerVar.setVisible(false);
-//		listboxMarkerVar.setModel(new SimpleListModel(new ArrayList()));
-//		
-//		msgJbrowse.setVisible(false);
-//		iframeJbrowse.setVisible(false);
-//		
-//		List listpos=new ArrayList();
-//		listpos.addAll( mapPos2Index.keySet() );
-//		this.listboxPosition.setModel(new SimpleListModel(listpos));
-//
-//	}
 	
 	
 	@Listen("onClick =#radioGroupbyMarker")
@@ -1194,143 +1141,7 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 			tabPosition.setDisabled(false);
 		}
 
-		
-//		
-//		if(trait==null || trait.isEmpty() || subpop==null || subpop.isEmpty()) return;
-//		
-//		//chartManhattan.getChart().setResetZoomButton(null);
-//		
-//	    AxisLabels xlabels = chartManhattan.getXAxis().getLabels();
-//	    
-//	    xlabels.setRotation(-80);
-//	    xlabels.setAlign("right");
-//	    //xlabels.setMaxStaggerLines(20);
-//	    
-//	    //xlabels.setStaggerLines(10);
-//
-//	    chartManhattan.getXAxis().setMinorTickInterval((Number)null);
-//	    chartManhattan.getXAxis().setShowFirstLabel(true);
-//	    chartManhattan.getXAxis().setShowLastLabel(true);
-//	    //chartManhattan.getXAxis().setTickPixelInterval(200);
-//	    //chartManhattan.getXAxis().setMinorTickInterval("auto");
-//	    //chartManhattan.getXAxis().setMinTickInterval(10);
-//	    //chartManhattan.getXAxis().setTickInterval(null);
-//	    //chartManhattan.getXAxis().getm
-//	    
-//		chartManhattan.getYAxis().setTitle("-logP");
-//		chartManhattan.setTitle("Manhattan plot");
-//
-//		
-//		
-//		DefaultCategoryModel model=readManhattan(trait,subpop,minlogp);
-//	  	double min = 0;
-//	    //double max = mapPos2Values.size(); //  genotypefreqlines.linecountmajormodel.getSeries(0). //chartAlleleFrequency.getXAxisSize();
-//	  	double max  = this.mapViewPos2Index.size();
-//	    
-//	    long interval = Math.max(1,  Double.valueOf(  Math.ceil( Double.valueOf((max-min)/nLabels)) ).longValue() );
-//	    if(interval>nMarkers)
-//	    	interval=nMarkers/nLabels;
-//	    //chartManhattan.getXAxis().setTickAmount(nLabels);
-//		xlabels.setStep( interval );
-//		
-//		//chartManhattan.getPlotOptions().getScatter().getDataLabels()
-//		chartManhattan.setModel(model);
-//		//AppContext.debug("linewidth=" +  chartManhattan.getPlotOptions().getLine().getLineWidth());
-//		chartManhattan.getPlotOptions().getSeries().setLineWidth(0);
-//		chartManhattan.getPlotOptions().getSeries().getMarker().setWidth(3);
-//		//chartManhattan.getPlotOptions().getLine().set .setLineWidth(0);
-//		//chartManhattan.getPlotOptions().getLine().setColor(color);
-//		
-//
-//		//msgJbrowse.setValue("Select a narrow region in a single contig/chromosome to JBrowse tracks. Click a peak to display allele distributions.");
-//		labelManhattan.setValue(this.mapPos2Index.size() + " markers, select a narrow region to zoom, show JBrowse tracks and marker annotations. Click a marker to display allele distributions and varieties.");
-//		labelManhattan.setVisible(true);
-//		this.tabRegion.setSelected(true);
-//		
-//		gridMarker.setVisible(false);
-//		msgJbrowse.setVisible(false);
-//		gridMarker.setModel(new SimpleListModel(new ArrayList()));
-//		iframeJbrowse.setVisible(false);
 	}
-	
-
-	/*
-	@Listen("onClick =#buttonResetzoom")
-	public void oncleckReset() {
-		reloadManhattan();
-	}
-	*/
-	
-//	@Listen("onSelection = #chartManhattan")
-//	public void doSelection(ChartsSelectionEvent event) {
-//	    // doing the zooming in function
-//		
-//		urljbrowse=null;
-//		
-//	    int min= event.getXAxisMin().intValue();
-//	    int max = event.getXAxisMax().intValue();
-//	    long interval = Math.max(1,  Double.valueOf((max-min)/nLabels).longValue());
-//	    AppContext.debug("event.getName()=" + event.getName() + "  min=" + min + " max=" + max + " interval=" + interval);
-//	    AppContext.debug("left=" +  mapViewIndex2Pos.get( min) + ", right=" +   mapViewIndex2Pos.get(max));
-//	    chartManhattan.getXAxis().getLabels().setStep( interval );
-//	    
-//	    msgJbrowse.setVisible(false);
-//	    this.labelAnnotations.setVisible(false);
-//	    iframeJbrowse.setVisible(false);
-//		borderMarkerVar.setVisible(false);
-//	    listboxMarkerVar.setVisible(false);
-//    	
-//
-//	    if(mapViewIndex2Pos.get(min)==null) {
-//	    	AppContext.debug("mapViewIndex2Pos.get(min)==null" + min);
-//	    	return;
-//	    }
-//	    if(mapViewIndex2Pos.get(max)==null) {
-//	    	AppContext.debug("mapViewIndex2Pos.get(max)==null" + max);
-//	    	return;
-//	    }
-//	    
-//    	int globalidxmin = mapPos2Index.get(mapViewIndex2Pos.get(min));
-//    	int globalidxmax = mapPos2Index.get(mapViewIndex2Pos.get(max));
-//    	
-//	    if(mapViewIndex2Pos.get( min).split("\\-")[0].equals(  mapViewIndex2Pos.get( max).split("\\-")[0] )) {
-//	    	String chr=mapViewIndex2Pos.get( min).split("\\-")[0];
-//	    	if(chr.length()==1) chr="chr0" + chr;
-//	    	else chr="chr" + chr;
-//
-//	    	List listPos=new ArrayList();
-//	    	for(int idx=globalidxmin; idx<=globalidxmax; idx++) {
-//	    		listPos.add(  BigDecimal.valueOf( Long.valueOf( mapIndex2Pos.get(idx).split("\\-")[1] )));
-//	    	}
-//
-//	    	labelAnnotations.setVisible(false);
-//	    	if( listPos.size()>200) {
-//	    		labelAnnotations.setValue("Too many markers to annotate. Limit selection to <200 markers.");
-//	    		labelAnnotations.setVisible(true);
-//	    	} else
-//	    		updateMarkerAnnotations(chr, listPos);
-//	    	
-//	    	updateJBrowse(chr,  mapViewIndex2Pos.get(min).split("\\-")[1],  mapViewIndex2Pos.get( max).split("\\-")[1], "" );
-//	    	if(listPos.size()==0)
-//	    		labelManhattan.setValue(listPos.size() + " markers, decrease Minumum -logP.");
-//	    	else labelManhattan.setValue(listPos.size() + " markers, select a narrow region to zoom, show JBrowse tracks and marker annotations. Click a marker to display allele distributions and varieties.");
-//
-//
-//	    } else {
-//	    	msgJbrowse.setValue("Cannot annotate and display multiple contigs in JBrowse. Narrow selected region to a single contig/chromosome");
-//	    	msgJbrowse.setVisible(true);
-//	    }
-//
-//    	Map<String, Double> mapZoomManhattan=new LinkedHashMap();
-//    	for(int idx=globalidxmin; idx<=globalidxmax; idx++) {
-//    		String zoompos = mapIndex2Pos.get(idx);
-//    		mapZoomManhattan.put(zoompos , mapPos2Values.get(zoompos));
-//    	}
-//    	chartManhattan.setModel( displayManhattan(mapZoomManhattan) );
-//		chartManhattan.getPlotOptions().getSeries().setLineWidth(0);
-//		chartManhattan.getPlotOptions().getSeries().getMarker().setWidth(3);
-//
-//	}
 	
 
 	private Integer[] convertX2ChrPos(Integer val) {
@@ -1347,10 +1158,26 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 	@Listen("onSelection = #chartManhattanXY")
 	public void doSelectionXY(ChartsSelectionEvent event) {
 	    // doing the zooming in function
-		
-		    
+
 	    int min= event.getXAxisMin().intValue();
 	    int max = event.getXAxisMax().intValue();
+	    prevMinX=min;
+	    prevMaxX=max;
+	    AppContext.debug("event.getName()=" + event.getName() + "  min=" + min + " max=" + max ); //+ " interval=" + interval);
+	    doSelectionXY( min,  max);
+	    checkboxIncludeInteractions.setChecked(false);
+	    checkboxIncludePromoters.setChecked(false);
+	    checkboxIncludeGO.setChecked(false);
+	    checkboxIncludePOTO.setChecked(false);
+	    checkboxIncludeQTL.setChecked(false);
+	    
+	}
+	
+	public void doSelectionXY(int min, int max) {
+	    // doing the zooming in function
+		try {
+		    
+	
 	    msgJbrowse.setVisible(false);
 	    iframeJbrowse.setVisible(false);
 		borderMarkerVar.setVisible(false);
@@ -1364,7 +1191,6 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 	    
 	    
 	    //long interval = Math.max(1,  Double.valueOf((max-min)/nLabels).longValue());
-	    AppContext.debug("event.getName()=" + event.getName() + "  min=" + min + " max=" + max ); //+ " interval=" + interval);
 	    AppContext.debug("left=" +   minpos[0] + "-" + minpos[1] + ", right=" + maxpos[0] + "-" + maxpos[1]);
 	    //chartManhattan.getXAxis().getLabels().setStep( interval );
 
@@ -1406,8 +1232,8 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 	    	}
 
 	    	labelAnnotations.setVisible(false);
-	    	if( listPos.size()>200) {
-	    		labelAnnotations.setValue("Too many markers to annotate. Limit selection to <200 markers.");
+	    	if( listPos.size()>this.maxAnnotMarkers ) {
+	    		labelAnnotations.setValue("Too many markers to annotate. Limit selection to <" + maxAnnotMarkers+ " markers.");
 	    		labelAnnotations.setVisible(true);
 	    		this.tabPosition.setDisabled(true);
 	    		listboxPosition.setModel(new SimpleListModel(new ArrayList()));
@@ -1446,15 +1272,15 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 	    	}
 
 	    	labelAnnotations.setVisible(false);
-	    	if( listPos.size()>200) {
-	    		labelAnnotations.setValue("Too many markers to annotate. Limit selection to <200 markers.");
+	    	if( listPos.size()>this.maxAnnotMarkers ) {
+	    		labelAnnotations.setValue("Too many markers to annotate. Limit selection to <" + maxAnnotMarkers+ " markers.");
 	    		labelAnnotations.setVisible(true);
 	    		this.tabPosition.setDisabled(true);
 	    		listboxPosition.setModel(new SimpleListModel(new ArrayList()));
 	    		listboxMultiPosition.setModel(new SimpleListModel(new ArrayList()));
 	    	} else {
 	    		this.tabPosition.setDisabled(false);
-	    		//updateMarkerAnnotations(chr, listPos);
+	    		updateMarkerAnnotations(chr, listPos);
 	    		this.listboxPosition.setModel(new SimpleListModel(listPosstr));
 	    		SimpleListModel lmodel=new SimpleListModel(listPosstr);
 	    		lmodel.setMultiple(true);
@@ -1478,33 +1304,12 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		*/
 
 	    this.tabRegion.setSelected(true);
+	    
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 	
-//	
-//	 @Listen("onPlotClick = #chartManhattan")
-//	 public void showMessage(ChartsEvent event) {
-//	        // Open an invisible popup at where the point clicked.
-//			List listpos=new ArrayList();
-//			listpos.add( event.getCategory().toString());
-//			this.tabPosition.setSelected(true);
-//			onselectListboxPositions(listpos);
-//			this.listboxPosition.setSelectedIndex(0);
-//
-//		  /*
-//	        anchor.open(chart, "at_pointer");
-//	        Point point = event.getPoint();
-//	        msgBox.setTitle(event.getSeries().getName());
-//	        // Locate the window's position by popup.
-//	        msgBox.setTop(anchor.getTop());
-//	        msgBox.setLeft(anchor.getLeft());
-//	        Label msg = (Label) msgBox.getFellow("msg");
-//	        String formattedDate = TimeUtil.getFormattedTime((Long) event.getCategory(),
-//	                "EEEEEEEEE, MMM dd, yyyy");
-//	        msg.setValue(formattedDate + ":\n" + point.getY() + " visits");
-//	        msgBox.setVisible(true);
-//	        */
-//	 }
-//	    
 	 @Listen("onPlotClick = #chartManhattanXY")
 	 public void showMessageXY(ChartsEvent event) {
 	        // Open an invisible popup at where the point clicked.
@@ -1612,71 +1417,6 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		return createVarlistFromSelection( event,  mapGroup2X2Y, null,  xlabel,  ylabel);
 	}
 
-	/*
-	private List createVarlistFromSelection(ChartsSelectionEvent event, Map mapGroup2X2Y, String xlabel, String ylabel) {
-		   	Double xmin= (Double)event.getXAxisMin();
-		    Double xmax = (Double)event.getXAxisMax();
-		    Integer ymin= event.getYAxisMin().intValue()-1;
-		    Integer ymax = event.getYAxisMax().intValue()+1;
-		    
-		    String strait=this.listboxTrait.getSelectedItem().getLabel();
-		    listVarieties=new ArrayList();
-		    Map<BigDecimal,Variety> mapVarid2Var = variety.getMapId2Variety();
-		    Iterator<Map<Object,Collection>> itMapPhen2Col = mapGroup2X2Y.values().iterator();
-		    while(itMapPhen2Col.hasNext()) {
-		    	Map<Object,Collection> mapPhen2Col=itMapPhen2Col.next();
-		    	Iterator itPhen=mapPhen2Col.keySet().iterator();
-		    	while(itPhen.hasNext()) {
-		    		Comparable x= (Comparable)itPhen.next();
-		    		Double dx=  ((BigDecimal)x).doubleValue();
-		    		if(dx.compareTo(xmin)>=0 && dx.compareTo(xmax)<=0) {
-		    			Collection cols = mapPhen2Col.get(x);
-		    			if(cols.size()>=ymin && cols.size()<=ymax) {
-		    				Iterator<BigDecimal> itVars=cols.iterator();
-			    			while(itVars.hasNext()) {
-			    				//listVarieties.add( mapVarid2Var.get(itVars.next()));
-			    				Variety thisvar = mapVarid2Var.get(itVars.next());
-			    				VarietyPlusPlus phevar = new VarietyPlusPlusImpl(thisvar,strait, mapVarid2Phenotype.get(  thisvar.getVarietyId() ) );
-			    				//listVarieties.add( mapVarid2Var.get(itVars.next()));
-			    				listVarieties.add(  phevar );
-
-			    			}
-		    			}
-		    		}
-		    	}
-		    }
-		    NumberFormat formatter = new DecimalFormat("#0.00");     
-		    this.labelVarietyMsg.setValue( xlabel + " between " + formatter.format(xmin) + " and " +  formatter.format(xmax) + ", " + ylabel + " between " + ymin + " and " + ymax );
-		    labelVarietyMsg.setVisible(true);
-		    
-		    // update table header
-	 		Map<String,String> listheaders = new LinkedHashMap();
-	 		listheaders.put("NAME","name"); listheaders.put("IRIS ID","irisId"); listheaders.put("SUBPOPULATION","subpopulation"); listheaders.put("COUNTRY","country");
-	 				listheaders.put(strait,  "" );
-		    Listhead lhd= this.listboxVariety.getListhead();
-			lhd.getChildren().clear();
-			Iterator<String> itHeader = listheaders.keySet().iterator();
-			while(itHeader.hasNext())
-			{
-				Listheader lh = new Listheader();
-				String headlabel =  itHeader.next();
-				lh.setLabel(headlabel);
-				
-				String field= listheaders.get(headlabel);
-				if(!field.isEmpty()) lh.setSort("auto(" + field +")");
-				else {
-					VarietyPlusPlusComparator compAsc = new VarietyPlusPlusComparator(true, headlabel);
-					VarietyPlusPlusComparator compDesc = new VarietyPlusPlusComparator(false, headlabel);
-					lh.setSortAscending( compAsc );
-					lh.setSortDescending( compDesc );
-				}
-				lh.setParent(lhd);
-			}
-			
-		    return listVarieties;
-	}
-	*/
-	
 	private int collectionTotal(Map<Object,Collection> mapPhen2Group) {
 		int total=0;
 		Iterator<Collection> itCol=mapPhen2Group.values().iterator();
@@ -1789,7 +1529,7 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 	    
 	    // update table header
  		Map<String,String> listheaders = new LinkedHashMap();
- 		listheaders.put("NAME","name"); listheaders.put("IRIS ID","irisId"); listheaders.put("SUBPOPULATION","subpopulation"); listheaders.put("COUNTRY","country");
+ 		listheaders.put("NAME","name"); listheaders.put("IRIS ID","irisId"); listheaders.put("ACCESSION","accession"); listheaders.put("SUBPOPULATION","subpopulation"); listheaders.put("COUNTRY","country");
  				listheaders.put(strait,  "" ); listheaders.put("Genotype",  "" );
 	    Listhead lhd= this.listboxVariety.getListhead();
 		lhd.getChildren().clear();
@@ -1815,26 +1555,6 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 	}
 
 
-	/*
-	  @Listen("onClick = #buttonAddToList")
-	    public void addToList() {
-	    	
-	    	workspace =  (WorkspaceFacade)AppContext.checkBean(workspace , "WorkspaceFacade");
-	    	
-	    	if(this.listboxVariety.getItems().size()==0) {
-	    		Messagebox.show( "EMPTY VARIETY LIST");
-	    		return;
-	    	}
-	    	if(txtboxListnameSnp.getValue().isEmpty()) {
-	    		Messagebox.show( "PROVIDE LIST NAME");
-	    		return;
-	    	}
-	    	Set setVarieties = new LinkedHashSet();
-	    	workspace.addVarietyList( txtboxListnameSnp.getValue().trim(), new LinkedHashSet(listVarieties), true );
-	    	txtboxListnameSnp.setValue("");
-	    }
-	    */
-	    
 	  
 	private DefaultCategoryModel readManhattan(String trait, String subpop, Double minlogP, String region) {
 		gwas=(GwasFacade)AppContext.checkBean(gwas,"GwasFacade");
@@ -1909,23 +1629,6 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 	}
 	
 	private void displayManhattanXY(Map<String, Double> mapMyPos2Values) {
-/*
-	0
-	43270923
-	79208173
-	115621992
-	151124686
-	181083120
-	212331907
-	242029528
-	270472550
-	293485270
-	316692557
-	345713663
-	373245519
-	*/
-		
-	
 
 		chartManhattanXY.setVisible(false);
 		Iterator<String> itPos =  mapMyPos2Values.keySet().iterator();
@@ -2132,7 +1835,14 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 	
 	@Listen("onClick =#buttonUpdateAnnotations")
 	public void onclickupdateannots() {
-		
+		try {	
+			int min=prevMinX; // chartManhattanXY.getXAxis().getMin().intValue();
+			int max= prevMaxX; //chartManhattanXY.getXAxis().getMax().intValue();
+			AppContext.debug("update annots, min="+ min + ", max=" + max);
+			doSelectionXY(min,max) ;
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 	
 	private void updateMarkerAnnotations(String chr, Collection colPos) {
@@ -2173,9 +1883,22 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		}
 		
 		
+
+		/*
+		markerresult = genomics.getMarkerAnnotsByContigPositions(contigname[0].trim() ,
+					colPos, 
+					this.listboxOrganism.getSelectedItem().getLabel(), 
+					 intboxPlusMinusBP.getValue(),
+					 annot , setAnnotations, maxint, excludeAnnotation);
+		*/
+		
 		markerresult = genomics.getMarkerAnnotsByContigPositions(chr, colPos, Organism.REFERENCE_NIPPONBARE,   0, GenomicsFacade.GENEMODEL_IRIC, setAnnotations, 10,excludeAnnotation);
+		
+		
 		this.searchbyMySnpListQtl();
 		
+		AppContext.debug("setAnnotations=" +setAnnotations);
+		AppContext.debug("excludeAnnotation=" + excludeAnnotation);
 		/*
 		gridMarker.setRowRenderer(new MarkerGridRenderer());
 		gridMarker.setModel( new SimpleListModel( markerresult ));
@@ -2295,6 +2018,9 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 
 				
 				String strait = listboxTrait.getSelectedItem().getLabel().trim();
+				if(strait.startsWith("CO")) {
+					strait=gwas.getLegacyTraitname(strait);
+				}
 				if(!strait.isEmpty()) {
 					showTracks+=",gwas3k_" + mapTrack.get(strait) + "_emmax_all_density,gwas3k_" + mapTrack.get(strait) + "_emmax_all_xy";
 				}
@@ -2393,223 +2119,6 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		onselectListboxPositions(listpos);
 	}
 	
-	@Listen("onSelect =#listboxGenotype1")
-	public void onselectGenotype1() {
-		if(listboxGenotype1.getSelectedIndex()==0 || listboxGenotype2.getSelectedIndex()==0 ||  listboxGenotype2.getSelectedItem()==null) return;
-		onselectSmoothGenotype();
-	}
-	
-	@Listen("onSelect =#listboxGenotype2")
-	public void onselectGenotype2() {
-		if(listboxGenotype1.getSelectedIndex()==0 || listboxGenotype2.getSelectedIndex()==0 || listboxGenotype1.getSelectedItem()==null) return;
-		onselectSmoothGenotype();
-	}
-	
-	private void onselectSmoothGenotype() {
-		Object al1=listboxGenotype1.getSelectedItem().getValue();
-		Object al2=listboxGenotype2.getSelectedItem().getValue();
-		Map mapBins[]=gwas.createBin(mapGenotype2Phenotype2Count.get(al1)  , mapGenotype2Phenotype2Count.get(al2), intboxBins.getValue());
-		Map mapBinsFreq[]=gwas.createBin(mapGenotype2Phenotype2Frequency.get(al1)  , mapGenotype2Phenotype2Frequency.get(al2), intboxBins.getValue());
-		//{mapBinValues, norm1, norm2};
-		
-		Map mapSmoothed=new LinkedHashMap();
-		mapSmoothed.put(al1 , mapBins[1]);
-		mapSmoothed.put(al2 , mapBins[2]);
-		mapSmoothed.put(al1 + " freq" , mapBinsFreq[1]);
-		mapSmoothed.put(al2 + " freq", mapBinsFreq[2]);
-		
-		Map<Integer,Float[]> mapBinsvals = mapBins[0];
-		Iterator<Integer> itBin=mapBinsvals.keySet().iterator();
-		AppContext.debug("bin ranges");
-		while(itBin.hasNext()) {
-			Integer bin=itBin.next();
-			Float binvals[] = (Float[])mapBinsvals.get(bin);
-			AppContext.debug(bin + " "  + binvals[0] + ", " +  binvals[1]);	
-		}
-		
-		
-		plotXYHistogram(mapSmoothed, chartSmoothHist, "Bin Smoothed Genotype frequency" , "BIN -" + listboxTrait.getSelectedItem().getLabel(), false);
-
-		Map mapSmoothedPhen=new LinkedHashMap();
-		mapSmoothedPhen.put(al1 + " count" , mapGenotype2Phenotype2Count.get(al1) );
-		mapSmoothedPhen.put(al2 + " count", mapGenotype2Phenotype2Count.get(al2));
-		mapSmoothedPhen.put(al1 + " freq" , mapGenotype2Phenotype2Frequency.get(al1) );
-		mapSmoothedPhen.put(al2 + " freq", mapGenotype2Phenotype2Frequency.get(al2));
-
-		plotXYHistogram(mapSmoothedPhen, chartSmoothPhen, "XY Genotype" , this.listboxTrait.getSelectedItem().getLabel(), false);
-		
-		float binwidth=mapBinsvals.get(0)[1]-mapBinsvals.get(0)[0];
-		Float[] binsStats = gwas.calculateOverlapArea( mapBins[1],  mapBins[2]);
-		AppContext.debug("bin stats: overlap area=" + binsStats[0]*binwidth + "  mean " + al1 +"=" +  binsStats[1]*binwidth +  "  mean " + al2 + "=" +  binsStats[2]*binwidth + " distinctarea=" + binsStats[3]*binwidth );
-		
-		
-	}
-	
-	private List selectRandomPos(List poslist, int npos) {
-		Random rand = new Random();
-		
-		if(poslist.isEmpty()) return null;
-		Set posSelset=new TreeSet();
-		while(posSelset.isEmpty()) {
-			for(int i=0; i<npos; i++) {
-				posSelset.add( poslist.get(rand.nextInt(poslist.size())));
-			}
-		}
-		List randList=new ArrayList();
-		randList.addAll( posSelset );
-		return randList;
-	}
-
-	@Listen("onSelect =#listboxMLIteration")
-	public void onselectIteration() {
-		Integer selidx=listboxMLIteration.getSelectedIndex();
-		showIteration( (Map[])listMapalleleScores[0].get(selidx), (Stack[])listMapalleleScores[1].get(selidx));
-	}
-	public void showIteration(Map[] mapAlleleHists, Stack[] bestscores) {
-		
-		//Map[] mapAlleleHists=listMapAlleleHists.get(idx);
-		Set genotypes= new TreeSet();
-		genotypes.addAll(mapAlleleHists[5].values());
-		List listGen=new ArrayList();
-		listGen.addAll(genotypes);
-		this.listboxGenotype1.setModel(new SimpleListModel(listGen));
-		this.listboxGenotype2.setModel(new SimpleListModel(listGen));
-		mapGenotype2Phenotype2Count=mapAlleleHists[1];
-		mapGenotype2Phenotype2Frequency=mapAlleleHists[3];
-		mapAllele2Phenotype2Count=mapAlleleHists[0];
-		mapVarid2Phenotype=mapAlleleHists[4];
-		mapVarid2Genotype=mapAlleleHists[5];
-		mapAllele2Phenotype2Set=mapAlleleHists[6];
-
-		//List<Stack[]> listbestscores=listListbestscores.get(idx);
-		
-			List listTops=new ArrayList();
-			for(int iscore=0; iscore<bestscores.length; iscore++) {
-				ScoreFeature score= (ScoreFeature)bestscores[iscore].peek();
-				listTops.add(score);
-			}
-			listboxBest.setModel(new SimpleListModel(listTops));
-			
-
-	}
-	
-	@Listen("onClick =#buttonMinOverlap")
-	public void onclickMinoverlap() {
-		
-		List listpos=new ArrayList();
-		for(int i=0; i<this.listboxMultiPosition.getModel().getSize(); i++) {
-			String poschr[]=  ((String)listboxMultiPosition.getModel().getElementAt(i)).split("-");
-			listpos.add( new PositionImpl( (poschr[0].length()>1?"chr"+ poschr[0]:"chr0" +  poschr[0]), BigDecimal.valueOf(Long.valueOf(poschr[1]))) );
-		}
-		
-		List randPos = selectRandomPos(listpos, intboxMaxFeatures.getValue());
-		//Map mapAlleleHists[] = new HashMap[7];
-		listMapalleleScores = gwas.getMinArea("any", randPos, this.listboxTrait.getSelectedItem().getLabel(), this.intboxBins.getValue(),
-				this.intboxMinCountPercent.getValue(), intboxMaxFeatures.getValue());
-
-		showIteration( (Map[])listMapalleleScores[0].get(0), (Stack[])listMapalleleScores[1].get(0));
-		/*
-		
-		Map[] mapAlleleHists=listMapAlleleHists.get(listMapAlleleHists.size()-1);
-		//ScoreFeature 
-		
-		Set genotypes= new TreeSet();
-		genotypes.addAll(mapAlleleHists[5].values());
-		List listGen=new ArrayList();
-		listGen.addAll(genotypes);
-		this.listboxGenotype1.setModel(new SimpleListModel(listGen));
-		this.listboxGenotype2.setModel(new SimpleListModel(listGen));
-		mapGenotype2Phenotype2Count=mapAlleleHists[1];
-		mapGenotype2Phenotype2Frequency=mapAlleleHists[3];
-		mapAllele2Phenotype2Count=mapAlleleHists[0];
-		mapVarid2Phenotype=mapAlleleHists[4];
-		mapVarid2Genotype=mapAlleleHists[5];
-		mapAllele2Phenotype2Set=mapAlleleHists[6];
-		
-		List listIters=new ArrayList();
-		Map<String,List> mapTops = new HashMap();
-		Iterator<Stack[]> itStacks = listbestscores.iterator();
-		int iter=0;
-		while(itStacks.hasNext()) {
-			Stack[] bestscores=itStacks.next();
-			List listTops=new ArrayList();
-			for(int iscore=0; iscore<bestscores.length; iscore++) {
-				ScoreFeature score= (ScoreFeature)bestscores[iscore].peek();
-				listTops.add(score);
-				Stack stack=bestscores[iscore];
-				List listScores=new ArrayList();
-				
-				AppContext.debug("iter=" + iter + " top scores for " + score.getName());
-				for(int i=0; i<stack.size(); i++) {
-					ScoreFeature scorei= (ScoreFeature)stack.get(i);
-					listScores.add( scorei.getScore());
-					AppContext.debug(i + " " + scorei.getScore() + "  " +scorei.getFeature1() + "  " + scorei.getFeature2());
-				}
-				List alllistscore=mapTops.get(score.getName());
-				if(alllistscore==null) {
-					alllistscore=new ArrayList();
-					mapTops.put(score.getName(), alllistscore);
-				}
-				alllistscore.addAll(listScores);
-			}
-			listboxBest.setModel(new SimpleListModel(listTops));
-			listboxBest.setSelectedIndex(0);
-			listIters.add(iter);
-			iter++;
-		}
-		*/
-		
-
-		List listIters=new ArrayList();
-		Map<String,List> mapTops = new HashMap();
-		Iterator itStacks = listMapalleleScores[1].iterator();
-		int iter=0;
-		while(itStacks.hasNext()) {
-			Stack[] bestscores=(Stack[])itStacks.next();
-			for(int iscore=0; iscore<bestscores.length; iscore++) {
-				ScoreFeature score= (ScoreFeature)bestscores[iscore].peek();
-				Stack stack=bestscores[iscore];
-				List listScores=new ArrayList();
-				AppContext.debug("iter=" + iter + " top scores for " + score.getName());
-				for(int i=0; i<stack.size(); i++) {
-					ScoreFeature scorei= (ScoreFeature)stack.get(i);
-					listScores.add( scorei.getScore());
-					AppContext.debug(i + " " + scorei.getScore() + "  " +scorei.getFeature1() + "  " + scorei.getFeature2());
-				}
-				List alllistscore=mapTops.get(score.getName());
-				if(alllistscore==null) {
-					alllistscore=new ArrayList();
-					mapTops.put(score.getName(), alllistscore);
-				}
-				alllistscore.addAll(listScores);
-			}
-			listIters.add(iter);
-			iter++;
-		}
-		listboxMLIteration.setModel(new SimpleListModel(listIters));
-		// plot top socres
-		listboxMLIteration.setSelectedIndex(listIters.size()-1);
-		plotLine(mapTops, this.chartsTopScores, "score","rank");
-		
-	}
-
-	@Listen("onSelect =#listboxBest")
-	public void onselectBest() {
-		if(listboxBest.getSelectedIndex()<3) {
-			ScoreFeature score = listboxBest.getSelectedItem().getValue();
-			int idx1=-1;
-			int idx2=-1;
-			for(int igen=0; igen<listboxGenotype1.getModel().getSize(); igen++) {
-				String gen1= (String)listboxGenotype1.getModel().getElementAt(igen);
-				if(gen1.equals(score.getFeature1())) idx1=igen; 
-				else if(gen1.equals(score.getFeature2())) idx2=igen;
-				if(idx1>-1 && idx2>-1) break;
-			}
-			listboxGenotype1.setSelectedIndex(idx1);
-			listboxGenotype2.setSelectedIndex(idx2);
-			onselectSmoothGenotype();
-		}
-	}
 	
 	public void onselectListboxPositions(List listpos) {
 		
@@ -2740,254 +2249,6 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		 labelPositions.setValue("Histograms for positions " +  listpos.toString());
 		 
 
-		
-//		
-//		
-//		GenotypeQueryParams params= new  GenotypeQueryParams(null, sChr, null, null, true,false, false,
-//				false,  poslist, null,
-//				null, false, false); 
-//		params.setPhenotype(sPhenotype);
-//
-//		Map<Object,Integer> mapGenotype2Count=new TreeMap();
-//		Map<Long,String> mapVarid2Subpop=new HashMap();
-//		mapVarid2Genotype=new HashMap();
-//		
-//		
-//		try {
-//			VariantStringData data = genotype.queryGenotype( params );
-//			VariantTableArray varianttable =  new VariantAlignmentTableArraysImpl();
-//			varianttable = (VariantTableArray)genotype.fillGenotypeTable(varianttable, data, params);
-//			for(int ivar=0; ivar<varianttable.getVarid().length; ivar++) {
-//				//Object allele=varianttable.getVaralleles()[ivar][0];
-//				
-//				StringBuffer buffallele=new StringBuffer();
-//				for(int allelelen=0; allelelen<varianttable.getVaralleles()[ivar].length; allelelen++) {
-//					String allelei=varianttable.getVaralleles()[ivar][allelelen].toString();
-//					if(allelei.isEmpty()) allelei="?";
-//					buffallele.append(allelei);
-//				}
-//				Object allele=buffallele.toString();
-//				
-//				mapVarid2Genotype.put( varianttable.getVarid()[ivar], allele );
-//				
-//				Integer cnt = mapGenotype2Count.get(allele);
-//				if(cnt==null) {
-//					cnt=Integer.valueOf(0);
-//				}
-//				mapGenotype2Count.put( allele, cnt+1);
-//				String subpop=variety.getMapId2Variety().get( BigDecimal.valueOf(varianttable.getVarid()[ivar]) ).getSubpopulation();
-//				mapVarid2Subpop.put(varianttable.getVarid()[ivar] , subpop);
-//			}
-//			
-//		} catch(Exception ex) {
-//			ex.printStackTrace();
-//			Messagebox.show(ex.getMessage());
-//		}
-//		
-//		
-//		mapVarid2Phenotype=null;
-//		boolean phenIsNumber=true;
-//		if(params.getPhenotype()!=null && !params.getPhenotype().isEmpty()) {
-//			sPhenotype=params.getPhenotype();
-//			mapVarid2Phenotype = variety.getPhenotypeValues(sPhenotype);
-//		} if( !this.listboxVarietylist.getSelectedItem().getLabel().isEmpty() ) {
-//			mapVarid2Phenotype=new HashMap();
-//			String varlistname=listboxVarietylist.getSelectedItem().getLabel().trim();
-//			Iterator<Variety> itvarlist=workspace.getVarieties(varlistname).iterator();
-//			while(itvarlist.hasNext()) {
-//				VarietyPlusPlus vp = (VarietyPlusPlus)itvarlist.next();
-//				mapVarid2Phenotype.put( vp.getVarietyId() , vp.getValue());
-//			}
-//		}
-//	
-//
-//		
-//		Iterator<BigDecimal> itVar=mapVarid2Phenotype.keySet().iterator();
-//		Map<Object,Integer> mapPhen2Count=new TreeMap();
-//		double maxphen=0;
-//		double minphen=Double.MAX_VALUE;
-//		while(itVar.hasNext()) {
-//			BigDecimal varid=itVar.next();
-//			Object phen=mapVarid2Phenotype.get(varid);
-//			
-//			//AppContext.debug(phen.getClass().toString() + "  " + phen);
-//			if(phen instanceof String) {
-//				phenIsNumber=false;
-//			} else {
-//				double phenval = ((BigDecimal)phen).doubleValue();
-//				if(phenval>maxphen) maxphen=phenval;
-//				if(phenval<minphen) minphen=phenval;
-//			}
-//			
-//			Object vargenotype=mapVarid2Genotype.get(varid.longValue());
-//			Map<Object,Collection> mapphencnt = mapGenotype2Phenotype2Count.get( vargenotype );
-//			if(mapphencnt==null) {
-//				mapphencnt=new HashMap();
-//				mapGenotype2Phenotype2Count.put(vargenotype, mapphencnt);
-//			}
-//			Collection phencnt = mapphencnt.get(phen);
-//			if(phencnt==null) {
-//				//phencnt=Integer.valueOf(0);
-//				phencnt=new HashSet();
-//				mapphencnt.put( phen, phencnt);
-//			}
-//			//mapphencnt.put( phen, phencnt+1 );
-//			phencnt.add( varid );
-//			mapGenotype2Phenotype2Count.put(vargenotype, mapphencnt);
-//			
-//			if(params.getPoslist()!=null &&  params.getPoslist().size()==1) {
-//			if(vargenotype.toString().contains("/")) {
-//				String alleles[] = vargenotype.toString().split("\\/");
-//
-//				Map<Object,Integer> mapallelecnt = mapAllele2Phenotype2Count.get( alleles[0] );
-//				Map<Object,Collection> mapalleleset = mapAllele2Phenotype2Set.get( alleles[0] );
-//				if(mapallelecnt==null) {
-//					mapallelecnt=new HashMap();
-//					mapAllele2Phenotype2Count.put(alleles[0], mapallelecnt);
-//					mapalleleset=new HashMap();
-//					mapAllele2Phenotype2Set.put(alleles[0], mapalleleset);
-//				}
-//				Integer phenallelecnt = mapallelecnt.get(phen);
-//				Collection phenalleleset=mapalleleset.get(phen);
-//				if(phenallelecnt==null) {
-//					phenallelecnt=Integer.valueOf(0);
-//				}
-//				if(phenalleleset==null) {
-//					phenalleleset=new HashSet();
-//					mapalleleset.put( phen, phenalleleset);
-//				}
-//				mapallelecnt.put( phen, phenallelecnt);
-//				phenalleleset.add( varid );
-//				mapAllele2Phenotype2Count.put(alleles[0], mapallelecnt);
-//
-//				mapallelecnt = mapAllele2Phenotype2Count.get( alleles[1] );
-//				mapalleleset = mapAllele2Phenotype2Set.get( alleles[1] );
-//				if(mapallelecnt==null) {
-//					mapallelecnt=new HashMap();
-//					mapAllele2Phenotype2Count.put(alleles[1], mapallelecnt);
-//					mapalleleset=new HashMap();
-//					mapAllele2Phenotype2Set.put(alleles[1], mapalleleset);
-//				}
-//				phenallelecnt = mapallelecnt.get(phen);
-//				phenalleleset=mapalleleset.get(phen);
-//				if(phenallelecnt==null) {
-//					phenallelecnt=Integer.valueOf(0);
-//				}
-//				if(phenalleleset==null) {
-//					phenalleleset=new HashSet();
-//					mapalleleset.put( phen, phenalleleset);
-//				}
-//				phenalleleset.add( varid );
-//				mapallelecnt.put( phen, phenallelecnt);
-//				mapAllele2Phenotype2Count.put(alleles[1], mapallelecnt);
-//				
-//			} else { // if(!vargenotype.toString().isEmpty()){
-//				Map<Object,Integer> mapallelecnt = mapAllele2Phenotype2Count.get( vargenotype );
-//				Map<Object,Collection> mapalleleset = mapAllele2Phenotype2Set.get( vargenotype);
-//				if(mapallelecnt==null) {
-//					mapallelecnt=new HashMap();
-//					mapAllele2Phenotype2Count.put(vargenotype, mapallelecnt);
-//					mapalleleset=new HashMap();
-//					mapAllele2Phenotype2Set.put(vargenotype, mapalleleset);
-//				}
-//				Integer phenallelecnt = mapallelecnt.get(phen);
-//				Collection phenalleleset=mapalleleset.get(phen);
-//				if(phenallelecnt==null) {
-//					phenallelecnt=Integer.valueOf(0);
-//				}
-//				if(phenalleleset==null) {
-//					phenalleleset=new HashSet();
-//					mapalleleset.put( phen, phenalleleset);
-//				}
-//				phenalleleset.add( varid );
-//				mapallelecnt.put( phen, phenallelecnt+2 );
-//				mapAllele2Phenotype2Count.put(vargenotype, mapallelecnt);
-//			}
-//			}
-//
-//
-//			String subpop=mapVarid2Subpop.get(varid.longValue());
-//			mapphencnt = mapSubpop2Phenotype2Count.get( subpop );
-//			if(mapphencnt==null) {
-//				mapphencnt=new HashMap();
-//				mapSubpop2Phenotype2Count.put(subpop, mapphencnt);
-//			}
-//			phencnt = mapphencnt.get(phen);
-//			if(phencnt==null) {
-//				//phencnt=Integer.valueOf(0);
-//				phencnt=new HashSet();
-//				mapphencnt.put( phen, phencnt);
-//			}
-//			//mapphencnt.put( phen, phencnt+1 );
-//			phencnt.add( varid );
-//			mapSubpop2Phenotype2Count.put(subpop, mapphencnt);
-//			
-//			String gensubpop= Data.getGeneralSubpopulation(mapVarid2Subpop.get(varid.longValue()));
-//			if(gensubpop!=null) {
-//				mapphencnt = mapSubpopGen2Phenotype2Count.get( gensubpop );
-//				if(mapphencnt==null) {
-//					mapphencnt=new HashMap();
-//					mapSubpopGen2Phenotype2Count.put(gensubpop, mapphencnt);
-//				}
-//				phencnt = mapphencnt.get(phen);
-//				if(phencnt==null) {
-//					//phencnt=Integer.valueOf(0);
-//					phencnt=new HashSet();
-//					mapphencnt.put( phen, phencnt);
-//				}
-//				//mapphencnt.put( phen, phencnt+1 );
-//				phencnt.add( varid );
-//				mapSubpopGen2Phenotype2Count.put(gensubpop, mapphencnt);
-//			}
-//			
-//			gensubpop="all varieties";
-//			mapphencnt = mapSubpopGen2Phenotype2Count.get( gensubpop );
-//			if(mapphencnt==null) {
-//				mapphencnt=new HashMap();
-//				mapSubpopGen2Phenotype2Count.put(gensubpop, mapphencnt);
-//			}
-//			phencnt = mapphencnt.get(phen);
-//			if(phencnt==null) {
-//				//phencnt=Integer.valueOf(0);
-//				phencnt=new HashSet();
-//				mapphencnt.put( phen, phencnt);
-//			}
-//			//mapphencnt.put( phen, phencnt+1 );
-//			phencnt.add( varid );
-//			mapSubpopGen2Phenotype2Count.put(gensubpop, mapphencnt);
-//			
-//			
-//			
-//		}
-//		
-//		// create xy data
-//		/*
-//		Iterator itAlleles = mapAllele2Phenotype2Count.keySet().iterator();
-//		int allelecount=0;
-//		while(itAlleles.hasNext()) {
-//			Object allele=itAlleles.next();
-//			Series series = null;
-//			if(allelecount==0) series = chartAlleleHist.getSeries();
-//			else series = chartAlleleHist.getSeries(allelecount);
-//			
-//			series.setName(allele.toString());
-//			for (Double[] value : createXY(mapAllele2Phenotype2Count.get(allele))) {
-//		            series.addPoint(value[0], value[1]);
-//		    }
-//			allelecount++;
-//		}
-//		*/
-//		 plotXYHistogramCount(mapAllele2Phenotype2Count,chartAlleleHist, "Allele count", sPhenotype, checkboxNormalize.isChecked());
-//		 plotXYHistogram(mapGenotype2Phenotype2Count,chartGenotypeHist, "Genotype count", sPhenotype, checkboxNormalize.isChecked());
-//		 plotXYHistogram(mapSubpop2Phenotype2Count,chartSubpopHist, "Variety count", sPhenotype, checkboxNormalize.isChecked(), true );
-//		 plotXYHistogram(mapSubpopGen2Phenotype2Count,chartGenSubpopHist, "Variety count", sPhenotype, checkboxNormalize.isChecked());
-//	
-//		 labelPositions.setMaxlength(70);
-//		 labelPositions.setMultiline(true);
-//		 labelPositions.setValue("Histograms for positions " +  listpos.toString());
-//		 
-//		 //if(listboxPosition.getRows()>-1) listboxPosition.setSelectedIndex(0);
-		 
 	}
 	
 	@Listen("onClick = #checkboxNormalize")

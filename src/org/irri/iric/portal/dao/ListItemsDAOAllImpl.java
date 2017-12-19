@@ -868,15 +868,22 @@ public class ListItemsDAOAllImpl implements  ListItemsDAO {
 				phenotypeDefinitions = new TreeMap<String,BigDecimal>();
 				mapDataset2phenotypeDefinitions.put(term.getDataset(), phenotypeDefinitions);
 			}
+			
+			/*
 			if(term.getDefinition().length()>100)				
 				phenotypeDefinitions.put(term.getDefinition().substring(0,99)+"...", term.getCvTermId());
 			else
 				phenotypeDefinitions.put(term.getDefinition(), term.getCvTermId());
+				*/
+			if(term.getName().length()>100)				
+				phenotypeDefinitions.put(term.getName().substring(0,99)+"...", term.getCvTermId());
+			else
+				phenotypeDefinitions.put(term.getName(), term.getCvTermId());
 			
 		}
 		
 		mapDataset2ptocoDefinitions=new HashMap();
-		
+		/*
 		if(AppContext.reloadFromDB("ptoco") || !new File(AppContext.getFlatfilesDir() + "v_cv_ptoco_path_allstocks.tsv").exists() ) {
 			
 			cvtermsPtocodao = (CvTermByDatasetDAO)AppContext.checkBean(cvtermsPtocodao, "VCvPtocoByDatasetDAO");
@@ -931,6 +938,7 @@ public class ListItemsDAOAllImpl implements  ListItemsDAO {
 				ex.printStackTrace();
 			}
 		}
+		*/
 		
 		
 		/*	
