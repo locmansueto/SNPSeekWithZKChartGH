@@ -120,9 +120,9 @@ public class AppContext {
 	// set target webserver and compile type
 	 
 	//static WEBSERVER webserver =  AppContext.WEBSERVER.AWS;
-	//static WEBSERVER webserver =  AppContext.WEBSERVER.LOCALHOST;
+	static WEBSERVER webserver =  AppContext.WEBSERVER.LOCALHOST;
 	//static WEBSERVER webserver =   AppContext.WEBSERVER.BEANSTALK;
-	static WEBSERVER webserver =   AppContext.WEBSERVER.BEANSTALKDEV;
+	//static WEBSERVER webserver =   AppContext.WEBSERVER.BEANSTALKDEV;
 	//static WEBSERVER webserver =  AppContext.WEBSERVER.ASTI;
 	//static WEBSERVER webserver =  AppContext.WEBSERVER.POLLUX;
 

@@ -160,13 +160,13 @@ VM_IRIC.minPoolSize=1
 -->
 				<!-- VM postgres -->
 				<!-- property name="url" value="jdbc:postgresql://localhost:5432/iric6"/ -->
-									
-				<!--  <AWS-RDS Beanstalk -->
+						
+				<!--  <AWS-RDS Beanstalk -->			
 				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
 					<property name="driverClassName" value="org.postgresql.Driver"/>
-					<property name="username" value="*"/>
-					<property name="password" value="*"/>
-					<property name="url" value="*"/>
+					<property name="username" value="postgres"/>
+					<property name="password" value="1rRl-4Bi0"/>
+					<property name="url" value="jdbc:postgresql://iric-rds-singapore-01.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric"/>
  
 					<property name="maxIdle" value="1"/>
 					<property name="maxActive" value="10"/>
@@ -174,15 +174,14 @@ VM_IRIC.minPoolSize=1
 
 
 				<!--  <AWS-RDS Beanstalk v2 -->
-				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
+				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
 					<property name="driverClassName" value="org.postgresql.Driver"/>
-					<property name="username" value="*"/>
-					<property name="password" value="*"/>
-					<property name="url" value="*"/>
+					<property name="username" value="postgres"/>
+					<property name="password" value="1rRl-4Bi0"/>
+					<property name="url" value="jdbc:postgresql://iric-rds-singapore-v2.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric2"/>
 					<property name="maxIdle" value="1"/>
 					<property name="maxActive" value="10"/>
-				</bean>
-
+				</bean -->
 
 				
 				<!--   localhost  -->									
@@ -197,14 +196,14 @@ VM_IRIC.minPoolSize=1
 
 
 				<!--   pollux  -->	
-				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
+				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
 					<property name="driverClassName" value="org.postgresql.Driver"/>
 					<property name="username" value="iric"/>
 					<property name="password" value="iric-dev"/>
 					<property name="url" value="jdbc:postgresql://172.29.4.215:5432/iric"/>
 					<property name="maxIdle" value="1"/>
 					<property name="maxActive" value="10"/>
-				</bean -->
+				</bean>
 
 
 				<!--  vm local  -->									

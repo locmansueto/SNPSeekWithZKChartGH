@@ -95,6 +95,6 @@ To cite this resource: <h:a target="_blank" href="http://nar.oxfordjournals.org/
 </div>	
 
 <zscript>
-	divGwas.setVisible(AppContext.isIRRILAN()); 
+	divGwas.setVisible(true); 
 </zscript>
 </zk>

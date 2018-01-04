@@ -150,6 +150,7 @@
 		
 			<menuitem  src="/images/iric/traitgenes.png" label="Trait genes" href="_ideo.zul?tracks=${paramstr}&amp;app=rice-ideogram"/>
 		
+			<menuitem  src="/images/iric/manhattan-icon.png" label="GWAS results" href="_gwas.zul"/>
 			</menupopup>
 			
 		

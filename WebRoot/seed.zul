@@ -119,7 +119,7 @@
 		<textbox id="textboxPhoneAuth" />
 		</hbox> 
 		<hbox>
-		<label value="Email              " pre="true"  />
+		<label value="Email               " pre="true"  />
 		<textbox id="textboxEmailAuth" width="270px"/><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
 		</hbox> 
 		</vbox>
@@ -150,6 +150,7 @@
 </hbox>
 <hbox>
 <label value="OR Variety List   " pre="true"  style="font-size:14px;font-weight:bold;color:gray;"/>
+<listbox id="listboxVarlists" mold="select" width="300px"/>
 <button id="buttonAddList" style="font-size:14px;font-weight:bold;color:gray;" label="Add" />
 </hbox>
 <hbox height="20px"/>
