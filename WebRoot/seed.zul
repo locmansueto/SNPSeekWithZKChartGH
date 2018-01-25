@@ -1,261 +1,360 @@
 <?page title="Seed Order" contentType="text/html;charset=UTF-8"?>
-<zk>
+<zk xmlns:c="client" xmlns:x="xhtml">
 
-<window border="none" apply="org.irri.iric.portal.seed.zkui.SeedOrderController">
+	<window border="none"
+		apply="org.irri.iric.portal.seed.zkui.SeedOrderController">
+		<script type="text/javascript"
+			src='https://www.google.com/recaptcha/api.js' defer="true" />
 
-<hbox height="15px"/>
-
-	<div align="center">
-	<label value="Seed Ordering Page" style="font-size:20px;font-weight:bold;color:green;"/>
-	<hbox height="10px"/>
-	<label value="Only seeds from the IRRI Genebank Collection can be ordered from this page" style="font-size:14px;font-weight:bold;color:gray;"/>
-	</div>
-	<hbox height="15px"/>
-
-	
-
-<label value="Customer Information" style="font-size:20px;font-weight:bold;color:green;"/>
-
-
-<grid  width="100%">
-<rows>
-	<row  spans="1,5" visible="true">
-		<label value="Requestor" style="font-size:14px;font-weight:bold;color:gray;"/>
-		<vbox>
-		<hbox>
-		<label value="Name               " pre="true"/>
-		<textbox id="textboxName" width="500px"/><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
-		<label value="  required field" pre="true" style="color:red;"/>
-		<label value="*" style="font-size:12px;font-weight:bold;color:red;"/>		
-
-
-		</hbox>
-		<hbox>
-		<label value="Institution         " pre="true"/>
-		<textbox id="textboxInstitution" width="500px" /><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
-		</hbox>
-		<hbox>
-		<label value="Address Line 1 " pre="true"/>
-		<textbox id="textboxAddress1"  width="500px"/><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
-		</hbox> 
-		<hbox>
-		<label value="Address Line 2 " pre="true"/>
-		<textbox id="textboxAddress2"  width="500px"/>
-		</hbox> 
-		
-                <hbox>
-                <label value="Email                " pre="true"/>
-                <textbox id="textboxEmailReq"  width="270px"/><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
-                <label value="    Phone no   " pre="true"/>
-                <textbox id="textboxPhoneReq" width="140px"/>
-                </hbox>
-
-                <hbox>
-                <label value="Postal code      " pre="true"/>
-                <textbox id="textboxPostalCode" width="200px"/>
-                <vbox width="30px"/>
-                <label value="Country        " pre="true"/>
-                <listbox id="listboxCountry" mold="select"/><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
-                </hbox>
-		
-		</vbox>				
-	</row>	
-	<row spans="1,5" visible="true">
-		<label value="User category" style="font-size:14px;font-weight:bold;color:gray;"/>
-		<hbox>
-		<listbox id="listboxCategory" mold="select">
-			<listitem value="irri"  selected="true" label="Within IRRI"/>
-			<listitem value="priv" label="Private sector"/>
-			<listitem value="pub" label="Public sector"/>
+		<script>
+			<![CDATA[ function afterValidate(response){
+			zk.Widget.$('$recaptcha').fire('onUserRespond',{'response':response},
+			{toServer:true}); } ]]>
 			
-			<!--  listitem value="pub_low" label="Public sector in low income country"/>
-			<listitem value="pub_lowmid" label="Public sector in lower middle income country"/>
-			<listitem value="pub_upmid" label="Public sector in upper middle income country"/>
-			<listitem value="pub_high" label="Public sector in high income country"/>
-			<listitem value="priv" label="Private sector"/ -->
-		</listbox>
-		<textbox id="textboxCountryCategory" readonly="true" visible="false" width="300px"/>
-		
-		</hbox>
-	</row>
-	<row  spans="1,5" visible="true">
-		<label value="SMTA" style="font-size:14px;font-weight:bold;color:gray;"/>
-		<vbox>
-		<hbox>
-			<checkbox id="checkboxAcceptSMTA"/>
-			<label pre="true" value="   I have read and give advance notice that I will accept the "/>
-			<a label="SMTA" href="http://www.fao.org/plant-treaty/areas-of-work/the-multilateral-system/the-smta/en/" target="_smta"/>
-		</hbox>
-		<hbox id="hboxAcceptanceType" visible="false">
-			<label value="Type of SMTA acceptance   " pre="true"/>
-			<radiogroup id="rgAcceptance"/>
-			<radio id="radioShrink" radiogroup="rgAcceptance" selected="true" label="shrink-wrap"/>
-			<vbox height="10px"/>
-			<radio id="radioSigned" radiogroup="rgAcceptance" label="signed"/>
-		</hbox>
-		</vbox>
-	</row>
-	
-	<row  spans="1,5" visible="false" id="rowAuthorized">
-		<vbox>
-		<label value="Official authorized to sign" style="font-size:14px;font-weight:bold;color:gray;"/>
-		<label value="for your organization" style="font-size:14px;font-weight:bold;color:gray;"/>
-		</vbox>
-		<vbox>
-		<hbox>
-		<label value="Name              " pre="true"/>
-		<textbox id="textboxAutname"  width="500px"/><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
-		</hbox> 
-		<hbox>
-		<label value="Position           " pre="true"/>
-		<textbox id="textboxPosition" width="500px" /><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
-		</hbox> 
-		<hbox>
-		<label value="Address           " pre="true"/>
-		<textbox id="textboxAutaddress" width="500px" /><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
-		</hbox> 
-		<hbox>
-		<label value="Phone no         " pre="true"/>
-		<textbox id="textboxPhoneAuth" />
-		</hbox> 
-		<hbox>
-		<label value="Email               " pre="true"  />
-		<textbox id="textboxEmailAuth" width="270px"/><label value="*" style="font-size:12px;font-weight:bold;color:red;"/>
-		</hbox> 
-		</vbox>
-	</row>
-</rows>
-</grid>
+		</script>
 
-<hbox height="50px"/>
+		<hbox height="15px" />
 
-
-<label value="Create Order List" style="font-size:20px;font-weight:bold;color:green;"/>
-
-<grid  width="100%">
-<rows>
-<row  spans="2,3">
-<vbox>
-<label value="Add Seeds by:" style="font-size:14px;font-weight:bold;color:gray;"/>
-<hbox height="10px"/>
-<hbox>
-<label value="Accession           " pre="true"  style="font-size:14px;font-weight:bold;color:gray;"/>
-<listbox id="listboxAccession" mold="select" width="200px"/>
-<button id="buttonAddAccession" style="font-size:14px;font-weight:bold;color:gray;" label="Add" />
-</hbox>
-<hbox>
-<label value="OR Designation  " pre="true"  style="font-size:14px;font-weight:bold;color:gray;"/>
-<!-- label value="Add designation" pre ="true"/ --><listbox id="listboxVarname" mold="select" width="300px"/>
-<button id="buttonAddVarname" style="font-size:14px;font-weight:bold;color:gray;" label="Add" />
-</hbox>
-<hbox>
-<label value="OR Variety List   " pre="true"  style="font-size:14px;font-weight:bold;color:gray;"/>
-<listbox id="listboxVarlists" mold="select" width="300px"/>
-<button id="buttonAddList" style="font-size:14px;font-weight:bold;color:gray;" label="Add" />
-</hbox>
-<hbox height="20px"/>
-<button id="buttonClear" style="font-size:14px;font-weight:bold;color:gray;" label="Clear list" />
-<hbox height="10px"/>
-<button id="buttonOrder" style="font-size:14px;font-weight:bold;color:gray;" label="Send Order" height="20px" />
-<listbox id="listboxPdfMethod" visible="false" mold="select">
-<listitem label="html"/>
-<listitem label="itext2"/>
-<listitem selected="true" label="docx"/>
-<listitem label="phantomjs"/>
-<listitem label="xslfo"/>
-</listbox>
-</vbox>
-<vbox>
-<label value="Seed Pricing" style="font-size:14px;font-weight:bold;color:gray;"/>
-<image src="/images/iric/seedprice.png" width="90%"/>
-</vbox>
-</row>
-</rows>
-</grid>
+		<div align="center">
+			<label value="Seed Ordering Page"
+				style="font-size:20px;font-weight:bold;color:green;" />
+			<hbox height="10px" />
+			<label
+				value="Only seeds from the IRRI Genebank Collection can be ordered from this page"
+				style="font-size:14px;font-weight:bold;color:gray;" />
+		</div>
+		<hbox height="15px" />
 
 
 
-<hbox height="50px"/>
+		<label value="Customer Information"
+			style="font-size:20px;font-weight:bold;color:green;" />
 
-<!--  DISPLAY QUERY RESULT TABLE  -->
-	 <!--  listbox visible="true" id="listboxVariety" fixedLayout="true" mold="paging" pageSize="100" visible="true"  checkmark="true" multiple="true" seltype="multiple"  >
-		<listhead>
-			<listheader  sort="auto"></listheader>
-			<listheader  sort="auto"></listheader>
-			<listheader  sort="auto"></listheader>
-			<listheader  sort="auto"></listheader>
-			<listheader  sort="auto"></listheader>
-		</listhead>		
-	</listbox -->
-	
-	
-	
-	<hbox>
-	<label value="Set all/default quantities to"/>
-	<spinner id="spinnerAllGrams" value="10" step="10" constraint="min 10 max 20" readonly="true"/>	<label value="grams  " pre="true"/>
-	<button id="buttonAllGrams"  style="font-size:14px;font-weight:bold;color:gray;" label="Apply to all" />
-	</hbox>
-	<hbox height="20px" />
-	
-	<div id="divBindgrid" apply="org.zkoss.bind.BindComposer"
-		viewModel="@id('vm') @init('org.irri.iric.portal.seed.InlineEditingViewModel')">
-		<vbox>
-		<hbox>
-		<label value="No. of items"/> 
-		<textbox width="100px" id="textboxNoItems" readonly="true" value="@bind(vm.noItems)"  style="font-size:14px;font-weight:bold;color:red;" />
-		<vbox width="30px"/>
-		<label value="Total weight (g)"/> 
-		<textbox  width="100px"  id="textboxTotalGram" readonly="true" value="@bind(vm.totalGram)"  style="font-size:14px;font-weight:bold;color:red;" />
-		<vbox width="30px"/>
-		<label value="Price estimate (US$)"/> 
-		<textbox  width="100px"  id="textboxTotalPrice" readonly="true" value="@bind(vm.totalPrice)"  style="font-size:14px;font-weight:bold;color:red;" />
-		</hbox>	
-		<grid id="gridOrders" hflex="min" model="@load(vm.allSeeds)" mold="paging" pageSize="20">
-			<columns height="22px">
-				<column width="100px" label="Accession" align="center" />
-				<column width="150px" label="Designation" align="center"/>
-				<column width="150px" label="Stock Type" align="center"/>
-				<column width="100px" label="US$/10g" align="center"/>
-				<column width="100px" label="Quantity (g)" align="center"/>
-				<column width="100px" label="Estimated Price (US$)" align="center"/>
-			</columns>
-			<template name="model">
-				<row>
-					<textbox readonly="true" 
-						value="@bind(each.accession)" width="99%" />
-					<textbox readonly="true" 
-						value="@bind(each.varname)" width="99%" />
-					<textbox readonly="true" 
-						value="@bind(each.stockType)" width="99%" />
-					<textbox readonly="true" 
-						value="@bind(each.pricePerGram)" width="99%" />
-					<div class='text-center'>
-						<spinner inplace="true" step="10" constraint="min 10 max 20"  readonly="true"
-							value="@bind(each.gram)" width="98%"
-							onChange="@command('updateTotal')"
-							/>
-					</div>
-					<textbox readonly="true" 
-						value="@bind(each.price)" width="99%" />
+
+		<grid width="100%">
+			<rows>
+				<row spans="1,5" visible="true">
+					<label value="Requestor"
+						style="font-size:14px;font-weight:bold;color:gray;" />
+					<vbox>
+						<hbox>
+							<label value="Name               "
+								pre="true" />
+							<textbox id="textboxName" width="500px" />
+							<label value="*"
+								style="font-size:12px;font-weight:bold;color:red;" />
+							<label value="  required field" pre="true"
+								style="color:red;" />
+							<label value="*"
+								style="font-size:12px;font-weight:bold;color:red;" />
+
+
+						</hbox>
+						<hbox>
+							<label value="Institution         "
+								pre="true" />
+							<textbox id="textboxInstitution"
+								width="500px" />
+							<label value="*"
+								style="font-size:12px;font-weight:bold;color:red;" />
+						</hbox>
+						<hbox>
+							<label value="Address Line 1 " pre="true" />
+							<textbox id="textboxAddress1" width="500px" />
+							<label value="*"
+								style="font-size:12px;font-weight:bold;color:red;" />
+						</hbox>
+						<hbox>
+							<label value="Address Line 2 " pre="true" />
+							<textbox id="textboxAddress2" width="500px" />
+						</hbox>
+
+						<hbox>
+							<label value="Email                "
+								pre="true" />
+							<textbox id="textboxEmailReq" width="270px" />
+							<label value="*"
+								style="font-size:12px;font-weight:bold;color:red;" />
+							<label value="    Phone no   " pre="true" />
+							<textbox id="textboxPhoneReq" width="140px" />
+						</hbox>
+
+						<hbox>
+							<label value="Postal code      " pre="true" />
+							<textbox id="textboxPostalCode"
+								width="200px" />
+							<vbox width="30px" />
+							<label value="Country        " pre="true" />
+							<listbox id="listboxCountry" mold="select" />
+							<label value="*"
+								style="font-size:12px;font-weight:bold;color:red;" />
+						</hbox>
+
+					</vbox>
 				</row>
-			</template>
-		</grid>
-		</vbox>
-	</div>
-	
-	
-	<div id="divSMTA" visible="false">
-	<vbox>
-	<hbox height="30px"/>
-	<label value="Order Material" style="font-size:20px;font-weight:bold;color:gray;"/>
-	<hbox height="20px"/>
-	<button id="buttonSendOrder" label="Accept and Send Order" height="20px"/>
-	<hbox height="20px"/>
-	</vbox>
-	<iframe id="iframePDF" width="70%" height="1000px"/>
-	</div>
+				<row spans="1,5" visible="true">
+					<label value="User category"
+						style="font-size:14px;font-weight:bold;color:gray;" />
+					<hbox>
+						<listbox id="listboxCategory" mold="select">
+							<listitem value="irri" selected="true"
+								label="Within IRRI" />
+							<listitem value="priv"
+								label="Private sector" />
+							<listitem value="pub" label="Public sector" />
 
-<hbox height="100px"/>
-			   			
-</window>
+							<!--  listitem value="pub_low" label="Public sector in low income country"/>
+								<listitem value="pub_lowmid" label="Public sector in lower middle income country"/>
+								<listitem value="pub_upmid" label="Public sector in upper middle income country"/>
+								<listitem value="pub_high" label="Public sector in high income country"/>
+								<listitem value="priv" label="Private sector"/ -->
+						</listbox>
+						<textbox id="textboxCountryCategory"
+							readonly="true" visible="false" width="300px" />
+
+					</hbox>
+				</row>
+				<row spans="1,5" visible="true">
+					<label value="SMTA"
+						style="font-size:14px;font-weight:bold;color:gray;" />
+					<vbox>
+						<hbox>
+							<checkbox id="checkboxAcceptSMTA" />
+							<label pre="true"
+								value="   I have read and give advance notice that I will accept the " />
+							<a label="SMTA"
+								href="http://www.fao.org/plant-treaty/areas-of-work/the-multilateral-system/the-smta/en/"
+								target="_smta" />
+						</hbox>
+						<hbox id="hboxAcceptanceType" visible="false">
+							<label value="Type of SMTA acceptance   "
+								pre="true" />
+							<radiogroup id="rgAcceptance" />
+							<radio id="radioShrink"
+								radiogroup="rgAcceptance" selected="true" label="shrink-wrap" />
+							<vbox height="10px" />
+							<radio id="radioSigned"
+								radiogroup="rgAcceptance" label="signed" />
+						</hbox>
+					</vbox>
+				</row>
+
+				<row spans="1,5" visible="false" id="rowAuthorized">
+					<vbox>
+						<label value="Official authorized to sign"
+							style="font-size:14px;font-weight:bold;color:gray;" />
+						<label value="for your organization"
+							style="font-size:14px;font-weight:bold;color:gray;" />
+					</vbox>
+					<vbox>
+						<hbox>
+							<label value="Name              "
+								pre="true" />
+							<textbox id="textboxAutname" width="500px" />
+							<label value="*"
+								style="font-size:12px;font-weight:bold;color:red;" />
+						</hbox>
+						<hbox>
+							<label value="Position           "
+								pre="true" />
+							<textbox id="textboxPosition" width="500px" />
+							<label value="*"
+								style="font-size:12px;font-weight:bold;color:red;" />
+						</hbox>
+						<hbox>
+							<label value="Address           "
+								pre="true" />
+							<textbox id="textboxAutaddress"
+								width="500px" />
+							<label value="*"
+								style="font-size:12px;font-weight:bold;color:red;" />
+						</hbox>
+						<hbox>
+							<label value="Phone no         " pre="true" />
+							<textbox id="textboxPhoneAuth" />
+						</hbox>
+						<hbox>
+							<label value="Email               "
+								pre="true" />
+							<textbox id="textboxEmailAuth"
+								width="270px" />
+							<label value="*"
+								style="font-size:12px;font-weight:bold;color:red;" />
+						</hbox>
+					</vbox>
+				</row>
+			</rows>
+		</grid>
+
+		<hbox height="50px" />
+
+
+		<label value="Create Order List"
+			style="font-size:20px;font-weight:bold;color:green;" />
+
+		<grid width="100%">
+			<rows>
+				<row spans="2,3">
+					<vbox>
+						<label value="Add Seeds by:"
+							style="font-size:14px;font-weight:bold;color:gray;" />
+						<hbox height="10px" />
+						<hbox>
+							<label value="Accession           "
+								pre="true" style="font-size:14px;font-weight:bold;color:gray;" />
+							<listbox id="listboxAccession" mold="select"
+								width="200px" />
+							<button id="buttonAddAccession"
+								style="font-size:14px;font-weight:bold;color:gray;" label="Add" />
+						</hbox>
+						<hbox>
+							<label value="OR Designation  " pre="true"
+								style="font-size:14px;font-weight:bold;color:gray;" />
+							<!-- label value="Add designation" pre ="true"/ -->
+							<listbox id="listboxVarname" mold="select"
+								width="300px" />
+							<button id="buttonAddVarname"
+								style="font-size:14px;font-weight:bold;color:gray;" label="Add" />
+						</hbox>
+						<hbox>
+							<label value="OR Variety List   " pre="true"
+								style="font-size:14px;font-weight:bold;color:gray;" />
+							<listbox id="listboxVarlists" mold="select"
+								width="300px" />
+							<button id="buttonAddList"
+								style="font-size:14px;font-weight:bold;color:gray;" label="Add" />
+						</hbox>
+						<hbox height="20px" />
+						<button id="buttonClear"
+							style="font-size:14px;font-weight:bold;color:gray;"
+							label="Clear list" />
+						<hbox height="10px" />
+						<button id="buttonOrder"
+							style="font-size:14px;font-weight:bold;color:gray;"
+							label="Send Order" height="20px" disabled="true"/>
+						<listbox id="listboxPdfMethod" visible="false"
+							mold="select">
+							<listitem label="html" />
+							<listitem label="itext2" />
+							<listitem selected="true" label="docx" />
+							<listitem label="phantomjs" />
+							<listitem label="xslfo" />
+						</listbox>
+					</vbox>
+					<vbox>
+						<label value="Seed Pricing"
+							style="font-size:14px;font-weight:bold;color:gray;" />
+						<image src="/images/iric/seedprice.png"
+							width="90%" />
+					</vbox>
+				</row>
+			</rows>
+		</grid>
+
+		<x:div id="recaptcha" class="g-recaptcha"
+			data-sitekey="6Lfjt0AUAAAAAKmoYgrvFfibA8QNe4OdNC4MHR9m"
+			data-callback="afterValidate" />
+
+		<hbox height="50px" />
+
+		<!--  DISPLAY QUERY RESULT TABLE  -->
+		<!--  listbox visible="true" id="listboxVariety" fixedLayout="true" mold="paging" pageSize="100" visible="true"  checkmark="true" multiple="true" seltype="multiple"  >
+			<listhead>
+			<listheader  sort="auto"></listheader>
+			<listheader  sort="auto"></listheader>
+			<listheader  sort="auto"></listheader>
+			<listheader  sort="auto"></listheader>
+			<listheader  sort="auto"></listheader>
+			</listhead>		
+			</listbox -->
+
+
+
+		<hbox>
+			<label value="Set all/default quantities to" />
+			<spinner id="spinnerAllGrams" value="10" step="10"
+				constraint="min 10 max 20" readonly="true" />
+			<label value="grams  " pre="true" />
+			<button id="buttonAllGrams"
+				style="font-size:14px;font-weight:bold;color:gray;"
+				label="Apply to all" />
+		</hbox>
+		<hbox height="20px" />
+
+		<div id="divBindgrid" apply="org.zkoss.bind.BindComposer"
+			viewModel="@id('vm') @init('org.irri.iric.portal.seed.InlineEditingViewModel')">
+			<vbox>
+				<hbox>
+					<label value="No. of items" />
+					<textbox width="100px" id="textboxNoItems"
+						readonly="true" value="@bind(vm.noItems)"
+						style="font-size:14px;font-weight:bold;color:red;" />
+					<vbox width="30px" />
+					<label value="Total weight (g)" />
+					<textbox width="100px" id="textboxTotalGram"
+						readonly="true" value="@bind(vm.totalGram)"
+						style="font-size:14px;font-weight:bold;color:red;" />
+					<vbox width="30px" />
+					<label value="Price estimate (US$)" />
+					<textbox width="100px" id="textboxTotalPrice"
+						readonly="true" value="@bind(vm.totalPrice)"
+						style="font-size:14px;font-weight:bold;color:red;" />
+				</hbox>
+				<grid id="gridOrders" hflex="min"
+					model="@load(vm.allSeeds)" mold="paging" pageSize="20">
+					<columns height="22px">
+						<column width="100px" label="Accession"
+							align="center" />
+						<column width="150px" label="Designation"
+							align="center" />
+						<column width="150px" label="Stock Type"
+							align="center" />
+						<column width="100px" label="US$/10g"
+							align="center" />
+						<column width="100px" label="Quantity (g)"
+							align="center" />
+						<column width="100px"
+							label="Estimated Price (US$)" align="center" />
+					</columns>
+					<template name="model">
+						<row>
+							<textbox readonly="true"
+								value="@bind(each.accession)" width="99%" />
+							<textbox readonly="true"
+								value="@bind(each.varname)" width="99%" />
+							<textbox readonly="true"
+								value="@bind(each.stockType)" width="99%" />
+							<textbox readonly="true"
+								value="@bind(each.pricePerGram)" width="99%" />
+							<div class='text-center'>
+								<spinner inplace="true" step="10"
+									constraint="min 10 max 20" readonly="true"
+									value="@bind(each.gram)" width="98%"
+									onChange="@command('updateTotal')" />
+							</div>
+							<textbox readonly="true"
+								value="@bind(each.price)" width="99%" />
+						</row>
+					</template>
+				</grid>
+			</vbox>
+		</div>
+
+
+		<div id="divSMTA" visible="false">
+			<vbox>
+				<hbox height="30px" />
+				<label value="Order Material"
+					style="font-size:20px;font-weight:bold;color:gray;" />
+				<hbox height="20px" />
+				<button id="buttonSendOrder"
+					label="Accept and Send Order" height="20px" />
+				<hbox height="20px" />
+			</vbox>
+			<iframe id="iframePDF" width="70%" height="1000px" />
+		</div>
+
+		<hbox height="100px" />
+
+	</window>
 </zk>

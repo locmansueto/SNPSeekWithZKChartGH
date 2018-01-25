@@ -372,7 +372,7 @@ public class SeedOrderService {
 	List lcc=new ArrayList();
 	if(AppContext.isAWSBeanstalk()) {
 		lto.add("m.alana@irri.org");
-		lcc.add("iric@irri.org");
+		lto.add("snpseek@irri.org");
 	} else
 		lto.add("l.mansueto@irri.org");
 	

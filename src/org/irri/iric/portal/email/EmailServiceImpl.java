@@ -1,6 +1,7 @@
 package org.irri.iric.portal.email;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -10,6 +11,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -20,18 +22,18 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService {
 
 	private JavaMailSender emailSender;
-	
+
 	static final int PORT = 587;
-	
-	static final String FROM = "l.h.barboza@irri.org";
-	
-	static final String FROMNAME = "Lord Hendrix Barboza";
-	
+
+	static final String FROM = "snpseek@irri.org";
+
+	static final String FROMNAME = "snpseek";
+
 	static final String SMTP_USERNAME = "AKIAIKQ5546KL2FEJ6EQ";
-    
-    static final String SMTP_PASSWORD = "AjpkcrrfH+EttKBdNjrPvmZtSy+mvTZUrV+UCUJClWtD";
-    
-    static final String HOST = "email-smtp.us-west-2.amazonaws.com";
+
+	static final String SMTP_PASSWORD = "AjpkcrrfH+EttKBdNjrPvmZtSy+mvTZUrV+UCUJClWtD";
+
+	static final String HOST = "email-smtp.us-west-2.amazonaws.com";
 
 	@Override
 	public JavaMailSender getJavaMailSender() {
@@ -80,7 +82,7 @@ public class EmailServiceImpl implements EmailService {
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 		helper.setTo(to);
 		// helper.setCc("l.mansueto@irri.org");
-		helper.setFrom("snpseek@systems.irri.org", "IRRI Seed Ordering");
+		helper.setFrom("snpseek@irri.org", "IRRI Seed Ordering");
 		helper.setSubject(subject);
 		// helper.setText(text);
 		message.setContent(text, "text/html");
@@ -160,7 +162,7 @@ public class EmailServiceImpl implements EmailService {
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 		helper.setTo(to);
 		helper.setCc("l.mansueto@irri.org");
-		helper.setFrom("snpseek@systems.irri.org", "IRRI Seed Ordering");
+		helper.setFrom("snpseek@irri.org", "IRRI Seed Ordering");
 		helper.setSubject(subject);
 		helper.setText(text);
 		FileSystemResource file = new FileSystemResource(new File(pathToAttachment));
@@ -171,6 +173,12 @@ public class EmailServiceImpl implements EmailService {
 
 	@Override
 	public void sendSimpleMessage(List<String> to, List<String> cc, String subject, String text) throws Exception {
+
+		InternetAddress[] recipients = new InternetAddress[to.size()];
+		int i = 0;
+		for (String recipient : to)
+			recipients[i++] = new InternetAddress(recipient);
+			
 		Properties props = System.getProperties();
 		props.put("mail.transport.protocol", "smtp");
 		props.put("mail.smtp.port", PORT);
@@ -181,7 +189,7 @@ public class EmailServiceImpl implements EmailService {
 
 		MimeMessage msg = new MimeMessage(session);
 		msg.setFrom(new InternetAddress(FROM, FROMNAME));
-		msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to.get(0)));
+		msg.setRecipients(Message.RecipientType.TO, recipients);
 		msg.setSubject(subject);
 		msg.setContent(text, "text/html");
 
