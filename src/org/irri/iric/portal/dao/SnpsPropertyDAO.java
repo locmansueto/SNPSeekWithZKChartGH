@@ -88,42 +88,42 @@ abstract public class SnpsPropertyDAO<T>  extends AbstractJpaDao<T> {
 
 			
 			/*
-			Iterator<VSnpRefposindex> it = (Iterator<VSnpRefposindex>)poslist.iterator();
-			//StringBuffer buff = new StringBuffer();
-			while(it.hasNext()) {
-				VSnpRefposindex pos = it.next();
-				setSnpfeatureid.add( pos .getSnpFeatureId());
-				//buff.append(snpfearueid + ", " );
-			}
-			//AppContext.debug(" snpfeatureid in " + buff);
-			
-			Set setAll = new HashSet();
-			Set sets[] = AppContext.setSlicer(setSnpfeatureid);
-			for(int iset=0; iset<sets.length; iset++) {
-				//Query query = createNamedQuery("findVSnpNonsynAlleleBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
-				Query query = createNamedQuery("findVSnpNonsynallelePosBySnpFeatureIdIn", -1, -1,sets[iset]);
-				setAll.addAll(query.getResultList());
-			}
-			//return new HashSet<SnpsNonsynAllele>(query.getResultList());
-			return setAll;
+//			Iterator<VSnpRefposindex> it = (Iterator<VSnpRefposindex>)poslist.iterator();
+//			//StringBuffer buff = new StringBuffer();
+//			while(it.hasNext()) {
+//				VSnpRefposindex pos = it.next();
+//				setSnpfeatureid.add( pos .getSnpFeatureId());
+//				//buff.append(snpfearueid + ", " );
+//			}
+//			//AppContext.debug(" snpfeatureid in " + buff);
+//			
+//			Set setAll = new HashSet();
+//			Set sets[] = AppContext.setSlicer(setSnpfeatureid);
+//			for(int iset=0; iset<sets.length; iset++) {
+//				//Query query = createNamedQuery("findVSnpNonsynAlleleBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
+//				Query query = createNamedQuery("findVSnpNonsynallelePosBySnpFeatureIdIn", -1, -1,sets[iset]);
+//				setAll.addAll(query.getResultList());
+//			}
+//			//return new HashSet<SnpsNonsynAllele>(query.getResultList());
+//			return setAll;
 			*/
 			
 			/*
-			AppContext.debug("checking " + posset.size() + " snp positions");
-			Map mapChr2Pos = MultiReferencePositionImpl.getMapContig2SNPPos(posset);
-			String sql = "select SNP_FEATURE_ID, TYPE_ID , CHROMOSOME, POSITION , REFCALL , ALLELE_INDEX from " + AppContext.getDefaultSchema() + ".V_SNP_REFPOSINDEX WHERE 1=1 and (";
-			Iterator<String> itContig= mapChr2Pos.keySet().iterator();
-			while(itContig.hasNext()) {
-				String contigstr = itContig.next();
-				String contig = contigstr.toUpperCase().replace("CHR0","").replace("CHR","");
-				Collection setPos = (Collection)mapChr2Pos.get(contigstr);
-				sql+= "( chromosome=" + contig + " and position in (" + setPos.toString().replace("[", "").replace("]", "") + ")) ";
-				if(itContig.hasNext()) 
-					sql += " or ";
-			};
-			
-			sql += ") and TYPE_ID=" + type + " order by CHROMOSOME, POSITION";
-			return executeSQL(sql);
+//			AppContext.debug("checking " + posset.size() + " snp positions");
+//			Map mapChr2Pos = MultiReferencePositionImpl.getMapContig2SNPPos(posset);
+//			String sql = "select SNP_FEATURE_ID, TYPE_ID , CHROMOSOME, POSITION , REFCALL , ALLELE_INDEX from " + AppContext.getDefaultSchema() + ".V_SNP_REFPOSINDEX WHERE 1=1 and (";
+//			Iterator<String> itContig= mapChr2Pos.keySet().iterator();
+//			while(itContig.hasNext()) {
+//				String contigstr = itContig.next();
+//				String contig = contigstr.toUpperCase().replace("CHR0","").replace("CHR","");
+//				Collection setPos = (Collection)mapChr2Pos.get(contigstr);
+//				sql+= "( chromosome=" + contig + " and position in (" + setPos.toString().replace("[", "").replace("]", "") + ")) ";
+//				if(itContig.hasNext()) 
+//					sql += " or ";
+//			};
+//			
+//			sql += ") and TYPE_ID=" + type + " order by CHROMOSOME, POSITION";
+//			return executeSQL(sql);
 			*/
 		}
 		else if(chr.toLowerCase().equals("loci")) {
@@ -148,20 +148,20 @@ abstract public class SnpsPropertyDAO<T>  extends AbstractJpaDao<T> {
 				
 				if(AppContext.isBypassViews() && AppContext.isPostgres()) {
 					/*
-					String sql = "SELECT cast(mv.snp_feature_id as numeric) snp_feature_id, mv.chromosome AS chr, mv.\"position\" + 1 AS \"position\", mv.type_id " + columnname +  ", cast(" + AppContext.getDefaultOrganismId() + " as numeric)  organism_id,  cast(mv.chromosome+2 AS numeric) srcfeature_id FROM mv_snp_refposindex mv, snp_featureprop sfp " +
-						     " WHERE mv.variantset in (" + AppContext.toCSVquoted(variantset,  "'") + ") and mv.snp_feature_id = sfp.snp_feature_id and  mv.chromosome=" + AppContext.guessChrFromString(chr) + " and " + 
-						     " exists ( select t.column_value from (select unnest(ARRAY" +   sets[iset]  + ")column_value) t where t.column_value-1=mv.POSITION ) " +
-						     " AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
-						setAll.addAll(executeSQL(sql,retclass));
+//					String sql = "SELECT cast(mv.snp_feature_id as numeric) snp_feature_id, mv.chromosome AS chr, mv.\"position\" + 1 AS \"position\", mv.type_id " + columnname +  ", cast(" + AppContext.getDefaultOrganismId() + " as numeric)  organism_id,  cast(mv.chromosome+2 AS numeric) srcfeature_id FROM mv_snp_refposindex mv, snp_featureprop sfp " +
+//						     " WHERE mv.variantset in (" + AppContext.toCSVquoted(variantset,  "'") + ") and mv.snp_feature_id = sfp.snp_feature_id and  mv.chromosome=" + AppContext.guessChrFromString(chr) + " and " + 
+//						     " exists ( select t.column_value from (select unnest(ARRAY" +   sets[iset]  + ")column_value) t where t.column_value-1=mv.POSITION ) " +
+//						     " AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
+//						setAll.addAll(executeSQL(sql,retclass));
 						*/
 					
 					
 						String sqldirect="";
-						sqldirect+="SELECT sfl.snp_feature_id, sfl.srcfeature_id-2 AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset " + columnname;
+						sqldirect+="SELECT sfl.snp_feature_id, sfl.srcfeature_id-" + AppContext.chr2srcfeatureidOffset()+ " AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset " + columnname;
 						sqldirect+=" FROM " +AppContext.getDefaultSchema() +".snp_featureloc sfl, " +AppContext.getDefaultSchema() +".variant_variantset vvs, " + AppContext.getDefaultSchema() +".variantset v ";
 						sqldirect+=" , snp_featureprop sfp  WHERE  sfl.snp_feature_id = sfp.snp_feature_id and sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
 						sqldirect+="  AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "') and v.name in (" + AppContext.toCSVquoted(variantset,"'") + ")";
-						sqldirect+=" and sfl.organism_id=9 and sfl.srcfeature_id=" + AppContext.guessChrFromString(chr) + "+2 ";
+						sqldirect+=" and sfl.organism_id="  + AppContext.getDefaultOrganismId() + " and sfl.srcfeature_id=" + AppContext.guessSrcfeataureidFromString(chr);
 						sqldirect+=" and exists ( select t.column_value from (select unnest(ARRAY" +   sets[iset]  + ")column_value) t where t.column_value-1=sfl.position ) "; 
 						sqldirect+=" order by sfl.position";
 						setAll.addAll(executeSQL(sqldirect,retclass));
@@ -185,11 +185,11 @@ abstract public class SnpsPropertyDAO<T>  extends AbstractJpaDao<T> {
 			
 			
 			String sqldirect="";
-			sqldirect+="SELECT sfl.snp_feature_id, sfl.srcfeature_id-2 AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset " + columnname ;
+			sqldirect+="SELECT sfl.snp_feature_id, sfl.srcfeature_id-" + AppContext.chr2srcfeatureidOffset()+ " AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset " + columnname ;
 			sqldirect+=" FROM " +AppContext.getDefaultSchema() +".snp_featureloc sfl, " +AppContext.getDefaultSchema() +".variant_variantset vvs, " + AppContext.getDefaultSchema() +".variantset v ";
 			sqldirect+=" , snp_featureprop sfp  WHERE  sfl.snp_feature_id = sfp.snp_feature_id and sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
 			sqldirect+="  AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
-			sqldirect+=" and sfl.organism_id=9 and sfl.srcfeature_id=" + AppContext.guessChrFromString(chr) + "+2 ";
+			sqldirect+=" and sfl.organism_id=" +  + AppContext.getDefaultOrganismId() + " and sfl.srcfeature_id=" + AppContext.guessSrcfeataureidFromString(chr) ;
 			sqldirect+=" and sfl.position between " + start + "-1 and " + end + "-1 and v.variantset_id="+ typeid + " order by sfl.position";
 			return new LinkedHashSet(executeSQL(sqldirect,retclass));
 			/*
@@ -208,33 +208,33 @@ abstract public class SnpsPropertyDAO<T>  extends AbstractJpaDao<T> {
 			if(columnname!=null && !columnname.isEmpty() && !columnname.startsWith(",")) columnname=", sfp.value AS " + columnname;
 			
 			/* using snp_feature_id
-			String sqldirect="";
-			sqldirect+="SELECT sfl.snp_feature_id, sfl.srcfeature_id-2 AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset " + columnname ;
-			sqldirect+=" FROM " +AppContext.getDefaultSchema() +".snp_featureloc sfl, " +AppContext.getDefaultSchema() +".variant_variantset vvs, " + AppContext.getDefaultSchema() +".variantset v ";
-			sqldirect+=" , snp_featureprop sfp  WHERE  sfl.snp_feature_id = sfp.snp_feature_id and sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
-			sqldirect+="  AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
-			sqldirect+=" and sfl.organism_id=9 and sfl.srcfeature_id=" + AppContext.guessChrFromString(chr) + "+2 ";
-			sqldirect+=" and sfl.position between " + start + "-1 and " + end + "-1 and v.name in (" + AppContext.toCSVquoted(variantset, "'") + ") order by sfl.position";
-			return new LinkedHashSet(executeSQL(sqldirect,retclass));
+//			String sqldirect="";
+//			sqldirect+="SELECT sfl.snp_feature_id, sfl.srcfeature_id-2 AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset " + columnname ;
+//			sqldirect+=" FROM " +AppContext.getDefaultSchema() +".snp_featureloc sfl, " +AppContext.getDefaultSchema() +".variant_variantset vvs, " + AppContext.getDefaultSchema() +".variantset v ";
+//			sqldirect+=" , snp_featureprop sfp  WHERE  sfl.snp_feature_id = sfp.snp_feature_id and sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
+//			sqldirect+="  AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
+//			sqldirect+=" and sfl.organism_id=9 and sfl.srcfeature_id=" + AppContext.guessChrFromString(chr) + "+2 ";
+//			sqldirect+=" and sfl.position between " + start + "-1 and " + end + "-1 and v.name in (" + AppContext.toCSVquoted(variantset, "'") + ") order by sfl.position";
+//			return new LinkedHashSet(executeSQL(sqldirect,retclass));
 			*/
 
 			// using position
 			String sqldirect="";
-			sqldirect+="SELECT sfl.snp_feature_id, sfl.srcfeature_id-2 AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset " + columnname ;
+			sqldirect+="SELECT sfl.snp_feature_id, sfl.srcfeature_id-" + AppContext.chr2srcfeatureidOffset()+ " AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset " + columnname ;
 			sqldirect+=" FROM " +AppContext.getDefaultSchema() +".snp_featureloc sfl, " +AppContext.getDefaultSchema() +".variant_variantset vvs, " + AppContext.getDefaultSchema() +".variantset v, ";
 			sqldirect+=  AppContext.getDefaultSchema()+".snp_featureloc sfl3k ";
 			sqldirect+=" , snp_featureprop sfp  WHERE  sfl3k.snp_feature_id = sfp.snp_feature_id and sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
 			sqldirect+="  AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
-			sqldirect+=" and sfl3k.organism_id=9 and sfl3k.srcfeature_id=" + AppContext.guessChrFromString(chr) + "+2 ";
-			sqldirect+=" and sfl3k.position=sfl.position and sfl3k.srcfeature_id=sfl.srcfeature_id and sfl.organism_id=9 "; 
+			sqldirect+=" and sfl3k.organism_id="  + AppContext.getDefaultOrganismId() + " and sfl3k.srcfeature_id=" + AppContext.guessSrcfeataureidFromString(chr) ;
+			sqldirect+=" and sfl3k.position=sfl.position and sfl3k.srcfeature_id=sfl.srcfeature_id and sfl.organism_id=" +  AppContext.getDefaultOrganismId() ; 
 			sqldirect+=" and sfl3k.position between " + start + "-1 and " + end + "-1 and v.name in (" + AppContext.toCSVquoted(variantset, "'") + ") order by sfl3k.position";
 			return new LinkedHashSet(executeSQL(sqldirect,retclass));
 
 			
 			/*
-			String sql = "SELECT cast(mv.snp_feature_id as numeric) snp_feature_id, mv.chromosome AS chr, mv.\"position\" + 1 AS \"position\", mv.type_id " + columnname + ", cast(" + AppContext.getDefaultOrganismId() + " as numeric)  organism_id,  cast(mv.chromosome+2 AS numeric) srcfeature_id FROM mv_snp_refposindex mv, snp_featureprop sfp " +
-		     " WHERE mv.variantset in (" + AppContext.toCSVquoted(variantset,"'") + ") and mv.snp_feature_id = sfp.snp_feature_id and  mv.chromosome=" + AppContext.guessChrFromString(chr) + " and mv.POSITION between " + start + " and " + end  + " AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
-			return new LinkedHashSet(executeSQL(sql,retclass));
+//			String sql = "SELECT cast(mv.snp_feature_id as numeric) snp_feature_id, mv.chromosome AS chr, mv.\"position\" + 1 AS \"position\", mv.type_id " + columnname + ", cast(" + AppContext.getDefaultOrganismId() + " as numeric)  organism_id,  cast(mv.chromosome+2 AS numeric) srcfeature_id FROM mv_snp_refposindex mv, snp_featureprop sfp " +
+//		     " WHERE mv.variantset in (" + AppContext.toCSVquoted(variantset,"'") + ") and mv.snp_feature_id = sfp.snp_feature_id and  mv.chromosome=" + AppContext.guessChrFromString(chr) + " and mv.POSITION between " + start + " and " + end  + " AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
+//			return new LinkedHashSet(executeSQL(sql,retclass));
 			*/
 		}
 	 
@@ -262,32 +262,32 @@ abstract public class SnpsPropertyDAO<T>  extends AbstractJpaDao<T> {
 		for(int iset=0; iset<sets.length; iset++) {
 			if(AppContext.isBypassViews() && AppContext.isPostgres()) {
 					/*
-						String sql = "SELECT cast(mv.snp_feature_id as numeric) snp_feature_id, mv.chromosome AS chr, mv.\"position\" + 1 AS \"position\", mv.type_id " + columnname +  ", cast(" + AppContext.getDefaultOrganismId() + " as numeric) organism_id,  cast(mv.chromosome+2 AS numeric) srcfeature_id  FROM mv_snp_refposindex mv, snp_featureprop sfp " +
-					     " WHERE mv.TYPE_ID=" + dataset + " and mv.snp_feature_id = sfp.snp_feature_id and  " + 
-					     " exists ( select t.column_value from (select unnest(ARRAY" +   sets[iset]  + ")column_value) t where t.column_value=mv.snp_feature_id ) " +
-					     " AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname+ "')";
-						setAll.addAll(executeSQL(sql, retclass));
+//						String sql = "SELECT cast(mv.snp_feature_id as numeric) snp_feature_id, mv.chromosome AS chr, mv.\"position\" + 1 AS \"position\", mv.type_id " + columnname +  ", cast(" + AppContext.getDefaultOrganismId() + " as numeric) organism_id,  cast(mv.chromosome+2 AS numeric) srcfeature_id  FROM mv_snp_refposindex mv, snp_featureprop sfp " +
+//					     " WHERE mv.TYPE_ID=" + dataset + " and mv.snp_feature_id = sfp.snp_feature_id and  " + 
+//					     " exists ( select t.column_value from (select unnest(ARRAY" +   sets[iset]  + ")column_value) t where t.column_value=mv.snp_feature_id ) " +
+//					     " AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname+ "')";
+//						setAll.addAll(executeSQL(sql, retclass));
 						*/
 				
 				/* using snp_feature_id
-						String sqldirect="";
-						sqldirect+="SELECT sfl.snp_feature_id, sfl.srcfeature_id-2 AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset " + columnname;
-						sqldirect+=" FROM " +AppContext.getDefaultSchema() +".snp_featureloc sfl, " +AppContext.getDefaultSchema() +".variant_variantset vvs, " + AppContext.getDefaultSchema() +".variantset v ";
-						sqldirect+=" , snp_featureprop sfp  WHERE  sfl.snp_feature_id = sfp.snp_feature_id and sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
-						sqldirect+="  AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
-						sqldirect+=" and sfl.organism_id=9";
-						sqldirect+=" and exists ( select t.column_value from (select unnest(ARRAY" +   sets[iset]  + ")column_value) t where t.column_value=sfl.snp_feature_id ) "; 
-						sqldirect+=" order by sfl.position";
-						setAll.addAll(executeSQL(sqldirect,retclass));
+//						String sqldirect="";
+//						sqldirect+="SELECT sfl.snp_feature_id, sfl.srcfeature_id-2 AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset " + columnname;
+//						sqldirect+=" FROM " +AppContext.getDefaultSchema() +".snp_featureloc sfl, " +AppContext.getDefaultSchema() +".variant_variantset vvs, " + AppContext.getDefaultSchema() +".variantset v ";
+//						sqldirect+=" , snp_featureprop sfp  WHERE  sfl.snp_feature_id = sfp.snp_feature_id and sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
+//						sqldirect+="  AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
+//						sqldirect+=" and sfl.organism_id=9";
+//						sqldirect+=" and exists ( select t.column_value from (select unnest(ARRAY" +   sets[iset]  + ")column_value) t where t.column_value=sfl.snp_feature_id ) "; 
+//						sqldirect+=" order by sfl.position";
+//						setAll.addAll(executeSQL(sqldirect,retclass));
 						*/
 					// using position
 					String sqldirect="";
-					sqldirect+="SELECT sfl.snp_feature_id, sfl.srcfeature_id-2 AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset " + columnname;
+					sqldirect+="SELECT sfl.snp_feature_id, sfl.srcfeature_id-" + AppContext.chr2srcfeatureidOffset()+ " AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset " + columnname;
 					sqldirect+=" FROM " +AppContext.getDefaultSchema() +".snp_featureloc sfl, " +AppContext.getDefaultSchema() +".variant_variantset vvs, " + AppContext.getDefaultSchema() +".variantset v, ";
 					sqldirect+=  AppContext.getDefaultSchema()+".snp_featureloc sfl3k ";
 					sqldirect+=" , snp_featureprop sfp  WHERE  sfl3k.snp_feature_id = sfp.snp_feature_id and sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
 					sqldirect+="  AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
-					sqldirect+=" and sfl3k.organism_id=9 and sfl3k.position=sfl.position and sfl3k.srcfeature_id=sfl.srcfeature_id and sfl.organism_id=9 "; 
+					sqldirect+=" and sfl3k.organism_id="  + AppContext.getDefaultOrganismId() +" and sfl3k.position=sfl.position and sfl3k.srcfeature_id=sfl.srcfeature_id and sfl.organism_id=9 "; 
 					sqldirect+=" and exists ( select t.column_value from (select unnest(ARRAY" +   sets[iset]  + ")column_value) t where t.column_value=sfl.snp_feature_id ) "; 
 					sqldirect+=" order by sfl.position";
 					setAll.addAll(executeSQL(sqldirect,retclass));			
@@ -318,7 +318,7 @@ abstract public class SnpsPropertyDAO<T>  extends AbstractJpaDao<T> {
 		  String sql="select vs.name variantset, count(1) from cvterm ct, snp_featureprop sfp, variant_variantset vvs, variantset vs, "
 		  + " snp_featureloc sfl, snp_featureloc sfl3k "
 		  + " where ct.name in ('" + propname + "') " 
-		  + " and sfl3k.organism_id=9 and sfl3k.position=sfl.position and sfl3k.srcfeature_id=sfl.srcfeature_id and sfl.organism_id=9 "
+		  + " and sfl3k.organism_id="  + AppContext.getDefaultOrganismId() + " and sfl3k.position=sfl.position and sfl3k.srcfeature_id=sfl.srcfeature_id and sfl.organism_id=9 "
 		  + " and sfl3k.snp_feature_id=sfp.snp_feature_id "
 		  + " and ct.cvterm_id=sfp.type_id and sfl.snp_feature_id=vvs.variant_feature_id"
 		  + " and vvs.variantset_id=vs.variantset_id and  vs.name in ('" + AppContext.toCSVquoted(variantset, "'") + "') group by vs.name";

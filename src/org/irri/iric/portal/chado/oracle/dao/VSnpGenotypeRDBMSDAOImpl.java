@@ -603,7 +603,7 @@ public class VSnpGenotypeRDBMSDAOImpl extends AbstractJpaDao<VSnpGenotypeRDBMS>
 					//String sql="select stock_sample_id, cast(trim( REPLACE(" + sqlAl1 + ", '0','?')) as varchar2(450)) as allele1, cast(trim(REPLACE(" + sqlAl2 +  ",'0','?')) as varchar2(450)) as allele2, 0 mismatch, null refcall  \r\n" + 
 					String sql="select stock_sample_id stock_sample_id, REPLACE(" + sqlAl1 + ", '0','?') allele1, REPLACE(" + sqlAl2 +  ",'0','?') allele2, 0 mismatch, null refcall  \r\n" +
 							" from (\r\n" + 
-							"select sg.stock_sample_id, sfl.srcfeature_id-2 chromosome, sfl.position+1 position, sg.allele1, sg.allele2 from " + AppContext.getDefaultSchema() + ".snp_genotype sg, " + AppContext.getDefaultSchema() + ".snp_featureloc sfl \r\n" + 
+							"select sg.stock_sample_id, sfl.srcfeature_id-" + AppContext.chr2srcfeatureidOffset()+ " chromosome, sfl.position+1 position, sg.allele1, sg.allele2 from " + AppContext.getDefaultSchema() + ".snp_genotype sg, " + AppContext.getDefaultSchema() + ".snp_featureloc sfl \r\n" + 
 							"where  exists (select column_value from table(sys.odcinumberlist(" + sqlIds + ")) t where t.column_value=sg.snp_feature_id) \r\n";
 							
 						if(colVarids!=null)
@@ -812,7 +812,7 @@ as final_result(stock_sample_id numeric, p1_69679 character varying[],p1_69809 c
 					
 					String sql="select stock_sample_id , replace(" + sqlAl1 + ", '0','?') allele1, replace(" + sqlAl2 +  ",'0','?') allele2, 0 mismatch, null refcall  \r\n" +
 							" from crosstab(\r\n" + 
-							"'select cast(sg.stock_sample_id as numeric) stock_sample_id, ''p''||(sfl.srcfeature_id-2)||''_''||(sfl.position+1) \"position\", ARRAY[sg.allele1, sg.allele2] allele12 from " + AppContext.getDefaultSchema() + ".snp_genotype sg, " + AppContext.getDefaultSchema() + ".snp_featureloc sfl \r\n" + 
+							"'select cast(sg.stock_sample_id as numeric) stock_sample_id, ''p''||(sfl.srcfeature_id-" + AppContext.chr2srcfeatureidOffset() + ")||''_''||(sfl.position+1) \"position\", ARRAY[sg.allele1, sg.allele2] allele12 from " + AppContext.getDefaultSchema() + ".snp_genotype sg, " + AppContext.getDefaultSchema() + ".snp_featureloc sfl \r\n" + 
 					//		"where  exists (select column_value from table(sys.odcinumberlist(" + sqlIds + ")) t where t.column_value=sg.snp_feature_id) \r\n";
 					"where  exists ( select t.column_value from (select unnest(ARRAY[" +  sqlIds + "])column_value) t where t.column_value=sg.snp_feature_id) \r\n";
 
@@ -929,32 +929,32 @@ as final_result(stock_sample_id numeric, p1_69679 character varying[],p1_69809 c
 	@Override
 	public Map readSNPString(String chr, int startIdx, int endIdx) {
 		// TODO Auto-generated method stub
-		String sql="select stock_sample_id, REPLACE( pos11832_al1||pos12340_al1||pos12742_al1||pos12911_al1, '0','?') allele1, REPLACE( pos11832_al2||pos12340_al2||pos12742_al2||pos12911_al2,'0','?')  allele2 ,\r\n" + 
-				"REPLACE( pos11832_refcall||pos12340_refcall||pos12742_refcall||pos12911_refcall,'0','?')  refcall  from (\r\n" + 
-				"select stock_sample_id, sfl.srcfeature_id-2 chromosome, sfl.position+1 position, allele1, allele2, refcall from snp_genotype sg, SNP_FEATURELOC sfl\r\n" + 
-				"where sfl.SNP_FEATURE_ID=sg.SNP_FEATURE_ID and sfl.srcfeature_id=3 and sfl.position+1 between 10000 and 13000 \r\n" + 
-				")\r\n" + 
-				"pivot\r\n" + 
-				"(   min(allele1) al1, min(allele2) al2 , min(refcall) refcall   \r\n" + 
-				"    for position in (11832 pos11832,  12340 pos12340,   12742 pos12742,12911 pos12911)\r\n" + 
-				") order by stock_sample_id";
+//		String sql="select stock_sample_id, REPLACE( pos11832_al1||pos12340_al1||pos12742_al1||pos12911_al1, '0','?') allele1, REPLACE( pos11832_al2||pos12340_al2||pos12742_al2||pos12911_al2,'0','?')  allele2 ,\r\n" + 
+//				"REPLACE( pos11832_refcall||pos12340_refcall||pos12742_refcall||pos12911_refcall,'0','?')  refcall  from (\r\n" + 
+//				"select stock_sample_id, sfl.srcfeature_id-" + AppContext.chr2srcfeatureidOffset() + " chromosome, sfl.position+1 position, allele1, allele2, refcall from snp_genotype sg, SNP_FEATURELOC sfl\r\n" + 
+//				"where sfl.SNP_FEATURE_ID=sg.SNP_FEATURE_ID and sfl.srcfeature_id=3 and sfl.position+1 between 10000 and 13000 \r\n" + 
+//				")\r\n" + 
+//				"pivot\r\n" + 
+//				"(   min(allele1) al1, min(allele2) al2 , min(refcall) refcall   \r\n" + 
+//				"    for position in (11832 pos11832,  12340 pos12340,   12742 pos12742,12911 pos12911)\r\n" + 
+//				") order by stock_sample_id";
 		return null;
 	}
 
 	@Override
 	public Map readSNPString(String chr, int[] posIdxs) {
 		// TODO Auto-generated method stub
-		
-		String sql="select stock_sample_id, REPLACE( pos11832_al1||pos12340_al1||pos12742_al1||pos12911_al1, '0','?') allele1, REPLACE( pos11832_al2||pos12340_al2||pos12742_al2||pos12911_al2,'0','?')  allele2 ,\r\n" + 
-				"REPLACE( pos11832_refcall||pos12340_refcall||pos12742_refcall||pos12911_refcall,'0','?')  refcall  from (\r\n" + 
-				"select stock_sample_id, sfl.srcfeature_id-2 chromosome, sfl.position+1 position, allele1, allele2, refcall from snp_genotype sg, SNP_FEATURELOC sfl\r\n" + 
-				"where sfl.SNP_FEATURE_ID=sg.SNP_FEATURE_ID and sfl.srcfeature_id=3 and sfl.position+1 between 10000 and 13000 \r\n" + 
-				")\r\n" + 
-				"pivot\r\n" + 
-				"(   min(allele1) al1, min(allele2) al2 , min(refcall) refcall   \r\n" + 
-				"    for position in (11832 pos11832,  12340 pos12340,   12742 pos12742,12911 pos12911)\r\n" + 
-				") order by stock_sample_id";
-		
+//		
+//		String sql="select stock_sample_id, REPLACE( pos11832_al1||pos12340_al1||pos12742_al1||pos12911_al1, '0','?') allele1, REPLACE( pos11832_al2||pos12340_al2||pos12742_al2||pos12911_al2,'0','?')  allele2 ,\r\n" + 
+//				"REPLACE( pos11832_refcall||pos12340_refcall||pos12742_refcall||pos12911_refcall,'0','?')  refcall  from (\r\n" + 
+//				"select stock_sample_id, sfl.srcfeature_id-2 chromosome, sfl.position+1 position, allele1, allele2, refcall from snp_genotype sg, SNP_FEATURELOC sfl\r\n" + 
+//				"where sfl.SNP_FEATURE_ID=sg.SNP_FEATURE_ID and sfl.srcfeature_id=3 and sfl.position+1 between 10000 and 13000 \r\n" + 
+//				")\r\n" + 
+//				"pivot\r\n" + 
+//				"(   min(allele1) al1, min(allele2) al2 , min(refcall) refcall   \r\n" + 
+//				"    for position in (11832 pos11832,  12340 pos12340,   12742 pos12742,12911 pos12911)\r\n" + 
+//				") order by stock_sample_id";
+//		
 		return null;
 	}
 

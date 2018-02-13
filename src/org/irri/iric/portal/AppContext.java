@@ -1322,6 +1322,10 @@ public class AppContext {
 	public static String guessChrFromString(String chr) {
 		return chr.toUpperCase().replace("CHR0", "").replace("CHR", "");
 	}
+	
+	public static String guessSrcfeataureidFromString(String chr) {
+		return Integer.toString( AppContext.chr2srcfeatureidOffset() + Integer.valueOf(chr.toUpperCase().replace("CHR0", "").replace("CHR", "")));
+	}
 
 	/**
 	 * Generate list of uppercase, lowercase, blanks for use in UI listboxes
@@ -2393,6 +2397,11 @@ public class AppContext {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		return cal;
+	}
+
+	public static int chr2srcfeatureidOffset() {
+		// TODO Auto-generated method stub
+		return 2;
 	}
 
 	/// **

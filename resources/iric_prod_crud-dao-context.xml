@@ -161,7 +161,7 @@ VM_IRIC.minPoolSize=1
 				<!-- VM postgres -->
 				<!-- property name="url" value="jdbc:postgresql://localhost:5432/iric6"/ -->
 						
-				<!--  <AWS-RDS Beanstalk -->			
+				<!--  <AWS-RDS Beanstalk (old schema, used by iric_portal_2) -->			
 				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
 					<property name="driverClassName" value="org.postgresql.Driver"/>
 					<property name="username" value="postgres"/>
@@ -195,7 +195,7 @@ VM_IRIC.minPoolSize=1
 				</bean -->
 
 
-				<!--   pollux  -->	
+				<!--   pollux  (new schema, used by iric_portal_3) -->	
 				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
 					<property name="driverClassName" value="org.postgresql.Driver"/>
 					<property name="username" value="iric"/>
@@ -206,7 +206,7 @@ VM_IRIC.minPoolSize=1
 				</bean>
 
 
-				<!--  vm local  -->									
+				<!--  vm local (old schema, used by iric_portal_2)  -->									
 				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
 					<property name="driverClassName" value="org.postgresql.Driver"/>
 					<property name="username" value="postgres"/>
