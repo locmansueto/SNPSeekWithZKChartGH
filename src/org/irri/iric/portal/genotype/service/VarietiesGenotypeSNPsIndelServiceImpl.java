@@ -420,7 +420,8 @@ public class VarietiesGenotypeSNPsIndelServiceImpl implements VarietiesGenotypeS
 			Iterator itrun=origRun.iterator();
 			Set setDS=new HashSet();
 			Set setVS=new HashSet();
-
+			AppContext.debug("origRun= " + origRun);
+			
 			String prevds=null;
 			while(itrun.hasNext()) {
 				GenotypeRunPlatform r=(GenotypeRunPlatform)itrun.next();

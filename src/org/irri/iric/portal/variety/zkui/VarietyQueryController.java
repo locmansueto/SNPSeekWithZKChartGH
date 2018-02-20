@@ -520,7 +520,7 @@ public class VarietyQueryController extends SelectorComposer<Component>  {
 			AppContext.debug("tabMDS.isSelected=" + tabMDS.isSelected());
 			AppContext.debug("tabTable.isVisible=" + tabTable.isVisible());
 
-			bandboxVarietyset.setValue("3k");
+			bandboxVarietyset.setValue( AppContext.getDefaultDataset()); //  "3k");
 			//updateUI();
 			/*
 			if(listboxDataset.getRows()>0) {

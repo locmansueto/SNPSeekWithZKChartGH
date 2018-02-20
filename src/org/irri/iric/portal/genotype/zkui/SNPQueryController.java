@@ -1168,10 +1168,11 @@ public void showAdvanceOptions() {
     	 listboxGenotyperun.setSelectedItems(sSelItems);
     	 */
  		
- 		Set selDS=new HashSet(); selDS.add("3k");
+ 		
+ 		Set selDS=new HashSet(); selDS.add( AppContext.getDefaultDataset()); //  "3k");
  		setVarietyset(selDS);
  		
-		Set selVS=new HashSet(); selVS.add("3kfiltered");
+		Set selVS=new HashSet(); selVS.add( AppContext.getDefaultVariantset()); // "3kfiltered");
  		setVariantset(selVS);
  
  		/*
@@ -2214,7 +2215,7 @@ public  void queryVariants()    {
 				}
 				else {
 					if(checkboxIndel.isChecked() && !checkboxAlignIndels.isChecked()) 
-						tabMSA.setVisible(false);	
+						if(AppContext.isRice()) tabMSA.setVisible(false);	
 					//else tabMSA.setVisible(true);
 
 					String chr = selectChr.getValue().trim();
@@ -2223,17 +2224,18 @@ public  void queryVariants()    {
 						tabJbrowse.setVisible(true);
 						tabHaplotype.setVisible(true);
 						
+						if(AppContext.isRice()) {
 						if(tallJbrowse) {
 							update_phylotree(chr.toUpperCase().replace("CHR0","").replace("CHR",""), intStart.getValue().toString() , intStop.getValue().toString() , listSNPs.size() );
 							//tabPhylo.setVisible(true);
 							tabMDS.setVisible(true);
 						}
-						
+						}
 						//tabTableLarge.setVisible(true);
 
 					}
 					hboxDownload.setVisible(true);
-					tabVista.setVisible(true);
+					if(AppContext.isRice()) tabVista.setVisible(true);
 					//tabVistaNPB.setVisible(true);
 					//tabVistaRev.setVisible(true);
 				}
@@ -4312,6 +4314,9 @@ public void onselectTabJbrowse() {
 				
 				try {
 				
+					
+				if(AppContext.showGenotypeTrack()) {	
+					
 				List listGFF = new ArrayList();
 				if(this.checkboxSNP.isChecked() && checkboxIndel.isChecked())
 				{
@@ -4364,6 +4369,12 @@ public void onselectTabJbrowse() {
 				//urlphylo = urlphylo.replace("GFF_FILE",  gfffile.replace(".gff", "") ); //  = "jsp/phylotreeGermplasms.jsp?scale=" + treescale + "&chr=" + chr + "&start=" + start + "&end=" + end + "&topn=" + topN + "&tmpfile=GFF_FILE&mindist=" + intPhyloMindist.getValue();
 
 				iframeJbrowse.setSrc( urljbrowse.replace("GFF_FILE" ,gfffile).replace("{","%7B").replace("}","%7D") );
+				} 
+				else { 
+					AppContext.resetTimer("viewing " + urljbrowse);
+					iframeJbrowse.setSrc( urljbrowse.replace("{","%7B").replace("}","%7D") );
+				}
+				
 				iframeJbrowse.invalidate();
 				
 				
@@ -4388,8 +4399,15 @@ public void onselectTabJbrowse() {
 			}
 		}
 		else {
-			AppContext.resetTimer("viewing " + urljbrowse.replace("GFF_FILE" ,gfffile).replace("{","%7B").replace("}","%7D") );
-			iframeJbrowse.setSrc( urljbrowse.replace("GFF_FILE" ,gfffile).replace("{","%7B").replace("}","%7D")  );
+			
+			if(AppContext.showGenotypeTrack()) {
+				AppContext.resetTimer("viewing " + urljbrowse.replace("GFF_FILE" ,gfffile).replace("{","%7B").replace("}","%7D") );
+				iframeJbrowse.setSrc( urljbrowse.replace("GFF_FILE" ,gfffile).replace("{","%7B").replace("}","%7D")  );
+			}
+			else {
+				AppContext.resetTimer("viewing " + urljbrowse.replace("{","%7B").replace("}","%7D") );
+				iframeJbrowse.setSrc( urljbrowse.replace("{","%7B").replace("}","%7D")  );
+			}
 			iframeJbrowse.invalidate();
 			//
 		}
@@ -5757,12 +5775,22 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 				//urljbrowse= AppContext.getHostname() + "/" + AppContext.getJbrowseDir() + "/?loc=chr"  + chrpad + "|msu7:" + start + ".." + end +   "&tracks=DNA%2Cmsu7gff%2Csnp3k%2C" + snp3kcore + "SNP%20Genotyping&addStores={%22url%22%3A{%22type%22%3A%22JBrowse%2FStore%2FSeqFeature%2FGFF3Variety%22%2C%22urlTemplate%22%3A%22" + urltemplate +
 				
 				//urljbrowse= AppContext.getHostname() + "/" + AppContext.getJbrowseDir() + "/?loc="  + chrpad + ":" + start + ".." + end +   "&tracks=DNA%2Cmsu7gff%2C" + snp3kcore + "SNP%20Genotyping&addStores={%22url%22%3A{%22type%22%3A%22JBrowse%2FStore%2FSeqFeature%2FGFF3Variety%22%2C%22urlTemplate%22%3A%22" + urltemplate +
+				/*
 				urljbrowse= AppContext.getJbrowseDir() + "/?" + chrpad + ":" + start + ".." + end +   "&tracks=" + showTracks  + "SNP%20Genotyping&addStores={%22url%22%3A{%22type%22%3A%22JBrowse%2FStore%2FSeqFeature%2FGFF3Variety%22%2C%22urlTemplate%22%3A%22" + urltemplate +
 					 "%22}}&addTracks=[{%22label%22%3A%22SNP%20Genotyping%22%2C%22type%22%3A" + rendertype + "%2C%22store%22%3A%22url%22%2C%20" + displaymode 
 					 + ",%22metadata%22:{%22Description%22%3A%20%22Varieties%20SNP%20Genotyping%20in%20the%20region.%20Each%20row%20is%20a%20variety.%20Red%20means%20there%20is%20variation%20with%20the%20reference%22}"  
 					 + ",%22fmtDetailValue_Name%22%3A%20%22function(name)%20%7B%20return%20%27%3Ca%20target%3D%5C%22variety%5C%22%20href%3D%5C%22/" + AppContext.getHostDirectory()  + "/_variety.zul%3Fname%3D%27%2Bname%2B%27%5C%22%3E%27%2Bname%2B%27%3C%2Fa%3E%27%3B%20%7D%22%20"
 					 + "%2C%20%22style%22%3A{%22showLabels%22%3A%22false%22%2C%22textFont%22%3A%22normal%208px%20Univers%2CHelvetica%2CArial%2Csans-serif%22}}]&highlight=";
-					//"fmtDetailValue_Name": "function(name) { return '<a target=\"variety\" href=\"_variety.zul?name='+name+'\">'+name+'</a>'; }" 
+					//"fmtDetailValue_Name": "function(name) { return '<a target=\"variety\" href=\"_variety.zul?name='+name+'\">'+name+'</a>'; }"
+				*/
+				urljbrowse= AppContext.getJbrowseDir() + "/?" + chrpad + ":" + start + ".." + end +   "&tracks=" + showTracks ; // "SNP%20Genotyping" + "&addStores={%22url%22%3A{%22type%22%3A%22JBrowse%2FStore%2FSeqFeature%2FGFF3Variety%22%2C%22urlTemplate%22%3A%22" + urltemplate +
+						 //"%22}} "
+						/*
+						 + "&addTracks=[{%22label%22%3A%22SNP%20Genotyping%22%2C%22type%22%3A" + rendertype + "%2C%22store%22%3A%22url%22%2C%20" + displaymode 
+						 + ",%22metadata%22:{%22Description%22%3A%20%22Varieties%20SNP%20Genotyping%20in%20the%20region.%20Each%20row%20is%20a%20variety.%20Red%20means%20there%20is%20variation%20with%20the%20reference%22}"  
+						 + ",%22fmtDetailValue_Name%22%3A%20%22function(name)%20%7B%20return%20%27%3Ca%20target%3D%5C%22variety%5C%22%20href%3D%5C%22/" + AppContext.getHostDirectory()  + "/_variety.zul%3Fname%3D%27%2Bname%2B%27%5C%22%3E%27%2Bname%2B%27%3C%2Fa%3E%27%3B%20%7D%22%20"
+						 + "%2C%20%22style%22%3A{%22showLabels%22%3A%22false%22%2C%22textFont%22%3A%22normal%208px%20Univers%2CHelvetica%2CArial%2Csans-serif%22}}]&highlight=";
+						 */
 			}
 			else
 			{
@@ -5792,11 +5820,14 @@ private void updateJBrowsePhylo(String chr, String start, String end, String loc
 				//urljbrowse= AppContext.getHostname() + "/" + AppContext.getJbrowseDir() + "/?loc=" + chrpad + ":" + start + ".." + end + 
 				urljbrowse=  AppContext.getJbrowseDir() + "/?" +  chrpad + ":" + start + ".." + end +
 					//"&tracks=DNA,msu7gff,snp3k," + snp3kcore + "SNP%20Genotyping&addStores={%22url%22:{%22type%22:%22JBrowse/Store/SeqFeature/GFF3%22,%22urlTemplate%22:%22" + urltemplate
-					"&tracks=" + showTracks  + "&SNP%20Genotyping&addStores={%22url%22:{%22type%22:%22JBrowse/Store/SeqFeature/GFF3%22,%22urlTemplate%22:%22" + urltemplate
+					"&tracks=" + showTracks ;
+				/*
+					+ "&SNP%20Genotyping&addStores={%22url%22:{%22type%22:%22JBrowse/Store/SeqFeature/GFF3%22,%22urlTemplate%22:%22" + urltemplate
 					+ "%22}}&addTracks=[{%22label%22:%22SNP%20Genotyping%22,%22type%22:%22JBrowse/View/Track/" + rendertype + "%22,%22store%22:%22url%22," + displaymode + 
 					 ",%22fmtDetailValue_Name%22%3A%20%22function(name)%20%7B%20return%20%27%3Ca%20target%3D%5C%22variety%5C%22%20href%3D%5C%22/" + AppContext.getHostDirectory() + "/_variety.zul%3Fname%3D%27%2Bname%2B%27%5C%22%3E%27%2Bname%2B%27%3C%2Fa%3E%27%3B%20%7D%22%20"
 					+ ",%22style%22:{%22showLabels%22:%22false%22,%22textFont%22:%22normal 8px Univers,Helvetica,Arial,sans-serif%22," +
 					"%22showLabels%22:%22false%22,%22label%22:%22Name%22,%22strandArrow%22:%22false%22}}]";
+					*/
 			
 			}
 			

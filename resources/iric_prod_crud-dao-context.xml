@@ -185,25 +185,36 @@ VM_IRIC.minPoolSize=1
 
 				
 				<!--   localhost  -->									
-				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
+				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
 					<property name="driverClassName" value="org.postgresql.Driver"/>
 					<property name="username" value="postgres"/>
 					<property name="password" value="iric-dev"/>
 					<property name="url" value="jdbc:postgresql://localhost:5432/snpseekv3"/>
 					<property name="maxIdle" value="1"/>
 					<property name="maxActive" value="10"/>
-				</bean -->
+				</bean>
 
 
 				<!--   pollux  (new schema, used by iric_portal_3) -->	
-				<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
+				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
 					<property name="driverClassName" value="org.postgresql.Driver"/>
 					<property name="username" value="iric"/>
 					<property name="password" value="iric-dev"/>
 					<property name="url" value="jdbc:postgresql://172.29.4.215:5432/iric"/>
 					<property name="maxIdle" value="1"/>
 					<property name="maxActive" value="10"/>
-				</bean>
+				</bean -->
+
+				<!-- docker sorghum -->
+				<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" name="IRIC_ProductionDS_PG">
+					<property name="driverClassName" value="org.postgresql.Driver"/>
+					<property name="username" value="postgres"/>
+					<property name="password" value="postgres"/>
+					<property name="url" value="jdbc:postgresql://localhost:5432/iric"/>
+					<property name="url" value="jdbc:postgresql://192.168.56.102:5432/iric"/>
+					<property name="maxIdle" value="1"/>
+					<property name="maxActive" value="10"/>
+				</bean -->
 
 
 				<!--  vm local (old schema, used by iric_portal_2)  -->									

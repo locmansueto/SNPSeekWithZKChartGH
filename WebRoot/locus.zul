@@ -47,10 +47,10 @@
 <label value="Gene model:" style="font-size:14px;font-weight:bold;color:gray;"/>
 <vbox width="10px"/>
 <listbox id="listboxAnnotation" class="gene-model" mold="select">
-<listitem  value="msu7only" label="MSU7" selected="true"/>
+<!-- listitem  value="msu7only" label="MSU7" selected="true"/>
 <listitem  value="raponly" label="RAP"/>
-<listitem  value="iric" label="Merged MSU7,RAP,FGenesh (by IRIC)"/>
-<!--  listitem  value="all" label="All"/ -->
+<listitem  value="iric" label="Merged MSU7,RAP,FGenesh (by IRIC)"/ -->
+<listitem  value="all" label="All" selected="true" />
 </listbox>
 </hbox>
 </div>

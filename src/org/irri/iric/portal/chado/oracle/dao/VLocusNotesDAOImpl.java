@@ -1158,7 +1158,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 		+ " fsrc.feature_id=fl.srcfeature_id and f.organism_id=o.organism_id and fsrc.organism_id=f.organism_id";
 	
 			if(synonym.isRegex() || synonym.isWholeWord()) {
-				sql += " and (f.name ~ '" + synonym.getText()  + "' ";
+				sql += " and (f.name ~* '" + synonym.getText()  + "' ";
 			}
 			else if(synonym.isExact()) {
 				sql += " and (lower(f.name)='" + synonym.getText().toLowerCase() + "' ";
@@ -1167,7 +1167,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 				sql += " and (lower(f.name) like '%" + synonym.getText().toLowerCase() + "%' ";
 			
 			if(synonym.isRegex() || synonym.isWholeWord()) {
-				sql += " or f3.value ~ '" + synonym.getText()  + "' ";
+				sql += " or f3.value ~* '" + synonym.getText()  + "' ";
 			}
 			else if(synonym.isExact()) {
 				sql += " or lower(f3.value)='" + synonym.getText().toLowerCase() + "' ";
@@ -1187,7 +1187,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 		+ " and f.feature_id=fl.feature_id and"
 		+ " fsrc.feature_id=fl.srcfeature_id and f.organism_id=o.organism_id and fsrc.organism_id=f.organism_id ";
 		if(synonym.isRegex() || synonym.isWholeWord()) {
-			sql += " and s.name ~ '" + synonym.getText()  + "' ";
+			sql += " and s.name ~* '" + synonym.getText()  + "' ";
 		}
 		else if(synonym.isExact()) {
 			sql += " and lower(s.name)='" + synonym.getText().toLowerCase() + "' ";
@@ -1403,7 +1403,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 		}
 		else */
 		if(synonym.isRegex() || synonym.isWholeWord()) {
-			sql += " and (f.name ~ '" + synonym.getText()  + "' ";
+			sql += " and (f.name ~* '" + synonym.getText()  + "' ";
 		}
 		else if(synonym.isExact()) {
 			sql += " and (lower(f.name)='" + synonym.getText().toLowerCase() + "' ";
@@ -1444,7 +1444,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements
 		}
 		else */
 		if(synonym.isRegex() || synonym.isWholeWord()) {
-			sql += " and s.name ~ '" + synonym.getText() + "' ";
+			sql += " and s.name ~* '" + synonym.getText() + "' ";
 		}
 		else if(synonym.isExact()) {
 			sql += " and lower(s.name)='" + synonym.getText().toLowerCase() + "' ";
@@ -1637,7 +1637,10 @@ select fdesc.*, '' as   iric,  fdesc."NAME" as msu7, '' as rap_rep, '' as rap_pr
 			sql = "select distinct f.feature_id, f.name \"name\", fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, " + notes + ", f.organism_id, o.common_name,   cvtype.name  as feature_type "
 			+ ", '' iric, '' as msu7, f.name as rap_rep, '' as rap_pred, '' as fgenesh";
 			pref=" and (f.name like 'Os0%' or f.name like 'Os1%') ";
-
+		} else {
+			sql = "select distinct f.feature_id, f.name \"name\", fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, " + notes + ", f.organism_id, o.common_name,   cvtype.name  as feature_type ";
+			//+ ", '' iric, '' as msu7, f.name as rap_rep, '' as rap_pred, '' as fgenesh";
+			//pref=" and (f.name like 'Os0%' or f.name like 'Os1%') ";
 		}
 		
 		sql  += " from " + AppContext.getDefaultSchema() + ".featureloc fl,  " + AppContext.getDefaultSchema() + ".feature fsrc, " + AppContext.getDefaultSchema() + ".organism o, " + AppContext.getDefaultSchema() + ".cvterm cvtype, " + AppContext.getDefaultSchema() + ".feature f"   
@@ -1659,8 +1662,9 @@ select fdesc.*, '' as   iric,  fdesc."NAME" as msu7, '' as rap_rep, '' as rap_pr
 			+ pref
 			+ " order by contig_name, fmin, fmax";
 		         
-
-		return executeSQLMerged(sql);
+		if(genemodel.equals(GenomicsFacade.GENEMODEL_ALL))
+			return executeSQL(sql);
+		else return executeSQLMerged(sql);
 	}
 
 
@@ -1809,6 +1813,9 @@ select fdesc.*, '' as   iric,  fdesc."NAME" as msu7, '' as rap_rep, '' as rap_pr
 	private List<Locus> getLocusByRegionPostgres(String contig, Long start, Long end, String organism, String genemodel, boolean exactString) {
 		// TODO Auto-generated method stub
 		
+		try {
+			
+		
 		if(genemodel.equals(GenomicsFacade.GENEMODEL_MSU7_ONLY) || genemodel.equals(GenomicsFacade.GENEMODEL_RAP_ONLY) || genemodel.equals(GenomicsFacade.GENEMODEL_IRIC_ONLY))
 			return getLocusByRegionPostgresNomapping( contig,  start,  end,  organism,  genemodel, GenomicsFacade.FEATURETYPE_GENE, null);
 
@@ -1818,7 +1825,8 @@ select fdesc.*, '' as   iric,  fdesc."NAME" as msu7, '' as rap_rep, '' as rap_pr
 		String locusmapping="";
 		String locuspref="";
 		if(genemodel.equals( GenomicsFacade.GENEMODEL_ALL) || !organism.equals(Organism.REFERENCE_NIPPONBARE) ) {
-			return  getLocusByRegion( contig,  start,  end, organism, GenomicsFacade.GENEMODEL_ALL);
+			//return  getLocusByRegion( contig,  start,  end, organism, GenomicsFacade.GENEMODEL_ALL);
+			return getLocusByRegionPostgresNomapping( contig,  start,  end,  organism,  genemodel, GenomicsFacade.FEATURETYPE_GENE, null);
 		}
 		else if(genemodel.equals( GenomicsFacade.GENEMODEL_IRIC)) {
 			locuspref = " and f.name like 'OsNippo%'"; 
@@ -1863,6 +1871,12 @@ select fdesc.*, '' as   iric,  fdesc."NAME" as msu7, '' as rap_rep, '' as rap_pr
 			+ " order by contig_name, fmin, fmax";
 
 		return executeSQLMerged(sql);
+		
+		} catch(Exception ex) {
+			AppContext.debug("getLocusByRegionPostgres");
+			ex.printStackTrace();
+			return new ArrayList();
+		}
 	}
 
 	public List<Locus> getLocusByRegionOracle(String contig, Long start, Long end, String organism, String genemodel) {

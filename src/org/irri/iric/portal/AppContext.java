@@ -1190,16 +1190,31 @@ public class AppContext {
 
 		// return "rice";
 		return "Japonica nipponbare";
+		//return "sorghum bicolor";
 		// return "Japonica Nipponbare";
 	}
 
 	public static Integer getDefaultOrganismId() {
 		return 9;
+		//return 1;
 	}
 
 	public static String getDefaultDataset() {
-		// return VarietyFacade.DATASET_SNPINDELV2_IUPAC;
-		return VarietyFacade.DATASET_DEFAULT;
+		return "3k";  //  VarietyFacade.DATASET_SNPINDELV2_IUPAC;
+		//return "refset" ; //VarietyFacade.DATASET_DEFAULT;
+		 
+	}
+
+	public static int chr2srcfeatureidOffset() {
+		// TODO Auto-generated method stub
+		return 2;
+		//return 3312; //0;
+	}
+
+	public static String getDefaultVariantset() {
+		// TODO Auto-generated method stub
+		//return "refset"; //  3kfiltered;
+		return  "3kfiltered";
 	}
 
 	/**
@@ -1326,7 +1341,16 @@ public class AppContext {
 	public static String guessSrcfeataureidFromString(String chr) {
 		return Integer.toString( AppContext.chr2srcfeatureidOffset() + Integer.valueOf(chr.toUpperCase().replace("CHR0", "").replace("CHR", "")));
 	}
+	
+	public static boolean isRice() {
+		return getDefaultOrganism().equals("Japonica nipponbare");
+	}
+	
+	public static boolean showGenotypeTrack() {
+		return false; //isRice();
+	}
 
+	
 	/**
 	 * Generate list of uppercase, lowercase, blanks for use in UI listboxes
 	 * 
@@ -2399,10 +2423,7 @@ public class AppContext {
 		return cal;
 	}
 
-	public static int chr2srcfeatureidOffset() {
-		// TODO Auto-generated method stub
-		return 2;
-	}
+	
 
 	/// **
 	// * is Amazon Web Service compile?
