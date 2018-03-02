@@ -26,19 +26,37 @@
 <vbox width="10px"/>
 <listbox id="listboxOrganism" class="reference-genome" mold="select" disabled="false"/>
 
+<zscript>
+	boolean isAnnotationVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_LOCI_BY_ANNOTATION);
+	boolean isGoTermVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_LOCI_BY_GO_TERM);
+	boolean isTraitVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_LOCI_BY_TRAIT);
+	boolean isRegionVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_LOCI_BY_REGION);
+	boolean isSequenceVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_LOCI_BY_SEQUENCE);
+	boolean isSnpListVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_LOCI_BY_SNPLIST);
+	boolean isGeneListVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_LOCI_BY_GENELIST);
+	
+	String visibleAnnotationStr = String.valueOf(isAnnotationVisible);
+	String visibleGoTermStr = String.valueOf(isGoTermVisible);
+	String visibleTraitStr = String.valueOf(isTraitVisible);
+	String visibleRegionStr = String.valueOf(isRegionVisible);
+	String visibleSequenceStr = String.valueOf(isSequenceVisible);
+	String visibleSnpListStr = String.valueOf(isSnpListVisible);
+	String visibleGeneListStr = String.valueOf(isGeneListVisible);
+</zscript>  
+
 <vbox width="30px"/>			    
 <label value="Search by:" style="font-size:14px;font-weight:bold;color:gray;"/>
 <vbox width="10px"/>
 <listbox id="listboxSearchby" class="search-by"  mold="select">
-<listitem  label="Annotation (by source)"/>
+<listitem  label="Annotation (by source)" visible="${visibleAnnotationStr}"/>
 <listitem selected="true" label="Gene name/symbol/function"/>
-<listitem  label="Gene Ontology term"/>
+<listitem  label="Gene Ontology term" visible="${visibleGoTermStr}"/>
 <!--  listitem  label="Plant and Trait Ontology term"/ -->
-<listitem  label="Trait"/>
-<listitem  label="Region"/>
-<listitem  id="listitemSequence" label="Sequence"/>
-<listitem  label="SNP Annotator (My SNP List)"/>
-<listitem  label="Gene set/networks"/>
+<listitem  label="Trait" visible="${visibleTraitStr}"/>
+<listitem  label="Region" visible="${visibleRegionStr}"/>
+<listitem  id="listitemSequence" label="Sequence" visible="${visibleSequenceStr}"/>
+<listitem  label="SNP Annotator (My SNP List)" visible="${visibleSnpListStr}"/>
+<listitem  label="Gene set/networks" visible="${visibleGeneListStr}"/>
 </listbox>
 
 <div id="divGeneModel">

@@ -80,7 +80,7 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 	</row>
    
 <!--  *********************   VARIETY QUERY OPTIONS  *********************************************************************************** -->   
-	
+	 
 	<row spans="1,3" visible="true">
 		<label value="Variety set" style="font-size:14px;font-weight:bold;color:gray;"/>
 		<!--  listbox id="listboxDataset" class="z-dataset-dropdown" mold="select" width="200px"/ -->
@@ -101,6 +101,7 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		
 	</row>
 	
+	
 	<row spans="1,3">
 		<label value="Designation" style="font-size:14px;font-weight:bold;color:gray;"/>
 		
@@ -110,8 +111,11 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		   </hbox>
 		
 	</row>
-	
-	<row  spans="1,3" visible="true">
+	<zscript>
+	boolean isAccVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_ACCESSION);
+	String visibleAccStr = String.valueOf(isAccVisible);
+	</zscript>
+	<row  spans="1,3" visible="${visibleAccStr}">
 		<label value="Accession" style="font-size:14px;font-weight:bold;color:gray;"/>
 			<hbox>
 		    <combobox id="comboAccession" class="z-combobox-accession" autodrop="true" buttonVisible="false" width="150px"/>
@@ -121,8 +125,11 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		    
 	</row>
 	
-	
-	<row  spans="1,3">
+	<zscript>
+	boolean isSubPopVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_SUBPOPULATION);
+	String visibleSubPopStr = String.valueOf(isSubPopVisible);
+	</zscript>
+	<row  spans="1,3" visible="${visibleSubPopStr}">
 		<label value="Subpopulation" style="font-size:14px;font-weight:bold;color:gray;"/>
 	
 		<hbox>
@@ -133,7 +140,11 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 	   
 	</row>
 	
-	<row  spans="1,3">
+	<zscript>
+	boolean isAssayVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_ASSAYID);
+	String visibleAssayStr = String.valueOf(isAssayVisible);
+	</zscript>
+	<row  spans="1,3" visible="${visibleAssayStr}">
 		<label  value="Assay ID" style="font-size:14px;font-weight:bold;color:gray;"/>
 		
 			<hbox>
@@ -142,15 +153,21 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		    </hbox>
 		   
 	</row>
-	
-	<row  spans="1,3">
+	<zscript>
+	boolean isCountryVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_COUNTRY);
+	String visibleCountryStr = String.valueOf(isCountryVisible);
+	</zscript>
+	<row  spans="1,3" visible="${visibleCountryStr}">
 		<label value="Country" style="font-size:14px;font-weight:bold;color:gray;"/>
 	    <combobox id="comboCountry" class="z-combobox-country" autodrop="true" buttonVisible="false" width="150px"/>
 	  
 	</row>
 
-	
-	<row  spans="1,3">
+	<zscript>
+	boolean isPassportVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_PASSPORT);
+	String visiblePassportStr = String.valueOf(isPassportVisible);
+	</zscript>
+	<row  spans="1,3" visible="${visiblePassportStr}">
 	<hbox>
 	<label pre="true" value="Passport   " style="font-size:14px;font-weight:bold;color:gray;"/><label/> <a target="_blank" href="/passport_dict.pdf" label="Data dictionary"/>
 	</hbox>	
@@ -163,8 +180,11 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		</hbox>
 		</vbox>
 	</row>
-	
-	<row  spans="1,3">
+	<zscript>
+	boolean isPhenotypeVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_PHENOTYPE);
+	String visiblePhenotypeStr = String.valueOf(isPhenotypeVisible);
+	</zscript>
+	<row  spans="1,3" visible="${visiblePhenotypeStr}">
 		
 		<hbox>
 		<label pre="true" value="Phenotype " style="font-size:14px;font-weight:bold;color:gray;"/><label/>  <a target="_blank" href="/phenotype_dict.pdf" label="Data dictionary"/>

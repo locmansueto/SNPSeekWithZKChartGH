@@ -96,7 +96,7 @@ public class WebserverPropertyConstants {
 	
 	public static final String DEFAULT_VARIANT_SET = "defaultVariantset";
 	
-	public static final String CHR2SRC_FEATURE_ID_OFFSET = "chr2srcfeatureidOffset";
+	public static final String DEFAULT_CHR2SRC_FEATURE_ID_OFFSET = "chr2srcfeatureidOffset";
 	
 	
 }

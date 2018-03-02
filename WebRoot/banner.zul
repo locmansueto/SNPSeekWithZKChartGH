@@ -25,12 +25,45 @@
 				<menuitem src="/images/iric/var5.png" label="Varieties" href="_variety.zul"/>
 				<menuitem src="/images/iric/genelocus.png" label="Gene Loci" href="_locus.zul"/>
 			</menupopup>
-		</menu>			
-		<menu label="Browse" src="/images/iric/browse6.png">
+		</menu>		
+		<zscript>
+			boolean isAllignmentVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.MENU_BROWSE_ALIGNMENT);
+			boolean isGenomeVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.MENU_BROWSE_GENOME);
+			boolean isGwasVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.MENU_BROWSE_GWAS);
+			boolean isMdsVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.MENU_BROWSE_MDS);
+			boolean isPhylotreeVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.MENU_BROWSE_PHYLOTREE);
+			boolean isTraitGenesVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.MENU_BROWSE_TRAITGENES);
+			
+			boolean isOrderVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.MENU_ORDER_SEEDS);
+			boolean isDownloadGenesVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.MENU_DOWNLOAD);
+			boolean isHelpVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.MENU_HELP);
+			
+			
+			final String visibleAllignmentStr = String.valueOf(isAllignmentVisible);
+			final String visibleGenomeStr = String.valueOf(isGenomeVisible);
+			final String visibleGwasStr = String.valueOf(isGwasVisible);
+			final String visibleMdsStr = String.valueOf(isMdsVisible);
+			final String visiblePhylotreeStr = String.valueOf(isPhylotreeVisible);
+			final String visibleTraitGenesStr = String.valueOf(isTraitGenesVisible);
+			
+			final String visibleOrderGenesStr = String.valueOf(isOrderVisible);
+			final String visibleDownloadGenesStr = String.valueOf(isDownloadGenesVisible);
+			final String visibleHelpGenesStr = String.valueOf(isHelpVisible);
+			
+			<![CDATA[
+				String visibleBrowse = "true";
+				if (visibleAllignmentStr.equals("false") && visibleGenomeStr.equals("false") && visibleGwasStr.equals("false") && visibleMdsStr.equals("false") && visiblePhylotreeStr.equals("false") && visibleTraitGenesStr.equals("false")){
+					visibleBrowse = "false";
+				} 
+			]]>
+			
+			
+		</zscript>  	
+		<menu label="Browse" src="/images/iric/browse6.png" visible="${visibleBrowse}" >
 			<menupopup>
 			
 
-				<menu label="Genome" src="/images/iric/genome1.png">
+				<menu label="Genome" src="/images/iric/genome1.png" visible="${visibleGenomeStr}">
 					<menupopup>
 					<menuitem src="/images/iric/genome1.png" label="Nipponbare" href="_ideo.zul?tracks=${paramstr}&amp;app=jbrowse"/>
 					<!--  menuitem src="/images/iric/genome1.png" label="Nipponbare" href="_jbrowse.zul?tracks=${paramstr}"/ -->
@@ -52,7 +85,7 @@
 				<!--  menuitem src="/images/iric/tree1.png" label="Phylogenetic Tree (dynamic)" href="_phylotreedyn.zul"/ -->
 
 
-				<menu label="Phylogenetic tree" src="/images/iric/tree1.png">
+				<menu label="Phylogenetic tree" src="/images/iric/tree1.png" visible="${visiblePhylotreeStr}">
 					<menupopup>
 					<menuitem src="/images/iric/tree1.png" label="K9 groups" href="_variety.zul?irisid=alltree"/>
 					<menuitem src="/images/iric/tree1.png" label="K15 groups" href="_variety.zul?irisid=alltree2"/>
@@ -61,7 +94,7 @@
 					</menupopup>
 				</menu>				
 
-				<menu src="/images/iric/mds_plot.png" label="MDS Plots">				
+				<menu src="/images/iric/mds_plot.png" label="MDS Plots" visible="${visibleMdsStr}">				
 					<menupopup>
 					<menuitem src="/images/iric/mds_plot.png" label="3k MDS Plot" href="_variety.zul?irisid=allmds"/>
 					<menuitem src="/images/iric/mds_plot.png" label="HDRA MDS Plot" href="_variety.zul?irisid=allmdshdra"/>
@@ -72,6 +105,7 @@
 				<!--  menuitem src="/images/iric/mds_plot.png" label="GWAS Plots" href="_gwas.zul"/ -->
 
 
+				 
 				<menu id="menuTestplots" src="/images/iric/mds_plot.png" label="Test plots" visible="false"> 
 					<menupopup>					
 						<menuitem src="/images/iric/tree1.png" label="Tree 1" href="treeBrowser3023K15_dndtree.html"  target="_test"/>
@@ -82,10 +116,9 @@
 					</menupopup>
 				</menu>
 				
-				
 
 
-		<menu label="Genome alignments" src="/images/iric/synteny.png">
+		<menu label="Genome alignments" src="/images/iric/synteny.png" visible="${visibleGenomeStr}">
 			<menupopup>
 				<menuitem label="Select Reference" disabled="true"/>
 				<menuseparator/>
@@ -148,21 +181,21 @@
 			</menupopup>
 		</menu>
 		
-			<menuitem  src="/images/iric/traitgenes.png" label="Trait genes" href="_ideo.zul?tracks=${paramstr}&amp;app=rice-ideogram"/>
+			<menuitem  src="/images/iric/traitgenes.png" label="Trait genes" href="_ideo.zul?tracks=${paramstr}&amp;app=rice-ideogram" visible="${visibleTraitGenesStr}"/>
 		
-			<menuitem  src="/images/iric/manhattan-icon.png" label="GWAS results" href="_gwas.zul"/>
+			<menuitem  src="/images/iric/manhattan-icon.png" label="GWAS results" href="_gwas.zul" visible="${visibleGwasStr}"/>
 			</menupopup>
 			
 		
 		</menu>
 		<menuitem src="/images/iric/mylist.png" label="My Lists" href="_workspace.zul"/>
 		
-		<menuitem src="/images/iric/var5.png" label="Order Seeds" href="_seed.zul"/>
+		<menuitem src="/images/iric/var5.png" label="Order Seeds" href="_seed.zul" visible="${visibleOrderGenesStr}"/>
 		
 		
 		<!--  menuitem src="/images/iric/download.png" label="Download" target="_blank" href="http://oryzasnp-atcg-irri-org.s3-website-ap-southeast-1.amazonaws.com"/ -->
-		<menuitem src="/images/iric/download.png" label="Download" href="_download.zul"/>
-		<menu label="Help" src="/images/iric/help.png">
+		<menuitem src="/images/iric/download.png" label="Download" href="_download.zul" visible="${visibleDownloadGenesStr}"/>
+		<menu label="Help" src="/images/iric/help.png" visible="${visibleHelpGenesStr}">
 			<menupopup>
 				<menuitem src="/images/iric/users_manual.png" label="User's Manual" href="_help.zul"/>	
 				<menuitem src="/images/iric/users_manual.png" label="NAR Supplementary Materials" href="suppl/index.html" target="suppl"/>

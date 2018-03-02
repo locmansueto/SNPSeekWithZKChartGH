@@ -39,6 +39,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.CreateZipMultipleFiles;
+import org.irri.iric.portal.WebserverPropertyConstants;
 import org.irri.iric.portal.admin.AsyncJob;
 import org.irri.iric.portal.admin.AsyncJobImpl;
 import org.irri.iric.portal.admin.AsyncJobReport;
@@ -1195,9 +1196,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			// prevDataset=getDataset();
 			prevDataset.add("3k");
 			fillVariantsetListbox();
-			
-			tabSnpeff.setVisible(false);
-			
+
 			AppContext.debug("zulpage end.");
 
 		} catch (Exception ex) {
@@ -2177,13 +2176,14 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			if (mode == GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS && listSNPs.size() > 0) {
 				// non-empty all-variety query, display JBrowse, Phylo and Alignment tabs
 				if (this.listboxReference.getSelectedItem().getLabel().equals(AppContext.getDefaultOrganism()))
-					tabSnpeff.setVisible(true);
+					tabSnpeff.setVisible(
+							true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_SNP_EFFECT));
 				else
 					tabSnpeff.setVisible(false);
 				if (listboxMySNPList.getSelectedIndex() > 0 || this.listboxMyLocusList.getSelectedIndex() > 0
 						|| this.listboxAlleleFilter.getSelectedIndex() > 0) {
 					tabJbrowse.setVisible(false);
-					tabHaplotype.setVisible(true);
+					tabHaplotype.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
 					tabTableLarge.setVisible(false);
 					tabPhylo.setVisible(false);
 					tabMDS.setVisible(false);
@@ -2198,15 +2198,15 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 					String chr = selectChr.getValue().trim();
 					if (!chr.isEmpty()) {
 						updateJBrowse(chr, intStart.getValue().toString(), intStop.getValue().toString(), "");
-						tabJbrowse.setVisible(true);
-						tabHaplotype.setVisible(true);
+						tabJbrowse.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_JBROWSE));
+						tabHaplotype.setVisible(true  && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
 
 						if (AppContext.isRice()) {
 							if (tallJbrowse) {
 								update_phylotree(chr.toUpperCase().replace("CHR0", "").replace("CHR", ""),
 										intStart.getValue().toString(), intStop.getValue().toString(), listSNPs.size());
 								// tabPhylo.setVisible(true);
-								tabMDS.setVisible(true);
+								tabMDS.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_MDS));
 							}
 						}
 						// tabTableLarge.setVisible(true);
@@ -2214,7 +2214,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 					}
 					hboxDownload.setVisible(true);
 					if (AppContext.isRice())
-						tabVista.setVisible(true);
+						tabVista.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_COMPARE));
 					// tabVistaNPB.setVisible(true);
 					// tabVistaRev.setVisible(true);
 				}
@@ -2229,10 +2229,11 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			} else if (mode == GenotypeFacade.snpQueryMode.SNPQUERY_VARIETIES && listSNPs.size() > 0) {
 
 				// show two-varieties table
-				tabJbrowse.setVisible(true);
-				tabHaplotype.setVisible(true);
+				tabJbrowse.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_JBROWSE));
+				tabHaplotype.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
 				tabSnpeff.setVisible(
-						this.listboxReference.getSelectedItem().getLabel().equals(AppContext.getDefaultOrganism()));
+						this.listboxReference.getSelectedItem().getLabel().equals(AppContext.getDefaultOrganism())
+								&& AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_SNP_EFFECT));
 				msgJbrowse.setVisible(false);
 				divTablePanel.setVisible(false);
 				// listboxSnpresult.setVisible(true);

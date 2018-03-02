@@ -123,8 +123,8 @@ public class AppContext {
 	private static String log_level = "debug";
 
 	/**
-	 * is using limited (uploaded for sharing) data Source code and data
-	 * downloaded from Bitbucket repository should set this to true
+	 * is using limited (uploaded for sharing) data Source code and data downloaded
+	 * from Bitbucket repository should set this to true
 	 */
 	static boolean isSharedData = false;
 
@@ -257,14 +257,12 @@ public class AppContext {
 		String tomcatWebDir = webProp.getProperty(WebserverPropertyConstants.TOMCAT_SERVER);
 
 		/*
-		 * if (isPollux()) return "/usr/share/apache-tomcat-7.0.42/webapps/";
-		 * else if (isAWS() || isAWSdev()) return
-		 * "/usr/share/apache-tomcat-7.0.55/webapps/"; else if (isASTI()) return
-		 * "/srv/webapps/"; else if (isVMIRRI()) return "/opt/tomcat7/webapps/";
-		 * else if (isLocalhost()) return
-		 * "E:/apache-tomcat-8.0.36-windows-x64/apache-tomcat-8.0.36/webapps/";
-		 * else if (isAWSBeanstalk() || isAWSBeanstalkDev()) return
-		 * "/var/lib/tomcat8/webapps/";
+		 * if (isPollux()) return "/usr/share/apache-tomcat-7.0.42/webapps/"; else if
+		 * (isAWS() || isAWSdev()) return "/usr/share/apache-tomcat-7.0.55/webapps/";
+		 * else if (isASTI()) return "/srv/webapps/"; else if (isVMIRRI()) return
+		 * "/opt/tomcat7/webapps/"; else if (isLocalhost()) return
+		 * "E:/apache-tomcat-8.0.36-windows-x64/apache-tomcat-8.0.36/webapps/"; else if
+		 * (isAWSBeanstalk() || isAWSBeanstalkDev()) return "/var/lib/tomcat8/webapps/";
 		 */
 		if (!tomcatWebDir.equals("."))
 			return tomcatWebDir;
@@ -303,10 +301,9 @@ public class AppContext {
 
 		/*
 		 * if (isPollux()) return "/home/lmansueto/iric-portal-files/"; else if
-		 * (isLocalhost()) return "E:/My Document/Transfer/3kcore_alleles/";
-		 * else if (isAWS() || isAWSdev()) return
-		 * "/data/lmansueto/iric-portal-files/"; else if (isASTI()) return
-		 * "/srv/iric-portal-files/"; else if (isAWSBeanstalk() ||
+		 * (isLocalhost()) return "E:/My Document/Transfer/3kcore_alleles/"; else if
+		 * (isAWS() || isAWSdev()) return "/data/lmansueto/iric-portal-files/"; else if
+		 * (isASTI()) return "/srv/iric-portal-files/"; else if (isAWSBeanstalk() ||
 		 * isAWSBeanstalkDev()) return "/IRCstorage/snpseekdata/current/";
 		 */
 
@@ -345,14 +342,14 @@ public class AppContext {
 		String hostname = webProp.getProperty(WebserverPropertyConstants.HOST);
 
 		/*
-		 * if (isPollux()) return "http://172.29.4.215:8080"; else if (isAWS())
-		 * return "http://snp-seek.irri.org"; else if (isAWSdev()) return
+		 * if (isPollux()) return "http://172.29.4.215:8080"; else if (isAWS()) return
+		 * "http://snp-seek.irri.org"; else if (isAWSdev()) return
 		 * "http://54.255.100.88"; else if (isVMIRRI()) return
 		 * "http://202.123.56.26:8080"; else if (isASTI()) return
 		 * "http://202.90.159.218"; else if (isLocalhost()) return
 		 * "http://localhost:8080"; else if (isAWSBeanstalkDev()) return
-		 * "http://prodsnpseek01-env-test.ap-southeast-1.elasticbeanstalk.com";
-		 * else if (isAWSBeanstalk()) return "http://snp-seek.irri.org";
+		 * "http://prodsnpseek01-env-test.ap-southeast-1.elasticbeanstalk.com"; else if
+		 * (isAWSBeanstalk()) return "http://snp-seek.irri.org";
 		 */
 		if (!hostname.equals("."))
 			return hostname;
@@ -373,11 +370,10 @@ public class AppContext {
 		String hostDir = webProp.getProperty(WebserverPropertyConstants.HOST_DIR);
 
 		/*
-		 * if (isWS()) return "iric-ws"; if (isDev()) { return
-		 * "iric-portal-dev"; } else if (isTest()) return "iric-portal-test";
-		 * else if (isPollux()) return "iric-portal"; else if (isLocalhost())
-		 * return "iric_portal"; else if (isAWS() || isAWSBeanstalk() ||
-		 * isAWSBeanstalkDev()) return "";
+		 * if (isWS()) return "iric-ws"; if (isDev()) { return "iric-portal-dev"; } else
+		 * if (isTest()) return "iric-portal-test"; else if (isPollux()) return
+		 * "iric-portal"; else if (isLocalhost()) return "iric_portal"; else if (isAWS()
+		 * || isAWSBeanstalk() || isAWSBeanstalkDev()) return "";
 		 */
 		if (!hostDir.equals("."))
 			return hostDir;
@@ -415,9 +411,9 @@ public class AppContext {
 
 	public static String getEmbededDir(String app) {
 		logger.info("EMBEDDED DIR" + webProp.getProperty(WebserverPropertyConstants.EMBEDDED_SERVER));
-		
+
 		String embbededDir = webProp.getProperty(WebserverPropertyConstants.EMBEDDED_SERVER);
-		
+
 		if (app.equals("jbrowse"))
 			return getJbrowseDir();
 		if (app.equals("ideogram"))
@@ -426,19 +422,19 @@ public class AppContext {
 		if (!embbededDir.equals("."))
 			return embbededDir;
 		return AppContext.getHostname() + "/" + "jbrowse-dev2";
-		
-//		if (isLocalhost()) {
-//			return "http://172.29.4.215:8080/jbrowse-dev2";
-//		} else {
-//			if (isASTI())
-//				return AppContext.getHostname() + "/" + "jbrowse";
-//			else if (isPollux())
-//				return AppContext.getHostname() + "/" + "jbrowse-dev2";
-//			else if (isUsingsharedData() || isAWSBeanstalk() || isAWSBeanstalkDev())
-//				return AppContext.getHostname() + "/" + "jbrowse";
-//			else
-//				return AppContext.getHostname() + "/" + "jbrowse-dev2";
-//		}
+
+		// if (isLocalhost()) {
+		// return "http://172.29.4.215:8080/jbrowse-dev2";
+		// } else {
+		// if (isASTI())
+		// return AppContext.getHostname() + "/" + "jbrowse";
+		// else if (isPollux())
+		// return AppContext.getHostname() + "/" + "jbrowse-dev2";
+		// else if (isUsingsharedData() || isAWSBeanstalk() || isAWSBeanstalkDev())
+		// return AppContext.getHostname() + "/" + "jbrowse";
+		// else
+		// return AppContext.getHostname() + "/" + "jbrowse-dev2";
+		// }
 
 	}
 
@@ -455,10 +451,9 @@ public class AppContext {
 		String path = webProp.getProperty(WebserverPropertyConstants.PATH_LOCAL_BLAST);
 
 		/*
-		 * if (isAWS() || isAWSdev()) return
-		 * "/home/ubuntu/lmansueto/ncbi-blast/bin/"; else if (isPollux()) return
-		 * "/home/lmansueto/ncbi-blast/bin/"; else if (isASTI()) return
-		 * "/srv/ncbi-blast/bin"; else if (isAWSBeanstalk() ||
+		 * if (isAWS() || isAWSdev()) return "/home/ubuntu/lmansueto/ncbi-blast/bin/";
+		 * else if (isPollux()) return "/home/lmansueto/ncbi-blast/bin/"; else if
+		 * (isASTI()) return "/srv/ncbi-blast/bin"; else if (isAWSBeanstalk() ||
 		 * isAWSBeanstalkDev()) return "/IRCstorage/blast/current/bin/";
 		 */
 		if (!path.equals("."))
@@ -483,11 +478,10 @@ public class AppContext {
 
 		/*
 		 * if (isAWS() || isAWSdev()) return
-		 * "/home/ubuntu/lmansueto/ncbi-blast/iric-portal/"; else if
-		 * (isPollux()) return "/home/lmansueto/ncbi-blast/iric-portal/"; else
-		 * if (isASTI()) return "/srv/ncbi-blast/iric-portal/"; else if
-		 * (isAWSBeanstalk() || isAWSBeanstalkDev()) return
-		 * "/IRCstorage/blastdb/iric-portal/";
+		 * "/home/ubuntu/lmansueto/ncbi-blast/iric-portal/"; else if (isPollux()) return
+		 * "/home/lmansueto/ncbi-blast/iric-portal/"; else if (isASTI()) return
+		 * "/srv/ncbi-blast/iric-portal/"; else if (isAWSBeanstalk() ||
+		 * isAWSBeanstalkDev()) return "/IRCstorage/blastdb/iric-portal/";
 		 */
 
 		if (!pathBlastData.equals("."))
@@ -506,10 +500,9 @@ public class AppContext {
 		String blastServer = webProp.getProperty(WebserverPropertyConstants.BLAST_SERVER);
 
 		/*
-		 * if (isLocalhost() || isPollux()) return
-		 * "http://pollux:8080/iric-portal-dev"; else if (isASTI()) return
-		 * getHostname() + "/iric-portal"; else if (isAWS()) { return
-		 * "http://oryzasnp.org/iric-portal"; }
+		 * if (isLocalhost() || isPollux()) return "http://pollux:8080/iric-portal-dev";
+		 * else if (isASTI()) return getHostname() + "/iric-portal"; else if (isAWS()) {
+		 * return "http://oryzasnp.org/iric-portal"; }
 		 */
 
 		if (!blastServer.equals("."))
@@ -574,8 +567,8 @@ public class AppContext {
 	}
 
 	/**
-	 * Using only downloaded shared data. Will disable some functions that use
-	 * the huge data.
+	 * Using only downloaded shared data. Will disable some functions that use the
+	 * huge data.
 	 * 
 	 * @return
 	 */
@@ -782,8 +775,8 @@ public class AppContext {
 	}
 
 	/**
-	 * Injected from the class "ApplicationContextProvider" which is
-	 * automatically loaded during Spring-Initialization.
+	 * Injected from the class "ApplicationContextProvider" which is automatically
+	 * loaded during Spring-Initialization.
 	 */
 	public static void setApplicationContext(ApplicationContext applicationContext) {
 		ctx = applicationContext;
@@ -964,9 +957,8 @@ public class AppContext {
 	 */
 	public static int getMaxlengthUni(String snpset) {
 		/*
-		 * if( (isDev()|| isTest()) && isLocalhost()) return 1000000;
-		 * if(isLocalhost() || (isDev() && isAWS())) return 5000; else return
-		 * 50000;
+		 * if( (isDev()|| isTest()) && isLocalhost()) return 1000000; if(isLocalhost()
+		 * || (isDev() && isAWS())) return 5000; else return 50000;
 		 */
 		// return 50000;
 		int i = getMaxlengthUniDownload(snpset) / 100;
@@ -976,9 +968,8 @@ public class AppContext {
 
 	public static int getMaxlengthUni(Set snpset) {
 		/*
-		 * if( (isDev()|| isTest()) && isLocalhost()) return 1000000;
-		 * if(isLocalhost() || (isDev() && isAWS())) return 5000; else return
-		 * 50000;
+		 * if( (isDev()|| isTest()) && isLocalhost()) return 1000000; if(isLocalhost()
+		 * || (isDev() && isAWS())) return 5000; else return 50000;
 		 */
 		// return 50000;
 		int i = getMaxlengthUniDownload(snpset) / 100;
@@ -1190,36 +1181,44 @@ public class AppContext {
 
 		// return "rice";
 		return "Japonica nipponbare";
-		//return "sorghum bicolor";
+		// return "sorghum bicolor";
 		// return "Japonica Nipponbare";
 	}
 
 	public static Integer getDefaultOrganismId() {
-		return 9;
-		//return 1;
+		try {
+			return Integer.parseInt(webProp.get(WebserverPropertyConstants.DEFAULT_ORGANISM_ID).toString());
+		} catch (NumberFormatException ex) {
+			return 9;
+		}
+
 	}
 
 	public static String getDefaultDataset() {
-		return "3k";  //  VarietyFacade.DATASET_SNPINDELV2_IUPAC;
-		//return "refset" ; //VarietyFacade.DATASET_DEFAULT;
-		 
+		return webProp.get(WebserverPropertyConstants.DEFAULT_DATASET).toString(); // VarietyFacade.DATASET_SNPINDELV2_IUPAC;
+		// return "refset" ; //VarietyFacade.DATASET_DEFAULT;
+
 	}
 
 	public static int chr2srcfeatureidOffset() {
-		// TODO Auto-generated method stub
-		return 2;
-		//return 3312; //0;
+		try {
+			return Integer
+					.parseInt(webProp.get(WebserverPropertyConstants.DEFAULT_CHR2SRC_FEATURE_ID_OFFSET).toString());
+		} catch (NumberFormatException ex) {
+			return 2;
+		}
+
+		// return 3312; //0;
 	}
 
 	public static String getDefaultVariantset() {
 		// TODO Auto-generated method stub
-		//return "refset"; //  3kfiltered;
-		return  "3kfiltered";
+		// return "refset"; // 3kfiltered;
+		return webProp.get(WebserverPropertyConstants.DEFAULT_VARIANT_SET).toString();
 	}
 
 	/**
-	 * Message logger used by the webapp, for easy maintenance and change of
-	 * loggers
+	 * Message logger used by the webapp, for easy maintenance and change of loggers
 	 * 
 	 * @param msg
 	 */
@@ -1337,20 +1336,20 @@ public class AppContext {
 	public static String guessChrFromString(String chr) {
 		return chr.toUpperCase().replace("CHR0", "").replace("CHR", "");
 	}
-	
+
 	public static String guessSrcfeataureidFromString(String chr) {
-		return Integer.toString( AppContext.chr2srcfeatureidOffset() + Integer.valueOf(chr.toUpperCase().replace("CHR0", "").replace("CHR", "")));
+		return Integer.toString(AppContext.chr2srcfeatureidOffset()
+				+ Integer.valueOf(chr.toUpperCase().replace("CHR0", "").replace("CHR", "")));
 	}
-	
+
 	public static boolean isRice() {
 		return getDefaultOrganism().equals("Japonica nipponbare");
 	}
-	
+
 	public static boolean showGenotypeTrack() {
-		return false; //isRice();
+		return false; // isRice();
 	}
 
-	
 	/**
 	 * Generate list of uppercase, lowercase, blanks for use in UI listboxes
 	 * 
@@ -1491,23 +1490,23 @@ public class AppContext {
 			throw new RuntimeException(name + "==null");
 
 		/*
-		 * if (obj==null) { logger.info(name + "==null using new!");
-		 * log.debug(name + "==null using new!"); Class<?> c; try { c =
-		 * Class.forName(name); Constructor<?> cons; try { cons =
-		 * c.getConstructor(); try { obj = cons.newInstance(); } catch
-		 * (InstantiationException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); } catch (IllegalAccessException e) { // TODO
+		 * if (obj==null) { logger.info(name + "==null using new!"); log.debug(name +
+		 * "==null using new!"); Class<?> c; try { c = Class.forName(name);
+		 * Constructor<?> cons; try { cons = c.getConstructor(); try { obj =
+		 * cons.newInstance(); } catch (InstantiationException e) { // TODO
 		 * Auto-generated catch block e.printStackTrace(); } catch
-		 * (IllegalArgumentException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); } catch (InvocationTargetException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
+		 * (IllegalAccessException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } catch (IllegalArgumentException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); } catch
+		 * (InvocationTargetException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
 		 * 
-		 * } catch (NoSuchMethodException e) { // TODO Auto-generated catch
-		 * block e.printStackTrace(); } catch (SecurityException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
+		 * } catch (NoSuchMethodException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } catch (SecurityException e) { // TODO Auto-generated
+		 * catch block e.printStackTrace(); }
 		 * 
-		 * } catch (ClassNotFoundException e) { // TODO Auto-generated catch
-		 * block e.printStackTrace(); } }
+		 * } catch (ClassNotFoundException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } }
 		 * 
 		 * 
 		 * if(obj==null) throw new RuntimeException(name + "==null");
@@ -1570,9 +1569,8 @@ public class AppContext {
 		// else
 		/*
 		 * if(dataset.equals(VarietyFacade.DATASET_SNP_HDRA)) return
-		 * "DNA,msu7gff,hdrasnp"; else
-		 * if(dataset.equals(VarietyFacade.DATASET_SNP_ALL)) return
-		 * "DNA,msu7gff,msu7snpsv2,msu7indelsv2,hdrasnp"; else return
+		 * "DNA,msu7gff,hdrasnp"; else if(dataset.equals(VarietyFacade.DATASET_SNP_ALL))
+		 * return "DNA,msu7gff,msu7snpsv2,msu7indelsv2,hdrasnp"; else return
 		 * "DNA,msu7gff,msu7snpsv2,msu7indelsv2";
 		 */
 
@@ -1696,12 +1694,11 @@ public class AppContext {
 		/*
 		 * try {
 		 * 
-		 * return BigDecimal.valueOf( Long.valueOf( "1" + String.format("%02d"
-		 * ,chr) + String.format("%08d" , pos) )); } catch (Exception ex) {
-		 * ex.printStackTrace();
-		 * AppContext.debug("convertRegion2Snpfeatureid chr=" + chr + "  pos=" +
-		 * pos); throw new RuntimeException("convertRegion2Snpfeatureid error");
-		 * }
+		 * return BigDecimal.valueOf( Long.valueOf( "1" + String.format("%02d" ,chr) +
+		 * String.format("%08d" , pos) )); } catch (Exception ex) {
+		 * ex.printStackTrace(); AppContext.debug("convertRegion2Snpfeatureid chr=" +
+		 * chr + "  pos=" + pos); throw new
+		 * RuntimeException("convertRegion2Snpfeatureid error"); }
 		 */
 	}
 
@@ -1713,12 +1710,11 @@ public class AppContext {
 	public static BigDecimal convertRegion2Snpfeatureid(Integer chr, Integer pos) {
 		throw new RuntimeException("Dont use convertRegion2Snpfeatureid! Integer chr, Integer pos");
 		/*
-		 * try { return BigDecimal.valueOf( Long.valueOf( "1" +
-		 * String.format("%02d" ,chr) + String.format("%08d" , pos) )); } catch
-		 * (Exception ex) { ex.printStackTrace();
-		 * AppContext.debug("convertRegion2Snpfeatureid chr=" + chr + "  pos=" +
-		 * pos); throw new RuntimeException("convertRegion2Snpfeatureid error");
-		 * }
+		 * try { return BigDecimal.valueOf( Long.valueOf( "1" + String.format("%02d"
+		 * ,chr) + String.format("%08d" , pos) )); } catch (Exception ex) {
+		 * ex.printStackTrace(); AppContext.debug("convertRegion2Snpfeatureid chr=" +
+		 * chr + "  pos=" + pos); throw new
+		 * RuntimeException("convertRegion2Snpfeatureid error"); }
 		 */
 
 	}
@@ -1731,12 +1727,11 @@ public class AppContext {
 	public static BigDecimal convertRegion2Snpfeatureid(Integer chr, BigDecimal pos) {
 		throw new RuntimeException("Dont use convertRegion2Snpfeatureid! Integer chr, BigDecimal pos");
 		/*
-		 * try { return BigDecimal.valueOf( Long.valueOf( "1" +
-		 * String.format("%02d" ,chr) + String.format("%08d" , pos.longValue())
-		 * )); } catch (Exception ex) { ex.printStackTrace();
-		 * AppContext.debug("convertRegion2Snpfeatureid chr=" + chr + "  pos=" +
-		 * pos); throw new RuntimeException("convertRegion2Snpfeatureid error");
-		 * }
+		 * try { return BigDecimal.valueOf( Long.valueOf( "1" + String.format("%02d"
+		 * ,chr) + String.format("%08d" , pos.longValue()) )); } catch (Exception ex) {
+		 * ex.printStackTrace(); AppContext.debug("convertRegion2Snpfeatureid chr=" +
+		 * chr + "  pos=" + pos); throw new
+		 * RuntimeException("convertRegion2Snpfeatureid error"); }
 		 */
 	}
 
@@ -1855,9 +1850,8 @@ public class AppContext {
 
 		/*
 		 * if(trait==null || trait.isEmpty()) return
-		 * "http://browser.planteome.org/amigo/search/ontology?q=TO:0000387";
-		 * else return "http://browser.planteome.org/amigo/search/ontology?q=" +
-		 * trait;
+		 * "http://browser.planteome.org/amigo/search/ontology?q=TO:0000387"; else
+		 * return "http://browser.planteome.org/amigo/search/ontology?q=" + trait;
 		 */
 
 		/*
@@ -2062,7 +2056,8 @@ public class AppContext {
 		}
 
 		return ((AppContext.isIRRILAN() || reqstr.contains(AppContext.getIRRIIp()))
-				? reqstr + "-" + AppContext.createTempFilename() : reqstr);
+				? reqstr + "-" + AppContext.createTempFilename()
+				: reqstr);
 
 	}
 
@@ -2389,11 +2384,10 @@ public class AppContext {
 	 * 
 	 * FileChannel source = null; FileChannel destination = null;
 	 * 
-	 * try { source = new FileInputStream(sourceFile).getChannel(); destination
-	 * = new FileOutputStream(destFile).getChannel();
-	 * destination.transferFrom(source, 0, source.size()); } finally { if(source
-	 * != null) { source.close(); } if(destination != null) {
-	 * destination.close(); } } }
+	 * try { source = new FileInputStream(sourceFile).getChannel(); destination =
+	 * new FileOutputStream(destFile).getChannel(); destination.transferFrom(source,
+	 * 0, source.size()); } finally { if(source != null) { source.close(); }
+	 * if(destination != null) { destination.close(); } } }
 	 */
 	// ************* PAST CODES RETAINED
 
@@ -2423,7 +2417,11 @@ public class AppContext {
 		return cal;
 	}
 
-	
+	public static boolean showItem(String item) {
+		if (webProp.getProperty(item).equals("true"))
+			return true;
+		return false;
+	}
 
 	/// **
 	// * is Amazon Web Service compile?
