@@ -224,7 +224,7 @@
 
 <vbox width="100%" height="3px"/>
 <hbox align="center" pack="center">
-<vbox width="600px"/><hbox><label value="SNP-Seek is moving to " style="font-size:13px;color:white" /><a href="http://snp-seek.irri.org"   style="font-size:13px;color:white">http://snp-seek.irri.org</a></hbox>
+<vbox width="600px"/><hbox><label value="By using SNP-Seek, you abide by the data use license stated " style="font-size:13px;color:white" /><a href="https://s3.amazonaws.com/3kricegenome/README-3kRG-SNPs-Permissive-License.txt"   style="font-size:13px;color:white;font-weight: bold;">&lt;here&gt;</a></hbox>
 </hbox>
 <vbox width="100%" height="3px"/>
 
