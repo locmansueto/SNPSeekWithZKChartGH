@@ -38,7 +38,7 @@ public interface VarietyFacade {
 	
 	public static String DATASET_SNPINDELV1="SNP v1";
 	public static String DATASET_SNPINDELV2="SNP v2";
-	public static String DATASET_SNPINDELV2_IUPAC=AppContext.getDefaultVariantset(); //   "3k";
+	public static String DATASET_SNPINDELV2_IUPAC=AppContext.getDefaultDataset(); //   "3k";
 	public static String DATASET_SNP_HDRA="hdra";
 	public static String DATASET_SNP_WISSUWA="wissuwa";
 	public static String DATASET_SNP_GOPAL92="gq92";
