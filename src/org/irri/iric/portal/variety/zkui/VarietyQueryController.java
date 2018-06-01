@@ -848,7 +848,9 @@ private void setVarietyset(Set s) {
     	}
     	Set setVarieties = new LinkedHashSet();
     	workspace.addVarietyList( txtboxListname.getValue().trim(), new LinkedHashSet(varsresult), getDataset() );
+    	Messagebox.show( "List "+ txtboxListname.getValue().trim() + " was created");
     	txtboxListname.setValue("");
+    	
     }
     
     
