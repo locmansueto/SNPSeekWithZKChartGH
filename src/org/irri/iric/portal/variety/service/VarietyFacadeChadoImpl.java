@@ -69,7 +69,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 
 	@Override
-	public List getGermplasmByName(String var1, Set dataset) {
+	public List<Variety> getGermplasmByName(String var1, Set dataset) {
 		// TODO Auto-generated method stub
 		Set sn=new HashSet(); sn.add(var1);
 		return varietydao.findVarietyByNames(sn, dataset);

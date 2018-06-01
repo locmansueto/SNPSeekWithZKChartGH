@@ -7,26 +7,22 @@ import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.Future;
 
+import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.CreateZipMultipleFiles;
 import org.irri.iric.portal.dao.VariantSequenceDAO;
 import org.irri.iric.portal.domain.MultiReferenceLocus;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.genomics.VariantSequenceQuery;
-import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.CreateZipMultipleFiles;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Repository;
 
 @Repository("VariantSequenceService")
 public class VariantSequenceDAOImpl implements VariantSequenceDAO {
 
-	
 	@Override
 	public String getFile(VariantSequenceQuery query) throws Exception {
 		// TODO Auto-generated method stub
@@ -72,9 +68,10 @@ public class VariantSequenceDAOImpl implements VariantSequenceDAO {
 			bw=new BufferedWriter(new FileWriter(destdir + "vars.txt"));
 			
 			bw.append("REFERENCE " + query.getReference() + "\n");
-			Iterator<Variety> itVars=query.getColVars().iterator();
+			Iterator<ArrayList> itVars=query.getColVars().iterator();
 			while(itVars.hasNext()) {
-				Variety var=itVars.next();
+				List<Variety> list = itVars.next();
+				Variety var = list.get(0); 
 				String boxcode = var.getIrisId().replace(" ","_").trim();
 				bw.append( boxcode).append("\t").append( var.getName() ).append("\n");
 			}

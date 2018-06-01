@@ -232,7 +232,7 @@ public class AppContext {
 			return "public";
 		if (isOracle())
 			return "iric";
-		return null;
+		return "";
 	}
 
 	/**
@@ -266,7 +266,7 @@ public class AppContext {
 		 */
 		if (!tomcatWebDir.equals("."))
 			return tomcatWebDir;
-		return null;
+		return "";
 	}
 
 	public static String getTempDir() {
@@ -309,7 +309,7 @@ public class AppContext {
 
 		if (!flatFiledir.equals("."))
 			return flatFiledir;
-		return null;
+		return "";
 	}
 
 	public static String getWebclientPath() {
@@ -354,7 +354,7 @@ public class AppContext {
 		if (!hostname.equals("."))
 			return hostname;
 
-		return null;
+		return "";
 	}
 
 	/**
@@ -378,7 +378,7 @@ public class AppContext {
 		if (!hostDir.equals("."))
 			return hostDir;
 
-		return null;
+		return "";
 	}
 
 	/**
