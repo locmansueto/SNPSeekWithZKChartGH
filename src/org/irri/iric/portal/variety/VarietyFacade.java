@@ -10,6 +10,7 @@ import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.Phenotype;
 import org.irri.iric.portal.domain.StockSample;
 import org.irri.iric.portal.domain.Variety;
+import org.zkoss.zul.Listitem;
 
 
 /**
@@ -402,6 +403,8 @@ public interface VarietyFacade {
 	public Set getGermplasm(String dataset);
 
 	List getVarietyByPhenotype(String phenId, Set dataset);
+
+	public Map getTraits(Set<Listitem> dataset, boolean selected);
 
 	
 

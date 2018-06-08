@@ -481,8 +481,12 @@ import org.irri.iric.portal.genotype.zkui.GenotypeRunPlatformSorter;
 			    		
 			    		<div visible="true">
           				<label value="    Show phenotype  " pre="true" style="font-weight:bold;"/>
-						<listbox id="listboxPhenotype" mold="select" width="200px"   />
-
+						<listbox id="listboxPhenotype" mold="select" width="150px"   />
+						<radiogroup id="rgTraitterm" />
+								<radio id="radioLegacyTrait"
+									selected="true" radiogroup="rgTraitterm" label="Legacy" />
+								<radio id="radioCoTrait"
+									radiogroup="rgTraitterm" label="CO Terms" />
 						</div>
 						<div visible="false">
           				<label value="    Dataset  " pre="true" style="font-weight:bold;" visible="false"/>

@@ -13,6 +13,7 @@ import org.irri.iric.portal.domain.Scaffold;
 import org.irri.iric.portal.domain.StockSample;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
+import org.zkoss.zul.Listitem;
 
 /**
  * Cache frequently used lists of objects, the list is queried from the database on first use.
@@ -169,6 +170,8 @@ public interface ListItemsDAO {
 	public List getIRGCAccessions();
 
 	Set getGermplasmByCountry(String country, Set dataset);
+
+	public Map<String, BigDecimal> getTraits(Set<Listitem> dataset, boolean selected);
 
 
 	

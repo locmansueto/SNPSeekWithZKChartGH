@@ -23,7 +23,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.Callable;
@@ -202,6 +202,8 @@ import org.zkoss.zul.Window;
 import org.zkoss.zul.event.ListDataListener;
 import org.zkoss.zul.event.PagingEvent;
 import org.zkoss.zul.ext.Selectable;
+
+import com.lowagie.text.ListItem;
 
 import org.forester.application.phyloxml_converter;
 
@@ -384,6 +386,11 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	private Radio radio3rdAlleles;
 	@Wire
 	private Radio radio4thAlleles;
+
+	@Wire
+	private Radio radioLegacyTrait;
+	@Wire
+	private Radio radioCoTrait;
 
 	@Wire
 	private Radio radioGroupShowGenotypeCount;
@@ -959,6 +966,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			// GenotypeFacade genotype = SpringUtil.getBean("GenotypeFacade");
 			genotype = (GenotypeFacade) AppContext.checkBean(genotype, "GenotypeFacade");
 			workspace = (WorkspaceFacade) AppContext.checkBean(workspace, "WorkspaceFacade");
+			varietyfacade = (VarietyFacade) AppContext.checkBean(varietyfacade, "VarietyFacade");
 
 			AppContext.debug("...genotype.zul init start");
 
@@ -1035,15 +1043,19 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 			AppContext.debug("varaccessions=" + varaccessions.size());
 
-			Set setPhenotype = new HashSet();
-			// Set setPhenotype = variety.getPhenotypeDefinitions("3k").keySet();
+			Set<String> setPhenotype = new HashSet();
+			setPhenotype = varietyfacade.getPhenotypeDefinitions(AppContext.getDefaultDataset()).keySet();
+			TreeSet<String> ts = new TreeSet<String>();
+			for (String phen : setPhenotype) {
+				ts.add(phen.toLowerCase());
+			}
 
 			java.util.List listPhenotype = new java.util.ArrayList();
 			listPhenotype.add("");
 			listPhenotype.add("Create phenotype list...");
 			listPhenotype.addAll(workspace.getVarietyQuantPhenotypelistNames("3k"));
 			listPhenotype.addAll(workspace.getVarietyCatPhenotypelistNames("3k"));
-			listPhenotype.addAll(setPhenotype);
+			listPhenotype.addAll(ts);
 			String jbrowsestart = AppContext.getJbrowseDir();
 
 			java.util.List listGenotyperun = new java.util.ArrayList();
@@ -1112,6 +1124,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			SimpleListModel listmodel2 = new SimpleListModel(genotype.getVarietysets());
 			listmodel2.setMultiple(true);
 			listboxVarietyset.setModel(listmodel2);
+			listboxVarietyset.setSelectedIndex(0);
 			/*
 			 * if(l==null)
 			 * AppContext.debug("checkboxdroplistGenotyperun.getListbox()==null"); else
@@ -1224,6 +1237,50 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		// Bandbox bandbox = (Bandbox)comp.getFellow("bd");
 		// bandbox.setValue(str);
 		bandboxVarietyset.setValue(str);
+	}
+
+	@Listen("onClick =#radioLegacyTrait")
+
+	public void onclickLegacy() {
+		java.util.List listPhenotype = new java.util.ArrayList();
+		listPhenotype.add("");
+		listPhenotype.add("Create phenotype list...");
+		listPhenotype.addAll(workspace.getVarietyQuantPhenotypelistNames("3k"));
+		listPhenotype.addAll(workspace.getVarietyCatPhenotypelistNames("3k"));
+
+		if (radioLegacyTrait.isSelected()) {
+			Set<String> setPhenotype = new HashSet();
+
+			setPhenotype = varietyfacade.getTraits(listboxVarietyset.getSelectedItems(), true).keySet();
+			TreeSet<String> ts = new TreeSet<String>();
+			for (String phen : setPhenotype) {
+				ts.add(phen.toLowerCase());
+			}
+			listPhenotype.addAll(ts);
+
+			listboxPhenotype.setModel(new SimpleListModel(listPhenotype));
+		}
+		listboxPhenotype.setSelectedIndex(0);
+	}
+
+	@Listen("onClick =#radioCoTrait")
+	public void onclickCOTerm() {
+		java.util.List listPhenotype = new java.util.ArrayList();
+		listPhenotype.add("");
+		listPhenotype.add("Create phenotype list...");
+		listPhenotype.addAll(workspace.getVarietyQuantPhenotypelistNames("3k"));
+		listPhenotype.addAll(workspace.getVarietyCatPhenotypelistNames("3k"));
+		if (radioCoTrait.isSelected()) {
+			Set<String> setPhenotype = new HashSet();
+			setPhenotype = varietyfacade.getTraits(listboxVarietyset.getSelectedItems(), false).keySet();
+			// TreeSet<String> ts = new TreeSet<String>();
+			listPhenotype.addAll(setPhenotype);
+
+			listboxPhenotype.setModel(new SimpleListModel(listPhenotype));
+
+		}
+
+		listboxPhenotype.setSelectedIndex(0);
 	}
 
 	private void fillVariantsetListbox() {
@@ -2183,7 +2240,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				if (listboxMySNPList.getSelectedIndex() > 0 || this.listboxMyLocusList.getSelectedIndex() > 0
 						|| this.listboxAlleleFilter.getSelectedIndex() > 0) {
 					tabJbrowse.setVisible(false);
-					tabHaplotype.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
+					tabHaplotype.setVisible(
+							true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
 					tabTableLarge.setVisible(false);
 					tabPhylo.setVisible(false);
 					tabMDS.setVisible(false);
@@ -2198,15 +2256,18 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 					String chr = selectChr.getValue().trim();
 					if (!chr.isEmpty()) {
 						updateJBrowse(chr, intStart.getValue().toString(), intStop.getValue().toString(), "");
-						tabJbrowse.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_JBROWSE));
-						tabHaplotype.setVisible(true  && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
+						tabJbrowse.setVisible(
+								true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_JBROWSE));
+						tabHaplotype.setVisible(
+								true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
 
 						if (AppContext.isRice()) {
 							if (tallJbrowse) {
 								update_phylotree(chr.toUpperCase().replace("CHR0", "").replace("CHR", ""),
 										intStart.getValue().toString(), intStop.getValue().toString(), listSNPs.size());
 								// tabPhylo.setVisible(true);
-								tabMDS.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_MDS));
+								tabMDS.setVisible(
+										true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_MDS));
 							}
 						}
 						// tabTableLarge.setVisible(true);
@@ -2214,7 +2275,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 					}
 					hboxDownload.setVisible(true);
 					if (AppContext.isRice())
-						tabVista.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_COMPARE));
+						tabVista.setVisible(
+								true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_COMPARE));
 					// tabVistaNPB.setVisible(true);
 					// tabVistaRev.setVisible(true);
 				}
@@ -2230,7 +2292,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 				// show two-varieties table
 				tabJbrowse.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_JBROWSE));
-				tabHaplotype.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
+				tabHaplotype
+						.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
 				tabSnpeff.setVisible(
 						this.listboxReference.getSelectedItem().getLabel().equals(AppContext.getDefaultOrganism())
 								&& AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_SNP_EFFECT));
@@ -2664,8 +2727,23 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		params.setDatasetPosOps(listboxDatasetSnpOps.getSelectedItem().getLabel());
 
-		if (listboxPhenotype.getSelectedItem() != null)
-			params.setPhenotype(listboxPhenotype.getSelectedItem().getLabel());
+		// if (listboxPhenotype.getSelectedItem() != null) {
+		// params.setPhenotype(listboxPhenotype.getSelectedItem().getLabel());
+		// }
+		//
+		if (listboxPhenotype.getSelectedItem() != null) {
+			// get Legacy trait, not CO TERMs
+			String paramTrait;
+
+			if (radioLegacyTrait.isSelected())
+				paramTrait = listboxPhenotype.getSelectedItem().getLabel();
+			else {
+				String[] coTerm = listboxPhenotype.getSelectedItem().getLabel().split("::");
+				paramTrait = coTerm[1];
+			}
+			
+			params.setPhenotype(paramTrait);
+		}
 
 		if (params.isbDownloadOnly()) {
 			// params.setbDownloadOnly(checkboxCreateHaplotype.isChecked());
@@ -7342,7 +7420,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 			// Primary y Axis
 			/*
-			 * YAxis yAxis1 = chart.getYAxis(); yAxis1.getLabels().setFormat("{value}°C");
+			 * YAxis yAxis1 = chart.getYAxis(); yAxis1.getLabels().setFormat("{value}Â°C");
 			 * yAxis1.setTitle("Temperature");
 			 */
 			// Secondary y Axis
