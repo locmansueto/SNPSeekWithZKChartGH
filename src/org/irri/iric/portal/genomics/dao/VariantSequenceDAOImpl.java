@@ -9,11 +9,11 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeSet;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.CreateZipMultipleFiles;
+import org.irri.iric.portal.chado.oracle.domain.VAllstockBasicprop;
 import org.irri.iric.portal.dao.VariantSequenceDAO;
 import org.irri.iric.portal.domain.MultiReferenceLocus;
 import org.irri.iric.portal.domain.Variety;
@@ -72,10 +72,10 @@ public class VariantSequenceDAOImpl implements VariantSequenceDAO {
 		bw = new BufferedWriter(new FileWriter(destdir + "vars.txt"));
 
 		bw.append("REFERENCE " + query.getReference() + "\n");
-		Iterator<ArrayList> itVars = query.getColVars().iterator();
+		Iterator<VAllstockBasicprop> itVars = query.getColVars().iterator();
 		while (itVars.hasNext()) {
-			List<Variety> list = itVars.next();
-			Variety var = list.get(0);
+			VAllstockBasicprop var = itVars.next();
+
 			String boxcode = var.getIrisId().replace(" ", "_").trim();
 			bw.append(boxcode).append("\t").append(var.getName()).append("\n");
 		}
