@@ -207,6 +207,9 @@ zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
 		<listbox id="listboxPhenComparator" class="z-phenotype-check" mold="select" width="40px" rows="1"/>
 		<listbox id="listboxPhenValue" class="z-phenotype-empty" mold="select"  rows="1"/>
 		<button id="buttonAddPhenConstraint" class="z-phenotype-add" label="Add" tooltip="popupAddPhenotype"/>
+		<radiogroup id="rgTraitterm" />
+			<radio id="radioLegacyTrait" selected="true" radiogroup="rgTraitterm" label="Legacy" />
+			<radio id="radioCoTrait" radiogroup="rgTraitterm" label="CO Terms" />
 		</hbox>
 		</vbox>
 		</vbox>

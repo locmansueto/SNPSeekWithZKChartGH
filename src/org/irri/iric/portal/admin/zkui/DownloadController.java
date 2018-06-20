@@ -11,16 +11,13 @@ import java.util.TreeSet;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.CreateZipMultipleFiles;
+import org.irri.iric.portal.SimpleListModelExt;
 import org.irri.iric.portal.admin.AsyncJob;
 import org.irri.iric.portal.admin.AsyncJobImpl;
 import org.irri.iric.portal.admin.AsyncJobReport;
 import org.irri.iric.portal.admin.JobsFacade;
 import org.irri.iric.portal.admin.WorkspaceFacade;
-import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
 import org.irri.iric.portal.domain.Gene;
 import org.irri.iric.portal.domain.MultiReferenceLocusImpl;
 import org.irri.iric.portal.domain.Organism;
@@ -32,9 +29,6 @@ import org.irri.iric.portal.variety.VarietyFacade;
 import org.irri.iric.portal.variety.VarietyPropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -324,13 +318,15 @@ public class DownloadController   extends SelectorComposer<Component>  {
     	genotypefacade= (GenotypeFacade)AppContext.checkBean(genotypefacade , "GenotypeFacade");
     	String selOrg=listboxReference.getSelectedItem().getLabel();
 		// get contigs for selected reference
-		List listContigs = AppContext.createUniqueUpperLowerStrings(genotypefacade.getContigsForReference(  selOrg ), true,true);
-		
+		//List listContigs = AppContext.createUniqueUpperLowerStrings(genotypefacade.getContigsForReference(  selOrg ), true,true);
+    	List listContigs = genotypefacade.getContigsForReference(  selOrg );
+    	
 		// get loci for reference
-		List listLoci = AppContext.createUniqueUpperLowerStrings(  genotypefacade.getLociForReference( selOrg ), true,true);
-
-    	this.comboQuerychr.setModel(new SimpleListModel(listContigs));
-    	this.comboboxLocus.setModel(new SimpleListModel(listLoci)); //.subList(0, 100)));
+		//List listLoci = AppContext.createUniqueUpperLowerStrings(  genotypefacade.getLociForReference( selOrg ), true,true);
+    	List listLoci = new ArrayList(genotypefacade.getLociForReference( selOrg ));
+    	
+    	this.comboQuerychr.setModel(new SimpleListModelExt(listContigs));
+    	this.comboboxLocus.setModel(new SimpleListModelExt(listLoci)); //.subList(0, 100)));
     	comboQuerychr.setValue("");
     	comboboxLocus.setValue("");
     	this.intboxEnd.setValue(null);

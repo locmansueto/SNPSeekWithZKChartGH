@@ -28,8 +28,11 @@
        	listLocuslistNames.add("create new list...");
 
        	List listVarNames =  AppContext.createUniqueUpperLowerStrings(genotype.getVarnames(VarietyFacade.DATASET_SNPINDELV2_IUPAC), false, true);
-        List listContigs = AppContext.createUniqueUpperLowerStrings( genotype.getContigsForReference(AppContext.getDefaultOrganism()), false,true);
-       	List listLocusNames = AppContext.createUniqueUpperLowerStrings( genotype.getGenenames() , true, true);
+        //List listContigs = AppContext.createUniqueUpperLowerStrings( genotype.getContigsForReference(AppContext.getDefaultOrganism()), false,true);
+       	//List listLocusNames = AppContext.createUniqueUpperLowerStrings( genotype.getGenenames() , true, true);
+       	
+       	List listContigs = genotype.getContigsForReference(AppContext.getDefaultOrganism());
+       	List listLocusNames = genotype.getGenenames() ;
         
 </zscript>
   
@@ -261,8 +264,8 @@
 				    		<zscript><![CDATA[
 								//comboQuerychr.setModel(new SimpleListModel(listContigs));
 								//comboQuerychr.setValue("");
-						        listboxLocuslist.setModel(new SimpleListModel(listLocuslistNames));
-						        comboboxLocus.setModel(new SimpleListModel(listLocusNames ));
+						        listboxLocuslist.setModel(new org.irri.iric.portal.SimpleListModelExt(listLocuslistNames));
+						        comboboxLocus.setModel(new org.irri.iric.portal.SimpleListModelExt(listLocusNames ));
 						        listboxLocuslist.setSelectedIndex(0);
 						        //listboxLocus.setSelectedIndex(0);
 						    ]]></zscript>

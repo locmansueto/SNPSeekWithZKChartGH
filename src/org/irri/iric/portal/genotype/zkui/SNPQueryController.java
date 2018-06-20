@@ -39,6 +39,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.CreateZipMultipleFiles;
+import org.irri.iric.portal.SimpleListModelExt;
 import org.irri.iric.portal.WebserverPropertyConstants;
 import org.irri.iric.portal.admin.AsyncJob;
 import org.irri.iric.portal.admin.AsyncJobImpl;
@@ -1029,7 +1030,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 			AppContext.debug("msg=" + msg);
 
-			genenames = AppContext.createUniqueUpperLowerStrings(genenames, true, false);
+			
+			//genenames = AppContext.createUniqueUpperLowerStrings(genenames, true, false);
 
 			AppContext.debug("genenames=" + genenames.size());
 
@@ -1090,15 +1092,17 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				// listConts.add("");
 				// listConts.addAll(listContigs);
 				// listConts.add("whole genome");
-				selectChr.setModel(
-						new SimpleListModel(AppContext.createUniqueUpperLowerStrings(listContigs, true, true)));
+				// selectChr.setModel(
+				// new SimpleListModel(AppContext.createUniqueUpperLowerStrings(listContigs, true, true)));
 				// selectChr.setModel(new ListModelList(listConts));
 				// selectChr.setSelectedIndex(0);
+				
+				selectChr.setModel(new SimpleListModelExt(listContigs));
 			}
 
 			AppContext.debug("starting genelocus section...");
 			// ListModel geneComboModel= new ListModelList(genenames);
-			ListModel geneComboModel = new SimpleListModel(genenames);
+			ListModel geneComboModel = new SimpleListModelExt(genenames);
 			comboGene.setModel(geneComboModel);
 
 			listboxMySNPList.setModel(new SimpleListModel(listSNPlistNames));
@@ -1240,7 +1244,6 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	}
 
 	@Listen("onClick =#radioLegacyTrait")
-
 	public void onclickLegacy() {
 		java.util.List listPhenotype = new java.util.ArrayList();
 		listPhenotype.add("");
