@@ -526,9 +526,9 @@ public class AppContext {
 
 		String pathToR = webProp.getProperty(WebserverPropertyConstants.PATH_R);
 
-		if (!pathToR.equals("."))
-			return "E:/R/R-3.3.3/bin/Rscript.exe";
-		return "/usr/bin/Rscript";
+		if (pathToR.equals("."))
+			return "/usr/bin/Rscript";
+		return pathToR;
 
 	}
 
