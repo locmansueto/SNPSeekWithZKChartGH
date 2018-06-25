@@ -50,7 +50,7 @@ enableTooltipster();
 			
 			cursor: wait;
     		top: 50%;
-    		left: 45%;
+    		left: 45% !important;
     		align: center;
     		vertical-align: middle; 
     		
@@ -58,6 +58,7 @@ enableTooltipster();
 			margin-left: auto;
     		margin-right: auto;
     		display: block;
+    		 
     
         }
         .z-loading-indicator {
@@ -68,6 +69,8 @@ enableTooltipster();
     		height: 100%;        
     
         }
+        .z-loading { top: 50% !important; left: 45% !important; align:
+		center; vertical-align: middle; }
         .z-loading-icon {
             background-image: url(${c:encodeURL('~./zk/img/progress3.gif')}); 
         }
