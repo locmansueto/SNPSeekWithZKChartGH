@@ -36,7 +36,40 @@
         
 </zscript>
   
+	<style>
 	
+	 .z-loading {
+            background-color:#808080;
+            border:1px outset #A0A0A0;
+            font-weight: bold;
+            padding:2px;
+			
+			cursor: wait;
+    		top: 50%;
+    		left: 45% !important;
+    		align: center;
+    		vertical-align: middle; 
+    		
+    		position: fixed;
+			margin-left: auto;
+    		margin-right: auto;
+    		display: block;
+    		 
+    
+        }
+        .z-loading-indicator {
+            color: gray;
+            border:0 none;
+            
+            width: 100%;
+    		height: 100%;        
+    
+        }
+    
+        .z-loading { top: 50% !important; left: 45% !important; align:
+		center; vertical-align: middle; }
+    
+    </style>
     <style>
     .myimgbutton {
         padding: 0;

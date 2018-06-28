@@ -1641,6 +1641,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	// public void queryVariants(String filename, String delimiter) {
 	public void queryVariants() {
 
+		Clients.showBusy("Processing..");
 		GenotypeFacade.snpQueryMode mode = null;
 
 		try {
@@ -2325,6 +2326,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			Messagebox.show(ex.getMessage(), "Exception", Messagebox.OK, Messagebox.ERROR);
 
 		}
+		
+		Clients.clearBusy();
 
 	}
 

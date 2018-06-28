@@ -21,8 +21,6 @@ import javax.servlet.http.HttpSession;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.admin.WorkspaceFacade;
 import org.irri.iric.portal.dao.ListItemsDAO;
-import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
-import org.irri.iric.portal.domain.GenotypeRunPlatform;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.MultiReferencePosition;
 import org.irri.iric.portal.domain.MultiReferencePositionImpl;
@@ -30,8 +28,6 @@ import org.irri.iric.portal.domain.MultiReferencePositionImplAllelePvalue;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.domain.VarietyPlus;
-import org.irri.iric.portal.domain.VarietyPlusPlus;
-import org.irri.iric.portal.domain.VarietyPlusPlusImpl;
 import org.irri.iric.portal.genomics.GenomicsFacade;
 import org.irri.iric.portal.genotype.GenotypeFacade;
 //import org.irri.iric.portal.hdf5.dao.SNPUni3kVarietiesAllele1DAO;
@@ -47,7 +43,6 @@ import org.springframework.stereotype.Controller;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.event.CheckEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -1242,7 +1237,7 @@ public void onSelectcheckboxdroplistGenotyperun(Event e) throws InterruptedExcep
         			try {
         				pos = BigDecimal.valueOf( Long.valueOf(chrpos[1]) );
         			} catch (Exception ex) {
-        				AppContext.debug("Invalid position " + chrpos[1]);
+        				AppContext.debug("Invalid position chrome position" );
         				continue;
         			}
         			
