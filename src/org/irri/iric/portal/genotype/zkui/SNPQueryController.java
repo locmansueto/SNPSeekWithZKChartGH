@@ -2741,10 +2741,11 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			// get Legacy trait, not CO TERMs
 			String paramTrait;
 
-			if (radioLegacyTrait.isSelected())
-				paramTrait = listboxPhenotype.getSelectedItem().getLabel();
+			String input = listboxPhenotype.getSelectedItem().getLabel();
+			if (!input.contains("::"))
+				paramTrait = input;
 			else {
-				String[] coTerm = listboxPhenotype.getSelectedItem().getLabel().split("::");
+				String[] coTerm = input.split("::");
 				paramTrait = coTerm[1];
 			}
 			

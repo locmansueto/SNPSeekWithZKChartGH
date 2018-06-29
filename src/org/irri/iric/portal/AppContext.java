@@ -247,6 +247,8 @@ public class AppContext {
 	}
 
 	public static String getTempFolder() {
+		if (isLocalhost())
+			return "temp\\";
 		return "temp/";
 	}
 
@@ -279,7 +281,7 @@ public class AppContext {
 
 	// in server file system (where tomcat is deployed)
 	public static String getHaploscriptsDir() {
-		if (isAWSBeanstalk() || isAWSBeanstalkDev())
+		if (isAWSBeanstalk() || isAWSBeanstalkDev() || isLocalhost())
 			// return getTomcatWebappsDir() + "ROOT/haplo/";
 			return getFlatfilesDir() + "haplo/";
 		else

@@ -72,10 +72,24 @@ public class VariantSequenceDAOImpl implements VariantSequenceDAO {
 		bw = new BufferedWriter(new FileWriter(destdir + "vars.txt"));
 
 		bw.append("REFERENCE " + query.getReference() + "\n");
-		Iterator<VAllstockBasicprop> itVars = query.getColVars().iterator();
+		
+		
+		
+		Iterator<ArrayList<VAllstockBasicprop>> itVars = query.getColVars().iterator();
 		while (itVars.hasNext()) {
-			VAllstockBasicprop var = itVars.next();
-
+			VAllstockBasicprop var = null;
+			
+			Object itVarValue = itVars.next();
+			
+			if (itVarValue instanceof List) {
+				List<VAllstockBasicprop> lst = (List<VAllstockBasicprop>) itVarValue;
+				var = lst.get(0);
+			}
+			
+			if (itVarValue instanceof VAllstockBasicprop) {
+				var = (VAllstockBasicprop) itVarValue;
+			}
+			
 			String boxcode = var.getIrisId().replace(" ", "_").trim();
 			bw.append(boxcode).append("\t").append(var.getName()).append("\n");
 		}
