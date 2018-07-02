@@ -77,6 +77,8 @@ public class AppContext {
 	private static Connection jdbccon;
 	private static Map mapVariant2Order = null;
 	private static int RAMfactor = 1; // 5;
+	
+	public static String SEED_NO_ORDER = "You have not place any orders.";
 
 	private static Map mapBearer2StartTime = new HashMap();
 

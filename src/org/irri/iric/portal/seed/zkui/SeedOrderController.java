@@ -377,9 +377,8 @@ public class SeedOrderController extends SelectorComposer<Window> {
 			updateUI(vm);
 
 			/*
-			 * List lVars=new ArrayList();
-			 * lVars.addAll(workspace.getVarieties(listname)); SimpleListModel
-			 * m=new SimpleListModel(lVars); m.setMultiple(true);
+			 * List lVars=new ArrayList(); lVars.addAll(workspace.getVarieties(listname));
+			 * SimpleListModel m=new SimpleListModel(lVars); m.setMultiple(true);
 			 * listboxVariety.setModel(m);
 			 */
 			AppContext.debug(gridOrders.getModel().getClass() + "  " + gridOrders.getModel().getSize());
@@ -416,8 +415,7 @@ public class SeedOrderController extends SelectorComposer<Window> {
 			vm.updateList();
 
 			/*
-			 * ListModelList lm= (ListModelList)gridOrders.getModel();
-			 * lm.clear();
+			 * ListModelList lm= (ListModelList)gridOrders.getModel(); lm.clear();
 			 */
 			AppContext.debug(gridOrders.getModel().getClass() + "  " + gridOrders.getModel().getSize());
 
@@ -568,13 +566,13 @@ public class SeedOrderController extends SelectorComposer<Window> {
 
 			AppContext.debug("smtafile at " + pdf);
 			if (pdf != null) {
-				Messagebox.show("Your order has been sent.");
-				/*
-				 * iframePDF.setSrc(pdf); divSMTA.setVisible(true);
-				 */
+				if (pdf.equals(AppContext.SEED_NO_ORDER))
+					Messagebox.show(AppContext.SEED_NO_ORDER);
+				else
+					Messagebox.show("Your order has been sent.");
 
 			} else {
-				Messagebox.show("Order failed to send.");
+				Messagebox.show("Order failed to send. Please check all details.");
 			}
 
 			/*
@@ -647,8 +645,7 @@ public class SeedOrderController extends SelectorComposer<Window> {
 		/*
 		 * List<Seed> lseeds= (List<Seed>)gridOrders.getModel();
 		 * setGram(spinnerAllGrams.intValue(), lseeds); ListModel
-		 * m=gridOrders.getModel(); m.notifyAll(); //ListDataListiner
-		 * dl=gridOrders.getl
+		 * m=gridOrders.getModel(); m.notifyAll(); //ListDataListiner dl=gridOrders.getl
 		 * 
 		 */
 	}
@@ -657,11 +654,11 @@ public class SeedOrderController extends SelectorComposer<Window> {
 	 * private void setGram(Integer gram, List<Seed> allSeeds) { for(Seed
 	 * s:allSeeds) { s.setGram(gram); } //gridOrders.getm }
 	 * 
-	 * private Double getTotalGram(List<Seed> allSeeds) { double total=0;
-	 * for(Seed s:allSeeds) { total+=s.getGram(); } return total; }
+	 * private Double getTotalGram(List<Seed> allSeeds) { double total=0; for(Seed
+	 * s:allSeeds) { total+=s.getGram(); } return total; }
 	 * 
-	 * private Double getTotalPrice(List<Seed> allSeeds) { double total=0;
-	 * for(Seed s:allSeeds) { total+=s.getPrice(); } return total;
+	 * private Double getTotalPrice(List<Seed> allSeeds) { double total=0; for(Seed
+	 * s:allSeeds) { total+=s.getPrice(); } return total;
 	 * 
 	 * }
 	 */
