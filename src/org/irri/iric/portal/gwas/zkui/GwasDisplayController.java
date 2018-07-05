@@ -1172,7 +1172,7 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		menuItems.add(separator());
 		// menuItems.add(customMenuItem("Download CSV", "this.exportChart({type:
 		// \"image/svg+xml\"});"));
-		menuItems.add(customMenuItem("Download CVS File", fireServerEventScript(ON_MY_CUSTOM_ITEM)));
+		menuItems.add(customMenuItem("Download CSV File", fireServerEventScript(ON_MY_CUSTOM_ITEM)));
 
 		buttons.setMenuItems(menuItems);
 

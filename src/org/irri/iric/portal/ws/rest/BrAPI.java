@@ -1120,10 +1120,10 @@ public class BrAPI {
 			  vars=variety.getGermplasm(dataset);
 		  } else {
 			  vars=new LinkedHashSet();
-			  if(germplasmPUI!=null && !germplasmPUI.isEmpty() && germplasmPUI.toLowerCase().contains( "oryzasnp.org/iric-portal/_variety.zul?irisid=") ) {
+			  if(germplasmPUI!=null && !germplasmPUI.isEmpty() && germplasmPUI.toLowerCase().contains( "snp-seek.irri.org/_variety.zul?irisid=") ) {
 				  String irisid=germplasmPUI.split("=")[1].trim();
 				  Set listNames=new HashSet();
-				  listNames.add( irisid );
+				  listNames.add( "IRIS "+irisid );
 				  Set s=new HashSet(); s.add(dataset);
 				  vars.addAll( variety.getGermplasmByIrisIds(listNames, s));
 			  } else if(germplasmName!=null && !germplasmName.isEmpty()){
@@ -2582,6 +2582,7 @@ public class BrAPI {
 		  
 			  listitemsDAO=(ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
 			  Map<BigDecimal,Variety> mapVar2Name=listitemsDAO.getMapId2Variety(VarietyFacade.DATASET_SNP_ALL);
+//			  Map<BigDecimal,Variety> mapVar2Name=listitemsDAO.getMapId2Variety("3kfiltered");
 			  
 			  
 			  List listProfiles=new ArrayList();
@@ -3618,6 +3619,7 @@ public class BrAPI {
 				  setVarids.add(BigDecimal.valueOf( itProfileid.next()-offset ));
 			  }
 			  maxregionlength=maxregionlength*3024/setVarids.size();
+			  
 		  }
 		  else if(studyId.equals("hdra")) {
 			  setVarids=new HashSet();

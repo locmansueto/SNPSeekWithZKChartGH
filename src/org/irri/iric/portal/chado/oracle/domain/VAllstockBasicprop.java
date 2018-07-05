@@ -54,6 +54,7 @@ import org.irri.iric.portal.variety.VarietyFacade;
 		@NamedQuery(name = "findVAllstockBasicpropByNameContainingDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.name) like upper(?1) and upper(myVAllstockBasicprop.dataset) in (?2)"),
 		@NamedQuery(name = "findVAllstockBasicpropByOriCountryDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.oriCountry) = upper(?1) and upper(myVAllstockBasicprop.dataset) in (?2)"),
 		@NamedQuery(name = "findVAllstockBasicpropByNamesDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.name) in (?1) and upper(myVAllstockBasicprop.dataset) in (?2)"),
+		@NamedQuery(name = "findVAllstockBasicpropByNamesLikeDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.name) like upper(?1) and upper(myVAllstockBasicprop.dataset) in (?2)"),
 		@NamedQuery(name = "findVAllstockBasicpropByOriCountryContainingDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.oriCountry) like upper(?1) and upper(myVAllstockBasicprop.dataset) in (?2)"),
 		@NamedQuery(name = "findVAllstockBasicpropByPrimaryKeyDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where myVAllstockBasicprop.allStockIdId = ?1 and upper(myVAllstockBasicprop.dataset) in (?2)") ,
 		

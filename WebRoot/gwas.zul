@@ -35,9 +35,6 @@
 		center; vertical-align: middle; 
 	}
     
-    .z-loading-icon {
-            background-image: url(${c:encodeURL('~./zk/img/progress3.gif')}); 
-    }
     
 </style>
 

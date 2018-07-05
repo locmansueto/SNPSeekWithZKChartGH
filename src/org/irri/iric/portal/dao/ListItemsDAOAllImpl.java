@@ -757,7 +757,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 		// AppContext.debug("getMapId2Variety:" + dataset);
 		Map m = this.mapDataset2Id2Variety.get(dataset);
-		if (m == null)
+		if (m == null || m.isEmpty())
 			initNames(dataset);
 		return mapDataset2Id2Variety.get(dataset);
 
