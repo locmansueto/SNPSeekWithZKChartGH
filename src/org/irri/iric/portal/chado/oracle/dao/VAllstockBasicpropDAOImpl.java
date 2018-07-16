@@ -16,6 +16,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+
 import org.hibernate.Session;
 import org.irri.iric.portal.AppContext;
 //import org.irri.iric.portal.chado.domain.VIricstockBasicprop;
@@ -813,8 +814,9 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public List<Variety> findVarietyByNamesLike(Collection names, Set dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+		Query query = createNamedQuery("findVAllstockBasicpropByNamesLikeDataset", -1, -1, AppContext.toUpperCase(names),
+				AppContext.toUpperCase(dataset));
+		return query.getResultList();
 	}
 
 	@Override
@@ -880,7 +882,12 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 		AppContext.debug("findVarietiesByDataset(String dataset) :" + dataset);
 
-		Query query = createNamedQuery("findVAllstockBasicpropByDataset", -1, -1, dataset);
+		Query query;
+		if (dataset.equals(VarietyFacade.DATASET_SNP_ALL))
+			query = createNamedQuery("findAllVAllstockBasicprops", -1, -1);
+		else
+			query = createNamedQuery("findVAllstockBasicpropByDataset", -1, -1, dataset);
+		
 		List l = query.getResultList();
 		AppContext.debug(l.size() + " samples: " + query.getClass());
 		return new LinkedHashSet<Variety>(l);
@@ -923,7 +930,13 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Variety findVarietyById(BigDecimal id, Set dataset) {
-		// TODO Auto-generated method stub
+		Query query = createNamedQuery("findVAllstockBasicpropByPrimaryKeyDataset", -1, -1, id, AppContext.toUpperCase(dataset));
+		List<Variety> resultList = query.getResultList();
+		if (resultList.size() > 1) 
+			throw new RuntimeException("Multiple varieties with id like " + id);
+		
+		if (resultList.size() == 1)
+			return (Variety) resultList.get(0);
 		return null;
 	}
 
