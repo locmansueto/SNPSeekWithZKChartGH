@@ -26,13 +26,13 @@ window.Boot_progressbox = function (){}
 <hbox>
 <vbox width="200px"/>
 <h:p style="font-family:sans-serif;font-size:13px" align="left" width="800px">
+<!-- 
 <h:div id="warningDiv" style="background-color:rgb(255, 246, 168);padding:10px"> 
-  
 <h:img src="images/icons/warning.png" height="25" width="25"/> We are migrating datasets to a new Amazon S3 bucket. The bam / vcf download and jbrowse features are affected and you may experience intermittent failures. We are still in process of troubleshooting to solve these issues.
 An alternative download site for bam and vcf files is available, kindly visit the 3K RG site, <h:a target="_blank" href="http://iric.irri.org/resources/3000-genomes-project">http://iric.irri.org/resources/3000-genomes-project</h:a> for more info.
 
 </h:div>
-
+ -->
 <h:br/>
 <h:br/>
 
