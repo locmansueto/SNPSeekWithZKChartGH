@@ -1,7 +1,7 @@
 <?page title="banner" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:h="native">
 
-<zscript>
+	<zscript>
         import org.irri.iric.portal.AppContext;      
         String paramstr=AppContext.getJBrowseDefaulttracks(AppContext.getDefaultDataset());
         //DNA,msu7gff,snp3k
@@ -219,13 +219,17 @@
 </hbox>
 </div>
 
-<div style="background-color:green;color:green">
+<div style="background-color:green;color:green;">
 <!--  vbox height="20px" width="100%"/ -->
 
 <vbox width="100%" height="3px"/>
-<hbox align="center" pack="center">
-<vbox width="600px"/><hbox><label value="By using SNP-Seek, you abide by the data use license stated " style="font-size:13px;color:white" /><a href="https://s3.amazonaws.com/3kricegenome/README-3kRG-SNPs-Permissive-License.txt"   style="font-size:13px;color:white;font-weight: bold;">here</a></hbox>
-</hbox>
+	<hbox align="center" pack="center" width="100%">
+		
+		<hbox>
+			<label value="By using SNP-Seek, you abide by the data use license stated " style="font-size:13px;color:white" />
+			<a href="https://s3.amazonaws.com/3kricegenome/README-3kRG-SNPs-Permissive-License.txt"   style="font-size:13px;color:white;font-weight: bold;">here</a>
+	</hbox>
+	</hbox>
 <vbox width="100%" height="3px"/>
 
 <!--  vbox width="100%" height="3px"/>

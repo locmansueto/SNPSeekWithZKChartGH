@@ -36,10 +36,11 @@ An alternative download site for bam and vcf files is available, kindly visit th
 <h:br/>
 <h:br/>
 
-This site provides Genotype, Phenotype, and Variety Information for rice (Oryza sativa L.). SNP genotyping data (called against five reference genomes:
- <h:a target="_blank" href="http://rice.plantbiology.msu.edu/annotation_pseudo_current.shtml">Nipponbare reference Os-Nipponbare-Reference-IRGSP-1.0</h:a>, 93-11, IR 64, Kasalath and DJ123) came from <h:a target="_blank" href="http://www.gigasciencejournal.com/content/3/1/7"> 3,000 Rice Genomes Project </h:a>. 
+This site provides Genotype, Phenotype, and Variety Information for rice (Oryza sativa L.). SNP genotyping data (called against <!-- five reference genomes -->
+ <h:a target="_blank" href="http://rice.plantbiology.msu.edu/annotation_pseudo_current.shtml">Nipponbare reference Os-Nipponbare-Reference-IRGSP-1.0</h:a><!-- , 93-11, IR 64, Kasalath and DJ123  -->) came from <h:a target="_blank" href="http://www.gigasciencejournal.com/content/3/1/7"> 3,000 Rice Genomes Project </h:a>. 
 Phenotype and passport data for the 3,000 rice varieties came from the International Rice Genebank Collection Information System  (<h:a target="_blank" href="http://irgcis.irri.org:81/grc/irgcishome.html">IRGCIS</h:a>).
-We are a part of an ongoing effort by the International Rice Informatics Consortium (<h:a target="_blank" href="http://iric.irri.org">IRIC</h:a>) to centralize information access to rice research data and provide computational tools to facilitate rice improvement via discovery of new gene-trait associations and accelerated breeding. 
+We are a part of an ongoing effort by the International Rice Informatics Consortium (<h:a target="_blank" href="http://iric.irri.org">IRIC</h:a>) to centralize information access to rice research data and provide computational tools to facilitate rice improvement via discovery of new gene-trait associations and accelerated breeding.
+ 
  
 <!-- h:p align="center" style="font-family:sans-serif;font-size:13px">
 To cite this resource: <h:a target="_blank" href="http://nar.oxfordjournals.org/content/43/D1/D1023.full">Alexandrov, et al. SNP-Seek database of SNPs derived from 3000 rice genomes. Nucl. Acids Res. 2015;43(D1):D1023-D1027</h:a>
@@ -97,6 +98,26 @@ To cite this resource: <h:a target="_blank" href="http://nar.oxfordjournals.org/
 					details="Help and documentation" href="_help.zul"/>
 			 </hbox -->
 			 
+
+
+
+<hbox>
+<vbox width="200px"/>
+<h:p style="font-family:sans-serif;font-size:13px" align="left" width="800px">
+<h:b>
+<h:h4 style="color:darkgreen">How to cite:</h:h4>
+</h:b>
+- Mansueto, et al. <h:b>Rice SNP-seek database update: new SNPs,
+						indels, and queries</h:b>.<h:i>Nucl. Acids Res.</h:i>(2017) 45 (D1):
+					D1075-D1081.  doi: <h:a target="_pub"
+					href="http://nar.oxfordjournals.org/content/early/2016/11/29/nar.gkw1135.abstract">10.1093/nar/gkw1135</h:a>
+					This paper describes new features and datasets added to SNP-Seek in
+					2015-2017 as well as software and database updates.
+<h:h5 style="color:darkgreen"><h:b><h:a target="_pub"
+					href="http://snp-seek.irri.org/_about.zul">- Other publications >> </h:a></h:b></h:h5>
+</h:p>
+<vbox width="200px"/>
+</hbox>
 
 </vbox>
 </div>	

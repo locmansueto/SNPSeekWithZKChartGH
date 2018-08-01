@@ -1900,11 +1900,13 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 			buttonDownloadFastqc.setHref(AppContext.getFastqcURL() + variety2.getIrisId().replace(" ", "_") + ".html");
 			buttonDownloadFastq.setHref(AppContext.getFastqURL() + variety2.getIrisId().replace(" ", "_"));
 			if (AppContext.isIRRILAN()) {
-				buttonDownloadBAM.setHref("http://172.29.4.93/cgi-bin/fqget.pl?q="
-						+ variety2.getIrisId().replace("IRIS", "").trim() + "&t=bam");
-				buttonDownloadVCF.setHref("http://172.29.4.93/cgi-bin/fqget.pl?q="
-						+ variety2.getIrisId().replace("IRIS", "").trim() + "&t=vcf");
-			} else if (AppContext.isAWS()) {
+//				buttonDownloadBAM.setHref("http://172.29.4.93/cgi-bin/fqget.pl?q="
+//						+ variety2.getIrisId().replace("IRIS", "").trim() + "&t=bam");
+//				buttonDownloadVCF.setHref("http://172.29.4.93/cgi-bin/fqget.pl?q="
+//						+ variety2.getIrisId().replace("IRIS", "").trim() + "&t=vcf");
+				buttonDownloadBAM.setHref(AppContext.getBamURL(variety2.getIrisId()));
+				buttonDownloadVCF.setHref(AppContext.getVcfURL(variety2.getIrisId()));
+			} else {
 
 				// buttonDownloadBAM.setHref("https://s3.amazonaws.com/3kricegenome/Nipponbare/"
 				// + variety2.getIrisId().replace("IRIS","").trim() + ".realigned.bam");
