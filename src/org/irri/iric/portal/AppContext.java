@@ -77,7 +77,7 @@ public class AppContext {
 	private static Connection jdbccon;
 	private static Map mapVariant2Order = null;
 	private static int RAMfactor = 1; // 5;
-	
+
 	public static String SEED_NO_ORDER = "You have not place any orders.";
 
 	private static Map mapBearer2StartTime = new HashMap();
@@ -480,14 +480,16 @@ public class AppContext {
 
 		String pathBlastData = webProp.getProperty(WebserverPropertyConstants.PATH_LOCAL_BLAST_DATA);
 
-		/*
-		 * if (isAWS() || isAWSdev()) return
-		 * "/home/ubuntu/lmansueto/ncbi-blast/iric-portal/"; else if (isPollux()) return
-		 * "/home/lmansueto/ncbi-blast/iric-portal/"; else if (isASTI()) return
-		 * "/srv/ncbi-blast/iric-portal/"; else if (isAWSBeanstalk() ||
-		 * isAWSBeanstalkDev()) return "/IRCstorage/blastdb/iric-portal/";
-		 */
-
+		// if (isAWS() || isAWSdev())
+		// return "/home/ubuntu/lmansueto/ncbi-blast/iric-portal/";
+		// else if (isPollux())
+		// return "/home/lmansueto/ncbi-blast/iric-portal/";
+		// else if (isASTI())
+		// return "/srv/ncbi-blast/iric-portal/";
+		// else if (isAWSBeanstalk() || isAWSBeanstalkDev())
+		// return "/IRCstorage/blastdb/iric-portal/";
+		
+		
 		if (!pathBlastData.equals("."))
 			return pathBlastData;
 
@@ -503,16 +505,18 @@ public class AppContext {
 		logger.info("BLAST SERVER: " + webProp.getProperty(WebserverPropertyConstants.BLAST_SERVER));
 		String blastServer = webProp.getProperty(WebserverPropertyConstants.BLAST_SERVER);
 
-		/*
-		 * if (isLocalhost() || isPollux()) return "http://pollux:8080/iric-portal-dev";
-		 * else if (isASTI()) return getHostname() + "/iric-portal"; else if (isAWS()) {
-		 * return "http://oryzasnp.org/iric-portal"; }
-		 */
+		// if (isLocalhost() || isPollux())
+		// return "http://pollux:8080/iric-portal-dev";
+		// else if (isASTI())
+		// return getHostname() + "/iric-portal";
+		// else if (isAWS()) {
+		// return "http://oryzasnp.org/iric-portal";
+		// }
 
 		if (!blastServer.equals("."))
 			return blastServer;
 
-		return "";
+		return "http://oryzasnp.org/iric-portal";
 	}
 
 	/**
@@ -1180,13 +1184,21 @@ public class AppContext {
 	 * @return
 	 */
 	public static String getDefaultOrganism() {
-		if (defaultorganism != null)
-			return defaultorganism;
+		
+		logger.info("TOMCAT DIRECTORY: " + webProp.getProperty(WebserverPropertyConstants.TOMCAT_SERVER));
 
+		defaultorganism = webProp.getProperty(WebserverPropertyConstants.DEFAULT_ORGANISM_NAME);
+		
+		if (defaultorganism == null || defaultorganism.equals("."))
+			return "Japonica nipponbare";
+		
+		return defaultorganism;
+		
 		// return "rice";
-		return "Japonica nipponbare";
+		//return "Japonica nipponbare";
 		// return "sorghum bicolor";
 		// return "Japonica Nipponbare";
+		//return "Cassava";
 	}
 
 	public static Integer getDefaultOrganismId() {

@@ -2320,14 +2320,18 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		} catch (InvocationTargetException ex) {
 			ex.getCause().printStackTrace();
 			Messagebox.show(ex.getCause().getMessage(), "InvocationTargetException", Messagebox.OK, Messagebox.ERROR);
+			
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			Messagebox.show(ex.getMessage(), "Exception", Messagebox.OK, Messagebox.ERROR);
+			
 
+		}finally {
+			Clients.clearBusy();
 		}
 		
-		Clients.clearBusy();
+		
 
 	}
 

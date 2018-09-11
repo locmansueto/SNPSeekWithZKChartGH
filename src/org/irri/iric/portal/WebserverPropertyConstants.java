@@ -92,6 +92,8 @@ public class WebserverPropertyConstants {
 	
 	public static final String DEFAULT_ORGANISM_ID = "defaultOrganismId";
 	
+	public static final String DEFAULT_ORGANISM_NAME = "defaultOrganismName";
+	
 	public static final String DEFAULT_DATASET = "defaultDataset";
 	
 	public static final String DEFAULT_VARIANT_SET = "defaultVariantset";

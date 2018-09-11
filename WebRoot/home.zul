@@ -37,7 +37,7 @@ An alternative download site for bam and vcf files is available, kindly visit th
 <h:br/>
 
 This site provides Genotype, Phenotype, and Variety Information for rice (Oryza sativa L.). SNP genotyping data (called against <!-- five reference genomes -->
- <h:a target="_blank" href="http://rice.plantbiology.msu.edu/annotation_pseudo_current.shtml">Nipponbare reference Os-Nipponbare-Reference-IRGSP-1.0</h:a><!-- , 93-11, IR 64, Kasalath and DJ123  -->) came from <h:a target="_blank" href="http://www.gigasciencejournal.com/content/3/1/7"> 3,000 Rice Genomes Project </h:a>. 
+ <h:a target="_blank" href="http://rice.plantbiology.msu.edu/annotation_pseudo_current.shtml">Nipponbare reference Os-Nipponbare-Reference-IRGSP-1.0</h:a><!-- , 93-11, IR 64, Kasalath and DJ123  -->) came from <h:a target="_blank" href="http://iric.irri.org/resources/3000-genomes-project"> 3,000 Rice Genomes Project </h:a>. 
 Phenotype and passport data for the 3,000 rice varieties came from the International Rice Genebank Collection Information System  (<h:a target="_blank" href="http://irgcis.irri.org:81/grc/irgcishome.html">IRGCIS</h:a>).
 We are a part of an ongoing effort by the International Rice Informatics Consortium (<h:a target="_blank" href="http://iric.irri.org">IRIC</h:a>) to centralize information access to rice research data and provide computational tools to facilitate rice improvement via discovery of new gene-trait associations and accelerated breeding.
  

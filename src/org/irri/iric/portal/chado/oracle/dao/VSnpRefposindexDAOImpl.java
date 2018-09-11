@@ -362,7 +362,7 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex>
 		// TODO Auto-generated method stub
 		BigDecimal bdChr=null;
 		try {
-			chr = chr.toUpperCase().replace("CHR0","").replace("CHR","");
+			chr = chr.toUpperCase().replace("CHROMOSOME0","").replace("CHROMOSOME","").replace("CHR0","").replace("CHR","");
 			try {
 				bdChr = BigDecimal.valueOf(Long.valueOf(chr));
 				if(startPos!=null && endPos!=null) {

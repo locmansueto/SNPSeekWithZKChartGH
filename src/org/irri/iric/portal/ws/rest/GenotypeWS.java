@@ -16,9 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
-
-
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -29,25 +26,20 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-
-
-
 //import org.codehaus.jackson.map.ObjectMapper;
 //import org.codehaus.jettison.json.JSONException;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.admin.WorkspaceFacade;
-import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
+import org.irri.iric.portal.chado.oracle.dao.VGenotypeRunDAO;
+import org.irri.iric.portal.chado.oracle.domain.VGenotypeRun;
+import org.irri.iric.portal.dao.GenotypeRunPlatformDAO;
+import org.irri.iric.portal.domain.GenotypeRunPlatform;
 import org.irri.iric.portal.genotype.GenotypeFacade;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantStringData;
 import org.irri.iric.portal.genotype.VariantTable;
 import org.irri.iric.portal.genotype.VariantTableArray;
 import org.irri.iric.portal.genotype.service.VariantAlignmentTableArraysImpl;
-
-
-
-
-
 //import org.irri.iric.portal.genotype.zkui.SNPAllvarsRowRenderer;
 //import org.irri.iric.portal.genotype.zkui.SNPListItemRenderer;
 //import org.irri.iric.portal.genotype.zkui.SNPMatrixRenderer;
@@ -82,6 +74,11 @@ public class GenotypeWS {
 	private GenotypeFacade genotype;
 	@Autowired
 	private WorkspaceFacade workspace;
+	
+	@Autowired
+	@Qualifier("GenotypeRunPlatformDAO")
+	private VGenotypeRunDAO genotyperundao;
+	
 
 	
 	@Autowired
@@ -387,7 +384,10 @@ public class GenotypeWS {
 		  		sRun.add("3kfiltered");
 		  		
 		  		
-				GenotypeQueryParams params = new GenotypeQueryParams(colVarIds,sChr, lStart, lEnd, bSNP, bIndel, sVS , sVar, sRun, 
+		  		genotyperundao = (VGenotypeRunDAO) AppContext.checkBean(genotyperundao, "GenotypeRunPlatformDAO");
+		  		Set<VGenotypeRun> sRunTest = genotyperundao.findVGenotypeRunByVariantset("3kfiltered");
+		  		
+				GenotypeQueryParams params = new GenotypeQueryParams(colVarIds,sChr, lStart, lEnd, bSNP, bIndel, sVS , sVar, sRunTest, 
 				bMismatchonly, poslist,  sSubpopulation, sLocus, bAlignIndels, showAllRefsAllele );			
 
 		  		

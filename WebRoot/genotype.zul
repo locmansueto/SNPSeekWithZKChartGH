@@ -266,7 +266,9 @@ function doPosition() {
 					</vbox>
 					</div>
 					</hbox>
-					<separator bar="true" style="color:green"/>
+					<label value="where are the other reference genome datasets?" style="text-decoration:underline;font-style:italic;font-weight:bold;color:darkgreen" tooltip="genotype_info"/>
+					<separator bar="true" style="color:green" />
+					
 					</vbox>
 			    </row>
         	<!--  *********************   VARIETY SELECTION  ************************************* -->
@@ -1672,6 +1674,15 @@ import org.irri.iric.portal.genotype.zkui.GenotypeRunPlatformSorter;
 				  Core-404k LD pruned). Detailed desription in Download section.
         ]]></html>
 </popup>
+<popup id="genotype_info" width="600px">
+        <html><![CDATA[
+			We currently disable the reference genome selection because we realized that we are inadvertently imposing a pan-genome for rice. The SNPs in other reference genomes were determined using the best aligned regions  from the pair-wise comparison between the five reference genome, and we progressively identified genome regions unique to each of each reference genomes in an arbitrary manner (Nipponbare -> 9311 -> ir64 -> dj123 -> kasalath), which may result in ambiguous SNP locations between reference genomes. Although we selected the best alignment (by length and % identity), these are local and not guaranteed correct because aligned regions are not unique nor symmetric, and other considerations (biological or computational), or global optimization may be necessary to assign the best genome-wide alignments. To improve this, we are currently working to display the matrix of samples X SNPs/indels as identified for each reference genome, which we will soon publish in SNP-Seek. Our next big project would to be to do the comparative genomics for all the currently published high quality rice genomes,which allows you to unambiguously map SNPs in each genome.
+			<br>
+			<br>
+			<p>If this data is necessary and urgently needed for your work now, we recommend you use the VCF files of the SNPs/indels identified for the other reference genomes at our S3 site (pls see <a href="http://iric.irri.org/resources/3000-genomes-project">iric.irri.org/resources/3000-genomes-project</a> for details) and use external tools to extract regions of the VCF files. In the Rice Galaxy resource at <a href="http://galaxy.irri.org/">galaxy.irri.org</a>, this can be done using <Get Data> --> <Get Subset of 3K VCF from Amazon S3 data repository>, one VCF at a time.</p>
+        ]]></html>
+</popup>
+
 
 
 

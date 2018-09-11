@@ -121,8 +121,8 @@ public class VScaffoldsOrganism implements Serializable, Scaffold {
 	/**
 	 */
 	public String getName() {
-		//return this.name;
-		return getUniquename();
+		return this.name;
+		//return getUniquename();
 	}
 
 	/**
