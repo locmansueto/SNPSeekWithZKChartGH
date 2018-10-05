@@ -8,4 +8,6 @@ public class PropertyConstants {
 
 	public static final String PROPERTYFILE = "config.properties";
 
+	public static final Object OPERATING_SYSTEM = "os";
+
 }

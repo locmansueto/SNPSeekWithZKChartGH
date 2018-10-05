@@ -90,6 +90,10 @@ public class AppContext {
 		LOCALHOST, AWS, AWSDEV, VMIRRI, POLLUX, ASTI, BEANSTALK, BEANSTALKDEV
 	};
 
+	public static enum OS {
+		WINDOWS, LINUX
+	};
+
 	public static enum COMPILETYPE {
 		PROD, DEV, TEST
 	};
@@ -115,6 +119,8 @@ public class AppContext {
 	static COMPILETYPE compiletype = AppContext.COMPILETYPE.PROD;
 	// static COMPILETYPE compiletype = AppContext.COMPILETYPE.TEST;
 	// static COMPILETYPE compiletype = AppContext.COMPILETYPE.DEV;
+
+	static OS operatingSytem;
 
 	static RDMS rdms = AppContext.RDMS.POSTGRES;
 	private static boolean bBypassViews = true;
@@ -178,6 +184,8 @@ public class AppContext {
 
 			webserver = WEBSERVER.valueOf(prop.get(PropertyConstants.WEBSERVER).toString().toUpperCase());
 			logger.info("WEBSERVER>>>>>>>>>>>>" + webserver);
+
+			operatingSytem = OS.valueOf(prop.get(PropertyConstants.OPERATING_SYSTEM).toString().toUpperCase());
 
 			InputStream isWebProp = AppContext.class
 					.getResourceAsStream("/config." + prop.getProperty(PropertyConstants.WEBSERVER) + ".properties");
@@ -488,8 +496,7 @@ public class AppContext {
 		// return "/srv/ncbi-blast/iric-portal/";
 		// else if (isAWSBeanstalk() || isAWSBeanstalkDev())
 		// return "/IRCstorage/blastdb/iric-portal/";
-		
-		
+
 		if (!pathBlastData.equals("."))
 			return pathBlastData;
 
@@ -695,7 +702,7 @@ public class AppContext {
 	 * @return
 	 */
 	public static boolean isWindows() {
-		return isLocalhost();
+		return operatingSytem == AppContext.OS.WINDOWS;
 	}
 
 	/**
@@ -1184,21 +1191,21 @@ public class AppContext {
 	 * @return
 	 */
 	public static String getDefaultOrganism() {
-		
+
 		logger.info("TOMCAT DIRECTORY: " + webProp.getProperty(WebserverPropertyConstants.TOMCAT_SERVER));
 
 		defaultorganism = webProp.getProperty(WebserverPropertyConstants.DEFAULT_ORGANISM_NAME);
-		
+
 		if (defaultorganism == null || defaultorganism.equals("."))
 			return "Japonica nipponbare";
-		
+
 		return defaultorganism;
-		
+
 		// return "rice";
-		//return "Japonica nipponbare";
+		// return "Japonica nipponbare";
 		// return "sorghum bicolor";
 		// return "Japonica Nipponbare";
-		//return "Cassava";
+		// return "Cassava";
 	}
 
 	public static Integer getDefaultOrganismId() {

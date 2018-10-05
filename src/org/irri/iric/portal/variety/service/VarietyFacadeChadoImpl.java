@@ -27,6 +27,7 @@ import org.irri.iric.portal.dao.PhenotypeDAO;
 import org.irri.iric.portal.dao.VarietyByPassportDAO;
 import org.irri.iric.portal.dao.VarietyByPhenotypeDAO;
 import org.irri.iric.portal.dao.VarietyDAO;
+import org.irri.iric.portal.dao.VarietyDistanceDAO;
 //import org.irri.iric.portal.dao.VarietyDistanceDAO;
 import org.irri.iric.portal.domain.Phenotype;
 import org.irri.iric.portal.domain.StockByPhenotype;
@@ -122,8 +123,19 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public double[][] constructMDSPlot(List<BigDecimal> ids, String scale, boolean isAll, Set dataset) {
-		// TODO Auto-generated method stub
-		return null;
+
+		double[][] xy = null;
+		Iterator<String> dsIterator = dataset.iterator();
+
+		while (dsIterator.hasNext()) {
+			String ds = dsIterator.next();
+			if (ds.equals("3k"))
+				xy = constructMDSPlot(ids, scale, isAll, -1);
+			else if (ds.equals("hdra"))
+				xy = constructMDSPlotFromHDRA(ids);
+		}
+
+		return xy;
 	}
 
 	@Override
@@ -281,8 +293,8 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	private CvTermUniqueValuesDAO cvphenotypeQuanValuesDao;
 
 	// phylogenetic tree construction daos
-	// @Autowired
-	// private VarietyDistanceDAO dist3kdao;
+	@Autowired
+	private VarietyDistanceDAO dist3kdao;
 
 	// User interface Listboxes values DAO
 	@Autowired
@@ -292,9 +304,9 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	@Autowired
 	private VarietyPropertiesService varpropservice;
 
-	protected Map<String,Set<String>> mapPop2Trait;
+	protected Map<String, Set<String>> mapPop2Trait;
 
-	protected Map<String,Set<String>> mapPop2Coterm;
+	protected Map<String, Set<String>> mapPop2Coterm;
 
 	// Class methods
 	// Methods with @Override annotation are implementations
@@ -983,13 +995,11 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	 */
 	private double[][] constructMDSPlot(List<BigDecimal> germplasms, String scale, boolean isAll, int topN) {
 
-		return null;
-		// if(isAll)
-		// return constructMDSPlotFromCore(germplasms);
-		//
-		// dist3kdao = (VarietyDistanceDAO)AppContext.checkBean(dist3kdao,
-		// "VarietyDistanceDAO");
-		//
+		if (isAll)
+			return constructMDSPlotFromCore(germplasms);
+
+		dist3kdao = (VarietyDistanceDAO) AppContext.checkBean(dist3kdao, "VarietyDistanceDAO");
+
 		// /*
 		// MemoryMXBean bean = ManagementFactory.getMemoryMXBean();
 		// AppContext.debug("heap space used MB:" +
@@ -999,29 +1009,29 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		// bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
 		// */
 		//
-		// java.util.Map<BigDecimal, Integer> mapVarid2Row = new
-		// java.util.HashMap<BigDecimal, Integer>();
-		//
-		// int distscale = Integer.parseInt(scale);
-		// List<VarietyDistance> listdist;
-		//
-		// int i=0;
-		//
-		// // setup ids, columns, rows
-		// java.util.Iterator<BigDecimal> itgerm=germplasms.iterator();
-		// while(itgerm.hasNext()) {
-		// BigDecimal c = itgerm.next();
-		// mapVarid2Row.put(c , i);
-		// i++;
-		// }
-		//
-		// listdist = dist3kdao.findVarieties(new HashSet(germplasms));
-		//
-		//
-		// return constructMDSPlot(mapVarid2Row, listdist, scale, topN) ;
-		//
+		 java.util.Map<BigDecimal, Integer> mapVarid2Row = new
+		 java.util.HashMap<BigDecimal, Integer>();
+		
+		 int distscale = Integer.parseInt(scale);
+		 List<VarietyDistance> listdist;
+		
+		 int i=0;
+		
+//		 setup ids, columns, rows
+		 java.util.Iterator<BigDecimal> itgerm=germplasms.iterator();
+		 while(itgerm.hasNext()) {
+		 BigDecimal c = itgerm.next();
+		 mapVarid2Row.put(c , i);
+		 i++;
+		 }
+		
+		 listdist = dist3kdao.findVarieties(new HashSet(germplasms));
+		
+		
+		 return constructMDSPlot(mapVarid2Row, listdist, scale, topN) ;
+		
 
-		//
+		
 		// java.util.Iterator<VarietyDistance> itdist = listdist.iterator();
 		// double input[][] = new double[i][i];
 		//
@@ -1032,12 +1042,12 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		// VarietyDistance dist3k = itdist.next();
 		//
 		// if(!mapVarid2Row.containsKey(dist3k.getVar1()) ) continue ; //throw new
-		// RuntimeException("No key " + dist3k.getVar1() + " in mapVarid2Row");
+		// new RuntimeException("No key " + dist3k.getVar1() + " in mapVarid2Row");
 		// if(!mapVarid2Row.containsKey(dist3k.getVar2()) ) continue ; //throw new
-		// RuntimeException("No key " + dist3k.getVar2() + " in mapVarid2Row");
+		// new RuntimeException("No key " + dist3k.getVar2() + " in mapVarid2Row");
 		//
-		// Double dist = dist3k.getDist().doubleValue()*distscale; // Double.valueOf(
-		// dist3k.getDist().toString() )*distscale;;
+		// Double dist = dist3k.getDist().doubleValue()*distscale; //
+		// Double.valueOf(dist3k.getDist().toString() )*distscale;;
 		//
 		// input[ mapVarid2Row.get(dist3k.getVar1()
 		// )][mapVarid2Row.get(dist3k.getVar2())] = dist ;
@@ -1048,7 +1058,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		// itdist = null;
 		// listdist = null;
 		//
-		// bean.gc();
+		// //bean.gc();
 		// return mdsj.MDSJ.classicalScaling(input);
 	}
 
@@ -1097,47 +1107,52 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	 */
 	private double[][] constructMDSPlotFromCore(List<BigDecimal> germplasms) {
 
-		// Map<String, double[]> mapCode2XY = Data.get3kCoreMDSXY();
+		Map<String, double[]> mapCode2XY = Data.get3kCoreMDSXY();
+
+		varietydao = (VarietyDAO) AppContext.checkBean(varietydao, "VarietyDAO");
+
+		Iterator<Variety> itVars = varietydao.findAllVariety().iterator();
+		Map<BigDecimal, Variety> mapId2Var = new HashMap();
+		while (itVars.hasNext()) {
+			Variety var = itVars.next();
+			mapId2Var.put(var.getVarietyId(), var);
+		}
+
+		Iterator itId = germplasms.iterator();
+
+		double xy[][] = new double[2][germplasms.size()];
+
+		int i = 0;
+		while (itId.hasNext()) {
+			Variety var = mapId2Var.get(itId.next());
+			if (var.getIrisId() != null && !var.getIrisId().isEmpty()) {
+				double xyi[] = mapCode2XY.get(var.getIrisId().replace(" ", "_").toUpperCase());
+				if (xyi == null) {
+					i++;
+					continue;
+				}
+				;
+				xy[0][i] = xyi[0];
+				xy[1][i] = xyi[1];
+				i++;
+			} else if (var.getBoxCode() != null && !var.getBoxCode().isEmpty()) {
+				double xyi[] = mapCode2XY.get(var.getBoxCode().toUpperCase());
+				if (xyi == null) {
+					i++;
+					continue;
+				}
+				;
+				xy[0][i] = xyi[0];
+				xy[1][i] = xyi[1];
+				i++;
+			}
+
+		}
+		// AppContext.debug(i + " varieties in MDS all");
+
+		return xy;
 		//
-		// germ2dao = (VarietyDAO)AppContext.checkBean(germ2dao, "VarietyDAO");
-		//
-		//
-		// Iterator<Variety> itVars = germ2dao.findAllVariety().iterator();
-		// Map<BigDecimal,Variety> mapId2Var = new HashMap();
-		// while(itVars.hasNext()) {
-		// Variety var = itVars.next();
-		// mapId2Var.put(var.getVarietyId(), var);
-		// }
-		//
-		// Iterator itId = germplasms.iterator();
-		//
-		// double xy[][] = new double[2][germplasms.size()];
-		//
-		//
-		// int i=0;
-		// while(itId.hasNext()) {
-		// Variety var = mapId2Var.get(itId.next());
-		// if(var.getIrisId()!=null && !var.getIrisId().isEmpty()) {
-		// double xyi[] = mapCode2XY.get( var.getIrisId().replace(" ",
-		// "_").toUpperCase() );
-		// if(xyi==null) { i++; continue ;};
-		// xy[0][i] = xyi[0];
-		// xy[1][i] = xyi[1];
-		// i++;
-		// } else if(var.getBoxCode()!=null && !var.getBoxCode().isEmpty() ) {
-		// double xyi[] = mapCode2XY.get( var.getBoxCode().toUpperCase() );
-		// if(xyi==null) { i++; continue; };
-		// xy[0][i] = xyi[0];
-		// xy[1][i] = xyi[1];
-		// i++;
-		// }
-		//
-		// }
-		// //AppContext.debug(i + " varieties in MDS all");
-		//
-		// return xy;
-		//
-		return null;
+		// return null;
 
 	}
 
@@ -1342,14 +1357,10 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Map getTraits(Set<Listitem> dataset, boolean legacyPhenotype) {
-		
+
 		return listitemsDAO.getTraits(dataset, legacyPhenotype);
-		
+
 	}
-
-	
-
-	
 
 }
 
