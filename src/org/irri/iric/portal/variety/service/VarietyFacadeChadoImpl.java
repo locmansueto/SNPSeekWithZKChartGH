@@ -293,8 +293,8 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	private CvTermUniqueValuesDAO cvphenotypeQuanValuesDao;
 
 	// phylogenetic tree construction daos
-	@Autowired
-	private VarietyDistanceDAO dist3kdao;
+	// @Autowired
+	//private VarietyDistanceDAO dist3kdao;
 
 	// User interface Listboxes values DAO
 	@Autowired
@@ -995,43 +995,42 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	 */
 	private double[][] constructMDSPlot(List<BigDecimal> germplasms, String scale, boolean isAll, int topN) {
 
-		if (isAll)
-			return constructMDSPlotFromCore(germplasms);
+		// if (isAll)
+		return constructMDSPlotFromCore(germplasms);
+		// return null;
 
-		dist3kdao = (VarietyDistanceDAO) AppContext.checkBean(dist3kdao, "VarietyDistanceDAO");
-
-		// /*
-		// MemoryMXBean bean = ManagementFactory.getMemoryMXBean();
-		// AppContext.debug("heap space used MB:" +
-		// bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
-		// bean.gc();
-		// AppContext.debug("GC successful: heap space used MB:" +
-		// bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
-		// */
+		// dist3kdao = (VarietyDistanceDAO) AppContext.checkBean(dist3kdao,
+		// "VarietyDistanceDAO");
 		//
-		 java.util.Map<BigDecimal, Integer> mapVarid2Row = new
-		 java.util.HashMap<BigDecimal, Integer>();
-		
-		 int distscale = Integer.parseInt(scale);
-		 List<VarietyDistance> listdist;
-		
-		 int i=0;
-		
-//		 setup ids, columns, rows
-		 java.util.Iterator<BigDecimal> itgerm=germplasms.iterator();
-		 while(itgerm.hasNext()) {
-		 BigDecimal c = itgerm.next();
-		 mapVarid2Row.put(c , i);
-		 i++;
-		 }
-		
-		 listdist = dist3kdao.findVarieties(new HashSet(germplasms));
-		
-		
-		 return constructMDSPlot(mapVarid2Row, listdist, scale, topN) ;
-		
+		// // /*
+		// // MemoryMXBean bean = ManagementFactory.getMemoryMXBean();
+		// // AppContext.debug("heap space used MB:" +
+		// // bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
+		// // bean.gc();
+		// // AppContext.debug("GC successful: heap space used MB:" +
+		// // bean.getHeapMemoryUsage().getUsed()*1.0/1000000 );
+		// // */
+		// //
+		// java.util.Map<BigDecimal, Integer> mapVarid2Row = new
+		// java.util.HashMap<BigDecimal, Integer>();
+		//
+		// int distscale = Integer.parseInt(scale);
+		// List<VarietyDistance> listdist;
+		// //
+		// int i = 0;
+		//
+		// // setup ids, columns, rows
+		// java.util.Iterator<BigDecimal> itgerm = germplasms.iterator();
+		// while (itgerm.hasNext()) {
+		// BigDecimal c = itgerm.next();
+		// mapVarid2Row.put(c, i);
+		// i++;
+		// }
+		//
+		// listdist = dist3kdao.findVarieties(new HashSet(germplasms));
+		//
+//		return constructMDSPlot(mapVarid2Row, listdist, scale, topN);
 
-		
 		// java.util.Iterator<VarietyDistance> itdist = listdist.iterator();
 		// double input[][] = new double[i][i];
 		//
@@ -1106,6 +1105,63 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	 * @return 2xN matrix of xy coordinates
 	 */
 	private double[][] constructMDSPlotFromCore(List<BigDecimal> germplasms) {
+
+		Map<String, double[]> mapCode2XY = Data.get3kCoreMDSXY();
+
+		varietydao = (VarietyDAO) AppContext.checkBean(varietydao, "VarietyDAO");
+
+		Iterator<Variety> itVars = varietydao.findAllVariety().iterator();
+		Map<BigDecimal, Variety> mapId2Var = new HashMap();
+		while (itVars.hasNext()) {
+			Variety var = itVars.next();
+			mapId2Var.put(var.getVarietyId(), var);
+		}
+
+		Iterator itId = germplasms.iterator();
+
+		double xy[][] = new double[2][germplasms.size()];
+
+		int i = 0;
+		while (itId.hasNext()) {
+			Variety var = mapId2Var.get(itId.next());
+			if (var.getIrisId() != null && !var.getIrisId().isEmpty()) {
+				double xyi[] = mapCode2XY.get(var.getIrisId().replace(" ", "_").toUpperCase());
+				if (xyi == null) {
+					i++;
+					continue;
+				}
+				;
+				xy[0][i] = xyi[0];
+				xy[1][i] = xyi[1];
+				i++;
+			} else if (var.getBoxCode() != null && !var.getBoxCode().isEmpty()) {
+				double xyi[] = mapCode2XY.get(var.getBoxCode().toUpperCase());
+				if (xyi == null) {
+					i++;
+					continue;
+				}
+				;
+				xy[0][i] = xyi[0];
+				xy[1][i] = xyi[1];
+				i++;
+			}
+
+		}
+		// AppContext.debug(i + " varieties in MDS all");
+
+		return xy;
+		//
+		// return null;
+
+	}
+
+	/**
+	 * Construct mds for all varieties
+	 * 
+	 * @param germplasms
+	 * @return 2xN matrix of xy coordinates
+	 */
+	private double[][] constructMDSPlot(List<BigDecimal> germplasms) {
 
 		Map<String, double[]> mapCode2XY = Data.get3kCoreMDSXY();
 
