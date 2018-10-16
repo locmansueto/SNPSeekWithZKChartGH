@@ -46,6 +46,7 @@ import org.irri.iric.portal.variety.VarietyFacade;
 import org.springframework.context.ApplicationContext;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zkplus.spring.SpringUtil;
+import org.zkoss.zul.Listitem;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSCredentials;
@@ -1299,6 +1300,7 @@ public class AppContext {
 			// log.error(timedif + msg);
 
 			logger.info(timedif + msg);
+			//System.out.println("TIME " + endTimeDate + "  " + timedif);
 			if (msg == null || msg.replaceAll("\\s+", "").isEmpty()) {
 				logger.info("empty/null msg");
 			}
@@ -2444,6 +2446,19 @@ public class AppContext {
 		if (webProp.getProperty(item).equals("true"))
 			return true;
 		return false;
+	}
+
+	public static Set<String> getStringValues(Set<Listitem> listItemBoxValues) {
+		Set<String> strValues = new HashSet<String>();
+
+		Iterator iter = listItemBoxValues.iterator();
+
+		while (iter.hasNext()) {
+			Listitem item = (Listitem) iter.next();
+			strValues.add((String) item.getValue());
+		}
+
+		return strValues;
 	}
 
 	/// **

@@ -333,7 +333,7 @@ public class JobsController   extends SelectorComposer<Component> {
 	
 	@Listen("onClick =#buttonDownloadResult")
 	public void onclickDownloadresult() throws Exception {
-		
+		AppContext.debug("onclickDownloadresult jobid=" + jobid);
 		if(jobsfacade.useS3()) {
 			String filetype = "application/zip";
 			byte f[]=jobsfacade.getS3Reader(jobid+".zip");
@@ -353,10 +353,16 @@ public class JobsController   extends SelectorComposer<Component> {
 	
 	@Listen("onClick =#buttonDownloadMessage")
 	public void onclickDownloadMessage() throws Exception {
+		AppContext.debug("buttonDownloadMessage jobid=" + jobid);
 		if(jobsfacade.useS3()) {
 			String filetype ="text/plain";
-			byte f[]=jobsfacade.getS3Reader(jobid+".zip");
-			Filedownload.save(f, filetype, jobid + ".error");
+			try {
+				byte f[]=jobsfacade.getS3Reader(jobid+".zip");
+				Filedownload.save(f, filetype, jobid + ".error");
+			} catch(Exception ex) {
+				byte f[]=jobsfacade.getS3Reader(jobid+".error");
+				Filedownload.save(f, filetype, jobid + ".error");
+			}
 		} else {		
 			String filetype = "text/plain";
 			Filedownload.save( new File(AppContext.getTempDir() + jobid + ".error"), filetype);

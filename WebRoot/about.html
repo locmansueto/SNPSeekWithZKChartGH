@@ -86,8 +86,7 @@
 				<td>
 					<h4>
 						<i>Other publications</i>
-					</h4> 
-					Mansueto, et al. <b>SNP-Seek II: A resource for allele mining
+					</h4> Mansueto, et al. <b>SNP-Seek II: A resource for allele mining
 						and analysis of big genomic data in Oryza sativa</b>.<i>Current
 						Plant Biology</i>(2016). 7-8:16-25<BR> doi: <a target="_pub"
 					href="http://doi.org/10.1016/j.cpb.2016.12.003">10.1016/j.cpb.2016.12.003</a><BR>
@@ -111,16 +110,14 @@
 				</td>
 				<td width="15%"></td>
 			</tr>
-			
+
 			<tr>
 				<td width="15%"></td>
-				<td>Wang W, Mauleon R, Hu Z, Chebotarov D, Tai S, et al. 
-				<b>Genomic variation in 3,010 diverse accessions of Asian cultivated rice.</b>.
-				<i>Nature.</i>(2018).
+				<td>Wang W, Mauleon R, Hu Z, Chebotarov D, Tai S, et al. <b>Genomic
+						variation in 3,010 diverse accessions of Asian cultivated rice.</b>. <i>Nature.</i>(2018).
 					557:43-49<BR> doi: <a target="_pub"
 					href="https://www.nature.com/articles/s41586-018-0063-9">10.1038/s41586-018-0063-9</a><BR>
-					The main scientific paper for the 3K RGP.<BR>
-					<BR>
+					The main scientific paper for the 3K RGP.<BR> <BR>
 				</td>
 				<td width="15%"></td>
 			</tr>
@@ -136,6 +133,74 @@
 			<tr>
 				<td width="15%"></td>
 				<td>
+					<h4>
+						<i>10/16/2018</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>ADDED: Legacy Web Services and usecases. GetAllCOTerms,
+							GetCOTerm, GetAllCOTerms given a variety, Get Record by Variety
+							and CO Term</li>
+						<li>FIXED: "Download Error Message" in bulk download</li>
+					</ul>
+
+					<h4>
+						<i>10/10/2018</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>FIXED: MDS PLOT error.
+							snp-seek.irri.org/_variety.zul?irisid=allmds returns error 500</li>
+					</ul>
+
+					<h4>
+						<i>09/11/2018</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>ADDED: "OS" tag to config file for setting values for
+							OPERATING SYSTEM. This is to determine what HDF5 libraries are to
+							be loaded.</li>
+						<li>ADDED: defaultOrganism in the webserver config file to
+							set initial value for organism.</li>
+						<li>FIXED: Nullpointer for BigListBox in SNP Genotype tab.
+						<li>ADDED: dockerfile. This dockerfile deploys precompiled
+							JAVA codes of snpseek portal to docker.</li>
+					</ul>
+
+					<h4>
+						<i>09/11/2018</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>FIXED: NULL Pointer Exception blast servername.</li>
+						<li>ADDED: filter for chr String, filtering whole word
+							"Chromosome"</li>
+						<li>UPDATE: Vscaddolds organism to retrieve name in getName
+							method instead of getting the uniquename</li>
+						<li>FIXED: "Processing icon" that locks the screen even an
+							exception was thrown</li>
+						<li>FIXED: Null pointer exception in GenotypeWS</li>
+						<li>ADDED: New citation in the main page.</li>
+						<li>ADDED: Info in the page regarding why other reference
+							genomes are missing</li>
+					</ul>
+
+					<h4>
+						<i>08/01/2018</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>UPDATE: Home Page. Added "How to Cite SNP seek.</li>
+						<li>Fixed: BAM and VCF Download in the Download Page</li>
+					</ul>
+
+					<h4>
+						<i>07/16/2018</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>UPDATE: Publication page content. Page format of this
+							page was also changed.</li>
+						<li>FIXED: BrAPI web services VAllStockBasicpropDaoImpl.</li>
+						<li>ADDED: findVarietyByNamesLike and findVarietyById</li>
+						<li>FIXED: findVarietiesByDataset. If all is selected, All
+							varAllStock.</li>
+					</ul>
 
 					<h4>
 						<i>07/05/2018</i>
@@ -143,12 +208,10 @@
 					<ul style="list-style-type: disc">
 						<li>BrAPI web services: Fix applied to usecases like
 							germplasmPUI, findVarietyByNamesLike when input dataset is set to
-							"all".</li> BrAPI web services: Implemented usecases
-						findVAllstockBasicpropByNamesLikeDataset and
-						findAllVAllstockBasicprops.
-						</li>
-
-
+							"all".</li>
+						<li>BrAPI web services: Implemented usecases
+							findVAllstockBasicpropByNamesLikeDataset and
+							findAllVAllstockBasicprops.</li>
 					</ul>
 
 					<h4>
@@ -398,6 +461,7 @@
 
 
 
+
 				</td>
 				<td width="15%"></td>
 			</tr>
@@ -405,9 +469,7 @@
 
 
 		</table>
-		<BR> <BR>
-		<BR>
-		<BR>
+		<BR> <BR> <BR> <BR>
 	</div>
 
 

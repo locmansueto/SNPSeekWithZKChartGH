@@ -17,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.admin.WorkspaceFacade;
+import org.irri.iric.portal.chado.oracle.dao.VIricstockPhenotypeDAO;
 //import org.irri.iric.portal.chado.oracle.domain.VIricstocksByPhenotype;
 //import org.irri.iric.portal.chado.postgres.domain.VIricstocksByPhenotype;
 import org.irri.iric.portal.dao.CvTermDAO;
@@ -491,9 +492,26 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		} catch (Exception ex) {
 			bdId = (BigDecimal) listitemsDAO.getPhenotypeDefinitions(dataset).get(phenId);
 		}
+
 		return varbyphenotypedao.findVarietyByPhenotype(bdId, dataset);
 
 	}
+
+	// @Override
+	// public List getVarietyByCoTerm(String coTerm, Set dataset) {
+	//
+	// listitemsDAO = (ListItemsDAO) AppContext.checkBean(listitemsDAO,
+	// "ListItems");
+	//
+	// BigDecimal bdId = null;
+	//
+	// bdId = (BigDecimal) listitemsDAO.getCOTerms(dataset).get(coTerm);
+	//
+	// if (bdId != null)
+	// return getVarietyByPhenotype(bdId.toString(), dataset);
+	// return new ArrayList<>();
+	//
+	// }
 
 	/*
 	 * @Override public List getVarietyByPhenotype(String phenId, Set dataset) { //
@@ -1029,7 +1047,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		//
 		// listdist = dist3kdao.findVarieties(new HashSet(germplasms));
 		//
-//		return constructMDSPlot(mapVarid2Row, listdist, scale, topN);
+		// return constructMDSPlot(mapVarid2Row, listdist, scale, topN);
 
 		// java.util.Iterator<VarietyDistance> itdist = listdist.iterator();
 		// double input[][] = new double[i][i];
@@ -1412,9 +1430,16 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	}
 
 	@Override
-	public Map getTraits(Set<Listitem> dataset, boolean legacyPhenotype) {
+	public Map getTraits(Set<String> dataset, boolean legacyPhenotype) {
 
 		return listitemsDAO.getTraits(dataset, legacyPhenotype);
+
+	}
+
+	@Override
+	public BigDecimal getPhenotypeId(String coTerm, String dataset) {
+
+		return (BigDecimal) listitemsDAO.getCOTerms(dataset).get(coTerm);
 
 	}
 

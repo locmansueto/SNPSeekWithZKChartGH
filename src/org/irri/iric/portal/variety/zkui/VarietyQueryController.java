@@ -1053,28 +1053,27 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 
 	@Listen("onSelect = #listboxPhenotypes")
 	public void setPhenotypeConstraint() {
-		
-		variety = (VarietyFacade)AppContext.checkBean(variety, "VarietyFacade");
-		
 
-		
+		variety = (VarietyFacade) AppContext.checkBean(variety, "VarietyFacade");
+
 		List listValues = new java.util.ArrayList();
-		
+
 		AppContext.debug("phenotype selected:" + listboxPhenotypes.getSelectedItem().getLabel());
-		
-		if(!listboxPhenotypes.getSelectedItem().getLabel().trim().isEmpty())
-		{
+
+		if (!listboxPhenotypes.getSelectedItem().getLabel().trim().isEmpty()) {
 			String value = "";
 			if (radioCoTrait.isSelected()) {
 				String phenValues[] = listboxPhenotypes.getSelectedItem().getLabel().split("::");
 				value = phenValues[1];
-			}else {
+			} else {
 				value = listboxPhenotypes.getSelectedItem().getLabel();
 			}
-			listValues = (List)getPhenUniqueValues( variety.getPhenotypeUniqueValues( value, getDataset() ) ); //variety.getPhenotypeUniqueValues( listboxPhenotypes.getSelectedItem().getLabel() ).iterator();
+			listValues = (List) getPhenUniqueValues(variety.getPhenotypeUniqueValues(value, getDataset())); // variety.getPhenotypeUniqueValues(
+																											// listboxPhenotypes.getSelectedItem().getLabel()
+																											// ).iterator();
 		}
-		listboxPhenValue.setModel(new SimpleListModel(listValues ));
-		if(listValues.size()>0)
+		listboxPhenValue.setModel(new SimpleListModel(listValues));
+		if (listValues.size() > 0)
 			listboxPhenValue.setSelectedIndex(0);
 	}
 
@@ -1568,14 +1567,13 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 					if (hblistboxPhenotypes.getSelectedItem() != null
 							&& !hblistboxPhenotypes.getSelectedItem().getLabel().trim().isEmpty()) {
 						String definition = hblistboxPhenotypes.getSelectedItem().getLabel().trim();
-						String queryValue; 
+						String queryValue;
 						if (radioCoTrait.isSelected()) {
 							String coValue[] = definition.split("::");
 							queryValue = coValue[1];
-						}else {
+						} else {
 							queryValue = definition;
 						}
-							
 
 						int phenotypetype;
 						if (listcount == 0)
@@ -1900,10 +1898,10 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 			buttonDownloadFastqc.setHref(AppContext.getFastqcURL() + variety2.getIrisId().replace(" ", "_") + ".html");
 			buttonDownloadFastq.setHref(AppContext.getFastqURL() + variety2.getIrisId().replace(" ", "_"));
 			if (AppContext.isIRRILAN()) {
-//				buttonDownloadBAM.setHref("http://172.29.4.93/cgi-bin/fqget.pl?q="
-//						+ variety2.getIrisId().replace("IRIS", "").trim() + "&t=bam");
-//				buttonDownloadVCF.setHref("http://172.29.4.93/cgi-bin/fqget.pl?q="
-//						+ variety2.getIrisId().replace("IRIS", "").trim() + "&t=vcf");
+				// buttonDownloadBAM.setHref("http://172.29.4.93/cgi-bin/fqget.pl?q="
+				// + variety2.getIrisId().replace("IRIS", "").trim() + "&t=bam");
+				// buttonDownloadVCF.setHref("http://172.29.4.93/cgi-bin/fqget.pl?q="
+				// + variety2.getIrisId().replace("IRIS", "").trim() + "&t=vcf");
 				buttonDownloadBAM.setHref(AppContext.getBamURL(variety2.getIrisId()));
 				buttonDownloadVCF.setHref(AppContext.getVcfURL(variety2.getIrisId()));
 			} else {
@@ -2600,7 +2598,7 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 		if (radioLegacyTrait.isSelected()) {
 			Set<String> setPhenotype = new HashSet();
 
-			setPhenotype = variety.getTraits(listboxDataset.getSelectedItems(), true).keySet();
+			setPhenotype = variety.getTraits(AppContext.getStringValues(listboxDataset.getSelectedItems()), true).keySet();
 			TreeSet<String> ts = new TreeSet<String>();
 			for (String phen : setPhenotype) {
 				ts.add(phen.toLowerCase());
@@ -2621,7 +2619,9 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 		listPhenotype.addAll(workspace.getVarietyCatPhenotypelistNames("3k"));
 		if (radioCoTrait.isSelected()) {
 			Set<String> setPhenotype = new HashSet();
-			setPhenotype = variety.getTraits(listboxDataset.getSelectedItems(), false).keySet();
+
+			setPhenotype = variety.getTraits(AppContext.getStringValues(listboxDataset.getSelectedItems()), false)
+					.keySet();
 			// TreeSet<String> ts = new TreeSet<String>();
 			listPhenotype.addAll(setPhenotype);
 

@@ -1,4 +1,4 @@
-{"swaggerVersion":"1.2","apiVersion":"1.0","basePath":"http://172.29.4.215:8080/iric-portal/ws","resourcePath":"",
+{"swaggerVersion":"1.2","apiVersion":"1.0","basePath":"http://localhost:8080/iric_portal/ws","resourcePath":"",
 "apis":[
 
 {"path":"/variety","description":"API's to query variety related data","operations":[{"nickname":"GET - getVarieties","method":"GET","summary":"All varieties", "notes":"Gets all variety objects", "type":"string","produces":["application/json"]}]},
@@ -16,6 +16,10 @@
 {"path":"/variety/{varid}/phenotypes/{phenid}","description":"","operations":[{"nickname":"GET - getVarietyPhenotype","method":"GET","summary":"Phenotype value for variety", "notes":"Get phenotype phenId value for varid","type":"string","produces":["application/json"],"parameters":[{"name":"varid","paramType":"path","allowMultiple":false,"required":true,"type":"string"}, {"name":"phenid","paramType":"path","allowMultiple":false,"required":true,"type":"string"} ]}]},
 {"path":"/variety/all/phenotypes/{phenid}","description":"","operations":[{"nickname":"GET - getVarietyPhenotype","method":"GET","summary":"Phenotype value for all varieties", "notes":"Get phenotype values for all varieties","type":"string","produces":["application/json"],"parameters":[{"name":"phenid","paramType":"path","allowMultiple":false,"required":true,"type":"string"} ]}]},
 
+{"path":"/variety/COterms","description":"","operations":[{"nickname":"GET - getCoTerms","method":"GET","summary":"All rice ontologies", "notes":"Gets all CO Term Names" ,"type":"string","produces":["application/json"]}]},
+{"path":"/variety/COterms/{coTerm}","description":"","operations":[{"nickname":"GET - getCOTerm4AllVarities","method":"GET","summary":"Ontology terms", "notes":"Gets value for coterms in all varieties","type":"string","produces":["application/json"],"parameters":[{"name":"coTerm","paramType":"path","allowMultiple":false,"required":true,"type":"string"}]}]},
+{"path":"/variety/{varid}/COterms/{coTerm}","description":"","operations":[{"nickname":"GET - getVarietyCOTerm","method":"GET","summary":"CO Term value for variety", "notes":"Get coterms value for varid","type":"string","produces":["application/json"],"parameters":[{"name":"varid","paramType":"path","allowMultiple":false,"required":true,"type":"string"}, {"name":"coTerm","paramType":"path","allowMultiple":false,"required":true,"type":"string"} ]}]},
+{"path":"/variety/all/COterms/{coTerm}","description":"","operations":[{"nickname":"GET - getAllVarietyCOterm","method":"GET","summary":"CO Term for all varieties", "notes":"Get coterms for all varieties","type":"string","produces":["application/json"],"parameters":[{"name":"coTerm","paramType":"path","allowMultiple":false,"required":true,"type":"string"} ]}]},
 
 {"path":"/variety/passports","description":"","operations":[{"nickname":"GET - getPassports","method":"GET","summary":"All passports", "notes":"Gets all passport fields and IDs","type":"string","produces":["application/json"]}]},
 {"path":"/variety/{varid}/passports","description":"","operations":[{"nickname":"GET - getVarietyPassports","method":"GET","summary":"Variety passports", "notes":"Gets all passport data for varid","type":"string","produces":["application/json"],"parameters":[{"name":"varid","paramType":"path","allowMultiple":false,"required":true,"type":"string"}]}]},

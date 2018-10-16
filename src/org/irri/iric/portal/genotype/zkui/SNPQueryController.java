@@ -1030,8 +1030,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 			AppContext.debug("msg=" + msg);
 
-			
-			//genenames = AppContext.createUniqueUpperLowerStrings(genenames, true, false);
+			// genenames = AppContext.createUniqueUpperLowerStrings(genenames, true, false);
 
 			AppContext.debug("genenames=" + genenames.size());
 
@@ -1093,10 +1092,11 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				// listConts.addAll(listContigs);
 				// listConts.add("whole genome");
 				// selectChr.setModel(
-				// new SimpleListModel(AppContext.createUniqueUpperLowerStrings(listContigs, true, true)));
+				// new SimpleListModel(AppContext.createUniqueUpperLowerStrings(listContigs,
+				// true, true)));
 				// selectChr.setModel(new ListModelList(listConts));
 				// selectChr.setSelectedIndex(0);
-				
+
 				selectChr.setModel(new SimpleListModelExt(listContigs));
 			}
 
@@ -1254,7 +1254,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		if (radioLegacyTrait.isSelected()) {
 			Set<String> setPhenotype = new HashSet();
 
-			setPhenotype = varietyfacade.getTraits(listboxVarietyset.getSelectedItems(), true).keySet();
+			setPhenotype = varietyfacade
+					.getTraits(AppContext.getStringValues(listboxVarietyset.getSelectedItems()), true).keySet();
 			TreeSet<String> ts = new TreeSet<String>();
 			for (String phen : setPhenotype) {
 				ts.add(phen.toLowerCase());
@@ -1275,7 +1276,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		listPhenotype.addAll(workspace.getVarietyCatPhenotypelistNames("3k"));
 		if (radioCoTrait.isSelected()) {
 			Set<String> setPhenotype = new HashSet();
-			setPhenotype = varietyfacade.getTraits(listboxVarietyset.getSelectedItems(), false).keySet();
+			setPhenotype = varietyfacade
+					.getTraits(AppContext.getStringValues(listboxVarietyset.getSelectedItems()), false).keySet();
 			// TreeSet<String> ts = new TreeSet<String>();
 			listPhenotype.addAll(setPhenotype);
 
@@ -2320,18 +2322,14 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		} catch (InvocationTargetException ex) {
 			ex.getCause().printStackTrace();
 			Messagebox.show(ex.getCause().getMessage(), "InvocationTargetException", Messagebox.OK, Messagebox.ERROR);
-			
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			Messagebox.show(ex.getMessage(), "Exception", Messagebox.OK, Messagebox.ERROR);
-			
 
-		}finally {
+		} finally {
 			Clients.clearBusy();
 		}
-		
-		
 
 	}
 
@@ -2752,7 +2750,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				String[] coTerm = input.split("::");
 				paramTrait = coTerm[1];
 			}
-			
+
 			params.setPhenotype(paramTrait);
 		}
 

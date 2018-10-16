@@ -898,6 +898,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 				line = line.trim();
 				if (line.isEmpty())
 					continue;
+				if (line.startsWith("snp3kvars") || line.startsWith("vcf2fasta")) ; else continue;
 				AsyncJob job = new AsyncJobImpl(line);
 				if(job.getDateCreated()==null) {
 					job.setDateCreated( getDateCreated(level,job.getJobId()));
@@ -977,7 +978,9 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 			log(0,"copytos3/error " + filename);
 			File f = new File(AppContext.getTempDir() + filename);
 			if(f.exists()) {
-				PutObjectResult res = s3.putObject(new PutObjectRequest(getBucket(), getErrorFolder() + filename.replace("/", ""), f));
+				String fname=new File(filename).getName();
+				PutObjectResult res = s3.putObject(new PutObjectRequest(getBucket(), getErrorFolder() + fname, f));
+				//PutObjectResult res = s3.putObject(new PutObjectRequest(getBucket(), getErrorFolder() + filename.replace("/", ""), f));
 				log(0, "putObject " + getBucket() + " " + getErrorFolder() + filename.replace("/", "") + " .. sucess" );
 			} else {
 				AppContext.error( "did not find file " + filename + " to copy to S3/error" );
@@ -993,14 +996,17 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 		if (!useS3())
 			return true;
 		try {
-			log(0,"copytos3 " + filename);
+			TimeUnit.SECONDS.sleep(2);
 			File f = new File(AppContext.getTempDir() + filename);
+			log(0,"copytos3 " + f.getAbsolutePath());
 			if(f.exists()) {
-				PutObjectResult res = s3.putObject(new PutObjectRequest(getBucket(), filename.replace("/", ""), f));
-				log(0, "putObject " + getBucket() + " " + filename.replace("/", "") + " .. sucess" );
+				String fname=new File(filename).getName();
+				PutObjectResult res = s3.putObject(new PutObjectRequest(getBucket(), fname, f));
+				//PutObjectResult res = s3.putObject(new PutObjectRequest(getBucket(), filename.replace("/", ""), f));
+				log(0, "putObject " + getBucket() + " " + f.getAbsolutePath() + " .. sucess" );
 			} else {
-				log(0, "putObject " + getBucket() + " " + filename.replace("/", "") + " .. failed" );
-				AppContext.error( "did not find file " + filename + " to copy to S3" );
+				log(0, "putObject " + getBucket() + " " + f.getAbsolutePath()  + " .. failed" );
+				AppContext.error( "did not find file " + f.getAbsolutePath() + " to copy to S3" );
 			}
 			return true;
 		} catch (Exception ex) {
@@ -1106,11 +1112,12 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 				}
 				else filename = filename.replace("/", "") + ".error";
 				*/
-				s3.putObject(new PutObjectRequest(getBucket(), filename, createSampleFile(msg)));
-				log(level, "PutObjectRequest " +  getBucket() + " " + filename + " ... success" );
+				String fname=new File(filename).getName();
+				s3.putObject(new PutObjectRequest(getBucket(),  fname, createSampleFile(msg)));
+				log(level, "writeError PutObjectRequest " +  getBucket() + " " +  fname + " ... success" );
 			} catch (Exception ex) {
 				ex.printStackTrace();
-				log(level, "PutObjectRequest " +  getBucket() + " " + filename + " ... failed" );
+				log(level, "writeError PutObjectRequest " +  getBucket() + " " + filename + " ... failed" );
 			}
 		}
 	}

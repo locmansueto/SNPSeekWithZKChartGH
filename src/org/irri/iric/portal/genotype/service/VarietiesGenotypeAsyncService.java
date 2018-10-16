@@ -425,7 +425,11 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 			 {
 		// TODO Auto-generated method stub
 		
-		if(true) throw new RuntimeException("Asynch _queryVariantStringData disabled.. check sliceVarids to use hdf5 index instead of varids");
+		if(true) {
+			writeStatus(params.getFilename(),  JobsFacade.JOBSTATUS_ERROR);
+			//return null;
+			throw new RuntimeException("Asynch _queryVariantStringData disabled.. check sliceVarids to use hdf5 index instead of varids");
+		}
 		
 		String chr="any";
 		if(params.isRegion()) chr=params.getsChr();

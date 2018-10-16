@@ -25,13 +25,14 @@ public class AsyncJobImpl implements AsyncJob {
 	
 	public AsyncJobImpl(String saveline) {
 		super();
+		AppContext.debug("AsyncJobImpl saveline="+ saveline);
 		String[] fields=null;
 		try {
 			fields=saveline.split("\t");
 			this.jobid = fields[0];
-			this.params = fields[3];
-			this.ipaddress = fields[2];
-			this.status=fields[1];
+			if (fields[1]!=null) this.status=fields[1];
+			if (fields[2]!=null) this.ipaddress = fields[2];
+			if (fields[3]!=null) this.params = fields[3];
 			//this.termination=fields[4];
 		} catch(Exception ex) {
 			AppContext.error(saveline);
