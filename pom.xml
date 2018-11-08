@@ -986,8 +986,8 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
-					<encoding>UTF-8</encoding>
-					<sourceEncoding>UTF-8</sourceEncoding>
+					<encoding>Cp1252</encoding>
+					<sourceEncoding>Cp1252</sourceEncoding>
 				</configuration>
 			</plugin>
 			<plugin>
