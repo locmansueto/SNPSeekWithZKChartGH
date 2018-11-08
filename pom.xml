@@ -978,6 +978,9 @@
 				</excludes>
 			</resource>
 		</resources>
+		<properties>
+			<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		</properties>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -985,7 +988,8 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
-					<encoding>UTF-8</encoding>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -997,4 +1001,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>
