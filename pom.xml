@@ -470,7 +470,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-nop</artifactId>
 			<version>1.7.25</version>
-			<scope>test</scope>
+			
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.glassfish.hk2/hk2-locator -->
 		<dependency>
@@ -709,7 +709,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.7</version>
-			<scope>test</scope>
+			
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.slf4j/log4j-over-slf4j -->
 		<dependency>
@@ -919,7 +919,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>3.2.9.RELEASE</version>
-			<scope>test</scope>
+			
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc-portlet -->
 		<dependency>
