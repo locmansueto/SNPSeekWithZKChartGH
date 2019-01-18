@@ -469,8 +469,9 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 		if (genenames == null || genenames.size() == 0) {
 			lockGenenameReader = true;
 
+			System.out.println("NAME OF ORGANISM: "+ organism);
 			genenames = new java.util.ArrayList();
-
+			System.out.println();
 			if (AppContext.reloadFromDB("v_gene_" + organism) || !new File(AppContext.getFlatfilesDir() + "v_gene_"
 					+ getOrganismByName(organism).getOrganismId().intValue() + ".csv").exists()) {
 				geneDAO = (GeneDAO) AppContext.checkBean(geneDAO, "GeneDAO");

@@ -80,6 +80,14 @@
 		</dependency>
 		<dependency>
 			<groupId>com.irri.iric</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/ojdbc14.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.irri.iric</groupId>
 			<artifactId>jarnc2obj</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
@@ -735,6 +743,10 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.4-1201-jdbc41</version>
 		</dependency>
+	
+	
+
+
 		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>

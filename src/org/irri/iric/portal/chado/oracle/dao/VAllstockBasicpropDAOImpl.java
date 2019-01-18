@@ -953,4 +953,17 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 		return null;
 	}
 
+	@Override
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByDataset() throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<VAllstockBasicprop> findVAllstockBasicpropByDataset(int startResult, int maxRows)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

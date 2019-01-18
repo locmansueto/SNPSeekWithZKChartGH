@@ -68,6 +68,8 @@
 	<context:component-scan base-package="org.irri.iric.portal.genotype.service"/>
 	<context:component-scan base-package="org.irri.iric.portal.variety.service"/>
 	<context:component-scan base-package="org.irri.iric.portal.genomics.service"/>
+	<context:component-scan base-package="org.irri.iric.portal.gwas.service"/>
+	<context:component-scan base-package="org.irri.iric.portal.gwas.dao"/>
 	<context:component-scan base-package="org.irri.iric.portal.email"/>
 	
 	

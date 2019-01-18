@@ -34,6 +34,7 @@
 	<context:component-scan base-package="org.irri.iric.portal.seed.service" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.email" scoped-proxy="interfaces" />
 	<context:component-scan base-package="org.irri.iric.portal.chado.oracle.service" scoped-proxy="interfaces" />
+	<context:component-scan base-package="org.irri.iric.portal.gwas.dao" scoped-proxy="interfaces"/>
 	
 	<!-- ******************************************************************** -->
 	<!-- Mark bean transactions as annotation driven -->
