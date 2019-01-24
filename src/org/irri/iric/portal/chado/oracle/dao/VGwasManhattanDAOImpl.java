@@ -28,14 +28,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository("VGwasManhattanDAOImpl")
 @Transactional
-public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
-		implements VGwasManhattanDAO {
+public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan> implements VGwasManhattanDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] {VGwasManhattanBasic.class})); //  VGwasManhattan.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VGwasManhattanBasic.class })); // VGwasManhattan.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Production
@@ -53,7 +54,7 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -84,7 +85,8 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 	 */
 
 	@Transactional
-	public VGwasManhattan findVGwasManhattanByPrimaryKey(BigDecimal gwasMarkerId, int startResult, int maxRows) throws DataAccessException {
+	public VGwasManhattan findVGwasManhattanByPrimaryKey(BigDecimal gwasMarkerId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVGwasManhattanByPrimaryKey", startResult, maxRows, gwasMarkerId);
 			return (org.irri.iric.portal.chado.oracle.domain.VGwasManhattan) query.getSingleResult();
@@ -98,7 +100,8 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 	 *
 	 */
 	@Transactional
-	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationContaining(String subpopulation) throws DataAccessException {
+	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationContaining(String subpopulation)
+			throws DataAccessException {
 
 		return findVGwasManhattanBySubpopulationContaining(subpopulation, -1, -1);
 	}
@@ -110,8 +113,10 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationContaining(String subpopulation, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVGwasManhattanBySubpopulationContaining", startResult, maxRows, subpopulation);
+	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationContaining(String subpopulation, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVGwasManhattanBySubpopulationContaining", startResult, maxRows,
+				subpopulation);
 		return new LinkedHashSet<VGwasManhattan>(query.getResultList());
 	}
 
@@ -132,7 +137,8 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasManhattan> findVGwasManhattanByTrait(String trait, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasManhattan> findVGwasManhattanByTrait(String trait, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasManhattanByTrait", startResult, maxRows, trait);
 		return new LinkedHashSet<VGwasManhattan>(query.getResultList());
 	}
@@ -154,7 +160,8 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasManhattan> findVGwasManhattanByChromosome(Long chromosome, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasManhattan> findVGwasManhattanByChromosome(Long chromosome, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasManhattanByChromosome", startResult, maxRows, chromosome);
 		return new LinkedHashSet<VGwasManhattan>(query.getResultList());
 	}
@@ -176,7 +183,8 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasManhattan> findVGwasManhattanByPosition(BigDecimal position, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasManhattan> findVGwasManhattanByPosition(BigDecimal position, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasManhattanByPosition", startResult, maxRows, position);
 		return new LinkedHashSet<VGwasManhattan>(query.getResultList());
 	}
@@ -198,7 +206,8 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasManhattan> findVGwasManhattanByTraitContaining(String trait, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasManhattan> findVGwasManhattanByTraitContaining(String trait, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasManhattanByTraitContaining", startResult, maxRows, trait);
 		return new LinkedHashSet<VGwasManhattan>(query.getResultList());
 	}
@@ -220,7 +229,8 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasManhattan> findVGwasManhattanBySubpopulation(String subpopulation, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasManhattan> findVGwasManhattanBySubpopulation(String subpopulation, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasManhattanBySubpopulation", startResult, maxRows, subpopulation);
 		return new LinkedHashSet<VGwasManhattan>(query.getResultList());
 	}
@@ -241,7 +251,8 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 	 */
 
 	@Transactional
-	public VGwasManhattan findVGwasManhattanByGwasMarkerId(BigDecimal gwasMarkerId, int startResult, int maxRows) throws DataAccessException {
+	public VGwasManhattan findVGwasManhattanByGwasMarkerId(BigDecimal gwasMarkerId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVGwasManhattanByGwasMarkerId", startResult, maxRows, gwasMarkerId);
 			return (org.irri.iric.portal.chado.oracle.domain.VGwasManhattan) query.getSingleResult();
@@ -255,7 +266,8 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 	 *
 	 */
 	@Transactional
-	public Set<VGwasManhattan> findVGwasManhattanByMinusLogp(java.math.BigDecimal minusLogp) throws DataAccessException {
+	public Set<VGwasManhattan> findVGwasManhattanByMinusLogp(java.math.BigDecimal minusLogp)
+			throws DataAccessException {
 
 		return findVGwasManhattanByMinusLogp(minusLogp, -1, -1);
 	}
@@ -267,7 +279,8 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasManhattan> findVGwasManhattanByMinusLogp(java.math.BigDecimal minusLogp, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasManhattan> findVGwasManhattanByMinusLogp(java.math.BigDecimal minusLogp, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVGwasManhattanByMinusLogp", startResult, maxRows, minusLogp);
 		return new LinkedHashSet<VGwasManhattan>(query.getResultList());
 	}
@@ -311,7 +324,8 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasManhattan> findVGwasManhattanByTraitId(java.math.BigDecimal traitId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasManhattan> findVGwasManhattanByTraitId(java.math.BigDecimal traitId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasManhattanByTraitId", startResult, maxRows, traitId);
 		return new LinkedHashSet<VGwasManhattan>(query.getResultList());
 	}
@@ -321,7 +335,8 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 	 *
 	 */
 	@Transactional
-	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationId(java.math.BigDecimal subpopulationId) throws DataAccessException {
+	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationId(java.math.BigDecimal subpopulationId)
+			throws DataAccessException {
 
 		return findVGwasManhattanBySubpopulationId(subpopulationId, -1, -1);
 	}
@@ -333,21 +348,22 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationId(java.math.BigDecimal subpopulationId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationId(java.math.BigDecimal subpopulationId,
+			int startResult, int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVGwasManhattanBySubpopulationId", startResult, maxRows, subpopulationId);
 		return new LinkedHashSet<VGwasManhattan>(query.getResultList());
 	}
 
-	
-	
 	/**
 	 * JPQL Query - findVGwasManhattanByGwasMarkerId
 	 *
 	 */
-	public Set<VGwasManhattan> findVGwasManhattanByGwasRunId(BigDecimal gwasRunId_1, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasManhattan> findVGwasManhattanByGwasRunId(BigDecimal gwasRunId_1, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasManhattanByGwasBasicRunId", startResult, maxRows, gwasRunId_1);
-		//Query query = createNamedQuery("findVGwasManhattanBasicByGwasRunId", startResult, maxRows, gwasRunId_1);
-		
+		// Query query = createNamedQuery("findVGwasManhattanBasicByGwasRunId",
+		// startResult, maxRows, gwasRunId_1);
+
 		return new LinkedHashSet<VGwasManhattan>(query.getResultList());
 	}
 
@@ -355,15 +371,14 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 	 * JPQL Query - findVGwasManhattanByGwasMarkerId
 	 *
 	 */
-	public Set<VGwasManhattan>  findVGwasManhattanByGwasRunId(BigDecimal gwasRunId_1) throws DataAccessException {
-		return findVGwasManhattanByGwasRunId(gwasRunId_1, -1, -1); 
+	public Set<VGwasManhattan> findVGwasManhattanByGwasRunId(BigDecimal gwasRunId_1) throws DataAccessException {
+		return findVGwasManhattanByGwasRunId(gwasRunId_1, -1, -1);
 	}
 
-	
-	
-	
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -372,11 +387,10 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 		return true;
 	}
 
-
 	@Override
 	public List<ManhattanPlot> getMinusPValues(GWASRun run) {
-		// TODO Auto-generated method stub
-		List list=new ArrayList();
+		
+		List list = new ArrayList();
 		list.addAll(findVGwasManhattanByGwasRunId(run.getGwasRunId()));
 		return list;
 	}
@@ -386,8 +400,5 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan>
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
-	
+
 }

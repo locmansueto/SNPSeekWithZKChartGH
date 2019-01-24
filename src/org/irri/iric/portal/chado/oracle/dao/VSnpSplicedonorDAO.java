@@ -24,19 +24,22 @@ public interface VSnpSplicedonorDAO extends JpaDao<VSnpSplicedonor>, SnpsSpliceD
 	 * JPQL Query - findVSnpSplicedonorByPosition
 	 *
 	 */
-	public Set<VSnpSplicedonor> findVSnpSplicedonorByPosition(Integer position, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpSplicedonor> findVSnpSplicedonorByPosition(Integer position, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpSplicedonorByOrganismId
 	 *
 	 */
-	public Set<VSnpSplicedonor> findVSnpSplicedonorByOrganismId(java.math.BigDecimal organismId) throws DataAccessException;
+	public Set<VSnpSplicedonor> findVSnpSplicedonorByOrganismId(java.math.BigDecimal organismId)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpSplicedonorByOrganismId
 	 *
 	 */
-	public Set<VSnpSplicedonor> findVSnpSplicedonorByOrganismId(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpSplicedonor> findVSnpSplicedonorByOrganismId(BigDecimal organismId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpSplicedonorByPrimaryKey
@@ -48,7 +51,8 @@ public interface VSnpSplicedonorDAO extends JpaDao<VSnpSplicedonor>, SnpsSpliceD
 	 * JPQL Query - findVSnpSplicedonorByPrimaryKey
 	 *
 	 */
-	public VSnpSplicedonor findVSnpSplicedonorByPrimaryKey(Integer snpFeatureId, int startResult, int maxRows) throws DataAccessException;
+	public VSnpSplicedonor findVSnpSplicedonorByPrimaryKey(Integer snpFeatureId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpSplicedonorBySnpFeatureId
@@ -60,7 +64,8 @@ public interface VSnpSplicedonorDAO extends JpaDao<VSnpSplicedonor>, SnpsSpliceD
 	 * JPQL Query - findVSnpSplicedonorBySnpFeatureId
 	 *
 	 */
-	public VSnpSplicedonor findVSnpSplicedonorBySnpFeatureId(Integer snpFeatureId_1, int startResult, int maxRows) throws DataAccessException;
+	public VSnpSplicedonor findVSnpSplicedonorBySnpFeatureId(Integer snpFeatureId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpSplicedonorBySrcfeatureId
@@ -72,7 +77,8 @@ public interface VSnpSplicedonorDAO extends JpaDao<VSnpSplicedonor>, SnpsSpliceD
 	 * JPQL Query - findVSnpSplicedonorBySrcfeatureId
 	 *
 	 */
-	public Set<VSnpSplicedonor> findVSnpSplicedonorBySrcfeatureId(Integer srcfeatureId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpSplicedonor> findVSnpSplicedonorBySrcfeatureId(Integer srcfeatureId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVSnpSplicedonors
@@ -96,7 +102,8 @@ public interface VSnpSplicedonorDAO extends JpaDao<VSnpSplicedonor>, SnpsSpliceD
 	 * JPQL Query - findVSnpSplicedonorByChrContaining
 	 *
 	 */
-	public Set<VSnpSplicedonor> findVSnpSplicedonorByChrContaining(String chr, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpSplicedonor> findVSnpSplicedonorByChrContaining(String chr, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpSplicedonorByChr
@@ -108,6 +115,7 @@ public interface VSnpSplicedonorDAO extends JpaDao<VSnpSplicedonor>, SnpsSpliceD
 	 * JPQL Query - findVSnpSplicedonorByChr
 	 *
 	 */
-	public Set<VSnpSplicedonor> findVSnpSplicedonorByChr(String chr_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpSplicedonor> findVSnpSplicedonorByChr(String chr_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

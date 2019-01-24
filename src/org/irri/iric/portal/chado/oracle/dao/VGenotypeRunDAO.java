@@ -14,7 +14,7 @@ import org.springframework.dao.DataAccessException;
  * DAO to manage VGenotypeRun entities.
  * 
  */
-public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatformDAO  {
+public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatformDAO {
 
 	/**
 	 * JPQL Query - findVGenotypeRunByDsDescriptionContaining
@@ -26,7 +26,8 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByDsDescriptionContaining
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByDsDescriptionContaining(String dsDescription, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByDsDescriptionContaining(String dsDescription, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByVariantsetContaining
@@ -38,7 +39,8 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByVariantsetContaining
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByVariantsetContaining(String variantset, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByVariantsetContaining(String variantset, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByDataset
@@ -50,7 +52,8 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByDataset
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByDataset(String dataset, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByDataset(String dataset, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByVariantTypeId
@@ -62,7 +65,8 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByVariantTypeId
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByVariantTypeId(Integer variantTypeId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByVariantTypeId(Integer variantTypeId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByPlatformId
@@ -74,7 +78,8 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByPlatformId
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByPlatformId(Integer platformId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByPlatformId(Integer platformId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByDsDescription
@@ -86,7 +91,8 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByDsDescription
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByDsDescription(String dsDescription_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByDsDescription(String dsDescription_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByDataLocation
@@ -98,19 +104,22 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByDataLocation
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByDataLocation(String dataLocation, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByDataLocation(String dataLocation, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByDatePerformedBefore
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedBefore(java.util.Calendar datePerformed) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedBefore(java.util.Calendar datePerformed)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByDatePerformedBefore
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedBefore(Calendar datePerformed, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedBefore(Calendar datePerformed, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByVariantsetId
@@ -122,7 +131,8 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByVariantsetId
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByVariantsetId(Integer variantsetId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByVariantsetId(Integer variantsetId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByVariantset
@@ -134,19 +144,22 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByVariantset
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByVariantset(String variantset_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByVariantset(String variantset_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByDatePerformed
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByDatePerformed(java.util.Calendar datePerformed_1) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByDatePerformed(java.util.Calendar datePerformed_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByDatePerformed
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByDatePerformed(Calendar datePerformed_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByDatePerformed(Calendar datePerformed_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByGenotypeRunId
@@ -158,7 +171,8 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByGenotypeRunId
 	 *
 	 */
-	public VGenotypeRun findVGenotypeRunByGenotypeRunId(Integer genotypeRunId, int startResult, int maxRows) throws DataAccessException;
+	public VGenotypeRun findVGenotypeRunByGenotypeRunId(Integer genotypeRunId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByVsDescriptionContaining
@@ -170,7 +184,8 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByVsDescriptionContaining
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByVsDescriptionContaining(String vsDescription, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByVsDescriptionContaining(String vsDescription, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByDatasetContaining
@@ -182,19 +197,22 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByDatasetContaining
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByDatasetContaining(String dataset_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByDatasetContaining(String dataset_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByDatePerformedAfter
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedAfter(java.util.Calendar datePerformed_2) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedAfter(java.util.Calendar datePerformed_2)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByDatePerformedAfter
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedAfter(Calendar datePerformed_2, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedAfter(Calendar datePerformed_2, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVGenotypeRuns
@@ -218,7 +236,8 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByVsDescription
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByVsDescription(String vsDescription_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByVsDescription(String vsDescription_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByPrimaryKey
@@ -230,7 +249,8 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByPrimaryKey
 	 *
 	 */
-	public VGenotypeRun findVGenotypeRunByPrimaryKey(Integer genotypeRunId_1, int startResult, int maxRows) throws DataAccessException;
+	public VGenotypeRun findVGenotypeRunByPrimaryKey(Integer genotypeRunId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByDataLocationContaining
@@ -242,7 +262,8 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByDataLocationContaining
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByDataLocationContaining(String dataLocation_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByDataLocationContaining(String dataLocation_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGenotypeRunByDatasetId
@@ -254,6 +275,7 @@ public interface VGenotypeRunDAO extends JpaDao<VGenotypeRun>, GenotypeRunPlatfo
 	 * JPQL Query - findVGenotypeRunByDatasetId
 	 *
 	 */
-	public Set<VGenotypeRun> findVGenotypeRunByDatasetId(Integer datasetId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGenotypeRun> findVGenotypeRunByDatasetId(Integer datasetId, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

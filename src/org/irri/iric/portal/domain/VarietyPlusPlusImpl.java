@@ -9,126 +9,120 @@ import org.irri.iric.portal.variety.VarietyFacade;
 
 /**
  * Implementation of VarietyPlusPlus
+ * 
  * @author LMansueto
  *
  */
-public class VarietyPlusPlusImpl  implements VarietyPlusPlus  {
-	
+public class VarietyPlusPlusImpl implements VarietyPlusPlus {
+
 	private Variety varplus;
 	private Map mapValues;
 
 	public VarietyPlusPlusImpl(Variety variety, String val2name, Object value) {
 		super();
-		// TODO Auto-generated constructor stub
+
 		this.varplus = variety;
 		mapValues = new LinkedHashMap();
-		mapValues.put( val2name, value);
-	}
-	
-	
-	public VarietyPlusPlusImpl(VarietyPlus varietyplus2, String val2name) {
-		super();
-		// TODO Auto-generated constructor stub
-		this.varplus = varietyplus2;
-		mapValues = new LinkedHashMap();
-		mapValues.put( val2name, varietyplus2.getValue());
+		mapValues.put(val2name, value);
 	}
 
-	
+	public VarietyPlusPlusImpl(VarietyPlus varietyplus2, String val2name) {
+		super();
+		this.varplus = varietyplus2;
+		mapValues = new LinkedHashMap();
+		mapValues.put(val2name, varietyplus2.getValue());
+	}
+
 	public VarietyPlusPlusImpl(Variety varietyplus1, VarietyPlus varietyplus2, String val2name) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.varplus = varietyplus1;
 		mapValues = new LinkedHashMap();
-		//mapValues.put( varietyplus1.getValueName(), varietyplus1.getValue());
-		mapValues.put( val2name, varietyplus2.getValue());
+		// mapValues.put( varietyplus1.getValueName(), varietyplus1.getValue());
+		mapValues.put(val2name, varietyplus2.getValue());
 	}
 
 	@Override
 	public Object getValue() {
-		// TODO Auto-generated method stub
-		return  mapValues.get("value"); // .values();
+		
+		return mapValues.get("value"); // .values();
 	}
-	
-/*
-	@Override
-	public String getValueName() {
-		// TODO Auto-generated method stub
-		return mapValues.keySet().toString();
-	}
-*/
+
+	/*
+	 * @Override public String getValueName() { 
+	 * return mapValues.keySet().toString(); }
+	 */
 	@Override
 	public Map getValueMap() {
-		// TODO Auto-generated method stub
+		
 		return mapValues;
 	}
 
 	public Object getValue(String field) {
-		// TODO Auto-generated method stub
+		
 		return mapValues.get(field);
 	}
 
 	public void setValue(Object value) {
-		// TODO Auto-generated method stub
-		mapValues.put("value",value);
+		
+		mapValues.put("value", value);
 	}
-	
+
 	@Override
 	public BigDecimal getVarietyId() {
-		// TODO Auto-generated method stub
+		
 		return varplus.getVarietyId();
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
+		
 		return varplus.getName();
 	}
 
 	@Override
 	public String getIrisId() {
-		// TODO Auto-generated method stub
+		
 		return varplus.getIrisId();
 	}
 
 	@Override
 	public String getCountry() {
-		// TODO Auto-generated method stub
+		
 		return varplus.getCountry();
 	}
 
 	@Override
 	public String getSubpopulation() {
-		// TODO Auto-generated method stub
+		
 		return varplus.getSubpopulation();
 	}
 
 	@Override
 	public void setCountry(String country) {
-		// TODO Auto-generated method stub
-		varplus.setCountry(country);
 		
+		varplus.setCountry(country);
+
 	}
 
 	@Override
 	public void setSubpopulation(String subpopulation) {
-		// TODO Auto-generated method stub
+		
 		varplus.setSubpopulation(subpopulation);
-		
-	}
-/*
-	@Override
-	public void setValueName(String valuename) {
-		// TODO Auto-generated method stub
-		
-	}
-*/
-	@Override
-	public void addValue(String name, Object value) {
-		// TODO Auto-generated method stub
-		mapValues.put(name, value);
+
 	}
 
+	/*
+	 * @Override public void setValueName(String valuename) { // TODO Auto-generated
+	 * method stub
+	 * 
+	 * }
+	 */
+	@Override
+	public void addValue(String name, Object value) {
+		
+		mapValues.put(name, value);
+	}
 
 	@Override
 	public int hashCode() {
@@ -143,89 +137,89 @@ public class VarietyPlusPlusImpl  implements VarietyPlusPlus  {
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
-		if (!(obj instanceof Variety)) //VIricstockBasicprop))
+		if (!(obj instanceof Variety)) // VIricstockBasicprop))
 			return false;
-		//VIricstockBasicprop equalCheck = (VIricstockBasicprop) obj;
+		// VIricstockBasicprop equalCheck = (VIricstockBasicprop) obj;
 		Variety equalCheck = (Variety) obj;
-		
-		//return iricStockId.equals(equalCheck.getIricStockId());
-		
-		
-		if ((getVarietyId() == null && equalCheck.getVarietyId() != null) || (getVarietyId() != null && equalCheck.getVarietyId() == null))
+
+		// return iricStockId.equals(equalCheck.getIricStockId());
+
+		if ((getVarietyId() == null && equalCheck.getVarietyId() != null)
+				|| (getVarietyId() != null && equalCheck.getVarietyId() == null))
 			return false;
 		if (getVarietyId() != null && !getVarietyId().equals(equalCheck.getVarietyId()))
 			return false;
 		return true;
-		
-	}
-	
-	@Override
-	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return getName().compareTo( ((Variety)o).getName() );
+
 	}
 
+	@Override
+	public int compareTo(Object o) {
+		
+		return getName().compareTo(((Variety) o).getName());
+	}
 
 	@Override
 	public String printFields(String delimiter) {
-		// TODO Auto-generated method stub
+		
 		String irisid = getIrisId();
-		if(irisid==null) irisid="";
+		if (irisid == null)
+			irisid = "";
 		String subpop = getSubpopulation();
-		if(subpop==null) subpop="";
+		if (subpop == null)
+			subpop = "";
 		String cntr = getCountry();
-		if(cntr==null) cntr="";
+		if (cntr == null)
+			cntr = "";
 		String acc = this.getAccession();
-		if(acc==null) acc="";
+		if (acc == null)
+			acc = "";
 
-	
-		StringBuffer buff = new StringBuffer();	
-		//buff.append(this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr);
-		buff.append( "\""+ this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter +  "\"" + acc + "\"" + delimiter +    "\"" + subpop + "\"" + delimiter + "\"" + cntr + "\"" );
-		Iterator<String> itName =  mapValues.keySet().iterator();
-		if(itName.hasNext()) buff.append(delimiter);
-		while(itName.hasNext()) {
-			buff.append( mapValues.get(itName.next()) );
-			if(itName.hasNext()) buff.append(delimiter);
+		StringBuffer buff = new StringBuffer();
+		// buff.append(this.getName() + delimiter + irisid + delimiter + subpop +
+		// delimiter + cntr);
+		buff.append("\"" + this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter + "\"" + acc + "\""
+				+ delimiter + "\"" + subpop + "\"" + delimiter + "\"" + cntr + "\"");
+		Iterator<String> itName = mapValues.keySet().iterator();
+		if (itName.hasNext())
+			buff.append(delimiter);
+		while (itName.hasNext()) {
+			buff.append(mapValues.get(itName.next()));
+			if (itName.hasNext())
+				buff.append(delimiter);
 		}
 		return buff.toString();
-	
-	}
 
+	}
 
 	@Override
 	public String getBoxCode() {
-		// TODO Auto-generated method stub
+		
 		return varplus.getBoxCode();
 	}
 
-
 	@Override
 	public String getAccession() {
-		// TODO Auto-generated method stub
+		
 		return varplus.getAccession();
 	}
-	
-	
+
 	@Override
 	public String getDataset() {
-		// TODO Auto-generated method stub
+		
 		return varplus.getDataset();
 	}
 
-
 	@Override
 	public void setName(String name) {
-		// TODO Auto-generated method stub
+		
 		varplus.setName(name);
 	}
 
-
 	@Override
 	public void setAccession(String accession) {
-		// TODO Auto-generated method stub
+		
 		varplus.setAccession(accession);
 	}
-	
-	
+
 }

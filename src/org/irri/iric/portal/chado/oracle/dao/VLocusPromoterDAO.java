@@ -18,13 +18,15 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByPfeatureNameContaining
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureNameContaining(String pfeatureName) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureNameContaining(String pfeatureName)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByPfeatureNameContaining
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureNameContaining(String pfeatureName, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureNameContaining(String pfeatureName, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByContigId
@@ -36,7 +38,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByContigId
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByContigId(BigDecimal contigId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByContigId(BigDecimal contigId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVLocusPromoters
@@ -60,7 +63,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByCommonNameContaining
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByCommonNameContaining(String commonName, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByCommonNameContaining(String commonName, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByNameContaining
@@ -72,7 +76,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByNameContaining
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByNameContaining(String name, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByNotesContaining
@@ -84,7 +89,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByNotesContaining
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByNotesContaining(String notes, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByNotesContaining(String notes, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByPfeatureName
@@ -96,19 +102,22 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByPfeatureName
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureName(String pfeatureName_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureName(String pfeatureName_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByPfeatureTypeContaining
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureTypeContaining(String pfeatureType) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureTypeContaining(String pfeatureType)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByPfeatureTypeContaining
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureTypeContaining(String pfeatureType, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureTypeContaining(String pfeatureType, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByPfeatureEnd
@@ -120,7 +129,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByPfeatureEnd
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureEnd(Integer pfeatureEnd, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureEnd(Integer pfeatureEnd, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByNotes
@@ -132,7 +142,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByNotes
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByNotes(String notes_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByNotes(String notes_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByGeneOverlaps
@@ -144,7 +155,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByGeneOverlaps
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByGeneOverlaps(String geneOverlaps, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByGeneOverlaps(String geneOverlaps, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByOrganismId
@@ -156,7 +168,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByOrganismId
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByOrganismId(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByOrganismId(BigDecimal organismId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByFmax
@@ -168,7 +181,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByFmax
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByFmax(BigDecimal fmax, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByFmax(BigDecimal fmax, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByName
@@ -180,7 +194,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByName
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByName(String name_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByName(String name_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByPfeatureChrContaining
@@ -192,7 +207,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByPfeatureChrContaining
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureChrContaining(String pfeatureChr, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureChrContaining(String pfeatureChr, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByPfeatureStart
@@ -204,7 +220,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByPfeatureStart
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureStart(Integer pfeatureStart, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureStart(Integer pfeatureStart, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByFeatureId
@@ -216,7 +233,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByFeatureId
 	 *
 	 */
-	public VLocusPromoter findVLocusPromoterByFeatureId(BigDecimal featureId, int startResult, int maxRows) throws DataAccessException;
+	public VLocusPromoter findVLocusPromoterByFeatureId(BigDecimal featureId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByContigName
@@ -228,7 +246,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByContigName
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByContigName(String contigName, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByContigName(String contigName, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByCommonName
@@ -240,7 +259,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByCommonName
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByCommonName(String commonName_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByCommonName(String commonName_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByFmin
@@ -252,7 +272,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByFmin
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByFmin(BigDecimal fmin, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByFmin(BigDecimal fmin, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByStrand
@@ -264,7 +285,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByStrand
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByStrand(BigDecimal strand, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByStrand(BigDecimal strand, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByPrimaryKey
@@ -276,7 +298,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByPrimaryKey
 	 *
 	 */
-	public VLocusPromoter findVLocusPromoterByPrimaryKey(BigDecimal featureId_1, int startResult, int maxRows) throws DataAccessException;
+	public VLocusPromoter findVLocusPromoterByPrimaryKey(BigDecimal featureId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByContigNameContaining
@@ -288,19 +311,22 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByContigNameContaining
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByContigNameContaining(String contigName_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByContigNameContaining(String contigName_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByGeneOverlapsContaining
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByGeneOverlapsContaining(String geneOverlaps_1) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByGeneOverlapsContaining(String geneOverlaps_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByGeneOverlapsContaining
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByGeneOverlapsContaining(String geneOverlaps_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByGeneOverlapsContaining(String geneOverlaps_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByPfeatureDb
@@ -312,7 +338,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByPfeatureDb
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureDb(BigDecimal pfeatureDb, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureDb(BigDecimal pfeatureDb, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByPfeatureChr
@@ -324,7 +351,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByPfeatureChr
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureChr(String pfeatureChr_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureChr(String pfeatureChr_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByPfeatureId
@@ -336,7 +364,8 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByPfeatureId
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureId(BigDecimal pfeatureId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureId(BigDecimal pfeatureId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusPromoterByPfeatureType
@@ -348,6 +377,7 @@ public interface VLocusPromoterDAO extends JpaDao<VLocusPromoter>, LocusPromoter
 	 * JPQL Query - findVLocusPromoterByPfeatureType
 	 *
 	 */
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureType(String pfeatureType_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureType(String pfeatureType_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

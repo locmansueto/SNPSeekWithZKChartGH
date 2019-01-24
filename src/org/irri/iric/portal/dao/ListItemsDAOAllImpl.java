@@ -469,9 +469,8 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 		if (genenames == null || genenames.size() == 0) {
 			lockGenenameReader = true;
 
-			System.out.println("NAME OF ORGANISM: "+ organism);
 			genenames = new java.util.ArrayList();
-			System.out.println();
+
 			if (AppContext.reloadFromDB("v_gene_" + organism) || !new File(AppContext.getFlatfilesDir() + "v_gene_"
 					+ getOrganismByName(organism).getOrganismId().intValue() + ".csv").exists()) {
 				geneDAO = (GeneDAO) AppContext.checkBean(geneDAO, "GeneDAO");
@@ -769,8 +768,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 		mapDataset2passportDefinitions = new HashMap();
 		mapDataset2phenotypeLegacyDefinitions = new HashMap<>();
 		mapDataset2phenotypeCOTermDefinitions = new HashMap<>();
-		
-		
+
 		mapDataset2ptocoDefinitions = new HashMap();
 	}
 
@@ -821,7 +819,8 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 			Map phenotypeDefinitions = this.mapDataset2phenotypeLegacyDefinitions.get(term.getDataset());
 			Map phenotypeCOTermDefinitions = this.mapDataset2phenotypeCOTermDefinitions.get(term.getDataset());
-			Map phenotypeCOTermPhenIdDefinitions = this.mapDataset2phenotypeCOTermPhenIdDefinitions.get(term.getDataset());
+			Map phenotypeCOTermPhenIdDefinitions = this.mapDataset2phenotypeCOTermPhenIdDefinitions
+					.get(term.getDataset());
 
 			if (phenotypeDefinitions == null) {
 				phenotypeDefinitions = new TreeMap<String, BigDecimal>();
@@ -832,7 +831,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 				phenotypeCOTermDefinitions = new TreeMap<String, BigDecimal>();
 				mapDataset2phenotypeCOTermDefinitions.put(term.getDataset(), phenotypeCOTermDefinitions);
 			}
-			
+
 			if (phenotypeCOTermPhenIdDefinitions == null) {
 				phenotypeCOTermPhenIdDefinitions = new TreeMap<String, BigDecimal>();
 				mapDataset2phenotypeCOTermPhenIdDefinitions.put(term.getDataset(), phenotypeCOTermPhenIdDefinitions);
@@ -845,7 +844,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 			 * term.getCvTermId());
 			 */
 			String[] coName = term.getName().split("::");
-			
+
 			if (coName[1].length() > 100)
 				phenotypeDefinitions.put(coName[1].substring(0, 99) + "...", term.getCvTermId());
 			else
@@ -855,7 +854,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 				phenotypeCOTermDefinitions.put(term.getName().substring(0, 99) + "...", term.getCvTermId());
 			else
 				phenotypeCOTermDefinitions.put(term.getName(), term.getCvTermId());
-			
+
 			if (coName[0].length() > 100)
 				phenotypeCOTermPhenIdDefinitions.put(coName[0].substring(0, 99) + "...", term.getCvTermId());
 			else
@@ -919,7 +918,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	}
 
-	
 	@Override
 	public Map<String, BigDecimal> getPhenotypeDefinitions(String dataset) {
 		// TODO Auto-generated method stub
@@ -933,15 +931,15 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 		else
 			return m;
 	}
-	
+
 	@Override
 	public Map<String, BigDecimal> getCOTerms(String dataset) {
-		
+
 		Map CoTermPhenIdDefinitions = this.mapDataset2phenotypeCOTermPhenIdDefinitions.get(dataset);
-		
+
 		if (CoTermPhenIdDefinitions == null)
 			initMoreConstraints();
-		
+
 		Map m = mapDataset2phenotypeCOTermPhenIdDefinitions.get(dataset);
 		if (m == null)
 			return new HashMap();
@@ -1557,7 +1555,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 		return m;
 
 	}
-	
+
 	@Override
 	public Map getCOTerms(Set dataset) {
 		// TODO Auto-generated method stub
@@ -1573,9 +1571,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 		return m;
 
 	}
-
-	
-	
 
 	@Override
 	public Map getUIforDataset(Set dataset) {
@@ -1711,10 +1706,28 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Map getMapId2Sample(Set dataset) {
-		// TODO Auto-generated method stub
+		// ********************** OLD CODES
+		// if (dataset.size() == 1)
+		// return getMapId2Sample((String) dataset.iterator().next());
+		// Map m = new HashMap();
+		// Iterator it = dataset.iterator();
+		// while (it.hasNext()) {
+		// String ds = (String) it.next();
+		// Map mds = this.mapDataset2Id2Sample.get(ds);
+		// if (mds == null)
+		// initSamples(ds);
+		// m.putAll(this.mapDataset2Id2Sample.get(ds));
+		// AppContext.debug("Dataset: "+ ds +" - " +
+		// this.mapDataset2Id2Sample.get(ds).size());
+		//
+		// }
+		//
+		// AppContext.debug("PUT IN MAPPING: "+ dataset +" - " + m.size());
+		// return m;
+		// ********************** ENDOLD CODES
 
-		if (dataset.size() == 1)
-			return getMapId2Sample((String) dataset.iterator().next());
+		// if (dataset.size() == 1)
+		// return getMapId2Sample((String) dataset.iterator().next());
 		Map m = new HashMap();
 		Iterator it = dataset.iterator();
 		while (it.hasNext()) {
@@ -1722,8 +1735,14 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 			Map mds = this.mapDataset2Id2Sample.get(ds);
 			if (mds == null)
 				initSamples(ds);
-			m.putAll(this.mapDataset2Id2Sample.get(ds));
+
+			m.put(ds, this.mapDataset2Id2Sample.get(ds));
+			// AppContext.debug("Dataset: " + ds + " - " +
+			// this.mapDataset2Id2Sample.get(ds).size());
+
 		}
+
+		AppContext.debug("PUT IN MAPPING: " + dataset + " - " + m.size());
 		return m;
 	}
 
@@ -1769,10 +1788,10 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 			phenotypeDefinitions = this.mapDataset2phenotypeLegacyDefinitions.get(dataset);
 		else
 			phenotypeDefinitions = this.mapDataset2phenotypeCOTermDefinitions.get(dataset);
-		
+
 		if (phenotypeDefinitions == null)
 			initMoreConstraints();
-		
+
 		Map m = null;
 		if (legacySelected)
 			m = mapDataset2phenotypeLegacyDefinitions.get(dataset);
@@ -1782,5 +1801,11 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 			return new HashMap();
 		else
 			return m;
+	}
+
+	@Override
+	public Map<BigDecimal, String> getAllTraits(Set<String> dataset, boolean legacyPhenotype) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

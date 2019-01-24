@@ -164,7 +164,7 @@ public interface ListItemsDAO {
 
 	public Map getMapId2Variety(Set dataset);
 
-	public Map getMapId2Sample(Set dataset);
+	public Map<String, Map<BigDecimal, StockSample>> getMapId2Sample(Set dataset);
 
 	public List getSubpopulations(Set dataset);
 
@@ -205,8 +205,10 @@ public interface ListItemsDAO {
 	public Map<String, BigDecimal> getTraits(Set<String> dataset, boolean selected);
 
 	public Map getCOTerms(Set dataset);
-	
+
 	public Map getCOTerms(String dataset);
+
+	public Map<BigDecimal, String> getAllTraits(Set<String> dataset, boolean legacyPhenotype);
 
 	/*
 	 * public Map getPhenotypeValues(String sPhenotype, Set dataset); public

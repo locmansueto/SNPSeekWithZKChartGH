@@ -7,40 +7,42 @@ import org.irri.iric.portal.domain.Phenotype;
 import org.irri.iric.portal.domain.Variety;
 
 public interface PhenotypeDAO {
-	
+
 	/**
 	 * Get list of phenotypes/values for variety
+	 * 
 	 * @param var
-	 * @param dataset 
+	 * @param dataset
 	 * @return
 	 */
-	public List findPhenotypesByVariety(Variety var, Set dataset); //, String dataset );
-	
+	public List findPhenotypesByVariety(Variety var, Set dataset); // , String dataset );
+
 	/**
-	 * Get list of phenotypes/values for variety with name like (used to bridge legacy and new schema)
+	 * Get list of phenotypes/values for variety with name like (used to bridge
+	 * legacy and new schema)
+	 * 
 	 * @param var
 	 * @return
 	 */
 	public List findPhenotypesByVarietyNameLike(String name);
 
 	/**
-	 * Get phenotype values for variety 
+	 * Get phenotype values for variety
+	 * 
 	 * @param var
-	 * @param phenId2 
+	 * @param phenId2
 	 * @return
 	 */
 	public Phenotype findPhenotypesByVariety(Variety var, String dataset, String phenId);
 
 	/**
-	 * Get phenotype values for all varieties 
+	 * Get phenotype values for all varieties
+	 * 
 	 * @param var
 	 * @return
 	 */
-	//public List findPhenotypesByVariety(String phenId);
+	// public List findPhenotypesByVariety(String phenId);
 
 	public List findPhenotypesByVariety(String phenId, String dataset);
-	
-	
 
-	
 }

@@ -42,7 +42,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Set<Variety> getIRGCStocks() {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByGsaccessionLike", -1, -1, "IRGC %");
 		List list = query.getResultList();
 		Set s = new HashSet();
@@ -263,7 +263,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Collection findVarietyByIds(Set setQueryVarobj) {
-		// TODO Auto-generated method stub
+		
 		try {
 			Query query = createNamedQuery("findVAllstockBasicpropByPrimaryKeys", -1, -1, setQueryVarobj);
 			return query.getResultList();
@@ -382,19 +382,19 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Set findAllVariety() {
-		// TODO Auto-generated method stub
+		
 		return this.findAllVAllstockBasicprops();
 	}
 
 	@Override
 	public Set findAllVarietyByCountry(String country) {
-		// TODO Auto-generated method stub
+		
 		return this.findVAllstockBasicpropByOriCountry(country);
 	}
 
 	@Override
 	public Set findAllVarietyBySubpopulation(String subpopulation) {
-		// TODO Auto-generated method stub
+		
 		return this.findVAllstockBasicpropBySubpopulation(subpopulation);
 	}
 
@@ -409,7 +409,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	/*
 	 * @Override public Set findAllVarietyByCountryAndSubpopulation(String country,
-	 * String subpopulation, String dataset) { // TODO Auto-generated method stub
+	 * String subpopulation, String dataset) { 
 	 * if(!dataset.equals(VarietyFacade.DATASET_SNPINDELV2_IUPAC)) throw new
 	 * RuntimeException("!dataset.equals(VarietyFacade.DATASET_SNPINDELV2_IUPAC in allStockbasicpropdao"
 	 * ); return this.findVAllstockBasicpropByOriCountrySubpopulation(country,
@@ -418,7 +418,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Variety findVarietyByIrisId(String name) {
-		// TODO Auto-generated method stub
+		
 		// return this.findVallStockBasicpropByIrisUniqueId(name);
 
 		Set setVarieties = this.findVAllstockBasicpropByIrisUniqueId(name);
@@ -432,7 +432,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Variety findVarietyByName(String name) {
-		// TODO Auto-generated method stub
+		
 		Set setNames = this.findVAllstockBasicpropByName(name);
 		if (setNames.size() > 1)
 			throw new RuntimeException("Multiple varities with name " + name);
@@ -443,13 +443,13 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Variety findVarietyById(BigDecimal id) {
-		// TODO Auto-generated method stub
+		
 		return this.findVAllstockBasicpropByPrimaryKey(id);
 	}
 
 	@Override
 	public Variety findVarietyByNameLike(String name) {
-		// TODO Auto-generated method stub
+		
 		Set setNames = this.findVAllstockBasicpropByNameContaining(name);
 		if (setNames.size() > 1)
 			throw new RuntimeException("Multiple varieties with name like " + name);
@@ -477,7 +477,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Variety findVarietyByAccession(String name) {
-		// TODO Auto-generated method stub
+		
 		Set setNames = findVarietiesByAccession(name);
 		if (setNames.size() > 1)
 			throw new RuntimeException("Multiple varieties with accession " + name);
@@ -498,7 +498,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 	}
 
 	private List<Variety> findVarietyByNamesLikeOracle(Collection names) {
-		// TODO Auto-generated method stub
+		
 		List listVars = new ArrayList();
 		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(names), 900);
 		for (int i = 0; i < setnames.length; i++) {
@@ -524,7 +524,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 	}
 
 	private List<Variety> findVarietyByNamesLikePostgres(Collection names) {
-		// TODO Auto-generated method stub
+		
 		List listVars = new ArrayList();
 		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(names), 900);
 		for (int i = 0; i < setnames.length; i++) {
@@ -551,7 +551,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public List<Variety> findVarietyByNames(Collection names) {
-		// TODO Auto-generated method stub
+		
 		if (AppContext.isOracle())
 			return findVarietyByNamesOracle(names);
 		else if (AppContext.isPostgres())
@@ -561,7 +561,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 	}
 
 	private List<Variety> findVarietyByNamesOracle(Collection names) {
-		// TODO Auto-generated method stub
+		
 
 		List listVars = new ArrayList();
 		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(names), 900);
@@ -600,7 +600,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 	}
 
 	private List<Variety> findVarietyByNamesPostgres(Collection names) {
-		// TODO Auto-generated method stub
+		
 
 		List listVars = new ArrayList();
 		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(names), 900);
@@ -649,7 +649,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	private List<Variety> findVarietyByIrisIdsOracle(Collection names) {
 
-		// TODO Auto-generated method stub
+		
 
 		List listVars = new ArrayList();
 		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(names), 900);
@@ -674,7 +674,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 	}
 
 	private List<Variety> findVarietyByIrisIdsPostgres(Collection names) {
-		// TODO Auto-generated method stub
+		
 
 		List listVars = new ArrayList();
 		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(names), 900);
@@ -711,13 +711,13 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Set findVarietiesByIrisId(String irisid) {
-		// TODO Auto-generated method stub
+		
 		return findVAllstockBasicpropByIrisUniqueId(irisid);
 	}
 
 	@Override
 	public Set findVarietiesByAccession(String accession) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByGsaccession", -1, -1,
 				accession.toUpperCase().replace("IRGC", "").trim());
 		List list = query.getResultList();
@@ -730,7 +730,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 	}
 
 	public Set findVAllstockBasicpropByDataset(String dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByDataset", -1, -1, dataset);
 		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
 
@@ -738,13 +738,13 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Set findVarietiesByName(String names) {
-		// TODO Auto-generated method stub
+		
 		return findVAllstockBasicpropByName(names);
 	}
 
 	@Override
 	public Set findVarietiesByNameAccession(String varname, String accession) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByNameGsaccession", -1, -1, varname,
 				accession.toUpperCase().replace("IRGC", "").trim());
 		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
@@ -753,7 +753,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Set findAllVarietyByCountry(String country, Set dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByOriCountryDataset", -1, -1, country,
 				AppContext.toUpperCase(dataset));
 		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
@@ -761,7 +761,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Set findAllVarietyBySubpopulation(String subpopulation, Set dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropBySubpopulationDataset", -1, -1, subpopulation,
 				AppContext.toUpperCase(dataset));
 		return new LinkedHashSet<VAllstockBasicprop>(query.getResultList());
@@ -769,20 +769,20 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	/*
 	 * @Override public Set findAllVarietyByCountryAndSubpopulation(String country,
-	 * String subpopulation, Set dataset) { // TODO Auto-generated method stub
+	 * String subpopulation, Set dataset) { 
 	 * return null; }
 	 */
 
 	/*
 	 * @Override public Variety findVarietyByName(String name, Set dataset) throws
-	 * DataAccessException { // TODO Auto-generated method stub Query query =
+	 * DataAccessException {  Query query =
 	 * createNamedQuery("findVAllstockBasicpropByNameDataset", -1,-1,name,
 	 * AppContext.toUpperCase(dataset)); return
 	 * (VAllstockBasicprop)query.getSingleResult(); }
 	 */
 	@Override
 	public List<Variety> findVarietyByName(String name, Set dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByNameDataset", -1, -1, name,
 				AppContext.toUpperCase(dataset));
 		return query.getResultList();
@@ -790,7 +790,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Variety findVarietyByNameLike(String name, Set dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByNameContainingDataset", -1, -1, name,
 				AppContext.toUpperCase(dataset));
 		return (VAllstockBasicprop) query.getSingleResult();
@@ -798,7 +798,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Variety findVarietyByIrisId(String name, Set dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByIrisUniqueIdDataset", -1, -1, name,
 				AppContext.toUpperCase(dataset));
 		return (VAllstockBasicprop) query.getSingleResult();
@@ -806,7 +806,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Variety findVarietyByAccession(String name, Set dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByGsaccessionDataset", -1, -1, name,
 				AppContext.toUpperCase(dataset));
 		return (VAllstockBasicprop) query.getSingleResult();
@@ -821,7 +821,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public List<Variety> findVarietyByNames(Collection names, Set dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByNamesDataset", -1, -1, AppContext.toUpperCase(names),
 				AppContext.toUpperCase(dataset));
 		return query.getResultList();
@@ -829,7 +829,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public List<Variety> findVarietyByIrisIds(Collection names, Set dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByIrisUniqueIdsDataset", -1, -1,
 				AppContext.toUpperCase(names), AppContext.toUpperCase(dataset));
 		return query.getResultList();
@@ -837,7 +837,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Set<Variety> findVarietiesByIrisId(String irisid, Set dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByIrisUniqueIdDataset", -1, -1, irisid,
 				AppContext.toUpperCase(dataset));
 		return new LinkedHashSet<Variety>(query.getResultList());
@@ -845,14 +845,14 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	/*
 	 * @Override public Variety findVarietyByAccession(String accession, Set
-	 * dataset) throws DataAccessException { // TODO Auto-generated method stub
+	 * dataset) throws DataAccessException { 
 	 * Query query = createNamedQuery("findVAllstockBasicpropByGsaccessionDataset",
 	 * -1,-1,accession, AppContext.toUpperCase(dataset)); return new
 	 * LinkedHashSet<Variety>(query.getResultList()); }
 	 */
 	@Override
 	public Set<Variety> findVarietiesByName(String names, Set dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByNameDataset", -1, -1, names,
 				AppContext.toUpperCase(dataset));
 		return new LinkedHashSet<Variety>(query.getResultList());
@@ -861,7 +861,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 	@Override
 	public Set<Variety> findVarietiesByNameAccession(String varname, String accession, Set dataset)
 			throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVAllstockBasicpropByNameGsaccessionDataset", -1, -1, varname, accession,
 				AppContext.toUpperCase(dataset));
 		return new LinkedHashSet<Variety>(query.getResultList());
@@ -869,7 +869,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Collection<Variety> findVarietyByIds(Set setQueryVarobj, Set dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 
 		Query query = createNamedQuery("findVAllstockBasicpropByPrimaryKeysDataset", -1, -1,
 				AppContext.toUpperCase(setQueryVarobj), AppContext.toUpperCase(dataset));
@@ -878,7 +878,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Collection<Variety> findVarietiesByDataset(String dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 
 		AppContext.debug("findVarietiesByDataset(String dataset) :" + dataset);
 
@@ -900,7 +900,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Collection<Variety> findVarietiesByDatasets(Set dataset) throws DataAccessException {
-		// TODO Auto-generated method stub
+		
 
 		Query query = createNamedQuery("findAllVAllstockBasicpropsDatasets", -1, -1, AppContext.toUpperCase(dataset));
 		AppContext.debug("findVarietiesByDataset(Set dataset) :" + dataset + "  " + query.getClass());
@@ -915,7 +915,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Set findAllVarietyByCountryAndSubpopulationDatasets(String country, String subpopulation, Set dataset) {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findAllVarietyByCountryAndSubpopulationDataset", -1, -1, country, subpopulation,
 				AppContext.toUpperCase(dataset));
 		return new LinkedHashSet<Variety>(query.getResultList());
@@ -923,7 +923,7 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Set findAllVarietyByCountryAndSubpopulation(String country, String subpopulation) {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findAllVarietyByCountryAndSubpopulation", -1, -1, country, subpopulation);
 		return new LinkedHashSet<Variety>(query.getResultList());
 	}
@@ -949,19 +949,6 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Set findAllVarietyByExample(Variety germplasm) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Set<VAllstockBasicprop> findVAllstockBasicpropByDataset() throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Set<VAllstockBasicprop> findVAllstockBasicpropByDataset(int startResult, int maxRows)
-			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}

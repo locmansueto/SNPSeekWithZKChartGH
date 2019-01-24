@@ -25,8 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository("VIricstocksByPtocoDAO")
 @Transactional
-public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco>
-		implements VIricstocksByPtocoDAO {
+public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco> implements VIricstocksByPtocoDAO {
 
 	@Override
 	public List findVarietyByQuanPhenotypeLessThan(BigDecimal object, Set dataset, double value) {
@@ -71,10 +70,12 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	}
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VIricstocksByPtoco.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VIricstocksByPtoco.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Production
@@ -92,7 +93,7 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -124,7 +125,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByNameContaining(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByNameContaining", startResult, maxRows, name);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -134,7 +136,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 *
 	 */
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByIrisUniqueIdContaining(String irisUniqueId) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByIrisUniqueIdContaining(String irisUniqueId)
+			throws DataAccessException {
 
 		return findVIricstocksByPtocoByIrisUniqueIdContaining(irisUniqueId, -1, -1);
 	}
@@ -146,8 +149,10 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByIrisUniqueIdContaining(String irisUniqueId, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVIricstocksByPtocoByIrisUniqueIdContaining", startResult, maxRows, irisUniqueId);
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByIrisUniqueIdContaining(String irisUniqueId, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVIricstocksByPtocoByIrisUniqueIdContaining", startResult, maxRows,
+				irisUniqueId);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
 
@@ -168,7 +173,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByDbContaining(String db, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByDbContaining(String db, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByDbContaining", startResult, maxRows, db);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -178,7 +184,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 *
 	 */
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByQuanValue(java.math.BigDecimal quanValue) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByQuanValue(java.math.BigDecimal quanValue)
+			throws DataAccessException {
 
 		return findVIricstocksByPtocoByQuanValue(quanValue, -1, -1);
 	}
@@ -190,7 +197,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByQuanValue(java.math.BigDecimal quanValue, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByQuanValue(java.math.BigDecimal quanValue, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByQuanValue", startResult, maxRows, quanValue);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -212,7 +220,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByOriCountry(String oriCountry, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByOriCountry(String oriCountry, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByOriCountry", startResult, maxRows, oriCountry);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -234,7 +243,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByCvterm(String cvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByCvterm(String cvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByCvterm", startResult, maxRows, cvterm);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -244,7 +254,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 *
 	 */
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByQualValueContaining(String qualValue) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByQualValueContaining(String qualValue)
+			throws DataAccessException {
 
 		return findVIricstocksByPtocoByQualValueContaining(qualValue, -1, -1);
 	}
@@ -256,7 +267,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByQualValueContaining(String qualValue, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByQualValueContaining(String qualValue, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByQualValueContaining", startResult, maxRows, qualValue);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -266,7 +278,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 *
 	 */
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByDefinitionContaining(String definition) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByDefinitionContaining(String definition)
+			throws DataAccessException {
 
 		return findVIricstocksByPtocoByDefinitionContaining(definition, -1, -1);
 	}
@@ -278,8 +291,10 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByDefinitionContaining(String definition, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVIricstocksByPtocoByDefinitionContaining", startResult, maxRows, definition);
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByDefinitionContaining(String definition, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVIricstocksByPtocoByDefinitionContaining", startResult, maxRows,
+				definition);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
 
@@ -288,7 +303,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 *
 	 */
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByAccessionContaining(String accession) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByAccessionContaining(String accession)
+			throws DataAccessException {
 
 		return findVIricstocksByPtocoByAccessionContaining(accession, -1, -1);
 	}
@@ -300,7 +316,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByAccessionContaining(String accession, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByAccessionContaining(String accession, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByAccessionContaining", startResult, maxRows, accession);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -322,7 +339,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByAccession(String accession, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByAccession(String accession, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByAccession", startResult, maxRows, accession);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -332,7 +350,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 *
 	 */
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoBySubpopulationContaining(String subpopulation) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoBySubpopulationContaining(String subpopulation)
+			throws DataAccessException {
 
 		return findVIricstocksByPtocoBySubpopulationContaining(subpopulation, -1, -1);
 	}
@@ -344,8 +363,10 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoBySubpopulationContaining(String subpopulation, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVIricstocksByPtocoBySubpopulationContaining", startResult, maxRows, subpopulation);
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoBySubpopulationContaining(String subpopulation,
+			int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVIricstocksByPtocoBySubpopulationContaining", startResult, maxRows,
+				subpopulation);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
 
@@ -366,7 +387,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByCvtermContaining(String cvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByCvtermContaining(String cvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByCvtermContaining", startResult, maxRows, cvterm);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -410,7 +432,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByName(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByName(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByName", startResult, maxRows, name);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -420,7 +443,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 *
 	 */
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByIrisUniqueId(String irisUniqueId) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByIrisUniqueId(String irisUniqueId)
+			throws DataAccessException {
 
 		return findVIricstocksByPtocoByIrisUniqueId(irisUniqueId, -1, -1);
 	}
@@ -432,7 +456,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByIrisUniqueId(String irisUniqueId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByIrisUniqueId(String irisUniqueId, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByIrisUniqueId", startResult, maxRows, irisUniqueId);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -442,7 +467,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 *
 	 */
 	@Transactional
-	public VIricstocksByPtoco findVIricstocksByPtocoByPrimaryKey(BigDecimal iricStockPhenotypeId) throws DataAccessException {
+	public VIricstocksByPtoco findVIricstocksByPtocoByPrimaryKey(BigDecimal iricStockPhenotypeId)
+			throws DataAccessException {
 
 		return findVIricstocksByPtocoByPrimaryKey(iricStockPhenotypeId, -1, -1);
 	}
@@ -453,9 +479,11 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 */
 
 	@Transactional
-	public VIricstocksByPtoco findVIricstocksByPtocoByPrimaryKey(BigDecimal iricStockPhenotypeId, int startResult, int maxRows) throws DataAccessException {
+	public VIricstocksByPtoco findVIricstocksByPtocoByPrimaryKey(BigDecimal iricStockPhenotypeId, int startResult,
+			int maxRows) throws DataAccessException {
 		try {
-			Query query = createNamedQuery("findVIricstocksByPtocoByPrimaryKey", startResult, maxRows, iricStockPhenotypeId);
+			Query query = createNamedQuery("findVIricstocksByPtocoByPrimaryKey", startResult, maxRows,
+					iricStockPhenotypeId);
 			return (org.irri.iric.portal.chado.oracle.domain.VIricstocksByPtoco) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
@@ -467,7 +495,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 *
 	 */
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByPhenotypeId(java.math.BigDecimal phenotypeId) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByPhenotypeId(java.math.BigDecimal phenotypeId)
+			throws DataAccessException {
 
 		return findVIricstocksByPtocoByPhenotypeId(phenotypeId, -1, -1);
 	}
@@ -479,7 +508,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByPhenotypeId(java.math.BigDecimal phenotypeId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByPhenotypeId(java.math.BigDecimal phenotypeId,
+			int startResult, int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByPhenotypeId", startResult, maxRows, phenotypeId);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -501,7 +531,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByQualValue(String qualValue, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByQualValue(String qualValue, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByQualValue", startResult, maxRows, qualValue);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -511,7 +542,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 *
 	 */
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByOriCountryContaining(String oriCountry) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByOriCountryContaining(String oriCountry)
+			throws DataAccessException {
 
 		return findVIricstocksByPtocoByOriCountryContaining(oriCountry, -1, -1);
 	}
@@ -523,8 +555,10 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByOriCountryContaining(String oriCountry, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVIricstocksByPtocoByOriCountryContaining", startResult, maxRows, oriCountry);
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByOriCountryContaining(String oriCountry, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVIricstocksByPtocoByOriCountryContaining", startResult, maxRows,
+				oriCountry);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
 
@@ -545,7 +579,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByDb(String db, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByDb(String db, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByDb", startResult, maxRows, db);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -555,7 +590,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 *
 	 */
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByIricStockId(BigDecimal iricStockId) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByIricStockId(BigDecimal iricStockId)
+			throws DataAccessException {
 
 		return findVIricstocksByPtocoByIricStockId(iricStockId, -1, -1);
 	}
@@ -567,7 +603,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByIricStockId(BigDecimal iricStockId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByIricStockId(BigDecimal iricStockId, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByIricStockId", startResult, maxRows, iricStockId);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -577,7 +614,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 *
 	 */
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoBySubpopulation(String subpopulation) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoBySubpopulation(String subpopulation)
+			throws DataAccessException {
 
 		return findVIricstocksByPtocoBySubpopulation(subpopulation, -1, -1);
 	}
@@ -589,7 +627,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoBySubpopulation(String subpopulation, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoBySubpopulation(String subpopulation, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoBySubpopulation", startResult, maxRows, subpopulation);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -611,7 +650,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByDefinition(String definition, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByDefinition(String definition, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByDefinition", startResult, maxRows, definition);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -633,7 +673,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByCvtermId(BigDecimal cvtermId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstocksByPtoco> findVIricstocksByPtocoByCvtermId(BigDecimal cvtermId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstocksByPtocoByCvtermId", startResult, maxRows, cvtermId);
 		return new LinkedHashSet<VIricstocksByPtoco>(query.getResultList());
 	}
@@ -643,7 +684,8 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 *
 	 */
 	@Transactional
-	public VIricstocksByPtoco findVIricstocksByPtocoByIricStockPhenotypeId(BigDecimal iricStockPhenotypeId) throws DataAccessException {
+	public VIricstocksByPtoco findVIricstocksByPtocoByIricStockPhenotypeId(BigDecimal iricStockPhenotypeId)
+			throws DataAccessException {
 
 		return findVIricstocksByPtocoByIricStockPhenotypeId(iricStockPhenotypeId, -1, -1);
 	}
@@ -654,9 +696,11 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	 */
 
 	@Transactional
-	public VIricstocksByPtoco findVIricstocksByPtocoByIricStockPhenotypeId(BigDecimal iricStockPhenotypeId, int startResult, int maxRows) throws DataAccessException {
+	public VIricstocksByPtoco findVIricstocksByPtocoByIricStockPhenotypeId(BigDecimal iricStockPhenotypeId,
+			int startResult, int maxRows) throws DataAccessException {
 		try {
-			Query query = createNamedQuery("findVIricstocksByPtocoByIricStockPhenotypeId", startResult, maxRows, iricStockPhenotypeId);
+			Query query = createNamedQuery("findVIricstocksByPtocoByIricStockPhenotypeId", startResult, maxRows,
+					iricStockPhenotypeId);
 			return (org.irri.iric.portal.chado.oracle.domain.VIricstocksByPtoco) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
@@ -664,7 +708,9 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -673,63 +719,62 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 		return true;
 	}
 
-
 	/*
-	findVIricstocksByPhenotypeByPhenotypeIdQuanLessthan
-	findVIricstocksByPhenotypeByPhenotypeIdQuanGreaterthan
-	findVIricstocksByPhenotypeByPhenotypeIdQuanEquals
-	findVIricstocksByPhenotypeByPhenotypeIdQualEquals
-	*/
-	
-	
-//
-//	@Override
-//	public List findVarietyByQuanPhenotypeLessThan(BigDecimal phen,
-//			String dataset, double value) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List findVarietyByQuanPhenotypeGreaterThan(BigDecimal phen,
-//			String dataset, double value) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List findVarietyByQuanPhenotypeEquals(BigDecimal phen,
-//			String dataset, double value) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List findVarietyByQualPhenotypeEquals(BigDecimal phen,
-//			String dataset, String value) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List findVarietyByPhenotype(BigDecimal phen, String dataset) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List findVarietyByQualPhenotypeLessThan(BigDecimal phen, String dataset, String value) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List findVarietyByQualPhenotypeGreaterThan(BigDecimal phen, String dataset, String value) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//	
-//	
-	
-	
+	 * findVIricstocksByPhenotypeByPhenotypeIdQuanLessthan
+	 * findVIricstocksByPhenotypeByPhenotypeIdQuanGreaterthan
+	 * findVIricstocksByPhenotypeByPhenotypeIdQuanEquals
+	 * findVIricstocksByPhenotypeByPhenotypeIdQualEquals
+	 */
+
+	//
+	// @Override
+	// public List findVarietyByQuanPhenotypeLessThan(BigDecimal phen,
+	// String dataset, double value) {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public List findVarietyByQuanPhenotypeGreaterThan(BigDecimal phen,
+	// String dataset, double value) {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public List findVarietyByQuanPhenotypeEquals(BigDecimal phen,
+	// String dataset, double value) {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public List findVarietyByQualPhenotypeEquals(BigDecimal phen,
+	// String dataset, String value) {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public List findVarietyByPhenotype(BigDecimal phen, String dataset) {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public List findVarietyByQualPhenotypeLessThan(BigDecimal phen, String
+	// dataset, String value) {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public List findVarietyByQualPhenotypeGreaterThan(BigDecimal phen, String
+	// dataset, String value) {
+	// 
+	// return null;
+	// }
+	//
+	//
+
 }

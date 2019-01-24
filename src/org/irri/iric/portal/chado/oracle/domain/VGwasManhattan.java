@@ -30,7 +30,7 @@ import org.irri.iric.portal.gwas.domain.ManhattanPlot;
 		@NamedQuery(name = "findVGwasManhattanByTrait", query = "select myVGwasManhattan from VGwasManhattan myVGwasManhattan where myVGwasManhattan.trait = ?1"),
 		@NamedQuery(name = "findVGwasManhattanByTraitContaining", query = "select myVGwasManhattan from VGwasManhattan myVGwasManhattan where myVGwasManhattan.trait like ?1"),
 		@NamedQuery(name = "findVGwasManhattanByTraitId", query = "select myVGwasManhattan from VGwasManhattan myVGwasManhattan where myVGwasManhattan.traitId = ?1") })
-@Table( name = "V_GWAS_MANHATTAN")
+@Table(name = "V_GWAS_MANHATTAN")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VGwasManhattan")
 public class VGwasManhattan implements Serializable, ManhattanPlot {
@@ -93,7 +93,7 @@ public class VGwasManhattan implements Serializable, ManhattanPlot {
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	BigDecimal subpopulationId;
-	
+
 	@Column(name = "GWAS_RUN_ID", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -253,7 +253,8 @@ public class VGwasManhattan implements Serializable, ManhattanPlot {
 		if (!(obj instanceof VGwasManhattan))
 			return false;
 		VGwasManhattan equalCheck = (VGwasManhattan) obj;
-		if ((gwasMarkerId == null && equalCheck.gwasMarkerId != null) || (gwasMarkerId != null && equalCheck.gwasMarkerId == null))
+		if ((gwasMarkerId == null && equalCheck.gwasMarkerId != null)
+				|| (gwasMarkerId != null && equalCheck.gwasMarkerId == null))
 			return false;
 		if (gwasMarkerId != null && !gwasMarkerId.equals(equalCheck.gwasMarkerId))
 			return false;
@@ -262,9 +263,11 @@ public class VGwasManhattan implements Serializable, ManhattanPlot {
 
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
-		if(chromosome>9) return "chr" + chromosome;
-		else return "chr0" + chromosome;
+		
+		if (chromosome > 9)
+			return "chr" + chromosome;
+		else
+			return "chr0" + chromosome;
 	}
 
 	@Override
@@ -275,34 +278,32 @@ public class VGwasManhattan implements Serializable, ManhattanPlot {
 
 	@Override
 	public Long getChr() {
-		// TODO Auto-generated method stub
+		
 		return chromosome;
 	}
 
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return this.gwasMarkerId.compareTo( ((ManhattanPlot)o).getMarkerId() );
+		
+		return this.gwasMarkerId.compareTo(((ManhattanPlot) o).getMarkerId());
 	}
 
 	@Override
 	public BigDecimal getMarkerId() {
-		// TODO Auto-generated method stub
+		
 		return this.gwasMarkerId;
 	}
 
 	@Override
 	public Double getMinusLogPvalue() {
-		// TODO Auto-generated method stub
+		
 		return minusLogp.doubleValue();
 	}
 
 	@Override
 	public void setMinusLogPvalue(Double pval) {
-		// TODO Auto-generated method stub
-		minusLogp=BigDecimal.valueOf(pval);
+		
+		minusLogp = BigDecimal.valueOf(pval);
 	}
 
-	
-	
 }

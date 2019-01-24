@@ -94,7 +94,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 
 	@Override
 	public List checkSNPsInChromosome(String chr, Collection posset, Set type) {
-		// TODO Auto-generated method stub
+		
 
 		/*
 		 * if(! (type.equals(SnpsAllvarsPosDAO.TYPE_3KALLSNP_HDF5_V2) ||
@@ -109,7 +109,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 
 	@Override
 	public List<SnpsEffect> getSnpsEffects(List positions) {
-		// TODO Auto-generated method stub
+		
 
 		snpseffDAO = (SnpsEffectDAO) AppContext.checkBean(snpseffDAO, "SnpsEffectDAO");
 		List listFeatureid = new ArrayList();
@@ -192,7 +192,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 
 	@Override
 	public long countVariantString(GenotypeQueryParams params) {
-		// TODO Auto-generated method stub
+		
 		return -1;
 	}
 
@@ -425,6 +425,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 	private VariantStringData _getSNPsStringNipponbare(GenotypeQueryParams params) { // , boolean exactMismatch, int
 																						// firstRow, int maxRows) {
 
+		String dataset = (String) params.getDataset().iterator().next();
 		Collection colVarids = params.getColVarIds();
 		// Integer chr= Integer.valueOf( params.getsChr() );
 		String chr = params.getsChr();
@@ -533,7 +534,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 			if (!params.isbMismatchonly() || score > 0 || params.isbPairwiseComparison() || params.hasLocusList()) { // ||
 																														// params.hasLocusList())
 																														// {
-				sortedVarieties.add(new SnpsStringAllvarsImpl(var, chr, snpstr, BigDecimal.valueOf(score),
+				sortedVarieties.add(new SnpsStringAllvarsImpl(dataset, var, chr, snpstr, BigDecimal.valueOf(score),
 						(Map) snpstrdata.getMapVarid2SnpsAllele2str().get(var), varNonsynPos, varSynPos,
 						snpstrdata.setSnpSpliceDonorPos, snpstrdata.setSnpSpliceAcceptorPos));
 
@@ -585,7 +586,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 
 	private SNPsStringData getSNPsStringData(GenotypeQueryParams params) { // , boolean exactMismatch, int firstRow, int
 																			// maxRows) {
-		// TODO Auto-generated method stub
+		
 
 		// Collection colVarids, String chr, BigDecimal start, BigDecimal end,
 		// Collection setPositions, Collection colLocus
@@ -984,9 +985,9 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 						}
 					}
 				}
-			} else if (mapVarid2Snpsstr_allele2 == null
-					&& (params.includeDataset(VarietyFacade.DATASET_SNPINDELV2_IUPAC)
-							|| params.includeDataset(VarietyFacade.DATASET_SNP_GOPAL92))) {
+			} else if (mapVarid2Snpsstr_allele2 == null) {
+				// && (params.includeDataset(VarietyFacade.DATASET_SNPINDELV2_IUPAC)
+				// || params.includeDataset(VarietyFacade.DATASET_SNP_GOPAL92))) {
 
 				Map mapVarid2SnpsstrSplitIUPAC = new LinkedHashMap();
 				mapVarid2Snpsstr_allele2 = new LinkedHashMap();

@@ -3,7 +3,8 @@ package org.irri.iric.portal.domain;
 import java.math.BigDecimal;
 
 /**
- * SNP 
+ * SNP
+ * 
  * @author LMansueto
  *
  */

@@ -25,20 +25,16 @@ import org.irri.iric.portal.variety.VarietyFacade;
 		@NamedQuery(name = "findVIricstocksByPtocoByCvterm", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.cvterm = ?1"),
 		@NamedQuery(name = "findVIricstocksByPtocoByCvtermContaining", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.cvterm like ?1"),
 		@NamedQuery(name = "findVIricstocksByPtocoByCvtermId", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.cvtermId = ?1"),
-		
-		
-		
-		@NamedQuery(name = "findVIricstocksByPtocoByPhenotypeIdQuanLessthan", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.cvtermId = ?1 and " +
-				" myVIricstocksByPtoco.quanValue < ?2 order by myVIricstocksByPtoco.quanValue, myVIricstocksByPtoco.name"),
-		@NamedQuery(name = "findVIricstocksByPtocoByPhenotypeIdQuanGreaterthan", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.cvtermId = ?1 and " +
-				" myVIricstocksByPtoco.quanValue > ?2 order by myVIricstocksByPtoco.quanValue, myVIricstocksByPtoco.name"),
-		@NamedQuery(name = "findVIricstocksByPtocoByPhenotypeIdQuanEquals", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.cvtermId = ?1 and " +
-				" myVIricstocksByPtoco.quanValue = ?2 order by  myVIricstocksByPtoco.name"),
-		@NamedQuery(name = "findVIricstocksByPtocoByPhenotypeIdQualEquals", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.cvtermId = ?1 and " +
-				" myVIricstocksByPtoco.qualValue = ?2 order by  myVIricstocksByPtoco.name"),
-		
-		
-		
+
+		@NamedQuery(name = "findVIricstocksByPtocoByPhenotypeIdQuanLessthan", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.cvtermId = ?1 and "
+				+ " myVIricstocksByPtoco.quanValue < ?2 order by myVIricstocksByPtoco.quanValue, myVIricstocksByPtoco.name"),
+		@NamedQuery(name = "findVIricstocksByPtocoByPhenotypeIdQuanGreaterthan", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.cvtermId = ?1 and "
+				+ " myVIricstocksByPtoco.quanValue > ?2 order by myVIricstocksByPtoco.quanValue, myVIricstocksByPtoco.name"),
+		@NamedQuery(name = "findVIricstocksByPtocoByPhenotypeIdQuanEquals", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.cvtermId = ?1 and "
+				+ " myVIricstocksByPtoco.quanValue = ?2 order by  myVIricstocksByPtoco.name"),
+		@NamedQuery(name = "findVIricstocksByPtocoByPhenotypeIdQualEquals", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.cvtermId = ?1 and "
+				+ " myVIricstocksByPtoco.qualValue = ?2 order by  myVIricstocksByPtoco.name"),
+
 		@NamedQuery(name = "findVIricstocksByPtocoByDb", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.db = ?1"),
 		@NamedQuery(name = "findVIricstocksByPtocoByDbContaining", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.db like ?1"),
 		@NamedQuery(name = "findVIricstocksByPtocoByDefinition", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.definition = ?1"),
@@ -58,7 +54,7 @@ import org.irri.iric.portal.variety.VarietyFacade;
 		@NamedQuery(name = "findVIricstocksByPtocoByQuanValue", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.quanValue = ?1"),
 		@NamedQuery(name = "findVIricstocksByPtocoBySubpopulation", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.subpopulation = ?1"),
 		@NamedQuery(name = "findVIricstocksByPtocoBySubpopulationContaining", query = "select myVIricstocksByPtoco from VIricstocksByPtoco myVIricstocksByPtoco where myVIricstocksByPtoco.subpopulation like ?1") })
-@Table( name = "V_IRICSTOCKS_BY_PTOCO")
+@Table(name = "V_IRICSTOCKS_BY_PTOCO")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VIricstocksByPtoco")
 public class VIricstocksByPtoco implements Serializable, VarietyPlus {
@@ -131,13 +127,11 @@ public class VIricstocksByPtoco implements Serializable, VarietyPlus {
 	/**
 	 */
 
-	
 	@Column(name = "BOX_CODE", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String boxCode;
 
-	
 	@Column(name = "ORI_COUNTRY", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -414,7 +408,8 @@ public class VIricstocksByPtoco implements Serializable, VarietyPlus {
 		if (!(obj instanceof VIricstocksByPtoco))
 			return false;
 		VIricstocksByPtoco equalCheck = (VIricstocksByPtoco) obj;
-		if ((iricStockPhenotypeId == null && equalCheck.iricStockPhenotypeId != null) || (iricStockPhenotypeId != null && equalCheck.iricStockPhenotypeId == null))
+		if ((iricStockPhenotypeId == null && equalCheck.iricStockPhenotypeId != null)
+				|| (iricStockPhenotypeId != null && equalCheck.iricStockPhenotypeId == null))
 			return false;
 		if (iricStockPhenotypeId != null && !iricStockPhenotypeId.equals(equalCheck.iricStockPhenotypeId))
 			return false;
@@ -423,71 +418,72 @@ public class VIricstocksByPtoco implements Serializable, VarietyPlus {
 
 	@Override
 	public BigDecimal getVarietyId() {
-		// TODO Auto-generated method stub
+		
 		return this.iricStockId;
 	}
 
 	@Override
 	public String getIrisId() {
-		// TODO Auto-generated method stub
-		if(irisUniqueId!=null) return irisUniqueId;
+		
+		if (irisUniqueId != null)
+			return irisUniqueId;
 		return boxCode;
 	}
 
 	@Override
 	public String getCountry() {
-		// TODO Auto-generated method stub
+		
 		return this.oriCountry;
 	}
 
 	@Override
 	public void setCountry(String country) {
-		// TODO Auto-generated method stub
-		this.oriCountry=country;
 		
+		this.oriCountry = country;
+
 	}
 
 	@Override
 	public String printFields(String delimiter) {
-		// TODO Auto-generated method stub
+		
 		return this.toString();
 	}
 
 	@Override
 	public String getBoxCode() {
-		// TODO Auto-generated method stub
+		
 		return this.boxCode;
 	}
 
 	@Override
 	public String getDataset() {
-		// TODO Auto-generated method stub
+		
 		return VarietyFacade.DATASET_SNPINDELV2_IUPAC;
 	}
 
 	@Override
 	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
-		Variety v=(Variety)arg0;
+		
+		Variety v = (Variety) arg0;
 		return getVarietyId().compareTo(v.getVarietyId());
 	}
 
 	@Override
 	public void setValue(Object value) {
-		// TODO Auto-generated method stub
-		if(value instanceof String) this.qualValue=(String)value;
-		else this.quanValue= BigDecimal.valueOf( Long.valueOf(value.toString()));
 		
+		if (value instanceof String)
+			this.qualValue = (String) value;
+		else
+			this.quanValue = BigDecimal.valueOf(Long.valueOf(value.toString()));
+
 	}
 
 	@Override
 	public Object getValue() {
-		// TODO Auto-generated method stub
-		if(qualValue!=null) return qualValue;
+		
+		if (qualValue != null)
+			return qualValue;
 		return quanValue;
 	}
-	
-	
-	
-	
+
 }

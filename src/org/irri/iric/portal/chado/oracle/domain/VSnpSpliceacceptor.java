@@ -20,11 +20,18 @@ import org.irri.iric.portal.domain.SnpsSpliceAcceptor;
 		@NamedQuery(name = "findAllVSnpSpliceacceptors", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor"),
 		@NamedQuery(name = "findVSnpSpliceacceptorByChr", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr = ?1"),
 		@NamedQuery(name = "findVSnpSpliceacceptorByChrContaining", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr like ?1"),
-//		@NamedQuery(name = "findVSnpSpliceacceptorByOrganismId", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.organismId = ?1"),
+		// @NamedQuery(name = "findVSnpSpliceacceptorByOrganismId", query = "select
+		// myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where
+		// myVSnpSpliceacceptor.organismId = ?1"),
 		@NamedQuery(name = "findVSnpSpliceacceptorByPosition", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.position = ?1"),
 
-		//@NamedQuery(name = "findVSnpSpliceacceptorByChrPositionBetween", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position between ?2 and ?3"),
-		//@NamedQuery(name = "findVSnpSpliceacceptorByChrPositionIn", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position in (?2)"),
+		// @NamedQuery(name = "findVSnpSpliceacceptorByChrPositionBetween", query =
+		// "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor
+		// where myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position between
+		// ?2 and ?3"),
+		// @NamedQuery(name = "findVSnpSpliceacceptorByChrPositionIn", query = "select
+		// myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where
+		// myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position in (?2)"),
 
 		@NamedQuery(name = "findVSnpSpliceacceptorByChrPositionBetween", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position-1 between ?2 and ?3"),
 		@NamedQuery(name = "findVSnpSpliceacceptorByChrPositionIn", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.chr=?1 and myVSnpSpliceacceptor.position-1 in (?2)"),
@@ -33,12 +40,13 @@ import org.irri.iric.portal.domain.SnpsSpliceAcceptor;
 
 		@NamedQuery(name = "findVSnpSpliceacceptorBySnpFeatureIdIn", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.snpFeatureId in (?1) order by  myVSnpSpliceacceptor.chr , myVSnpSpliceacceptor.position"),
 
-		
 		@NamedQuery(name = "findVSnpSpliceacceptorByPrimaryKey", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.snpFeatureId = ?1"),
 		@NamedQuery(name = "findVSnpSpliceacceptorBySnpFeatureId", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.snpFeatureId = ?1")
-//		@NamedQuery(name = "findVSnpSpliceacceptorBySrcfeatureId", query = "select myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where myVSnpSpliceacceptor.srcfeatureId = ?1") 
-		})
-@Table( name = "V_SNP_SPLICEACCEPTOR_V2")
+		// @NamedQuery(name = "findVSnpSpliceacceptorBySrcfeatureId", query = "select
+		// myVSnpSpliceacceptor from VSnpSpliceacceptor myVSnpSpliceacceptor where
+		// myVSnpSpliceacceptor.srcfeatureId = ?1")
+})
+@Table(name = "V_SNP_SPLICEACCEPTOR_V2")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VSnpSpliceacceptor")
 public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Comparable {
@@ -67,17 +75,17 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 	/**
 	 */
 
-//	@Column(name = "SRCFEATURE_ID")
-//	@Basic(fetch = FetchType.EAGER)
-//	@XmlElement
-//	BigDecimal srcfeatureId;
-//	/**
-//	 */
+	// @Column(name = "SRCFEATURE_ID")
+	// @Basic(fetch = FetchType.EAGER)
+	// @XmlElement
+	// BigDecimal srcfeatureId;
+	// /**
+	// */
 
 	@Column(name = "POSITION")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
-	BigDecimal  position;
+	BigDecimal position;
 	/**
 	 */
 
@@ -87,37 +95,35 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 	Long chr;
 	/**
 	 */
-//
-//	@Column(name = "ORGANISM_ID", precision = 10)
-//	@Basic(fetch = FetchType.EAGER)
-//	@XmlElement
-//	BigDecimal organismId;
+	//
+	// @Column(name = "ORGANISM_ID", precision = 10)
+	// @Basic(fetch = FetchType.EAGER)
+	// @XmlElement
+	// BigDecimal organismId;
 
-	
 	@Column(name = "VARIANTSET", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String variantset;
 
-	
 	/**
 	 */
 	public void setSnpFeatureId(BigDecimal snpFeatureId) {
 		this.snpFeatureId = snpFeatureId;
 	}
 
-//	
-//	/**
-//	 */
-//	public void setSrcfeatureId(BigDecimal srcfeatureId) {
-//		this.srcfeatureId = srcfeatureId;
-//	}
-//
-//	/**
-//	 */
-//	public BigDecimal getSrcfeatureId() {
-//		return this.srcfeatureId;
-//	}
+	//
+	// /**
+	// */
+	// public void setSrcfeatureId(BigDecimal srcfeatureId) {
+	// this.srcfeatureId = srcfeatureId;
+	// }
+	//
+	// /**
+	// */
+	// public BigDecimal getSrcfeatureId() {
+	// return this.srcfeatureId;
+	// }
 
 	/**
 	 */
@@ -143,20 +149,17 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 		return this.chr;
 	}
 
-	
-	
-	
-//	/**
-//	 */
-//	public void setOrganismId(BigDecimal organismId) {
-//		this.organismId = organismId;
-//	}
-//
-//	/**
-//	 */
-//	public BigDecimal getOrganismId() {
-//		return this.organismId;
-//	}
+	// /**
+	// */
+	// public void setOrganismId(BigDecimal organismId) {
+	// this.organismId = organismId;
+	// }
+	//
+	// /**
+	// */
+	// public BigDecimal getOrganismId() {
+	// return this.organismId;
+	// }
 
 	/**
 	 */
@@ -169,10 +172,10 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 	 */
 	public void copy(VSnpSpliceacceptor that) {
 		setSnpFeatureId(that.getSnpFeatureId());
-	//	setSrcfeatureId(that.getSrcfeatureId());
+		// setSrcfeatureId(that.getSrcfeatureId());
 		setPosition(that.getPosition());
 		setChr(that.getChr());
-	//	setOrganismId(that.getOrganismId());
+		// setOrganismId(that.getOrganismId());
 	}
 
 	/**
@@ -184,10 +187,10 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("snpFeatureId=[").append(snpFeatureId).append("] ");
-	//	buffer.append("srcfeatureId=[").append(srcfeatureId).append("] ");
+		// buffer.append("srcfeatureId=[").append(srcfeatureId).append("] ");
 		buffer.append("position=[").append(position).append("] ");
 		buffer.append("chr=[").append(chr).append("] ");
-	//	buffer.append("organismId=[").append(organismId).append("] ");
+		// buffer.append("organismId=[").append(organismId).append("] ");
 
 		return buffer.toString();
 	}
@@ -210,7 +213,8 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 		if (!(obj instanceof VSnpSpliceacceptor))
 			return false;
 		VSnpSpliceacceptor equalCheck = (VSnpSpliceacceptor) obj;
-		if ((snpFeatureId == null && equalCheck.snpFeatureId != null) || (snpFeatureId != null && equalCheck.snpFeatureId == null))
+		if ((snpFeatureId == null && equalCheck.snpFeatureId != null)
+				|| (snpFeatureId != null && equalCheck.snpFeatureId == null))
 			return false;
 		if (snpFeatureId != null && !snpFeatureId.equals(equalCheck.snpFeatureId))
 			return false;
@@ -219,23 +223,18 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 
 	@Override
 	public BigDecimal getSnpFeatureId() {
-		// TODO Auto-generated method stub
+
 		return snpFeatureId;
 	}
 
-
-
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		VSnpSpliceacceptor acc=(VSnpSpliceacceptor)o;
-		int ret = this.getChr().compareTo( acc.getChr() );
-		if(ret==0)
-			ret = this.getPosition().compareTo( acc.getPosition() );
+
+		VSnpSpliceacceptor acc = (VSnpSpliceacceptor) o;
+		int ret = this.getChr().compareTo(acc.getChr());
+		if (ret == 0)
+			ret = this.getPosition().compareTo(acc.getPosition());
 		return ret;
 	}
-	
-	
-	
-	
+
 }

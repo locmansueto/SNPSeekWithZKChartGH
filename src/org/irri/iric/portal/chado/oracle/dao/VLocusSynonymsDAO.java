@@ -24,7 +24,8 @@ public interface VLocusSynonymsDAO extends JpaDao<VLocusSynonyms>, FeatureSynony
 	 * JPQL Query - findVLocusSynonymsByOrganismId
 	 *
 	 */
-	public Set<VLocusSynonyms> findVLocusSynonymsByOrganismId(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusSynonyms> findVLocusSynonymsByOrganismId(BigDecimal organismId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusSynonymsBySynonymContaining
@@ -36,7 +37,8 @@ public interface VLocusSynonymsDAO extends JpaDao<VLocusSynonyms>, FeatureSynony
 	 * JPQL Query - findVLocusSynonymsBySynonymContaining
 	 *
 	 */
-	public Set<VLocusSynonyms> findVLocusSynonymsBySynonymContaining(String synonym, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusSynonyms> findVLocusSynonymsBySynonymContaining(String synonym, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVLocusSynonymss
@@ -60,7 +62,8 @@ public interface VLocusSynonymsDAO extends JpaDao<VLocusSynonyms>, FeatureSynony
 	 * JPQL Query - findVLocusSynonymsBySynonymId
 	 *
 	 */
-	public VLocusSynonyms findVLocusSynonymsBySynonymId(BigDecimal synonymId, int startResult, int maxRows) throws DataAccessException;
+	public VLocusSynonyms findVLocusSynonymsBySynonymId(BigDecimal synonymId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusSynonymsBySynonym
@@ -72,7 +75,8 @@ public interface VLocusSynonymsDAO extends JpaDao<VLocusSynonyms>, FeatureSynony
 	 * JPQL Query - findVLocusSynonymsBySynonym
 	 *
 	 */
-	public Set<VLocusSynonyms> findVLocusSynonymsBySynonym(String synonym_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusSynonyms> findVLocusSynonymsBySynonym(String synonym_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusSynonymsByFeatureId
@@ -84,7 +88,8 @@ public interface VLocusSynonymsDAO extends JpaDao<VLocusSynonyms>, FeatureSynony
 	 * JPQL Query - findVLocusSynonymsByFeatureId
 	 *
 	 */
-	public Set<VLocusSynonyms> findVLocusSynonymsByFeatureId(BigDecimal featureId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusSynonyms> findVLocusSynonymsByFeatureId(BigDecimal featureId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusSynonymsByPrimaryKey
@@ -96,7 +101,8 @@ public interface VLocusSynonymsDAO extends JpaDao<VLocusSynonyms>, FeatureSynony
 	 * JPQL Query - findVLocusSynonymsByPrimaryKey
 	 *
 	 */
-	public VLocusSynonyms findVLocusSynonymsByPrimaryKey(BigDecimal synonymId_1, int startResult, int maxRows) throws DataAccessException;
+	public VLocusSynonyms findVLocusSynonymsByPrimaryKey(BigDecimal synonymId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusSynonymsByLocus
@@ -108,7 +114,8 @@ public interface VLocusSynonymsDAO extends JpaDao<VLocusSynonyms>, FeatureSynony
 	 * JPQL Query - findVLocusSynonymsByLocus
 	 *
 	 */
-	public Set<VLocusSynonyms> findVLocusSynonymsByLocus(String locus, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusSynonyms> findVLocusSynonymsByLocus(String locus, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusSynonymsByLocusContaining
@@ -120,6 +127,7 @@ public interface VLocusSynonymsDAO extends JpaDao<VLocusSynonyms>, FeatureSynony
 	 * JPQL Query - findVLocusSynonymsByLocusContaining
 	 *
 	 */
-	public Set<VLocusSynonyms> findVLocusSynonymsByLocusContaining(String locus_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusSynonyms> findVLocusSynonymsByLocusContaining(String locus_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

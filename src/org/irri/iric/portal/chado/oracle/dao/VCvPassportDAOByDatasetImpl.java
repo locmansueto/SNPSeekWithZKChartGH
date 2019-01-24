@@ -12,9 +12,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-
-
-
 //import org.irri.iric.portal.chado.oracle.domain.VCvPassportByDataset;
 import org.irri.iric.portal.chado.oracle.domain.VCvPassportByDataset;
 import org.irri.iric.portal.dao.CvTermByDatasetDAO;
@@ -30,16 +27,17 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository("VCvPassportByDatasetDAO")
 @Transactional
-public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDataset> implements
-	CvTermByDatasetDAO {
+public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDataset> implements CvTermByDatasetDAO {
 
-	private String defaultdataset="3k";
-	
+	private String defaultdataset = "3k";
+
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VCvPassportByDataset.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VCvPassportByDataset.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit Production
@@ -57,7 +55,7 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -88,9 +86,11 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 	 */
 
 	@Transactional
-	public VCvPassportByDataset findVCvPassportByDatasetByPrimaryKey(Integer cvTermId, int startResult, int maxRows) throws DataAccessException {
+	public VCvPassportByDataset findVCvPassportByDatasetByPrimaryKey(Integer cvTermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
-			Query query = createNamedQuery("findVCvPassportByPrimaryKeyDataset", startResult, maxRows, cvTermId,defaultdataset);
+			Query query = createNamedQuery("findVCvPassportByPrimaryKeyDataset", startResult, maxRows, cvTermId,
+					defaultdataset);
 			return (org.irri.iric.portal.chado.oracle.domain.VCvPassportByDataset) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
@@ -102,7 +102,8 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 	 *
 	 */
 	@Transactional
-	public Set<VCvPassportByDataset> findVCvPassportByDatasetByDefinition(String definition) throws DataAccessException {
+	public Set<VCvPassportByDataset> findVCvPassportByDatasetByDefinition(String definition)
+			throws DataAccessException {
 
 		return findVCvPassportByDatasetByDefinition(definition, -1, -1);
 	}
@@ -114,8 +115,10 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPassportByDataset> findVCvPassportByDatasetByDefinition(String definition, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVCvPassportByDefinitionDataset", startResult, maxRows, definition,defaultdataset);
+	public Set<VCvPassportByDataset> findVCvPassportByDatasetByDefinition(String definition, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVCvPassportByDefinitionDataset", startResult, maxRows, definition,
+				defaultdataset);
 		return new LinkedHashSet<VCvPassportByDataset>(query.getResultList());
 	}
 
@@ -136,8 +139,10 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPassportByDataset> findVCvPassportByDatasetByNameContaining(String name, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVCvPassportByNameContainingDataset", startResult, maxRows, name,defaultdataset);
+	public Set<VCvPassportByDataset> findVCvPassportByDatasetByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException {
+		Query query = createNamedQuery("findVCvPassportByNameContainingDataset", startResult, maxRows, name,
+				defaultdataset);
 		return new LinkedHashSet<VCvPassportByDataset>(query.getResultList());
 	}
 
@@ -146,7 +151,8 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 	 *
 	 */
 	@Transactional
-	public Set<VCvPassportByDataset> findVCvPassportByDatasetByDefinitionContaining(String definition) throws DataAccessException {
+	public Set<VCvPassportByDataset> findVCvPassportByDatasetByDefinitionContaining(String definition)
+			throws DataAccessException {
 
 		return findVCvPassportByDatasetByDefinitionContaining(definition, -1, -1);
 	}
@@ -158,8 +164,10 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPassportByDataset> findVCvPassportByDatasetByDefinitionContaining(String definition, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVCvPassportByDefinitionContainingDataset", startResult, maxRows, definition,defaultdataset);
+	public Set<VCvPassportByDataset> findVCvPassportByDatasetByDefinitionContaining(String definition, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVCvPassportByDefinitionContainingDataset", startResult, maxRows, definition,
+				defaultdataset);
 		return new LinkedHashSet<VCvPassportByDataset>(query.getResultList());
 	}
 
@@ -177,12 +185,13 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 	 * JPQL Query - findAllVCvPassportByDatasets
 	 *
 	 */
-	
+
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<VCvPassportByDataset> findAllVCvPassportByDatasets(int startResult, int maxRows) throws DataAccessException {
+	public List<VCvPassportByDataset> findAllVCvPassportByDatasets(int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findAllVCvPassportsDataset", startResult, maxRows);
-		
+
 		return query.getResultList();
 	}
 
@@ -203,8 +212,9 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPassportByDataset> findVCvPassportByDatasetByName(String name, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVCvPassportByNameDataset", startResult, maxRows, name,defaultdataset);
+	public Set<VCvPassportByDataset> findVCvPassportByDatasetByName(String name, int startResult, int maxRows)
+			throws DataAccessException {
+		Query query = createNamedQuery("findVCvPassportByNameDataset", startResult, maxRows, name, defaultdataset);
 		return new LinkedHashSet<VCvPassportByDataset>(query.getResultList());
 	}
 
@@ -224,9 +234,11 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 	 */
 
 	@Transactional
-	public VCvPassportByDataset findVCvPassportByDatasetByCvTermId(Integer cvTermId, int startResult, int maxRows) throws DataAccessException {
+	public VCvPassportByDataset findVCvPassportByDatasetByCvTermId(Integer cvTermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
-			Query query = createNamedQuery("findVCvPassportByCvTermIdDataset", startResult, maxRows, cvTermId,defaultdataset);
+			Query query = createNamedQuery("findVCvPassportByCvTermIdDataset", startResult, maxRows, cvTermId,
+					defaultdataset);
 			return (org.irri.iric.portal.chado.oracle.domain.VCvPassportByDataset) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
@@ -234,7 +246,9 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -245,21 +259,21 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 
 	@Override
 	public List getAllTerms() {
-		// TODO Auto-generated method stub
+		
 		return this.findAllVCvPassportByDatasets();
 	}
-//
-//	@Override
-//	public List getAllTerms(String organism) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List getAllTerms(String cv, String organism) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	//
+	// @Override
+	// public List getAllTerms(String organism) {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public List getAllTerms(String cv, String organism) {
+	// 
+	// return null;
+	// }
 
 	@Override
 	public List getAllTerms(BigDecimal cvByName, BigDecimal organismByName) {
@@ -269,8 +283,8 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 
 	@Override
 	public List getAllTermsByDataset(String dataset) {
-		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findAllVCvPassportDatasetByDataset", -1,-1, dataset);
+		
+		Query query = createNamedQuery("findAllVCvPassportDatasetByDataset", -1, -1, dataset);
 		return query.getResultList();
 	}
 
@@ -279,7 +293,5 @@ public class VCvPassportDAOByDatasetImpl extends AbstractJpaDao<VCvPassportByDat
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
+
 }

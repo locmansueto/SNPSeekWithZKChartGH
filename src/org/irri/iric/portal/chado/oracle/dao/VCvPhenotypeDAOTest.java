@@ -19,15 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({
-		DependencyInjectionTestExecutionListener.class,
-		DirtiesContextTestExecutionListener.class,
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
 		TransactionalTestExecutionListener.class })
 @Transactional
-@ContextConfiguration(locations = {
-		"file:./resources/iric_prod_crud-security-context.xml",
-		"file:./resources/iric_prod_crud-service-context.xml",
-		"file:./resources/iric_prod_crud-dao-context.xml",
+@ContextConfiguration(locations = { "file:./resources/iric_prod_crud-security-context.xml",
+		"file:./resources/iric_prod_crud-service-context.xml", "file:./resources/iric_prod_crud-dao-context.xml",
 		"file:./resources/iric_prod_crud-web-context.xml" })
 public class VCvPhenotypeDAOTest {
 	/**
@@ -52,8 +48,9 @@ public class VCvPhenotypeDAOTest {
 	public void VCvPhenotype() {
 		VCvPhenotype instance = new VCvPhenotype();
 
-		// Test create				
-		// TODO: Populate instance for create.  The store will fail if the primary key fields are blank.				
+		// Test create
+		// TODO: Populate instance for create. The store will fail if the primary key
+		// fields are blank.
 
 		// store the object
 		dataStore.store(instance);

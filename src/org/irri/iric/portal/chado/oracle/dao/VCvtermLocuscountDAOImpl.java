@@ -27,18 +27,19 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage VCvtermLocuscount entities.
  * 
  */
-//@Repository("VCvtermLocuscountDAO")
+// @Repository("VCvtermLocuscountDAO")
 @Repository("CvTermLocusCountDAO")
 
 @Transactional
-public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
-		implements VCvtermLocuscountDAO {
+public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount> implements VCvtermLocuscountDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VCvtermLocuscount.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VCvtermLocuscount.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit Production
@@ -56,7 +57,7 @@ public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -88,7 +89,8 @@ public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvTermContaining(String cvTerm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvTermContaining(String cvTerm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvtermLocuscountByCvTermContaining", startResult, maxRows, cvTerm);
 		return new LinkedHashSet<VCvtermLocuscount>(query.getResultList());
 	}
@@ -110,7 +112,8 @@ public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvtermId(Integer cvtermId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvtermId(Integer cvtermId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvtermLocuscountByCvtermId", startResult, maxRows, cvtermId);
 		return new LinkedHashSet<VCvtermLocuscount>(query.getResultList());
 	}
@@ -132,7 +135,8 @@ public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvTerm(String cvTerm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvTerm(String cvTerm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvtermLocuscountByCvTerm", startResult, maxRows, cvTerm);
 		return new LinkedHashSet<VCvtermLocuscount>(query.getResultList());
 	}
@@ -154,7 +158,8 @@ public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvName(String cvName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvName(String cvName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvtermLocuscountByCvName", startResult, maxRows, cvName);
 		return new LinkedHashSet<VCvtermLocuscount>(query.getResultList());
 	}
@@ -198,7 +203,8 @@ public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByLocusCount(Integer locusCount, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByLocusCount(Integer locusCount, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvtermLocuscountByLocusCount", startResult, maxRows, locusCount);
 		return new LinkedHashSet<VCvtermLocuscount>(query.getResultList());
 	}
@@ -220,7 +226,8 @@ public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvAccContaining(String cvAcc, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvAccContaining(String cvAcc, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvtermLocuscountByCvAccContaining", startResult, maxRows, cvAcc);
 		return new LinkedHashSet<VCvtermLocuscount>(query.getResultList());
 	}
@@ -242,7 +249,8 @@ public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvNameContaining(String cvName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvNameContaining(String cvName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvtermLocuscountByCvNameContaining", startResult, maxRows, cvName);
 		return new LinkedHashSet<VCvtermLocuscount>(query.getResultList());
 	}
@@ -252,7 +260,8 @@ public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
 	 *
 	 */
 	@Transactional
-	public VCvtermLocuscount findVCvtermLocuscountByPrimaryKey(Integer organismId, Integer cvtermId) throws DataAccessException {
+	public VCvtermLocuscount findVCvtermLocuscountByPrimaryKey(Integer organismId, Integer cvtermId)
+			throws DataAccessException {
 
 		return findVCvtermLocuscountByPrimaryKey(organismId, cvtermId, -1, -1);
 	}
@@ -263,10 +272,13 @@ public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
 	 */
 
 	@Transactional
-	public VCvtermLocuscount findVCvtermLocuscountByPrimaryKey(Integer organismId, Integer cvtermId, int startResult, int maxRows) throws DataAccessException {
+	public VCvtermLocuscount findVCvtermLocuscountByPrimaryKey(Integer organismId, Integer cvtermId, int startResult,
+			int maxRows) throws DataAccessException {
 		try {
-			Query query = createNamedQuery("findVCvtermLocuscountByPrimaryKey", startResult, maxRows, organismId, cvtermId);
-			//return (org.irri.iric.portal.chado.domain.VCvtermLocuscount) query.getSingleResult();
+			Query query = createNamedQuery("findVCvtermLocuscountByPrimaryKey", startResult, maxRows, organismId,
+					cvtermId);
+			// return (org.irri.iric.portal.chado.domain.VCvtermLocuscount)
+			// query.getSingleResult();
 			return (VCvtermLocuscount) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
@@ -290,7 +302,8 @@ public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvAcc(String cvAcc, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvAcc(String cvAcc, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvtermLocuscountByCvAcc", startResult, maxRows, cvAcc);
 		return new LinkedHashSet<VCvtermLocuscount>(query.getResultList());
 	}
@@ -312,13 +325,16 @@ public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByOrganismId(Integer organismId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByOrganismId(Integer organismId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvtermLocuscountByOrganismId", startResult, maxRows, organismId);
 		return new LinkedHashSet<VCvtermLocuscount>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -326,158 +342,166 @@ public class VCvtermLocuscountDAOImpl extends AbstractJpaDao<VCvtermLocuscount>
 	public boolean canBeMerged(VCvtermLocuscount entity) {
 		return true;
 	}
-	
 
 	private List<VCvtermLocuscount> executeSQL(String sql) {
-		//System.out.println("executing :" + sql);
-		//log.info("executing :" + sql);
-		AppContext.debug("executing sql: " + sql );
-		return  getSession().createSQLQuery(sql).addEntity(VCvtermLocuscount.class).list();
+		// System.out.println("executing :" + sql);
+		// log.info("executing :" + sql);
+		AppContext.debug("executing sql: " + sql);
+		return getSession().createSQLQuery(sql).addEntity(VCvtermLocuscount.class).list();
 	}
-	
+
 	private Session getSession() {
 		return entityManager.unwrap(Session.class);
 	}
 
 	@Override
 	public List getCvTermLocusCount(BigDecimal orgId, Collection loci, String cv) {
-		// TODO Auto-generated method stub
 		
+
 		Set lociname = new HashSet();
 		Iterator itLoci = loci.iterator();
-		while(itLoci.hasNext()) {
+		while (itLoci.hasNext()) {
 			Object loc = itLoci.next();
-			if(loc instanceof Locus) {
-				lociname.add( ((Locus)loc).getUniquename().toUpperCase());
-			} else 
+			if (loc instanceof Locus) {
+				lociname.add(((Locus) loc).getUniquename().toUpperCase());
+			} else
 				lociname.add(loc.toString().toUpperCase());
 		}
 		/*
-		String sqllocusnames = "(";
-		Iterator<String> itLociName = AppContext.setStringSlicer(new HashSet(lociname), true,  true).iterator();
-		while(itLociName.hasNext()) {
-			sqllocusnames += " upper(f.uniquename) in (" + itLociName.next() + ")";
-			if(itLociName.hasNext())
-				sqllocusnames += " or ";
-		}
-		sqllocusnames +=")";
-		*/
-		
-		
-		if(cv==null || cv.isEmpty()) 
+		 * String sqllocusnames = "("; Iterator<String> itLociName =
+		 * AppContext.setStringSlicer(new HashSet(lociname), true, true).iterator();
+		 * while(itLociName.hasNext()) { sqllocusnames += " upper(f.uniquename) in (" +
+		 * itLociName.next() + ")"; if(itLociName.hasNext()) sqllocusnames += " or "; }
+		 * sqllocusnames +=")";
+		 */
+
+		if (cv == null || cv.isEmpty())
 			cv = "'molecular_function','biological_process','cellular_component'";
 		else if (!cv.startsWith("'"))
-			cv = "'" + cv +"'";
-		
-		
-		//(select distinct column_value uniquename from table(sys.odciVarchar2List(
+			cv = "'" + cv + "'";
+
+		// (select distinct column_value uniquename from table(sys.odciVarchar2List(
 
 		String sql = "SELECT distinct  \"ORGANISM_ID\", \"CV_NAME\",\"CVTERM_ID\",\"CV_ACC\",\"CV_TERM\" , COUNT(DISTINCT \"UNIQUENAME\") LOCUS_COUNT FROM (";
-		Iterator<String> itLociName = AppContext.setStringSlicer(new HashSet(lociname), true,  true).iterator();
-		while(itLociName.hasNext()) {
+		Iterator<String> itLociName = AppContext.setStringSlicer(new HashSet(lociname), true, true).iterator();
+		while (itLociName.hasNext()) {
 
 			String locinames = itLociName.next();
 
-		
-		sql += " select f.organism_id,  c.name cv_name, cv.cvterm_id, db.accession cv_acc, cv.name cv_term, f.uniquename "
-		+ " from  " + AppContext.getDefaultSchema() + ".feature_cvterm fc, " + AppContext.getDefaultSchema() + ".cvterm cv , " + AppContext.getDefaultSchema() + ".dbxref db, " + AppContext.getDefaultSchema() + ".cv c, " + AppContext.getDefaultSchema() + ".feature f, (select distinct column_value uniquename from table(sys.odciVarchar2List(" + locinames + "))) loci "
-		+ " where fc.feature_id=f.feature_id and  fc.cvterm_id=cv.cvterm_id  and f.organism_id=" + orgId
-		+ " and c.cv_id=cv.cv_id and c.name in(" + cv + ")"
-		+ " and cv.dbxref_id=db.dbxref_id"
-		+ " and f.type_id=865" // -- ; -- gene
-		+ " and upper(f.uniquename)=loci.uniquename "
+			sql += " select f.organism_id,  c.name cv_name, cv.cvterm_id, db.accession cv_acc, cv.name cv_term, f.uniquename "
+					+ " from  " + AppContext.getDefaultSchema() + ".feature_cvterm fc, " + AppContext.getDefaultSchema()
+					+ ".cvterm cv , " + AppContext.getDefaultSchema() + ".dbxref db, " + AppContext.getDefaultSchema()
+					+ ".cv c, " + AppContext.getDefaultSchema()
+					+ ".feature f, (select distinct column_value uniquename from table(sys.odciVarchar2List("
+					+ locinames + "))) loci "
+					+ " where fc.feature_id=f.feature_id and  fc.cvterm_id=cv.cvterm_id  and f.organism_id=" + orgId
+					+ " and c.cv_id=cv.cv_id and c.name in(" + cv + ")" + " and cv.dbxref_id=db.dbxref_id"
+					+ " and f.type_id=865" // -- ; -- gene
+					+ " and upper(f.uniquename)=loci.uniquename "
 
-		+ " UNION"
-		//-- locus from      feature_cvterm->subj_id->cvtermpath->obj_id
-		+ " select f.organism_id,  c.name cv_name, cv_obj.cvterm_id, db_obj.accession cv_acc, cv_obj.name cv_term,  f.uniquename"
-		+ " from " + AppContext.getDefaultSchema() + ".feature_cvterm fc, " + AppContext.getDefaultSchema() + ".cvterm cv_subj , " + AppContext.getDefaultSchema() + ".dbxref db_subj, " + AppContext.getDefaultSchema() + ".cv c, " + AppContext.getDefaultSchema() + ".cvterm cv_obj , " + AppContext.getDefaultSchema() + ".dbxref db_obj, " + AppContext.getDefaultSchema() + ".cvtermpath cvtp, " + AppContext.getDefaultSchema() + ".feature f, (select distinct column_value uniquename from table(sys.odciVarchar2List(" + locinames + "))) loci "
-		+ " where fc.feature_id=f.feature_id and f.organism_id=" + orgId
-		+ " and fc.cvterm_id=cv_subj.cvterm_id "
-		+ " and c.cv_id=cv_subj.cv_id and c.name in(" + cv + ")"
-		+ " and cv_subj.dbxref_id=db_subj.dbxref_id"
-		+ " and cv_subj.cvterm_id=cvtp.subject_id and cv_obj.cvterm_id=cvtp.object_id_" 
-		+ " and cvtp.pathdistance>-1"
-		+ " and cv_obj.dbxref_id=db_obj.dbxref_id"
-		+ " and f.type_id=865" // --; --gene
-		+ " and upper(f.uniquename)=loci.uniquename "
-		
-		+ " UNION"
+					+ " UNION"
+					// -- locus from feature_cvterm->subj_id->cvtermpath->obj_id
+					+ " select f.organism_id,  c.name cv_name, cv_obj.cvterm_id, db_obj.accession cv_acc, cv_obj.name cv_term,  f.uniquename"
+					+ " from " + AppContext.getDefaultSchema() + ".feature_cvterm fc, " + AppContext.getDefaultSchema()
+					+ ".cvterm cv_subj , " + AppContext.getDefaultSchema() + ".dbxref db_subj, "
+					+ AppContext.getDefaultSchema() + ".cv c, " + AppContext.getDefaultSchema() + ".cvterm cv_obj , "
+					+ AppContext.getDefaultSchema() + ".dbxref db_obj, " + AppContext.getDefaultSchema()
+					+ ".cvtermpath cvtp, " + AppContext.getDefaultSchema()
+					+ ".feature f, (select distinct column_value uniquename from table(sys.odciVarchar2List("
+					+ locinames + "))) loci " + " where fc.feature_id=f.feature_id and f.organism_id=" + orgId
+					+ " and fc.cvterm_id=cv_subj.cvterm_id " + " and c.cv_id=cv_subj.cv_id and c.name in(" + cv + ")"
+					+ " and cv_subj.dbxref_id=db_subj.dbxref_id"
+					+ " and cv_subj.cvterm_id=cvtp.subject_id and cv_obj.cvterm_id=cvtp.object_id_"
+					+ " and cvtp.pathdistance>-1" + " and cv_obj.dbxref_id=db_obj.dbxref_id" + " and f.type_id=865" // --;
+																													// --gene
+					+ " and upper(f.uniquename)=loci.uniquename "
 
-		+ " select f.organism_id,  c.name cv_name, cv_obj.cvterm_id, db_obj.accession cv_acc, cv_obj.name cv_term,  f.uniquename "
-		+ " from  " + AppContext.getDefaultSchema() + ".feature_cvterm fc, " + AppContext.getDefaultSchema() + ".cvterm cv_subj , " + AppContext.getDefaultSchema() + ".dbxref db_subj, " + AppContext.getDefaultSchema() + ".cv c, " + AppContext.getDefaultSchema() + ".cvterm cv_obj , " + AppContext.getDefaultSchema() + ".dbxref db_obj, lmansueto.cvterm_transclosure cvtp, " + AppContext.getDefaultSchema() + ".feature f, (select distinct column_value uniquename from table(sys.odciVarchar2List(" + locinames + "))) loci "
-		+ " where fc.feature_id=f.feature_id and f.organism_id=" + orgId 
-		+ " and fc.cvterm_id=cv_subj.cvterm_id" 
-		+ " and c.cv_id=cv_subj.cv_id and c.name in(" + cv + ")"
-		+ " and cv_subj.dbxref_id=db_subj.dbxref_id"
-		+ " and cv_obj.dbxref_id=db_obj.dbxref_id"
-		+ " and 'GO:' || db_subj.accession = cvtp.subject" 
-		+ " and 'GO:' || db_obj.accession = cvtp.object "
-		+ " and f.type_id=865" // -- ; --gene
-		+ " and upper(f.uniquename)=loci.uniquename ";
-		
-			if(itLociName.hasNext()) sql += " UNION ";
+					+ " UNION"
+
+					+ " select f.organism_id,  c.name cv_name, cv_obj.cvterm_id, db_obj.accession cv_acc, cv_obj.name cv_term,  f.uniquename "
+					+ " from  " + AppContext.getDefaultSchema() + ".feature_cvterm fc, " + AppContext.getDefaultSchema()
+					+ ".cvterm cv_subj , " + AppContext.getDefaultSchema() + ".dbxref db_subj, "
+					+ AppContext.getDefaultSchema() + ".cv c, " + AppContext.getDefaultSchema() + ".cvterm cv_obj , "
+					+ AppContext.getDefaultSchema() + ".dbxref db_obj, lmansueto.cvterm_transclosure cvtp, "
+					+ AppContext.getDefaultSchema()
+					+ ".feature f, (select distinct column_value uniquename from table(sys.odciVarchar2List("
+					+ locinames + "))) loci " + " where fc.feature_id=f.feature_id and f.organism_id=" + orgId
+					+ " and fc.cvterm_id=cv_subj.cvterm_id" + " and c.cv_id=cv_subj.cv_id and c.name in(" + cv + ")"
+					+ " and cv_subj.dbxref_id=db_subj.dbxref_id" + " and cv_obj.dbxref_id=db_obj.dbxref_id"
+					+ " and 'GO:' || db_subj.accession = cvtp.subject" + " and 'GO:' || db_obj.accession = cvtp.object "
+					+ " and f.type_id=865" // -- ; --gene
+					+ " and upper(f.uniquename)=loci.uniquename ";
+
+			if (itLociName.hasNext())
+				sql += " UNION ";
 		}
-		
-		/*		
-		String sql = "";
-		sql += "SELECT distinct  \"ORGANISM_ID\", \"CV_NAME\",\"CVTERM_ID\",\"CV_ACC\",\"CV_TERM\" , COUNT(DISTINCT \"UNIQUENAME\") LOCUS_COUNT FROM " 
-		+ "(select f.organism_id,  c.name cv_name, cv.cvterm_id, db.accession cv_acc, cv.name cv_term, f.uniquename "
-		+ " from  " + AppContext.getDefaultSchema() + ".feature_cvterm fc, " + AppContext.getDefaultSchema() + ".cvterm cv , " + AppContext.getDefaultSchema() + ".dbxref db, " + AppContext.getDefaultSchema() + ".cv c, " + AppContext.getDefaultSchema() + ".feature f"
-		+ " where fc.feature_id=f.feature_id and  fc.cvterm_id=cv.cvterm_id  and f.organism_id=" + orgId
-		+ " and c.cv_id=cv.cv_id and c.name in(" + cv + ")"
-		+ " and cv.dbxref_id=db.dbxref_id"
-		+ " and f.type_id=865" // -- ; -- gene
-		+ " and " + sqllocusnames
 
-		+ " UNION"
-		//-- locus from      feature_cvterm->subj_id->cvtermpath->obj_id
-		+ " select f.organism_id,  c.name cv_name, cv_obj.cvterm_id, db_obj.accession cv_acc, cv_obj.name cv_term,  f.uniquename"
-		+ " from " + AppContext.getDefaultSchema() + ".feature_cvterm fc, " + AppContext.getDefaultSchema() + ".cvterm cv_subj , " + AppContext.getDefaultSchema() + ".dbxref db_subj, " + AppContext.getDefaultSchema() + ".cv c, " + AppContext.getDefaultSchema() + ".cvterm cv_obj , " + AppContext.getDefaultSchema() + ".dbxref db_obj, " + AppContext.getDefaultSchema() + ".cvtermpath cvtp, " + AppContext.getDefaultSchema() + ".feature f"
-		+ " where fc.feature_id=f.feature_id and f.organism_id=" + orgId
-		+ " and fc.cvterm_id=cv_subj.cvterm_id "
-		+ " and c.cv_id=cv_subj.cv_id and c.name in(" + cv + ")"
-		+ " and cv_subj.dbxref_id=db_subj.dbxref_id"
-		+ " and cv_subj.cvterm_id=cvtp.subject_id and cv_obj.cvterm_id=cvtp.object_id_" 
-		+ " and cvtp.pathdistance>-1"
-		+ " and cv_obj.dbxref_id=db_obj.dbxref_id"
-		+ " and f.type_id=865" // --; --gene
-		+ " and " + sqllocusnames
-		
-		+ " UNION"
-
-		+ " select f.organism_id,  c.name cv_name, cv_obj.cvterm_id, db_obj.accession cv_acc, cv_obj.name cv_term,  f.uniquename "
-		+ " from  " + AppContext.getDefaultSchema() + ".feature_cvterm fc, " + AppContext.getDefaultSchema() + ".cvterm cv_subj , " + AppContext.getDefaultSchema() + ".dbxref db_subj, " + AppContext.getDefaultSchema() + ".cv c, " + AppContext.getDefaultSchema() + ".cvterm cv_obj , " + AppContext.getDefaultSchema() + ".dbxref db_obj, lmansueto.cvterm_transclosure cvtp, " + AppContext.getDefaultSchema() + ".feature f"
-		+ " where fc.feature_id=f.feature_id and f.organism_id=" + orgId 
-		+ " and fc.cvterm_id=cv_subj.cvterm_id" 
-		+ " and c.cv_id=cv_subj.cv_id and c.name in(" + cv + ")"
-		+ " and cv_subj.dbxref_id=db_subj.dbxref_id"
-		+ " and cv_obj.dbxref_id=db_obj.dbxref_id"
-		+ " and 'GO:' || db_subj.accession = cvtp.subject" 
-		+ " and 'GO:' || db_obj.accession = cvtp.object "
-		+ " and f.type_id=865" // -- ; --gene
-		+ " and " + sqllocusnames
-		+ " )"
-		*/
-				
 		/*
-		+ " where ("; 
-		Iterator<String> itLociName = AppContext.setStringSlicer(new HashSet(lociname), true,  true).iterator();
-		while(itLociName.hasNext()) {
-			sql += " upper(UNIQUENAME) in (" + itLociName.next() + ")";
-			if(itLociName.hasNext())
-				sql += " or ";
-		}
-		//+ " where UNIQUENAME in ('LOC_Os01g01010','LOC_Os01g01120','LOC_Os01g01060','LOC_Os01g01369','LOC_Os01g01689') "
-		sql += ") "
-		*/
-		
+		 * String sql = ""; sql +=
+		 * "SELECT distinct  \"ORGANISM_ID\", \"CV_NAME\",\"CVTERM_ID\",\"CV_ACC\",\"CV_TERM\" , COUNT(DISTINCT \"UNIQUENAME\") LOCUS_COUNT FROM "
+		 * +
+		 * "(select f.organism_id,  c.name cv_name, cv.cvterm_id, db.accession cv_acc, cv.name cv_term, f.uniquename "
+		 * + " from  " + AppContext.getDefaultSchema() + ".feature_cvterm fc, " +
+		 * AppContext.getDefaultSchema() + ".cvterm cv , " +
+		 * AppContext.getDefaultSchema() + ".dbxref db, " +
+		 * AppContext.getDefaultSchema() + ".cv c, " + AppContext.getDefaultSchema() +
+		 * ".feature f" +
+		 * " where fc.feature_id=f.feature_id and  fc.cvterm_id=cv.cvterm_id  and f.organism_id="
+		 * + orgId + " and c.cv_id=cv.cv_id and c.name in(" + cv + ")" +
+		 * " and cv.dbxref_id=db.dbxref_id" + " and f.type_id=865" // -- ; -- gene +
+		 * " and " + sqllocusnames
+		 * 
+		 * + " UNION" //-- locus from feature_cvterm->subj_id->cvtermpath->obj_id +
+		 * " select f.organism_id,  c.name cv_name, cv_obj.cvterm_id, db_obj.accession cv_acc, cv_obj.name cv_term,  f.uniquename"
+		 * + " from " + AppContext.getDefaultSchema() + ".feature_cvterm fc, " +
+		 * AppContext.getDefaultSchema() + ".cvterm cv_subj , " +
+		 * AppContext.getDefaultSchema() + ".dbxref db_subj, " +
+		 * AppContext.getDefaultSchema() + ".cv c, " + AppContext.getDefaultSchema() +
+		 * ".cvterm cv_obj , " + AppContext.getDefaultSchema() + ".dbxref db_obj, " +
+		 * AppContext.getDefaultSchema() + ".cvtermpath cvtp, " +
+		 * AppContext.getDefaultSchema() + ".feature f" +
+		 * " where fc.feature_id=f.feature_id and f.organism_id=" + orgId +
+		 * " and fc.cvterm_id=cv_subj.cvterm_id " +
+		 * " and c.cv_id=cv_subj.cv_id and c.name in(" + cv + ")" +
+		 * " and cv_subj.dbxref_id=db_subj.dbxref_id" +
+		 * " and cv_subj.cvterm_id=cvtp.subject_id and cv_obj.cvterm_id=cvtp.object_id_"
+		 * + " and cvtp.pathdistance>-1" + " and cv_obj.dbxref_id=db_obj.dbxref_id" +
+		 * " and f.type_id=865" // --; --gene + " and " + sqllocusnames
+		 * 
+		 * + " UNION"
+		 * 
+		 * +
+		 * " select f.organism_id,  c.name cv_name, cv_obj.cvterm_id, db_obj.accession cv_acc, cv_obj.name cv_term,  f.uniquename "
+		 * + " from  " + AppContext.getDefaultSchema() + ".feature_cvterm fc, " +
+		 * AppContext.getDefaultSchema() + ".cvterm cv_subj , " +
+		 * AppContext.getDefaultSchema() + ".dbxref db_subj, " +
+		 * AppContext.getDefaultSchema() + ".cv c, " + AppContext.getDefaultSchema() +
+		 * ".cvterm cv_obj , " + AppContext.getDefaultSchema() +
+		 * ".dbxref db_obj, lmansueto.cvterm_transclosure cvtp, " +
+		 * AppContext.getDefaultSchema() + ".feature f" +
+		 * " where fc.feature_id=f.feature_id and f.organism_id=" + orgId +
+		 * " and fc.cvterm_id=cv_subj.cvterm_id" +
+		 * " and c.cv_id=cv_subj.cv_id and c.name in(" + cv + ")" +
+		 * " and cv_subj.dbxref_id=db_subj.dbxref_id" +
+		 * " and cv_obj.dbxref_id=db_obj.dbxref_id" +
+		 * " and 'GO:' || db_subj.accession = cvtp.subject" +
+		 * " and 'GO:' || db_obj.accession = cvtp.object " + " and f.type_id=865" // --
+		 * ; --gene + " and " + sqllocusnames + " )"
+		 */
+
+		/*
+		 * + " where ("; Iterator<String> itLociName = AppContext.setStringSlicer(new
+		 * HashSet(lociname), true, true).iterator(); while(itLociName.hasNext()) { sql
+		 * += " upper(UNIQUENAME) in (" + itLociName.next() + ")";
+		 * if(itLociName.hasNext()) sql += " or "; } //+
+		 * " where UNIQUENAME in ('LOC_Os01g01010','LOC_Os01g01120','LOC_Os01g01060','LOC_Os01g01369','LOC_Os01g01689') "
+		 * sql += ") "
+		 */
+
 		sql += ") group by \"ORGANISM_ID\", \"CV_NAME\",\"CVTERM_ID\",\"CV_ACC\",\"CV_TERM\" "
-		+ " ORDER BY LOCUS_COUNT DESC";
-		
+				+ " ORDER BY LOCUS_COUNT DESC";
+
 		return executeSQL(sql);
 	}
-	
-	
-	
-	
+
 }

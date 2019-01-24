@@ -28,16 +28,17 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */
 @Repository("VLocusInteractionDAO")
-//@Repository("Ricenetv2InteractionDAO")
+// @Repository("Ricenetv2InteractionDAO")
 @Transactional
-public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
-		implements VLocusInteractionDAO {
+public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction> implements VLocusInteractionDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VLocusInteraction.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VLocusInteraction.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Production
@@ -55,7 +56,7 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -87,7 +88,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByQfeatureId(BigDecimal qfeatureId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByQfeatureId(BigDecimal qfeatureId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByQfeatureId", startResult, maxRows, qfeatureId);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -109,7 +111,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByOrganismId(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByOrganismId(BigDecimal organismId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByOrganismId", startResult, maxRows, organismId);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -131,7 +134,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByNameContaining(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByNameContaining", startResult, maxRows, name);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -153,7 +157,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByFmax(Integer fmax, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByFmax(Integer fmax, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByFmax", startResult, maxRows, fmax);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -175,7 +180,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByNotesContaining(String notes, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByNotesContaining(String notes, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByNotesContaining", startResult, maxRows, notes);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -197,7 +203,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByFmin(Integer fmin, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByFmin(Integer fmin, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByFmin", startResult, maxRows, fmin);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -219,7 +226,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByNotes(String notes, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByNotes(String notes, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByNotes", startResult, maxRows, notes);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -241,7 +249,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByQfeatureName(String qfeatureName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByQfeatureName(String qfeatureName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByQfeatureName", startResult, maxRows, qfeatureName);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -262,7 +271,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 	 */
 
 	@Transactional
-	public VLocusInteraction findVLocusInteractionByPrimaryKey(BigDecimal featureId, int startResult, int maxRows) throws DataAccessException {
+	public VLocusInteraction findVLocusInteractionByPrimaryKey(BigDecimal featureId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVLocusInteractionByPrimaryKey", startResult, maxRows, featureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VLocusInteraction) query.getSingleResult();
@@ -288,7 +298,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByCommonName(String commonName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByCommonName(String commonName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByCommonName", startResult, maxRows, commonName);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -310,7 +321,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByContigId(BigDecimal contigId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByContigId(BigDecimal contigId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByContigId", startResult, maxRows, contigId);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -332,7 +344,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByContigName(String contigName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByContigName(String contigName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByContigName", startResult, maxRows, contigName);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -342,7 +355,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 	 *
 	 */
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByContigNameContaining(String contigName) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByContigNameContaining(String contigName)
+			throws DataAccessException {
 
 		return findVLocusInteractionByContigNameContaining(contigName, -1, -1);
 	}
@@ -354,7 +368,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByContigNameContaining(String contigName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByContigNameContaining(String contigName, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByContigNameContaining", startResult, maxRows, contigName);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -386,7 +401,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 	 *
 	 */
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByCommonNameContaining(String commonName) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByCommonNameContaining(String commonName)
+			throws DataAccessException {
 
 		return findVLocusInteractionByCommonNameContaining(commonName, -1, -1);
 	}
@@ -398,7 +414,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByCommonNameContaining(String commonName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByCommonNameContaining(String commonName, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByCommonNameContaining", startResult, maxRows, commonName);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -420,7 +437,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByStrand(Integer strand, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByStrand(Integer strand, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByStrand", startResult, maxRows, strand);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -442,7 +460,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByName(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByName(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByName", startResult, maxRows, name);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -463,7 +482,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 	 */
 
 	@Transactional
-	public VLocusInteraction findVLocusInteractionByFeatureId(BigDecimal featureId, int startResult, int maxRows) throws DataAccessException {
+	public VLocusInteraction findVLocusInteractionByFeatureId(BigDecimal featureId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVLocusInteractionByFeatureId", startResult, maxRows, featureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VLocusInteraction) query.getSingleResult();
@@ -489,7 +509,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByScore(java.math.BigDecimal score, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByScore(java.math.BigDecimal score, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusInteractionByScore", startResult, maxRows, score);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
@@ -499,7 +520,8 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 	 *
 	 */
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByQfeatureNameContaining(String qfeatureName) throws DataAccessException {
+	public Set<VLocusInteraction> findVLocusInteractionByQfeatureNameContaining(String qfeatureName)
+			throws DataAccessException {
 
 		return findVLocusInteractionByQfeatureNameContaining(qfeatureName, -1, -1);
 	}
@@ -511,13 +533,17 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusInteraction> findVLocusInteractionByQfeatureNameContaining(String qfeatureName, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVLocusInteractionByQfeatureNameContaining", startResult, maxRows, qfeatureName);
+	public Set<VLocusInteraction> findVLocusInteractionByQfeatureNameContaining(String qfeatureName, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVLocusInteractionByQfeatureNameContaining", startResult, maxRows,
+				qfeatureName);
 		return new LinkedHashSet<VLocusInteraction>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -527,17 +553,16 @@ public class VLocusInteractionDAOImpl extends AbstractJpaDao<VLocusInteraction>
 	}
 
 	@Override
-	public List<Locus> getInteractingFeatures(Collection<Locus> colLocus,
-			int type, Integer max) {
-		// TODO Auto-generated method stub
-		Set locisId=new TreeSet();
+	public List<Locus> getInteractingFeatures(Collection<Locus> colLocus, int type, Integer max) {
+		
+		Set locisId = new TreeSet();
 		Iterator<Locus> itLoc = colLocus.iterator();
-		while(itLoc.hasNext()) locisId.add( itLoc.next().getFeatureId() );
+		while (itLoc.hasNext())
+			locisId.add(itLoc.next().getFeatureId());
 		Query query = createNamedQuery("findVLocusInteractionByQfeatureIdIn", -1, -1, locisId);
-		if(max!=null) query.setMaxResults(max);
+		if (max != null)
+			query.setMaxResults(max);
 		return query.getResultList();
 	}
 
-	
-	
 }

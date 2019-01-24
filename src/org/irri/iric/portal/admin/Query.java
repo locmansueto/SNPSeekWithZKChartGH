@@ -25,7 +25,7 @@ public class Query {
 	}
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
+		
 		return "submitter=" + submitter + ";jobid=" + jobid +";filename=" + filename;
 	}
 	

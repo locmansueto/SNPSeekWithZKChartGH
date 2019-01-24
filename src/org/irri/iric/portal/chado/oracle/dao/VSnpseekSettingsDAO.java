@@ -13,7 +13,7 @@ import org.springframework.dao.DataAccessException;
  * DAO to manage VSnpseekSettings entities.
  * 
  */
-public interface VSnpseekSettingsDAO extends JpaDao<VSnpseekSettings> , SnpSeekSettingsDAO {
+public interface VSnpseekSettingsDAO extends JpaDao<VSnpseekSettings>, SnpSeekSettingsDAO {
 
 	/**
 	 * JPQL Query - findAllVSnpseekSettingss
@@ -37,7 +37,8 @@ public interface VSnpseekSettingsDAO extends JpaDao<VSnpseekSettings> , SnpSeekS
 	 * JPQL Query - findVSnpseekSettingsByValueContaining
 	 *
 	 */
-	public Set<VSnpseekSettings> findVSnpseekSettingsByValueContaining(String value, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpseekSettings> findVSnpseekSettingsByValueContaining(String value, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpseekSettingsByNameContaining
@@ -49,7 +50,8 @@ public interface VSnpseekSettingsDAO extends JpaDao<VSnpseekSettings> , SnpSeekS
 	 * JPQL Query - findVSnpseekSettingsByNameContaining
 	 *
 	 */
-	public Set<VSnpseekSettings> findVSnpseekSettingsByNameContaining(String name, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpseekSettings> findVSnpseekSettingsByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpseekSettingsByPrimaryKey
@@ -61,7 +63,8 @@ public interface VSnpseekSettingsDAO extends JpaDao<VSnpseekSettings> , SnpSeekS
 	 * JPQL Query - findVSnpseekSettingsByPrimaryKey
 	 *
 	 */
-	public VSnpseekSettings findVSnpseekSettingsByPrimaryKey(String name_1, int startResult, int maxRows) throws DataAccessException;
+	public VSnpseekSettings findVSnpseekSettingsByPrimaryKey(String name_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpseekSettingsByName
@@ -73,7 +76,8 @@ public interface VSnpseekSettingsDAO extends JpaDao<VSnpseekSettings> , SnpSeekS
 	 * JPQL Query - findVSnpseekSettingsByName
 	 *
 	 */
-	public VSnpseekSettings findVSnpseekSettingsByName(String name_2, int startResult, int maxRows) throws DataAccessException;
+	public VSnpseekSettings findVSnpseekSettingsByName(String name_2, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpseekSettingsByValue
@@ -85,6 +89,7 @@ public interface VSnpseekSettingsDAO extends JpaDao<VSnpseekSettings> , SnpSeekS
 	 * JPQL Query - findVSnpseekSettingsByValue
 	 *
 	 */
-	public Set<VSnpseekSettings> findVSnpseekSettingsByValue(String value_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpseekSettings> findVSnpseekSettingsByValue(String value_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

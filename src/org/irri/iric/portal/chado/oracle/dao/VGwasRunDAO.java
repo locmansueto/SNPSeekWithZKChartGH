@@ -25,7 +25,8 @@ public interface VGwasRunDAO extends JpaDao<VGwasRun>, GWASRunDAO {
 	 * JPQL Query - findVGwasRunBySubpopulationId
 	 *
 	 */
-	public Set<VGwasRun> findVGwasRunBySubpopulationId(BigDecimal subpopulationId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasRun> findVGwasRunBySubpopulationId(BigDecimal subpopulationId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasRunByGwasRunId
@@ -37,7 +38,8 @@ public interface VGwasRunDAO extends JpaDao<VGwasRun>, GWASRunDAO {
 	 * JPQL Query - findVGwasRunByGwasRunId
 	 *
 	 */
-	public VGwasRun findVGwasRunByGwasRunId(BigDecimal gwasRunId, int startResult, int maxRows) throws DataAccessException;
+	public VGwasRun findVGwasRunByGwasRunId(BigDecimal gwasRunId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasRunByRundate
@@ -49,7 +51,8 @@ public interface VGwasRunDAO extends JpaDao<VGwasRun>, GWASRunDAO {
 	 * JPQL Query - findVGwasRunByRundate
 	 *
 	 */
-	public Set<VGwasRun> findVGwasRunByRundate(Calendar rundate, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasRun> findVGwasRunByRundate(Calendar rundate, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasRunByQqplot
@@ -73,7 +76,8 @@ public interface VGwasRunDAO extends JpaDao<VGwasRun>, GWASRunDAO {
 	 * JPQL Query - findVGwasRunByTraitId
 	 *
 	 */
-	public Set<VGwasRun> findVGwasRunByTraitId(BigDecimal traitId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasRun> findVGwasRunByTraitId(BigDecimal traitId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasRunBySubpopulation
@@ -85,7 +89,8 @@ public interface VGwasRunDAO extends JpaDao<VGwasRun>, GWASRunDAO {
 	 * JPQL Query - findVGwasRunBySubpopulation
 	 *
 	 */
-	public Set<VGwasRun> findVGwasRunBySubpopulation(String subpopulation, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasRun> findVGwasRunBySubpopulation(String subpopulation, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasRunByMethodContaining
@@ -97,7 +102,8 @@ public interface VGwasRunDAO extends JpaDao<VGwasRun>, GWASRunDAO {
 	 * JPQL Query - findVGwasRunByMethodContaining
 	 *
 	 */
-	public Set<VGwasRun> findVGwasRunByMethodContaining(String method, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasRun> findVGwasRunByMethodContaining(String method, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasRunByTraitContaining
@@ -109,7 +115,8 @@ public interface VGwasRunDAO extends JpaDao<VGwasRun>, GWASRunDAO {
 	 * JPQL Query - findVGwasRunByTraitContaining
 	 *
 	 */
-	public Set<VGwasRun> findVGwasRunByTraitContaining(String trait, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasRun> findVGwasRunByTraitContaining(String trait, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasRunBySubpopulationContaining
@@ -121,7 +128,8 @@ public interface VGwasRunDAO extends JpaDao<VGwasRun>, GWASRunDAO {
 	 * JPQL Query - findVGwasRunBySubpopulationContaining
 	 *
 	 */
-	public Set<VGwasRun> findVGwasRunBySubpopulationContaining(String subpopulation_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasRun> findVGwasRunBySubpopulationContaining(String subpopulation_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasRunByMethod
@@ -169,7 +177,8 @@ public interface VGwasRunDAO extends JpaDao<VGwasRun>, GWASRunDAO {
 	 * JPQL Query - findVGwasRunByPrimaryKey
 	 *
 	 */
-	public VGwasRun findVGwasRunByPrimaryKey(BigDecimal gwasRunId_1, int startResult, int maxRows) throws DataAccessException;
+	public VGwasRun findVGwasRunByPrimaryKey(BigDecimal gwasRunId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasRunByQqplotContaining
@@ -181,6 +190,7 @@ public interface VGwasRunDAO extends JpaDao<VGwasRun>, GWASRunDAO {
 	 * JPQL Query - findVGwasRunByQqplotContaining
 	 *
 	 */
-	public Set<VGwasRun> findVGwasRunByQqplotContaining(String qqplot_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasRun> findVGwasRunByQqplotContaining(String qqplot_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

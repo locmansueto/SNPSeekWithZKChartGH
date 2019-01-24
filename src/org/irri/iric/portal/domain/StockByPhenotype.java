@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 public interface StockByPhenotype extends VarietyPlus, Serializable {
-	
-	
+
 	public BigDecimal getStockId();
 
 }

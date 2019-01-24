@@ -14,14 +14,14 @@ public class AppContextFilterConfig implements Filter {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res,
 			FilterChain chain) throws IOException, ServletException {
-		// TODO Auto-generated method stub
+		
 		try {
 			chain.doFilter(req, res);
 		} catch (Exception ex) {
@@ -32,7 +32,7 @@ public class AppContextFilterConfig implements Filter {
 	
 	@Override
 	public void init(FilterConfig config) throws ServletException {
-		// TODO Auto-generated method stub
+		
 		
 		 if( AppContext.configloaded) return;
 		
@@ -83,7 +83,7 @@ public class AppContextFilterConfig implements Filter {
 
 //	@Override
 //	public void init(FilterConfig config) throws ServletException {
-//		// TODO Auto-generated method stub
+//		
 //		
 //		 if( AppContext.configloaded) return;
 //		

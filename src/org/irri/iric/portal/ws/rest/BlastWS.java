@@ -1,8 +1,5 @@
 package org.irri.iric.portal.ws.rest;
 
-
-
-
 import java.util.List;
 
 import javax.ws.rs.DefaultValue;
@@ -33,70 +30,69 @@ public class BlastWS {
 	@Qualifier("LocalAlignmentDAO")
 	private LocalAlignmentDAO localblastdao;
 
-	private List alignWithDB(LocalAlignmentQuery query)  throws Exception {
-		
-		localblastdao = (LocalAlignmentDAO)AppContext.checkBean(localblastdao, "LocalAlignmentDAO");
+	private List alignWithDB(LocalAlignmentQuery query) throws Exception {
+
+		localblastdao = (LocalAlignmentDAO) AppContext.checkBean(localblastdao, "LocalAlignmentDAO");
 		// setup arguments
-		return localblastdao.alignWithDB( query) ;
+		return localblastdao.alignWithDB(query);
 	}
-	
-	
-	
-	  @Path("/postblast")
-	  @POST
-	  @Produces("application/json")
-	  public Response postBlast(@FormParam("sequence") String sequence, 
-			  @FormParam("program") String program,  @FormParam("db") String dbname,  
-			  @DefaultValue("10") @FormParam("maxe") Double maxevalue
-	  		) throws JSONException {
- 
-		  	if(sequence==null || program==null || dbname==null )  throw new JSONException("parameters sequence AND program AND db are required");
 
-		  	try {
-				LocalAlignmentQuery query = new LocalAlignmentQuery(sequence, dbname, program);
-				query.setEvalue(maxevalue);
-				
-				AppContext.logQuery("WS " + query.toString());
-				
-			  	List listResult = alignWithDB(query);
-		  		return Response.status(200).entity( new ObjectMapper().writeValueAsString( listResult )).build();
-		  		
-		  	} catch(JSONException ex) {
-		  		ex.printStackTrace();
-		  		throw ex;
-		  	} catch (Exception ex) {
-		  		ex.printStackTrace();
-		  		throw new JSONException(ex);
-		  	}
-			
-	  }
-	  @Path("/getblast")
-	  @GET
-	  @Produces("application/json")
-	  public Response getBlast(@QueryParam("sequence") String sequence, 
-			  @QueryParam("program") String program,  @QueryParam("db") String dbname,  
-			  @DefaultValue("10") @QueryParam("maxe") Double maxevalue
-	  		) throws JSONException {
- 
-		  	if(sequence==null || program==null || dbname==null )  throw new JSONException("parameters sequence AND program AND db are required");
+	@Path("/postblast")
+	@POST
+	@Produces("application/json")
+	public Response postBlast(@FormParam("sequence") String sequence, @FormParam("program") String program,
+			@FormParam("db") String dbname, @DefaultValue("10") @FormParam("maxe") Double maxevalue)
+			throws JSONException {
 
-		  	try {
-				LocalAlignmentQuery query = new LocalAlignmentQuery(sequence, dbname, program);
-				query.setEvalue(maxevalue);
-				
-				AppContext.logQuery("WS " + query.toString());
-				
-			  	List listResult = alignWithDB(query);
-		  		return Response.status(200).entity( new ObjectMapper().writeValueAsString( listResult )).build();
-		  		
-		  	} catch(JSONException ex) {
-		  		ex.printStackTrace();
-		  		throw ex;
-		  	} catch (Exception ex) {
-		  		ex.printStackTrace();
-		  		throw new JSONException(ex);
-		  	}
-			
-	  }
-	  
+		if (sequence == null || program == null || dbname == null)
+			throw new JSONException("parameters sequence AND program AND db are required");
+
+		try {
+			LocalAlignmentQuery query = new LocalAlignmentQuery(sequence, dbname, program);
+			query.setEvalue(maxevalue);
+
+			AppContext.logQuery("WS " + query.toString());
+
+			List listResult = alignWithDB(query);
+			return Response.status(200).entity(new ObjectMapper().writeValueAsString(listResult)).build();
+
+		} catch (JSONException ex) {
+			ex.printStackTrace();
+			throw ex;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new JSONException(ex);
+		}
+
+	}
+
+	@Path("/getblast")
+	@GET
+	@Produces("application/json")
+	public Response getBlast(@QueryParam("sequence") String sequence, @QueryParam("program") String program,
+			@QueryParam("db") String dbname, @DefaultValue("10") @QueryParam("maxe") Double maxevalue)
+			throws JSONException {
+
+		if (sequence == null || program == null || dbname == null)
+			throw new JSONException("parameters sequence AND program AND db are required");
+
+		try {
+			LocalAlignmentQuery query = new LocalAlignmentQuery(sequence, dbname, program);
+			query.setEvalue(maxevalue);
+
+			AppContext.logQuery("WS " + query.toString());
+
+			List listResult = alignWithDB(query);
+			return Response.status(200).entity(new ObjectMapper().writeValueAsString(listResult)).build();
+
+		} catch (JSONException ex) {
+			ex.printStackTrace();
+			throw ex;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new JSONException(ex);
+		}
+
+	}
+
 }

@@ -9,6 +9,7 @@ public interface SnpsInExonDAO {
 
 	/**
 	 * Get SNPs in exon in chromosome, from start to end
+	 * 
 	 * @param chr
 	 * @param start
 	 * @param end

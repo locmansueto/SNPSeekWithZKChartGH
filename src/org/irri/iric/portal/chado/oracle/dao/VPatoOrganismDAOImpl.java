@@ -26,17 +26,18 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage VPatoOrganism entities.
  * 
  */
-//@Repository("VPatoOrganismDAO")
+// @Repository("VPatoOrganismDAO")
 @Repository("VPatoOrganismDAO")
 @Transactional
-public class VPatoOrganismDAOImpl extends AbstractJpaDao<VPatoOrganism>
-		implements VPatoOrganismDAO {
+public class VPatoOrganismDAOImpl extends AbstractJpaDao<VPatoOrganism> implements VPatoOrganismDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VPatoOrganism.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VPatoOrganism.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Pollux
@@ -54,7 +55,7 @@ public class VPatoOrganismDAOImpl extends AbstractJpaDao<VPatoOrganism>
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -69,27 +70,30 @@ public class VPatoOrganismDAOImpl extends AbstractJpaDao<VPatoOrganism>
 		return dataTypes;
 	}
 
-//	/**
-//	 * JPQL Query - findVPatoOrganismByCommonName
-//	 *
-//	 */
-//	@Transactional
-//	public Set<VPatoOrganism> findVPatoOrganismByCommonName(String commonName) throws DataAccessException {
-//
-//		return findVPatoOrganismByCommonName(commonName, -1, -1);
-//	}
-//
-//	/**
-//	 * JPQL Query - findVPatoOrganismByCommonName
-//	 *
-//	 */
-//
-//	@SuppressWarnings("unchecked")
-//	@Transactional
-//	public Set<VPatoOrganism> findVPatoOrganismByCommonName(String commonName, int startResult, int maxRows) throws DataAccessException {
-//		Query query = createNamedQuery("findVPatoOrganismByCommonName", startResult, maxRows, commonName);
-//		return new LinkedHashSet<VPatoOrganism>(query.getResultList());
-//	}
+	// /**
+	// * JPQL Query - findVPatoOrganismByCommonName
+	// *
+	// */
+	// @Transactional
+	// public Set<VPatoOrganism> findVPatoOrganismByCommonName(String commonName)
+	// throws DataAccessException {
+	//
+	// return findVPatoOrganismByCommonName(commonName, -1, -1);
+	// }
+	//
+	// /**
+	// * JPQL Query - findVPatoOrganismByCommonName
+	// *
+	// */
+	//
+	// @SuppressWarnings("unchecked")
+	// @Transactional
+	// public Set<VPatoOrganism> findVPatoOrganismByCommonName(String commonName,
+	// int startResult, int maxRows) throws DataAccessException {
+	// Query query = createNamedQuery("findVPatoOrganismByCommonName", startResult,
+	// maxRows, commonName);
+	// return new LinkedHashSet<VPatoOrganism>(query.getResultList());
+	// }
 
 	/**
 	 * JPQL Query - findVPatoOrganismByPrimaryKey
@@ -107,7 +111,8 @@ public class VPatoOrganismDAOImpl extends AbstractJpaDao<VPatoOrganism>
 	 */
 
 	@Transactional
-	public VPatoOrganism findVPatoOrganismByPrimaryKey(BigDecimal cvtermId, int startResult, int maxRows) throws DataAccessException {
+	public VPatoOrganism findVPatoOrganismByPrimaryKey(BigDecimal cvtermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVPatoOrganismByPrimaryKey", startResult, maxRows, cvtermId);
 			return (org.irri.iric.portal.chado.oracle.domain.VPatoOrganism) query.getSingleResult();
@@ -133,7 +138,8 @@ public class VPatoOrganismDAOImpl extends AbstractJpaDao<VPatoOrganism>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VPatoOrganism> findVPatoOrganismByOrganismId(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VPatoOrganism> findVPatoOrganismByOrganismId(BigDecimal organismId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVPatoOrganismByOrganismId", startResult, maxRows, organismId);
 		return new LinkedHashSet<VPatoOrganism>(query.getResultList());
 	}
@@ -155,7 +161,8 @@ public class VPatoOrganismDAOImpl extends AbstractJpaDao<VPatoOrganism>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VPatoOrganism> findVPatoOrganismByCvtermContaining(String cvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VPatoOrganism> findVPatoOrganismByCvtermContaining(String cvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVPatoOrganismByCvtermContaining", startResult, maxRows, cvterm);
 		return new LinkedHashSet<VPatoOrganism>(query.getResultList());
 	}
@@ -177,7 +184,8 @@ public class VPatoOrganismDAOImpl extends AbstractJpaDao<VPatoOrganism>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VPatoOrganism> findVPatoOrganismByCvterm(String cvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VPatoOrganism> findVPatoOrganismByCvterm(String cvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVPatoOrganismByCvterm", startResult, maxRows, cvterm);
 		return new LinkedHashSet<VPatoOrganism>(query.getResultList());
 	}
@@ -221,32 +229,36 @@ public class VPatoOrganismDAOImpl extends AbstractJpaDao<VPatoOrganism>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VPatoOrganism> findVPatoOrganismByAccession(String accession, int startResult, int maxRows) throws DataAccessException {
+	public Set<VPatoOrganism> findVPatoOrganismByAccession(String accession, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVPatoOrganismByAccession", startResult, maxRows, accession);
 		return new LinkedHashSet<VPatoOrganism>(query.getResultList());
 	}
-//
-//	/**
-//	 * JPQL Query - findVPatoOrganismByCvNameContaining
-//	 *
-//	 */
-//	@Transactional
-//	public Set<VPatoOrganism> findVPatoOrganismByCvNameContaining(String cvName) throws DataAccessException {
-//
-//		return findVPatoOrganismByCvNameContaining(cvName, -1, -1);
-//	}
-//
-//	/**
-//	 * JPQL Query - findVPatoOrganismByCvNameContaining
-//	 *
-//	 */
-//
-//	@SuppressWarnings("unchecked")
-//	@Transactional
-//	public Set<VPatoOrganism> findVPatoOrganismByCvNameContaining(String cvName, int startResult, int maxRows) throws DataAccessException {
-//		Query query = createNamedQuery("findVPatoOrganismByCvNameContaining", startResult, maxRows, cvName);
-//		return new LinkedHashSet<VPatoOrganism>(query.getResultList());
-//	}
+	//
+	// /**
+	// * JPQL Query - findVPatoOrganismByCvNameContaining
+	// *
+	// */
+	// @Transactional
+	// public Set<VPatoOrganism> findVPatoOrganismByCvNameContaining(String cvName)
+	// throws DataAccessException {
+	//
+	// return findVPatoOrganismByCvNameContaining(cvName, -1, -1);
+	// }
+	//
+	// /**
+	// * JPQL Query - findVPatoOrganismByCvNameContaining
+	// *
+	// */
+	//
+	// @SuppressWarnings("unchecked")
+	// @Transactional
+	// public Set<VPatoOrganism> findVPatoOrganismByCvNameContaining(String cvName,
+	// int startResult, int maxRows) throws DataAccessException {
+	// Query query = createNamedQuery("findVPatoOrganismByCvNameContaining",
+	// startResult, maxRows, cvName);
+	// return new LinkedHashSet<VPatoOrganism>(query.getResultList());
+	// }
 
 	/**
 	 * JPQL Query - findVPatoOrganismByAccessionContaining
@@ -265,54 +277,61 @@ public class VPatoOrganismDAOImpl extends AbstractJpaDao<VPatoOrganism>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VPatoOrganism> findVPatoOrganismByAccessionContaining(String accession, int startResult, int maxRows) throws DataAccessException {
+	public Set<VPatoOrganism> findVPatoOrganismByAccessionContaining(String accession, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVPatoOrganismByAccessionContaining", startResult, maxRows, accession);
 		return new LinkedHashSet<VPatoOrganism>(query.getResultList());
 	}
-//
-//	/**
-//	 * JPQL Query - findVPatoOrganismByCvName
-//	 *
-//	 */
-//	@Transactional
-//	public Set<VPatoOrganism> findVPatoOrganismByCvName(String cvName) throws DataAccessException {
-//
-//		return findVPatoOrganismByCvName(cvName, -1, -1);
-//	}
-//
-//	/**
-//	 * JPQL Query - findVPatoOrganismByCvName
-//	 *
-//	 */
-//
-//	@SuppressWarnings("unchecked")
-//	@Transactional
-//	public Set<VPatoOrganism> findVPatoOrganismByCvName(String cvName, int startResult, int maxRows) throws DataAccessException {
-//		Query query = createNamedQuery("findVPatoOrganismByCvName", startResult, maxRows, cvName);
-//		return new LinkedHashSet<VPatoOrganism>(query.getResultList());
-//	}
-//
-//	/**
-//	 * JPQL Query - findVPatoOrganismByCommonNameContaining
-//	 *
-//	 */
-//	@Transactional
-//	public Set<VPatoOrganism> findVPatoOrganismByCommonNameContaining(String commonName) throws DataAccessException {
-//
-//		return findVPatoOrganismByCommonNameContaining(commonName, -1, -1);
-//	}
-//
-//	/**
-//	 * JPQL Query - findVPatoOrganismByCommonNameContaining
-//	 *
-//	 */
-//
-//	@SuppressWarnings("unchecked")
-//	@Transactional
-//	public Set<VPatoOrganism> findVPatoOrganismByCommonNameContaining(String commonName, int startResult, int maxRows) throws DataAccessException {
-//		Query query = createNamedQuery("findVPatoOrganismByCommonNameContaining", startResult, maxRows, commonName);
-//		return new LinkedHashSet<VPatoOrganism>(query.getResultList());
-//	}
+	//
+	// /**
+	// * JPQL Query - findVPatoOrganismByCvName
+	// *
+	// */
+	// @Transactional
+	// public Set<VPatoOrganism> findVPatoOrganismByCvName(String cvName) throws
+	// DataAccessException {
+	//
+	// return findVPatoOrganismByCvName(cvName, -1, -1);
+	// }
+	//
+	// /**
+	// * JPQL Query - findVPatoOrganismByCvName
+	// *
+	// */
+	//
+	// @SuppressWarnings("unchecked")
+	// @Transactional
+	// public Set<VPatoOrganism> findVPatoOrganismByCvName(String cvName, int
+	// startResult, int maxRows) throws DataAccessException {
+	// Query query = createNamedQuery("findVPatoOrganismByCvName", startResult,
+	// maxRows, cvName);
+	// return new LinkedHashSet<VPatoOrganism>(query.getResultList());
+	// }
+	//
+	// /**
+	// * JPQL Query - findVPatoOrganismByCommonNameContaining
+	// *
+	// */
+	// @Transactional
+	// public Set<VPatoOrganism> findVPatoOrganismByCommonNameContaining(String
+	// commonName) throws DataAccessException {
+	//
+	// return findVPatoOrganismByCommonNameContaining(commonName, -1, -1);
+	// }
+	//
+	// /**
+	// * JPQL Query - findVPatoOrganismByCommonNameContaining
+	// *
+	// */
+	//
+	// @SuppressWarnings("unchecked")
+	// @Transactional
+	// public Set<VPatoOrganism> findVPatoOrganismByCommonNameContaining(String
+	// commonName, int startResult, int maxRows) throws DataAccessException {
+	// Query query = createNamedQuery("findVPatoOrganismByCommonNameContaining",
+	// startResult, maxRows, commonName);
+	// return new LinkedHashSet<VPatoOrganism>(query.getResultList());
+	// }
 
 	/**
 	 * JPQL Query - findVPatoOrganismByCvtermId
@@ -330,7 +349,8 @@ public class VPatoOrganismDAOImpl extends AbstractJpaDao<VPatoOrganism>
 	 */
 
 	@Transactional
-	public VPatoOrganism findVPatoOrganismByCvtermId(BigDecimal cvtermId, int startResult, int maxRows) throws DataAccessException {
+	public VPatoOrganism findVPatoOrganismByCvtermId(BigDecimal cvtermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVPatoOrganismByCvtermId", startResult, maxRows, cvtermId);
 			return (org.irri.iric.portal.chado.oracle.domain.VPatoOrganism) query.getSingleResult();
@@ -340,7 +360,9 @@ public class VPatoOrganismDAOImpl extends AbstractJpaDao<VPatoOrganism>
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -349,68 +371,59 @@ public class VPatoOrganismDAOImpl extends AbstractJpaDao<VPatoOrganism>
 		return true;
 	}
 
-	
-	
-	
-
 	@Override
 	public List getAllTerms() {
-		// TODO Auto-generated method stub
-		List list=new ArrayList();
-		list.addAll( this.findAllVPatoOrganisms() );
+		
+		List list = new ArrayList();
+		list.addAll(this.findAllVPatoOrganisms());
 		return list;
 	}
 	/*
-	@Override
-	public List getAllTermsByOrganism(String organism) {
-		// TODO Auto-generated method stub
-		
-		Set setTerms = new TreeSet();
-		Iterator<VGoOrganism> itgoorg = findVGoOrganismByCommonName(organism).iterator(); 
-		while(itgoorg.hasNext())
-			setTerms.add(  itgoorg.next().getCvterm() );
-		
-		List list=new ArrayList();
-		list.addAll(setTerms );
-		return list;
-	}
-*/
-//	@Override
-//	public List getAllTerms(String organism) {
-//		// TODO Auto-generated method stub
-//
-//		Set setTerms = new TreeSet();
-//		Iterator<VPatoOrganism> itgoorg = findVPatoOrganismByCommonName(organism).iterator(); 
-//		while(itgoorg.hasNext())
-//			setTerms.add(  itgoorg.next().getCvterm() );
-//		
-//		List list=new ArrayList();
-//		list.addAll(setTerms );
-//		return list;
-//	}
+	 * @Override public List getAllTermsByOrganism(String organism) { // TODO
+	 * Auto-generated method stub
+	 * 
+	 * Set setTerms = new TreeSet(); Iterator<VGoOrganism> itgoorg =
+	 * findVGoOrganismByCommonName(organism).iterator(); while(itgoorg.hasNext())
+	 * setTerms.add( itgoorg.next().getCvterm() );
+	 * 
+	 * List list=new ArrayList(); list.addAll(setTerms ); return list; }
+	 */
+	// @Override
+	// public List getAllTerms(String organism) {
+	// 
+	//
+	// Set setTerms = new TreeSet();
+	// Iterator<VPatoOrganism> itgoorg =
+	// findVPatoOrganismByCommonName(organism).iterator();
+	// while(itgoorg.hasNext())
+	// setTerms.add( itgoorg.next().getCvterm() );
+	//
+	// List list=new ArrayList();
+	// list.addAll(setTerms );
+	// return list;
+	// }
 
 	@Override
 	public List getAllTerms(BigDecimal cv, BigDecimal organism) {
-		// TODO Auto-generated method stub
+		
 		/*
-		Set setTerms = new TreeSet();
-		//Iterator<VPatoOrganism> itgoorg = findVPatoOrganismByCvCommonName(cv,organism,-1,-1).iterator(); 
-		Iterator<VPatoOrganism> itgoorg = findVPatoOrganismByCvOrganism(cv,organism,-1,-1).iterator();
-		while(itgoorg.hasNext())
-			setTerms.add(  itgoorg.next().getCvterm() );
-		*/
-		List list=new ArrayList();
-		list.addAll( findVPatoOrganismByCvOrganism(cv,organism,-1,-1));
+		 * Set setTerms = new TreeSet(); //Iterator<VPatoOrganism> itgoorg =
+		 * findVPatoOrganismByCvCommonName(cv,organism,-1,-1).iterator();
+		 * Iterator<VPatoOrganism> itgoorg =
+		 * findVPatoOrganismByCvOrganism(cv,organism,-1,-1).iterator();
+		 * while(itgoorg.hasNext()) setTerms.add( itgoorg.next().getCvterm() );
+		 */
+		List list = new ArrayList();
+		list.addAll(findVPatoOrganismByCvOrganism(cv, organism, -1, -1));
 		return list;
 	}
-	
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	private Set<VPatoOrganism> findVPatoOrganismByCvOrganism(BigDecimal cv, BigDecimal organism, int startResult, int maxRows) throws DataAccessException {
+	private Set<VPatoOrganism> findVPatoOrganismByCvOrganism(BigDecimal cv, BigDecimal organism, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVPatoOrganismByCvOrganism", startResult, maxRows, cv, organism);
 		return new LinkedHashSet<VPatoOrganism>(query.getResultList());
 	}
-	
-	
+
 }

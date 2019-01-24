@@ -40,7 +40,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class VQtlDAOImpl extends AbstractJpaDao<VQtl> implements VQtlDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
 	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VQtl.class }));
@@ -61,7 +62,7 @@ public class VQtlDAOImpl extends AbstractJpaDao<VQtl> implements VQtlDAO {
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -93,7 +94,8 @@ public class VQtlDAOImpl extends AbstractJpaDao<VQtl> implements VQtlDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VQtl> findVQtlByTraitNameContaining(String traitName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VQtl> findVQtlByTraitNameContaining(String traitName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVQtlByTraitNameContaining", startResult, maxRows, traitName);
 		return new LinkedHashSet<VQtl>(query.getResultList());
 	}
@@ -369,7 +371,9 @@ public class VQtlDAOImpl extends AbstractJpaDao<VQtl> implements VQtlDAO {
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -383,44 +387,39 @@ public class VQtlDAOImpl extends AbstractJpaDao<VQtl> implements VQtlDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	public Collection getLocusByName(Collection<String> name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-/*
+
+	/*
+	 * @Override public List<Locus> getLocusByRegion(String contig, Long start, Long
+	 * end, String organism) {  return null; }
+	 */
 	@Override
-	public List<Locus> getLocusByRegion(String contig, Long start, Long end,
-			String organism) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-*/
-	@Override
-	public List<Locus> getLocusByRegion(String contig, Long start, Long end,
-			String organism, String genemodel) {
+	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List getLocusByContigPositions(String contig, Collection posset,
-			String organism, Integer plusminus) {
+	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List getLocusByContigPositions(String contig, Collection posset,
-			String organism, Integer plusminus, String genemodel) {
-		// TODO Auto-generated method stub
-		Set allset=new HashSet();
-		Set sets[] = AppContext.setSlicer(new HashSet(posset),500);
-		for(int iset=0; iset<sets.length; iset++) {
-			allset.addAll( _getLocusByContigPositions( contig,  sets[iset],  organism, genemodel,  plusminus));
+	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus,
+			String genemodel) {
+		
+		Set allset = new HashSet();
+		Set sets[] = AppContext.setSlicer(new HashSet(posset), 500);
+		for (int iset = 0; iset < sets.length; iset++) {
+			allset.addAll(_getLocusByContigPositions(contig, sets[iset], organism, genemodel, plusminus));
 		}
-		List listall=new ArrayList();
+		List listall = new ArrayList();
 		listall.addAll(allset);
 		return listall;
 	}
@@ -432,24 +431,19 @@ public class VQtlDAOImpl extends AbstractJpaDao<VQtl> implements VQtlDAO {
 	}
 
 	@Override
-	public List<Locus> getLocusByDescription(TextSearchOptions description,
-			String organism, String genemodel) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-	
-	@Override
-	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym,
-			String organism) {
+	public List<Locus> getLocusByDescription(TextSearchOptions description, String organism, String genemodel) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym,
-			String organism, String genemodel) {
+	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym, String organism) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym, String organism, String genemodel) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -457,24 +451,25 @@ public class VQtlDAOImpl extends AbstractJpaDao<VQtl> implements VQtlDAO {
 	private Session getSession() {
 		return entityManager.unwrap(Session.class);
 	}
+
 	private List<Locus> executeSQLMerged(String sql) {
-		//System.out.println("executing :" + sql);
-		//log.info("executing :" + sql);
+		// System.out.println("executing :" + sql);
+		// log.info("executing :" + sql);
 		AppContext.debug("executing " + sql);
 		List listResult = getSession().createSQLQuery(sql).addEntity(VQtl.class).list();
 		AppContext.debug("result " + listResult.size() + " qtls");
 		return listResult;
 	}
-	
-	private List _getLocusByContigPositions(String contig, Collection posset, String organism, String genemodel, Integer plusminus) {
-		if(AppContext.isOracle()) return _getLocusByContigPositionsOracle( contig,  posset,  organism,  genemodel,  plusminus) ;
-		if(AppContext.isPostgres()) return _getLocusByContigPositionsPostgres( contig,  posset,  organism,  genemodel,  plusminus) ;
+
+	private List _getLocusByContigPositions(String contig, Collection posset, String organism, String genemodel,
+			Integer plusminus) {
+		if (AppContext.isOracle())
+			return _getLocusByContigPositionsOracle(contig, posset, organism, genemodel, plusminus);
+		if (AppContext.isPostgres())
+			return _getLocusByContigPositionsPostgres(contig, posset, organism, genemodel, plusminus);
 		return null;
 	}
-	
-	
-	
-	
+
 	@Override
 	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel,
 			String featuretype) {
@@ -489,138 +484,129 @@ public class VQtlDAOImpl extends AbstractJpaDao<VQtl> implements VQtlDAO {
 		return null;
 	}
 
-	private List _getLocusByContigPositionsOracle(String contig, Collection posset, String organism, String genemodel, Integer plusminus) {
-		
-		/*
-		List posset=new ArrayList();
-		Iterator<Position> itpos=possetobj.iterator();
-		while(itpos.hasNext()) {
-			posset.add(  itpos.next().getPosition() );
-		}
-		*/
-		
-	
-		String locuspref="";
-		/*
-		if(genemodel.equals( LocusCvTermDAO.QTL_ALL)) {
-			//return  _getLocusByContigPositions( contig,  posset,  organism, null);
-		}
-		else if(genemodel.equals( LocusCvTermDAO.QTL_QTARO)) {
-			locuspref = " and q.db_id=1 ";
-		}
-		else if(genemodel.equals( LocusCvTermDAO.QTL_GRAMENE)) {
-			locuspref = " and q.db_id=2 ";
-		}
-		*/
-		
-		//listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItems");
+	private List _getLocusByContigPositionsOracle(String contig, Collection posset, String organism, String genemodel,
+			Integer plusminus) {
 
-		posset=AppContext.convertPos2Position(posset);
-		
+		/*
+		 * List posset=new ArrayList(); Iterator<Position> itpos=possetobj.iterator();
+		 * while(itpos.hasNext()) { posset.add( itpos.next().getPosition() ); }
+		 */
+
+		String locuspref = "";
+		/*
+		 * if(genemodel.equals( LocusCvTermDAO.QTL_ALL)) { //return
+		 * _getLocusByContigPositions( contig, posset, organism, null); } else
+		 * if(genemodel.equals( LocusCvTermDAO.QTL_QTARO)) { locuspref =
+		 * " and q.db_id=1 "; } else if(genemodel.equals( LocusCvTermDAO.QTL_GRAMENE)) {
+		 * locuspref = " and q.db_id=2 "; }
+		 */
+
+		// listitemsdao = (ListItemsDAO)AppContext.checkBean(listitemsdao, "ListItems");
+
+		posset = AppContext.convertPos2Position(posset);
 
 		StringBuffer sql = new StringBuffer();
-		
+
 		sql.append("select * from (");
-		
-		Set[] posseti=AppContext.setSlicer(new TreeSet(posset),900);
-		
-		for(int iset=0; iset<posseti.length; iset++) {
+
+		Set[] posseti = AppContext.setSlicer(new TreeSet(posset), 900);
+
+		for (int iset = 0; iset < posseti.length; iset++) {
 			String qtlmodel = "";
-			if(genemodel.equals(QtlDAO.QTL_QTARO))
+			if (genemodel.equals(QtlDAO.QTL_QTARO))
 				qtlmodel = " and q.db_id=1 ";
-			else if(genemodel.equals(QtlDAO.QTL_GRAMENE))
+			else if (genemodel.equals(QtlDAO.QTL_GRAMENE))
 				qtlmodel = " and q.db_id=2 ";
-			
-			
-			String ppm="";
-			String mpm="";
-			if(plusminus!=null && plusminus.intValue()!=0 ) {
+
+			String ppm = "";
+			String mpm = "";
+			if (plusminus != null && plusminus.intValue() != 0) {
 				ppm = "+" + plusminus;
 				mpm = "-" + plusminus;
 			}
-			
-			sql.append("select pt.pos querypos, q.* from " + AppContext.getDefaultSchema() + ".v_qtl q,"); 
-			sql.append( " (select distinct column_value pos from table(sys.odcinumberlist(" + AppContext.toCSV(posseti[iset])+  "))) pt");
-			sql.append( " where q.chromosome=" + contig.replace("chr0","").replace("chr","").replace("Chr", "")); 
-			sql.append( " and  pt.pos between ( q.startpos " + mpm + ") and (q.endpos " + ppm + ") " ); 
-			sql.append( qtlmodel );
-			if(iset<posseti.length-1) sql.append(" union ");
+
+			sql.append("select pt.pos querypos, q.* from " + AppContext.getDefaultSchema() + ".v_qtl q,");
+			sql.append(" (select distinct column_value pos from table(sys.odcinumberlist("
+					+ AppContext.toCSV(posseti[iset]) + "))) pt");
+			sql.append(" where q.chromosome=" + contig.replace("chr0", "").replace("chr", "").replace("Chr", ""));
+			sql.append(" and  pt.pos between ( q.startpos " + mpm + ") and (q.endpos " + ppm + ") ");
+			sql.append(qtlmodel);
+			if (iset < posseti.length - 1)
+				sql.append(" union ");
 		}
-		
+
 		sql.append(") order by chromosome, startpos, endpos");
-			
-		//AppContext.debug("sql query: " + sql);
-		List listqtl=new ArrayList();
-		 listqtl.addAll(new TreeSet(executeSQLMerged(sql.toString())));
+
+		// AppContext.debug("sql query: " + sql);
+		List listqtl = new ArrayList();
+		listqtl.addAll(new TreeSet(executeSQLMerged(sql.toString())));
 		return listqtl;
-		
+
 	}
 
-	
-private List _getLocusByContigPositionsPostgres(String contig, Collection posset, String organism, String genemodel, Integer plusminus) {
-		
-		
-	
-		String locuspref="";
+	private List _getLocusByContigPositionsPostgres(String contig, Collection posset, String organism, String genemodel,
+			Integer plusminus) {
 
-		posset=AppContext.convertPos2Position(posset);
-		
+		String locuspref = "";
+
+		posset = AppContext.convertPos2Position(posset);
 
 		StringBuffer sql = new StringBuffer();
-		
+
 		sql.append("select * from (");
-		
-		Set[] posseti=AppContext.setSlicer(new TreeSet(posset),900);
-		
-		for(int iset=0; iset<posseti.length; iset++) {
+
+		Set[] posseti = AppContext.setSlicer(new TreeSet(posset), 900);
+
+		for (int iset = 0; iset < posseti.length; iset++) {
 			String qtlmodel = "";
-			if(genemodel.equals(QtlDAO.QTL_QTARO))
+			if (genemodel.equals(QtlDAO.QTL_QTARO))
 				qtlmodel = " and q.db_id=1 ";
-			else if(genemodel.equals(QtlDAO.QTL_GRAMENE))
+			else if (genemodel.equals(QtlDAO.QTL_GRAMENE))
 				qtlmodel = " and q.db_id=2 ";
-			
-			
-			String ppm="";
-			String mpm="";
-			if(plusminus!=null && plusminus.intValue()!=0 ) {
+
+			String ppm = "";
+			String mpm = "";
+			if (plusminus != null && plusminus.intValue() != 0) {
 				ppm = "+" + plusminus;
 				mpm = "-" + plusminus;
 			}
-			
-			sql.append("select pt.pos querypos, q.* from " + AppContext.getDefaultSchema() + ".v_qtl q,"); 
-			//sql.append( " (select distinct column_value pos from table(sys.odcinumberlist(" + AppContext.toCSV(posseti[iset])+  "))) pt");
-			
-			//sql.append( " (select distinct column_value pos from table(sys.odcinumberlist(" + AppContext.toCSV(posseti[iset])+  "))) pt");
-			sql.append( " (select unnest(ARRAY[" +AppContext.toCSV(posseti[iset]) + "]) pos)  pt" );
-			
-			sql.append( " where q.chromosome=" + contig.replace("chr0","").replace("chr","").replace("Chr", "")); 
-			sql.append( " and  pt.pos between ( q.startpos " + mpm + ") and (q.endpos " + ppm + ") " ); 
-			sql.append( qtlmodel );
-			if(iset<posseti.length-1) sql.append(" union ");
+
+			sql.append("select pt.pos querypos, q.* from " + AppContext.getDefaultSchema() + ".v_qtl q,");
+			// sql.append( " (select distinct column_value pos from
+			// table(sys.odcinumberlist(" + AppContext.toCSV(posseti[iset])+ "))) pt");
+
+			// sql.append( " (select distinct column_value pos from
+			// table(sys.odcinumberlist(" + AppContext.toCSV(posseti[iset])+ "))) pt");
+			sql.append(" (select unnest(ARRAY[" + AppContext.toCSV(posseti[iset]) + "]) pos)  pt");
+
+			sql.append(" where q.chromosome=" + contig.replace("chr0", "").replace("chr", "").replace("Chr", ""));
+			sql.append(" and  pt.pos between ( q.startpos " + mpm + ") and (q.endpos " + ppm + ") ");
+			sql.append(qtlmodel);
+			if (iset < posseti.length - 1)
+				sql.append(" union ");
 		}
-		
+
 		sql.append(") foo order by chromosome, startpos, endpos");
-			
-		//AppContext.debug("sql query: " + sql);
-		List listqtl=new ArrayList();
-		 listqtl.addAll(new TreeSet(executeSQLMerged(sql.toString())));
+
+		// AppContext.debug("sql query: " + sql);
+		List listqtl = new ArrayList();
+		listqtl.addAll(new TreeSet(executeSQLMerged(sql.toString())));
 		return listqtl;
-		
+
 	}
 
-@Override
-public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus,
-		String genemodel, Set featuretype) {
-	// TODO Auto-generated method stub
-	return null;
-}
+	@Override
+	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus,
+			String genemodel, Set featuretype) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-@Override
-public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel,
-		Set featuretype) {
-	// TODO Auto-generated method stub
-	return null;
-}
-	
-	
+	@Override
+	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel,
+			Set featuretype) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -200,14 +200,14 @@ public class VIricstockPhenotypeDAOImpl extends AbstractJpaDao<VIricstockPhenoty
 	@Override
 	public Set<VIricstockPhenotype> findVIricstockPhenotypeByIricStockId(BigDecimal iricStockId)
 			throws DataAccessException {
-		// TODO Auto-generated method stub
+
 		return findVIricstockPhenotypeByIricStockId(iricStockId, -1, -1);
 	}
 
 	@Override
 	public Set<VIricstockPhenotype> findVIricstockPhenotypeByIricStockId(BigDecimal iricStockId, int startResult,
 			int maxRows) throws DataAccessException {
-		// TODO Auto-generated method stub
+
 		Query query = createNamedQuery("findVIricstockPhenotypeByIricStockIdAll", startResult, maxRows, iricStockId);
 		return new LinkedHashSet<VIricstockPhenotype>(query.getResultList());
 	}
@@ -391,7 +391,7 @@ public class VIricstockPhenotypeDAOImpl extends AbstractJpaDao<VIricstockPhenoty
 
 	@Override
 	public List findPhenotypesByVariety(Variety var, Set ds) {
-		// TODO Auto-generated method stub
+
 		List list = new java.util.ArrayList();
 		list.addAll(this.findVIricstockPhenotypeByIricStockId(var.getVarietyId()));
 		return list;
@@ -411,7 +411,7 @@ public class VIricstockPhenotypeDAOImpl extends AbstractJpaDao<VIricstockPhenoty
 
 	@Override
 	public Phenotype findPhenotypesByVariety(Variety var, String dataset, String phenId) {
-		// TODO Auto-generated method stub
+
 		return findVIricstockPhenotypeByIricStockId(var.getVarietyId(), dataset,
 				BigDecimal.valueOf(Long.valueOf(phenId)));
 
@@ -419,12 +419,12 @@ public class VIricstockPhenotypeDAOImpl extends AbstractJpaDao<VIricstockPhenoty
 
 	@Override
 	public List findPhenotypesByVariety(String phenId, String dataset) {
-		// TODO Auto-generated method stub
+
 		return findVIricstockPhenotypeByPhenId(BigDecimal.valueOf(Long.valueOf(phenId)), dataset);
 	}
 
 	public List findPhenotypesByVarietyNameLike(String name) {
-		// TODO Auto-generated method stub
+
 		List list = new java.util.ArrayList();
 		list.addAll(this.findVIricstockPhenotypeByNameContaining(name));
 		return list;

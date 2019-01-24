@@ -16,19 +16,26 @@ import org.irri.iric.portal.domain.Locus;
 /**
  */
 @IdClass(org.irri.iric.portal.chado.oracle.domain.VLocusCvtermCvtermpathPK.class)
-@Entity(name="VLocusCvtermCvtermpath")
+@Entity(name = "VLocusCvtermCvtermpath")
 @NamedQueries({
 		@NamedQuery(name = "findAllVLocusCvtermCvtermpaths", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath"),
 		@NamedQuery(name = "findVLocusCvtermCvtermpathByCommonName", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.commonName = ?1"),
-		
-//		@NamedQuery(name = "findVLocusCvtermCvtermpathByCvCommonName", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.cvName = ?1 and myVLocusCvtermCvtermpath.commonName = ?2"),
+
+		// @NamedQuery(name = "findVLocusCvtermCvtermpathByCvCommonName", query =
+		// "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath
+		// myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.cvName = ?1 and
+		// myVLocusCvtermCvtermpath.commonName = ?2"),
 		@NamedQuery(name = "findVLocusCvtermCvtermpathByCvOrganism", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.cvId = ?1 and myVLocusCvtermCvtermpath.organismId = ?2"),
 		@NamedQuery(name = "findVLocusCvtermCvtermpathByCvOrganismInFeatureId", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.cvId = ?1 and myVLocusCvtermCvtermpath.organismId = ?2 and myVLocusCvtermCvtermpath.featureId in (?3)"),
-//		@NamedQuery(name = "findVLocusCvtermCvtermpathByObjCvtermOrg", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.objCvterm = ?1 and myVLocusCvtermCvtermpath.commonName=?2 order by myVLocusCvtermCvtermpath.contigName, myVLocusCvtermCvtermpath.fmin, myVLocusCvtermCvtermpath.pathdistance"),
+		// @NamedQuery(name = "findVLocusCvtermCvtermpathByObjCvtermOrg", query =
+		// "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath
+		// myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.objCvterm = ?1 and
+		// myVLocusCvtermCvtermpath.commonName=?2 order by
+		// myVLocusCvtermCvtermpath.contigName, myVLocusCvtermCvtermpath.fmin,
+		// myVLocusCvtermCvtermpath.pathdistance"),
 		@NamedQuery(name = "findVLocusCvtermCvtermpathByObjCvtermCvOrg", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.objCvterm = ?1 and myVLocusCvtermCvtermpath.cvId=?2 and myVLocusCvtermCvtermpath.organismId=?3 order by myVLocusCvtermCvtermpath.contigName, myVLocusCvtermCvtermpath.fmin, myVLocusCvtermCvtermpath.pathdistance"),
 		@NamedQuery(name = "findVLocusCvtermCvtermpathByCvOrgInFeatureId", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.cvId=?1 and myVLocusCvtermCvtermpath.organismId=?2 and myVLocusCvtermCvtermpath.featureId in (?3) order by myVLocusCvtermCvtermpath.contigName, myVLocusCvtermCvtermpath.fmin, myVLocusCvtermCvtermpath.pathdistance"),
-				
-		
+
 		@NamedQuery(name = "findVLocusCvtermCvtermpathByCommonNameContaining", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.commonName like ?1"),
 		@NamedQuery(name = "findVLocusCvtermCvtermpathByContigId", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.contigId = ?1"),
 		@NamedQuery(name = "findVLocusCvtermCvtermpathByContigName", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.contigName = ?1"),
@@ -54,10 +61,10 @@ import org.irri.iric.portal.domain.Locus;
 		@NamedQuery(name = "findVLocusCvtermCvtermpathBySubjAccContaining", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.subjAcc like ?1"),
 		@NamedQuery(name = "findVLocusCvtermCvtermpathBySubjCvterm", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.subjCvterm = ?1"),
 		@NamedQuery(name = "findVLocusCvtermCvtermpathBySubjCvtermContaining", query = "select myVLocusCvtermCvtermpath from VLocusCvtermCvtermpath myVLocusCvtermCvtermpath where myVLocusCvtermCvtermpath.subjCvterm like ?1") })
-@Table( name = "V_LOCUS_CVTERM_CVTERMPATH")
+@Table(name = "V_LOCUS_CVTERM_CVTERMPATH")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VLocusCvtermCvtermpath")
-public class VLocusCvtermCvtermpath implements Serializable , Locus, CvTerm, Comparable {
+public class VLocusCvtermCvtermpath implements Serializable, Locus, CvTerm, Comparable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -125,13 +132,11 @@ public class VLocusCvtermCvtermpath implements Serializable , Locus, CvTerm, Com
 	@XmlElement
 	String cvName;
 
-	
 	@Column(name = "DB", length = 1020)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String db;
 
-	
 	@Column(name = "CV_ID", length = 1020)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -183,7 +188,6 @@ public class VLocusCvtermCvtermpath implements Serializable , Locus, CvTerm, Com
 	/**
 	 */
 
-	
 	@Column(name = "ORGANISM_ID", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
 	@Id
@@ -212,8 +216,8 @@ public class VLocusCvtermCvtermpath implements Serializable , Locus, CvTerm, Com
 	/**
 	 */
 	public void setName(String cvterm) {
-		//this.name = name;
-		this.subjCvterm=name;
+		// this.name = name;
+		this.subjCvterm = name;
 	}
 
 	/**
@@ -291,9 +295,9 @@ public class VLocusCvtermCvtermpath implements Serializable , Locus, CvTerm, Com
 	/**
 	 */
 	public String getNotes() {
-		//return this.notes;
+		// return this.notes;
 		return this.notes;
-		
+
 	}
 
 	/**
@@ -460,111 +464,117 @@ public class VLocusCvtermCvtermpath implements Serializable , Locus, CvTerm, Com
 		return result;
 	}
 
-
 	@Override
 	public boolean equals(Object obj) {
 
-		return compareTo(obj)==0;
-		
-		/*if (!(obj instanceof VLocusCvtermCvtermpath))
-			return false;
-		VLocusCvtermCvtermpath c= (VLocusCvtermCvtermpath)obj;
-		return c.getUniquename().equals(this.getUniquename()) && c.getOrganismId().equals(this.getOrganismId());
-		*/
+		return compareTo(obj) == 0;
+
+		/*
+		 * if (!(obj instanceof VLocusCvtermCvtermpath)) return false;
+		 * VLocusCvtermCvtermpath c= (VLocusCvtermCvtermpath)obj; return
+		 * c.getUniquename().equals(this.getUniquename()) &&
+		 * c.getOrganismId().equals(this.getOrganismId());
+		 */
 	}
 
 	/**
 	 */
-//	public boolean equals(Object obj) {
-//		if (obj == this)
-//			return true;
-//		if (!(obj instanceof VLocusCvtermCvtermpath))
-//			return false;
-//		VLocusCvtermCvtermpath equalCheck = (VLocusCvtermCvtermpath) obj;
-//		if ((featureId == null && equalCheck.featureId != null) || (featureId != null && equalCheck.featureId == null))
-//			return false;
-//		if (featureId != null && !featureId.equals(equalCheck.featureId))
-//			return false;
-//		if ((cvtermId == null && equalCheck.cvtermId != null) || (cvtermId != null && equalCheck.cvtermId == null))
-//			return false;
-//		if (cvtermId != null && !cvtermId.equals(equalCheck.cvtermId))
-//			return false;
-//		if ((organismId == null && equalCheck.organismId != null) || (organismId != null && equalCheck.organismId == null))
-//			return false;
-//		if (organismId != null && !organismId.equals(equalCheck.organismId))
-//			return false;
-//		return true;
-//	}
-	
-	
-	
+	// public boolean equals(Object obj) {
+	// if (obj == this)
+	// return true;
+	// if (!(obj instanceof VLocusCvtermCvtermpath))
+	// return false;
+	// VLocusCvtermCvtermpath equalCheck = (VLocusCvtermCvtermpath) obj;
+	// if ((featureId == null && equalCheck.featureId != null) || (featureId != null
+	// && equalCheck.featureId == null))
+	// return false;
+	// if (featureId != null && !featureId.equals(equalCheck.featureId))
+	// return false;
+	// if ((cvtermId == null && equalCheck.cvtermId != null) || (cvtermId != null &&
+	// equalCheck.cvtermId == null))
+	// return false;
+	// if (cvtermId != null && !cvtermId.equals(equalCheck.cvtermId))
+	// return false;
+	// if ((organismId == null && equalCheck.organismId != null) || (organismId !=
+	// null && equalCheck.organismId == null))
+	// return false;
+	// if (organismId != null && !organismId.equals(equalCheck.organismId))
+	// return false;
+	// return true;
+	// }
 
 	@Override
 	public BigDecimal getCvTermId() {
-		// TODO Auto-generated method stub
+		
 		return this.cvtermId;
 	}
 
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-			// TODO Auto-generated method stub
-		VLocusCvtermCvtermpath l1=(VLocusCvtermCvtermpath)this;
-		VLocusCvtermCvtermpath l2=(VLocusCvtermCvtermpath)o;
+		
+		
+		VLocusCvtermCvtermpath l1 = (VLocusCvtermCvtermpath) this;
+		VLocusCvtermCvtermpath l2 = (VLocusCvtermCvtermpath) o;
 		int ret = l1.getContig().compareTo(l2.getContig());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmin().compareTo(l2.getFmin());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmax().compareTo(l2.getFmax());
 		return 0;
 	}
 
 	@Override
 	public String getDefinition() {
-		// TODO Auto-generated method stub
+		
 		return this.subjCvterm;
 	}
 
 	@Override
 	public String getAccession() {
-		// TODO Auto-generated method stub
+		
 		return this.subjAcc;
 	}
 
 	@Override
 	public String getUniquename() {
-		// TODO Auto-generated method stub
+		
 		return this.name;
 	}
 
 	@Override
 	public Long getChr() {
-		// TODO Auto-generated method stub
-		//return Long.valueOf(getContig());
+		
+		// return Long.valueOf(getContig());
 		return Long.valueOf(AppContext.guessChrFromString(getContig()));
 	}
 
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
+		
 		return this.contigName;
 	}
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
+		
 		String mynotes = "no description";
-		if(this.notes!=null) mynotes=this.notes;
-		String strdb="";
-		if(db==null || db.isEmpty()) {
-			
-		} else strdb=db.toUpperCase()+":";
-		if(pathdistance>10000)
-			return  strdb + this.subjAcc + " " + this.subjCvterm +  " -*-> " + strdb + this.objAcc + " " + this.objCvterm + " (" + mynotes + ")" ;
-		else if(pathdistance==0)
-			 return strdb + this.subjAcc + " " + this.subjCvterm +  " (" + mynotes + ")" ;
+		if (this.notes != null)
+			mynotes = this.notes;
+		String strdb = "";
+		if (db == null || db.isEmpty()) {
+
+		} else
+			strdb = db.toUpperCase() + ":";
+		if (pathdistance > 10000)
+			return strdb + this.subjAcc + " " + this.subjCvterm + " -*-> " + strdb + this.objAcc + " " + this.objCvterm
+					+ " (" + mynotes + ")";
+		else if (pathdistance == 0)
+			return strdb + this.subjAcc + " " + this.subjCvterm + " (" + mynotes + ")";
 		else
-			return  strdb  + this.subjAcc + " " + this.subjCvterm +  " --" + pathdistance + "-> "+strdb + this.objAcc + " " + this.objCvterm + " (" + mynotes + ")" ;
+			return strdb + this.subjAcc + " " + this.subjCvterm + " --" + pathdistance + "-> " + strdb + this.objAcc
+					+ " " + this.objCvterm + " (" + mynotes + ")";
 	}
 
 	public Integer getPathdistance() {
@@ -580,7 +590,5 @@ public class VLocusCvtermCvtermpath implements Serializable , Locus, CvTerm, Com
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
+
 }

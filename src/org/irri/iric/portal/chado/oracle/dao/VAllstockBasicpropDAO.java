@@ -25,12 +25,6 @@ public interface VAllstockBasicpropDAO extends JpaDao<VAllstockBasicprop>, Varie
 	 *
 	 */
 	public Set<VAllstockBasicprop> findAllVAllstockBasicprops(int startResult, int maxRows) throws DataAccessException;
-	
-	
-	public Set<VAllstockBasicprop> findVAllstockBasicpropByDataset() throws DataAccessException;
-
-	public Set<VAllstockBasicprop> findVAllstockBasicpropByDataset(int startResult, int maxRows) throws DataAccessException;
-	
 
 	/**
 	 * JPQL Query - findVAllstockBasicpropByIrisUniqueIdContaining

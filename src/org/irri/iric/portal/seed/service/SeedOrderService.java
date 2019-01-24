@@ -44,13 +44,13 @@ public class SeedOrderService {
 	private SeedPriceDAO seedpricedao;
 	@Autowired
 	private EmailService emailservice;
-	
+
 	// @Autowired
 	// private SeedOrderService orderservice;
 
 	public SeedOrderService() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	private boolean generateHtml4Doc4j(OrderData order, String orderid, int page) throws Exception {
@@ -97,7 +97,7 @@ public class SeedOrderService {
 						.replace("DESIGNATION1", s.getVarname())
 						.replace("PRICEPERGRAM1", AppContext.decf.format(s.getPricePerGram()))
 						.replace("QUANTITY1", s.getGram().toString())
-						.replace("PRICE1", AppContext.decf.format(s.getPrice())).replace("â€?", "");
+						.replace("PRICE1", AppContext.decf.format(s.getPrice())).replace("ï¿½?", "");
 
 				bw.append(strrow); // .append();
 
@@ -588,13 +588,13 @@ public class SeedOrderService {
 	// }
 
 	public List getCountries() {
-		// TODO Auto-generated method stub
+		
 		seedpricedao = (SeedPriceDAO) AppContext.checkBean(seedpricedao, "SeedPriceDAO");
 		return seedpricedao.getCountries();
 	}
 
 	public String getCountryCategory(String c) {
-		// TODO Auto-generated method stub
+		
 		seedpricedao = (SeedPriceDAO) AppContext.checkBean(seedpricedao, "SeedPriceDAO");
 		return seedpricedao.getCountryCategory(c);
 	}
@@ -628,7 +628,7 @@ public class SeedOrderService {
 	}
 
 	public void updatePrice(InlineEditingViewModel vm, String usercat, String c) {
-		// TODO Auto-generated method stub
+		
 		if (usercat.equals("pub")) {
 			String ccat = getCountryCategory(c);
 			AppContext.debug("pub-" + ccat);

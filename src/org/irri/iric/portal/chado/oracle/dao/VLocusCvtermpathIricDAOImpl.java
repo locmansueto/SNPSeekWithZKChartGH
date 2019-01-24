@@ -35,10 +35,12 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 		implements VLocusCvtermpathIricDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VLocusCvtermpathIric.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VLocusCvtermpathIric.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Production
@@ -56,7 +58,7 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -76,7 +78,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByContigName(String contigName) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByContigName(String contigName)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByContigName(contigName, -1, -1);
 	}
@@ -88,7 +91,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByContigName(String contigName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByContigName(String contigName, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByContigName", startResult, maxRows, contigName);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -110,7 +114,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByNotes(String notes, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByNotes(String notes, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByNotes", startResult, maxRows, notes);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -132,7 +137,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByDb(String db, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByDb(String db, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByDb", startResult, maxRows, db);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -154,7 +160,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByName(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByName(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByName", startResult, maxRows, name);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -164,7 +171,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByOrganismId(java.math.BigDecimal organismId) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByOrganismId(java.math.BigDecimal organismId)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByOrganismId(organismId, -1, -1);
 	}
@@ -176,7 +184,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByOrganismId(java.math.BigDecimal organismId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByOrganismId(java.math.BigDecimal organismId,
+			int startResult, int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByOrganismId", startResult, maxRows, organismId);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -198,7 +207,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvName(String cvName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvName(String cvName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByCvName", startResult, maxRows, cvName);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -208,7 +218,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFmax(java.math.BigDecimal fmax) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFmax(java.math.BigDecimal fmax)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByFmax(fmax, -1, -1);
 	}
@@ -220,7 +231,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFmax(java.math.BigDecimal fmax, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFmax(java.math.BigDecimal fmax, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByFmax", startResult, maxRows, fmax);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -230,7 +242,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCommonNameContaining(String commonName) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCommonNameContaining(String commonName)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByCommonNameContaining(commonName, -1, -1);
 	}
@@ -242,8 +255,10 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCommonNameContaining(String commonName, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVLocusCvtermpathIricByCommonNameContaining", startResult, maxRows, commonName);
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCommonNameContaining(String commonName, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVLocusCvtermpathIricByCommonNameContaining", startResult, maxRows,
+				commonName);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
 
@@ -252,7 +267,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByRapRepContaining(String rapRep) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByRapRepContaining(String rapRep)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByRapRepContaining(rapRep, -1, -1);
 	}
@@ -264,7 +280,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByRapRepContaining(String rapRep, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByRapRepContaining(String rapRep, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByRapRepContaining", startResult, maxRows, rapRep);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -286,7 +303,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByIric(String iric, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByIric(String iric, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByIric", startResult, maxRows, iric);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -308,7 +326,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjCvterm(String objCvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjCvterm(String objCvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByObjCvterm", startResult, maxRows, objCvterm);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -318,7 +337,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByContigNameContaining(String contigName) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByContigNameContaining(String contigName)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByContigNameContaining(contigName, -1, -1);
 	}
@@ -330,8 +350,10 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByContigNameContaining(String contigName, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVLocusCvtermpathIricByContigNameContaining", startResult, maxRows, contigName);
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByContigNameContaining(String contigName, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVLocusCvtermpathIricByContigNameContaining", startResult, maxRows,
+				contigName);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
 
@@ -352,7 +374,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByMsu7Containing(String msu7, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByMsu7Containing(String msu7, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByMsu7Containing", startResult, maxRows, msu7);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -362,7 +385,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByStrand(java.math.BigDecimal strand) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByStrand(java.math.BigDecimal strand)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByStrand(strand, -1, -1);
 	}
@@ -374,7 +398,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByStrand(java.math.BigDecimal strand, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByStrand(java.math.BigDecimal strand, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByStrand", startResult, maxRows, strand);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -396,7 +421,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByDbContaining(String db, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByDbContaining(String db, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByDbContaining", startResult, maxRows, db);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -418,7 +444,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFgenesh(String fgenesh, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFgenesh(String fgenesh, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByFgenesh", startResult, maxRows, fgenesh);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -440,7 +467,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByRapRep(String rapRep, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByRapRep(String rapRep, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByRapRep", startResult, maxRows, rapRep);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -450,7 +478,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvNameContaining(String cvName) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvNameContaining(String cvName)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByCvNameContaining(cvName, -1, -1);
 	}
@@ -462,7 +491,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvNameContaining(String cvName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvNameContaining(String cvName, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByCvNameContaining", startResult, maxRows, cvName);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -472,7 +502,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCommonName(String commonName) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCommonName(String commonName)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByCommonName(commonName, -1, -1);
 	}
@@ -484,7 +515,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCommonName(String commonName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCommonName(String commonName, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByCommonName", startResult, maxRows, commonName);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -494,7 +526,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByRapPredContaining(String rapPred) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByRapPredContaining(String rapPred)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByRapPredContaining(rapPred, -1, -1);
 	}
@@ -506,7 +539,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByRapPredContaining(String rapPred, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByRapPredContaining(String rapPred, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByRapPredContaining", startResult, maxRows, rapPred);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -516,7 +550,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvtermId(java.math.BigDecimal cvtermId) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvtermId(java.math.BigDecimal cvtermId)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByCvtermId(cvtermId, -1, -1);
 	}
@@ -528,7 +563,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvtermId(java.math.BigDecimal cvtermId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvtermId(java.math.BigDecimal cvtermId, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByCvtermId", startResult, maxRows, cvtermId);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -538,7 +574,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFgeneshContaining(String fgenesh) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFgeneshContaining(String fgenesh)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByFgeneshContaining(fgenesh, -1, -1);
 	}
@@ -550,7 +587,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFgeneshContaining(String fgenesh, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFgeneshContaining(String fgenesh, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByFgeneshContaining", startResult, maxRows, fgenesh);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -572,7 +610,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByNameContaining(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByNameContaining", startResult, maxRows, name);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -593,7 +632,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 */
 
 	@Transactional
-	public VLocusCvtermpathIric findVLocusCvtermpathIricByPrimaryKey(Integer featureId, int startResult, int maxRows) throws DataAccessException {
+	public VLocusCvtermpathIric findVLocusCvtermpathIricByPrimaryKey(Integer featureId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVLocusCvtermpathIricByPrimaryKey", startResult, maxRows, featureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VLocusCvtermpathIric) query.getSingleResult();
@@ -607,7 +647,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByNotesContaining(String notes) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByNotesContaining(String notes)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByNotesContaining(notes, -1, -1);
 	}
@@ -619,7 +660,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByNotesContaining(String notes, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByNotesContaining(String notes, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByNotesContaining", startResult, maxRows, notes);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -640,7 +682,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 */
 
 	@Transactional
-	public VLocusCvtermpathIric findVLocusCvtermpathIricByFeatureId(Integer featureId, int startResult, int maxRows) throws DataAccessException {
+	public VLocusCvtermpathIric findVLocusCvtermpathIricByFeatureId(Integer featureId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVLocusCvtermpathIricByFeatureId", startResult, maxRows, featureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VLocusCvtermpathIric) query.getSingleResult();
@@ -666,7 +709,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByIricContaining(String iric, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByIricContaining(String iric, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByIricContaining", startResult, maxRows, iric);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -676,7 +720,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjCvterm(String subjCvterm) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjCvterm(String subjCvterm)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricBySubjCvterm(subjCvterm, -1, -1);
 	}
@@ -688,7 +733,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjCvterm(String subjCvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjCvterm(String subjCvterm, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricBySubjCvterm", startResult, maxRows, subjCvterm);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -698,7 +744,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjAccContaining(String subjAcc) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjAccContaining(String subjAcc)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricBySubjAccContaining(subjAcc, -1, -1);
 	}
@@ -710,7 +757,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjAccContaining(String subjAcc, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjAccContaining(String subjAcc, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricBySubjAccContaining", startResult, maxRows, subjAcc);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -720,7 +768,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjAccContaining(String objAcc) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjAccContaining(String objAcc)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByObjAccContaining(objAcc, -1, -1);
 	}
@@ -732,7 +781,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjAccContaining(String objAcc, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjAccContaining(String objAcc, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByObjAccContaining", startResult, maxRows, objAcc);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -742,7 +792,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjCvtermContaining(String subjCvterm) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjCvtermContaining(String subjCvterm)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricBySubjCvtermContaining(subjCvterm, -1, -1);
 	}
@@ -754,8 +805,10 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjCvtermContaining(String subjCvterm, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVLocusCvtermpathIricBySubjCvtermContaining", startResult, maxRows, subjCvterm);
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjCvtermContaining(String subjCvterm, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVLocusCvtermpathIricBySubjCvtermContaining", startResult, maxRows,
+				subjCvterm);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
 
@@ -764,7 +817,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvId(java.math.BigDecimal cvId) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvId(java.math.BigDecimal cvId)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByCvId(cvId, -1, -1);
 	}
@@ -776,7 +830,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvId(java.math.BigDecimal cvId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByCvId(java.math.BigDecimal cvId, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByCvId", startResult, maxRows, cvId);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -798,7 +853,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByMsu7(String msu7, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByMsu7(String msu7, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByMsu7", startResult, maxRows, msu7);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -808,7 +864,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByContigId(java.math.BigDecimal contigId) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByContigId(java.math.BigDecimal contigId)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByContigId(contigId, -1, -1);
 	}
@@ -820,7 +877,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByContigId(java.math.BigDecimal contigId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByContigId(java.math.BigDecimal contigId, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByContigId", startResult, maxRows, contigId);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -842,7 +900,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findAllVLocusCvtermpathIrics(int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findAllVLocusCvtermpathIrics(int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findAllVLocusCvtermpathIrics", startResult, maxRows);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -864,7 +923,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByRapPred(String rapPred, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByRapPred(String rapPred, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByRapPred", startResult, maxRows, rapPred);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -874,7 +934,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByPathdistance(Integer pathdistance) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByPathdistance(Integer pathdistance)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByPathdistance(pathdistance, -1, -1);
 	}
@@ -886,7 +947,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByPathdistance(Integer pathdistance, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByPathdistance(Integer pathdistance, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByPathdistance", startResult, maxRows, pathdistance);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -908,7 +970,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjAcc(String subjAcc, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricBySubjAcc(String subjAcc, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricBySubjAcc", startResult, maxRows, subjAcc);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -930,7 +993,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjAcc(String objAcc, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjAcc(String objAcc, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByObjAcc", startResult, maxRows, objAcc);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -940,7 +1004,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFmin(java.math.BigDecimal fmin) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFmin(java.math.BigDecimal fmin)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByFmin(fmin, -1, -1);
 	}
@@ -952,7 +1017,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFmin(java.math.BigDecimal fmin, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByFmin(java.math.BigDecimal fmin, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusCvtermpathIricByFmin", startResult, maxRows, fmin);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
@@ -962,7 +1028,8 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	 *
 	 */
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjCvtermContaining(String objCvterm) throws DataAccessException {
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjCvtermContaining(String objCvterm)
+			throws DataAccessException {
 
 		return findVLocusCvtermpathIricByObjCvtermContaining(objCvterm, -1, -1);
 	}
@@ -974,23 +1041,26 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjCvtermContaining(String objCvterm, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVLocusCvtermpathIricByObjCvtermContaining", startResult, maxRows, objCvterm);
-		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
-	}
-	
-	
-	
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjCvtermCvOrg(String objCvterm, BigDecimal cvId, BigDecimal organismId, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVLocusCvtermpathIricByObjCvtermCvOrg", startResult, maxRows, objCvterm, cvId, organismId);
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjCvtermContaining(String objCvterm, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVLocusCvtermpathIricByObjCvtermContaining", startResult, maxRows,
+				objCvterm);
 		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
 	}
 
-	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VLocusCvtermpathIric> findVLocusCvtermpathIricByObjCvtermCvOrg(String objCvterm, BigDecimal cvId,
+			BigDecimal organismId, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVLocusCvtermpathIricByObjCvtermCvOrg", startResult, maxRows, objCvterm,
+				cvId, organismId);
+		return new LinkedHashSet<VLocusCvtermpathIric>(query.getResultList());
+	}
+
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -1000,38 +1070,35 @@ public class VLocusCvtermpathIricDAOImpl extends AbstractJpaDao<VLocusCvtermpath
 	}
 
 	@Override
-	public List getLocusByDescription(String goterm, Integer organismId,
-			Integer cvId) {
-		// TODO Auto-generated method stub
-		//return null;
-		Set setLocus = new TreeSet(  findVLocusCvtermpathIricByObjCvtermCvOrg(goterm, BigDecimal.valueOf(cvId), BigDecimal.valueOf(organismId), -1,-1) );
+	public List getLocusByDescription(String goterm, Integer organismId, Integer cvId) {
+		
+		// return null;
+		Set setLocus = new TreeSet(findVLocusCvtermpathIricByObjCvtermCvOrg(goterm, BigDecimal.valueOf(cvId),
+				BigDecimal.valueOf(organismId), -1, -1));
 		List list = new ArrayList();
 		list.addAll(setLocus);
 		return list;
 	}
 
 	@Override
-	public List<Locus> filterLocusWithCvterm(Collection<Locus> colLoc,
-			Integer organismId, Integer cvId) {
+	public List<Locus> filterLocusWithCvterm(Collection<Locus> colLoc, Integer organismId, Integer cvId) {
+
 		
-		
-		// TODO Auto-generated method stub
-		Set locisId=new TreeSet();
+		Set locisId = new TreeSet();
 		Iterator<Locus> itLoc = colLoc.iterator();
-		while(itLoc.hasNext()) locisId.add( itLoc.next().getFeatureId() );
-		
+		while (itLoc.hasNext())
+			locisId.add(itLoc.next().getFeatureId());
+
 		Set featureIds[] = AppContext.setSlicer(locisId);
-		
-		List filtered=new ArrayList();
-		for(int i=0; i<featureIds.length; i++) {
-			Query query = createNamedQuery("findVLocusCvtermpathIricByCvOrgInFeatureId", -1,-1, BigDecimal.valueOf(cvId), BigDecimal.valueOf(organismId), featureIds[i]);
+
+		List filtered = new ArrayList();
+		for (int i = 0; i < featureIds.length; i++) {
+			Query query = createNamedQuery("findVLocusCvtermpathIricByCvOrgInFeatureId", -1, -1,
+					BigDecimal.valueOf(cvId), BigDecimal.valueOf(organismId), featureIds[i]);
 			filtered.addAll(query.getResultList());
 		}
 
 		return filtered;
 	}
 
-	
-	
-	
 }

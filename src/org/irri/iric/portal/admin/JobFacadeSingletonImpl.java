@@ -190,7 +190,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 
 	@Override
 	public void setLogDest(boolean forcelocal, boolean forces3) {
-		// TODO Auto-generated method stub
+		
 		this.forcelocal=forcelocal;
 		this.forces3=forces3;
 	}
@@ -251,25 +251,25 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 
 	@Override
 	public boolean addJob(AsyncJob job) {
-		// TODO Auto-generated method stub
+		
 		return addJob(0,job, true);
 	}
 
 	@Override
 	public boolean checkSubmitter(String ip) {
-		// TODO Auto-generated method stub
+		
 		return checkSubmitter(0,ip, true);
 	}
 
 	@Override
 	public boolean doneSubmitter(String ip) {
-		// TODO Auto-generated method stub
+		
 		return doneSubmitter(0,ip, true);
 	}
 
 	@Override
 	public boolean errorSubmitter(String ip) {
-		// TODO Auto-generated method stub
+		
 		return errorSubmitter(0,ip, true);
 	}
 
@@ -295,7 +295,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 
 	@Override
 	public List<AsyncJob> getAllJobs(boolean active, boolean done, boolean downloaded) {
-		// TODO Auto-generated method stub
+		
 		return getAllJobs(0,active, done, downloaded, true, false);
 	}
 
@@ -318,7 +318,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 
 	private boolean addJob(int level,AsyncJob job, boolean sync) {
 		log(level , "add " + job.getJobId() +" " + sync);
-		// TODO Auto-generated method stub
+		
 		if (sync)
 			synchIn(level+1,true);
 		if (checkSubmitter(level+1,job.getIpaddress(), false)) {
@@ -420,7 +420,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 	}
 
 	private boolean saveJobs(int level, boolean synchin, boolean synchout) {
-		// TODO Auto-generated method stub
+		
 		log(level , "savejobs " + synchin + ", "+ synchout);
 		if (useS3()) {
 			try {
@@ -468,7 +468,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 	}
 	
 	private boolean saveDownloadedJobs(int level, boolean synchin, boolean synchout) {
-		// TODO Auto-generated method stub
+		
 		log(level , "saveDownloadedjobs " + synchin + ", "+ synchout);
 		if (useS3()) {
 			try {
@@ -550,7 +550,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 
 	@Override
 	public void clearDownloadedJobs(boolean delete) {
-		// TODO Auto-generated method stub
+		
 		log(0,"clearDownloadedJobs " + delete);
 		synchIn(0,true);
 		if (delete) {
@@ -571,7 +571,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 
 	@Override
 	public void clearAllJobs() {
-		// TODO Auto-generated method stub
+		
 		log(0,"clearAllJobs");
 		synchIn(0,true);
 		mapIp2RunningJob.clear();
@@ -664,7 +664,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 	
 	@Override
 	public byte[] getS3Reader(String filename) {
-		// TODO Auto-generated method stub 
+		 
 		try {
 			S3Object object = s3.getObject(getBucket(), filename); 
 			return IOUtils.toByteArray(object.getObjectContent());
@@ -849,7 +849,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 	}
 	
 	private boolean loadJobs(int level, boolean lock, boolean unlockAfter) {
-		// TODO Auto-generated method stub
+		
 		// check if exists, if not create
 		
 		log(level , "loadJobs " +  lock + ", " + unlockAfter);
@@ -925,12 +925,12 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 
 	@Override
 	public void setStatus(String filename, String msg) {
-		// TODO Auto-generated method stub
+		
 		writeStatus(0,filename, msg, false);
 	}
 
 	private String getJobStatus(int level, String jobid, boolean sync) throws Exception {
-		// TODO Auto-generated method stub
+		
 		/*
 		 * File fstatus = null; if(jobid.startsWith("vcf2fasta")) { fstatus =
 		 * new File( AppContext.getTempDir() + jobid +"/status"); } else fstatus
@@ -963,7 +963,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 	 * @return
 	 */
 	private boolean checkSubmitter(int level, String ip, boolean sync) {
-		// TODO Auto-generated method stub
+		
 		log(level , "checkSubmitter " + ip + " " + sync);
 		if (sync) 
 			synchIn(level+1,false);
@@ -1016,7 +1016,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 	}
 
 	private boolean doneSubmitter(int level, String ip, boolean sync) {
-		// TODO Auto-generated method stub
+		
 		log(level , "done " + ip +", " + sync);
 		if (sync)
 			synchIn(level+1,true);
@@ -1036,7 +1036,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 	}
 
 	private boolean errorSubmitter(int level, String ip, boolean sync) {
-		// TODO Auto-generated method stub
+		
 		log(level , "errorSubmitter " + ip + " " + sync);
 		if (sync) synchIn(level+1,true);
 		if (checkSubmitter(level+1,ip, false)) {
@@ -1054,7 +1054,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 
 	private boolean errorSubmitter(int level, String ip, String filename, String msg, boolean sync) {
 		log(level , "errorSubmitter " + ip + " " + filename + " "+ sync);
-		// TODO Auto-generated method stub
+		
 		if (sync)
 			synchIn(level+1,true);
 		if (errorSubmitter(level+1,ip, false)) {
@@ -1189,7 +1189,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 
 	private boolean startSubmitter(int level, String ip, boolean sync) {
 		log(level , "startSubmitter " + ip + " " + sync);
-		// TODO Auto-generated method stub
+		
 		if (sync)
 			synchIn(level+1,true);
 		if (checkSubmitter(level+1,ip, false)) {
@@ -1207,7 +1207,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 		log(level , "getRunningJobById " + jobid + " " + sync);
 		if (sync)
 			synchIn(level+1,false);
-		// TODO Auto-generated method stub
+		
 		Iterator<String> itIp = mapIp2RunningJob.keySet().iterator();
 		String ipjob = null;
 		while (itIp.hasNext()) {
@@ -1221,7 +1221,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 	}
 
 	private AsyncJob getRunningJobByIp(int level, String ip, boolean sync) {
-		// TODO Auto-generated method stub
+		
 		log(level , "getRunningJobByIp " + ip + " " + sync);
 		if (sync)
 			synchIn(level+1,false);
@@ -1230,7 +1230,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 
 	@Override
 	public boolean downloadJob(String jobid) {
-		// TODO Auto-generated method stub
+		
 		log(0,"downloadJob " + jobid);
 		/*
 		 * Iterator<String> itIp=doneJob.keySet().iterator(); String ipjob=null;
@@ -1334,7 +1334,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 	}
 
 	private List<AsyncJob> getAllJobs(int level, boolean active, boolean done, boolean downloaded, boolean synchin, boolean synchout) {
-		// TODO Auto-generated method stub
+		
 		log(level , "getAllJobs " + synchin + " " +  synchout);
 
 		if (synchin)
@@ -1423,7 +1423,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 
 	@Override
 	public void setLogLevel(String string) {
-		// TODO Auto-generated method stub
+		
 		if(string==null) string="info";
 		AppContext.setLog_level(string);
 	}

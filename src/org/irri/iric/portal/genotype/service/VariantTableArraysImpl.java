@@ -8,13 +8,11 @@ import java.util.Map;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.ListItemsDAO;
 
-
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.SnpsStringAllvars;
 import org.irri.iric.portal.domain.StockSample;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
-
 
 import org.irri.iric.portal.genotype.VariantStringData;
 import org.irri.iric.portal.genotype.VariantTable;
@@ -26,76 +24,76 @@ public class VariantTableArraysImpl implements VariantTable {
 	@Autowired
 	@Qualifier("ListItems")
 	private ListItemsDAO lisitemdao;
-	
+
 	private String message;
 	private String varnames[];
 	private String allelestring[][];
 	private Double varmismatch[];
 	private Long varids[];
-	
+	private String dataset[];
 	private Long posarr[];
 	private String refnuc[];
-	
+
 	private VariantStringData data;
-	
-	
-	
+
 	@Override
 	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params, List listCDS)
 			throws Exception {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params) {
-		// TODO Auto-generated method stub
-		this.data=data;
+		
+		this.data = data;
 
 		List<SnpsAllvarsPos> snpsposlist = data.getListPos();
-		posarr = new Long[snpsposlist.size()]; 
+		posarr = new Long[snpsposlist.size()];
 		refnuc = new String[snpsposlist.size()];
 		Iterator<SnpsAllvarsPos> itPos = snpsposlist.iterator();
 		int poscount = 0;
-		while(itPos.hasNext()) {
-			SnpsAllvarsPos posnuc=itPos.next();
+		while (itPos.hasNext()) {
+			SnpsAllvarsPos posnuc = itPos.next();
 			posarr[poscount] = posnuc.getPosition().longValue();
 			refnuc[poscount] = posnuc.getRefnuc();
 			poscount++;
 		}
-		
-		lisitemdao = (ListItemsDAO)AppContext.checkBean(lisitemdao, "ListItems");
-		
-		Map<BigDecimal, StockSample> mapVarid2Sample = lisitemdao.getMapId2Sample(params.getDataset());
-		List listTable= data.getListVariantsString();
+
+		lisitemdao = (ListItemsDAO) AppContext.checkBean(lisitemdao, "ListItems");
+
+		Map<String, Map<BigDecimal, StockSample>> MapDs = lisitemdao.getMapId2Sample(params.getDataset());
+		List listTable = data.getListVariantsString();
 		varnames = new String[listTable.size()];
 		varids = new Long[listTable.size()];
+		dataset = new String[listTable.size()];
 		varmismatch = new Double[listTable.size()];
 		allelestring = new String[listTable.size()][data.getListPos().size()];
-	
+
 		Iterator<SnpsStringAllvars> itSnpstring = listTable.iterator();
 		int varcount = 0;
-		while(itSnpstring.hasNext()) {
+		while (itSnpstring.hasNext()) {
 			SnpsStringAllvars snpstr = itSnpstring.next();
-			
-			varmismatch[varcount]=snpstr.getMismatch().doubleValue();
-			varnames[varcount]=mapVarid2Sample.get( snpstr.getVar() ).getName();
-			varids[varcount]= snpstr.getVar().longValue();
-			
-			allelestring[varcount] = IndelStringHDF5nRDBMSHybridService.createVarietyString(snpstr,data);
+
+			Map<BigDecimal, StockSample> mapVarid2Sample = MapDs.get(snpstr.getDataset());
+
+			varmismatch[varcount] = snpstr.getMismatch().doubleValue();
+			varnames[varcount] = mapVarid2Sample.get(snpstr.getVar()).getName();
+			varids[varcount] = snpstr.getVar().longValue();
+			dataset[varcount] = snpstr.getDataset();
+			allelestring[varcount] = IndelStringHDF5nRDBMSHybridService.createVarietyString(snpstr, data);
 			varcount++;
 		}
 		message = data.getMessage();
 	}
 
-
 	public String getMessage() {
-		// TODO Auto-generated method stub
+		
 		return message;
 	}
+
 	public void setMessage(String message) {
-		// TODO Auto-generated method stub
+		
 		this.message = message;
 	}
 
@@ -114,9 +112,11 @@ public class VariantTableArraysImpl implements VariantTable {
 	public void setVarnames(String[] varnames) {
 		this.varnames = varnames;
 	}
+
 	private String[][] getAllelestring() {
 		return allelestring;
 	}
+
 	public void setAllelestring(String[][] allelestring) {
 		this.allelestring = allelestring;
 	}
@@ -136,6 +136,7 @@ public class VariantTableArraysImpl implements VariantTable {
 	public void setPosarr(Long[] posarr) {
 		this.posarr = posarr;
 	}
+
 	private String[] getRefnuc() {
 		return refnuc;
 	}
@@ -143,40 +144,40 @@ public class VariantTableArraysImpl implements VariantTable {
 	public void setRefnuc(String[] refnuc) {
 		this.refnuc = refnuc;
 	}
+
 	public void setVarmismatch(Double[] varmismatch) {
 		this.varmismatch = varmismatch;
 	}
 
-	
-	
-	
-
 	public Long[] getPosition() {
 		return this.getPosarr();
 	}
+
 	public String[] getReference() {
 		return this.getRefnuc();
 	}
+
 	public Object[][] getVaralleles() {
 		return this.getAllelestring();
 	}
+
 	public Long[] getVarid() {
 		return this.getVarids();
 	}
+
 	public String[] getVarname() {
 		return this.getVarnames();
 	}
+
 	public Double[] getVarmismatch() {
 		return this.varmismatch;
 	}
 
-
 	@Override
 	public VariantStringData getVariantStringData() {
-		// TODO Auto-generated method stub
+		
 		return data;
 	}
-
 
 	@Override
 	public String[] getContigs() {
@@ -184,27 +185,21 @@ public class VariantTableArraysImpl implements VariantTable {
 		return null;
 	}
 
-	
-	
-	
-/*
-	private String getIndelAlleleString(IndelsAllvarsPos indelpos) {
-		if(indelpos==null) return "";
-		if(indelpos.getDellength()==0) {
-			if(indelpos.getInsString()==null || indelpos.getInsString().trim().isEmpty()) 
-				return "ref";
-			else return indelpos.getInsString();
-		} else {
-			if(indelpos.getInsString()!=null && !indelpos.getInsString().trim().isEmpty() ) {
-				if(indelpos.getInsString().trim().length()==1)
-					return "snp -> " + indelpos.getInsString();
-				else return "del " + indelpos.getDellength() + " -> " + indelpos.getInsString();
-			}
-			else return "del " + indelpos.getDellength();
-		}
+	public String[] getDatasets() {
+		
+		return dataset;
 	}
-	*/
-	
-	
-	
+
+	/*
+	 * private String getIndelAlleleString(IndelsAllvarsPos indelpos) {
+	 * if(indelpos==null) return ""; if(indelpos.getDellength()==0) {
+	 * if(indelpos.getInsString()==null || indelpos.getInsString().trim().isEmpty())
+	 * return "ref"; else return indelpos.getInsString(); } else {
+	 * if(indelpos.getInsString()!=null && !indelpos.getInsString().trim().isEmpty()
+	 * ) { if(indelpos.getInsString().trim().length()==1) return "snp -> " +
+	 * indelpos.getInsString(); else return "del " + indelpos.getDellength() +
+	 * " -> " + indelpos.getInsString(); } else return "del " +
+	 * indelpos.getDellength(); } }
+	 */
+
 }

@@ -1,13 +1,10 @@
 package org.irri.iric.portal.genotype;
 
-
-
 import java.util.List;
 
 import org.irri.iric.portal.domain.Position;
 
 public interface VariantTableArray extends VariantTable {
-
 
 	public Position[] getPosition();
 
@@ -21,7 +18,7 @@ public interface VariantTableArray extends VariantTable {
 
 	public Double[] getVarmismatch();
 
-	//String[] getSNPGenomicAnnotation();
+	// String[] getSNPGenomicAnnotation();
 
 	String[] getSNPGenomicAnnotation(GenotypeQueryParams genotypeQueryParams);
 

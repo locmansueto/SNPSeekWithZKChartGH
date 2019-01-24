@@ -164,7 +164,7 @@ public class SeedOrderController extends SelectorComposer<Window> {
 
 	@Override
 	public void doAfterCompose(Window comp) throws Exception {
-		// TODO Auto-generated method stub
+		
 		super.doAfterCompose(comp);
 		try {
 

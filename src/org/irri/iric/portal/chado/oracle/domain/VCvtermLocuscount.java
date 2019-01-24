@@ -3,9 +3,6 @@ package org.irri.iric.portal.chado.oracle.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-
-
-
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -18,7 +15,7 @@ import org.irri.iric.portal.domain.CvTermLocusCount;
 
 /**
  */
-//@IdClass(org.irri.iric.portal.chado.domain.VCvtermLocuscountPK.class)
+// @IdClass(org.irri.iric.portal.chado.domain.VCvtermLocuscountPK.class)
 @IdClass(VCvtermLocuscountPK.class)
 @Entity
 @NamedQueries({
@@ -33,7 +30,7 @@ import org.irri.iric.portal.domain.CvTermLocusCount;
 		@NamedQuery(name = "findVCvtermLocuscountByLocusCount", query = "select myVCvtermLocuscount from VCvtermLocuscount myVCvtermLocuscount where myVCvtermLocuscount.locusCount = ?1"),
 		@NamedQuery(name = "findVCvtermLocuscountByOrganismId", query = "select myVCvtermLocuscount from VCvtermLocuscount myVCvtermLocuscount where myVCvtermLocuscount.organismId = ?1"),
 		@NamedQuery(name = "findVCvtermLocuscountByPrimaryKey", query = "select myVCvtermLocuscount from VCvtermLocuscount myVCvtermLocuscount where myVCvtermLocuscount.organismId = ?1 and myVCvtermLocuscount.cvtermId = ?2") })
-@Table( name = "V_CVTERM_LOCUSCOUNT")
+@Table(name = "V_CVTERM_LOCUSCOUNT")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VCvtermLocuscount")
 public class VCvtermLocuscount implements Serializable, CvTermLocusCount {
@@ -211,7 +208,8 @@ public class VCvtermLocuscount implements Serializable, CvTermLocusCount {
 		if (!(obj instanceof VCvtermLocuscount))
 			return false;
 		VCvtermLocuscount equalCheck = (VCvtermLocuscount) obj;
-		if ((organismId == null && equalCheck.organismId != null) || (organismId != null && equalCheck.organismId == null))
+		if ((organismId == null && equalCheck.organismId != null)
+				|| (organismId != null && equalCheck.organismId == null))
 			return false;
 		if (organismId != null && !organismId.equals(equalCheck.organismId))
 			return false;
@@ -224,30 +222,26 @@ public class VCvtermLocuscount implements Serializable, CvTermLocusCount {
 
 	@Override
 	public String getAccession() {
-		// TODO Auto-generated method stub
+
 		return "GO:" + this.cvAcc;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
+
 		return this.cvTerm;
 	}
 
 	@Override
 	public BigDecimal getCount() {
-		// TODO Auto-generated method stub
+
 		return this.locusCount;
 	}
 
 	@Override
 	public String getCV() {
-		// TODO Auto-generated method stub
+
 		return this.cvName;
 	}
 
-	
-	
-	
-	
 }

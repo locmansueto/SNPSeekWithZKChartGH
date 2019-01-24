@@ -2,8 +2,6 @@ package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
 
-
-
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
@@ -20,26 +18,25 @@ import org.irri.iric.portal.domain.Locus;
  */
 
 @Entity
-@NamedQueries({
-		@NamedQuery(name = "findAllVGenes", query = "select myVGene from VGene myVGene"),
+@NamedQueries({ @NamedQuery(name = "findAllVGenes", query = "select myVGene from VGene myVGene"),
 		@NamedQuery(name = "findVGeneByChr", query = "select myVGene from VGene myVGene where myVGene.chr = ?1"),
 		@NamedQuery(name = "findVGeneByFmax", query = "select myVGene from VGene myVGene where myVGene.fmax = ?1"),
 		@NamedQuery(name = "findVGeneByFmin", query = "select myVGene from VGene myVGene where myVGene.fmin = ?1"),
 		@NamedQuery(name = "findVGeneByGeneId", query = "select myVGene from VGene myVGene where myVGene.geneId = ?1"),
 		@NamedQuery(name = "findVGeneByName", query = "select myVGene from VGene myVGene where upper(myVGene.name) = upper(?1)"),
 		@NamedQuery(name = "findVGeneByNameContaining", query = "select myVGene from VGene myVGene where upper(myVGene.name) like upper(?1)"),
-		
+
 		@NamedQuery(name = "findVGeneByNameOrg", query = "select myVGene from VGene myVGene where upper(myVGene.name) = upper(?1) and myVGene.organismId=?2"),
 		@NamedQuery(name = "findVGeneByOrg", query = "select myVGene from VGene myVGene where myVGene.organismId= ?1"),
 		@NamedQuery(name = "findVGeneByNamesOrg", query = "select myVGene from VGene myVGene where myVGene.name in (?1) and myVGene.organismId=?2"),
-		
+
 		@NamedQuery(name = "findVGeneByPhase", query = "select myVGene from VGene myVGene where myVGene.phase = ?1"),
 		@NamedQuery(name = "findVGeneByPrimaryKey", query = "select myVGene from VGene myVGene where myVGene.geneId = ?1"),
 		@NamedQuery(name = "findVGeneByStrand", query = "select myVGene from VGene myVGene where myVGene.strand = ?1") })
-@Table( name = "V_GENE")
+@Table(name = "V_GENE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VGene")
-public class VGene implements Serializable, Gene,  Comparable {
+public class VGene implements Serializable, Gene, Comparable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -93,13 +90,11 @@ public class VGene implements Serializable, Gene,  Comparable {
 	@XmlElement
 	Integer phase;
 
-	
 	@Column(name = "ORGANISM_ID", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	Integer organismId;
 
-	
 	/**
 	 */
 	public void setGeneId(Integer geneId) {
@@ -184,11 +179,6 @@ public class VGene implements Serializable, Gene,  Comparable {
 		return this.phase;
 	}
 
-	
-	
-	
-	
-	
 	public Integer getOrganismId() {
 		return organismId;
 	}
@@ -235,32 +225,33 @@ public class VGene implements Serializable, Gene,  Comparable {
 		return buffer.toString();
 	}
 
-//	/**
-//	 */
-//	@Override
-//	public int hashCode() {
-//		final int prime = 31;
-//		int result = 1;
-//		result = (int) (prime * result + ((geneId == null) ? 0 : geneId.hashCode()));
-//		return result;
-//	}
-//
-//	/**
-//	 */
-//	public boolean equals(Object obj) {
-//		if (obj == this)
-//			return true;
-//		if (!(obj instanceof VGene))
-//			return false;
-//		VGene equalCheck = (VGene) obj;
-//		if ((geneId == null && equalCheck.geneId != null) || (geneId != null && equalCheck.geneId == null))
-//			return false;
-//		if (geneId != null && !geneId.equals(equalCheck.geneId))
-//			return false;
-//		return true;
-//	}
-//
-//	
+	// /**
+	// */
+	// @Override
+	// public int hashCode() {
+	// final int prime = 31;
+	// int result = 1;
+	// result = (int) (prime * result + ((geneId == null) ? 0 : geneId.hashCode()));
+	// return result;
+	// }
+	//
+	// /**
+	// */
+	// public boolean equals(Object obj) {
+	// if (obj == this)
+	// return true;
+	// if (!(obj instanceof VGene))
+	// return false;
+	// VGene equalCheck = (VGene) obj;
+	// if ((geneId == null && equalCheck.geneId != null) || (geneId != null &&
+	// equalCheck.geneId == null))
+	// return false;
+	// if (geneId != null && !geneId.equals(equalCheck.geneId))
+	// return false;
+	// return true;
+	// }
+	//
+	//
 
 	/**
 	 */
@@ -268,52 +259,56 @@ public class VGene implements Serializable, Gene,  Comparable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		//result = (int) (prime * result + ((featureId == null) ? 0 : featureId.hashCode()));
+		// result = (int) (prime * result + ((featureId == null) ? 0 :
+		// featureId.hashCode()));
 		result = (int) (prime * result + ((organismId == null) ? 0 : organismId.hashCode()));
 		result = (int) (prime * result + ((chr == null) ? 0 : chr.hashCode()));
 		result = (int) (prime * result + ((fmin == null) ? 0 : fmin.hashCode()));
 		result = (int) (prime * result + ((fmax == null) ? 0 : fmax.hashCode()));
 		return result;
 	}
-	
+
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		Locus l1=(Locus)this;
-		Locus l2=(Locus)o;
-		//int ret = organismId compareTo(l2.getOrganismId());
-		//if(ret!=0) return ret;
+		
+		Locus l1 = (Locus) this;
+		Locus l2 = (Locus) o;
+		// int ret = organismId compareTo(l2.getOrganismId());
+		// if(ret!=0) return ret;
 		int ret = l1.getContig().compareTo(l2.getContig());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmin().compareTo(l2.getFmin());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmax().compareTo(l2.getFmax());
 		return ret;
-		
+
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return compareTo(obj)==0;
+		
+		return compareTo(obj) == 0;
 	}
-	
+
 	@Override
 	public String getUniquename() {
-		// TODO Auto-generated method stub
+		
 		return this.getName();
 	}
 
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
+		
 		try {
 			Integer chrnum = Integer.valueOf(chr);
-			if(chrnum>9)
+			if (chrnum > 9)
 				return "chr0" + chrnum;
-			else return "chr" + chrnum;
+			else
+				return "chr" + chrnum;
 		} catch (Exception ex) {
-			//ex.printStackTrace();
+			// ex.printStackTrace();
 		}
 		return chr;
 	}
@@ -326,22 +321,20 @@ public class VGene implements Serializable, Gene,  Comparable {
 
 	@Override
 	public String getOrganism() {
-		// TODO Auto-generated method stub
+		
 		return this.organismId.toString();
 	}
 
 	@Override
 	public BigDecimal getFeatureId() {
-		// TODO Auto-generated method stub
+		
 		return BigDecimal.valueOf(this.geneId);
 	}
 
 	@Override
 	public String getFeatureType() {
-		// TODO Auto-generated method stub
+		
 		return "gene";
 	}
-	
-	
-	
+
 }

@@ -24,19 +24,22 @@ public interface VIricstockPhenotypeDAO extends JpaDao<VIricstockPhenotype>, Phe
 	 * JPQL Query - findAllVIricstockPhenotypes
 	 *
 	 */
-	public Set<VIricstockPhenotype> findAllVIricstockPhenotypes(int startResult, int maxRows) throws DataAccessException;
+	public Set<VIricstockPhenotype> findAllVIricstockPhenotypes(int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByDefinitionContaining
 	 *
 	 */
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByDefinitionContaining(String definition) throws DataAccessException;
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByDefinitionContaining(String definition)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByDefinitionContaining
 	 *
 	 */
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByDefinitionContaining(String definition, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByDefinitionContaining(String definition, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByQualValue
@@ -48,19 +51,22 @@ public interface VIricstockPhenotypeDAO extends JpaDao<VIricstockPhenotype>, Phe
 	 * JPQL Query - findVIricstockPhenotypeByQualValue
 	 *
 	 */
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByQualValue(String qualValue, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByQualValue(String qualValue, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByIricStockPhenotypeId
 	 *
 	 */
-	public VIricstockPhenotype findVIricstockPhenotypeByIricStockPhenotypeId(Integer iricStockPhenotypeId) throws DataAccessException;
+	public VIricstockPhenotype findVIricstockPhenotypeByIricStockPhenotypeId(Integer iricStockPhenotypeId)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByIricStockPhenotypeId
 	 *
 	 */
-	public VIricstockPhenotype findVIricstockPhenotypeByIricStockPhenotypeId(Integer iricStockPhenotypeId, int startResult, int maxRows) throws DataAccessException;
+	public VIricstockPhenotype findVIricstockPhenotypeByIricStockPhenotypeId(Integer iricStockPhenotypeId,
+			int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByPrimaryKey
@@ -72,19 +78,22 @@ public interface VIricstockPhenotypeDAO extends JpaDao<VIricstockPhenotype>, Phe
 	 * JPQL Query - findVIricstockPhenotypeByPrimaryKey
 	 *
 	 */
-	public VIricstockPhenotype findVIricstockPhenotypeByPrimaryKey(BigDecimal iricStockPhenotypeId_1, int startResult, int maxRows) throws DataAccessException;
+	public VIricstockPhenotype findVIricstockPhenotypeByPrimaryKey(BigDecimal iricStockPhenotypeId_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByIricStockId
 	 *
 	 */
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByIricStockId(java.math.BigDecimal iricStockId) throws DataAccessException;
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByIricStockId(java.math.BigDecimal iricStockId)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByIricStockId
 	 *
 	 */
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByIricStockId(BigDecimal iricStockId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByIricStockId(BigDecimal iricStockId, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByDefinition
@@ -96,7 +105,8 @@ public interface VIricstockPhenotypeDAO extends JpaDao<VIricstockPhenotype>, Phe
 	 * JPQL Query - findVIricstockPhenotypeByDefinition
 	 *
 	 */
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByDefinition(String definition_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByDefinition(String definition_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByName
@@ -108,7 +118,8 @@ public interface VIricstockPhenotypeDAO extends JpaDao<VIricstockPhenotype>, Phe
 	 * JPQL Query - findVIricstockPhenotypeByName
 	 *
 	 */
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByName(String name, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByName(String name, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByNameContaining
@@ -120,30 +131,35 @@ public interface VIricstockPhenotypeDAO extends JpaDao<VIricstockPhenotype>, Phe
 	 * JPQL Query - findVIricstockPhenotypeByNameContaining
 	 *
 	 */
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByNameContaining(String name_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByNameContaining(String name_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByQualValueContaining
 	 *
 	 */
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByQualValueContaining(String qualValue_1) throws DataAccessException;
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByQualValueContaining(String qualValue_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByQualValueContaining
 	 *
 	 */
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByQualValueContaining(String qualValue_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByQualValueContaining(String qualValue_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByQuanValue
 	 *
 	 */
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByQuanValue(java.math.BigDecimal quanValue) throws DataAccessException;
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByQuanValue(java.math.BigDecimal quanValue)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPhenotypeByQuanValue
 	 *
 	 */
-	public Set<VIricstockPhenotype> findVIricstockPhenotypeByQuanValue(BigDecimal quanValue, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIricstockPhenotype> findVIricstockPhenotypeByQuanValue(BigDecimal quanValue, int startResult,
+			int maxRows) throws DataAccessException;
 
 }

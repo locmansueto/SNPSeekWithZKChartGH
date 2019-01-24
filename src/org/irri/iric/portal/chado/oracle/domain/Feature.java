@@ -19,8 +19,7 @@ import org.irri.iric.portal.domain.Sequence;
  */
 
 @Entity
-@NamedQueries({
-		@NamedQuery(name = "findAllFeatures", query = "select myFeature from Feature myFeature"),
+@NamedQueries({ @NamedQuery(name = "findAllFeatures", query = "select myFeature from Feature myFeature"),
 		@NamedQuery(name = "findFeatureByDbxrefId", query = "select myFeature from Feature myFeature where myFeature.dbxrefId = ?1"),
 		@NamedQuery(name = "findFeatureByFeatureId", query = "select myFeature from Feature myFeature where myFeature.featureId = ?1"),
 		@NamedQuery(name = "findFeatureByIsAnalysis", query = "select myFeature from Feature myFeature where myFeature.isAnalysis = ?1"),
@@ -37,10 +36,10 @@ import org.irri.iric.portal.domain.Sequence;
 		@NamedQuery(name = "findFeatureByTypeId", query = "select myFeature from Feature myFeature where myFeature.typeId = ?1"),
 		@NamedQuery(name = "findFeatureByUniquename", query = "select myFeature from Feature myFeature where myFeature.uniquename = ?1"),
 		@NamedQuery(name = "findFeatureByUniquenameContaining", query = "select myFeature from Feature myFeature where myFeature.uniquename like ?1") })
-@Table( name = "FEATURE")
+@Table(name = "FEATURE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "Feature")
-public class Feature implements Serializable , org.irri.iric.portal.domain.Feature, Sequence {
+public class Feature implements Serializable, org.irri.iric.portal.domain.Feature, Sequence {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -79,7 +78,7 @@ public class Feature implements Serializable , org.irri.iric.portal.domain.Featu
 	@Basic(fetch = FetchType.EAGER)
 	@Lob
 	@XmlElement
-	//byte[] residues;
+	// byte[] residues;
 	Clob residues;
 	/**
 	 */
@@ -196,19 +195,17 @@ public class Feature implements Serializable , org.irri.iric.portal.domain.Featu
 	 */
 	public String getResidues() {
 		try {
-		return AppContext.clobStringConversion(this.residues);
-		} catch(Exception ex) {
+			return AppContext.clobStringConversion(this.residues);
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return null;
 	}
 
-	
-	
 	@Override
 	public void setResidues(String residues) {
-		// TODO Auto-generated method stub
 		
+
 	}
 
 	/**
@@ -384,9 +381,9 @@ public class Feature implements Serializable , org.irri.iric.portal.domain.Featu
 
 	@Override
 	public String getSequenceInPosition(long start, long end) {
-		// TODO Auto-generated method stub
+		
 		try {
-		return AppContext.clobStringConversion(this.residues).substring((int)start, (int)end);
+			return AppContext.clobStringConversion(this.residues).substring((int) start, (int) end);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}

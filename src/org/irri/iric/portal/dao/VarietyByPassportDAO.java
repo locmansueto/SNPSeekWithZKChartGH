@@ -4,20 +4,21 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
-
 public interface VarietyByPassportDAO {
 
 	/**
-	 * Get varieties with passport equal to value 
+	 * Get varieties with passport equal to value
+	 * 
 	 * @param object
 	 * @param value
-	 * @param value2 
+	 * @param value2
 	 * @return
 	 */
-	//List findVarietyByPassportEquals(Object object, Set dataset, String value);
+	// List findVarietyByPassportEquals(Object object, Set dataset, String value);
 
 	/**
 	 * Get passport values for all varieties
+	 * 
 	 * @param sPassId
 	 * @return
 	 */
@@ -25,7 +26,7 @@ public interface VarietyByPassportDAO {
 
 	List findVarietyByPassportEquals(BigDecimal type_id, Set dataset, String value);
 
-	
-	//List findVIricstocksByPassportByTypeIdValueContaining(BigDecimal type_id, String value);
-	
+	// List findVIricstocksByPassportByTypeIdValueContaining(BigDecimal type_id,
+	// String value);
+
 }

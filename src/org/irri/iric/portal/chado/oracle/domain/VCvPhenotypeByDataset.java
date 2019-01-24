@@ -25,7 +25,7 @@ import org.irri.iric.portal.domain.CvTermDataset;
 		@NamedQuery(name = "findVCvPhenotypeByNameDataset", query = "select myVCvPhenotype from VCvPhenotypeByDataset myVCvPhenotype where myVCvPhenotype.name = ?1 and myVCvPhenotype.dataset=?2"),
 		@NamedQuery(name = "findVCvPhenotypeByNameContainingDataset", query = "select myVCvPhenotype from VCvPhenotypeByDataset myVCvPhenotype where myVCvPhenotype.name like ?1 and myVCvPhenotype.dataset=?2"),
 		@NamedQuery(name = "findVCvPhenotypeByPrimaryKeyDataset", query = "select myVCvPhenotype from VCvPhenotypeByDataset myVCvPhenotype where myVCvPhenotype.cvTermId = ?1 and myVCvPhenotype.dataset=?2") })
-@Table( name = "V_CV_PHENOTYPE_ALLSTOCKS")
+@Table(name = "V_CV_PHENOTYPE_ALLSTOCKS")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VCvPhenotypeByDataset")
 public class VCvPhenotypeByDataset implements Serializable, CvTermDataset {
@@ -60,7 +60,6 @@ public class VCvPhenotypeByDataset implements Serializable, CvTermDataset {
 	@XmlElement
 	String dataset;
 
-	
 	/**
 	 */
 	public void setCvTermId(BigDecimal cvTermId) {
@@ -167,7 +166,7 @@ public class VCvPhenotypeByDataset implements Serializable, CvTermDataset {
 
 	@Override
 	public String getDataset() {
-		// TODO Auto-generated method stub
+		
 		return this.dataset;
 	}
 
@@ -175,8 +174,4 @@ public class VCvPhenotypeByDataset implements Serializable, CvTermDataset {
 		this.dataset = dataset;
 	}
 
-
-	
-	
-	
 }

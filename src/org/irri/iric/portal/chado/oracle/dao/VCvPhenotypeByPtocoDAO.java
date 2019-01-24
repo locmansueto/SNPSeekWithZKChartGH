@@ -25,7 +25,8 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjAccContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjAccContaining(String objAcc, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjAccContaining(String objAcc, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjCvname
@@ -37,7 +38,8 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjCvname
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvname(String subjCvname, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvname(String subjCvname, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjDb
@@ -49,7 +51,8 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjDb
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjDb(String objDb, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjDb(String objDb, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByPrimaryKey
@@ -61,55 +64,64 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoByPrimaryKey
 	 *
 	 */
-	public VCvPhenotypeByPtoco findVCvPhenotypeByPtocoByPrimaryKey(BigDecimal objCvtermId, int startResult, int maxRows) throws DataAccessException;
+	public VCvPhenotypeByPtoco findVCvPhenotypeByPtocoByPrimaryKey(BigDecimal objCvtermId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjCvnameContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvnameContaining(String objCvname) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvnameContaining(String objCvname)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjCvnameContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvnameContaining(String objCvname, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvnameContaining(String objCvname, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjAccContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjAccContaining(String subjAcc) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjAccContaining(String subjAcc)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjAccContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjAccContaining(String subjAcc, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjAccContaining(String subjAcc, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjDefinition
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjDefinition(String subjDefinition) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjDefinition(String subjDefinition)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjDefinition
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjDefinition(String subjDefinition, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjDefinition(String subjDefinition, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjCvtermContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvtermContaining(String subjCvterm) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvtermContaining(String subjCvterm)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjCvtermContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvtermContaining(String subjCvterm, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvtermContaining(String subjCvterm, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjCvname
@@ -121,7 +133,8 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjCvname
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvname(String objCvname_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvname(String objCvname_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVCvPhenotypeByPtocos
@@ -133,7 +146,8 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findAllVCvPhenotypeByPtocos
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findAllVCvPhenotypeByPtocos(int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findAllVCvPhenotypeByPtocos(int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjDbContaining
@@ -145,7 +159,8 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjDbContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjDbContaining(String subjDb, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjDbContaining(String subjDb, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjCvterm
@@ -157,7 +172,8 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjCvterm
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvterm(String subjCvterm_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvterm(String subjCvterm_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjCvid
@@ -169,43 +185,50 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjCvid
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvid(BigDecimal objCvid, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvid(BigDecimal objCvid, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByQualValueContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByQualValueContaining(String qualValue) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByQualValueContaining(String qualValue)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByQualValueContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByQualValueContaining(String qualValue, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByQualValueContaining(String qualValue, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjCvtermId
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvtermId(BigDecimal subjCvtermId) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvtermId(BigDecimal subjCvtermId)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjCvtermId
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvtermId(BigDecimal subjCvtermId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvtermId(BigDecimal subjCvtermId, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByPathdistance
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByPathdistance(BigDecimal pathdistance) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByPathdistance(BigDecimal pathdistance)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByPathdistance
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByPathdistance(BigDecimal pathdistance, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByPathdistance(BigDecimal pathdistance, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByQualValue
@@ -217,19 +240,22 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoByQualValue
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByQualValue(String qualValue_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByQualValue(String qualValue_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjCvtermId
 	 *
 	 */
-	public VCvPhenotypeByPtoco findVCvPhenotypeByPtocoByObjCvtermId(BigDecimal objCvtermId_1) throws DataAccessException;
+	public VCvPhenotypeByPtoco findVCvPhenotypeByPtocoByObjCvtermId(BigDecimal objCvtermId_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjCvtermId
 	 *
 	 */
-	public VCvPhenotypeByPtoco findVCvPhenotypeByPtocoByObjCvtermId(BigDecimal objCvtermId_1, int startResult, int maxRows) throws DataAccessException;
+	public VCvPhenotypeByPtoco findVCvPhenotypeByPtocoByObjCvtermId(BigDecimal objCvtermId_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjAcc
@@ -241,7 +267,8 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjAcc
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjAcc(String subjAcc_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjAcc(String subjAcc_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjCvid
@@ -253,43 +280,50 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjCvid
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvid(BigDecimal subjCvid, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvid(BigDecimal subjCvid, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjCvnameContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvnameContaining(String subjCvname_1) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvnameContaining(String subjCvname_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjCvnameContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvnameContaining(String subjCvname_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjCvnameContaining(String subjCvname_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByQuanValue
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByQuanValue(java.math.BigDecimal quanValue) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByQuanValue(java.math.BigDecimal quanValue)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByQuanValue
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByQuanValue(BigDecimal quanValue, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByQuanValue(BigDecimal quanValue, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjCvtermContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvtermContaining(String objCvterm) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvtermContaining(String objCvterm)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjCvtermContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvtermContaining(String objCvterm, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvtermContaining(String objCvterm, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjDb
@@ -301,19 +335,22 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjDb
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjDb(String subjDb_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjDb(String subjDb_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjDefinitionContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjDefinitionContaining(String subjDefinition_1) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjDefinitionContaining(String subjDefinition_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoBySubjDefinitionContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjDefinitionContaining(String subjDefinition_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoBySubjDefinitionContaining(String subjDefinition_1,
+			int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjAcc
@@ -325,7 +362,8 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjAcc
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjAcc(String objAcc_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjAcc(String objAcc_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjCvterm
@@ -337,7 +375,8 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjCvterm
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvterm(String objCvterm_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjCvterm(String objCvterm_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjDbContaining
@@ -349,6 +388,7 @@ public interface VCvPhenotypeByPtocoDAO extends JpaDao<VCvPhenotypeByPtoco>, CvT
 	 * JPQL Query - findVCvPhenotypeByPtocoByObjDbContaining
 	 *
 	 */
-	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjDbContaining(String objDb_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotypeByPtoco> findVCvPhenotypeByPtocoByObjDbContaining(String objDb_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 }

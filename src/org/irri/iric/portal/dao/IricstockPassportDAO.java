@@ -7,10 +7,11 @@ public interface IricstockPassportDAO {
 
 	/**
 	 * Get passport data for variety
+	 * 
 	 * @param id
 	 * @return
 	 */
-	//public Set findIricstockPassportByIricStockId(BigDecimal id);
+	// public Set findIricstockPassportByIricStockId(BigDecimal id);
 
 	public Set getPassportByStockId(BigDecimal id);
 }

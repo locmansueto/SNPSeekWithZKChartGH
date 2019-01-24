@@ -17,8 +17,7 @@ import java.math.BigDecimal;
  */
 
 @Entity
-@NamedQueries({
-		@NamedQuery(name = "findAllVQtls", query = "select myVQtl from VQtl myVQtl"),
+@NamedQueries({ @NamedQuery(name = "findAllVQtls", query = "select myVQtl from VQtl myVQtl"),
 		@NamedQuery(name = "findVQtlByChromosome", query = "select myVQtl from VQtl myVQtl where myVQtl.chromosome = ?1"),
 		@NamedQuery(name = "findVQtlByDbId", query = "select myVQtl from VQtl myVQtl where myVQtl.dbId = ?1"),
 		@NamedQuery(name = "findVQtlByEnd", query = "select myVQtl from VQtl myVQtl where myVQtl.end = ?1"),
@@ -31,7 +30,7 @@ import java.math.BigDecimal;
 		@NamedQuery(name = "findVQtlByStart", query = "select myVQtl from VQtl myVQtl where myVQtl.start = ?1"),
 		@NamedQuery(name = "findVQtlByTraitName", query = "select myVQtl from VQtl myVQtl where myVQtl.traitName = ?1"),
 		@NamedQuery(name = "findVQtlByTraitNameContaining", query = "select myVQtl from VQtl myVQtl where myVQtl.traitName like ?1") })
-@Table( name = "V_QTL")
+@Table(name = "V_QTL")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VQtl")
 public class VQtl implements Serializable, Locus {
@@ -62,7 +61,6 @@ public class VQtl implements Serializable, Locus {
 	/**
 	 */
 
-	
 	@Column(name = "QUERYPOS", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -70,7 +68,6 @@ public class VQtl implements Serializable, Locus {
 	/**
 	 */
 
-	
 	@Column(name = "STARTPOS", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -240,32 +237,33 @@ public class VQtl implements Serializable, Locus {
 		return buffer.toString();
 	}
 
-//	/**
-//	 */
-//	@Override
-//	public int hashCode() {
-//		final int prime = 31;
-//		int result = 1;
-//		result = (int) (prime * result + ((qtlId == null) ? 0 : qtlId.hashCode()));
-//		return result;
-//	}
-//
-//	/**
-//	 */
-//	public boolean equals(Object obj) {
-//		if (obj == this)
-//			return true;
-//		if (!(obj instanceof VQtl))
-//			return false;
-//		VQtl equalCheck = (VQtl) obj;
-//		if ((qtlId == null && equalCheck.qtlId != null) || (qtlId != null && equalCheck.qtlId == null))
-//			return false;
-//		if (qtlId != null && !qtlId.equals(equalCheck.qtlId))
-//			return false;
-//		return true;
-//	}
-//
-//	
+	// /**
+	// */
+	// @Override
+	// public int hashCode() {
+	// final int prime = 31;
+	// int result = 1;
+	// result = (int) (prime * result + ((qtlId == null) ? 0 : qtlId.hashCode()));
+	// return result;
+	// }
+	//
+	// /**
+	// */
+	// public boolean equals(Object obj) {
+	// if (obj == this)
+	// return true;
+	// if (!(obj instanceof VQtl))
+	// return false;
+	// VQtl equalCheck = (VQtl) obj;
+	// if ((qtlId == null && equalCheck.qtlId != null) || (qtlId != null &&
+	// equalCheck.qtlId == null))
+	// return false;
+	// if (qtlId != null && !qtlId.equals(equalCheck.qtlId))
+	// return false;
+	// return true;
+	// }
+	//
+	//
 
 	/**
 	 */
@@ -273,55 +271,59 @@ public class VQtl implements Serializable, Locus {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		//result = (int) (prime * result + ((featureId == null) ? 0 : featureId.hashCode()));
-		//result = (int) (prime * result + ((organismId == null) ? 0 : organismId.hashCode()));
+		// result = (int) (prime * result + ((featureId == null) ? 0 :
+		// featureId.hashCode()));
+		// result = (int) (prime * result + ((organismId == null) ? 0 :
+		// organismId.hashCode()));
 		result = (int) (prime * result + ((getContig() == null) ? 0 : getContig().hashCode()));
 		result = (int) (prime * result + ((getFmin() == null) ? 0 : getFmin().hashCode()));
 		result = (int) (prime * result + ((getFmax() == null) ? 0 : getFmax().hashCode()));
 		return result;
 	}
-	
+
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		Locus l1=(Locus)this;
-		Locus l2=(Locus)o;
+
+		Locus l1 = (Locus) this;
+		Locus l2 = (Locus) o;
 		int ret = l1.getContig().compareTo(l2.getContig());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmin().compareTo(l2.getFmin());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmax().compareTo(l2.getFmax());
 		return ret;
-		
+
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return compareTo(obj)==0;
+
+		return compareTo(obj) == 0;
 	}
-	
+
 	@Override
 	public String getUniquename() {
-		// TODO Auto-generated method stub
+
 		return this.name;
 	}
 
 	@Override
 	public Long getChr() {
-		// TODO Auto-generated method stub
+
 		return Long.valueOf(this.chromosome);
 	}
 
 	@Override
 	public Integer getFmin() {
-		// TODO Auto-generated method stub
+
 		return this.start.intValue();
 	}
 
 	@Override
 	public Integer getFmax() {
-		// TODO Auto-generated method stub
+
 		return this.end.intValue();
 	}
 
@@ -333,18 +335,20 @@ public class VQtl implements Serializable, Locus {
 
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
-		if(chromosome>9) return "chr" + chromosome;
-		else return "chr0" + chromosome;
+
+		if (chromosome > 9)
+			return "chr" + chromosome;
+		else
+			return "chr0" + chromosome;
 	}
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		if(this.dbId.intValue()==1)
-			return "qtaro-qtl:" +  this.traitName + " (" + this.notes + ")";
-		else if(this.dbId.intValue()==2)
-			return "gramene-qtl:" +  this.traitName;
+
+		if (this.dbId.intValue() == 1)
+			return "qtaro-qtl:" + this.traitName + " (" + this.notes + ")";
+		else if (this.dbId.intValue() == 2)
+			return "gramene-qtl:" + this.traitName;
 		return null;
 	}
 
@@ -359,7 +363,5 @@ public class VQtl implements Serializable, Locus {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
+
 }

@@ -31,13 +31,12 @@ import org.irri.iric.portal.domain.CvTermUniqueValues;
 		@NamedQuery(name = "findVCvPhenotypeByPtocoPathByObjDb", query = "select myVCvPhenotypeByPtocoPath from VCvPhenotypeByPtocoPath myVCvPhenotypeByPtocoPath where myVCvPhenotypeByPtocoPath.objDb = ?1"),
 		@NamedQuery(name = "findVCvPhenotypeByPtocoPathByObjDbContaining", query = "select myVCvPhenotypeByPtocoPath from VCvPhenotypeByPtocoPath myVCvPhenotypeByPtocoPath where myVCvPhenotypeByPtocoPath.objDb like ?1"),
 		@NamedQuery(name = "findVCvPhenotypeByPtocoPathByPathdistance", query = "select myVCvPhenotypeByPtocoPath from VCvPhenotypeByPtocoPath myVCvPhenotypeByPtocoPath where myVCvPhenotypeByPtocoPath.pathdistance = ?1"),
-		
-		
+
 		@NamedQuery(name = "findVCvPhenotypeByPtocoPathByObjCvtermPosMaxdist", query = "select myVCvPhenotypeByPtocoPath from VCvPhenotypeByPtocoPath myVCvPhenotypeByPtocoPath where myVCvPhenotypeByPtocoPath.objCvname=?1 and  myVCvPhenotypeByPtocoPath.objCvterm = ?2 and ((myVCvPhenotypeByPtocoPath.pathdistance>0 and myVCvPhenotypeByPtocoPath.pathdistance<=?3) or myVCvPhenotypeByPtocoPath.pathdistance is null)  and myVCvPhenotypeByPtocoPath.dataset=?4 order by myVCvPhenotypeByPtocoPath.pathdistance, myVCvPhenotypeByPtocoPath.subjCvterm"),
 		@NamedQuery(name = "findVCvPhenotypeByPtocoPathByObjCvtermNegMaxdist", query = "select myVCvPhenotypeByPtocoPath from VCvPhenotypeByPtocoPath myVCvPhenotypeByPtocoPath where  myVCvPhenotypeByPtocoPath.objCvname=?1 and  myVCvPhenotypeByPtocoPath.objCvterm = ?2 and myVCvPhenotypeByPtocoPath.pathdistance<0 and myVCvPhenotypeByPtocoPath.pathdistance>=?3  and myVCvPhenotypeByPtocoPath.dataset=?4 order by myVCvPhenotypeByPtocoPath.pathdistance desc, myVCvPhenotypeByPtocoPath.subjCvterm"),
 		@NamedQuery(name = "findVCvPhenotypeByPtocoPathByObjCvtermPosDist", query = "select myVCvPhenotypeByPtocoPath from VCvPhenotypeByPtocoPath myVCvPhenotypeByPtocoPath where myVCvPhenotypeByPtocoPath.objCvname=?1 and  myVCvPhenotypeByPtocoPath.objCvterm = ?2 and ( myVCvPhenotypeByPtocoPath.pathdistance>0  or  myVCvPhenotypeByPtocoPath.pathdistance is null)  and myVCvPhenotypeByPtocoPath.dataset=?3 order by myVCvPhenotypeByPtocoPath.pathdistance, myVCvPhenotypeByPtocoPath.subjCvterm"),
 		@NamedQuery(name = "findVCvPhenotypeByPtocoPathByObjCvtermNegDist", query = "select myVCvPhenotypeByPtocoPath from VCvPhenotypeByPtocoPath myVCvPhenotypeByPtocoPath where  myVCvPhenotypeByPtocoPath.objCvname=?1 and myVCvPhenotypeByPtocoPath.objCvterm = ?2 and myVCvPhenotypeByPtocoPath.pathdistance<0  and myVCvPhenotypeByPtocoPath.dataset=?3 order by myVCvPhenotypeByPtocoPath.pathdistance desc, myVCvPhenotypeByPtocoPath.subjCvterm"),
-		
+
 		@NamedQuery(name = "findVCvPhenotypeByPtocoPathByPrimaryKey", query = "select myVCvPhenotypeByPtocoPath from VCvPhenotypeByPtocoPath myVCvPhenotypeByPtocoPath where myVCvPhenotypeByPtocoPath.subjCvtermId = ?1"),
 		@NamedQuery(name = "findVCvPhenotypeByPtocoPathByQualValue", query = "select myVCvPhenotypeByPtocoPath from VCvPhenotypeByPtocoPath myVCvPhenotypeByPtocoPath where myVCvPhenotypeByPtocoPath.qualValue = ?1"),
 		@NamedQuery(name = "findVCvPhenotypeByPtocoPathByQualValueContaining", query = "select myVCvPhenotypeByPtocoPath from VCvPhenotypeByPtocoPath myVCvPhenotypeByPtocoPath where myVCvPhenotypeByPtocoPath.qualValue like ?1"),
@@ -54,8 +53,8 @@ import org.irri.iric.portal.domain.CvTermUniqueValues;
 		@NamedQuery(name = "findVCvPhenotypeByPtocoPathBySubjDbContaining", query = "select myVCvPhenotypeByPtocoPath from VCvPhenotypeByPtocoPath myVCvPhenotypeByPtocoPath where myVCvPhenotypeByPtocoPath.subjDb like ?1"),
 		@NamedQuery(name = "findVCvPhenotypeByPtocoPathBySubjDefinition", query = "select myVCvPhenotypeByPtocoPath from VCvPhenotypeByPtocoPath myVCvPhenotypeByPtocoPath where myVCvPhenotypeByPtocoPath.subjDefinition = ?1"),
 		@NamedQuery(name = "findVCvPhenotypeByPtocoPathBySubjDefinitionContaining", query = "select myVCvPhenotypeByPtocoPath from VCvPhenotypeByPtocoPath myVCvPhenotypeByPtocoPath where myVCvPhenotypeByPtocoPath.subjDefinition like ?1") })
-//@Table( name = "V_CV_PHENOTYPE_BY_PTOCO_PATH")
-@Table( name = "V_CV_PHEN_BY_PTOCO_PATH_ALL")
+// @Table( name = "V_CV_PHENOTYPE_BY_PTOCO_PATH")
+@Table(name = "V_CV_PHEN_BY_PTOCO_PATH_ALL")
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VCvPhenotypeByPtocoPath")
@@ -176,16 +175,12 @@ public class VCvPhenotypeByPtocoPath implements Serializable, CvTermDataset {
 	@XmlElement
 	String qualValue;
 
-	
 	@Column(name = "DATASET")
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	@XmlElement
 	String dataset;
 
-	
-	
-	
 	public String getDataset() {
 		return dataset;
 	}
@@ -463,7 +458,8 @@ public class VCvPhenotypeByPtocoPath implements Serializable, CvTermDataset {
 		if (!(obj instanceof VCvPhenotypeByPtocoPath))
 			return false;
 		VCvPhenotypeByPtocoPath equalCheck = (VCvPhenotypeByPtocoPath) obj;
-		if ((subjCvtermId == null && equalCheck.subjCvtermId != null) || (subjCvtermId != null && equalCheck.subjCvtermId == null))
+		if ((subjCvtermId == null && equalCheck.subjCvtermId != null)
+				|| (subjCvtermId != null && equalCheck.subjCvtermId == null))
 			return false;
 		if (subjCvtermId != null && !subjCvtermId.equals(equalCheck.subjCvtermId))
 			return false;
@@ -474,32 +470,28 @@ public class VCvPhenotypeByPtocoPath implements Serializable, CvTermDataset {
 		return true;
 	}
 
-	
 	@Override
 	public BigDecimal getCvTermId() {
-		// TODO Auto-generated method stub
+
 		return this.subjCvid;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
+
 		return this.subjCvterm;
 	}
 
 	@Override
 	public String getDefinition() {
-		// TODO Auto-generated method stub
+
 		return this.subjDefinition;
 	}
 
 	@Override
 	public String getAccession() {
-		// TODO Auto-generated method stub
+
 		return this.subjDb + ":" + this.subjAcc;
 	}
-	
-	
-	
-	
+
 }

@@ -25,21 +25,20 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage VIricstockPassportValues entities.
  * 
  */
-//@Repository("VIricstockPassportValuesDAO")
-//@Repository("CvTermUniqueValuesDAO")
+// @Repository("VIricstockPassportValuesDAO")
+// @Repository("CvTermUniqueValuesDAO")
 @Repository("VCvPassportValuesDAO")
 @Transactional
 public class VIricstockPassportValuesDAOImpl extends AbstractJpaDao<VIricstockPassportValues>
 		implements VIricstockPassportValuesDAO {
 
-	
-
-
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VIricstockPassportValues.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VIricstockPassportValues.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit Production
@@ -57,7 +56,7 @@ public class VIricstockPassportValuesDAOImpl extends AbstractJpaDao<VIricstockPa
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -77,7 +76,8 @@ public class VIricstockPassportValuesDAOImpl extends AbstractJpaDao<VIricstockPa
 	 *
 	 */
 	@Transactional
-	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(BigDecimal typeId, Set dataset) throws DataAccessException {
+	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(BigDecimal typeId, Set dataset)
+			throws DataAccessException {
 
 		return findVIricstockPassportValuesByTypeId(typeId, dataset, -1, -1);
 	}
@@ -89,7 +89,8 @@ public class VIricstockPassportValuesDAOImpl extends AbstractJpaDao<VIricstockPa
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(BigDecimal typeId, Set dataset, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(BigDecimal typeId, Set dataset,
+			int startResult, int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVIricstockPassportValuesByTypeId", startResult, maxRows, typeId, dataset);
 		return new LinkedHashSet<VIricstockPassportValues>(query.getResultList());
 	}
@@ -99,7 +100,8 @@ public class VIricstockPassportValuesDAOImpl extends AbstractJpaDao<VIricstockPa
 	 *
 	 */
 	@Transactional
-	public VIricstockPassportValues findVIricstockPassportValuesByPrimaryKey(String value, BigDecimal typeId) throws DataAccessException {
+	public VIricstockPassportValues findVIricstockPassportValuesByPrimaryKey(String value, BigDecimal typeId)
+			throws DataAccessException {
 
 		return findVIricstockPassportValuesByPrimaryKey(value, typeId, -1, -1);
 	}
@@ -110,9 +112,11 @@ public class VIricstockPassportValuesDAOImpl extends AbstractJpaDao<VIricstockPa
 	 */
 
 	@Transactional
-	public VIricstockPassportValues findVIricstockPassportValuesByPrimaryKey(String value, BigDecimal typeId, int startResult, int maxRows) throws DataAccessException {
+	public VIricstockPassportValues findVIricstockPassportValuesByPrimaryKey(String value, BigDecimal typeId,
+			int startResult, int maxRows) throws DataAccessException {
 		try {
-			Query query = createNamedQuery("findVIricstockPassportValuesByPrimaryKey", startResult, maxRows, value, typeId);
+			Query query = createNamedQuery("findVIricstockPassportValuesByPrimaryKey", startResult, maxRows, value,
+					typeId);
 			return (org.irri.iric.portal.chado.oracle.domain.VIricstockPassportValues) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
@@ -124,7 +128,8 @@ public class VIricstockPassportValuesDAOImpl extends AbstractJpaDao<VIricstockPa
 	 *
 	 */
 	@Transactional
-	public Set<VIricstockPassportValues> findVIricstockPassportValuesByValueContaining(String value) throws DataAccessException {
+	public Set<VIricstockPassportValues> findVIricstockPassportValuesByValueContaining(String value)
+			throws DataAccessException {
 
 		return findVIricstockPassportValuesByValueContaining(value, -1, -1);
 	}
@@ -136,7 +141,8 @@ public class VIricstockPassportValuesDAOImpl extends AbstractJpaDao<VIricstockPa
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPassportValues> findVIricstockPassportValuesByValueContaining(String value, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstockPassportValues> findVIricstockPassportValuesByValueContaining(String value, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVIricstockPassportValuesByValueContaining", startResult, maxRows, value);
 		return new LinkedHashSet<VIricstockPassportValues>(query.getResultList());
 	}
@@ -158,7 +164,8 @@ public class VIricstockPassportValuesDAOImpl extends AbstractJpaDao<VIricstockPa
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPassportValues> findAllVIricstockPassportValuess(int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstockPassportValues> findAllVIricstockPassportValuess(int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findAllVIricstockPassportValuess", startResult, maxRows);
 		return new LinkedHashSet<VIricstockPassportValues>(query.getResultList());
 	}
@@ -180,13 +187,16 @@ public class VIricstockPassportValuesDAOImpl extends AbstractJpaDao<VIricstockPa
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPassportValues> findVIricstockPassportValuesByValue(String value, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstockPassportValues> findVIricstockPassportValuesByValue(String value, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstockPassportValuesByValue", startResult, maxRows, value);
 		return new LinkedHashSet<VIricstockPassportValues>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -195,76 +205,85 @@ public class VIricstockPassportValuesDAOImpl extends AbstractJpaDao<VIricstockPa
 		return true;
 	}
 
-//	
-//	@Override
-//	public Set getUniqueValues(BigDecimal typeId, Set dataset) {
-//		// TODO Auto-generated method stub
-//		if(AppContext.isOracle())
-//			return this.findVIricstockPassportValuesByTypeId(typeId, dataset);
-//		else {
-//		
-//			String sql="SELECT DISTINCT sp.value, sp.type_id, db.name as dataset FROM " + AppContext.getDefaultSchema() + ".stockprop sp, "  + AppContext.getDefaultSchema() + ".dbxref dx, "  + AppContext.getDefaultSchema() + 
-//					". db where sp.dbxref_id=dx.dbxref_id and dx.db_id=db.db_id and sp.type_id=" + typeId + " and db.name='" + dataset + "' ORDER BY 1";
-//			
-//			/*
-//		String sql="";
-//		if(dataset.equals("3k"))
-//			sql="SELECT DISTINCT iric_stockprop.value, iric_stockprop.type_id, '3k' AS dataset FROM public.iric_stockprop where type_id=" + typeId + " ORDER BY 1";
-//		else if(dataset.equals("hdra"))
-//			sql="SELECT DISTINCT hdra_stockprop.value, hdra_stockprop.type_id, 'hdra' AS dataset FROM public.hdra_stockprop  where type_id=" + typeId + " ORDER BY 1";
-//		else if(dataset.equals("gq92"))
-//			sql="SELECT DISTINCT gopal_stockprop.value, gopal_stockprop.type_id, 'gq92' AS dataset FROM public.gopal_stockprop  where type_id=" + typeId + " ORDER BY 1";
-//		*/
-//			
-//		return new LinkedHashSet(AppContext.executeSQL( getEntityManager() , VIricstockPassportValues.class, sql));
-//		}
-//		
-//	}
-	
+	//
+	// @Override
+	// public Set getUniqueValues(BigDecimal typeId, Set dataset) {
+	// 
+	// if(AppContext.isOracle())
+	// return this.findVIricstockPassportValuesByTypeId(typeId, dataset);
+	// else {
+	//
+	// String sql="SELECT DISTINCT sp.value, sp.type_id, db.name as dataset FROM " +
+	// AppContext.getDefaultSchema() + ".stockprop sp, " +
+	// AppContext.getDefaultSchema() + ".dbxref dx, " +
+	// AppContext.getDefaultSchema() +
+	// ". db where sp.dbxref_id=dx.dbxref_id and dx.db_id=db.db_id and sp.type_id="
+	// + typeId + " and db.name='" + dataset + "' ORDER BY 1";
+	//
+	// /*
+	// String sql="";
+	// if(dataset.equals("3k"))
+	// sql="SELECT DISTINCT iric_stockprop.value, iric_stockprop.type_id, '3k' AS
+	// dataset FROM public.iric_stockprop where type_id=" + typeId + " ORDER BY 1";
+	// else if(dataset.equals("hdra"))
+	// sql="SELECT DISTINCT hdra_stockprop.value, hdra_stockprop.type_id, 'hdra' AS
+	// dataset FROM public.hdra_stockprop where type_id=" + typeId + " ORDER BY 1";
+	// else if(dataset.equals("gq92"))
+	// sql="SELECT DISTINCT gopal_stockprop.value, gopal_stockprop.type_id, 'gq92'
+	// AS dataset FROM public.gopal_stockprop where type_id=" + typeId + " ORDER BY
+	// 1";
+	// */
+	//
+	// return new LinkedHashSet(AppContext.executeSQL( getEntityManager() ,
+	// VIricstockPassportValues.class, sql));
+	// }
+	//
+	// }
 
 	@Override
 	public Set getUniqueValues(BigDecimal typeId, Set dataset) {
-		// TODO Auto-generated method stub
-		if(AppContext.isOracle())
+		
+		if (AppContext.isOracle())
 			return null;
 		else {
-		
-			String sql="SELECT DISTINCT sp.value, sp.type_id, db.name as dataset FROM " + AppContext.getDefaultSchema()+".stock_sample ss," + AppContext.getDefaultSchema() + ".stockprop sp, "  + AppContext.getDefaultSchema() + ".dbxref dx, "  + AppContext.getDefaultSchema() + 
-					".db where ss.stock_id=sp.stock_id and ss.dbxref_id=dx.dbxref_id and dx.db_id=db.db_id and sp.type_id=" + typeId + " and db.name in (" + AppContext.toCSVquoted(dataset,"'") + ") ORDER BY 1";
-			
-			//SELECT DISTINCT sp.value, sp.type_id, db.name as dataset FROM  public.stockprop sp, stock_sample ss, public.dbxref dx, public. db where 
-			 //ss.stock_id=sp.stock_id and ss.dbxref_id=dx.dbxref_id and dx.db_id=db.db_id and sp.type_id=67042 and db.name in ('3k') ORDER BY 1;
-			
+
+			String sql = "SELECT DISTINCT sp.value, sp.type_id, db.name as dataset FROM "
+					+ AppContext.getDefaultSchema() + ".stock_sample ss," + AppContext.getDefaultSchema()
+					+ ".stockprop sp, " + AppContext.getDefaultSchema() + ".dbxref dx, " + AppContext.getDefaultSchema()
+					+ ".db where ss.stock_id=sp.stock_id and ss.dbxref_id=dx.dbxref_id and dx.db_id=db.db_id and sp.type_id="
+					+ typeId + " and db.name in (" + AppContext.toCSVquoted(dataset, "'") + ") ORDER BY 1";
+
+			// SELECT DISTINCT sp.value, sp.type_id, db.name as dataset FROM
+			// public.stockprop sp, stock_sample ss, public.dbxref dx, public. db where
+			// ss.stock_id=sp.stock_id and ss.dbxref_id=dx.dbxref_id and dx.db_id=db.db_id
+			// and sp.type_id=67042 and db.name in ('3k') ORDER BY 1;
+
 			/*
-		String sql="";
-		if(dataset.equals("3k"))
-			sql="SELECT DISTINCT iric_stockprop.value, iric_stockprop.type_id, '3k' AS dataset FROM public.iric_stockprop where type_id=" + typeId + " ORDER BY 1";
-		else if(dataset.equals("hdra"))
-			sql="SELECT DISTINCT hdra_stockprop.value, hdra_stockprop.type_id, 'hdra' AS dataset FROM public.hdra_stockprop  where type_id=" + typeId + " ORDER BY 1";
-		else if(dataset.equals("gq92"))
-			sql="SELECT DISTINCT gopal_stockprop.value, gopal_stockprop.type_id, 'gq92' AS dataset FROM public.gopal_stockprop  where type_id=" + typeId + " ORDER BY 1";
-		*/
-			
-		return new LinkedHashSet(AppContext.executeSQL( getEntityManager() , VIricstockPassportValues.class, sql));
+			 * String sql=""; if(dataset.equals("3k"))
+			 * sql="SELECT DISTINCT iric_stockprop.value, iric_stockprop.type_id, '3k' AS dataset FROM public.iric_stockprop where type_id="
+			 * + typeId + " ORDER BY 1"; else if(dataset.equals("hdra"))
+			 * sql="SELECT DISTINCT hdra_stockprop.value, hdra_stockprop.type_id, 'hdra' AS dataset FROM public.hdra_stockprop  where type_id="
+			 * + typeId + " ORDER BY 1"; else if(dataset.equals("gq92"))
+			 * sql="SELECT DISTINCT gopal_stockprop.value, gopal_stockprop.type_id, 'gq92' AS dataset FROM public.gopal_stockprop  where type_id="
+			 * + typeId + " ORDER BY 1";
+			 */
+
+			return new LinkedHashSet(AppContext.executeSQL(getEntityManager(), VIricstockPassportValues.class, sql));
 		}
 	}
-	
 
 	@Override
-	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(
-			BigDecimal typeId) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(
-			BigDecimal typeId, int startResult, int maxRows)
+	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(BigDecimal typeId)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
+
+	@Override
+	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(BigDecimal typeId, int startResult,
+			int maxRows) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -45,7 +45,7 @@ public class VAllsampleBasicpropDAOImpl extends AbstractJpaDao<VAllsampleBasicpr
 	@Transactional	
 	@Override
 	public Set<StockSample> getSamples(Set dataset) {
-		// TODO Auto-generated method stub
+		
 			Query query = createNamedQuery("findVAllsampleBasicpropByDatasetIn", -1, -1, dataset);
 			return new LinkedHashSet<StockSample>(query.getResultList());
 	}

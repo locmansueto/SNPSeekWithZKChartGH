@@ -17,7 +17,7 @@ public class LimitedFIFOStack extends Stack {
 
 	@Override
 	public Object push(Object arg0) {
-		// TODO Auto-generated method stub
+		
 		 super.push(arg0);
 	     while (size() > limit) { super.remove(super.firstElement()); }; 
 	     return true;

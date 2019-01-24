@@ -1,173 +1,147 @@
 package org.irri.iric.portal.hdf5;
 
-import ncsa.hdf.object.*;     // include the common HDF object package
-import ncsa.hdf.object.h5.*;  // include the HDF5 object package
+import ncsa.hdf.object.*; // include the common HDF object package
+import ncsa.hdf.object.h5.*; // include the HDF5 object package
 //import ncsa.hdf.hdf5lib.*;    // include the Java HDF5 interface
 
 import javax.swing.tree.TreeNode;
 
-
-
-
 /**
  * Retreve and print HDF5 objects from file hdf5_test.h5
+ * 
  * @version 1.3.0 10/26/2001
  * @author Peter X. Cao
  *
  */
-public class TestH5File
-{
-    public static void main(String[] argv)
-    {
-        // create an H5File object
-        //H5File h5file = new H5File("hdf5_test.h5", HDF5Constants.H5F_ACC_RDONLY);
-    	H5File h5file = new H5File( "E:/My Document/Transfer/3kcore_alleles/SNPUni"); //,  HDF5Constants.H5F_ACC_RDONLY);
+public class TestH5File {
+	public static void main(String[] argv) {
+		// create an H5File object
+		// H5File h5file = new H5File("hdf5_test.h5", HDF5Constants.H5F_ACC_RDONLY);
+		H5File h5file = new H5File("E:/My Document/Transfer/3kcore_alleles/SNPUni"); // , HDF5Constants.H5F_ACC_RDONLY);
 
-        try
-        {
-            // open file and retrieve the file structure
-            h5file.open();
-        }
-        catch (Exception ex)
-        {
-            System.out.println(ex);
-        }
+		try {
+			// open file and retrieve the file structure
+			h5file.open();
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
 
-        
-        Object  rootobj =  ((javax.swing.tree.DefaultMutableTreeNode) h5file.getRootNode()).getUserObject();
-        System.out.println("instanceof root" + rootobj.getClass().getCanonicalName() + " " + rootobj.getClass().getName());
-        //Group root = (Group) ((javax.swing.tree.DefaultMutableTreeNode) h5file.getRootNode()).getUserObject();
+		Object rootobj = ((javax.swing.tree.DefaultMutableTreeNode) h5file.getRootNode()).getUserObject();
+		System.out.println(
+				"instanceof root" + rootobj.getClass().getCanonicalName() + " " + rootobj.getClass().getName());
+		// Group root = (Group) ((javax.swing.tree.DefaultMutableTreeNode)
+		// h5file.getRootNode()).getUserObject();
 
-        try {
-	        // retrieve the dataset "2D 32-bit integer 20x10"
-        	Group  root = (Group)rootobj;
-	        
-        	Dataset dataset = (Dataset) root.getMemberList().get(0);
-        	System.out.println("instanceof dataset " + dataset.getClass().getCanonicalName() );
-        	//Object readobj = dataset.read();
-        	
-        
-            // initialize the dataset: load dataset information such as datatype
-            // and dataspace into memory.
-            dataset.init();
+		try {
+			// retrieve the dataset "2D 32-bit integer 20x10"
+			Group root = (Group) rootobj;
 
-            // start, stride and sizes will determined the selected subset
-            long[] start = dataset.getStartDims();
-            long[] stride = dataset.getStride();
-            long[] sizes = dataset.getSelectedDims();
+			Dataset dataset = (Dataset) root.getMemberList().get(0);
+			System.out.println("instanceof dataset " + dataset.getClass().getCanonicalName());
+			// Object readobj = dataset.read();
 
-            // select the subset: starting at (4, 2)
-            start[0] = 4;
-            start[1] = 2;
+			// initialize the dataset: load dataset information such as datatype
+			// and dataspace into memory.
+			dataset.init();
 
-            int rows=5;
-            int cols=3;
-            // select the subset: subset size (5, 3)
-            sizes[0] = rows;
-            sizes[1] = cols;
+			// start, stride and sizes will determined the selected subset
+			long[] start = dataset.getStartDims();
+			long[] stride = dataset.getStride();
+			long[] sizes = dataset.getSelectedDims();
 
-            
-            // select the subset: set stride to (3, 2)
-            stride[0] = 1;
-            stride[1] = 1;
+			// select the subset: starting at (4, 2)
+			start[0] = 4;
+			start[1] = 2;
 
-            // read the data of the subset
-            byte[] dataRead = (byte[]) dataset.read();
+			int rows = 5;
+			int cols = 3;
+			// select the subset: subset size (5, 3)
+			sizes[0] = rows;
+			sizes[1] = cols;
 
-            // print out the data values
-	        System.out.println("\n\nOriginal Data Values");
-	        for (int i = 0; i < rows; i++) {
-	            System.out.print("\n" + dataRead[i * cols]);
-	            for (int j = 1; j < cols; j++) {
-	                System.out.print(", " + dataRead[i * cols + j]);
-	            }
-	        }
-	        
-	       // char[] copyTo = java.util.Arrays.copyOfRange(copyFrom, 2, 9);
-	        
-	        
-	            
-            /*
-            System.out.println("\n\nSubset Data Values");
-            for (int i = 0; i < cols; i++) {
-                System.out.print("\n" +   new String( dataRead[i * rows] ) ;
-                for (int j = 1; j < rows; j++) {
-                    System.out.print("," +  Byte.toString(dataRead[i * rows + j]));
-                }
-            }
-            */
+			// select the subset: set stride to (3, 2)
+			stride[0] = 1;
+			stride[1] = 1;
 
-            
-            /*for (int i = 0; i < cols; i++) {
-            	byte[] byte3=new byte[cols];
-            	for(int j=0; i< rows ; i++) byte3[j]=dataRead[i * rows + j];
-                System.out.println( new String( byte3) ) ;
-            }
-            */
-            //System.out.print( new String( dataRead ));
-            /*
-            for (int i = 0; i < 5; i++) {
-                System.out.print("\n" +   new String( dataRead[i * 3]) ) ;
-                for (int j = 1; j < 3; j++) {
-                    System.out.print("," +  Byte.toString(dataRead[i * 3 + j]));
-                }
-            }
-            */
-            
-        			
-        	//H5ScalarDS dataRead = (H5ScalarDS) dataset.read();
-        	//dataRead.
+			// read the data of the subset
+			byte[] dataRead = (byte[]) dataset.read();
 
-          //  int rank = dataset.getRank();
-          //  dataset.getDatatype();
-          //  dataset.getData();
-            System.out.println("rank " + dataset.getRank());
-            System.out.println("datatype " +  dataset.getDatatype() + " " + dataset.getDatatype().getClass().getCanonicalName());
-            System.out.println("getdata " + dataset.getData().getClass().getCanonicalName());
-            
-          //  System.out.println("getdims " +  dataRead.getDims().getClass().getCanonicalName());
-            
-	/*
-	        // print out the data values
-	        System.out.println("\n\nOriginal Data Values");
-	        for (int i = 0; i < 20; i++) {
-	            System.out.print("\n" + dataRead[i * 10]);
-	            for (int j = 1; j < 10; j++) {
-	                System.out.print(", " + dataRead[i * 10 + j]);
-	            }
-	 */
-            
-        } catch(Exception ex) {
-        	ex.printStackTrace();
-        }
+			// print out the data values
+			System.out.println("\n\nOriginal Data Values");
+			for (int i = 0; i < rows; i++) {
+				System.out.print("\n" + dataRead[i * cols]);
+				for (int j = 1; j < cols; j++) {
+					System.out.print(", " + dataRead[i * cols + j]);
+				}
+			}
 
-        /*
-        javax.swing.tree.MutableTreeNode root = (MutableTreeNode) h5file.getRootNode();
-        if (root != null)
-        {
-            printNode(root, "    ");
-            
-            //data 8-bit integer,    3000 x 20310628
-        }
-        */
+			// char[] copyTo = java.util.Arrays.copyOfRange(copyFrom, 2, 9);
 
-        try { h5file.close(); 
-        	System.out.println("hdf5 file closed.");
-        }
-        catch (Exception ex ) {}
-    }
+			/*
+			 * System.out.println("\n\nSubset Data Values"); for (int i = 0; i < cols; i++)
+			 * { System.out.print("\n" + new String( dataRead[i * rows] ) ; for (int j = 1;
+			 * j < rows; j++) { System.out.print("," + Byte.toString(dataRead[i * rows +
+			 * j])); } }
+			 */
 
-    // print out the data object recusively
-    private static void printNode(javax.swing.tree.TreeNode node, String indent)
-    {
-    	
-        
-        System.out.println(indent+node);
+			/*
+			 * for (int i = 0; i < cols; i++) { byte[] byte3=new byte[cols]; for(int j=0; i<
+			 * rows ; i++) byte3[j]=dataRead[i * rows + j]; System.out.println( new String(
+			 * byte3) ) ; }
+			 */
+			// System.out.print( new String( dataRead ));
+			/*
+			 * for (int i = 0; i < 5; i++) { System.out.print("\n" + new String( dataRead[i
+			 * * 3]) ) ; for (int j = 1; j < 3; j++) { System.out.print("," +
+			 * Byte.toString(dataRead[i * 3 + j])); } }
+			 */
 
-        int n = node.getChildCount();
-        for (int i=0; i<n; i++)
-        {
-            printNode(node.getChildAt(i), indent+"    ");
-        }
-    }
+			// H5ScalarDS dataRead = (H5ScalarDS) dataset.read();
+			// dataRead.
+
+			// int rank = dataset.getRank();
+			// dataset.getDatatype();
+			// dataset.getData();
+			System.out.println("rank " + dataset.getRank());
+			System.out.println(
+					"datatype " + dataset.getDatatype() + " " + dataset.getDatatype().getClass().getCanonicalName());
+			System.out.println("getdata " + dataset.getData().getClass().getCanonicalName());
+
+			// System.out.println("getdims " +
+			// dataRead.getDims().getClass().getCanonicalName());
+
+			/*
+			 * // print out the data values System.out.println("\n\nOriginal Data Values");
+			 * for (int i = 0; i < 20; i++) { System.out.print("\n" + dataRead[i * 10]); for
+			 * (int j = 1; j < 10; j++) { System.out.print(", " + dataRead[i * 10 + j]); }
+			 */
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		/*
+		 * javax.swing.tree.MutableTreeNode root = (MutableTreeNode)
+		 * h5file.getRootNode(); if (root != null) { printNode(root, "    ");
+		 * 
+		 * //data 8-bit integer, 3000 x 20310628 }
+		 */
+
+		try {
+			h5file.close();
+			System.out.println("hdf5 file closed.");
+		} catch (Exception ex) {
+		}
+	}
+
+	// print out the data object recusively
+	private static void printNode(javax.swing.tree.TreeNode node, String indent) {
+
+		System.out.println(indent + node);
+
+		int n = node.getChildCount();
+		for (int i = 0; i < n; i++) {
+			printNode(node.getChildAt(i), indent + "    ");
+		}
+	}
 }

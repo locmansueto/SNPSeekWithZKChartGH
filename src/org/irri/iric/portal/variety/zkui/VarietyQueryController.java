@@ -275,7 +275,7 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 
 	@Override
 	public void doAfterCompose(Component comp) throws Exception {
-		// TODO Auto-generated method stub
+		
 		super.doAfterCompose(comp);
 
 		// String url = (String)desktop.getExecution().getArg().get("href");
@@ -1068,6 +1068,7 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 			} else {
 				value = listboxPhenotypes.getSelectedItem().getLabel();
 			}
+
 			listValues = (List) getPhenUniqueValues(variety.getPhenotypeUniqueValues(value, getDataset())); // variety.getPhenotypeUniqueValues(
 																											// listboxPhenotypes.getSelectedItem().getLabel()
 																											// ).iterator();
@@ -2598,7 +2599,11 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 		if (radioLegacyTrait.isSelected()) {
 			Set<String> setPhenotype = new HashSet();
 
-			setPhenotype = variety.getTraits(AppContext.getStringValues(listboxDataset.getSelectedItems()), true).keySet();
+			setPhenotype = variety.getTraits(AppContext.getStringValues(listboxDataset.getSelectedItems()), true)
+					.keySet();
+			// setPhenotype = new HashSet<String>(variety
+			// .getAllTraits(AppContext.getStringValues(listboxDataset.getSelectedItems()),
+			// true).values());
 			TreeSet<String> ts = new TreeSet<String>();
 			for (String phen : setPhenotype) {
 				ts.add(phen.toLowerCase());
@@ -2622,6 +2627,9 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 
 			setPhenotype = variety.getTraits(AppContext.getStringValues(listboxDataset.getSelectedItems()), false)
 					.keySet();
+			// setPhenotype = new HashSet<String>(variety
+			// .getAllTraits(AppContext.getStringValues(listboxDataset.getSelectedItems()),
+			// false).values());
 			// TreeSet<String> ts = new TreeSet<String>();
 			listPhenotype.addAll(setPhenotype);
 
@@ -2674,7 +2682,7 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 						new org.zkoss.zk.ui.event.EventListener() {
 							@Override
 							public void onEvent(Event e) throws Exception {
-								// TODO Auto-generated method stub
+								
 								if (e.getName().equals(ListboxMessageBox.ON_OK)) {
 									// objSel= getObjSel(); //listboxOptions.getSelectedItem().getValue();
 									// AppContext.debug("objSel=" + objSel);

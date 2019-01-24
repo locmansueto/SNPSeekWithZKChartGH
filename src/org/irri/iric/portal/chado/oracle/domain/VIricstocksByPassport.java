@@ -35,22 +35,18 @@ import org.irri.iric.portal.variety.VarietyFacade;
 
 		@NamedQuery(name = "findVIricstocksByPassportByTypeIdValueEquals", query = "select myVIricstocksByPassport from VIricstocksByPassport myVIricstocksByPassport where myVIricstocksByPassport.typeId = ?1 and  myVIricstocksByPassport.dataset in (?2) and upper(myVIricstocksByPassport.value) = upper(?3)"),
 		@NamedQuery(name = "findVIricstocksByPassportByTypeIdValueContaining", query = "select myVIricstocksByPassport from VIricstocksByPassport myVIricstocksByPassport where myVIricstocksByPassport.typeId = ?1 and  myVIricstocksByPassport.dataset in (?2) and upper(myVIricstocksByPassport.value) like upper(?3)"),
-		
-		
+
 		@NamedQuery(name = "findVIricstocksByPassportByValueContaining", query = "select myVIricstocksByPassport from VIricstocksByPassport myVIricstocksByPassport where myVIricstocksByPassport.value like ?1") })
 
-
-
-
-//@Table( name = "V_IRICSTOCKS_BY_PASSPORT")
-@Table( name = "V_STOCK_BY_PASSPORT")
+// @Table( name = "V_IRICSTOCKS_BY_PASSPORT")
+@Table(name = "V_STOCK_BY_PASSPORT")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstocksByPassport")
 public class VIricstocksByPassport implements Serializable, VarietyPlus {
 	private static final long serialVersionUID = 1L;
 
-	//private String valuename;
-	
+	// private String valuename;
+
 	/**
 	 */
 
@@ -107,19 +103,17 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 	@XmlElement
 	String boxCode;
 
-	
 	@Column(name = "VALUE", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String value;
 	/**
 	 */
-	
+
 	@Column(name = "DATASET", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String dataset;
-
 
 	@Column(name = "TYPE_ID", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
@@ -222,8 +216,6 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 		return this.typeId;
 	}
 
-	
-	
 	public void setDataset(String dataset) {
 		this.dataset = dataset;
 	}
@@ -271,28 +263,19 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 	}
 
 	/*
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = (int) (prime * result + ((iricStockpropId == null) ? 0 : iricStockpropId.hashCode()));
-		return result;
-	}
+	 * @Override public int hashCode() { final int prime = 31; int result = 1;
+	 * result = (int) (prime * result + ((iricStockpropId == null) ? 0 :
+	 * iricStockpropId.hashCode())); return result; }
+	 * 
+	 * public boolean equals(Object obj) { if (obj == this) return true; if (!(obj
+	 * instanceof VIricstocksByPassport)) return false; VIricstocksByPassport
+	 * equalCheck = (VIricstocksByPassport) obj; if ((iricStockpropId == null &&
+	 * equalCheck.iricStockpropId != null) || (iricStockpropId != null &&
+	 * equalCheck.iricStockpropId == null)) return false; if (iricStockpropId !=
+	 * null && !iricStockpropId.equals(equalCheck.iricStockpropId)) return false;
+	 * return true; }
+	 */
 
-	public boolean equals(Object obj) {
-		if (obj == this)
-			return true;
-		if (!(obj instanceof VIricstocksByPassport))
-			return false;
-		VIricstocksByPassport equalCheck = (VIricstocksByPassport) obj;
-		if ((iricStockpropId == null && equalCheck.iricStockpropId != null) || (iricStockpropId != null && equalCheck.iricStockpropId == null))
-			return false;
-		if (iricStockpropId != null && !iricStockpropId.equals(equalCheck.iricStockpropId))
-			return false;
-		return true;
-	}
-	*/
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -307,132 +290,131 @@ public class VIricstocksByPassport implements Serializable, VarietyPlus {
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
-		if (!(obj instanceof Variety)) //VIricstockBasicprop))
+		if (!(obj instanceof Variety)) // VIricstockBasicprop))
 			return false;
-		//VIricstockBasicprop equalCheck = (VIricstockBasicprop) obj;
+		// VIricstockBasicprop equalCheck = (VIricstockBasicprop) obj;
 		Variety equalCheck = (Variety) obj;
-		
-		//return iricStockId.equals(equalCheck.getIricStockId());
-		
-		
-		if ((getVarietyId() == null && equalCheck.getVarietyId() != null) || (getVarietyId() != null && equalCheck.getVarietyId() == null))
+
+		// return iricStockId.equals(equalCheck.getIricStockId());
+
+		if ((getVarietyId() == null && equalCheck.getVarietyId() != null)
+				|| (getVarietyId() != null && equalCheck.getVarietyId() == null))
 			return false;
 		if (getVarietyId() != null && !getVarietyId().equals(equalCheck.getVarietyId()))
 			return false;
-		if ((getDataset() == null && equalCheck.getDataset() != null) || (getDataset() != null && equalCheck.getDataset() == null))
+		if ((getDataset() == null && equalCheck.getDataset() != null)
+				|| (getDataset() != null && equalCheck.getDataset() == null))
 			return false;
 		if (getDataset() != null && !getDataset().equals(equalCheck.getDataset()))
 			return false;
-		
-		
+
 		return true;
-		
+
 	}
 
 	@Override
 	public BigDecimal getVarietyId() {
-		// TODO Auto-generated method stub
+		
 		return this.getIricStockId();
 	}
 
 	@Override
 	public String getIrisId() {
-		// TODO Auto-generated method stub
-		if(this.getIrisUniqueId()==null || this.getIrisUniqueId().isEmpty())
+		
+		if (this.getIrisUniqueId() == null || this.getIrisUniqueId().isEmpty())
 			return this.getBoxCode();
-		else return this.getIrisUniqueId();
+		else
+			return this.getIrisUniqueId();
 	}
 
 	@Override
 	public String getCountry() {
-		// TODO Auto-generated method stub
+		
 		return this.getOriCountry();
 	}
 
 	@Override
 	public void setCountry(String country) {
-		// TODO Auto-generated method stub
-	
+		
+
 		this.setOriCountry(country);
 	}
 
 	/*
-	@Override
-	public String getValueName() {
-		// TODO Auto-generated method stub
-		return valuename;
-	}
+	 * @Override public String getValueName() { 
+	 * return valuename; }
+	 * 
+	 * @Override public void setValueName(String valuename) { // TODO Auto-generated
+	 * method stub this.valuename=valuename; }
+	 */
 
-	@Override
-	public void setValueName(String valuename) {
-		// TODO Auto-generated method stub
-		this.valuename=valuename;
-	}
-	*/
-
-	
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		int ret = getName().compareTo( ((Variety)o).getName() ); 
-		if(ret==0)
-			ret = getVarietyId().compareTo( ((Variety)o).getVarietyId() );
-		if(ret==0)
-			ret = getDataset().compareTo( ((Variety)o).getDataset() );
-			
+		
+		int ret = getName().compareTo(((Variety) o).getName());
+		if (ret == 0)
+			ret = getVarietyId().compareTo(((Variety) o).getVarietyId());
+		if (ret == 0)
+			ret = getDataset().compareTo(((Variety) o).getDataset());
+
 		return ret;
 	}
+
 	@Override
 	public String printFields(String delimiter) {
-		// TODO Auto-generated method stub
+		
 		String irisid = getIrisId();
-		if(irisid==null) irisid="";
+		if (irisid == null)
+			irisid = "";
 		String subpop = getSubpopulation();
-		if(subpop==null) subpop="";
+		if (subpop == null)
+			subpop = "";
 		String cntr = getCountry();
-		if(cntr==null) cntr="";
+		if (cntr == null)
+			cntr = "";
 		String strvalue = value;
-		if(strvalue==null) strvalue = "";
-		
+		if (strvalue == null)
+			strvalue = "";
+
 		String acc = this.getAccession();
-		if(acc==null) acc="";
-		
-		//return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr + delimiter + strvalue;
-		return "\""+ this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter + "\""  + acc + "\"" + delimiter + "\""  + subpop + "\"" + delimiter + "\"" + cntr + "\"" + delimiter + strvalue   ;
+		if (acc == null)
+			acc = "";
+
+		// return this.getName() + delimiter + irisid + delimiter + subpop + delimiter +
+		// cntr + delimiter + strvalue;
+		return "\"" + this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter + "\"" + acc + "\""
+				+ delimiter + "\"" + subpop + "\"" + delimiter + "\"" + cntr + "\"" + delimiter + strvalue;
 
 	}
 
 	@Override
 	public String getBoxCode() {
-		// TODO Auto-generated method stub
+		
 		return boxCode;
 	}
 
 	@Override
 	public String getAccession() {
-		// TODO Auto-generated method stub
+		
 		try {
 			Integer.valueOf(gsAccession);
 			return "IRGC" + gsAccession;
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			return gsAccession;
 		}
 	}
-	
-	
+
 	@Override
 	public String getDataset() {
-		// TODO Auto-generated method stub
-		//return VarietyFacade.DATASET_SNPINDELV2_IUPAC;
+		
+		// return VarietyFacade.DATASET_SNPINDELV2_IUPAC;
 		return dataset;
 	}
 
 	@Override
 	public void setAccession(String accession) {
-		// TODO Auto-generated method stub
-		gsAccession=accession;
+		
+		gsAccession = accession;
 	}
-	
-	
-	
+
 }

@@ -17,8 +17,7 @@ import org.irri.iric.portal.gwas.domain.GWASRun;
  */
 
 @Entity
-@NamedQueries({
-		@NamedQuery(name = "findAllVGwasRuns", query = "select myVGwasRun from VGwasRun myVGwasRun"),
+@NamedQueries({ @NamedQuery(name = "findAllVGwasRuns", query = "select myVGwasRun from VGwasRun myVGwasRun"),
 		@NamedQuery(name = "findVGwasRunByGwasRunId", query = "select myVGwasRun from VGwasRun myVGwasRun where myVGwasRun.gwasRunId = ?1"),
 		@NamedQuery(name = "findVGwasRunByMethod", query = "select myVGwasRun from VGwasRun myVGwasRun where myVGwasRun.method = ?1"),
 		@NamedQuery(name = "findVGwasRunByMethodContaining", query = "select myVGwasRun from VGwasRun myVGwasRun where myVGwasRun.method like ?1"),
@@ -34,13 +33,13 @@ import org.irri.iric.portal.gwas.domain.GWASRun;
 		@NamedQuery(name = "findVGwasRunByCodefinition", query = "select myVGwasRun from VGwasRun myVGwasRun where upper(myVGwasRun.codefinition) = upper(?1)"),
 		@NamedQuery(name = "findVGwasRunByTraitContaining", query = "select myVGwasRun from VGwasRun myVGwasRun where myVGwasRun.trait like ?1"),
 		@NamedQuery(name = "findVGwasRunByTraitId", query = "select myVGwasRun from VGwasRun myVGwasRun where myVGwasRun.traitId = ?1") })
-@Table( name = "V_GWAS_RUN")
+@Table(name = "V_GWAS_RUN")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VGwasRun")
 public class VGwasRun implements Serializable, GWASRun {
 	@Override
 	public String getCodefinition() {
-		// TODO Auto-generated method stub
+
 		return codefinition;
 	}
 
@@ -78,8 +77,8 @@ public class VGwasRun implements Serializable, GWASRun {
 	String trait;
 	/**
 	 */
-	
-	@Column(name = "COTERM_ID",  precision = 10)
+
+	@Column(name = "COTERM_ID", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	BigDecimal cotermId;
@@ -93,8 +92,6 @@ public class VGwasRun implements Serializable, GWASRun {
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String codefinition;
-
-	
 
 	@Column(name = "SUBPOPULATION_ID", nullable = false)
 	@Basic(fetch = FetchType.EAGER)

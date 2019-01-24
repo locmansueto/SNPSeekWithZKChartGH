@@ -12,7 +12,7 @@ import org.springframework.dao.DataAccessException;
  * DAO to manage VCvPtoco entities.
  * 
  */
-public interface VCvPtocoDAO extends JpaDao<VCvPtoco>, CvTermDAO  {
+public interface VCvPtocoDAO extends JpaDao<VCvPtoco>, CvTermDAO {
 
 	/**
 	 * JPQL Query - findVCvPtocoByDb
@@ -36,7 +36,8 @@ public interface VCvPtocoDAO extends JpaDao<VCvPtoco>, CvTermDAO  {
 	 * JPQL Query - findVCvPtocoByDefinition
 	 *
 	 */
-	public Set<VCvPtoco> findVCvPtocoByDefinition(String definition, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPtoco> findVCvPtocoByDefinition(String definition, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVCvPtocos
@@ -60,7 +61,8 @@ public interface VCvPtocoDAO extends JpaDao<VCvPtoco>, CvTermDAO  {
 	 * JPQL Query - findVCvPtocoByCvtermContaining
 	 *
 	 */
-	public Set<VCvPtoco> findVCvPtocoByCvtermContaining(String cvterm, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPtoco> findVCvPtocoByCvtermContaining(String cvterm, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPtocoByPrimaryKey
@@ -72,7 +74,8 @@ public interface VCvPtocoDAO extends JpaDao<VCvPtoco>, CvTermDAO  {
 	 * JPQL Query - findVCvPtocoByPrimaryKey
 	 *
 	 */
-	public VCvPtoco findVCvPtocoByPrimaryKey(BigDecimal cvtermId, int startResult, int maxRows) throws DataAccessException;
+	public VCvPtoco findVCvPtocoByPrimaryKey(BigDecimal cvtermId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPtocoByAccessionContaining
@@ -84,7 +87,8 @@ public interface VCvPtocoDAO extends JpaDao<VCvPtoco>, CvTermDAO  {
 	 * JPQL Query - findVCvPtocoByAccessionContaining
 	 *
 	 */
-	public Set<VCvPtoco> findVCvPtocoByAccessionContaining(String accession, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPtoco> findVCvPtocoByAccessionContaining(String accession, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPtocoByCvterm
@@ -108,7 +112,8 @@ public interface VCvPtocoDAO extends JpaDao<VCvPtoco>, CvTermDAO  {
 	 * JPQL Query - findVCvPtocoByDbContaining
 	 *
 	 */
-	public Set<VCvPtoco> findVCvPtocoByDbContaining(String db_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPtoco> findVCvPtocoByDbContaining(String db_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPtocoByAccession
@@ -120,7 +125,8 @@ public interface VCvPtocoDAO extends JpaDao<VCvPtoco>, CvTermDAO  {
 	 * JPQL Query - findVCvPtocoByAccession
 	 *
 	 */
-	public Set<VCvPtoco> findVCvPtocoByAccession(String accession_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPtoco> findVCvPtocoByAccession(String accession_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPtocoByDefinitionContaining
@@ -132,7 +138,8 @@ public interface VCvPtocoDAO extends JpaDao<VCvPtoco>, CvTermDAO  {
 	 * JPQL Query - findVCvPtocoByDefinitionContaining
 	 *
 	 */
-	public Set<VCvPtoco> findVCvPtocoByDefinitionContaining(String definition_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPtoco> findVCvPtocoByDefinitionContaining(String definition_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPtocoByCvtermId
@@ -144,6 +151,7 @@ public interface VCvPtocoDAO extends JpaDao<VCvPtoco>, CvTermDAO  {
 	 * JPQL Query - findVCvPtocoByCvtermId
 	 *
 	 */
-	public VCvPtoco findVCvPtocoByCvtermId(BigDecimal cvtermId_1, int startResult, int maxRows) throws DataAccessException;
+	public VCvPtoco findVCvPtocoByCvtermId(BigDecimal cvtermId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

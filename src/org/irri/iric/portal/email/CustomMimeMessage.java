@@ -13,5 +13,5 @@ public class CustomMimeMessage extends MimeMessage {
 	@Override
 	protected void updateMessageID() throws MessagingException {
 		setHeader("Message-ID", "objects-message-id");
-	}  
+	}
 }

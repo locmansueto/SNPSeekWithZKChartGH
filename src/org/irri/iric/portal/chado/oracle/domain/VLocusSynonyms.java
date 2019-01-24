@@ -26,7 +26,7 @@ import org.irri.iric.portal.domain.FeatureSynonym;
 		@NamedQuery(name = "findVLocusSynonymsBySynonym", query = "select myVLocusSynonyms from VLocusSynonyms myVLocusSynonyms where myVLocusSynonyms.synonym = ?1"),
 		@NamedQuery(name = "findVLocusSynonymsBySynonymContaining", query = "select myVLocusSynonyms from VLocusSynonyms myVLocusSynonyms where myVLocusSynonyms.synonym like ?1"),
 		@NamedQuery(name = "findVLocusSynonymsBySynonymId", query = "select myVLocusSynonyms from VLocusSynonyms myVLocusSynonyms where myVLocusSynonyms.synonymId = ?1") })
-@Table( name = "V_LOCUS_SYNONYMS")
+@Table(name = "V_LOCUS_SYNONYMS")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VLocusSynonyms")
 public class VLocusSynonyms implements Serializable, FeatureSynonym {

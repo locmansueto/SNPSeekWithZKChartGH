@@ -8,6 +8,6 @@ import org.irri.iric.portal.domain.PositionLogPvalue;
 public interface ManhattanPlot extends Position, PositionLogPvalue {
 
 	BigDecimal getMarkerId();
-	//BigDecimal getMinusLogP();
-	
+	// BigDecimal getMinusLogP();
+
 }

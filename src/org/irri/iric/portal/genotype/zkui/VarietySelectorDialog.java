@@ -17,62 +17,51 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.SimpleListModel;
 import org.zkoss.zul.Window;
 
-
 //public class VarietySelectorDialog extends SelectorComposer<Component>, GenericForwardComposer {
-public class VarietySelectorDialog extends GenericForwardComposer<Component>  {
-    private static final long serialVersionUID = 1L;
-     
-    @Wire
-    private Listbox  listboxVariety;
-    @Wire
-    private Button buttonClose;
-    @Wire
-    private Window windowSelectVariety;
-     
-    private int selected=-1; 
-    
-    /*
-    public VarietySelectorDialog(List listVars) {
-		super();
-		// TODO Auto-generated constructor stub
-		listboxVariety.setModel(new SimpleListModel(listVars));
-	}
-*/
+public class VarietySelectorDialog extends GenericForwardComposer<Component> {
+	private static final long serialVersionUID = 1L;
+
+	@Wire
+	private Listbox listboxVariety;
+	@Wire
+	private Button buttonClose;
+	@Wire
+	private Window windowSelectVariety;
+
+	private int selected = -1;
+
+	/*
+	 * public VarietySelectorDialog(List listVars) { super(); // TODO Auto-generated
+	 * constructor stub listboxVariety.setModel(new SimpleListModel(listVars)); }
+	 */
 
 	@Listen("onClick = #buttonClose")
-    public void showModal(Event e) {
+	public void showModal(Event e) {
 		AppContext.debug("buttonClose");
-		Combobox combovar = (Combobox)Sessions.getCurrent().getAttribute("comboboxvar");
+		Combobox combovar = (Combobox) Sessions.getCurrent().getAttribute("comboboxvar");
 		Sessions.getCurrent().removeAttribute("comboboxvar");
-		Variety varsel = (Variety)listboxVariety.getSelectedItem().getValue();
-		combovar.setValue(varsel.getName() + " [" + varsel.getAccession() + "]" );
+		Variety varsel = (Variety) listboxVariety.getSelectedItem().getValue();
+		combovar.setValue(varsel.getName() + " [" + varsel.getAccession() + "]");
 		windowSelectVariety.setVisible(false);
-    	windowSelectVariety.detach();
-    }
-
+		windowSelectVariety.detach();
+	}
 
 	public int getSelected() {
 		return selected;
 	}
 
-
 	@Override
 	public void doAfterCompose(Component comp) throws Exception {
-		// TODO Auto-generated method stub
+		
 		super.doAfterCompose(comp);
-		
-		
-		List listvars = (List)Sessions.getCurrent().getAttribute("varlist");
+
+		List listvars = (List) Sessions.getCurrent().getAttribute("varlist");
 		listboxVariety.setModel(new SimpleListModel(listvars));
 		Sessions.getCurrent().removeAttribute("varlist");
 		/*
-		if (arg.containsKey("varlist")) {
-			listboxVariety.setModel(new SimpleListModel(listvars));
-		}
-		*/
+		 * if (arg.containsKey("varlist")) { listboxVariety.setModel(new
+		 * SimpleListModel(listvars)); }
+		 */
 	}
-    
-	
-	
-    
+
 }

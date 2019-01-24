@@ -35,17 +35,18 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage MvIndelRefposindex entities.
  * 
  */
-//@Repository("MvIndelRefposindexDAO")
+// @Repository("MvIndelRefposindexDAO")
 @Repository("IndelsAllvarsPosDAO")
 @Transactional
-public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
-		implements VIndelRefposindexDAO {
+public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex> implements VIndelRefposindexDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VIndelRefposindex.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VIndelRefposindex.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Production
@@ -63,7 +64,7 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -95,7 +96,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIndelRefposindex> findMvIndelRefposindexByPosition(BigDecimal position, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIndelRefposindex> findMvIndelRefposindexByPosition(BigDecimal position, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findMvIndelRefposindexByPosition", startResult, maxRows, position);
 		return new LinkedHashSet<VIndelRefposindex>(query.getResultList());
 	}
@@ -105,7 +107,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 	 *
 	 */
 	@Transactional
-	public Set<VIndelRefposindex> findMvIndelRefposindexByMaxInsertLen(Integer maxInsertLen) throws DataAccessException {
+	public Set<VIndelRefposindex> findMvIndelRefposindexByMaxInsertLen(Integer maxInsertLen)
+			throws DataAccessException {
 
 		return findMvIndelRefposindexByMaxInsertLen(maxInsertLen, -1, -1);
 	}
@@ -117,7 +120,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIndelRefposindex> findMvIndelRefposindexByMaxInsertLen(Integer maxInsertLen, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIndelRefposindex> findMvIndelRefposindexByMaxInsertLen(Integer maxInsertLen, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findMvIndelRefposindexByMaxInsertLen", startResult, maxRows, maxInsertLen);
 		return new LinkedHashSet<VIndelRefposindex>(query.getResultList());
 	}
@@ -149,7 +153,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 	 *
 	 */
 	@Transactional
-	public VIndelRefposindex findMvIndelRefposindexByIndelFeatureId(BigDecimal indelFeatureId) throws DataAccessException {
+	public VIndelRefposindex findMvIndelRefposindexByIndelFeatureId(BigDecimal indelFeatureId)
+			throws DataAccessException {
 
 		return findMvIndelRefposindexByIndelFeatureId(indelFeatureId, -1, -1);
 	}
@@ -160,15 +165,17 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 	 */
 
 	@Transactional
-	public VIndelRefposindex findMvIndelRefposindexByIndelFeatureId(BigDecimal indelFeatureId, int startResult, int maxRows) throws DataAccessException {
-		
+	public VIndelRefposindex findMvIndelRefposindexByIndelFeatureId(BigDecimal indelFeatureId, int startResult,
+			int maxRows) throws DataAccessException {
+
 		try {
-			Query query = createNamedQuery("findMvIndelRefposindexByIndelFeatureId", startResult, maxRows, indelFeatureId);
+			Query query = createNamedQuery("findMvIndelRefposindexByIndelFeatureId", startResult, maxRows,
+					indelFeatureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VIndelRefposindex) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
 		}
-		
+
 	}
 
 	/**
@@ -188,7 +195,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIndelRefposindex> findMvIndelRefposindexByRefcall(String refcall, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIndelRefposindex> findMvIndelRefposindexByRefcall(String refcall, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findMvIndelRefposindexByRefcall", startResult, maxRows, refcall);
 		return new LinkedHashSet<VIndelRefposindex>(query.getResultList());
 	}
@@ -209,7 +217,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 	 */
 
 	@Transactional
-	public VIndelRefposindex findMvIndelRefposindexByPrimaryKey(BigDecimal indelFeatureId, int startResult, int maxRows) throws DataAccessException {
+	public VIndelRefposindex findMvIndelRefposindexByPrimaryKey(BigDecimal indelFeatureId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findMvIndelRefposindexByPrimaryKey", startResult, maxRows, indelFeatureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VIndelRefposindex) query.getSingleResult();
@@ -235,7 +244,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIndelRefposindex> findMvIndelRefposindexByRefcallContaining(String refcall, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIndelRefposindex> findMvIndelRefposindexByRefcallContaining(String refcall, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findMvIndelRefposindexByRefcallContaining", startResult, maxRows, refcall);
 		return new LinkedHashSet<VIndelRefposindex>(query.getResultList());
 	}
@@ -245,7 +255,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 	 *
 	 */
 	@Transactional
-	public Set<VIndelRefposindex> findMvIndelRefposindexByMaxDeleteLen(Integer maxDeleteLen) throws DataAccessException {
+	public Set<VIndelRefposindex> findMvIndelRefposindexByMaxDeleteLen(Integer maxDeleteLen)
+			throws DataAccessException {
 
 		return findMvIndelRefposindexByMaxDeleteLen(maxDeleteLen, -1, -1);
 	}
@@ -257,7 +268,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIndelRefposindex> findMvIndelRefposindexByMaxDeleteLen(Integer maxDeleteLen, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIndelRefposindex> findMvIndelRefposindexByMaxDeleteLen(Integer maxDeleteLen, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findMvIndelRefposindexByMaxDeleteLen", startResult, maxRows, maxDeleteLen);
 		return new LinkedHashSet<VIndelRefposindex>(query.getResultList());
 	}
@@ -279,7 +291,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIndelRefposindex> findMvIndelRefposindexByAltcall(String altcall, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIndelRefposindex> findMvIndelRefposindexByAltcall(String altcall, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findMvIndelRefposindexByAltcall", startResult, maxRows, altcall);
 		return new LinkedHashSet<VIndelRefposindex>(query.getResultList());
 	}
@@ -301,7 +314,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIndelRefposindex> findMvIndelRefposindexByChromosome(BigDecimal chromosome, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIndelRefposindex> findMvIndelRefposindexByChromosome(BigDecimal chromosome, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findMvIndelRefposindexByChromosome", startResult, maxRows, chromosome);
 		return new LinkedHashSet<VIndelRefposindex>(query.getResultList());
 	}
@@ -311,7 +325,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 	 *
 	 */
 	@Transactional
-	public Set<VIndelRefposindex> findMvIndelRefposindexByAlleleIndex(BigDecimal alleleIndex) throws DataAccessException {
+	public Set<VIndelRefposindex> findMvIndelRefposindexByAlleleIndex(BigDecimal alleleIndex)
+			throws DataAccessException {
 
 		return findMvIndelRefposindexByAlleleIndex(alleleIndex, -1, -1);
 	}
@@ -323,7 +338,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIndelRefposindex> findMvIndelRefposindexByAlleleIndex(BigDecimal alleleIndex, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIndelRefposindex> findMvIndelRefposindexByAlleleIndex(BigDecimal alleleIndex, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findMvIndelRefposindexByAlleleIndex", startResult, maxRows, alleleIndex);
 		return new LinkedHashSet<VIndelRefposindex>(query.getResultList());
 	}
@@ -345,7 +361,8 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIndelRefposindex> findMvIndelRefposindexByTypeId(BigDecimal typeId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIndelRefposindex> findMvIndelRefposindexByTypeId(BigDecimal typeId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findMvIndelRefposindexByTypeId", startResult, maxRows, typeId);
 		return new LinkedHashSet<VIndelRefposindex>(query.getResultList());
 	}
@@ -367,13 +384,16 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIndelRefposindex> findMvIndelRefposindexByAltcallContaining(String altcall, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIndelRefposindex> findMvIndelRefposindexByAltcallContaining(String altcall, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findMvIndelRefposindexByAltcallContaining", startResult, maxRows, altcall);
 		return new LinkedHashSet<VIndelRefposindex>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -382,206 +402,214 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex>
 		return true;
 	}
 
-//	@Override
-//	public Map getMapIndelId2Indels(String chromosome, Integer startPos,
-//			Integer endPos) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public Map getMapIndelId2Indels(String chromosome, Collection poslist) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List getSNPs(String chromosome, Integer startPos, Integer endPos,
-//			BigDecimal type) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List getSNPs(String chromosome, Integer startPos, Integer endPos,
-//			BigDecimal type, int firstRow, int maxRows) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List getSNPsInChromosome(String chr, Collection posset,
-//			BigDecimal type) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//	
-	
-	
-//	@NamedQuery(name = "findIndelAlleleByChromosomePosBetween", query = "select myMvIndelRefposindex from MvIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.chromosome = ?1 and myMvIndelRefposindex.position between ?2 and ?3"),
-//	@NamedQuery(name = "findIndelAlleleByChromosomePosIn", query = "select myMvIndelRefposindex from MvIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.chromosome = ?1 and myMvIndelRefposindex.position in (?2)"),
-//	@NamedQuery(name = "findMvIndelRefposindexByIndelFeatureId", query = "select myMvIndelRefposindex from MvIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.indelFeatureId in (?1)"),
+	// @Override
+	// public Map getMapIndelId2Indels(String chromosome, Integer startPos,
+	// Integer endPos) {
+	//
+	// return null;
+	// }
+	//
+	// @Override
+	// public Map getMapIndelId2Indels(String chromosome, Collection poslist) {
+	//
+	// return null;
+	// }
+	//
+	// @Override
+	// public List getSNPs(String chromosome, Integer startPos, Integer endPos,
+	// BigDecimal type) {
+	//
+	// return null;
+	// }
+	//
+	// @Override
+	// public List getSNPs(String chromosome, Integer startPos, Integer endPos,
+	// BigDecimal type, int firstRow, int maxRows) {
+	//
+	// return null;
+	// }
+	//
+	// @Override
+	// public List getSNPsInChromosome(String chr, Collection posset,
+	// BigDecimal type) {
+	//
+	// return null;
+	// }
+	//
 
-	
-	
+	// @NamedQuery(name = "findIndelAlleleByChromosomePosBetween", query = "select
+	// myMvIndelRefposindex from MvIndelRefposindex myMvIndelRefposindex where
+	// myMvIndelRefposindex.chromosome = ?1 and myMvIndelRefposindex.position
+	// between ?2 and ?3"),
+	// @NamedQuery(name = "findIndelAlleleByChromosomePosIn", query = "select
+	// myMvIndelRefposindex from MvIndelRefposindex myMvIndelRefposindex where
+	// myMvIndelRefposindex.chromosome = ?1 and myMvIndelRefposindex.position in
+	// (?2)"),
+	// @NamedQuery(name = "findMvIndelRefposindexByIndelFeatureId", query = "select
+	// myMvIndelRefposindex from MvIndelRefposindex myMvIndelRefposindex where
+	// myMvIndelRefposindex.indelFeatureId in (?1)"),
+
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIndelRefposindex> findIndelAlleleByChrPosBetween(Integer chr, Integer posStart, Integer posStop, Set type) throws DataAccessException {
-		Query query = createNamedQuery("findMvIndelRefposindexByChromosomePosBetweenVS", -1, -1, BigDecimal.valueOf(chr),  BigDecimal.valueOf(posStart), BigDecimal.valueOf(posStop), type);
+	public Set<VIndelRefposindex> findIndelAlleleByChrPosBetween(Integer chr, Integer posStart, Integer posStop,
+			Set type) throws DataAccessException {
+		Query query = createNamedQuery("findMvIndelRefposindexByChromosomePosBetweenVS", -1, -1,
+				BigDecimal.valueOf(chr), BigDecimal.valueOf(posStart), BigDecimal.valueOf(posStop), type);
 		return new LinkedHashSet<VIndelRefposindex>(query.getResultList());
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIndelRefposindex> findIndelAlleleByChrPosIn(Integer chr, Collection poslist, Set variantset) throws DataAccessException {
-		Query query = createNamedQuery("findMvIndelRefposindexByChromosomePosInVS", -1, -1,  BigDecimal.valueOf(chr), poslist,variantset);
+	public Set<VIndelRefposindex> findIndelAlleleByChrPosIn(Integer chr, Collection poslist, Set variantset)
+			throws DataAccessException {
+		Query query = createNamedQuery("findMvIndelRefposindexByChromosomePosInVS", -1, -1, BigDecimal.valueOf(chr),
+				poslist, variantset);
 		return new LinkedHashSet<VIndelRefposindex>(query.getResultList());
 	}
-	
-	
-	
+
 	@Override
-	public List getSNPs(String chromosome, Integer startPos, Integer endPos,
-			Set type) {
-		// TODO Auto-generated method stub
-		//if(!type.contains(SnpsAllvarsPosDAO.TYPE_3KALLINDEL_V2)) throw new RuntimeException("type should be SnpcoreRefposindexDAO.TYPE_3KALLINDEL_V2");
-		
+	public List getSNPs(String chromosome, Integer startPos, Integer endPos, Set type) {
+
+		// if(!type.contains(SnpsAllvarsPosDAO.TYPE_3KALLINDEL_V2)) throw new
+		// RuntimeException("type should be SnpcoreRefposindexDAO.TYPE_3KALLINDEL_V2");
+
 		List retlist = new ArrayList();
-		//retlist.addAll( findIndelAlleleByChrPosBetween(Integer.valueOf(AppContext.guessChrFromString(chromosome)), startPos, endPos) );
-		retlist.addAll( findIndelAlleleByChrPosBetween(Integer.valueOf(AppContext.guessChrFromString(chromosome)) , startPos, endPos,type) );
+		// retlist.addAll(
+		// findIndelAlleleByChrPosBetween(Integer.valueOf(AppContext.guessChrFromString(chromosome)),
+		// startPos, endPos) );
+		retlist.addAll(findIndelAlleleByChrPosBetween(Integer.valueOf(AppContext.guessChrFromString(chromosome)),
+				startPos, endPos, type));
 		return retlist;
 	}
 
 	@Override
-	public List getSNPs(String chromosome, Integer startPos, Integer endPos,
-			Set type, int firstRow, int maxRows) {
-		// TODO Auto-generated method stub
-		 return getSNPs(chromosome, startPos, endPos, type);
+	public List getSNPs(String chromosome, Integer startPos, Integer endPos, Set type, int firstRow, int maxRows) {
+
+		return getSNPs(chromosome, startPos, endPos, type);
 	}
 
-
 	@Override
-	public Map<BigDecimal,VIndelRefposindex> getMapIndelId2Indels(String chromosome, Integer startPos, Integer endPos, Set type) {
-		// TODO Auto-generated method stub
-		Iterator<VIndelRefposindex> itIndels =  findIndelAlleleByChrPosBetween(Integer.valueOf( AppContext.guessChrFromString(chromosome)), startPos, endPos, type).iterator();
-		
+	public Map<BigDecimal, VIndelRefposindex> getMapIndelId2Indels(String chromosome, Integer startPos, Integer endPos,
+			Set type) {
+
+		Iterator<VIndelRefposindex> itIndels = findIndelAlleleByChrPosBetween(
+				Integer.valueOf(AppContext.guessChrFromString(chromosome)), startPos, endPos, type).iterator();
+
 		Map mapIndelid2Indels = new LinkedHashMap();
-		while(itIndels.hasNext()) {
+		while (itIndels.hasNext()) {
 			VIndelRefposindex indel = itIndels.next();
 			mapIndelid2Indels.put(indel.getIndelFeatureId(), indel);
 		}
 		return mapIndelid2Indels;
 	}
 
-	
-
-	
 	private List<VIndelRefposindex> executeSQL(String sql) {
 		AppContext.debug("executing :" + sql);
-		//log.info("executing :" + sql);
-		return  getSession().createSQLQuery(sql).addEntity(VIndelRefposindex.class).list();
+		// log.info("executing :" + sql);
+		return getSession().createSQLQuery(sql).addEntity(VIndelRefposindex.class).list();
 	}
-	
+
 	private Session getSession() {
 		return entityManager.unwrap(Session.class);
 	}
-	
-	
+
 	@Override
-	public Map<BigDecimal,VIndelRefposindex> getMapIndelId2Indels(String chromosome, Collection poslist,Set variantset) {
-		// TODO Auto-generated method stub
-		
-		Iterator<VIndelRefposindex> itIndels=null;
-		if(chromosome.toLowerCase().equals("any")) {
-			Map<String,Set<BigDecimal>> mapcontig2pos = MultiReferencePositionImpl.getMapContig2SNPPos(poslist);
+	public Map<BigDecimal, VIndelRefposindex> getMapIndelId2Indels(String chromosome, Collection poslist,
+			Set variantset) {
+
+		Iterator<VIndelRefposindex> itIndels = null;
+		if (chromosome.toLowerCase().equals("any")) {
+			Map<String, Set<BigDecimal>> mapcontig2pos = MultiReferencePositionImpl.getMapContig2SNPPos(poslist);
 			Iterator<String> itCont = mapcontig2pos.keySet().iterator();
 			StringBuffer buff = new StringBuffer();
-			while(itCont.hasNext()) {
-				String cont=itCont.next();
+			while (itCont.hasNext()) {
+				String cont = itCont.next();
 				Set pos = mapcontig2pos.get(cont);
-				buff.append(  " (CHROMOSOME=" + Integer.valueOf(AppContext.guessChrFromString(cont)) + " and POSITION IN (" ); 
+				buff.append(
+						" (CHROMOSOME=" + Integer.valueOf(AppContext.guessChrFromString(cont)) + " and POSITION IN (");
 				Iterator<BigDecimal> itPos = pos.iterator();
-				while(itPos.hasNext()) {
-					buff.append( itPos.next().longValue()-1 );
-					if(itPos.hasNext()) buff.append(",");
+				while (itPos.hasNext()) {
+					buff.append(itPos.next().longValue() - 1);
+					if (itPos.hasNext())
+						buff.append(",");
 				}
 				buff.append(")");
-				buff.append(" and variantset in (" + AppContext.toCSVquoted(variantset,"'") + ") ");
+				buff.append(" and variantset in (" + AppContext.toCSVquoted(variantset, "'") + ") ");
 
 				buff.append(") ");
-				if(itCont.hasNext()) buff.append(" OR ");
+				if (itCont.hasNext())
+					buff.append(" OR ");
 			}
 			buff.append("");
-			String sql = "select * from " + AppContext.getDefaultSchema() + ".V_INDEL_REFPOSINDEX where " + buff + " order by CHROMOSOME, POSITION";
-			itIndels=executeSQL(sql).iterator();
-		}
-		else if(chromosome.toLowerCase().equals("loci")) {
-			Map<String,Set<Locus>> mapcontig2locus =  MultiReferencePositionImpl.getMapContig2Loci(poslist);
-			
+			String sql = "select * from " + AppContext.getDefaultSchema() + ".V_INDEL_REFPOSINDEX where " + buff
+					+ " order by CHROMOSOME, POSITION";
+			itIndels = executeSQL(sql).iterator();
+		} else if (chromosome.toLowerCase().equals("loci")) {
+			Map<String, Set<Locus>> mapcontig2locus = MultiReferencePositionImpl.getMapContig2Loci(poslist);
+
 			Iterator<String> itCont = mapcontig2locus.keySet().iterator();
 			StringBuffer buff = new StringBuffer();
-			while(itCont.hasNext()) {
-				String cont=itCont.next();
+			while (itCont.hasNext()) {
+				String cont = itCont.next();
 				Set pos = mapcontig2locus.get(cont);
-				buff.append(  " (CHROMOSOME=" + Integer.valueOf(AppContext.guessChrFromString(cont)) + " and (" ) ;  
+				buff.append(" (CHROMOSOME=" + Integer.valueOf(AppContext.guessChrFromString(cont)) + " and (");
 				Iterator<Locus> itPos = pos.iterator();
-				while(itPos.hasNext()) {
+				while (itPos.hasNext()) {
 					Locus loc = itPos.next();
-					buff.append(" (POSITION between " + (loc.getFmin().longValue()-1) + " and " + (loc.getFmax().longValue()-1) + ") ");
-					buff.append(" and variantset in (" + AppContext.toCSVquoted(variantset,"'") + ") ");
-					if(itPos.hasNext()) buff.append(" or ");
+					buff.append(" (POSITION between " + (loc.getFmin().longValue() - 1) + " and "
+							+ (loc.getFmax().longValue() - 1) + ") ");
+					buff.append(" and variantset in (" + AppContext.toCSVquoted(variantset, "'") + ") ");
+					if (itPos.hasNext())
+						buff.append(" or ");
 				}
 				buff.append(")) ");
-				if(itCont.hasNext()) buff.append(" OR ");
+				if (itCont.hasNext())
+					buff.append(" OR ");
 			}
 			buff.append("");
-			String sql = "select * from " + AppContext.getDefaultSchema() + ".V_INDEL_REFPOSINDEX where " + buff + " order by CHROMOSOME, POSITION";
-			itIndels=executeSQL(sql).iterator();
+			String sql = "select * from " + AppContext.getDefaultSchema() + ".V_INDEL_REFPOSINDEX where " + buff
+					+ " order by CHROMOSOME, POSITION";
+			itIndels = executeSQL(sql).iterator();
 		} else {
-			itIndels =  findIndelAlleleByChrPosIn(Integer.valueOf(AppContext.guessChrFromString(chromosome)), poslist, variantset).iterator();
+			itIndels = findIndelAlleleByChrPosIn(Integer.valueOf(AppContext.guessChrFromString(chromosome)), poslist,
+					variantset).iterator();
 		}
-		
+
 		Map mapIndelid2Indels = new LinkedHashMap();
-		while(itIndels.hasNext()) {
+		while (itIndels.hasNext()) {
 			VIndelRefposindex indel = itIndels.next();
 			mapIndelid2Indels.put(indel.getIndelFeatureId(), indel);
 		}
 		return mapIndelid2Indels;
-		
-		
+
 	}
 
 	/*
-	@Override
-	public Map getMapIndelId2IndelsByIndelId(Collection indelids) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-*/
+	 * @Override public Map getMapIndelId2IndelsByIndelId(Collection indelids) { //
+	 * TODO Auto-generated method stub return null; }
+	 */
 
 	@Override
-	public List getSNPsInChromosome(String chr, Collection posset,
-			Set variantset) {
-		// TODO Auto-generated method stub
-		//if(!type.contains(SnpsAllvarsPosDAO.TYPE_3KALLINDEL_V2)) throw new RuntimeException("type should be SnpcoreRefposindexDAO.TYPE_3KALLINDEL_V2");
+	public List getSNPsInChromosome(String chr, Collection posset, Set variantset) {
+
+		// if(!type.contains(SnpsAllvarsPosDAO.TYPE_3KALLINDEL_V2)) throw new
+		// RuntimeException("type should be SnpcoreRefposindexDAO.TYPE_3KALLINDEL_V2");
 		List retlist = new ArrayList();
-		retlist.addAll(findIndelAlleleByChrPosIn(Integer.valueOf(AppContext.guessChrFromString( chr)), posset,variantset) );
-		return  retlist;
+		retlist.addAll(
+				findIndelAlleleByChrPosIn(Integer.valueOf(AppContext.guessChrFromString(chr)), posset, variantset));
+		return retlist;
 	}
 
 	@Override
 	public long countSNPsInChromosome(String chr, Collection posset, Set type) {
-		// TODO Auto-generated method stub
+
 		return -1;
 	}
 
 	@Override
 	public long countSNPs(String chr, Integer startPos, Integer endPos, Set type) {
-		// TODO Auto-generated method stub
+
 		return -1;
 	}
-	
-	
-	
-	
+
 }

@@ -1,6 +1,5 @@
 package org.irri.iric.portal.dao;
 
-
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -10,12 +9,14 @@ public interface OrganismDAO {
 
 	/**
 	 * Get map of organism name to organism object
+	 * 
 	 * @return
 	 */
-	public Map<String,Organism> getMapName2Organism();
-	
+	public Map<String, Organism> getMapName2Organism();
+
 	/**
 	 * Get organism with ID
+	 * 
 	 * @param id
 	 * @return
 	 */

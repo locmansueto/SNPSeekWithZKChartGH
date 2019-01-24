@@ -12,44 +12,49 @@ import org.springframework.dao.DataAccessException;
  * DAO to manage VIricstockPassportValues entities.
  * 
  */
-public interface VIricstockPassportValuesDAO extends
-		JpaDao<VIricstockPassportValues> , CvTermUniqueValuesDAO {
+public interface VIricstockPassportValuesDAO extends JpaDao<VIricstockPassportValues>, CvTermUniqueValuesDAO {
 
 	/**
 	 * JPQL Query - findVIricstockPassportValuesByTypeId
 	 *
 	 */
-	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(BigDecimal typeId) throws DataAccessException;
+	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(BigDecimal typeId)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPassportValuesByTypeId
 	 *
 	 */
-	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(BigDecimal typeId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(BigDecimal typeId, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPassportValuesByPrimaryKey
 	 *
 	 */
-	public VIricstockPassportValues findVIricstockPassportValuesByPrimaryKey(String value, BigDecimal typeId_1) throws DataAccessException;
+	public VIricstockPassportValues findVIricstockPassportValuesByPrimaryKey(String value, BigDecimal typeId_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPassportValuesByPrimaryKey
 	 *
 	 */
-	public VIricstockPassportValues findVIricstockPassportValuesByPrimaryKey(String value, BigDecimal typeId_1, int startResult, int maxRows) throws DataAccessException;
+	public VIricstockPassportValues findVIricstockPassportValuesByPrimaryKey(String value, BigDecimal typeId_1,
+			int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPassportValuesByValueContaining
 	 *
 	 */
-	public Set<VIricstockPassportValues> findVIricstockPassportValuesByValueContaining(String value_1) throws DataAccessException;
+	public Set<VIricstockPassportValues> findVIricstockPassportValuesByValueContaining(String value_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPassportValuesByValueContaining
 	 *
 	 */
-	public Set<VIricstockPassportValues> findVIricstockPassportValuesByValueContaining(String value_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIricstockPassportValues> findVIricstockPassportValuesByValueContaining(String value_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVIricstockPassportValuess
@@ -61,7 +66,8 @@ public interface VIricstockPassportValuesDAO extends
 	 * JPQL Query - findAllVIricstockPassportValuess
 	 *
 	 */
-	public Set<VIricstockPassportValues> findAllVIricstockPassportValuess(int startResult, int maxRows) throws DataAccessException;
+	public Set<VIricstockPassportValues> findAllVIricstockPassportValuess(int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVIricstockPassportValuesByValue
@@ -73,6 +79,7 @@ public interface VIricstockPassportValuesDAO extends
 	 * JPQL Query - findVIricstockPassportValuesByValue
 	 *
 	 */
-	public Set<VIricstockPassportValues> findVIricstockPassportValuesByValue(String value_2, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIricstockPassportValues> findVIricstockPassportValuesByValue(String value_2, int startResult,
+			int maxRows) throws DataAccessException;
 
 }

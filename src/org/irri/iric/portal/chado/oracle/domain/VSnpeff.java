@@ -25,8 +25,7 @@ import org.irri.iric.portal.domain.SnpsEffect;
  */
 
 @Entity
-@NamedQueries({
-		@NamedQuery(name = "findAllVSnpeffs", query = "select myVSnpeff from VSnpeff myVSnpeff"),
+@NamedQueries({ @NamedQuery(name = "findAllVSnpeffs", query = "select myVSnpeff from VSnpeff myVSnpeff"),
 		@NamedQuery(name = "findVSnpeffByAnnotation", query = "select myVSnpeff from VSnpeff myVSnpeff where myVSnpeff.annotation = ?1"),
 		@NamedQuery(name = "findVSnpeffByAnnotationContaining", query = "select myVSnpeff from VSnpeff myVSnpeff where myVSnpeff.annotation like ?1"),
 		@NamedQuery(name = "findVSnpeffByChromosome", query = "select myVSnpeff from VSnpeff myVSnpeff where myVSnpeff.chromosome = ?1"),
@@ -35,25 +34,24 @@ import org.irri.iric.portal.domain.SnpsEffect;
 		@NamedQuery(name = "findVSnpeffByPositionBetween", query = "select myVSnpeff from VSnpeff myVSnpeff where  myVSnpeff.chromosome = ?1 and myVSnpeff.position between ?2 and ?3 order by myVSnpeff.position"),
 		@NamedQuery(name = "findVSnpeffByPositionBetweenSnpsets", query = "select myVSnpeff from VSnpeff myVSnpeff where  myVSnpeff.chromosome = ?1 and myVSnpeff.position between ?2 and ?3 and myVSnpeff.variantset in (?4) order by myVSnpeff.position"),
 
-		
 		@NamedQuery(name = "findVSnpeffByPrimaryKey", query = "select myVSnpeff from VSnpeff myVSnpeff where myVSnpeff.snpFeatureId = ?1"),
 		@NamedQuery(name = "findVSnpeffBySnpFeatureId", query = "select myVSnpeff from VSnpeff myVSnpeff where myVSnpeff.snpFeatureId = ?1") })
-@Table( name = "V_SNPEFF")
+@Table(name = "V_SNPEFF")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VSnpeff")
 public class VSnpeff implements Serializable, SnpsEffect {
-	
+
 	@Override
 	public String getSnpset() {
-		// TODO Auto-generated method stub
+		
 		return variantset;
 	}
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Transient
 	private Double score;
-	
+
 	/**
 	 */
 
@@ -159,17 +157,16 @@ public class VSnpeff implements Serializable, SnpsEffect {
 	 */
 	public String toString() {
 
-		
 		/*
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("snpFeatureId=[").append(snpFeatureId).append("] ");
-		buffer.append("chromosome=[").append(chromosome).append("] ");
-		buffer.append("position=[").append(position).append("] ");
-		buffer.append("annotation=[").append(annotation).append("] ");
-
-		return buffer.toString();
-		*/
+		 * StringBuilder buffer = new StringBuilder();
+		 * 
+		 * buffer.append("snpFeatureId=[").append(snpFeatureId).append("] ");
+		 * buffer.append("chromosome=[").append(chromosome).append("] ");
+		 * buffer.append("position=[").append(position).append("] ");
+		 * buffer.append("annotation=[").append(annotation).append("] ");
+		 * 
+		 * return buffer.toString();
+		 */
 		return annotation;
 	}
 
@@ -179,7 +176,8 @@ public class VSnpeff implements Serializable, SnpsEffect {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		//result = (int) (prime * result + ((snpFeatureId == null) ? 0 : snpFeatureId.hashCode()));
+		// result = (int) (prime * result + ((snpFeatureId == null) ? 0 :
+		// snpFeatureId.hashCode()));
 		result = (int) (prime * result + ((chromosome == null) ? 0 : chromosome.hashCode()));
 		result = (int) (prime * result + ((position == null) ? 0 : position.hashCode()));
 		return result;
@@ -188,33 +186,32 @@ public class VSnpeff implements Serializable, SnpsEffect {
 	/**
 	 */
 	public boolean equals(Object obj) {
-		return compareTo(obj)==0;
+		return compareTo(obj) == 0;
 		/*
-		if (obj == this)
-			return true;
-		if (!(obj instanceof VSnpeff))
-			return false;
-		VSnpeff equalCheck = (VSnpeff) obj;
-		if ((snpFeatureId == null && equalCheck.snpFeatureId != null) || (snpFeatureId != null && equalCheck.snpFeatureId == null))
-			return false;
-		if (snpFeatureId != null && !snpFeatureId.equals(equalCheck.snpFeatureId))
-			return false;
-		return true;
-		*/
+		 * if (obj == this) return true; if (!(obj instanceof VSnpeff)) return false;
+		 * VSnpeff equalCheck = (VSnpeff) obj; if ((snpFeatureId == null &&
+		 * equalCheck.snpFeatureId != null) || (snpFeatureId != null &&
+		 * equalCheck.snpFeatureId == null)) return false; if (snpFeatureId != null &&
+		 * !snpFeatureId.equals(equalCheck.snpFeatureId)) return false; return true;
+		 */
 	}
-	
-	private Map<String,String[]> getInfos() {
-		Map<String,String[]>  mapInfos=null;
-		if(mapInfos==null) mapInfos=new HashMap();
-		if(this.annotation!=null) {
-			String infos[]=annotation.split(";");
-			for(int i=0;i<infos.length; i++) {
-				if(infos[i].startsWith("ANN=")) mapInfos.put("ANN", infos[i].replace("ANN=", "").split(",") );
-				else if(infos[i].startsWith("LOF=")) mapInfos.put("LOF", infos[i].replace("LOF=", "").split("\\|") );
-				else if(infos[i].startsWith("NMD=")) mapInfos.put("NMD", infos[i].replace("NMD=", "").split("\\|") );
+
+	private Map<String, String[]> getInfos() {
+		Map<String, String[]> mapInfos = null;
+		if (mapInfos == null)
+			mapInfos = new HashMap();
+		if (this.annotation != null) {
+			String infos[] = annotation.split(";");
+			for (int i = 0; i < infos.length; i++) {
+				if (infos[i].startsWith("ANN="))
+					mapInfos.put("ANN", infos[i].replace("ANN=", "").split(","));
+				else if (infos[i].startsWith("LOF="))
+					mapInfos.put("LOF", infos[i].replace("LOF=", "").split("\\|"));
+				else if (infos[i].startsWith("NMD="))
+					mapInfos.put("NMD", infos[i].replace("NMD=", "").split("\\|"));
 			}
 		}
-		
+
 		return mapInfos;
 	}
 
@@ -225,94 +222,91 @@ public class VSnpeff implements Serializable, SnpsEffect {
 
 	@Override
 	public String[] getLOF() {
-		// TODO Auto-generated method stub
+		
 		return getInfos().get("LOF");
 	}
 
 	@Override
 	public String[] getNMD() {
-		// TODO Auto-generated method stub
+		
 		return getInfos().get("NMD");
 	}
 
-	
-	
-	
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
-		if(chromosome>9) return "chr" + chromosome;
+		
+		if (chromosome > 9)
+			return "chr" + chromosome;
 		return "chr0" + chromosome;
 	}
-/*
-	@Override
-	public String getRefnuc() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-*/
+
+	/*
+	 * @Override public String getRefnuc() { 
+	 * return null; }
+	 */
 	@Override
 	public Long getChr() {
-		// TODO Auto-generated method stub
+		
 		return Long.valueOf(this.chromosome);
 	}
 
 	@Override
 	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
-		Locus p=(Locus)arg0;
-		int ret=getChr().compareTo(p.getChr());
-		if(ret!=0) return ret;
-		ret=getFmin().compareTo(p.getFmin());
-		return ret;
 		
+		Locus p = (Locus) arg0;
+		int ret = getChr().compareTo(p.getChr());
+		if (ret != 0)
+			return ret;
+		ret = getFmin().compareTo(p.getFmin());
+		return ret;
+
 	}
 
 	@Override
 	public String getUniquename() {
-		// TODO Auto-generated method stub
+		
 		return "snp-" + getContig() + "-" + getPosition();
 	}
 
 	@Override
 	public Integer getFmin() {
-		// TODO Auto-generated method stub
+		
 		return this.position.intValue();
 	}
 
 	@Override
 	public Integer getFmax() {
-		// TODO Auto-generated method stub
+		
 		return this.position.intValue();
 	}
 
 	@Override
 	public Integer getStrand() {
-		// TODO Auto-generated method stub
+		
 		return 1;
 	}
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
+		
 		return this.annotation;
 	}
 
 	@Override
 	public BigDecimal getFeatureId() {
-		// TODO Auto-generated method stub
+		
 		return snpFeatureId;
 	}
 
 	@Transient
 	@Override
 	public List<SnpEffectAnn> getANNObj() {
-		// TODO Auto-generated method stub
 		
-		List listAnns=new ArrayList();
+
+		List listAnns = new ArrayList();
 		String anns[] = getANN();
-		for(int i=0; i<anns.length; i++) {
-			listAnns.add( new SnpEffectAnn(anns[i]));
+		for (int i = 0; i < anns.length; i++) {
+			listAnns.add(new SnpEffectAnn(anns[i]));
 		}
 		return listAnns;
 	}
@@ -320,23 +314,23 @@ public class VSnpeff implements Serializable, SnpsEffect {
 	@Override
 	@Transient
 	public Double getScore() {
-		// TODO Auto-generated method stub
-		if(score==null) {
-			int minrank=Integer.MAX_VALUE;
-			Iterator<SnpEffectAnn>  itanns = getANNObj().iterator();
-			while(itanns.hasNext())
-			{
+		
+		if (score == null) {
+			int minrank = Integer.MAX_VALUE;
+			Iterator<SnpEffectAnn> itanns = getANNObj().iterator();
+			while (itanns.hasNext()) {
 				try {
-					String annots[]=itanns.next().getAnnotation().split("&");
-					for(int in=0; in<annots.length; in++) {
-						int rank= AppContext.getMapVariantRank( annots[in] );
-						if(rank<minrank) minrank=rank;
+					String annots[] = itanns.next().getAnnotation().split("&");
+					for (int in = 0; in < annots.length; in++) {
+						int rank = AppContext.getMapVariantRank(annots[in]);
+						if (rank < minrank)
+							minrank = rank;
 					}
-				} catch(Exception ex) {
+				} catch (Exception ex) {
 					AppContext.debug("annotation=" + annotation);
 					ex.printStackTrace();
 				}
-				
+
 			}
 			score = Double.valueOf(minrank);
 		}
@@ -349,7 +343,5 @@ public class VSnpeff implements Serializable, SnpsEffect {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
+
 }

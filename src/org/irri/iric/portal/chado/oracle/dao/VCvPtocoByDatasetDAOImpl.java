@@ -27,14 +27,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository("VCvPtocoByDatasetDAO")
 @Transactional
-public class VCvPtocoByDatasetDAOImpl extends AbstractJpaDao<VCvPtocoByDataset> implements
-CvTermByDatasetDAO {
+public class VCvPtocoByDatasetDAOImpl extends AbstractJpaDao<VCvPtocoByDataset> implements CvTermByDatasetDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VCvPtocoByDataset.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VCvPtocoByDataset.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Production
@@ -52,7 +53,7 @@ CvTermByDatasetDAO {
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -106,7 +107,8 @@ CvTermByDatasetDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtocoByDataset> findVCvPtocoByDefinition(String definition, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtocoByDataset> findVCvPtocoByDefinition(String definition, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPtocoByDefinitionDataset", startResult, maxRows, definition);
 		return new LinkedHashSet<VCvPtocoByDataset>(query.getResultList());
 	}
@@ -128,7 +130,8 @@ CvTermByDatasetDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtocoByDataset> findAllVCvPtocos(String dataset, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtocoByDataset> findAllVCvPtocos(String dataset, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findAllVCvPtocosDataset", startResult, maxRows, dataset);
 		return new LinkedHashSet<VCvPtocoByDataset>(query.getResultList());
 	}
@@ -140,7 +143,6 @@ CvTermByDatasetDAO {
 		return new LinkedHashSet<VCvPtocoByDataset>(query.getResultList());
 	}
 
-	
 	/**
 	 * JPQL Query - findVCvPtocoByCvtermContaining
 	 *
@@ -158,7 +160,8 @@ CvTermByDatasetDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtocoByDataset> findVCvPtocoByCvtermContaining(String cvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtocoByDataset> findVCvPtocoByCvtermContaining(String cvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPtocoByCvtermContainingDataset", startResult, maxRows, cvterm);
 		return new LinkedHashSet<VCvPtocoByDataset>(query.getResultList());
 	}
@@ -179,7 +182,8 @@ CvTermByDatasetDAO {
 	 */
 
 	@Transactional
-	public VCvPtocoByDataset findVCvPtocoByPrimaryKey(BigDecimal cvtermId, int startResult, int maxRows) throws DataAccessException {
+	public VCvPtocoByDataset findVCvPtocoByPrimaryKey(BigDecimal cvtermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVCvPtocoByPrimaryKeyDataset", startResult, maxRows, cvtermId);
 			return (org.irri.iric.portal.chado.oracle.domain.VCvPtocoByDataset) query.getSingleResult();
@@ -205,7 +209,8 @@ CvTermByDatasetDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtocoByDataset> findVCvPtocoByAccessionContaining(String accession, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtocoByDataset> findVCvPtocoByAccessionContaining(String accession, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPtocoByAccessionContainingDataset", startResult, maxRows, accession);
 		return new LinkedHashSet<VCvPtocoByDataset>(query.getResultList());
 	}
@@ -227,7 +232,8 @@ CvTermByDatasetDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtocoByDataset> findVCvPtocoByCvterm(String cvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtocoByDataset> findVCvPtocoByCvterm(String cvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPtocoByCvtermDataset", startResult, maxRows, cvterm);
 		return new LinkedHashSet<VCvPtocoByDataset>(query.getResultList());
 	}
@@ -249,7 +255,8 @@ CvTermByDatasetDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtocoByDataset> findVCvPtocoByDbContaining(String db, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtocoByDataset> findVCvPtocoByDbContaining(String db, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPtocoByDbContainingDataset", startResult, maxRows, db);
 		return new LinkedHashSet<VCvPtocoByDataset>(query.getResultList());
 	}
@@ -271,7 +278,8 @@ CvTermByDatasetDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtocoByDataset> findVCvPtocoByAccession(String accession, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtocoByDataset> findVCvPtocoByAccession(String accession, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPtocoByAccessionDataset", startResult, maxRows, accession);
 		return new LinkedHashSet<VCvPtocoByDataset>(query.getResultList());
 	}
@@ -293,7 +301,8 @@ CvTermByDatasetDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtocoByDataset> findVCvPtocoByDefinitionContaining(String definition, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtocoByDataset> findVCvPtocoByDefinitionContaining(String definition, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPtocoByDefinitionContainingDataset", startResult, maxRows, definition);
 		return new LinkedHashSet<VCvPtocoByDataset>(query.getResultList());
 	}
@@ -314,7 +323,8 @@ CvTermByDatasetDAO {
 	 */
 
 	@Transactional
-	public VCvPtocoByDataset findVCvPtocoByCvtermId(BigDecimal cvtermId, int startResult, int maxRows) throws DataAccessException {
+	public VCvPtocoByDataset findVCvPtocoByCvtermId(BigDecimal cvtermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVCvPtocoByCvtermIdDataset", startResult, maxRows, cvtermId);
 			return (org.irri.iric.portal.chado.oracle.domain.VCvPtocoByDataset) query.getSingleResult();
@@ -324,7 +334,9 @@ CvTermByDatasetDAO {
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -335,12 +347,11 @@ CvTermByDatasetDAO {
 
 	@Override
 	public List getAllTerms() {
-		// TODO Auto-generated method stub
-		
-		List list=new ArrayList();
-		list.addAll(findAllVCvPtocosAll(-1,-1));
+
+		List list = new ArrayList();
+		list.addAll(findAllVCvPtocosAll(-1, -1));
 		return list;
-		
+
 	}
 
 	@Override
@@ -351,20 +362,16 @@ CvTermByDatasetDAO {
 
 	@Override
 	public List getAllTermsByDataset(String dataset) {
-		// TODO Auto-generated method stub
-		List list=new ArrayList();
+
+		List list = new ArrayList();
 		list.addAll(findAllVCvPtocos(dataset));
 		return list;
 	}
 
 	@Override
-	public List getAllTermsByDataset(BigDecimal cvByName,
-			BigDecimal organismByName, String dataset) {
+	public List getAllTermsByDataset(BigDecimal cvByName, BigDecimal organismByName, String dataset) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
-	
+
 }

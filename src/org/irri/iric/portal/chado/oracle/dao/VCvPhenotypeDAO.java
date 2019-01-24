@@ -24,7 +24,8 @@ public interface VCvPhenotypeDAO extends JpaDao<VCvPhenotype>, CvTermDAO {
 	 * JPQL Query - findVCvPhenotypeByDefinition
 	 *
 	 */
-	public Set<VCvPhenotype> findVCvPhenotypeByDefinition(String definition, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotype> findVCvPhenotypeByDefinition(String definition, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByName
@@ -36,7 +37,8 @@ public interface VCvPhenotypeDAO extends JpaDao<VCvPhenotype>, CvTermDAO {
 	 * JPQL Query - findVCvPhenotypeByName
 	 *
 	 */
-	public Set<VCvPhenotype> findVCvPhenotypeByName(String name, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotype> findVCvPhenotypeByName(String name, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByNameContaining
@@ -48,7 +50,8 @@ public interface VCvPhenotypeDAO extends JpaDao<VCvPhenotype>, CvTermDAO {
 	 * JPQL Query - findVCvPhenotypeByNameContaining
 	 *
 	 */
-	public Set<VCvPhenotype> findVCvPhenotypeByNameContaining(String name_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotype> findVCvPhenotypeByNameContaining(String name_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByCvTermId
@@ -60,7 +63,8 @@ public interface VCvPhenotypeDAO extends JpaDao<VCvPhenotype>, CvTermDAO {
 	 * JPQL Query - findVCvPhenotypeByCvTermId
 	 *
 	 */
-	public VCvPhenotype findVCvPhenotypeByCvTermId(Integer cvTermId, int startResult, int maxRows) throws DataAccessException;
+	public VCvPhenotype findVCvPhenotypeByCvTermId(Integer cvTermId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVCvPhenotypes
@@ -84,7 +88,8 @@ public interface VCvPhenotypeDAO extends JpaDao<VCvPhenotype>, CvTermDAO {
 	 * JPQL Query - findVCvPhenotypeByPrimaryKey
 	 *
 	 */
-	public VCvPhenotype findVCvPhenotypeByPrimaryKey(Integer cvTermId_1, int startResult, int maxRows) throws DataAccessException;
+	public VCvPhenotype findVCvPhenotypeByPrimaryKey(Integer cvTermId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPhenotypeByDefinitionContaining
@@ -96,6 +101,7 @@ public interface VCvPhenotypeDAO extends JpaDao<VCvPhenotype>, CvTermDAO {
 	 * JPQL Query - findVCvPhenotypeByDefinitionContaining
 	 *
 	 */
-	public Set<VCvPhenotype> findVCvPhenotypeByDefinitionContaining(String definition_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPhenotype> findVCvPhenotypeByDefinitionContaining(String definition_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

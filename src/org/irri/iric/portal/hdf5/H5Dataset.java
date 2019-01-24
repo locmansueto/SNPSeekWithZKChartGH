@@ -250,7 +250,7 @@ public class H5Dataset implements SnpsStringDAO {
 
 	@Override
 	public Map readSNPString(Set colVarids, String chr, int posidxstartend[][]) {
-		// TODO Auto-generated method stub
+		
 		try {
 			// order varids based on file ordering for 1pass/smooth disk read
 			Set orderedVarids = new TreeSet(colVarids);
@@ -280,7 +280,7 @@ public class H5Dataset implements SnpsStringDAO {
 
 	@Override
 	public Map readSNPString(String chr, int posidxstartend[][]) {
-		// TODO Auto-generated method stub
+		
 		try {
 			// order varids based on file ordering for 1pass/smooth disk read
 			AppContext.debug("H5 querying " + this.filename + " " + posidxstartend.length + " ranges");

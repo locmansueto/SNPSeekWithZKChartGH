@@ -21,24 +21,34 @@ import org.irri.iric.portal.domain.CvTerm;
 		@NamedQuery(name = "findAllVPatoOrganisms", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism"),
 		@NamedQuery(name = "findVPatoOrganismByAccession", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.accession = ?1"),
 		@NamedQuery(name = "findVPatoOrganismByAccessionContaining", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.accession like ?1"),
-		//@NamedQuery(name = "findVPatoOrganismByCommonName", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.commonName = ?1"),
+		// @NamedQuery(name = "findVPatoOrganismByCommonName", query = "select
+		// myVPatoOrganism from VPatoOrganism myVPatoOrganism where
+		// myVPatoOrganism.commonName = ?1"),
 
-		//@NamedQuery(name = "findVPatoOrganismByCvCommonName", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.cvName = ?1 and myVPatoOrganism.commonName = ?2"),
-		
+		// @NamedQuery(name = "findVPatoOrganismByCvCommonName", query = "select
+		// myVPatoOrganism from VPatoOrganism myVPatoOrganism where
+		// myVPatoOrganism.cvName = ?1 and myVPatoOrganism.commonName = ?2"),
+
 		@NamedQuery(name = "findVPatoOrganismByCvOrganism", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.cvId = ?1 and myVPatoOrganism.organismId = ?2"),
-		
-		//@NamedQuery(name = "findVPatoOrganismByCommonNameContaining", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.commonName like ?1"),
-		//@NamedQuery(name = "findVPatoOrganismByCvName", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.cvName = ?1"),
-		//@NamedQuery(name = "findVPatoOrganismByCvNameContaining", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.cvName like ?1"),
+
+		// @NamedQuery(name = "findVPatoOrganismByCommonNameContaining", query = "select
+		// myVPatoOrganism from VPatoOrganism myVPatoOrganism where
+		// myVPatoOrganism.commonName like ?1"),
+		// @NamedQuery(name = "findVPatoOrganismByCvName", query = "select
+		// myVPatoOrganism from VPatoOrganism myVPatoOrganism where
+		// myVPatoOrganism.cvName = ?1"),
+		// @NamedQuery(name = "findVPatoOrganismByCvNameContaining", query = "select
+		// myVPatoOrganism from VPatoOrganism myVPatoOrganism where
+		// myVPatoOrganism.cvName like ?1"),
 		@NamedQuery(name = "findVPatoOrganismByCvterm", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.cvterm = ?1"),
 		@NamedQuery(name = "findVPatoOrganismByCvtermContaining", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.cvterm like ?1"),
 		@NamedQuery(name = "findVPatoOrganismByCvtermId", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.cvtermId = ?1"),
 		@NamedQuery(name = "findVPatoOrganismByOrganismId", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.organismId = ?1"),
 		@NamedQuery(name = "findVPatoOrganismByPrimaryKey", query = "select myVPatoOrganism from VPatoOrganism myVPatoOrganism where myVPatoOrganism.cvtermId = ?1") })
-//@Table( name = "V_PATO_ORGANISM")
-//@Table( name = "V_LOCUS_CVTERM_CVTERMPATH")
+// @Table( name = "V_PATO_ORGANISM")
+// @Table( name = "V_LOCUS_CVTERM_CVTERMPATH")
 
-@Table( name = "V_CVTERM_CVTERMPATH_ORGANISM")
+@Table(name = "V_CVTERM_CVTERMPATH_ORGANISM")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VPatoOrganism")
 public class VPatoOrganism implements Serializable, CvTerm {
@@ -55,7 +65,7 @@ public class VPatoOrganism implements Serializable, CvTerm {
 	/**
 	 */
 
-	//@Column(name = "ACCESSION", length = 1020, nullable = false)
+	// @Column(name = "ACCESSION", length = 1020, nullable = false)
 	@Column(name = "SUBJ_ACC", length = 1020, nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -63,20 +73,18 @@ public class VPatoOrganism implements Serializable, CvTerm {
 	/**
 	 */
 
-//	@Column(name = "CV_NAME", length = 1020, nullable = false)
-//	@Basic(fetch = FetchType.EAGER)
-//	@XmlElement
-//	String cvName;
-//	/**
-//	 */
+	// @Column(name = "CV_NAME", length = 1020, nullable = false)
+	// @Basic(fetch = FetchType.EAGER)
+	// @XmlElement
+	// String cvName;
+	// /**
+	// */
 
-	
 	@Column(name = "CV_ID", length = 1020, nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	BigDecimal cvId;
 
-	
 	@Column(name = "SUBJ_CVTERM", length = 1024)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -91,10 +99,10 @@ public class VPatoOrganism implements Serializable, CvTerm {
 	/**
 	 */
 
-//	@Column(name = "COMMON_NAME", length = 4)
-//	@Basic(fetch = FetchType.EAGER)
-//	@XmlElement
-//	String commonName;
+	// @Column(name = "COMMON_NAME", length = 4)
+	// @Basic(fetch = FetchType.EAGER)
+	// @XmlElement
+	// String commonName;
 
 	/**
 	 */
@@ -120,17 +128,17 @@ public class VPatoOrganism implements Serializable, CvTerm {
 		return this.accession;
 	}
 
-//	/**
-//	 */
-//	public void setCvName(String cvName) {
-//		this.cvName = cvName;
-//	}
-//
-//	/**
-//	 */
-//	public String getCvName() {
-//		return this.cvName;
-//	}
+	// /**
+	// */
+	// public void setCvName(String cvName) {
+	// this.cvName = cvName;
+	// }
+	//
+	// /**
+	// */
+	// public String getCvName() {
+	// return this.cvName;
+	// }
 
 	/**
 	 */
@@ -155,18 +163,18 @@ public class VPatoOrganism implements Serializable, CvTerm {
 	public BigDecimal getOrganismId() {
 		return this.organismId;
 	}
-//
-//	/**
-//	 */
-//	public void setCommonName(String commonName) {
-//		this.commonName = commonName;
-//	}
-//
-//	/**
-//	 */
-//	public String getCommonName() {
-//		return this.commonName;
-//	}
+	//
+	// /**
+	// */
+	// public void setCommonName(String commonName) {
+	// this.commonName = commonName;
+	// }
+	//
+	// /**
+	// */
+	// public String getCommonName() {
+	// return this.commonName;
+	// }
 
 	/**
 	 */
@@ -180,10 +188,10 @@ public class VPatoOrganism implements Serializable, CvTerm {
 	public void copy(VPatoOrganism that) {
 		setCvtermId(that.getCvtermId());
 		setAccession(that.getAccession());
-		//setCvName(that.getCvName());
+		// setCvName(that.getCvName());
 		setCvterm(that.getCvterm());
 		setOrganismId(that.getOrganismId());
-		//setCommonName(that.getCommonName());
+		// setCommonName(that.getCommonName());
 	}
 
 	/**
@@ -196,10 +204,10 @@ public class VPatoOrganism implements Serializable, CvTerm {
 
 		buffer.append("cvtermId=[").append(cvtermId).append("] ");
 		buffer.append("accession=[").append(accession).append("] ");
-		//buffer.append("cvName=[").append(cvName).append("] ");
+		// buffer.append("cvName=[").append(cvName).append("] ");
 		buffer.append("cvterm=[").append(cvterm).append("] ");
 		buffer.append("organismId=[").append(organismId).append("] ");
-		//buffer.append("commonName=[").append(commonName).append("] ");
+		// buffer.append("commonName=[").append(commonName).append("] ");
 
 		return buffer.toString();
 	}
@@ -231,22 +239,20 @@ public class VPatoOrganism implements Serializable, CvTerm {
 
 	@Override
 	public BigDecimal getCvTermId() {
-		// TODO Auto-generated method stub
+
 		return this.cvtermId;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
+
 		return this.cvterm;
 	}
 
 	@Override
 	public String getDefinition() {
-		// TODO Auto-generated method stub
+
 		return this.accession;
 	}
 
-	
-	
 }

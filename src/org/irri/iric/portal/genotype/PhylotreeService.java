@@ -10,38 +10,46 @@ import org.irri.iric.portal.domain.VarietyDistance;
 
 /**
  * Phylogenetic tree construction service
+ * 
  * @author LMansueto
  *
  */
 public interface PhylotreeService {
 
-	public static String PHYLOTREE_METHOD_TOPN="topn";
-	public static String PHYLOTREE_METHOD_MINDIST="mindist";
-	
+	public static String PHYLOTREE_METHOD_TOPN = "topn";
+	public static String PHYLOTREE_METHOD_MINDIST = "mindist";
+
 	/**
 	 * Construct phylogenetic tree
+	 * 
 	 * @param params
 	 * @param requestid
 	 * @return
 	 */
 	Object[] constructPhylotree(PhylotreeQueryParams params, String requestid);
 
-	//Object[] constructPhylotree(String scale, String chr, int start, int end, String requestid);
-	
+	// Object[] constructPhylotree(String scale, String chr, int start, int end,
+	// String requestid);
 
 	/**
-	 * Get map of variety Id to DFS (depth first search) order in the tree 
+	 * Get map of variety Id to DFS (depth first search) order in the tree
+	 * 
 	 * @param tmpfile
 	 * @return
 	 */
-	//Map<BigDecimal, Integer> orderVarietiesFromPhylotree(String tmpfile);
-	//Map<BigDecimal, Integer> orderVarietiesFromPhylotree(String tmpfile, String newick);
+	// Map<BigDecimal, Integer> orderVarietiesFromPhylotree(String tmpfile);
+	// Map<BigDecimal, Integer> orderVarietiesFromPhylotree(String tmpfile, String
+	// newick);
 	Map<BigDecimal, Integer> orderVarietiesFromPhylotree(String tmpfile, String newick, Set dataset);
+
 	Map<BigDecimal, Integer> orderVarietiesFromPhylotree(String tmpfile, Set dataset);
+
 	Object[] constructPhylotree(String scale, String chr, int start, int end, String requestid, Set dataset);
+
 	Object[] constructPhylotree(VariantStringData data, PhylotreeQueryParams params);
 
-	//Object[] constructMDS(VariantStringData dataset, PhylotreeQueryParams params);
+	// Object[] constructMDS(VariantStringData dataset, PhylotreeQueryParams
+	// params);
 
 	List<Snps2VarsCountmismatch> calculateDistancePair(VariantStringData data, PhylotreeQueryParams params);
 

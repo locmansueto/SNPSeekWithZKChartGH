@@ -741,7 +741,7 @@ public class UserSessionListsManager {
 	 * @return
 	 */
 	public String downloadLists() {
-		// TODO Auto-generated method stub
+		
 		StringBuffer buff = new StringBuffer();
 		// Map<BigDecimal, Variety> mapVarid2Var2 = null;
 
@@ -890,7 +890,7 @@ public class UserSessionListsManager {
 	 * @return
 	 */
 	public String downloadListsCookie() {
-		// TODO Auto-generated method stub
+		
 		StringBuffer buff = new StringBuffer();
 
 		varietyprop2DAO = (VarietyDAO) AppContext.checkBean(varietyprop2DAO, "VarietyDAO");

@@ -56,10 +56,9 @@ import org.irri.iric.portal.domain.Locus;
 		@NamedQuery(name = "findVLocusIntxnRicenetv1ByQfeatureIdIn", query = "select myVLocusIntxnRicenetv1 from VLocusIntxnRicenetv1 myVLocusIntxnRicenetv1 where myVLocusIntxnRicenetv1.qfeatureId in (?1) order by  myVLocusIntxnRicenetv1.oscxScore desc"),
 		@NamedQuery(name = "findVLocusIntxnRicenetv1ByQfeatureNameIn", query = "select myVLocusIntxnRicenetv1 from VLocusIntxnRicenetv1 myVLocusIntxnRicenetv1 where myVLocusIntxnRicenetv1.qfeatureName in (?1) order by  myVLocusIntxnRicenetv1.oscxScore desc"),
 
-		
 		@NamedQuery(name = "findVLocusIntxnRicenetv1ByQfeatureNameContaining", query = "select myVLocusIntxnRicenetv1 from VLocusIntxnRicenetv1 myVLocusIntxnRicenetv1 where myVLocusIntxnRicenetv1.qfeatureName like ?1"),
 		@NamedQuery(name = "findVLocusIntxnRicenetv1ByStrand", query = "select myVLocusIntxnRicenetv1 from VLocusIntxnRicenetv1 myVLocusIntxnRicenetv1 where myVLocusIntxnRicenetv1.strand = ?1") })
-@Table( name = "V_LOCUS_INTXN_RICENETV1")
+@Table(name = "V_LOCUS_INTXN_RICENETV1")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VLocusIntxnRicenetv1")
 public class VLocusIntxnRicenetv1 implements Serializable, Locus {
@@ -721,32 +720,32 @@ public class VLocusIntxnRicenetv1 implements Serializable, Locus {
 		return buffer.toString();
 	}
 
-//	/**
-//	 */
-//	@Override
-//	public int hashCode() {
-//		final int prime = 31;
-//		int result = 1;
-//		result = (int) (prime * result + ((featureId == null) ? 0 : featureId.hashCode()));
-//		return result;
-//	}
-//
-//	/**
-//	 */
-//	public boolean equals(Object obj) {
-//		if (obj == this)
-//			return true;
-//		if (!(obj instanceof VLocusIntxnRicenetv1))
-//			return false;
-//		VLocusIntxnRicenetv1 equalCheck = (VLocusIntxnRicenetv1) obj;
-//		if ((featureId == null && equalCheck.featureId != null) || (featureId != null && equalCheck.featureId == null))
-//			return false;
-//		if (featureId != null && !featureId.equals(equalCheck.featureId))
-//			return false;
-//		return true;
-//	}
-
-	
+	// /**
+	// */
+	// @Override
+	// public int hashCode() {
+	// final int prime = 31;
+	// int result = 1;
+	// result = (int) (prime * result + ((featureId == null) ? 0 :
+	// featureId.hashCode()));
+	// return result;
+	// }
+	//
+	// /**
+	// */
+	// public boolean equals(Object obj) {
+	// if (obj == this)
+	// return true;
+	// if (!(obj instanceof VLocusIntxnRicenetv1))
+	// return false;
+	// VLocusIntxnRicenetv1 equalCheck = (VLocusIntxnRicenetv1) obj;
+	// if ((featureId == null && equalCheck.featureId != null) || (featureId != null
+	// && equalCheck.featureId == null))
+	// return false;
+	// if (featureId != null && !featureId.equals(equalCheck.featureId))
+	// return false;
+	// return true;
+	// }
 
 	/**
 	 */
@@ -754,65 +753,69 @@ public class VLocusIntxnRicenetv1 implements Serializable, Locus {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		//result = (int) (prime * result + ((featureId == null) ? 0 : featureId.hashCode()));
+		// result = (int) (prime * result + ((featureId == null) ? 0 :
+		// featureId.hashCode()));
 		result = (int) (prime * result + ((organismId == null) ? 0 : organismId.hashCode()));
 		result = (int) (prime * result + ((contigId == null) ? 0 : contigId.hashCode()));
 		result = (int) (prime * result + ((fmin == null) ? 0 : fmin.hashCode()));
 		result = (int) (prime * result + ((fmax == null) ? 0 : fmax.hashCode()));
 		return result;
 	}
-	
+
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		Locus l1=(Locus)this;
-		Locus l2=(Locus)o;
+		
+		Locus l1 = (Locus) this;
+		Locus l2 = (Locus) o;
 		int ret = l1.getContig().compareTo(l2.getContig());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmin().compareTo(l2.getFmin());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmax().compareTo(l2.getFmax());
 		return ret;
-		
+
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return compareTo(obj)==0;
+		
+		return compareTo(obj) == 0;
 	}
-	
+
 	@Override
 	public String getUniquename() {
-		// TODO Auto-generated method stub
+		
 		return name;
 	}
 
 	@Override
 	public Long getChr() {
-		// TODO Auto-generated method stub
+		
 		return Long.valueOf(getContig());
 	}
 
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
-		return contigName;	}
+		
+		return contigName;
+	}
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		StringBuffer buff=new StringBuffer();
-		if(intnetScore!=null)
-			buff.append(" Score:" + String.format("%.2f", intnetScore) + "/" + intnetRank );
-		if(oscxScore!=null)
-			buff.append( " OS-CX:" + String.format("%.2f", oscxScore) + "/" + oscxRank );
-		if(osgnScore!=null)
-			buff.append( " OS-GN:" + String.format("%.2f", osgnScore) + "/" + osgnRank );
-		if(ospgScore!=null)
-			buff.append(" OS-PG:" + String.format("%.2f", ospgScore) + "/" + ospgRank ); 
 		
-		return  buff + " " + notes;
+		StringBuffer buff = new StringBuffer();
+		if (intnetScore != null)
+			buff.append(" Score:" + String.format("%.2f", intnetScore) + "/" + intnetRank);
+		if (oscxScore != null)
+			buff.append(" OS-CX:" + String.format("%.2f", oscxScore) + "/" + oscxRank);
+		if (osgnScore != null)
+			buff.append(" OS-GN:" + String.format("%.2f", osgnScore) + "/" + osgnRank);
+		if (ospgScore != null)
+			buff.append(" OS-PG:" + String.format("%.2f", ospgScore) + "/" + ospgRank);
+
+		return buff + " " + notes;
 	}
 
 	@Override
@@ -820,6 +823,5 @@ public class VLocusIntxnRicenetv1 implements Serializable, Locus {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
 }

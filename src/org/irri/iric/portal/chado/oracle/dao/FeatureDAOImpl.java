@@ -483,7 +483,7 @@ public class FeatureDAOImpl extends AbstractJpaDao<Feature> implements
 
 	@Override
 	public String getSubSequence(String featurename, long start, long stop, int organismId) throws Exception {
-		// TODO Auto-generated method stub
+		
 	
 		//return getSubSequenceOracle( featurename,  start,  stop,  organismId);
 		
@@ -532,7 +532,7 @@ public class FeatureDAOImpl extends AbstractJpaDao<Feature> implements
 	@Override
 	public String getSubSequence(BigDecimal featureid, long start, long stop)
 			throws Exception {
-		// TODO Auto-generated method stub
+		
 		String sql = "select feature_id, dbxref_id, organism_id, name, "
 				+ "substr(residues," + start + ", " + (stop-start+1) + ") residues, "  
 				+ " seqlen, md5checksum, type_id, is_analysis, is_obsolete, timeaccessioned, timelastmodified, uniquename "

@@ -2,7 +2,6 @@ package org.irri.iric.portal.chado.oracle.domain;
 
 import java.io.Serializable;
 
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -19,13 +18,12 @@ import javax.persistence.*;
  */
 
 @Entity
-@NamedQueries({
-		@NamedQuery(name = "findAllCvs", query = "select myCv from Cv myCv"),
+@NamedQueries({ @NamedQuery(name = "findAllCvs", query = "select myCv from Cv myCv"),
 		@NamedQuery(name = "findCvByCvId", query = "select myCv from Cv myCv where myCv.cvId = ?1"),
 		@NamedQuery(name = "findCvByName", query = "select myCv from Cv myCv where myCv.name = ?1"),
 		@NamedQuery(name = "findCvByNameContaining", query = "select myCv from Cv myCv where myCv.name like ?1"),
 		@NamedQuery(name = "findCvByPrimaryKey", query = "select myCv from Cv myCv where myCv.cvId = ?1") })
-@Table( name = "CV")
+@Table(name = "CV")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "Cv")
 public class Cv implements Serializable, org.irri.iric.portal.domain.Cv {
@@ -50,13 +48,15 @@ public class Cv implements Serializable, org.irri.iric.portal.domain.Cv {
 	 */
 
 	/*
-	@Column(name = "DEFINITION")
-	@Basic(fetch = FetchType.EAGER)
-	@Lob
-	@XmlElement
-	byte[] definition;
-	*/
-	
+	 * @Column(name = "DEFINITION")
+	 * 
+	 * @Basic(fetch = FetchType.EAGER)
+	 * 
+	 * @Lob
+	 * 
+	 * @XmlElement byte[] definition;
+	 */
+
 	@Column(name = "DEFINITION")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -152,7 +152,5 @@ public class Cv implements Serializable, org.irri.iric.portal.domain.Cv {
 			return false;
 		return true;
 	}
-	
-	
-	
+
 }

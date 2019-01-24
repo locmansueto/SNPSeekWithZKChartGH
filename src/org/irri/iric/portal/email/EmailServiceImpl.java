@@ -70,11 +70,11 @@ public class EmailServiceImpl implements EmailService {
 
 	@Override
 	public void sendSimpleMessage(String to, String subject, String text) throws Exception {
-		// TODO Auto-generated method stub
+		
 		/*
-		 * SimpleMailMessage message = new SimpleMailMessage();
-		 * message.setTo(to); message.setSubject(subject);
-		 * message.setText(text); getJavaMailSender().send(message);
+		 * SimpleMailMessage message = new SimpleMailMessage(); message.setTo(to);
+		 * message.setSubject(subject); message.setText(text);
+		 * getJavaMailSender().send(message);
 		 */
 
 		MimeMessage message = getJavaMailSender().createMimeMessage();
@@ -93,7 +93,7 @@ public class EmailServiceImpl implements EmailService {
 	// @Override
 	// public void sendSimpleMessage(List<String> to, List<String> cc, String
 	// subject, String text) throws Exception {
-	// // TODO Auto-generated method stub
+	// 
 	//
 	//
 	// //String strto[]=new String[to.ize()];
@@ -155,7 +155,7 @@ public class EmailServiceImpl implements EmailService {
 	@Override
 	public void sendMessageWithAttachment(String to, String subject, String text, String pathToAttachment,
 			String filename) throws Exception {
-		// TODO Auto-generated method stub
+		
 
 		MimeMessage message = getJavaMailSender().createMimeMessage();
 		// message.setHeader("Message-ID", snpseek@systems.irri.org");
@@ -178,7 +178,7 @@ public class EmailServiceImpl implements EmailService {
 		int i = 0;
 		for (String recipient : to)
 			recipients[i++] = new InternetAddress(recipient);
-			
+
 		Properties props = System.getProperties();
 		props.put("mail.transport.protocol", "smtp");
 		props.put("mail.smtp.port", PORT);

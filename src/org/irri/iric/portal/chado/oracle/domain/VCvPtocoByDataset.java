@@ -20,7 +20,7 @@ import org.irri.iric.portal.domain.CvTermDataset;
 @NamedQueries({
 		@NamedQuery(name = "findAllVCvPtocosDataset", query = "select myVCvPtoco from VCvPtocoByDataset myVCvPtoco where myVCvPtoco.dataset=?1 order by myVCvPtoco.cvterm"),
 		@NamedQuery(name = "findAllVCvPtocosAllDataset", query = "select myVCvPtoco from VCvPtocoByDataset myVCvPtoco order by myVCvPtoco.cvterm"),
-		
+
 		@NamedQuery(name = "findVCvPtocoByAccessionDataset", query = "select myVCvPtoco from VCvPtocoByDataset myVCvPtoco where myVCvPtoco.accession = ?1  order by myVCvPtoco.cvterm"),
 		@NamedQuery(name = "findVCvPtocoByAccessionContainingDataset", query = "select myVCvPtoco from VCvPtocoByDataset myVCvPtoco where myVCvPtoco.accession like ?1 order by myVCvPtoco.cvterm"),
 		@NamedQuery(name = "findVCvPtocoByCvtermDataset", query = "select myVCvPtoco from VCvPtocoByDataset myVCvPtoco where myVCvPtoco.cvterm = ?1  order by myVCvPtoco.cvterm"),
@@ -31,8 +31,8 @@ import org.irri.iric.portal.domain.CvTermDataset;
 		@NamedQuery(name = "findVCvPtocoByDefinitionDataset", query = "select myVCvPtoco from VCvPtocoByDataset myVCvPtoco where myVCvPtoco.definition = ?1  order by myVCvPtoco.cvterm"),
 		@NamedQuery(name = "findVCvPtocoByDefinitionContainingDataset", query = "select myVCvPtoco from VCvPtocoByDataset myVCvPtoco where myVCvPtoco.definition like ?1  order by myVCvPtoco.cvterm"),
 		@NamedQuery(name = "findVCvPtocoByPrimaryKeyDataset", query = "select myVCvPtoco from VCvPtocoByDataset myVCvPtoco where myVCvPtoco.cvtermId = ?1  order by myVCvPtoco.cvterm") })
-//@Table( name = "V_CV_PTOCO_PATH")
-@Table( name = "V_CV_PTOCO_PATH_ALLSTOCKS")
+// @Table( name = "V_CV_PTOCO_PATH")
+@Table(name = "V_CV_PTOCO_PATH_ALLSTOCKS")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VCvPtocoByDataset")
 public class VCvPtocoByDataset implements Serializable, CvTermDataset {
@@ -70,23 +70,18 @@ public class VCvPtocoByDataset implements Serializable, CvTermDataset {
 	/**
 	 */
 
-	
 	@Column(name = "DEFINITION", length = 4000)
-	//@Column(name = "CVTERM", length = 4000)
+	// @Column(name = "CVTERM", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String definition;
 
-	
 	@Column(name = "DATASET", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	@XmlElement
 	String dataset;
-	
-	
-	
-	
+
 	public String getDataset() {
 		return dataset;
 	}
@@ -143,17 +138,17 @@ public class VCvPtocoByDataset implements Serializable, CvTermDataset {
 		return this.cvterm;
 	}
 
-//	/**
-//	 */
-//	public void setDefinition(String definition) {
-//		this.definition = definition;
-//	}
-//
+	// /**
+	// */
+	// public void setDefinition(String definition) {
+	// this.definition = definition;
+	// }
+	//
 	/**
 	 */
 	public String getDefinition() {
-		//return this.definition;
-		return this.cvterm ;
+		// return this.definition;
+		return this.cvterm;
 	}
 
 	/**
@@ -170,7 +165,7 @@ public class VCvPtocoByDataset implements Serializable, CvTermDataset {
 		setDb(that.getDb());
 		setAccession(that.getAccession());
 		setCvterm(that.getCvterm());
-		//setDefinition(that.getDefinition());
+		// setDefinition(that.getDefinition());
 		setDataset(that.getDataset());
 	}
 
@@ -186,7 +181,7 @@ public class VCvPtocoByDataset implements Serializable, CvTermDataset {
 		buffer.append("db=[").append(db).append("] ");
 		buffer.append("accession=[").append(accession).append("] ");
 		buffer.append("cvterm=[").append(cvterm).append("] ");
-		//buffer.append("definition=[").append(definition).append("] ");
+		// buffer.append("definition=[").append(definition).append("] ");
 		buffer.append("dataset=[").append(dataset).append("] ");
 
 		return buffer.toString();
@@ -224,16 +219,14 @@ public class VCvPtocoByDataset implements Serializable, CvTermDataset {
 
 	@Override
 	public BigDecimal getCvTermId() {
-		// TODO Auto-generated method stub
+		
 		return this.cvtermId;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
+		
 		return this.cvterm + " (" + this.db + ":" + this.accession + ")";
 	}
-	
-	
-	
+
 }

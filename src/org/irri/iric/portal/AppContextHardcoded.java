@@ -103,7 +103,7 @@ public class AppContextHardcoded {
     
     public AppContextHardcoded() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 		
 		
 		// load parameters from conf files

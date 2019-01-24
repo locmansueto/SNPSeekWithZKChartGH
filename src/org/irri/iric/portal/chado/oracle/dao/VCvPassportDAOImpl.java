@@ -24,14 +24,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository("VCvPassportDAO")
 @Transactional
-public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements
-		VCvPassportDAO {
+public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements VCvPassportDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VCvPassport.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VCvPassport.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit Production
@@ -49,7 +50,7 @@ public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -80,7 +81,8 @@ public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements
 	 */
 
 	@Transactional
-	public VCvPassport findVCvPassportByPrimaryKey(Integer cvTermId, int startResult, int maxRows) throws DataAccessException {
+	public VCvPassport findVCvPassportByPrimaryKey(Integer cvTermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVCvPassportByPrimaryKey", startResult, maxRows, cvTermId);
 			return (org.irri.iric.portal.chado.oracle.domain.VCvPassport) query.getSingleResult();
@@ -106,7 +108,8 @@ public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPassport> findVCvPassportByDefinition(String definition, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPassport> findVCvPassportByDefinition(String definition, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPassportByDefinition", startResult, maxRows, definition);
 		return new LinkedHashSet<VCvPassport>(query.getResultList());
 	}
@@ -128,7 +131,8 @@ public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPassport> findVCvPassportByNameContaining(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPassport> findVCvPassportByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPassportByNameContaining", startResult, maxRows, name);
 		return new LinkedHashSet<VCvPassport>(query.getResultList());
 	}
@@ -150,7 +154,8 @@ public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPassport> findVCvPassportByDefinitionContaining(String definition, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPassport> findVCvPassportByDefinitionContaining(String definition, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPassportByDefinitionContaining", startResult, maxRows, definition);
 		return new LinkedHashSet<VCvPassport>(query.getResultList());
 	}
@@ -174,7 +179,7 @@ public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements
 	@Transactional
 	public List<VCvPassport> findAllVCvPassports(int startResult, int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findAllVCvPassports", startResult, maxRows);
-		
+
 		return query.getResultList();
 	}
 
@@ -195,7 +200,8 @@ public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPassport> findVCvPassportByName(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPassport> findVCvPassportByName(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPassportByName", startResult, maxRows, name);
 		return new LinkedHashSet<VCvPassport>(query.getResultList());
 	}
@@ -216,7 +222,8 @@ public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements
 	 */
 
 	@Transactional
-	public VCvPassport findVCvPassportByCvTermId(Integer cvTermId, int startResult, int maxRows) throws DataAccessException {
+	public VCvPassport findVCvPassportByCvTermId(Integer cvTermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVCvPassportByCvTermId", startResult, maxRows, cvTermId);
 			return (org.irri.iric.portal.chado.oracle.domain.VCvPassport) query.getSingleResult();
@@ -226,7 +233,9 @@ public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -237,28 +246,26 @@ public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements
 
 	@Override
 	public List getAllTerms() {
-		// TODO Auto-generated method stub
+
 		return this.findAllVCvPassports();
 	}
-//
-//	@Override
-//	public List getAllTerms(String organism) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List getAllTerms(String cv, String organism) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	//
+	// @Override
+	// public List getAllTerms(String organism) {
+	//
+	// return null;
+	// }
+	//
+	// @Override
+	// public List getAllTerms(String cv, String organism) {
+	//
+	// return null;
+	// }
 
 	@Override
 	public List getAllTerms(BigDecimal cvByName, BigDecimal organismByName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
+
 }

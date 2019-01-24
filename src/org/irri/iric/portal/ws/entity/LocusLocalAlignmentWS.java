@@ -14,79 +14,79 @@ public class LocusLocalAlignmentWS implements LocalAlignment {
 
 	@Override
 	public String getQacc() {
-		// TODO Auto-generated method stub
-		return localalignment.getQacc() ;
+		
+		return localalignment.getQacc();
 	}
 
 	@Override
 	public String getSacc() {
-		// TODO Auto-generated method stub
+		
 		return localalignment.getSacc();
 	}
 
 	@Override
 	public Double getEvalue() {
-		// TODO Auto-generated method stub
+		
 		return localalignment.getEvalue();
 	}
 
 	@Override
 	public Long getQstart() {
-		// TODO Auto-generated method stub
+		
 		return localalignment.getQstart();
 	}
 
 	@Override
 	public Long getQend() {
-		// TODO Auto-generated method stub
+		
 		return localalignment.getQend();
 	}
 
 	@Override
 	public Long getSstart() {
-		// TODO Auto-generated method stub
+		
 		return localalignment.getQstart();
 	}
 
 	@Override
 	public Long getSend() {
-		// TODO Auto-generated method stub
+		
 		return localalignment.getSend();
 	}
 
 	@Override
 	public Integer getSstrand() {
-		// TODO Auto-generated method stub
+		
 		return localalignment.getSstrand();
 	}
 
 	@Override
 	public Double getRawScore() {
-		// TODO Auto-generated method stub
+		
 		return localalignment.getRawScore();
 	}
 
 	@Override
 	public Long getAlignmentLength() {
-		// TODO Auto-generated method stub
+		
 		return localalignment.getAlignmentLength();
 	}
 
 	@Override
 	public Double getPercentMatches() {
-		// TODO Auto-generated method stub
+		
 		return localalignment.getPercentMatches();
 	}
 
 	@Override
 	public Long getMatches() {
-		// TODO Auto-generated method stub
+		
 		return localalignment.getMatches();
 	}
 
 	@Override
 	public Long getMismatches() {
-		// TODO Auto-generated method stub
+		
 		return localalignment.getMismatches();
 	}
 
@@ -105,93 +105,55 @@ public class LocusLocalAlignmentWS implements LocalAlignment {
 	@Override
 	public void setQSequence(String seq) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setSSequence(String seq) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	
-	
 
 	/*
-	@Override
-	public String getUniquename() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	 * @Override public String getUniquename() { 
+	 * return null; }
+	 * 
+	 * @Override public Integer getChr() {  return
+	 * null; }
+	 * 
+	 * @Override public Integer getFmin() { 
+	 * return null; }
+	 * 
+	 * @Override public Integer getFmax() { 
+	 * return null; }
+	 * 
+	 * @Override public Integer getStrand() { 
+	 * return null; }
+	 * 
+	 * @Override public String getContig() { 
+	 * return null; }
+	 * 
+	 * /*
+	 * 
+	 * @Override public String getUniquename() { 
+	 * return localalignment.getUniquename(); }
+	 * 
+	 * @Override public Integer getChr() {  return
+	 * localalignment.getChr(); }
+	 * 
+	 * @Override public Integer getFmin() { 
+	 * return localalignment.getFmin(); }
+	 * 
+	 * @Override public Integer getFmax() { 
+	 * return localalignment.getFmax(); }
+	 * 
+	 * @Override public Integer getStrand() { 
+	 * return localalignment.getSstrand(); }
+	 * 
+	 * @Override public String getContig() { 
+	 * return localalignment.getContig(); }
+	 * 
+	 * 
+	 */
 
-	@Override
-	public Integer getChr() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer getFmin() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer getFmax() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer getStrand() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getContig() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-/*	
-	@Override
-	public String getUniquename() {
-		// TODO Auto-generated method stub
-		return localalignment.getUniquename();
-	}
-
-	@Override
-	public Integer getChr() {
-		// TODO Auto-generated method stub
-		return localalignment.getChr();
-	}
-
-	@Override
-	public Integer getFmin() {
-		// TODO Auto-generated method stub
-		return localalignment.getFmin();
-	}
-
-	@Override
-	public Integer getFmax() {
-		// TODO Auto-generated method stub
-		return localalignment.getFmax();
-	}
-
-	@Override
-	public Integer getStrand() {
-		// TODO Auto-generated method stub
-		return localalignment.getSstrand();
-	}
-
-	@Override
-	public String getContig() {
-		// TODO Auto-generated method stub
-		return localalignment.getContig();
-	}
-	
-	
-	*/
-	
 }

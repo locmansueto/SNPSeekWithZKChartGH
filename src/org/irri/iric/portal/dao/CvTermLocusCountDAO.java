@@ -8,6 +8,7 @@ public interface CvTermLocusCountDAO {
 
 	/**
 	 * Count number of loci for CV term in organism
+	 * 
 	 * @param orgId
 	 * @param loci
 	 * @param cv

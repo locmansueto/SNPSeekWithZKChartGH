@@ -1,8 +1,5 @@
 package org.irri.iric.portal.ws.entity;
 
-
-
-
 import java.util.List;
 
 import org.irri.iric.portal.domain.Position;
@@ -10,20 +7,18 @@ import org.irri.iric.portal.genotype.GenotypeQueryParams;
 import org.irri.iric.portal.genotype.VariantStringData;
 import org.irri.iric.portal.genotype.VariantTableArray;
 
-public class VariantTableWS implements org.irri.iric.portal.genotype.VariantTableArray  {
+public class VariantTableWS implements org.irri.iric.portal.genotype.VariantTableArray {
 
-//	private String message;
-//	private Long position[];
-//	private String reference[];
-//	private Object varalleles[][];
-//	private Long varid[];
-//	private String varname[];
-//	private Double varmismatch[];
-	
+	// private String message;
+	// private Long position[];
+	// private String reference[];
+	// private Object varalleles[][];
+	// private Long varid[];
+	// private String varname[];
+	// private Double varmismatch[];
+
 	private VariantTableArray table;
-	
-	
-	
+
 	public VariantTableWS(VariantTableArray table) {
 		super();
 		this.table = table;
@@ -43,7 +38,7 @@ public class VariantTableWS implements org.irri.iric.portal.genotype.VariantTabl
 	public Position[] getPosition() {
 		return table.getPosition();
 	}
-	
+
 	@Override
 	public String[] getReference() {
 		return table.getReference();
@@ -54,7 +49,6 @@ public class VariantTableWS implements org.irri.iric.portal.genotype.VariantTabl
 		return table.getVaralleles();
 	}
 
-	
 	@Override
 	public Long[] getVarid() {
 		return table.getVarid();
@@ -65,26 +59,22 @@ public class VariantTableWS implements org.irri.iric.portal.genotype.VariantTabl
 		return table.getVarname();
 	}
 
-
 	@Override
 	public Double[] getVarmismatch() {
 		return table.getVarmismatch();
 	}
 
 	@Override
-	public void setVariantStringData(VariantStringData data,
-			GenotypeQueryParams params) throws Exception {
+	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	
 
 	@Override
 	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params, List listCDS)
 			throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -105,6 +95,4 @@ public class VariantTableWS implements org.irri.iric.portal.genotype.VariantTabl
 		return null;
 	}
 
-	
-	
 }

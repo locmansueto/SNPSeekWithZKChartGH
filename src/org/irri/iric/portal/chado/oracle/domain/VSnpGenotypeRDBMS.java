@@ -27,8 +27,8 @@ import org.irri.iric.portal.domain.SnpsStringAllvars;
 		@NamedQuery(name = "findVSnpGenotypeRDBMSByPrimaryKey", query = "select myVSnpGenotypeRDBMS from VSnpGenotypeRDBMS myVSnpGenotypeRDBMS where myVSnpGenotypeRDBMS.RDBMSStockId = ?1"),
 		@NamedQuery(name = "findVSnpGenotypeRDBMSByRefcall", query = "select myVSnpGenotypeRDBMS from VSnpGenotypeRDBMS myVSnpGenotypeRDBMS where myVSnpGenotypeRDBMS.refcall = ?1"),
 		@NamedQuery(name = "findVSnpGenotypeRDBMSByRefcallContaining", query = "select myVSnpGenotypeRDBMS from VSnpGenotypeRDBMS myVSnpGenotypeRDBMS where myVSnpGenotypeRDBMS.refcall like ?1") })
-//@Table( name = "V_SNP_GENOTYPE_RDBMS")
-//@Table( name = "V_SNP_GENOTYPE_RDBMS", schema="IRIC")
+// @Table( name = "V_SNP_GENOTYPE_RDBMS")
+// @Table( name = "V_SNP_GENOTYPE_RDBMS", schema="IRIC")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VSnpGenotypeRDBMS")
 public class VSnpGenotypeRDBMS implements Serializable {
@@ -52,7 +52,7 @@ public class VSnpGenotypeRDBMS implements Serializable {
 	/**
 	 */
 
-	//@Column(name = "REFCALL", length = 1000)
+	// @Column(name = "REFCALL", length = 1000)
 	@Column(name = "REFCALL")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -184,13 +184,12 @@ public class VSnpGenotypeRDBMS implements Serializable {
 		if (!(obj instanceof VSnpGenotypeRDBMS))
 			return false;
 		VSnpGenotypeRDBMS equalCheck = (VSnpGenotypeRDBMS) obj;
-		if ((RDBMSStockId == null && equalCheck.RDBMSStockId != null) || (RDBMSStockId != null && equalCheck.RDBMSStockId == null))
+		if ((RDBMSStockId == null && equalCheck.RDBMSStockId != null)
+				|| (RDBMSStockId != null && equalCheck.RDBMSStockId == null))
 			return false;
 		if (RDBMSStockId != null && !RDBMSStockId.equals(equalCheck.RDBMSStockId))
 			return false;
 		return true;
 	}
-	
-	
-	
+
 }

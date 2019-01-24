@@ -26,7 +26,6 @@ import org.irri.iric.portal.domain.Position;
 		@NamedQuery(name = "findMvIndelRefposindexByMaxInsertLen", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.maxInsertLen = ?1"),
 		@NamedQuery(name = "findMvIndelRefposindexByPosition", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.position = ?1"),
 		@NamedQuery(name = "findMvIndelRefposindexByIndelFeatureId", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.indelFeatureId = ?1  order by myMvIndelRefposindex.chromosome, myMvIndelRefposindex.position"),
-		
 
 		@NamedQuery(name = "findMvIndelRefposindexByChromosomePosBetween", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.chromosome = ?1 and myMvIndelRefposindex.position between ?2 and ?3 order by myMvIndelRefposindex.chromosome, myMvIndelRefposindex.position"),
 		@NamedQuery(name = "findMvIndelRefposindexByChromosomePosIn", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.chromosome = ?1 and myMvIndelRefposindex.position in (?2)  order by myMvIndelRefposindex.chromosome, myMvIndelRefposindex.position"),
@@ -35,20 +34,16 @@ import org.irri.iric.portal.domain.Position;
 		@NamedQuery(name = "findMvIndelRefposindexByChromosomePosBetweenVS", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.chromosome = ?1 and myMvIndelRefposindex.position between ?2 and ?3 and  myMvIndelRefposindex.variantset in (?4) order by myMvIndelRefposindex.chromosome, myMvIndelRefposindex.position"),
 		@NamedQuery(name = "findMvIndelRefposindexByChromosomePosInVS", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.chromosome = ?1 and myMvIndelRefposindex.position in (?2) and  myMvIndelRefposindex.variantset in (?3) order by myMvIndelRefposindex.chromosome, myMvIndelRefposindex.position"),
 
-		
 		@NamedQuery(name = "findMvIndelRefposindexByPrimaryKey", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.indelFeatureId = ?1"),
 		@NamedQuery(name = "findMvIndelRefposindexByRefcall", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.refcall = ?1"),
 		@NamedQuery(name = "findMvIndelRefposindexByRefcallContaining", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.refcall like ?1"),
 		@NamedQuery(name = "findMvIndelRefposindexByTypeId", query = "select myMvIndelRefposindex from VIndelRefposindex myMvIndelRefposindex where myMvIndelRefposindex.typeId = ?1") })
-@Table( name = "V_INDEL_REFPOSINDEX")
+@Table(name = "V_INDEL_REFPOSINDEX")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VIndelRefposindex")
 public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 	private static final long serialVersionUID = 1L;
 
-
-	
-	
 	/**
 	 */
 
@@ -102,7 +97,6 @@ public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 	/**
 	 */
 
-	
 	@Column(name = "ALLELE_INDEX", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -151,8 +145,6 @@ public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 	public void setPosition(BigDecimal position) {
 		this.position = position;
 	}
-
-
 
 	/**
 	 */
@@ -268,16 +260,14 @@ public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 	@Override
 	public int hashCode() {
 		/*
+		 * final int prime = 31; int result = 1; result = (int) (prime * result +
+		 * ((indelFeatureId == null) ? 0 : indelFeatureId.hashCode())); return result;
+		 */
+
 		final int prime = 31;
 		int result = 1;
-		result = (int) (prime * result + ((indelFeatureId == null) ? 0 : indelFeatureId.hashCode()));
-		return result;
-		*/
-		
-		final int prime = 31;
-		int result = 1;
-		result = (int) (prime * result + ((  getContig() == null) ? 0 : getContig().hashCode()));
-		result = (int) (prime * result + (( position == null) ? 0 : position.hashCode()));
+		result = (int) (prime * result + ((getContig() == null) ? 0 : getContig().hashCode()));
+		result = (int) (prime * result + ((position == null) ? 0 : position.hashCode()));
 		return result;
 	}
 
@@ -285,114 +275,107 @@ public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 	 */
 	public boolean equals(Object obj) {
 		/*
-		if (obj == this)
-			return true;
-		if (!(obj instanceof VIndelRefposindex))
-			return false;
-		VIndelRefposindex equalCheck = (VIndelRefposindex) obj;
-		if ((indelFeatureId == null && equalCheck.indelFeatureId != null) || (indelFeatureId != null && equalCheck.indelFeatureId == null))
-			return false;
-		if (indelFeatureId != null && !indelFeatureId.equals(equalCheck.indelFeatureId))
-			return false;
-		return true;
-		*/
-		return compareTo(obj)==0;
+		 * if (obj == this) return true; if (!(obj instanceof VIndelRefposindex)) return
+		 * false; VIndelRefposindex equalCheck = (VIndelRefposindex) obj; if
+		 * ((indelFeatureId == null && equalCheck.indelFeatureId != null) ||
+		 * (indelFeatureId != null && equalCheck.indelFeatureId == null)) return false;
+		 * if (indelFeatureId != null &&
+		 * !indelFeatureId.equals(equalCheck.indelFeatureId)) return false; return true;
+		 */
+		return compareTo(obj) == 0;
 	}
 
 	@Override
 	public BigDecimal getPosition() {
-		// TODO Auto-generated method stub
+
 		return this.position;
 	}
 
 	@Override
 	public String getRefnuc() {
-		// TODO Auto-generated method stub
+
 		return this.refcall;
 	}
 
 	@Override
 	public void setRefnuc(String refnuc) {
-		// TODO Auto-generated method stub
-		this.refcall=refnuc;
-		
+
+		this.refcall = refnuc;
+
 	}
 
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
-		if(chromosome.intValue()>9) return "chr" + chromosome;
-		else  return "chr0" + chromosome;
+
+		if (chromosome.intValue() > 9)
+			return "chr" + chromosome;
+		else
+			return "chr0" + chromosome;
 	}
 
 	@Override
 	public BigDecimal getSnpFeatureId() {
-		// TODO Auto-generated method stub
+
 		return this.indelFeatureId;
 	}
 
 	@Override
 	public Integer getMaxDellength() {
-		// TODO Auto-generated method stub
+
 		return this.maxDeleteLen;
 	}
 
 	@Override
 	public String getInsString() {
-		// TODO Auto-generated method stub
+
 		return this.altcall;
 	}
 
 	@Override
 	public Integer getMaxInsLength() {
-		// TODO Auto-generated method stub
+
 		return this.maxInsertLen;
 	}
 
-//	@Override
-//	public Integer getDellength() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	// @Override
+	// public Integer getDellength() {
+	//
+	// return null;
+	// }
 
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		//IndelsAllvarsPos obj=(IndelsAllvarsPos)o;
-		Position obj=(Position)o;
-		int ret= getContig().compareTo(obj.getContig());
-		if(ret==0) ret= getPosition().compareTo(obj.getPosition());
-		
-		if(o instanceof VIndelRefposindex) {
-			if(ret==0) ret= indelFeatureId.compareTo( ((VIndelRefposindex)o).getIndelFeatureId() );
+
+		// IndelsAllvarsPos obj=(IndelsAllvarsPos)o;
+		Position obj = (Position) o;
+		int ret = getContig().compareTo(obj.getContig());
+		if (ret == 0)
+			ret = getPosition().compareTo(obj.getPosition());
+
+		if (o instanceof VIndelRefposindex) {
+			if (ret == 0)
+				ret = indelFeatureId.compareTo(((VIndelRefposindex) o).getIndelFeatureId());
 		}
-		
+
 		return ret;
 	}
 
 	@Override
 	public Long getChr() {
-		// TODO Auto-generated method stub
+
 		return this.chromosome.longValue();
 	}
 
 	@Override
 	public void setAltnuc(String altnuc) {
-		// TODO Auto-generated method stub
-		this.altcall=altnuc;
+
+		this.altcall = altnuc;
 	}
 
 	@Override
 	public String getAltnuc() {
-		// TODO Auto-generated method stub
+
 		return altcall;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

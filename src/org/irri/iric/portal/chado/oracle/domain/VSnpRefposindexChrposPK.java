@@ -19,8 +19,6 @@ public class VSnpRefposindexChrposPK implements Serializable {
 	/**
 	 */
 
-	
-
 	@Column(name = "CHROMOSOME", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
 	@Id
@@ -34,7 +32,7 @@ public class VSnpRefposindexChrposPK implements Serializable {
 	@Id
 	@XmlElement
 	BigDecimal position;
-	
+
 	/**
 	 */
 	public void setChromosome(BigDecimal chromosome) {
@@ -58,7 +56,7 @@ public class VSnpRefposindexChrposPK implements Serializable {
 	public BigDecimal getPosition() {
 		return this.position;
 	}
-	
+
 	/**
 	 */
 	@Override
@@ -73,13 +71,14 @@ public class VSnpRefposindexChrposPK implements Serializable {
 	/**
 	 */
 	public boolean equals(Object obj) {
-		
+
 		if (obj == this)
 			return true;
 		if (!(obj instanceof VSnpRefposindexChrposPK))
 			return false;
 		VSnpRefposindexChrposPK equalCheck = (VSnpRefposindexChrposPK) obj;
-		if ((chromosome == null && equalCheck.chromosome != null) || (chromosome != null && equalCheck.chromosome == null))
+		if ((chromosome == null && equalCheck.chromosome != null)
+				|| (chromosome != null && equalCheck.chromosome == null))
 			return false;
 		if (chromosome != null && !chromosome.equals(equalCheck.chromosome))
 			return false;
@@ -88,7 +87,7 @@ public class VSnpRefposindexChrposPK implements Serializable {
 		if (position != null && !position.equals(equalCheck.position))
 			return false;
 		return true;
-		
+
 	}
 
 	@Override

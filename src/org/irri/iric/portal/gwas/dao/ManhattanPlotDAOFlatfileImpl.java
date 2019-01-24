@@ -19,13 +19,13 @@ public class ManhattanPlotDAOFlatfileImpl implements ManhattanPlotDAO {
 
 	@Override
 	public List<ManhattanPlot> getMinusPValues(GWASRun run) {
-		// TODO Auto-generated method stub
+		
 		return getMinusPValues(run, null, "all");
 	}
 
 	@Override
 	public List<ManhattanPlot> getMinusPValues(GWASRun run, Double minlogP, String region) {
-		// TODO Auto-generated method stub
+		
 
 		List list = new ArrayList();
 		try {

@@ -21,20 +21,18 @@ import org.irri.iric.portal.domain.Passport;
 		@NamedQuery(name = "findVIricstockPassportByDefinition", query = "select myVIricstockPassport from VIricstockPassport myVIricstockPassport where myVIricstockPassport.definition = ?1"),
 		@NamedQuery(name = "findVIricstockPassportByDefinitionContaining", query = "select myVIricstockPassport from VIricstockPassport myVIricstockPassport where myVIricstockPassport.definition like ?1"),
 		@NamedQuery(name = "findVIricstockPassportByIricStockId", query = "select myVIricstockPassport from VIricstockPassport myVIricstockPassport where myVIricstockPassport.iricStockId = ?1"),
-		
-		
-		
+
 		@NamedQuery(name = "findVIricstockPassportByIricStockpropId", query = "select myVIricstockPassport from VIricstockPassport myVIricstockPassport where myVIricstockPassport.iricStockpropId = ?1"),
 		@NamedQuery(name = "findVIricstockPassportByName", query = "select myVIricstockPassport from VIricstockPassport myVIricstockPassport where myVIricstockPassport.name = ?1"),
 		@NamedQuery(name = "findVIricstockPassportByNameContaining", query = "select myVIricstockPassport from VIricstockPassport myVIricstockPassport where myVIricstockPassport.name like ?1"),
 		@NamedQuery(name = "findVIricstockPassportByPrimaryKey", query = "select myVIricstockPassport from VIricstockPassport myVIricstockPassport where myVIricstockPassport.iricStockpropId = ?1"),
 		@NamedQuery(name = "findVIricstockPassportByValue", query = "select myVIricstockPassport from VIricstockPassport myVIricstockPassport where myVIricstockPassport.value = ?1"),
 		@NamedQuery(name = "findVIricstockPassportByValueContaining", query = "select myVIricstockPassport from VIricstockPassport myVIricstockPassport where myVIricstockPassport.value like ?1") })
-//@Table( name = "V_IRICSTOCK_PASSPORT")
-@Table( name = "V_STOCK_PASSPORT")
+// @Table( name = "V_IRICSTOCK_PASSPORT")
+@Table(name = "V_STOCK_PASSPORT")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockPassport")
-public class VIricstockPassport implements Serializable , Passport {
+public class VIricstockPassport implements Serializable, Passport {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -74,13 +72,11 @@ public class VIricstockPassport implements Serializable , Passport {
 	@XmlElement
 	String value;
 
-	
 	@Column(name = "DATASET", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String dataset;
 
-	
 	/**
 	 */
 	public void setIricStockpropId(BigDecimal iricStockpropId) {
@@ -141,8 +137,6 @@ public class VIricstockPassport implements Serializable , Passport {
 		return this.value;
 	}
 
-	
-	
 	public String getDataset() {
 		return dataset;
 	}
@@ -205,7 +199,8 @@ public class VIricstockPassport implements Serializable , Passport {
 		if (!(obj instanceof VIricstockPassport))
 			return false;
 		VIricstockPassport equalCheck = (VIricstockPassport) obj;
-		if ((iricStockpropId == null && equalCheck.iricStockpropId != null) || (iricStockpropId != null && equalCheck.iricStockpropId == null))
+		if ((iricStockpropId == null && equalCheck.iricStockpropId != null)
+				|| (iricStockpropId != null && equalCheck.iricStockpropId == null))
 			return false;
 		if (iricStockpropId != null && !iricStockpropId.equals(equalCheck.iricStockpropId))
 			return false;

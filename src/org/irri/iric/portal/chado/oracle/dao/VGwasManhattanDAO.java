@@ -24,19 +24,22 @@ public interface VGwasManhattanDAO extends JpaDao<VGwasManhattan>, ManhattanPlot
 	 * JPQL Query - findVGwasManhattanByPrimaryKey
 	 *
 	 */
-	public VGwasManhattan findVGwasManhattanByPrimaryKey(BigDecimal gwasMarkerId, int startResult, int maxRows) throws DataAccessException;
+	public VGwasManhattan findVGwasManhattanByPrimaryKey(BigDecimal gwasMarkerId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBySubpopulationContaining
 	 *
 	 */
-	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationContaining(String subpopulation) throws DataAccessException;
+	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationContaining(String subpopulation)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBySubpopulationContaining
 	 *
 	 */
-	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationContaining(String subpopulation, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationContaining(String subpopulation, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanByTrait
@@ -48,7 +51,8 @@ public interface VGwasManhattanDAO extends JpaDao<VGwasManhattan>, ManhattanPlot
 	 * JPQL Query - findVGwasManhattanByTrait
 	 *
 	 */
-	public Set<VGwasManhattan> findVGwasManhattanByTrait(String trait, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattan> findVGwasManhattanByTrait(String trait, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanByChromosome
@@ -60,7 +64,8 @@ public interface VGwasManhattanDAO extends JpaDao<VGwasManhattan>, ManhattanPlot
 	 * JPQL Query - findVGwasManhattanByChromosome
 	 *
 	 */
-	public Set<VGwasManhattan> findVGwasManhattanByChromosome(Long chromosome, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattan> findVGwasManhattanByChromosome(Long chromosome, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanByPosition
@@ -72,7 +77,8 @@ public interface VGwasManhattanDAO extends JpaDao<VGwasManhattan>, ManhattanPlot
 	 * JPQL Query - findVGwasManhattanByPosition
 	 *
 	 */
-	public Set<VGwasManhattan> findVGwasManhattanByPosition(BigDecimal position, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattan> findVGwasManhattanByPosition(BigDecimal position, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanByTraitContaining
@@ -84,7 +90,8 @@ public interface VGwasManhattanDAO extends JpaDao<VGwasManhattan>, ManhattanPlot
 	 * JPQL Query - findVGwasManhattanByTraitContaining
 	 *
 	 */
-	public Set<VGwasManhattan> findVGwasManhattanByTraitContaining(String trait_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattan> findVGwasManhattanByTraitContaining(String trait_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBySubpopulation
@@ -96,7 +103,8 @@ public interface VGwasManhattanDAO extends JpaDao<VGwasManhattan>, ManhattanPlot
 	 * JPQL Query - findVGwasManhattanBySubpopulation
 	 *
 	 */
-	public Set<VGwasManhattan> findVGwasManhattanBySubpopulation(String subpopulation_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattan> findVGwasManhattanBySubpopulation(String subpopulation_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanByGwasMarkerId
@@ -108,7 +116,8 @@ public interface VGwasManhattanDAO extends JpaDao<VGwasManhattan>, ManhattanPlot
 	 * JPQL Query - findVGwasManhattanByGwasMarkerId
 	 *
 	 */
-	public Set<VGwasManhattan> findVGwasManhattanByGwasRunId(BigDecimal gwasRunId_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattan> findVGwasManhattanByGwasRunId(BigDecimal gwasRunId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanByGwasMarkerId
@@ -120,9 +129,9 @@ public interface VGwasManhattanDAO extends JpaDao<VGwasManhattan>, ManhattanPlot
 	 * JPQL Query - findVGwasManhattanByGwasMarkerId
 	 *
 	 */
-	public VGwasManhattan findVGwasManhattanByGwasMarkerId(BigDecimal gwasMarkerId_1, int startResult, int maxRows) throws DataAccessException;
+	public VGwasManhattan findVGwasManhattanByGwasMarkerId(BigDecimal gwasMarkerId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
-	
 	/**
 	 * JPQL Query - findVGwasManhattanByMinusLogp
 	 *
@@ -133,7 +142,8 @@ public interface VGwasManhattanDAO extends JpaDao<VGwasManhattan>, ManhattanPlot
 	 * JPQL Query - findVGwasManhattanByMinusLogp
 	 *
 	 */
-	public Set<VGwasManhattan> findVGwasManhattanByMinusLogp(BigDecimal minusLogp, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattan> findVGwasManhattanByMinusLogp(BigDecimal minusLogp, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVGwasManhattans
@@ -157,18 +167,21 @@ public interface VGwasManhattanDAO extends JpaDao<VGwasManhattan>, ManhattanPlot
 	 * JPQL Query - findVGwasManhattanByTraitId
 	 *
 	 */
-	public Set<VGwasManhattan> findVGwasManhattanByTraitId(BigDecimal traitId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattan> findVGwasManhattanByTraitId(BigDecimal traitId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBySubpopulationId
 	 *
 	 */
-	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationId(java.math.BigDecimal subpopulationId) throws DataAccessException;
+	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationId(java.math.BigDecimal subpopulationId)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBySubpopulationId
 	 *
 	 */
-	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationId(BigDecimal subpopulationId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattan> findVGwasManhattanBySubpopulationId(BigDecimal subpopulationId, int startResult,
+			int maxRows) throws DataAccessException;
 
 }

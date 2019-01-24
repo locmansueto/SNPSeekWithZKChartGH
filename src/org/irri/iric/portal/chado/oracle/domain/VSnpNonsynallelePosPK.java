@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 
 import javax.persistence.*;
 
-
 /**
  */
 public class VSnpNonsynallelePosPK implements Serializable {
@@ -31,12 +30,11 @@ public class VSnpNonsynallelePosPK implements Serializable {
 	@Id
 	public BigDecimal typeId;
 
-	
 	@Column(name = "ALLELE_NONSYN")
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	public String alleleNonsyn;
-	
+
 	/**
 	 */
 	public void setSnpFeatureId(BigDecimal snpFeatureId) {
@@ -60,7 +58,7 @@ public class VSnpNonsynallelePosPK implements Serializable {
 	public BigDecimal getTypeId() {
 		return this.typeId;
 	}
-	
+
 	/**
 	 */
 	public void setAlleleNonsyn(String alleleNonsyn) {
@@ -93,7 +91,8 @@ public class VSnpNonsynallelePosPK implements Serializable {
 		if (!(obj instanceof VSnpNonsynallelePosPK))
 			return false;
 		VSnpNonsynallelePosPK equalCheck = (VSnpNonsynallelePosPK) obj;
-		if ((snpFeatureId == null && equalCheck.snpFeatureId != null) || (snpFeatureId != null && equalCheck.snpFeatureId == null))
+		if ((snpFeatureId == null && equalCheck.snpFeatureId != null)
+				|| (snpFeatureId != null && equalCheck.snpFeatureId == null))
 			return false;
 		if (snpFeatureId != null && !snpFeatureId.equals(equalCheck.snpFeatureId))
 			return false;
@@ -101,7 +100,8 @@ public class VSnpNonsynallelePosPK implements Serializable {
 			return false;
 		if (typeId != null && !typeId.equals(equalCheck.typeId))
 			return false;
-		if ((alleleNonsyn == null && equalCheck.alleleNonsyn != null) || (alleleNonsyn != null && equalCheck.alleleNonsyn == null))
+		if ((alleleNonsyn == null && equalCheck.alleleNonsyn != null)
+				|| (alleleNonsyn != null && equalCheck.alleleNonsyn == null))
 			return false;
 		if (alleleNonsyn != null && !alleleNonsyn.equals(equalCheck.alleleNonsyn))
 			return false;

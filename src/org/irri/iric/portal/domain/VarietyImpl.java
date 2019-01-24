@@ -6,6 +6,7 @@ import org.irri.iric.portal.variety.VarietyFacade;
 
 /**
  * Implementation of Variety
+ * 
  * @author LMansueto
  *
  */
@@ -17,46 +18,46 @@ public class VarietyImpl implements Variety {
 	protected String country;
 	protected String subpopulation;
 	protected String accession;
-	
+
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
+
 		return name;
 	}
 
 	@Override
 	public String getIrisId() {
-		// TODO Auto-generated method stub
+
 		return irisId;
 	}
 
 	@Override
 	public String getCountry() {
-		// TODO Auto-generated method stub
+
 		return country;
 	}
 
 	@Override
 	public String getSubpopulation() {
-		// TODO Auto-generated method stub
+
 		return subpopulation;
 	}
 
 	@Override
 	public void setCountry(String country) {
-		// TODO Auto-generated method stub
+
 		this.country = country;
 	}
 
 	@Override
 	public void setSubpopulation(String subpopulation) {
-		// TODO Auto-generated method stub
+
 		this.subpopulation = subpopulation;
 	}
 
 	@Override
 	public BigDecimal getVarietyId() {
-		// TODO Auto-generated method stub
+
 		return id;
 	}
 
@@ -73,42 +74,48 @@ public class VarietyImpl implements Variety {
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
-		if (!(obj instanceof Variety)) //VIricstockBasicprop))
+		if (!(obj instanceof Variety)) // VIricstockBasicprop))
 			return false;
-		//VIricstockBasicprop equalCheck = (VIricstockBasicprop) obj;
+		// VIricstockBasicprop equalCheck = (VIricstockBasicprop) obj;
 		Variety equalCheck = (Variety) obj;
-		
-		//return iricStockId.equals(equalCheck.getIricStockId());
-		
-		
-		if ((getVarietyId() == null && equalCheck.getVarietyId() != null) || (getVarietyId() != null && equalCheck.getVarietyId() == null))
+
+		// return iricStockId.equals(equalCheck.getIricStockId());
+
+		if ((getVarietyId() == null && equalCheck.getVarietyId() != null)
+				|| (getVarietyId() != null && equalCheck.getVarietyId() == null))
 			return false;
 		if (getVarietyId() != null && !getVarietyId().equals(equalCheck.getVarietyId()))
 			return false;
 		return true;
-		
+
 	}
 
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return getName().compareTo( ((Variety)o).getName() );
+
+		return getName().compareTo(((Variety) o).getName());
 	}
 
 	@Override
 	public String printFields(String delimiter) {
-		// TODO Auto-generated method stub
+
 		String irisid = getIrisId();
-		if(irisid==null) irisid="";
+		if (irisid == null)
+			irisid = "";
 		String subpop = getSubpopulation();
-		if(subpop==null) subpop="";
+		if (subpop == null)
+			subpop = "";
 		String cntr = getCountry();
-		if(cntr==null) cntr="";
+		if (cntr == null)
+			cntr = "";
 		String acc = this.getAccession();
-		if(acc==null) acc="";
-		
-		//return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr;
-		return "\""+ this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter + "\"" + acc + "\"" + delimiter +  "\"" + subpop + "\"" + delimiter + "\"" + cntr + "\"";
+		if (acc == null)
+			acc = "";
+
+		// return this.getName() + delimiter + irisid + delimiter + subpop + delimiter +
+		// cntr;
+		return "\"" + this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter + "\"" + acc + "\""
+				+ delimiter + "\"" + subpop + "\"" + delimiter + "\"" + cntr + "\"";
 	}
 
 	@Override
@@ -119,11 +126,10 @@ public class VarietyImpl implements Variety {
 
 	@Override
 	public String getAccession() {
-		// TODO Auto-generated method stub
+
 		return accession;
 	}
-	
-	
+
 	@Override
 	public String getDataset() {
 		// TODO Auto-generated method stub
@@ -132,15 +138,15 @@ public class VarietyImpl implements Variety {
 
 	@Override
 	public void setName(String name) {
-		// TODO Auto-generated method stub
-		this.name=name;
+
+		this.name = name;
 	}
 
 	@Override
 	public void setAccession(String accession) {
-		// TODO Auto-generated method stub
-		this.accession=accession;
-		
+
+		this.accession = accession;
+
 	}
-	
+
 }

@@ -15,7 +15,7 @@ import org.irri.iric.portal.domain.Scaffold;
 /**
  */
 
-@Entity(name="VScaffoldsOrganism")
+@Entity(name = "VScaffoldsOrganism")
 @NamedQueries({
 		@NamedQuery(name = "findAllVScaffoldsOrganisms", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism"),
 		@NamedQuery(name = "findVScaffoldsOrganismByCommonName", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where myVScaffoldsOrganism.commonName = ?1"),
@@ -23,11 +23,13 @@ import org.irri.iric.portal.domain.Scaffold;
 		@NamedQuery(name = "findVScaffoldsOrganismByFeatureId", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where myVScaffoldsOrganism.featureId = ?1"),
 		@NamedQuery(name = "findVScaffoldsOrganismByName", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where myVScaffoldsOrganism.name = ?1"),
 		@NamedQuery(name = "findVScaffoldsOrganismByNameContaining", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where myVScaffoldsOrganism.name like ?1"),
-		
-		//@NamedQuery(name = "findVScaffoldsOrganismByNameCommonName", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where myVScaffoldsOrganism.name = ?1 and myVScaffoldsOrganism.commonName = ?2"),
+
+		// @NamedQuery(name = "findVScaffoldsOrganismByNameCommonName", query = "select
+		// myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where
+		// myVScaffoldsOrganism.name = ?1 and myVScaffoldsOrganism.commonName = ?2"),
 		@NamedQuery(name = "findVScaffoldsOrganismByNameCommonName", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where upper(myVScaffoldsOrganism.name) = upper(?1)  and myVScaffoldsOrganism.commonName = ?2"),
 		@NamedQuery(name = "findVScaffoldsOrganismByNameOrganismId", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where upper(myVScaffoldsOrganism.name) = upper(?1)  and myVScaffoldsOrganism.organismId = ?2"),
-		
+
 		@NamedQuery(name = "findVScaffoldsOrganismByOrganismId", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where myVScaffoldsOrganism.organismId = ?1 order by myVScaffoldsOrganism.seqlen desc"),
 		@NamedQuery(name = "findVScaffoldsOrganismByPrimaryKey", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where myVScaffoldsOrganism.featureId = ?1"),
 		@NamedQuery(name = "findVScaffoldsOrganismBySeqlen", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where myVScaffoldsOrganism.seqlen = ?1"),
@@ -36,7 +38,7 @@ import org.irri.iric.portal.domain.Scaffold;
 		@NamedQuery(name = "findVScaffoldsOrganismByTypeId", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where myVScaffoldsOrganism.typeId = ?1"),
 		@NamedQuery(name = "findVScaffoldsOrganismByUniquename", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where upper(myVScaffoldsOrganism.uniquename) = upper(?1)"),
 		@NamedQuery(name = "findVScaffoldsOrganismByUniquenameContaining", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where upper(myVScaffoldsOrganism.uniquename) like upper(?1)") })
-@Table( name = "V_SCAFFOLDS_ORGANISM")
+@Table(name = "V_SCAFFOLDS_ORGANISM")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VScaffoldsOrganism")
 public class VScaffoldsOrganism implements Serializable, Scaffold {
@@ -122,7 +124,7 @@ public class VScaffoldsOrganism implements Serializable, Scaffold {
 	 */
 	public String getName() {
 		return this.name;
-		//return getUniquename();
+		// return getUniquename();
 	}
 
 	/**
@@ -264,10 +266,8 @@ public class VScaffoldsOrganism implements Serializable, Scaffold {
 
 	@Override
 	public long getLength() {
-		// TODO Auto-generated method stub
+		
 		return seqlen.longValue();
 	}
-	
-	
-	
+
 }

@@ -2,28 +2,30 @@ package org.irri.iric.portal.genomics;
 
 /**
  * BLAST alignment parameters
+ * 
  * @author LMansueto
  *
  */
 public class LocalAlignmentQuery {
-	
+
 	String queryseq;
 	String dbname;
 	double evalue;
 	String querytype;
-	boolean tophitonly=false;
-	boolean sequence=false;
-	
+	boolean tophitonly = false;
+	boolean sequence = false;
+
 	public LocalAlignmentQuery(String queryseq, String dbname, String querytype) {
 		super();
 		this.queryseq = queryseq;
 		this.dbname = dbname;
 		this.querytype = querytype;
 	}
-	
+
 	public String getQueryseq() {
 		return queryseq;
 	}
+
 	public String getDbname() {
 		return dbname;
 	}
@@ -58,12 +60,8 @@ public class LocalAlignmentQuery {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
+		
 		return "LocalAlignmentQuery: db=" + dbname + ";type=" + querytype + ";length=" + queryseq.length();
 	}
 
-	
-	
-	
-	
 }

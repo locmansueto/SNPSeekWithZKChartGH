@@ -25,45 +25,141 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 
 		@NamedQuery(name = "findMVConvertposAny2allrefsByFromOrgIdContigIdPosBetween", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefsMV myVConvertposAny2allrefs where myVConvertposAny2allrefs.fromOrganismId = ?1 and myVConvertposAny2allrefs.fromContigId = ?2 and myVConvertposAny2allrefs.fromPosition between ?3 and ?4 order by  myVConvertposAny2allrefs.fromContigId, myVConvertposAny2allrefs.fromPosition"),
 
-	/*
-		@NamedQuery(name = "findAllVConvertposAny2allrefss", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByAlleleIndex", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.alleleIndex = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByDj123ContigId", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.dj123ContigId = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByDj123Position", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.dj123Position = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByDj123Refcall", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.dj123Refcall = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByDj123RefcallContaining", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.dj123Refcall like ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByFromContigId", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.fromContigId = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByFromOrganismId", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.fromOrganismId = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByFromPosition", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.fromPosition = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByFromRefcall", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.fromRefcall = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByFromRefcallContaining", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.fromRefcall like ?1"),
-		
-		
-		
-		@NamedQuery(name = "findVConvertposAny2allrefsByIr64ContigId", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.ir64ContigId = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByIr64Position", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.ir64Position = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByIr64Refcall", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.ir64Refcall = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByIr64RefcallContaining", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.ir64Refcall like ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByKasalathContigId", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.kasalathContigId = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByKasalathPosition", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.kasalathPosition = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByKasalathRefcall", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.kasalathRefcall = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByKasalathRefcallContaining", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.kasalathRefcall like ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByNbContigId", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.nbContigId = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByNbPosition", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.nbPosition = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByNbRefcall", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.nbRefcall = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByNbRefcallContaining", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.nbRefcall like ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByOrganismId", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.organismId = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByPrimaryKey", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.snpFeatureId = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByRice9311ContigId", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.rice9311ContigId = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByRice9311Position", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.rice9311Position = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByRice9311Refcall", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.rice9311Refcall = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByRice9311RefcallContaining", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.rice9311Refcall like ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsBySnpFeatureId", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.snpFeatureId = ?1"),
-		@NamedQuery(name = "findVConvertposAny2allrefsByTypeId", query = "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.typeId = ?1")
-		*/
-		 })
-@Table( name = "MV_CONVERTPOS_ANY2ALLREFS")
-//@Table( name = "V_CONVERTPOS_ANY2ALLREFS")
+		/*
+		 * @NamedQuery(name = "findAllVConvertposAny2allrefss", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByAlleleIndex", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.alleleIndex = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByDj123ContigId", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.dj123ContigId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByDj123Position", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.dj123Position = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByDj123Refcall", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.dj123Refcall = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByDj123RefcallContaining",
+		 * query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.dj123Refcall like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByFromContigId", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.fromContigId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByFromOrganismId", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.fromOrganismId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByFromPosition", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.fromPosition = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByFromRefcall", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.fromRefcall = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByFromRefcallContaining", query
+		 * =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.fromRefcall like ?1"
+		 * ),
+		 * 
+		 * 
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByIr64ContigId", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.ir64ContigId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByIr64Position", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.ir64Position = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByIr64Refcall", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.ir64Refcall = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByIr64RefcallContaining", query
+		 * =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.ir64Refcall like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByKasalathContigId", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.kasalathContigId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByKasalathPosition", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.kasalathPosition = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByKasalathRefcall", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.kasalathRefcall = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByKasalathRefcallContaining",
+		 * query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.kasalathRefcall like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByNbContigId", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.nbContigId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByNbPosition", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.nbPosition = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByNbRefcall", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.nbRefcall = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByNbRefcallContaining", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.nbRefcall like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByOrganismId", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.organismId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByPrimaryKey", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.snpFeatureId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByRice9311ContigId", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.rice9311ContigId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByRice9311Position", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.rice9311Position = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByRice9311Refcall", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.rice9311Refcall = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByRice9311RefcallContaining",
+		 * query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.rice9311Refcall like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsBySnpFeatureId", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.snpFeatureId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVConvertposAny2allrefsByTypeId", query =
+		 * "select myVConvertposAny2allrefs from VConvertposAny2allrefs myVConvertposAny2allrefs where myVConvertposAny2allrefs.typeId = ?1"
+		 * )
+		 */
+})
+@Table(name = "MV_CONVERTPOS_ANY2ALLREFS")
+// @Table( name = "V_CONVERTPOS_ANY2ALLREFS")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VConvertposAny2allrefsMV")
 public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultirefsPos {
@@ -214,11 +310,12 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 	 */
 
 	/*
-	@Column(name = "ORGANISM_ID")
-	@Basic(fetch = FetchType.EAGER)
-	@XmlElement
-	BigDecimal organismId;
-	*/
+	 * @Column(name = "ORGANISM_ID")
+	 * 
+	 * @Basic(fetch = FetchType.EAGER)
+	 * 
+	 * @XmlElement BigDecimal organismId;
+	 */
 	/**
 	 */
 
@@ -233,8 +330,6 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	BigDecimal alleleIndex;
-
-	
 
 	@Column(name = "NB_CONTIG_NAME")
 	@Basic(fetch = FetchType.EAGER)
@@ -261,7 +356,6 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 	@XmlElement
 	String kasalathContigName;
 
-	
 	@Column(name = "NB_ALIGN_COUNT")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -281,13 +375,12 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	Integer dj123AlignCount;
-	
+
 	@Column(name = "KASALATH_ALIGN_COUNT")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	Integer kasalathAlignCount;
-	
-	
+
 	/**
 	 */
 	public void setSnpFeatureId(BigDecimal snpFeatureId) {
@@ -528,17 +621,17 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 		return this.kasalathRefcall;
 	}
 
-//	/**
-//	 */
-//	public void setOrganismId(BigDecimal organismId) {
-//		this.organismId = organismId;
-//	}
-//
-//	/**
-//	 */
-//	public BigDecimal getOrganismId() {
-//		return this.organismId;
-//	}
+	// /**
+	// */
+	// public void setOrganismId(BigDecimal organismId) {
+	// this.organismId = organismId;
+	// }
+	//
+	// /**
+	// */
+	// public BigDecimal getOrganismId() {
+	// return this.organismId;
+	// }
 
 	/**
 	 */
@@ -594,7 +687,7 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 		setKasalathContigId(that.getKasalathContigId());
 		setKasalathPosition(that.getKasalathPosition());
 		setKasalathRefcall(that.getKasalathRefcall());
-		//setOrganismId(that.getOrganismId());
+		// setOrganismId(that.getOrganismId());
 		setTypeId(that.getTypeId());
 		setAlleleIndex(that.getAlleleIndex());
 	}
@@ -627,7 +720,7 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 		buffer.append("kasalathContigId=[").append(kasalathContigId).append("] ");
 		buffer.append("kasalathPosition=[").append(kasalathPosition).append("] ");
 		buffer.append("kasalathRefcall=[").append(kasalathRefcall).append("] ");
-		//buffer.append("organismId=[").append(organismId).append("] ");
+		// buffer.append("organismId=[").append(organismId).append("] ");
 		buffer.append("typeId=[").append(typeId).append("] ");
 		buffer.append("alleleIndex=[").append(alleleIndex).append("] ");
 
@@ -647,192 +740,199 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 	/**
 	 */
 	public boolean equals(Object obj) {
-		
-		return compareTo(obj)==0;
+
+		return compareTo(obj) == 0;
 		/*
-		if (obj == this)
-			return true;
-		if (!(obj instanceof VConvertposAny2allrefs))
-			return false;
-		VConvertposAny2allrefs equalCheck = (VConvertposAny2allrefs) obj;
-		if ((snpFeatureId == null && equalCheck.snpFeatureId != null) || (snpFeatureId != null && equalCheck.snpFeatureId == null))
-			return false;
-		if (snpFeatureId != null && !snpFeatureId.equals(equalCheck.snpFeatureId))
-			return false;
-		return true;
-		*/
+		 * if (obj == this) return true; if (!(obj instanceof VConvertposAny2allrefs))
+		 * return false; VConvertposAny2allrefs equalCheck = (VConvertposAny2allrefs)
+		 * obj; if ((snpFeatureId == null && equalCheck.snpFeatureId != null) ||
+		 * (snpFeatureId != null && equalCheck.snpFeatureId == null)) return false; if
+		 * (snpFeatureId != null && !snpFeatureId.equals(equalCheck.snpFeatureId))
+		 * return false; return true;
+		 */
 	}
-	
 
 	public String getNBContigName() {
 		/*
-		if(this.nbContigName!=null) {
-			if(nbContigName.length()==4)
-				return this.nbContigName.replace("Chr","chr0");
-			else return this.nbContigName.replace("Chr","chr");
-		}
-		*/
-		return this.nbContigName; 
+		 * if(this.nbContigName!=null) { if(nbContigName.length()==4) return
+		 * this.nbContigName.replace("Chr","chr0"); else return
+		 * this.nbContigName.replace("Chr","chr"); }
+		 */
+		return this.nbContigName;
 	}
-	
+
 	public String get9311ContigName() {
 		return this._311ContigName;
 	}
-	
+
 	public String getIR64ContigName() {
 		return this.ir64ContigName;
 	}
-	
+
 	public String getDJ123ContigName() {
 		return this.dj123ContigName;
 	}
+
 	public String getKasalathContigName() {
 		return this.kasalathContigName;
 	}
 
 	@Override
 	public String getRefnuc() {
-		// TODO Auto-generated method stub
+
 		return this.fromRefcall;
 	}
 
 	@Override
 	public void setRefnuc(String refnuc) {
-		// TODO Auto-generated method stub
-		this.fromRefcall=refnuc;
+
+		this.fromRefcall = refnuc;
 	}
 
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
-		String ctgname="";
-		if(fromOrganismId.equals( Organism.REFERENCE_NIPPONBARE_ID))
-			ctgname=this.nbContigName;
-		else if(fromOrganismId.equals( Organism.REFERENCE_9311_ID))
-			ctgname=this._311ContigName;
-		else if(fromOrganismId.equals( Organism.REFERENCE_IR64_ID))
-			ctgname=this.ir64ContigName;
-		else if(fromOrganismId.equals( Organism.REFERENCE_DJ123_ID ))
-			ctgname=this.dj123ContigName;
-		else if(fromOrganismId.equals( Organism.REFERENCE_KASALATH_ID ))
-			ctgname=this.kasalathContigName;
-		//if(ctgname==null) ctgname="";
+
+		String ctgname = "";
+		if (fromOrganismId.equals(Organism.REFERENCE_NIPPONBARE_ID))
+			ctgname = this.nbContigName;
+		else if (fromOrganismId.equals(Organism.REFERENCE_9311_ID))
+			ctgname = this._311ContigName;
+		else if (fromOrganismId.equals(Organism.REFERENCE_IR64_ID))
+			ctgname = this.ir64ContigName;
+		else if (fromOrganismId.equals(Organism.REFERENCE_DJ123_ID))
+			ctgname = this.dj123ContigName;
+		else if (fromOrganismId.equals(Organism.REFERENCE_KASALATH_ID))
+			ctgname = this.kasalathContigName;
+		// if(ctgname==null) ctgname="";
 		return ctgname;
 	}
 
 	@Override
 	public String getContigName(String organism) {
-		// TODO Auto-generated method stub
-		String ctgname="";
-		if(organism.equals(Organism.REFERENCE_NIPPONBARE)) ctgname=  getNBContigName();
-		else if(organism.equals(Organism.REFERENCE_9311)) ctgname=  get9311ContigName();
-		else if(organism.equals(Organism.REFERENCE_IR64)) ctgname=  getIR64ContigName();
-		else if(organism.equals(Organism.REFERENCE_DJ123)) ctgname=  getDJ123ContigName();
-		else if(organism.equals(Organism.REFERENCE_KASALATH)) ctgname=  getKasalathContigName();
-		if(ctgname==null) ctgname="";
+
+		String ctgname = "";
+		if (organism.equals(Organism.REFERENCE_NIPPONBARE))
+			ctgname = getNBContigName();
+		else if (organism.equals(Organism.REFERENCE_9311))
+			ctgname = get9311ContigName();
+		else if (organism.equals(Organism.REFERENCE_IR64))
+			ctgname = getIR64ContigName();
+		else if (organism.equals(Organism.REFERENCE_DJ123))
+			ctgname = getDJ123ContigName();
+		else if (organism.equals(Organism.REFERENCE_KASALATH))
+			ctgname = getKasalathContigName();
+		if (ctgname == null)
+			ctgname = "";
 		return ctgname;
-		
+
 	}
 
-	
 	@Override
 	public BigDecimal getPosition() {
-		// TODO Auto-generated method stub
+
 		return this.fromPosition;
 	}
 
-	
 	@Override
 	public BigDecimal getPosition(String organism) {
-		// TODO Auto-generated method stub
-		if(organism.equals(Organism.REFERENCE_NIPPONBARE)) return  this.nbPosition;
-		else if(organism.equals(Organism.REFERENCE_9311)) return  this.rice9311Position;
-		else if(organism.equals(Organism.REFERENCE_IR64)) return  this.ir64Position;
-		else if(organism.equals(Organism.REFERENCE_DJ123)) return  this.dj123Position;
-		else if(organism.equals(Organism.REFERENCE_KASALATH)) return this.kasalathPosition;
+
+		if (organism.equals(Organism.REFERENCE_NIPPONBARE))
+			return this.nbPosition;
+		else if (organism.equals(Organism.REFERENCE_9311))
+			return this.rice9311Position;
+		else if (organism.equals(Organism.REFERENCE_IR64))
+			return this.ir64Position;
+		else if (organism.equals(Organism.REFERENCE_DJ123))
+			return this.dj123Position;
+		else if (organism.equals(Organism.REFERENCE_KASALATH))
+			return this.kasalathPosition;
 		return null;
 	}
 
 	@Override
 	public Integer getAlignCount(String organism) {
-		// TODO Auto-generated method stub
-		if(organism.equals(Organism.REFERENCE_NIPPONBARE)) return  this.nbAlignCount;
-		else if(organism.equals(Organism.REFERENCE_9311)) return  this._311AlignCount;
-		else if(organism.equals(Organism.REFERENCE_IR64)) return  this.ir64AlignCount;
-		else if(organism.equals(Organism.REFERENCE_DJ123)) return  this.dj123AlignCount;
-		else if(organism.equals(Organism.REFERENCE_KASALATH)) return this.kasalathAlignCount;
+
+		if (organism.equals(Organism.REFERENCE_NIPPONBARE))
+			return this.nbAlignCount;
+		else if (organism.equals(Organism.REFERENCE_9311))
+			return this._311AlignCount;
+		else if (organism.equals(Organism.REFERENCE_IR64))
+			return this.ir64AlignCount;
+		else if (organism.equals(Organism.REFERENCE_DJ123))
+			return this.dj123AlignCount;
+		else if (organism.equals(Organism.REFERENCE_KASALATH))
+			return this.kasalathAlignCount;
 		return null;
 	}
 
-	
-	
-	
-	
 	@Override
 	public String getAllele(String organism) {
-		// TODO Auto-generated method stub
-		if(organism.equals(Organism.REFERENCE_NIPPONBARE)) return  this.nbRefcall;
-		else if(organism.equals(Organism.REFERENCE_9311)) return  this.rice9311Refcall;
-		else if(organism.equals(Organism.REFERENCE_IR64)) return  this.ir64Refcall;
-		else if(organism.equals(Organism.REFERENCE_DJ123)) return  this.dj123Refcall;
-		else if(organism.equals(Organism.REFERENCE_KASALATH)) return this.kasalathRefcall;
+
+		if (organism.equals(Organism.REFERENCE_NIPPONBARE))
+			return this.nbRefcall;
+		else if (organism.equals(Organism.REFERENCE_9311))
+			return this.rice9311Refcall;
+		else if (organism.equals(Organism.REFERENCE_IR64))
+			return this.ir64Refcall;
+		else if (organism.equals(Organism.REFERENCE_DJ123))
+			return this.dj123Refcall;
+		else if (organism.equals(Organism.REFERENCE_KASALATH))
+			return this.kasalathRefcall;
 		return null;
 	}
 
 	@Override
 	public Long getChr() {
-		// TODO Auto-generated method stub
-		if(fromOrganismId.equals( Organism.REFERENCE_NIPPONBARE_ID))
-			return Long.valueOf(AppContext.guessChrFromString(  this.nbContigName ));
-		else if(fromOrganismId.equals( Organism.REFERENCE_KASALATH_ID ))
-			return Long.valueOf(AppContext.guessChrFromString(  this.kasalathContigName ));
-		else if(fromOrganismId.equals( Organism.REFERENCE_KASALATH_ID )) {
+
+		if (fromOrganismId.equals(Organism.REFERENCE_NIPPONBARE_ID))
+			return Long.valueOf(AppContext.guessChrFromString(this.nbContigName));
+		else if (fromOrganismId.equals(Organism.REFERENCE_KASALATH_ID))
+			return Long.valueOf(AppContext.guessChrFromString(this.kasalathContigName));
+		else if (fromOrganismId.equals(Organism.REFERENCE_KASALATH_ID)) {
 			try {
-			return Long.valueOf(AppContext.guessChrFromString(  this.kasalathContigName.replace("9311_","") ));
+				return Long.valueOf(AppContext.guessChrFromString(this.kasalathContigName.replace("9311_", "")));
 			} catch (Exception ex) {
-				
+
 			}
 		}
 		return null;
 	}
-	
-
 
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		//VConvertposAny2allrefs obj=(VConvertposAny2allrefs)o;
-		int ret=0;
-		if(o instanceof VConvertposAny2allrefsMV) {
-			VConvertposAny2allrefsMV obj=(VConvertposAny2allrefsMV)o;
-			ret= this.fromContigId.compareTo(obj.fromContigId);
-			if(ret==0)
-				ret= this.fromPosition.compareTo(obj.fromPosition);
+
+		// VConvertposAny2allrefs obj=(VConvertposAny2allrefs)o;
+		int ret = 0;
+		if (o instanceof VConvertposAny2allrefsMV) {
+			VConvertposAny2allrefsMV obj = (VConvertposAny2allrefsMV) o;
+			ret = this.fromContigId.compareTo(obj.fromContigId);
+			if (ret == 0)
+				ret = this.fromPosition.compareTo(obj.fromPosition);
 		} else {
-			SnpsAllvarsPos obj=(SnpsAllvarsPos)o;
+			SnpsAllvarsPos obj = (SnpsAllvarsPos) o;
 			ret = this.getContig().compareTo(obj.getContig());
-			if(ret==0)
-				ret= this.getPosition().compareTo(obj.getPosition());
+			if (ret == 0)
+				ret = this.getPosition().compareTo(obj.getPosition());
 		}
 		return ret;
 	}
 
 	@Override
 	public BigDecimal getOrganism() {
-		// TODO Auto-generated method stub
+
 		return this.fromOrganismId;
 	}
 
 	@Override
 	public BigDecimal getFileId() {
-		// TODO Auto-generated method stub
+
 		return this.typeId;
 	}
 
 	@Override
 	public void setAltnuc(String altnuc) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public String getNbContigName() {
@@ -877,7 +977,4 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 		return null;
 	}
 
-	
-	
-	
 }

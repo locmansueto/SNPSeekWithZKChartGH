@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import java.math.BigDecimal;
 
-
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -25,27 +24,23 @@ import org.irri.iric.portal.domain.VarietyDistance;
 
 		@NamedQuery(name = "findAllVIricstockDistancesTopN", query = "select myVIricstockDistance from VIricstockDistance myVIricstockDistance where myVIricstockDistance.var1 <= myVIricstockDistance.var2 order by myVIricstockDistance.dist desc"),
 
-		
-		
 		@NamedQuery(name = "findVIricstockDistanceByVarieties", query = "select myVIricstockDistance from VIricstockDistance myVIricstockDistance where myVIricstockDistance.var1 <= myVIricstockDistance.var2 and myVIricstockDistance.var1 in (?1) and  myVIricstockDistance.var2 in (?1)"),
 		@NamedQuery(name = "findVIricstockDistanceByVarieties2", query = "select myVIricstockDistance from VIricstockDistance myVIricstockDistance where myVIricstockDistance.var1 <= myVIricstockDistance.var2 and (myVIricstockDistance.var1 in (?1) or myVIricstockDistance.var1 in (?2)) and  (myVIricstockDistance.var2 in (?1) or myVIricstockDistance.var1 in (?2))"),
 		@NamedQuery(name = "findVIricstockDistanceByVarieties3", query = "select myVIricstockDistance from VIricstockDistance myVIricstockDistance where myVIricstockDistance.var1 <= myVIricstockDistance.var2 and (myVIricstockDistance.var1 in (?1) or myVIricstockDistance.var1 in (?2) or myVIricstockDistance.var1 in (?3)) and  (myVIricstockDistance.var2 in (?1) or myVIricstockDistance.var2 in (?2) or myVIricstockDistance.var2 in (?3))"),
-		
-		
+
 		@NamedQuery(name = "findVIricstockDistanceByVar2", query = "select myVIricstockDistance from VIricstockDistance myVIricstockDistance where myVIricstockDistance.var2 = ?1") })
-@Table( name = "V_IRICSTOCK_DISTANCE")
-//@Table( name = "IRIC_STOCK_DISTANCE")
+@Table(name = "V_IRICSTOCK_DISTANCE")
+// @Table( name = "IRIC_STOCK_DISTANCE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockDistance")
 public class VIricstockDistance implements Serializable, VarietyDistance {
 	private static final long serialVersionUID = 1L;
 
-	
 	/**
 	 */
 
 	@Column(name = "VAR1", nullable = false)
-//	@Column(name = "IRIC_STOCK_ID1", nullable = false)
+	// @Column(name = "IRIC_STOCK_ID1", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	@XmlElement
@@ -54,7 +49,7 @@ public class VIricstockDistance implements Serializable, VarietyDistance {
 	 */
 
 	@Column(name = "VAR2", nullable = false)
-//	@Column(name = "IRIC_STOCK_ID2", nullable = false)
+	// @Column(name = "IRIC_STOCK_ID2", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	@XmlElement
@@ -62,7 +57,7 @@ public class VIricstockDistance implements Serializable, VarietyDistance {
 	/**
 	 */
 
-//	@Column(name = "DIST")
+	// @Column(name = "DIST")
 	@Column(name = "DISTANCE")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement

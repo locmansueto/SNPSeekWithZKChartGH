@@ -24,17 +24,19 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage VIricstockPhenotypeQuanval entities.
  * 
  */
-//@Repository("VIricstockPhenotypeQuanvalDAO")
+// @Repository("VIricstockPhenotypeQuanvalDAO")
 @Repository("VCvPhenotypeQuanValuesDAO")
 @Transactional
 public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstockPhenotypeQuanval>
 		implements VIricstockPhenotypeQuanvalDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VIricstockPhenotypeQuanval.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VIricstockPhenotypeQuanval.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit Production
@@ -52,7 +54,7 @@ public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstock
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -72,7 +74,8 @@ public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstock
 	 *
 	 */
 	@Transactional
-	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByQuanValue(BigDecimal quanValue) throws DataAccessException {
+	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByQuanValue(BigDecimal quanValue)
+			throws DataAccessException {
 
 		return findVIricstockPhenotypeQuanvalByQuanValue(quanValue, -1, -1);
 	}
@@ -84,7 +87,8 @@ public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstock
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByQuanValue(BigDecimal quanValue, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByQuanValue(BigDecimal quanValue,
+			int startResult, int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVIricstockPhenotypeQuanvalByQuanValue", startResult, maxRows, quanValue);
 		return new LinkedHashSet<VIricstockPhenotypeQuanval>(query.getResultList());
 	}
@@ -94,7 +98,8 @@ public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstock
 	 *
 	 */
 	@Transactional
-	public VIricstockPhenotypeQuanval findVIricstockPhenotypeQuanvalByPrimaryKey(BigDecimal quanValue, BigDecimal phenotypeId) throws DataAccessException {
+	public VIricstockPhenotypeQuanval findVIricstockPhenotypeQuanvalByPrimaryKey(BigDecimal quanValue,
+			BigDecimal phenotypeId) throws DataAccessException {
 
 		return findVIricstockPhenotypeQuanvalByPrimaryKey(quanValue, phenotypeId, -1, -1);
 	}
@@ -105,9 +110,11 @@ public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstock
 	 */
 
 	@Transactional
-	public VIricstockPhenotypeQuanval findVIricstockPhenotypeQuanvalByPrimaryKey(BigDecimal quanValue, BigDecimal phenotypeId, int startResult, int maxRows) throws DataAccessException {
+	public VIricstockPhenotypeQuanval findVIricstockPhenotypeQuanvalByPrimaryKey(BigDecimal quanValue,
+			BigDecimal phenotypeId, int startResult, int maxRows) throws DataAccessException {
 		try {
-			Query query = createNamedQuery("findVIricstockPhenotypeQuanvalByPrimaryKey", startResult, maxRows, quanValue, phenotypeId);
+			Query query = createNamedQuery("findVIricstockPhenotypeQuanvalByPrimaryKey", startResult, maxRows,
+					quanValue, phenotypeId);
 			return (org.irri.iric.portal.chado.oracle.domain.VIricstockPhenotypeQuanval) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
@@ -119,9 +126,10 @@ public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstock
 	 *
 	 */
 	@Transactional
-	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(BigDecimal phenotypeId, String dataset) throws DataAccessException {
+	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(BigDecimal phenotypeId,
+			String dataset) throws DataAccessException {
 
-		return findVIricstockPhenotypeQuanvalByPhenotypeId(phenotypeId,dataset,  -1, -1);
+		return findVIricstockPhenotypeQuanvalByPhenotypeId(phenotypeId, dataset, -1, -1);
 	}
 
 	/**
@@ -131,15 +139,19 @@ public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstock
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(BigDecimal phenotypeId,  String dataset, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVIricstockPhenotypeQuanvalByPhenotypeId", startResult, maxRows, phenotypeId, dataset);
+	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(BigDecimal phenotypeId,
+			String dataset, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVIricstockPhenotypeQuanvalByPhenotypeId", startResult, maxRows, phenotypeId,
+				dataset);
 		return new LinkedHashSet<VIricstockPhenotypeQuanval>(query.getResultList());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeIdDataset(BigDecimal phenotypeId,  Set dataset, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVIricstockPhenotypeQuanvalByPhenotypeIdDataset", startResult, maxRows, phenotypeId, dataset);
+	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeIdDataset(BigDecimal phenotypeId,
+			Set dataset, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVIricstockPhenotypeQuanvalByPhenotypeIdDataset", startResult, maxRows,
+				phenotypeId, dataset);
 		return new LinkedHashSet<VIricstockPhenotypeQuanval>(query.getResultList());
 	}
 
@@ -160,13 +172,16 @@ public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstock
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPhenotypeQuanval> findAllVIricstockPhenotypeQuanvals(int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstockPhenotypeQuanval> findAllVIricstockPhenotypeQuanvals(int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findAllVIricstockPhenotypeQuanvals", startResult, maxRows);
 		return new LinkedHashSet<VIricstockPhenotypeQuanval>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -175,31 +190,24 @@ public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstock
 		return true;
 	}
 
-
-
 	@Override
 	public Set getUniqueValues(BigDecimal typeId, Set dataset) {
-		// TODO Auto-generated method stub
-		return this.findVIricstockPhenotypeQuanvalByPhenotypeIdDataset(typeId, dataset,-1,-1);
+		
+		return this.findVIricstockPhenotypeQuanvalByPhenotypeIdDataset(typeId, dataset, -1, -1);
 	}
 
 	@Override
-	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(
-			BigDecimal phenotypeId_1) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(
-			BigDecimal phenotypeId_1, int startResult, int maxRows)
+	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(BigDecimal phenotypeId_1)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(BigDecimal phenotypeId_1,
+			int startResult, int maxRows) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	
-	
-	
 }

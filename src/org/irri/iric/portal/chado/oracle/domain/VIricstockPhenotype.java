@@ -15,34 +15,29 @@ import org.irri.iric.portal.domain.Phenotype;
 /**
  */
 
-
-
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "findAllVIricstockPhenotypes", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype"),
 		@NamedQuery(name = "findVIricstockPhenotypeByDefinition", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.definition = ?1"),
 		@NamedQuery(name = "findVIricstockPhenotypeByDefinitionContaining", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.definition like ?1"),
 
-		
-		
 		@NamedQuery(name = "findVIricstockPhenotypeByIricStockIdAll", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.iricStockId = ?1"),
 		@NamedQuery(name = "findVIricstockPhenotypeByIricStockId", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.iricStockId = ?1 and  myVIricstockPhenotype.dataset=?2"),
 		@NamedQuery(name = "findVIricstockPhenotypeByIricStockIdPhenId", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.iricStockId = ?1 and myVIricstockPhenotype.phenotypeId=?2 and  myVIricstockPhenotype.dataset=?3"),
 		@NamedQuery(name = "findVIricstockPhenotypesByPhenId", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.phenotypeId=?1 and myVIricstockPhenotype.dataset=?2"),
-		
-		
+
 		@NamedQuery(name = "findVIricstockPhenotypeByIricStockPhenotypeId", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.iricStockPhenotypeId = ?1"),
 		@NamedQuery(name = "findVIricstockPhenotypeByName", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.name = ?1"),
-		
+
 		@NamedQuery(name = "findVIricstockPhenotypeByNameContaining", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where upper(myVIricstockPhenotype.name) like upper(?1)"),
-		
+
 		@NamedQuery(name = "findVIricstockPhenotypeByPrimaryKey", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.iricStockPhenotypeId = ?1"),
 		@NamedQuery(name = "findVIricstockPhenotypeByQualValue", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.qualValue = ?1"),
 		@NamedQuery(name = "findVIricstockPhenotypeByQualValueContaining", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.qualValue like ?1"),
 		@NamedQuery(name = "findVIricstockPhenotypeByQuanValue", query = "select myVIricstockPhenotype from VIricstockPhenotype myVIricstockPhenotype where myVIricstockPhenotype.quanValue = ?1") })
-		
-//@Table( name = "V_IRICSTOCK_PHENOTYPE")
-@Table( name = "V_STOCK_PHENOTYPE")
+
+// @Table( name = "V_IRICSTOCK_PHENOTYPE")
+@Table(name = "V_STOCK_PHENOTYPE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockPhenotype")
 public class VIricstockPhenotype implements Serializable, Phenotype {
@@ -51,7 +46,7 @@ public class VIricstockPhenotype implements Serializable, Phenotype {
 	/**
 	 */
 
-	@Column(name = "STOCK_PHENOTYPE_ID", nullable = false)
+	@Column(name = "STOCK_PHENOTYPE2_ID", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	@XmlElement
@@ -73,7 +68,6 @@ public class VIricstockPhenotype implements Serializable, Phenotype {
 	/**
 	 */
 
-	
 	@Column(name = "NAME", length = 1024)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -104,10 +98,7 @@ public class VIricstockPhenotype implements Serializable, Phenotype {
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String dataset;
-	
-	
-	
-	
+
 	public String getDataset() {
 		return dataset;
 	}
@@ -244,7 +235,8 @@ public class VIricstockPhenotype implements Serializable, Phenotype {
 		if (!(obj instanceof VIricstockPhenotype))
 			return false;
 		VIricstockPhenotype equalCheck = (VIricstockPhenotype) obj;
-		if ((iricStockPhenotypeId == null && equalCheck.iricStockPhenotypeId != null) || (iricStockPhenotypeId != null && equalCheck.iricStockPhenotypeId == null))
+		if ((iricStockPhenotypeId == null && equalCheck.iricStockPhenotypeId != null)
+				|| (iricStockPhenotypeId != null && equalCheck.iricStockPhenotypeId == null))
 			return false;
 		if (iricStockPhenotypeId != null && !iricStockPhenotypeId.equals(equalCheck.iricStockPhenotypeId))
 			return false;
@@ -253,9 +245,8 @@ public class VIricstockPhenotype implements Serializable, Phenotype {
 
 	@Override
 	public BigDecimal getPhenotypeId() {
-		// TODO Auto-generated method stub
+
 		return this.phenotypeId;
 	}
-	
-	
+
 }

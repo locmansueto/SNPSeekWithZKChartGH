@@ -36,7 +36,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
 	public WorkspaceFacadeSessionScopedImpl() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 		//sessionmgr = new UserSessionManager();			
 		AppContext.debug("created WorkspaceFacadeSessionScopedImpl:" + this);
 	}
@@ -45,7 +45,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
 	@Override
 	public void queryIric() {
-		// TODO Auto-generated method stub
+		
 		//queryiric = (QueryIric)AppContext.checkBean(queryiric, "QueryIric");
 		//queryiric.createSNPFile();
 	}
@@ -91,7 +91,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
 	@Override
 	public boolean addVarietyList(String name, Set setVarieties, Set dataset) {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.addVarietyList(name, setVarieties,  dataset);
 	}
@@ -99,7 +99,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
 	@Override
 	public boolean addVarietyList(String name, Set setVarieties, Set dataset, int hasPhenotype, List phenname, Map<BigDecimal, Object[]> mapVarid2Phen) {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		boolean suc=true;
 		for(Object ds:dataset) {
@@ -139,7 +139,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
 	@Override
 	public boolean addLocusList(String name, Set locuslist) {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.addLocusList(name, locuslist);
 	}
@@ -157,7 +157,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	
 	@Override
 	public Set getSnpPositions(String chromosome, String name) {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		Set s=sessionmgr.getSNPs(chromosome, name);
 		AppContext.debug("snplist=" + s.size());
@@ -168,7 +168,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	@Override
 	//public boolean addSnpPositionList(Integer chromosome, String name, Set poslist) {
 	public boolean addSnpPositionList(String contig, String name, Set poslist, boolean hasAllele, boolean hasPvalue) {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.addSNPList(contig, name, poslist, hasAllele, hasPvalue);
 	}
@@ -179,7 +179,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
 	@Override
 	public boolean SNPListhasAllele(String listname) {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.SNPhasAllele(listname);
 
@@ -188,7 +188,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
 	@Override
 	public boolean SNPListhasPvalue(String listname) {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.SNPhasPvalue(listname);
 	}
@@ -196,7 +196,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
 	@Override
 	public Set getSnpPositionListNames() {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.getSNPlistNames();
 	}
@@ -218,14 +218,14 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	
 	@Override
 	public Set getVarietyQuantPhenotypelistNames(String dataset) {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.getVarietyQuantPhenotypelistNames(dataset);
 	}
 
 	@Override
 	public Set getVarietyCatPhenotypelistNames(String dataset) {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.getVarietyCatPhenotypelistNames(dataset);
 	}
@@ -233,14 +233,14 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
 	@Override
 	public Collection getVarietyQuantPhenotypelistNames() {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.getVarietyQuantPhenotypelistNames();
 	}
 
 	@Override
 	public Collection getVarietyCatPhenotypelistNames() {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.getVarietyCatPhenotypelistNames();
 	}
@@ -249,7 +249,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
 	@Override
 	public Map getVarietylistPhenotypeValues(String phenotype, String dataset) {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		Map m=sessionmgr.getVarietyPhenotypeValues(phenotype.split("\\:\\:")[0], dataset, phenotype.split("\\:\\:")[1]);
 		AppContext.debug("1phenvalues for " + phenotype + " , " + m.size());
@@ -261,7 +261,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	/*
 	@Override
 	public Set getLocusListNames() {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.getLocuslistNames();
 	}
@@ -277,21 +277,21 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	
 	@Override
 	public String getMyLists() {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.downloadLists();
 	}
 
 	@Override
 	public String getMyListsCookie() {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		return sessionmgr.downloadListsCookie();
 	}
 
 	@Override
 	public void setMyListsCookie(String mylist) {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		sessionmgr.uploadListCookie(mylist);
 	}
@@ -299,7 +299,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 	
 	@Override
 	public void downloadLists() {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		String filename = AppContext.getTempDir() + "mylists-" + AppContext.createTempFilename()+ ".txt";
 		
@@ -332,7 +332,7 @@ public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
 
 	@Override
 	public void deleteSNPList(String chromosome, String listname) {
-		// TODO Auto-generated method stub
+		
 		UserSessionListsManager sessionmgr = getSessionManager();
 		sessionmgr.deleteSNPList(chromosome, listname);  
 	}

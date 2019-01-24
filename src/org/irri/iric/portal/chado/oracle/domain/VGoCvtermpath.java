@@ -15,7 +15,7 @@ import org.irri.iric.portal.domain.CvTermUniqueValues;
 /**
  */
 @IdClass(org.irri.iric.portal.chado.oracle.domain.VGoCvtermpathPK.class)
-@Entity(name="VGoCvtermpath")
+@Entity(name = "VGoCvtermpath")
 @NamedQueries({
 		@NamedQuery(name = "findAllVGoCvtermpaths", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath"),
 		@NamedQuery(name = "findVGoCvtermpathByCvName", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.cvName = ?1"),
@@ -23,14 +23,12 @@ import org.irri.iric.portal.domain.CvTermUniqueValues;
 		@NamedQuery(name = "findVGoCvtermpathByCvtermId", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.cvtermId = ?1"),
 		@NamedQuery(name = "findVGoCvtermpathByObjAcc", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.objAcc = ?1"),
 		@NamedQuery(name = "findVGoCvtermpathByObjAccContaining", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.objAcc like ?1"),
-		
 
 		@NamedQuery(name = "findVGoCvtermpathByObjCvtermPosMaxdist", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.cvName=?1 and  myVGoCvtermpath.objCvterm = ?2 and ((myVGoCvtermpath.pathdistance>0 and myVGoCvtermpath.pathdistance<=?3) or myVGoCvtermpath.pathdistance is null) order by myVGoCvtermpath.pathdistance, myVGoCvtermpath.subjCvterm"),
 		@NamedQuery(name = "findVGoCvtermpathByObjCvtermNegMaxdist", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where  myVGoCvtermpath.cvName=?1 and  myVGoCvtermpath.objCvterm = ?2 and myVGoCvtermpath.pathdistance<0 and myVGoCvtermpath.pathdistance>=?3 order by myVGoCvtermpath.pathdistance desc, myVGoCvtermpath.subjCvterm"),
 		@NamedQuery(name = "findVGoCvtermpathByObjCvtermPosDist", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.cvName=?1 and  myVGoCvtermpath.objCvterm = ?2 and ( myVGoCvtermpath.pathdistance>0  or  myVGoCvtermpath.pathdistance is null) order by myVGoCvtermpath.pathdistance, myVGoCvtermpath.subjCvterm"),
 		@NamedQuery(name = "findVGoCvtermpathByObjCvtermNegDist", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where  myVGoCvtermpath.cvName=?1 and myVGoCvtermpath.objCvterm = ?2 and myVGoCvtermpath.pathdistance<0  order by myVGoCvtermpath.pathdistance desc, myVGoCvtermpath.subjCvterm"),
 
-		
 		@NamedQuery(name = "findVGoCvtermpathByObjCvterm", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.objCvterm = ?1"),
 		@NamedQuery(name = "findVGoCvtermpathByObjCvtermContaining", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.objCvterm like ?1"),
 		@NamedQuery(name = "findVGoCvtermpathByPathdistance", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.pathdistance = ?1"),
@@ -39,10 +37,10 @@ import org.irri.iric.portal.domain.CvTermUniqueValues;
 		@NamedQuery(name = "findVGoCvtermpathBySubjAccContaining", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.subjAcc like ?1"),
 		@NamedQuery(name = "findVGoCvtermpathBySubjCvterm", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.subjCvterm = ?1"),
 		@NamedQuery(name = "findVGoCvtermpathBySubjCvtermContaining", query = "select myVGoCvtermpath from VGoCvtermpath myVGoCvtermpath where myVGoCvtermpath.subjCvterm like ?1") })
-@Table( name = "V_GO_CVTERMPATH")
+@Table(name = "V_GO_CVTERMPATH")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VGoCvtermpath")
-public class VGoCvtermpath implements Serializable , CvTermUniqueValues {
+public class VGoCvtermpath implements Serializable, CvTermUniqueValues {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -251,10 +249,8 @@ public class VGoCvtermpath implements Serializable , CvTermUniqueValues {
 
 	@Override
 	public String getValue() {
-		// TODO Auto-generated method stub
+		
 		return this.getSubjCvterm();
 	}
-	
-	
-	
+
 }

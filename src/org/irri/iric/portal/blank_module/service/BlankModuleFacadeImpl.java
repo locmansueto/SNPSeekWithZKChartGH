@@ -14,13 +14,12 @@ public class BlankModuleFacadeImpl implements BlankModuleFacade {
 	
 	public BlankModuleFacadeImpl() {
 		super();
-		// TODO Auto-generated constructor stub
 		AppContext.debug( this.getClass() + " loaded");
 	}
 
 	@Override
 	public List getOptions() {
-		// TODO Auto-generated method stub
+		
 		List options=new ArrayList();
 			options.add("option 1");
 			options.add("option 2");

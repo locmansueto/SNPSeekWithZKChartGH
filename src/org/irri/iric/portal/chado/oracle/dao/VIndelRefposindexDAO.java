@@ -24,7 +24,8 @@ public interface VIndelRefposindexDAO extends JpaDao<VIndelRefposindex>, IndelsA
 	 * JPQL Query - findMvIndelRefposindexByPosition
 	 *
 	 */
-	public Set<VIndelRefposindex> findMvIndelRefposindexByPosition(BigDecimal position, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIndelRefposindex> findMvIndelRefposindexByPosition(BigDecimal position, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByMaxInsertLen
@@ -36,7 +37,8 @@ public interface VIndelRefposindexDAO extends JpaDao<VIndelRefposindex>, IndelsA
 	 * JPQL Query - findMvIndelRefposindexByMaxInsertLen
 	 *
 	 */
-	public Set<VIndelRefposindex> findMvIndelRefposindexByMaxInsertLen(Integer maxInsertLen, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIndelRefposindex> findMvIndelRefposindexByMaxInsertLen(Integer maxInsertLen, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllMvIndelRefposindexs
@@ -54,13 +56,15 @@ public interface VIndelRefposindexDAO extends JpaDao<VIndelRefposindex>, IndelsA
 	 * JPQL Query - findMvIndelRefposindexByIndelFeatureId
 	 *
 	 */
-	public VIndelRefposindex findMvIndelRefposindexByIndelFeatureId(BigDecimal indelFeatureId) throws DataAccessException;
+	public VIndelRefposindex findMvIndelRefposindexByIndelFeatureId(BigDecimal indelFeatureId)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByIndelFeatureId
 	 *
 	 */
-	public VIndelRefposindex findMvIndelRefposindexByIndelFeatureId(BigDecimal indelFeatureId, int startResult, int maxRows) throws DataAccessException;
+	public VIndelRefposindex findMvIndelRefposindexByIndelFeatureId(BigDecimal indelFeatureId, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByRefcall
@@ -72,7 +76,8 @@ public interface VIndelRefposindexDAO extends JpaDao<VIndelRefposindex>, IndelsA
 	 * JPQL Query - findMvIndelRefposindexByRefcall
 	 *
 	 */
-	public Set<VIndelRefposindex> findMvIndelRefposindexByRefcall(String refcall, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIndelRefposindex> findMvIndelRefposindexByRefcall(String refcall, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByPrimaryKey
@@ -84,19 +89,22 @@ public interface VIndelRefposindexDAO extends JpaDao<VIndelRefposindex>, IndelsA
 	 * JPQL Query - findMvIndelRefposindexByPrimaryKey
 	 *
 	 */
-	public VIndelRefposindex findMvIndelRefposindexByPrimaryKey(BigDecimal indelFeatureId_1, int startResult, int maxRows) throws DataAccessException;
+	public VIndelRefposindex findMvIndelRefposindexByPrimaryKey(BigDecimal indelFeatureId_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByRefcallContaining
 	 *
 	 */
-	public Set<VIndelRefposindex> findMvIndelRefposindexByRefcallContaining(String refcall_1) throws DataAccessException;
+	public Set<VIndelRefposindex> findMvIndelRefposindexByRefcallContaining(String refcall_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByRefcallContaining
 	 *
 	 */
-	public Set<VIndelRefposindex> findMvIndelRefposindexByRefcallContaining(String refcall_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIndelRefposindex> findMvIndelRefposindexByRefcallContaining(String refcall_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByMaxDeleteLen
@@ -108,7 +116,8 @@ public interface VIndelRefposindexDAO extends JpaDao<VIndelRefposindex>, IndelsA
 	 * JPQL Query - findMvIndelRefposindexByMaxDeleteLen
 	 *
 	 */
-	public Set<VIndelRefposindex> findMvIndelRefposindexByMaxDeleteLen(Integer maxDeleteLen, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIndelRefposindex> findMvIndelRefposindexByMaxDeleteLen(Integer maxDeleteLen, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByAltcall
@@ -120,7 +129,8 @@ public interface VIndelRefposindexDAO extends JpaDao<VIndelRefposindex>, IndelsA
 	 * JPQL Query - findMvIndelRefposindexByAltcall
 	 *
 	 */
-	public Set<VIndelRefposindex> findMvIndelRefposindexByAltcall(String altcall, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIndelRefposindex> findMvIndelRefposindexByAltcall(String altcall, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByChromosome
@@ -132,19 +142,22 @@ public interface VIndelRefposindexDAO extends JpaDao<VIndelRefposindex>, IndelsA
 	 * JPQL Query - findMvIndelRefposindexByChromosome
 	 *
 	 */
-	public Set<VIndelRefposindex> findMvIndelRefposindexByChromosome(BigDecimal chromosome, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIndelRefposindex> findMvIndelRefposindexByChromosome(BigDecimal chromosome, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByAlleleIndex
 	 *
 	 */
-	public Set<VIndelRefposindex> findMvIndelRefposindexByAlleleIndex(BigDecimal alleleIndex) throws DataAccessException;
+	public Set<VIndelRefposindex> findMvIndelRefposindexByAlleleIndex(BigDecimal alleleIndex)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByAlleleIndex
 	 *
 	 */
-	public Set<VIndelRefposindex> findMvIndelRefposindexByAlleleIndex(BigDecimal alleleIndex, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIndelRefposindex> findMvIndelRefposindexByAlleleIndex(BigDecimal alleleIndex, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByTypeId
@@ -156,18 +169,21 @@ public interface VIndelRefposindexDAO extends JpaDao<VIndelRefposindex>, IndelsA
 	 * JPQL Query - findMvIndelRefposindexByTypeId
 	 *
 	 */
-	public Set<VIndelRefposindex> findMvIndelRefposindexByTypeId(BigDecimal typeId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIndelRefposindex> findMvIndelRefposindexByTypeId(BigDecimal typeId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByAltcallContaining
 	 *
 	 */
-	public Set<VIndelRefposindex> findMvIndelRefposindexByAltcallContaining(String altcall_1) throws DataAccessException;
+	public Set<VIndelRefposindex> findMvIndelRefposindexByAltcallContaining(String altcall_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findMvIndelRefposindexByAltcallContaining
 	 *
 	 */
-	public Set<VIndelRefposindex> findMvIndelRefposindexByAltcallContaining(String altcall_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VIndelRefposindex> findMvIndelRefposindexByAltcallContaining(String altcall_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 }

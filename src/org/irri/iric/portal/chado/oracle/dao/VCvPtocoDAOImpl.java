@@ -25,14 +25,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository("VCvPtocoDAO")
 @Transactional
-public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements
-		VCvPtocoDAO {
+public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements VCvPtocoDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VCvPtoco.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VCvPtoco.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Production
@@ -50,7 +51,7 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -104,7 +105,8 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtoco> findVCvPtocoByDefinition(String definition, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtoco> findVCvPtocoByDefinition(String definition, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPtocoByDefinition", startResult, maxRows, definition);
 		return new LinkedHashSet<VCvPtoco>(query.getResultList());
 	}
@@ -148,7 +150,8 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtoco> findVCvPtocoByCvtermContaining(String cvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtoco> findVCvPtocoByCvtermContaining(String cvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPtocoByCvtermContaining", startResult, maxRows, cvterm);
 		return new LinkedHashSet<VCvPtoco>(query.getResultList());
 	}
@@ -169,7 +172,8 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements
 	 */
 
 	@Transactional
-	public VCvPtoco findVCvPtocoByPrimaryKey(BigDecimal cvtermId, int startResult, int maxRows) throws DataAccessException {
+	public VCvPtoco findVCvPtocoByPrimaryKey(BigDecimal cvtermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVCvPtocoByPrimaryKey", startResult, maxRows, cvtermId);
 			return (org.irri.iric.portal.chado.oracle.domain.VCvPtoco) query.getSingleResult();
@@ -195,7 +199,8 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtoco> findVCvPtocoByAccessionContaining(String accession, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtoco> findVCvPtocoByAccessionContaining(String accession, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPtocoByAccessionContaining", startResult, maxRows, accession);
 		return new LinkedHashSet<VCvPtoco>(query.getResultList());
 	}
@@ -239,7 +244,8 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtoco> findVCvPtocoByDbContaining(String db, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtoco> findVCvPtocoByDbContaining(String db, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPtocoByDbContaining", startResult, maxRows, db);
 		return new LinkedHashSet<VCvPtoco>(query.getResultList());
 	}
@@ -261,7 +267,8 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtoco> findVCvPtocoByAccession(String accession, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtoco> findVCvPtocoByAccession(String accession, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPtocoByAccession", startResult, maxRows, accession);
 		return new LinkedHashSet<VCvPtoco>(query.getResultList());
 	}
@@ -283,7 +290,8 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPtoco> findVCvPtocoByDefinitionContaining(String definition, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPtoco> findVCvPtocoByDefinitionContaining(String definition, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPtocoByDefinitionContaining", startResult, maxRows, definition);
 		return new LinkedHashSet<VCvPtoco>(query.getResultList());
 	}
@@ -304,7 +312,8 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements
 	 */
 
 	@Transactional
-	public VCvPtoco findVCvPtocoByCvtermId(BigDecimal cvtermId, int startResult, int maxRows) throws DataAccessException {
+	public VCvPtoco findVCvPtocoByCvtermId(BigDecimal cvtermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVCvPtocoByCvtermId", startResult, maxRows, cvtermId);
 			return (org.irri.iric.portal.chado.oracle.domain.VCvPtoco) query.getSingleResult();
@@ -314,7 +323,9 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -326,7 +337,7 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements
 	@Override
 	public List getAllTerms() {
 		// TODO Auto-generated method stub
-		List list=new ArrayList();
+		List list = new ArrayList();
 		list.addAll(findAllVCvPtocos());
 		return list;
 	}
@@ -336,8 +347,5 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
-	
+
 }

@@ -104,7 +104,8 @@ public class VLocusCvtermCvtermpathPK implements Serializable {
 			return false;
 		if (cvtermId != null && !cvtermId.equals(equalCheck.cvtermId))
 			return false;
-		if ((organismId == null && equalCheck.organismId != null) || (organismId != null && equalCheck.organismId == null))
+		if ((organismId == null && equalCheck.organismId != null)
+				|| (organismId != null && equalCheck.organismId == null))
 			return false;
 		if (organismId != null && !organismId.equals(equalCheck.organismId))
 			return false;

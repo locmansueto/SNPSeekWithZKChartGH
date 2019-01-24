@@ -17,11 +17,10 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.SimpleListModel;
 import org.zkoss.zul.Window;
 
-import org.zkoss.zkplus.spring.SpringUtil;      
-	import org.irri.iric.portal.blank_module.BlankModuleFacade;
-	import org.irri.iric.portal.variety.VarietyFacade;
-	import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
-
+import org.zkoss.zkplus.spring.SpringUtil;
+import org.irri.iric.portal.blank_module.BlankModuleFacade;
+import org.irri.iric.portal.variety.VarietyFacade;
+import org.irri.iric.portal.variety.zkui.VarietyListItemRenderer;
 
 @Controller("BlankModuleController")
 public class BlankModuleController extends SelectorComposer<Window> {
@@ -36,52 +35,50 @@ public class BlankModuleController extends SelectorComposer<Window> {
 	private Button buttonSearch;
 	@Wire
 	private Listbox listboxVariety;
-	
+
 	public BlankModuleController() {
 		super();
 	}
-	
+
 	/**
 	 * Example to get varieties in selected subpopulation on button click
 	 */
 	@Listen("onClick =#buttonSearch")
 	public void onclickStart() {
 
-	/*	Messagebox.show(listboxOptions.getSelectedItem().getLabel() + " selected from option BlankModule. " + 
-				listboxSubpopulation.getSelectedItem().getLabel() + " selected from Variety.",
-				"Message", Messagebox.OK, Messagebox.INFORMATION);
-		*/
-		variety = (VarietyFacade)AppContext.checkBean(variety, "VarietyFacade");
-		Set setVariety=variety.getGermplasmBySubpopulation( listboxSubpopulation.getSelectedItem().getLabel(), "3k");
-		List listVariety=new ArrayList();
+		/*
+		 * Messagebox.show(listboxOptions.getSelectedItem().getLabel() +
+		 * " selected from option BlankModule. " +
+		 * listboxSubpopulation.getSelectedItem().getLabel() +
+		 * " selected from Variety.", "Message", Messagebox.OK, Messagebox.INFORMATION);
+		 */
+		variety = (VarietyFacade) AppContext.checkBean(variety, "VarietyFacade");
+		Set setVariety = variety.getGermplasmBySubpopulation(listboxSubpopulation.getSelectedItem().getLabel(), "3k");
+		List listVariety = new ArrayList();
 		listVariety.addAll(setVariety);
-		listboxVariety.setModel( new SimpleListModel(listVariety));
+		listboxVariety.setModel(new SimpleListModel(listVariety));
 	}
 
 	@Override
 	public void doAfterCompose(Window comp) throws Exception {
-		// TODO Auto-generated method stub
+		
 		super.doAfterCompose(comp);
-		
-		
-		// initialization 
-	 	BlankModuleFacade module = (BlankModuleFacade)SpringUtil.getBean("BlankModuleFacade"); 
-	 	List options = module.getOptions();
 
-	 	VarietyFacade variety = (VarietyFacade)SpringUtil.getBean("VarietyFacade"); 
-	 	List listVariety = variety.getSubpopulations("3k");
-	 	
-	    	listboxOptions.setModel(new SimpleListModel(options));
-	    	listboxOptions.setSelectedIndex(0);
+		// initialization
+		BlankModuleFacade module = (BlankModuleFacade) SpringUtil.getBean("BlankModuleFacade");
+		List options = module.getOptions();
 
-	    	       	    	listboxSubpopulation.setModel(new SimpleListModel(listVariety));
-	    	       	    	listboxSubpopulation.setSelectedIndex(0);
+		VarietyFacade variety = (VarietyFacade) SpringUtil.getBean("VarietyFacade");
+		List listVariety = variety.getSubpopulations("3k");
 
-	    	       	 	   	    	listboxVariety.setItemRenderer(new VarietyListItemRenderer());
-	    	       	    	
+		listboxOptions.setModel(new SimpleListModel(options));
+		listboxOptions.setSelectedIndex(0);
+
+		listboxSubpopulation.setModel(new SimpleListModel(listVariety));
+		listboxSubpopulation.setSelectedIndex(0);
+
+		listboxVariety.setItemRenderer(new VarietyListItemRenderer());
+
 	}
-	
-	
-	
-	
+
 }

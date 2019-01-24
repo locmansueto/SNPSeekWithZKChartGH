@@ -47,7 +47,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Set getGermplasm(String dataset) {
-		// TODO Auto-generated method stub
 		Set s = new HashSet();
 		s.add(dataset);
 		return getGermplasm(s);
@@ -55,19 +54,16 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public List getIRGCVarietyNames() {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getIRGCVarietyNames();
 	}
 
 	@Override
 	public List getIRGCAccessions() {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getIRGCAccessions();
 	}
 
 	@Override
 	public List<Variety> getGermplasmByName(String var1, Set dataset) {
-		// TODO Auto-generated method stub
 		Set sn = new HashSet();
 		sn.add(var1);
 		return varietydao.findVarietyByNames(sn, dataset);
@@ -75,50 +71,43 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Variety getGermplasmsByAccession(String varname, Set dataset) {
-		// TODO Auto-generated method stub
+
 		// Set s=new HashSet(); s.add(dataset);
 		return varietydao.findVarietyByAccession(varname, dataset); // .getGermplasmsByAccession(varname, dataset) ;
 	}
 
 	@Override
 	public Map<String, BigDecimal> getPassportDefinitions(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getPassportDefinitions(dataset);
 	}
 
 	@Override
 	public Map<String, BigDecimal> getPtocoDefinitions(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getPtocoDefinitions(dataset);
 	}
 
 	@Override
 	public List getVarietyAccessions(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getAccessions(dataset);
 	}
 
 	@Override
 	public List getIrisIds(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getIrisIds(dataset);
 	}
 
 	@Override
 	public List getCountries(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getCountries(dataset);
 	}
 
 	@Override
 	public Variety getGermplasmByIrisId(String name, Set dataset) {
-		// TODO Auto-generated method stub
 		return varietydao.findVarietyByIrisId(name, dataset);
 	}
 
 	@Override
 	public Collection getGermplasmsByNameAccession(String varname, String accession, Set dataset) {
-		// TODO Auto-generated method stub
 		return varietydao.findVarietiesByNameAccession(varname, accession, dataset);
 	}
 
@@ -147,8 +136,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Map<BigDecimal, Object> getPhenotypeValues(String sPhenotype, Set dataset) {
-		// TODO Auto-generated method stub
-
 		Map m = new HashMap();
 		Iterator it = dataset.iterator();
 		while (it.hasNext()) {
@@ -159,25 +146,21 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Variety getGermplasmByAccession(String accession, Set dataset) {
-		// TODO Auto-generated method stub
 		return varietydao.findVarietyByAccession(accession, dataset);
 	}
 
 	@Override
 	public Map<String, Variety> getMapVarname2Variety(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getMapId2Variety(dataset);
 	}
 
 	@Override
 	public Map<String, StockSample> getMapAssay2Sample(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getMapAssay2Sample(dataset);
 	}
 
 	@Override
 	public Collection getGermplasmsByName(String varname, Set dataset) {
-		// TODO Auto-generated method stub
 		// Set s=new HashSet(); s.add(dataset);
 		Set sn = new HashSet();
 		sn.add(varname);
@@ -186,25 +169,21 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Map getMapId2Variety(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getMapId2Variety(dataset);
 	}
 
 	@Override
 	public Map getMapId2Sample(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getMapId2Sample(dataset);
 	}
 
 	@Override
 	public List getSubpopulations(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getSubpopulations(dataset);
 	}
 
 	@Override
 	public List getAccessions(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getAccessions(dataset);
 	}
 
@@ -221,7 +200,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Set getGermplasmBySubpopulation(String subpopulation, Set dataset) {
-		// TODO Auto-generated method stub
 		Set s = new HashSet();
 		s.add(dataset);
 		return varietydao.findAllVarietyBySubpopulation(subpopulation, dataset); // .getGermplasmBySubpopulation(subpopulation,
@@ -295,7 +273,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	// phylogenetic tree construction daos
 	// @Autowired
-	//private VarietyDistanceDAO dist3kdao;
+	// private VarietyDistanceDAO dist3kdao;
 
 	// User interface Listboxes values DAO
 	@Autowired
@@ -315,7 +293,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	public VarietyFacadeChadoImpl() {
 		super();
-		// TODO Auto-generated constructor stub
 		listitemsDAO = (ListItemsDAO) AppContext.checkBean(listitemsDAO, "ListItems");
 		AppContext.debug("VarietyFacadeChadoImpl created");
 	}
@@ -355,7 +332,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	 * subpopulation) { return
 	 * listitemsDAO.getGermplasmBySubpopulation(subpopulation); }
 	 * 
-	 * @Override public Set getGermplasm() { // TODO Auto-generated method stub
+	 * @Override public Set getGermplasm() { 
 	 * return listitemsDAO.getGermplasm(); }
 	 * 
 	 * @Override public Set getGermplasmByExample(Variety germplasm) { // TODO
@@ -365,7 +342,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Collection<? extends Variety> getGermplasmByExample(Variety example, Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getGermplasmByExample(example, dataset);
 	}
 
@@ -382,7 +358,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Variety getGermplasmById(BigDecimal id, String dataset) {
-		// TODO Auto-generated method stub
 		// listitemsDAO = (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
 		// return listitemsDAO.getMapId2Variety(dataset).get(id);
 		Set s = new HashSet();
@@ -393,14 +368,12 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public List<Variety> getGermplasmByNames(Collection names, Set dataset) {
-		// TODO Auto-generated method stub
 		// Set s=new HashSet(); s.add(dataset);
 		return varietydao.findVarietyByNames(names, dataset);
 	}
 
 	@Override
 	public List<Variety> getGermplasmByNamesLike(Collection names, String dataset) {
-		// TODO Auto-generated method stub
 		Set s = new HashSet();
 		s.add(dataset);
 		return varietydao.findVarietyByNamesLike(names, s);
@@ -408,7 +381,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public List<Variety> getGermplasmByIrisIds(Collection names, Set dataset) {
-		// TODO Auto-generated method stub
 		// Set s=new HashSet(); s.add(dataset);
 		return varietydao.findVarietyByIrisIds(names, dataset);
 	}
@@ -473,7 +445,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public List getVarietyByPhenotype(String phenId, String dataset) {
-		// TODO Auto-generated method stub
 		Set s = new HashSet();
 		s.add(dataset);
 		return getVarietyByPhenotype(phenId, s);
@@ -481,7 +452,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public List getVarietyByPhenotype(String phenId, Set dataset) {
-		// TODO Auto-generated method stub
 		varbyphenotypedao = (VarietyByPhenotypeDAO) AppContext.checkBean(varbyphenotypedao,
 				"VIricstocksByPhenotypeDAO");
 		listitemsDAO = (ListItemsDAO) AppContext.checkBean(listitemsDAO, "ListItems");
@@ -557,14 +527,12 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Set getPassportByVarietyid(BigDecimal id) {
-		// TODO Auto-generated method stub
 		// return passportdao.findVIricstockPassportByIricStockId( );
 		return passportdao.getPassportByStockId(id);
 	}
 
 	@Override
 	public Map<String, BigDecimal> getPassportDefinitions(String dataset) {
-		// TODO Auto-generated method stub
 		try {
 			listitemsDAO = (ListItemsDAO) AppContext.checkBean(listitemsDAO, "ListItems");
 			return listitemsDAO.getPassportDefinitions(dataset);
@@ -594,14 +562,12 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Phenotype getPhenotypesByGermplasm(Variety var, String dataset, String phenId) {
-		// TODO Auto-generated method stub
 		return phendao.findPhenotypesByVariety(var, dataset, phenId);
 
 	}
 
 	@Override
 	public List getPhenotypesByGermplasm(String phenId, String dataset) {
-		// TODO Auto-generated method stub
 		return phendao.findPhenotypesByVariety(phenId, dataset);
 	}
 
@@ -612,7 +578,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Map<String, BigDecimal> getPhenotypeDefinitions(String dataset) {
-		// TODO Auto-generated method stub
 		// return new HashMap();
 		try {
 			listitemsDAO = (ListItemsDAO) AppContext.checkBean(listitemsDAO, "ListItems");
@@ -625,7 +590,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Map<String, BigDecimal> getPtocoDefinitions(String dataset) {
-		// TODO Auto-generated method stub
 		try {
 			listitemsDAO = (ListItemsDAO) AppContext.checkBean(listitemsDAO, "ListItems");
 			return listitemsDAO.getPtocoDefinitions(dataset);
@@ -639,7 +603,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	/*
 	 * @Override public Object[] getPhenotypeUniqueValues(String definition, Set
-	 * dataset) { // TODO Auto-generated method stub cvphenotypeQuanValuesDao =
+	 * dataset) {  cvphenotypeQuanValuesDao =
 	 * (CvTermUniqueValuesDAO)AppContext.checkBean(cvphenotypeQuanValuesDao,
 	 * "VCvPhenotypeQuanValuesDAO"); listitemsDAO =
 	 * (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
@@ -669,6 +633,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		cvphenotypeQuanValuesDao = (CvTermUniqueValuesDAO) AppContext.checkBean(cvphenotypeQuanValuesDao,
 				"VCvPhenotypeQuanValuesDAO");
 		listitemsDAO = (ListItemsDAO) AppContext.checkBean(listitemsDAO, "ListItems");
+
 		Map<String, BigDecimal> phenotypeDefinitions = listitemsDAO.getPhenotypeDefinitions(dataset);
 		Set values = cvphenotypeQuanValuesDao.getUniqueValues(phenotypeDefinitions.get(definition), dataset);
 		// System.out.println( definition + " => " +
@@ -693,7 +658,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Map<BigDecimal, Object> getPhenotypeValues(String phenotype, String dataset) {
-		// TODO Auto-generated method stub
 		Map mapVarid2Value = new HashMap();
 		AppContext.debug("get phenotype values for " + phenotype + ", " + dataset);
 		if (phenotype.contains("::") && !phenotype.startsWith("CO_320")) {
@@ -774,6 +738,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	private String[] constructPhylotree(Set<BigDecimal> germplasms, String scale, boolean isAll, int topN,
 			String requestid, String dataset) {
 
+		// TODO
 		return null;
 		// if(isAll)
 		// // use a precomputed newick tree using all varieties on the core set
@@ -1256,7 +1221,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Map getVarietyExternalURL(String name) {
-		// TODO Auto-generated method stub
+		
 
 		varpropservice = (VarietyPropertiesService) AppContext.checkBean(varpropservice, "VarietyPropertiesService");
 
@@ -1296,7 +1261,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Set checkVariety(String varstr, String dataset) {
-		// TODO Auto-generated method stub
 		Set s = new HashSet();
 		s.add(dataset);
 		return checkVariety(varstr, s);
@@ -1304,43 +1268,36 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public List getVarietyNames(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getVarietyNames(dataset);
 	}
 
 	@Override
 	public List<String> getVarietyAccessions(String dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getAccessions(dataset);
 	}
 
 	@Override
 	public Set getGermplasmByCountry(String country, Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getGermplasmByCountry(country, dataset);
 	}
 
 	@Override
 	public Set getGermplasm(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getGermplasm(dataset);
 	}
 
 	@Override
 	public Set getGermplasmBySubpopulation(String subpopulation, String dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getGermplasmBySubpopulation(subpopulation, dataset);
 	}
 
 	@Override
 	public List getIrisIds(String dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getIrisIds(dataset);
 	}
 
 	@Override
 	public List getSubpopulations(String dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getSubpopulations(dataset);
 	}
 
@@ -1351,7 +1308,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public List getAccessions(String dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getAccessions(dataset);
 	}
 
@@ -1367,7 +1323,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	 */
 	@Override
 	public List getGermplasmByNameLike(String name, Set dataset) {
-		// TODO Auto-generated method stub
 		Set s = new HashSet();
 		s.add(name);
 		return varietydao.findVarietyByNamesLike(s, dataset);
@@ -1375,40 +1330,16 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Variety getGermplasmByAccession(String value, String dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getGermplasmByAccession(value, dataset);
 	}
-	/*
-	 * @Override public Set getGermplasmsByName(String varname, Set dataset) { //
-	 * TODO Auto-generated method stub return
-	 * listitemsDAO.getGermplasmsByName(varname, dataset); }
-	 */
-	/*
-	 * @Override public Set getGermplasmsByAccession(String accession, String
-	 * dataset) { // TODO Auto-generated method stub return
-	 * listitemsDAO.getGermplasmsByAccession(accession, dataset); }
-	 */
-	/*
-	 * @Override public Variety getGermplasmsByAccession(String accession, String
-	 * dataset) { // TODO Auto-generated method stub return
-	 * listitemsDAO.getGermplasmsByAccession(accession, dataset); }
-	 */
-
-	/*
-	 * @Override public Set getGermplasmsByAccessions(Collection accession, String
-	 * dataset) { // TODO Auto-generated method stub return
-	 * listitemsDAO.getGermplasmsByAccessions(accession, dataset); }
-	 */
 
 	@Override
 	public Set getGermplasmsByNameAccession(String varname, String accession, String dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getGermplasmsByNameAccession(varname, accession, dataset);
 	}
 
 	@Override
 	public Set getQuantTraits(String dataset) {
-		// TODO Auto-generated method stub
 		Set s = new HashSet(AppContext.getDBQuanTraits());
 		workspace = (WorkspaceFacade) AppContext.checkBean(workspace, "WorkspaceFacade");
 		s.addAll(workspace.getVarietyQuantPhenotypelistNames(dataset));
@@ -1417,13 +1348,11 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Set getQuantTraits(Set dataset) {
-		// TODO Auto-generated method stub
 		return listitemsDAO.getQuantTraits(dataset);
 	}
 
 	@Override
 	public List getDatasets() {
-		// TODO Auto-generated method stub
 		List l = new ArrayList();
 		l.addAll(listitemsDAO.getDatasets("SNP"));
 		return l;
@@ -1441,6 +1370,12 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 		return (BigDecimal) listitemsDAO.getCOTerms(dataset).get(coTerm);
 
+	}
+
+	@Override
+	public Map<BigDecimal, String> getAllTraits(Set<String> dataset, boolean legacyPhenotype) {
+
+		return listitemsDAO.getAllTraits(dataset, legacyPhenotype);
 	}
 
 }

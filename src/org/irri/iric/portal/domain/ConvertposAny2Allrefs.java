@@ -7,9 +7,12 @@ import java.math.BigDecimal;
 
 public interface ConvertposAny2Allrefs extends Serializable, SnpsAllvarsMultirefsPos {
 
-	public BigDecimal getNbPosition(); 
-	public BigDecimal getNbContigId() ;
+	public BigDecimal getNbPosition();
+
+	public BigDecimal getNbContigId();
+
 	public String getNBContigName();
+
 	public String getNbRefcall();
 
 }

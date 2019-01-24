@@ -14,9 +14,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
-@Entity(name="VLocusNotesMarker")
-@Table( name = "V_LOCUS_NOTES")
+@Entity(name = "VLocusNotesMarker")
+@Table(name = "V_LOCUS_NOTES")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VLocusNotesMarker")
 

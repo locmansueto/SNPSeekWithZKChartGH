@@ -20,8 +20,7 @@ import org.irri.iric.portal.domain.Feature;
  */
 
 @Entity
-@NamedQueries({
-		@NamedQuery(name = "findPGAllFeatures", query = "select myFeature from FeaturePostgres myFeature"),
+@NamedQueries({ @NamedQuery(name = "findPGAllFeatures", query = "select myFeature from FeaturePostgres myFeature"),
 		@NamedQuery(name = "findPGFeatureByDbxrefId", query = "select myFeature from FeaturePostgres myFeature where myFeature.dbxrefId = ?1"),
 		@NamedQuery(name = "findPGFeatureByFeatureId", query = "select myFeature from FeaturePostgres myFeature where myFeature.featureId = ?1"),
 		@NamedQuery(name = "findPGFeatureByIsAnalysis", query = "select myFeature from FeaturePostgres myFeature where myFeature.isAnalysis = ?1"),
@@ -38,10 +37,10 @@ import org.irri.iric.portal.domain.Feature;
 		@NamedQuery(name = "findPGFeatureByTypeId", query = "select myFeature from FeaturePostgres myFeature where myFeature.typeId = ?1"),
 		@NamedQuery(name = "findPGFeatureByUniquename", query = "select myFeature from FeaturePostgres myFeature where myFeature.uniquename = ?1"),
 		@NamedQuery(name = "findPGFeatureByUniquenameContaining", query = "select myFeature from FeaturePostgres myFeature where myFeature.uniquename like ?1") })
-@Table( name = "FEATURE")
+@Table(name = "FEATURE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "FeaturePostgres")
-public class FeaturePostgres implements Serializable , Feature, Sequence {
+public class FeaturePostgres implements Serializable, Feature, Sequence {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -80,9 +79,9 @@ public class FeaturePostgres implements Serializable , Feature, Sequence {
 	@Basic(fetch = FetchType.EAGER)
 	@Lob
 	@XmlElement
-	//byte[] residues;
-	//Clob residues;
-	String  residues;
+	// byte[] residues;
+	// Clob residues;
+	String residues;
 	/**
 	 */
 
@@ -373,9 +372,9 @@ public class FeaturePostgres implements Serializable , Feature, Sequence {
 
 	@Override
 	public String getSequenceInPosition(long start, long end) {
-		// TODO Auto-generated method stub
+		
 		try {
-			//return AppContext.clobStringConversion(this.residues);
+			// return AppContext.clobStringConversion(this.residues);
 			return residues;
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);

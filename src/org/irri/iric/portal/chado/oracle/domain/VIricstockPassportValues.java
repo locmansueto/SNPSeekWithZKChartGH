@@ -21,17 +21,11 @@ import org.irri.iric.portal.domain.CvTermUniqueValues;
 		@NamedQuery(name = "findVIricstockPassportValuesByPrimaryKey", query = "select myVIricstockPassportValues from VIricstockPassportValues myVIricstockPassportValues where myVIricstockPassportValues.value = ?1 and myVIricstockPassportValues.typeId = ?2"),
 		@NamedQuery(name = "findVIricstockPassportValuesByTypeId", query = "select myVIricstockPassportValues from VIricstockPassportValues myVIricstockPassportValues where myVIricstockPassportValues.typeId = ?1 and myVIricstockPassportValues.dataset in (?2)"),
 
-		
 		@NamedQuery(name = "findVIricstockPassportValuesByValue", query = "select myVIricstockPassportValues from VIricstockPassportValues myVIricstockPassportValues where myVIricstockPassportValues.value = ?1 and myVIricstockPassportValues.dataset in (?2)"),
 		@NamedQuery(name = "findVIricstockPassportValuesByValueContaining", query = "select myVIricstockPassportValues from VIricstockPassportValues myVIricstockPassportValues where myVIricstockPassportValues.value like ?1 and myVIricstockPassportValues.dataset in ( ?2)") })
 
-
-
-
-
-
-//@Table( name = "V_IRICSTOCK_PASSPORT_VALUES")
-@Table( name = "V_STOCK_PASSPORT_VALUES")
+// @Table( name = "V_IRICSTOCK_PASSPORT_VALUES")
+@Table(name = "V_STOCK_PASSPORT_VALUES")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockPassportValues")
 public class VIricstockPassportValues implements Serializable, CvTermUniqueValues {
@@ -53,15 +47,12 @@ public class VIricstockPassportValues implements Serializable, CvTermUniqueValue
 	@Id
 	@XmlElement
 	BigDecimal typeId;
-	
-	
+
 	@Column(name = "DATASET", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	@XmlElement
 	String dataset;
-	
-	
 
 	/**
 	 */
@@ -86,9 +77,6 @@ public class VIricstockPassportValues implements Serializable, CvTermUniqueValue
 	public BigDecimal getTypeId() {
 		return this.typeId;
 	}
-	
-	
-	
 
 	public String getDataset() {
 		return dataset;

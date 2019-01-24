@@ -13,10 +13,8 @@ import javax.persistence.*;
 /**
  */
 
-
-@Entity(name="Organism")
-@NamedQueries({
-		@NamedQuery(name = "findAllOrganisms", query = "select myOrganism from Organism myOrganism"),
+@Entity(name = "Organism")
+@NamedQueries({ @NamedQuery(name = "findAllOrganisms", query = "select myOrganism from Organism myOrganism"),
 		@NamedQuery(name = "findOrganismByAbbreviation", query = "select myOrganism from Organism myOrganism where myOrganism.abbreviation = ?1"),
 		@NamedQuery(name = "findOrganismByAbbreviationContaining", query = "select myOrganism from Organism myOrganism where myOrganism.abbreviation like ?1"),
 		@NamedQuery(name = "findOrganismByCommonName", query = "select myOrganism from Organism myOrganism where myOrganism.commonName = ?1"),
@@ -27,10 +25,10 @@ import javax.persistence.*;
 		@NamedQuery(name = "findOrganismByPrimaryKey", query = "select myOrganism from Organism myOrganism where myOrganism.organismId = ?1"),
 		@NamedQuery(name = "findOrganismBySpecies", query = "select myOrganism from Organism myOrganism where myOrganism.species = ?1"),
 		@NamedQuery(name = "findOrganismBySpeciesContaining", query = "select myOrganism from Organism myOrganism where myOrganism.species like ?1") })
-@Table( name = "V_ORGANISM")
+@Table(name = "V_ORGANISM")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "Organism")
-public class Organism implements Serializable , org.irri.iric.portal.domain.Organism {
+public class Organism implements Serializable, org.irri.iric.portal.domain.Organism {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -204,7 +202,8 @@ public class Organism implements Serializable , org.irri.iric.portal.domain.Orga
 		if (!(obj instanceof Organism))
 			return false;
 		Organism equalCheck = (Organism) obj;
-		if ((organismId == null && equalCheck.organismId != null) || (organismId != null && equalCheck.organismId == null))
+		if ((organismId == null && equalCheck.organismId != null)
+				|| (organismId != null && equalCheck.organismId == null))
 			return false;
 		if (organismId != null && !organismId.equals(equalCheck.organismId))
 			return false;
@@ -213,11 +212,9 @@ public class Organism implements Serializable , org.irri.iric.portal.domain.Orga
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
+		
 		return this.getCommonName();
-		//return  this.getAbbreviation();
+		// return this.getAbbreviation();
 	}
-	
-	
-	
+
 }

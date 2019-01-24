@@ -38,10 +38,9 @@ public class LocusRegionWS {
 	}
 
 	/*
-	public Set<String> getOverlappingGenes() {
-		return loc.getOverlappingGenes();
-	}
-	*/
+	 * public Set<String> getOverlappingGenes() { return loc.getOverlappingGenes();
+	 * }
+	 */
 
 	public String getIRICName() {
 		return loc.getIRICName();
@@ -62,6 +61,5 @@ public class LocusRegionWS {
 	public String getFGeneshName() {
 		return loc.getFGeneshName();
 	}
-	
-	
+
 }

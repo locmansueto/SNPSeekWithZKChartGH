@@ -14,7 +14,7 @@ public class LimitedFIFOQueue extends LinkedList implements Queue {
 
 	@Override
 	public boolean add(Object e) {
-		// TODO Auto-generated method stub
+		
 	       super.add(e);
 	       while (size() > limit) { super.remove(); }
 	       return true;

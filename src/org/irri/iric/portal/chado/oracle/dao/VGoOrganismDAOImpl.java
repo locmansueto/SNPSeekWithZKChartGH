@@ -31,14 +31,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository("VGoOrganismDAO")
 @Transactional
-public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements
-		VGoOrganismDAO, LocusCvTermDAO {
+public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements VGoOrganismDAO, LocusCvTermDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VGoOrganism.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VGoOrganism.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit Production
@@ -56,7 +57,7 @@ public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -75,31 +76,35 @@ public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements
 	 * JPQL Query - findVGoOrganismByCommonName
 	 *
 	 */
-//	@Transactional
-//	public Set<VGoOrganism> findVGoOrganismByCommonName(String commonName) throws DataAccessException {
-//
-//		return findVGoOrganismByCommonName(commonName, -1, -1);
-//	}
-//
-//	/**
-//	 * JPQL Query - findVGoOrganismByCommonName
-//	 *
-//	 */
-//
-//	@SuppressWarnings("unchecked")
-//	@Transactional
-//	public Set<VGoOrganism> findVGoOrganismByCommonName(String commonName, int startResult, int maxRows) throws DataAccessException {
-//		Query query = createNamedQuery("findVGoOrganismByCommonName", startResult, maxRows, commonName);
-//		return new LinkedHashSet<VGoOrganism>(query.getResultList());
-//	}
+	// @Transactional
+	// public Set<VGoOrganism> findVGoOrganismByCommonName(String commonName) throws
+	// DataAccessException {
+	//
+	// return findVGoOrganismByCommonName(commonName, -1, -1);
+	// }
+	//
+	// /**
+	// * JPQL Query - findVGoOrganismByCommonName
+	// *
+	// */
+	//
+	// @SuppressWarnings("unchecked")
+	// @Transactional
+	// public Set<VGoOrganism> findVGoOrganismByCommonName(String commonName, int
+	// startResult, int maxRows) throws DataAccessException {
+	// Query query = createNamedQuery("findVGoOrganismByCommonName", startResult,
+	// maxRows, commonName);
+	// return new LinkedHashSet<VGoOrganism>(query.getResultList());
+	// }
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoOrganism> findVGoOrganismByCvOrganism(BigDecimal cv, BigDecimal commonName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoOrganism> findVGoOrganismByCvOrganism(BigDecimal cv, BigDecimal commonName, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVGoOrganismByCvOrganism", startResult, maxRows, cv, commonName);
 		return new LinkedHashSet<VGoOrganism>(query.getResultList());
 	}
-	
+
 	/**
 	 * JPQL Query - findVGoOrganismByCvterm
 	 *
@@ -117,7 +122,8 @@ public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoOrganism> findVGoOrganismByCvterm(String cvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoOrganism> findVGoOrganismByCvterm(String cvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoOrganismByCvterm", startResult, maxRows, cvterm);
 		return new LinkedHashSet<VGoOrganism>(query.getResultList());
 	}
@@ -138,7 +144,8 @@ public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements
 	 */
 
 	@Transactional
-	public VGoOrganism findVGoOrganismByPrimaryKey(Integer cvtermId, int startResult, int maxRows) throws DataAccessException {
+	public VGoOrganism findVGoOrganismByPrimaryKey(Integer cvtermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVGoOrganismByPrimaryKey", startResult, maxRows, cvtermId);
 			return (org.irri.iric.portal.chado.oracle.domain.VGoOrganism) query.getSingleResult();
@@ -147,49 +154,55 @@ public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements
 		}
 	}
 
-//	/**
-//	 * JPQL Query - findVGoOrganismByCvName
-//	 *
-//	 */
-//	@Transactional
-//	public Set<VGoOrganism> findVGoOrganismByCvName(String cvName) throws DataAccessException {
-//
-//		return findVGoOrganismByCvName(cvName, -1, -1);
-//	}
-//
-//	/**
-//	 * JPQL Query - findVGoOrganismByCvName
-//	 *
-//	 */
-//
-//	@SuppressWarnings("unchecked")
-//	@Transactional
-//	public Set<VGoOrganism> findVGoOrganismByCvName(String cvName, int startResult, int maxRows) throws DataAccessException {
-//		Query query = createNamedQuery("findVGoOrganismByCvName", startResult, maxRows, cvName);
-//		return new LinkedHashSet<VGoOrganism>(query.getResultList());
-//	}
-//
-//	/**
-//	 * JPQL Query - findVGoOrganismByCvNameContaining
-//	 *
-//	 */
-//	@Transactional
-//	public Set<VGoOrganism> findVGoOrganismByCvNameContaining(String cvName) throws DataAccessException {
-//
-//		return findVGoOrganismByCvNameContaining(cvName, -1, -1);
-//	}
-//
-//	/**
-//	 * JPQL Query - findVGoOrganismByCvNameContaining
-//	 *
-//	 */
-//
-//	@SuppressWarnings("unchecked")
-//	@Transactional
-//	public Set<VGoOrganism> findVGoOrganismByCvNameContaining(String cvName, int startResult, int maxRows) throws DataAccessException {
-//		Query query = createNamedQuery("findVGoOrganismByCvNameContaining", startResult, maxRows, cvName);
-//		return new LinkedHashSet<VGoOrganism>(query.getResultList());
-//	}
+	// /**
+	// * JPQL Query - findVGoOrganismByCvName
+	// *
+	// */
+	// @Transactional
+	// public Set<VGoOrganism> findVGoOrganismByCvName(String cvName) throws
+	// DataAccessException {
+	//
+	// return findVGoOrganismByCvName(cvName, -1, -1);
+	// }
+	//
+	// /**
+	// * JPQL Query - findVGoOrganismByCvName
+	// *
+	// */
+	//
+	// @SuppressWarnings("unchecked")
+	// @Transactional
+	// public Set<VGoOrganism> findVGoOrganismByCvName(String cvName, int
+	// startResult, int maxRows) throws DataAccessException {
+	// Query query = createNamedQuery("findVGoOrganismByCvName", startResult,
+	// maxRows, cvName);
+	// return new LinkedHashSet<VGoOrganism>(query.getResultList());
+	// }
+	//
+	// /**
+	// * JPQL Query - findVGoOrganismByCvNameContaining
+	// *
+	// */
+	// @Transactional
+	// public Set<VGoOrganism> findVGoOrganismByCvNameContaining(String cvName)
+	// throws DataAccessException {
+	//
+	// return findVGoOrganismByCvNameContaining(cvName, -1, -1);
+	// }
+	//
+	// /**
+	// * JPQL Query - findVGoOrganismByCvNameContaining
+	// *
+	// */
+	//
+	// @SuppressWarnings("unchecked")
+	// @Transactional
+	// public Set<VGoOrganism> findVGoOrganismByCvNameContaining(String cvName, int
+	// startResult, int maxRows) throws DataAccessException {
+	// Query query = createNamedQuery("findVGoOrganismByCvNameContaining",
+	// startResult, maxRows, cvName);
+	// return new LinkedHashSet<VGoOrganism>(query.getResultList());
+	// }
 
 	/**
 	 * JPQL Query - findAllVGoOrganisms
@@ -230,7 +243,8 @@ public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoOrganism> findVGoOrganismByAccessionContaining(String accession, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoOrganism> findVGoOrganismByAccessionContaining(String accession, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoOrganismByAccessionContaining", startResult, maxRows, accession);
 		return new LinkedHashSet<VGoOrganism>(query.getResultList());
 	}
@@ -252,7 +266,8 @@ public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoOrganism> findVGoOrganismByAccession(String accession, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoOrganism> findVGoOrganismByAccession(String accession, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoOrganismByAccession", startResult, maxRows, accession);
 		return new LinkedHashSet<VGoOrganism>(query.getResultList());
 	}
@@ -274,7 +289,8 @@ public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoOrganism> findVGoOrganismByOrganismId(java.math.BigDecimal organismId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoOrganism> findVGoOrganismByOrganismId(java.math.BigDecimal organismId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoOrganismByOrganismId", startResult, maxRows, organismId);
 		return new LinkedHashSet<VGoOrganism>(query.getResultList());
 	}
@@ -296,7 +312,8 @@ public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoOrganism> findVGoOrganismByCommonNameContaining(String commonName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoOrganism> findVGoOrganismByCommonNameContaining(String commonName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoOrganismByCommonNameContaining", startResult, maxRows, commonName);
 		return new LinkedHashSet<VGoOrganism>(query.getResultList());
 	}
@@ -317,7 +334,8 @@ public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements
 	 */
 
 	@Transactional
-	public VGoOrganism findVGoOrganismByCvtermId(Integer cvtermId, int startResult, int maxRows) throws DataAccessException {
+	public VGoOrganism findVGoOrganismByCvtermId(Integer cvtermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVGoOrganismByCvtermId", startResult, maxRows, cvtermId);
 			return (org.irri.iric.portal.chado.oracle.domain.VGoOrganism) query.getSingleResult();
@@ -343,13 +361,16 @@ public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoOrganism> findVGoOrganismByCvtermContaining(String cvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoOrganism> findVGoOrganismByCvtermContaining(String cvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoOrganismByCvtermContaining", startResult, maxRows, cvterm);
 		return new LinkedHashSet<VGoOrganism>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -360,97 +381,86 @@ public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements
 
 	@Override
 	public List getAllTerms() {
-		// TODO Auto-generated method stub
-		List list=new ArrayList();
-		list.addAll( this.findAllVGoOrganisms() );
+		
+		List list = new ArrayList();
+		list.addAll(this.findAllVGoOrganisms());
 		return list;
 	}
 	/*
-	@Override
-	public List getAllTermsByOrganism(String organism) {
-		// TODO Auto-generated method stub
-		
-		Set setTerms = new TreeSet();
-		Iterator<VGoOrganism> itgoorg = findVGoOrganismByCommonName(organism).iterator(); 
-		while(itgoorg.hasNext())
-			setTerms.add(  itgoorg.next().getCvterm() );
-		
-		List list=new ArrayList();
-		list.addAll(setTerms );
-		return list;
-	}
-*/
-//	@Override
-//	public List getAllTerms(String organism) {
-//		// TODO Auto-generated method stub
-//
-//		Set setTerms = new TreeSet();
-//		Iterator<VGoOrganism> itgoorg = findVGoOrganismByCommonName(organism).iterator(); 
-//		while(itgoorg.hasNext())
-//			setTerms.add(  itgoorg.next().getCvterm() );
-//		
-//		List list=new ArrayList();
-//		list.addAll(setTerms );
-//		return list;
-//	}
+	 * @Override public List getAllTermsByOrganism(String organism) { // TODO
+	 * Auto-generated method stub
+	 * 
+	 * Set setTerms = new TreeSet(); Iterator<VGoOrganism> itgoorg =
+	 * findVGoOrganismByCommonName(organism).iterator(); while(itgoorg.hasNext())
+	 * setTerms.add( itgoorg.next().getCvterm() );
+	 * 
+	 * List list=new ArrayList(); list.addAll(setTerms ); return list; }
+	 */
+	// @Override
+	// public List getAllTerms(String organism) {
+	// 
+	//
+	// Set setTerms = new TreeSet();
+	// Iterator<VGoOrganism> itgoorg =
+	// findVGoOrganismByCommonName(organism).iterator();
+	// while(itgoorg.hasNext())
+	// setTerms.add( itgoorg.next().getCvterm() );
+	//
+	// List list=new ArrayList();
+	// list.addAll(setTerms );
+	// return list;
+	// }
 
-//	@Override
-//	public List getAllTerms(String cv, String organism) {
-//		// TODO Auto-generated method stub
-//		Set setTerms = new TreeSet();
-//		Iterator<VGoOrganism> itgoorg = findVGoOrganismByCvCommonName(cv,organism,-1,-1).iterator(); 
-//		while(itgoorg.hasNext())
-//			setTerms.add(  itgoorg.next().getCvterm() );
-//		
-//		List list=new ArrayList();
-//		list.addAll(setTerms );
-//		return list;
-//	}
-	
+	// @Override
+	// public List getAllTerms(String cv, String organism) {
+	// 
+	// Set setTerms = new TreeSet();
+	// Iterator<VGoOrganism> itgoorg =
+	// findVGoOrganismByCvCommonName(cv,organism,-1,-1).iterator();
+	// while(itgoorg.hasNext())
+	// setTerms.add( itgoorg.next().getCvterm() );
+	//
+	// List list=new ArrayList();
+	// list.addAll(setTerms );
+	// return list;
+	// }
+
 	@Override
 	public List getAllTerms(BigDecimal cv, BigDecimal organism) {
-		// TODO Auto-generated method stub
-		//Set setTerms = new TreeSet();
+		
+		// Set setTerms = new TreeSet();
 
-		List list=new ArrayList();
-		list.addAll(findVGoOrganismByCvOrganism(cv,organism,-1,-1));
+		List list = new ArrayList();
+		list.addAll(findVGoOrganismByCvOrganism(cv, organism, -1, -1));
 		return list;
-		
+
 		/*
-		Iterator<VGoOrganism> itgoorg = findVGoOrganismByCvOrganism(cv,organism,-1,-1).iterator(); 
-		while(itgoorg.hasNext())
-			setTerms.add(  itgoorg.next().getCvterm() );
-		
-		List list=new ArrayList();
-		list.addAll(setTerms );
-		return list;
-		*/
+		 * Iterator<VGoOrganism> itgoorg =
+		 * findVGoOrganismByCvOrganism(cv,organism,-1,-1).iterator();
+		 * while(itgoorg.hasNext()) setTerms.add( itgoorg.next().getCvterm() );
+		 * 
+		 * List list=new ArrayList(); list.addAll(setTerms ); return list;
+		 */
 	}
 
 	@Override
-	public List getLocusByDescription(String goterm, Integer organismId,
-			Integer cvId) {
-		// TODO Auto-generated method stub
+	public List getLocusByDescription(String goterm, Integer organismId, Integer cvId) {
 		
-		
-		
+
 		try {
-			//Query query = createNamedQuery("findVGoOrganismByCvtermCvOrganism", -1,-1, cvId, goterm, "molecular_function", organismId);
-			Query query = createNamedQuery("findVGoOrganismByCvtermCvOrganism", -1,-1, goterm, cvId,  organismId);
-			return  query.getResultList();
+			// Query query = createNamedQuery("findVGoOrganismByCvtermCvOrganism", -1,-1,
+			// cvId, goterm, "molecular_function", organismId);
+			Query query = createNamedQuery("findVGoOrganismByCvtermCvOrganism", -1, -1, goterm, cvId, organismId);
+			return query.getResultList();
 		} catch (NoResultException nre) {
 			return null;
 		}
 	}
 
 	@Override
-	public List<Locus> filterLocusWithCvterm(Collection<Locus> colLoc,
-			Integer organismId, Integer cvId) {
+	public List<Locus> filterLocusWithCvterm(Collection<Locus> colLoc, Integer organismId, Integer cvId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	
-	
-	
 }

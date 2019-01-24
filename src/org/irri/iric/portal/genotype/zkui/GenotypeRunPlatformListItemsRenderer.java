@@ -11,29 +11,28 @@ public class GenotypeRunPlatformListItemsRenderer implements ListitemRenderer {
 
 	@Override
 	public void render(Listitem arg0, Object arg1, int arg2) throws Exception {
-		// TODO Auto-generated method stub
-		arg0.setValue(arg1);
 		
-		GenotypeRunPlatform v=(GenotypeRunPlatform)arg1;
-		addListcell (arg0, v.getDataset());
-		addListcell (arg0, v.getVariantset());
-		addListcell (arg0,  AppContext.datef.format(v.getDatePerformed().getTime()).replace("00:00:00","").trim());
-		addListcell (arg0, v.getMethod());
+		arg0.setValue(arg1);
+
+		GenotypeRunPlatform v = (GenotypeRunPlatform) arg1;
+		addListcell(arg0, v.getDataset());
+		addListcell(arg0, v.getVariantset());
+		addListcell(arg0, AppContext.datef.format(v.getDatePerformed().getTime()).replace("00:00:00", "").trim());
+		addListcell(arg0, v.getMethod());
 	}
 
-
-	private void addListcell (Listitem listitem, String value) {
-		addListcell ( listitem,  value, "" );
+	private void addListcell(Listitem listitem, String value) {
+		addListcell(listitem, value, "");
 	}
 
-    private void addListcell (Listitem listitem, String  value, String style) {
-        Listcell lc = new Listcell ();
-        Label lb = new Label(value);
-        lb.setPre(true);
-        if(!style.isEmpty()) 
-        	lb.setStyle(style);
-        lb.setParent(lc);
-        lc.setParent(listitem);
-    }
-	
+	private void addListcell(Listitem listitem, String value, String style) {
+		Listcell lc = new Listcell();
+		Label lb = new Label(value);
+		lb.setPre(true);
+		if (!style.isEmpty())
+			lb.setStyle(style);
+		lb.setParent(lc);
+		lc.setParent(listitem);
+	}
+
 }

@@ -7,8 +7,7 @@ public class Book {
 	private Date publish;
 	private int pages;
 
-	public Book(String author, String title, Date publish, int pages,
-			String status) {
+	public Book(String author, String title, Date publish, int pages, String status) {
 		this.author = author;
 		this.title = title;
 		this.publish = publish;

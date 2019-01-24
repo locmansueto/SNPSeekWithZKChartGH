@@ -11,21 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-
 @Service("LocalAlignmentService")
 public class LocalAlignmentBLASTServiceImpl implements LocalAlignmentService {
-	
+
 	@Autowired
-	//@Qualifier("LocalAlignmentDAORemoteBlast")
+	// @Qualifier("LocalAlignmentDAORemoteBlast")
 	@Qualifier("LocalAlignmentDAO")
 	private LocalAlignmentDAO localblastdao;
 
 	@Override
-	public List alignWithDB(LocalAlignmentQuery query)  throws Exception {
-		
-		localblastdao = (LocalAlignmentDAO)AppContext.checkBean(localblastdao, "LocalAlignmentDAO");
+	public List alignWithDB(LocalAlignmentQuery query) throws Exception {
+
+		localblastdao = (LocalAlignmentDAO) AppContext.checkBean(localblastdao, "LocalAlignmentDAO");
 		// setup arguments
-		return localblastdao.alignWithDB( query) ;
+		return localblastdao.alignWithDB(query);
 	}
-	
+
 }

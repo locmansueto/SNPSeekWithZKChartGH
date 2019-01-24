@@ -26,107 +26,102 @@ import org.springframework.stereotype.Repository;
 
 //@Repository("IndelStringNormalizedDAO")
 @Repository("IndelStringNormalizedNewDAO")
-@Scope(value= "prototype")
+@Scope(value = "prototype")
 public class IndelStringNormalizedHDF5DAOImpl implements IndelStringDAO {
 
 	@Autowired
-	//@Qualifier("IndelsAllvarsPosDAO")
+	// @Qualifier("IndelsAllvarsPosDAO")
 	@Qualifier("IndelsAllvarsHDF5PosDAO")
 	private IndelsAllvarsPosDAO indelsAllvarsPosDAO;
-	
-	
+
 	@Autowired
 	@Qualifier("IndelStringNormalizedDynamicDAO")
 	private IndelStringDAO indelstringdynamicdao;
-	
-	
+
 	@Autowired
 	@Qualifier("H5IndelUniAllele12V2DAO")
 	private H5Dataset indelallele12dao;
-	
-	private boolean isDynamic=true;
-	
+
+	private boolean isDynamic = true;
+
 	public IndelStringNormalizedHDF5DAOImpl() {
 		super();
 		// TODO Auto-generated constructor stub
-		indelstringdynamicdao=(IndelStringDAO)AppContext.checkBean(indelstringdynamicdao, "IndelStringNormalizedDynamicDAO");
-		//indelsAllvarsPosDAO=(IndelsAllvarsPosDAO)AppContext.checkBean(indelsAllvarsPosDAO, "IndelsAllvarsPosDAO");
-		indelallele12dao=	(H5Dataset)AppContext.checkBean(indelallele12dao, "H5IndelUniAllele12V2DAO");
+		indelstringdynamicdao = (IndelStringDAO) AppContext.checkBean(indelstringdynamicdao,
+				"IndelStringNormalizedDynamicDAO");
+		// indelsAllvarsPosDAO=(IndelsAllvarsPosDAO)AppContext.checkBean(indelsAllvarsPosDAO,
+		// "IndelsAllvarsPosDAO");
+		indelallele12dao = (H5Dataset) AppContext.checkBean(indelallele12dao, "H5IndelUniAllele12V2DAO");
 	}
 
 	@Override
 	public Map readSNPString(String chr, int startIdx, int endIdx) {
-		// TODO Auto-generated method stub
-		isDynamic=false;
+		
+		isDynamic = false;
 		return indelallele12dao.readSNPString(chr, startIdx, endIdx);
 	}
 
 	@Override
 	public Map readSNPString(String chr, int[] posIdxs) {
-		// TODO Auto-generated method stub
-		return indelstringdynamicdao.readSNPString(chr,posIdxs);
+		
+		return indelstringdynamicdao.readSNPString(chr, posIdxs);
 	}
 
 	@Override
-	public Map readSNPString(Set<BigDecimal> colVarids, String chr,
-			int[] posIdxs) {
-		// TODO Auto-generated method stub
-		return indelstringdynamicdao.readSNPString(colVarids,  chr, posIdxs);
+	public Map readSNPString(Set<BigDecimal> colVarids, String chr, int[] posIdxs) {
+		
+		return indelstringdynamicdao.readSNPString(colVarids, chr, posIdxs);
 	}
 
 	@Override
-	public Map readSNPString(Set<BigDecimal> colVarids, String chr,
-			int startIdx, int endIdx) {
-		// TODO Auto-generated method stub
-		return indelstringdynamicdao.readSNPString(colVarids,  chr,
-				 startIdx,  endIdx);
+	public Map readSNPString(Set<BigDecimal> colVarids, String chr, int startIdx, int endIdx) {
+		
+		return indelstringdynamicdao.readSNPString(colVarids, chr, startIdx, endIdx);
 
 	}
 
 	@Override
 	public Map readSNPString(Set colVarids, String chr, int[][] posidxstartend) {
-		// TODO Auto-generated method stub
-		return indelstringdynamicdao.readSNPString(colVarids,  chr,  posidxstartend);
+		
+		return indelstringdynamicdao.readSNPString(colVarids, chr, posidxstartend);
 	}
 
 	@Override
 	public Map readSNPString(String chr, int[][] posidxstartend) {
-		// TODO Auto-generated method stub
+		
 		return indelstringdynamicdao.readSNPString(chr, posidxstartend);
 	}
 
 	@Override
-	public Map readSNPString(String chr,
-			int starvarid, int endvarid, int[][] posstartendIdxs) {
-		// TODO Auto-generated method stub
-		return indelstringdynamicdao.readSNPString(chr,
-				 starvarid,  endvarid, posstartendIdxs);
+	public Map readSNPString(String chr, int starvarid, int endvarid, int[][] posstartendIdxs) {
+		
+		return indelstringdynamicdao.readSNPString(chr, starvarid, endvarid, posstartendIdxs);
 	}
 
 	@Override
-	public Map readSNPString(String chr, int[] posIdxs, int starvarid,
-			int endvarid) {
-		// TODO Auto-generated method stub
-		return indelstringdynamicdao.readSNPString(chr,posIdxs,  starvarid,endvarid);
+	public Map readSNPString(String chr, int[] posIdxs, int starvarid, int endvarid) {
+		
+		return indelstringdynamicdao.readSNPString(chr, posIdxs, starvarid, endvarid);
 	}
 
 	@Override
 	public Map readSNPString(Set colVarids, String chr, Collection colpos) {
-		// TODO Auto-generated method stub
-		return indelstringdynamicdao.readSNPString( colVarids,  chr,  colpos);
+		
+		return indelstringdynamicdao.readSNPString(colVarids, chr, colpos);
 	}
 
 	@Override
 	public Map readSNPString(String chr, Collection colpos) {
-		// TODO Auto-generated method stub
-		return indelstringdynamicdao.readSNPString( chr,  colpos);
+		
+		return indelstringdynamicdao.readSNPString(chr, colpos);
 	}
 
 	@Override
 	public Map getMapAlleleId2Indel() {
-		// TODO Auto-generated method stub
-		//return indelstringdynamicdao.readSNPString();
-		if(isDynamic) return indelstringdynamicdao.getMapAlleleId2Indel();
+		
+		// return indelstringdynamicdao.readSNPString();
+		if (isDynamic)
+			return indelstringdynamicdao.getMapAlleleId2Indel();
 		return null;
 	}
 
@@ -136,8 +131,6 @@ public class IndelStringNormalizedHDF5DAOImpl implements IndelStringDAO {
 		return null;
 	}
 
-	
-	
 	@Override
 	public Map<BigDecimal, Double> getMapVariety2Mismatch() {
 		// TODO Auto-generated method stub
@@ -155,8 +148,7 @@ public class IndelStringNormalizedHDF5DAOImpl implements IndelStringDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
 	@Override
 	public Map[] readSNPString(List<SnpsAllvarsPos> listpos) {
 		// TODO Auto-generated method stub
@@ -169,8 +161,6 @@ public class IndelStringNormalizedHDF5DAOImpl implements IndelStringDAO {
 		return null;
 	}
 
-	
-	
 	@Override
 	public Map[] readSNPString(GenotypeRunPlatform run, Set<BigDecimal> colVarids, String chr,
 			List<SnpsAllvarsPos> listpos) {
@@ -178,49 +168,49 @@ public class IndelStringNormalizedHDF5DAOImpl implements IndelStringDAO {
 		return null;
 	}
 
-	private Map<BigDecimal, IndelsStringAllvars> readIndelsAllvars(String chr, BigDecimal start, BigDecimal end, Collection varList, Collection posList) {
+	private Map<BigDecimal, IndelsStringAllvars> readIndelsAllvars(String chr, BigDecimal start, BigDecimal end,
+			Collection varList, Collection posList) {
 		/*
-		
-		indelsAllvarsDAO = (IndelsAllvarsDAO)AppContext.checkBean(indelsAllvarsDAO, "IndelAllvarsDAOHDF5");
-		indelallele12.g
-		
-		Map<BigDecimal, Map<Position, IndelsAllvars>> mapVar2AlleleCall;
-		
-		AppContext.debug("getting indelpos in " + chr + " [" + start + "-" + end + "]");
-		
-		Set setSnps=null;
-		if(start!=null && end!=null) {
-		
-			// given chr, start end
-			
-			listPos = indelsAllvarsPosDAO.getSNPs(chr, start.intValue(), end.intValue(), SnpsAllvarsPosDAO.TYPE_3KALLINDEL_V2 );
-			
-			if(listPos.size()==0) return new HashMap();
+		 * 
+		 * indelsAllvarsDAO = (IndelsAllvarsDAO)AppContext.checkBean(indelsAllvarsDAO,
+		 * "IndelAllvarsDAOHDF5"); indelallele12.g
+		 * 
+		 * Map<BigDecimal, Map<Position, IndelsAllvars>> mapVar2AlleleCall;
+		 * 
+		 * AppContext.debug("getting indelpos in " + chr + " [" + start + "-" + end +
+		 * "]");
+		 * 
+		 * Set setSnps=null; if(start!=null && end!=null) {
+		 * 
+		 * // given chr, start end
+		 * 
+		 * listPos = indelsAllvarsPosDAO.getSNPs(chr, start.intValue(), end.intValue(),
+		 * SnpsAllvarsPosDAO.TYPE_3KALLINDEL_V2 );
+		 * 
+		 * if(listPos.size()==0) return new HashMap();
+		 * 
+		 * BigDecimal startIdx = listPos.get(0).getAlleleIndex(); BigDecimal endIdx =
+		 * listPos.get(listPos.size()-1).getAlleleIndex();
+		 * 
+		 * //indelsAllvarsDAO //if(varList!=null && varList.size()<1000)
+		 * if(varList!=null) { AppContext.debug("getting indelcallsbyvar in " + chr +
+		 * " [" + start + " idx" + startIdx + " - " + end + " idx " + endIdx + "]");
+		 * setSnps = indelsAllvarsDAO.findIndelAllvarsByVarChrPosBetween(varList, null,
+		 * startIdx, endIdx, listPos); } else {
+		 * AppContext.debug("getting indelcalls in " + chr + " [" + start + " idx" +
+		 * startIdx + " - " + end + " idx " + endIdx + "]"); setSnps =
+		 * indelsAllvarsDAO.findIndelAllvarsByChrPosBetween( null, startIdx, endIdx,
+		 * listPos); }
+		 * 
+		 * 
+		 * 
+		 * }
+		 * 
+		 * 
+		 * return null; }
+		 */
 
-			BigDecimal startIdx =  listPos.get(0).getAlleleIndex();
-			BigDecimal endIdx =  listPos.get(listPos.size()-1).getAlleleIndex();
-
-			//indelsAllvarsDAO
-			//if(varList!=null && varList.size()<1000)
-			if(varList!=null)
-			{
-				AppContext.debug("getting indelcallsbyvar in " + chr + " [" + start + " idx" + startIdx + " - " + end + " idx " + endIdx + "]");
-				setSnps = indelsAllvarsDAO.findIndelAllvarsByVarChrPosBetween(varList, null, startIdx, endIdx, listPos);
-			} else {
-				AppContext.debug("getting indelcalls in " + chr + " [" + start + " idx" + startIdx + " - " + end + " idx " + endIdx + "]");
-				setSnps = indelsAllvarsDAO.findIndelAllvarsByChrPosBetween( null, startIdx, endIdx, listPos);
-			}
-			
-			
-		
-		}
-		
-		
-		return null;
-		}*/
-		
 		return null;
 	}
-		
 
 }

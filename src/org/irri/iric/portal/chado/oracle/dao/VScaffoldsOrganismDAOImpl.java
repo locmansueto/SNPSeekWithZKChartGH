@@ -396,7 +396,7 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 
 	@Override
 	public List<Scaffold> getScaffolds(String organism) {
-		// TODO Auto-generated method stub
+		
 		
 		List list = new ArrayList();
 		
@@ -413,7 +413,7 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 
 	@Override
 	public Long getScaffoldLength(String scaffold, String organism) {
-		// TODO Auto-generated method stub
+		
 		//AppContext.debug("scafold=" + scaffold + ", organism=" + organism);
 		if(organism.equals(AppContext.getDefaultOrganism())) {
 			scaffold=scaffold.replace("r0","r");
@@ -425,7 +425,7 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 
 	@Override
 	public List<Scaffold> getScaffolds(BigDecimal organism) {
-		// TODO Auto-generated method stub
+		
 		List list = new ArrayList();
 		list.addAll(findVScaffoldsOrganismByOrganismId( organism));
 		return list;
@@ -433,7 +433,7 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 
 	@Override
 	public Long getScaffoldLength(String scaffold, BigDecimal organism) {
-		// TODO Auto-generated method stub
+		
 		
 		/*
 		if(organism.equals(BigDecimal.valueOf(9))) {
@@ -463,7 +463,7 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 	
 	@Override
 	public Scaffold getScaffold(String scaffold, BigDecimal organism) {
-		// TODO Auto-generated method stub
+		
 
 		if(organism.equals(BigDecimal.valueOf(9))) {
 			scaffold=scaffold.replace("r0","r");
@@ -481,7 +481,7 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 
 	@Override
 	public Scaffold getScaffold(String scaffold, String organism) {
-		// TODO Auto-generated method stub
+		
 		
 		if(organism.equals(AppContext.getDefaultOrganism())) {
 			scaffold=scaffold.replace("r0","r");
@@ -499,7 +499,7 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 
 	@Override
 	public Scaffold getScaffold(BigDecimal scaffoldId) {
-		// TODO Auto-generated method stub
+		
 		return  findVScaffoldsOrganismByFeatureId( scaffoldId);
 	}
 	

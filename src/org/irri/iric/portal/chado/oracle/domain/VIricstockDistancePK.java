@@ -3,7 +3,6 @@ package org.irri.iric.portal.chado.oracle.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-
 import javax.persistence.*;
 
 /**
@@ -20,7 +19,7 @@ public class VIricstockDistancePK implements Serializable {
 	 */
 
 	@Column(name = "VAR1", nullable = false)
-//	@Column(name = "IRIC_STOCK_ID1", nullable = false)
+	// @Column(name = "IRIC_STOCK_ID1", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	public BigDecimal var1;
@@ -28,7 +27,7 @@ public class VIricstockDistancePK implements Serializable {
 	 */
 
 	@Column(name = "VAR2", nullable = false)
-//	@Column(name = "IRIC_STOCK_ID2", nullable = false)
+	// @Column(name = "IRIC_STOCK_ID2", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	public BigDecimal var2;

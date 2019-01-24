@@ -24,14 +24,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository("VCvPhenotypeDAO")
 @Transactional
-public class VCvPhenotypeDAOImpl extends AbstractJpaDao<VCvPhenotype> implements
-		VCvPhenotypeDAO {
+public class VCvPhenotypeDAOImpl extends AbstractJpaDao<VCvPhenotype> implements VCvPhenotypeDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VCvPhenotype.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VCvPhenotype.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit Production
@@ -49,7 +50,7 @@ public class VCvPhenotypeDAOImpl extends AbstractJpaDao<VCvPhenotype> implements
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -81,7 +82,8 @@ public class VCvPhenotypeDAOImpl extends AbstractJpaDao<VCvPhenotype> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPhenotype> findVCvPhenotypeByDefinition(String definition, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPhenotype> findVCvPhenotypeByDefinition(String definition, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPhenotypeByDefinition", startResult, maxRows, definition);
 		return new LinkedHashSet<VCvPhenotype>(query.getResultList());
 	}
@@ -103,7 +105,8 @@ public class VCvPhenotypeDAOImpl extends AbstractJpaDao<VCvPhenotype> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPhenotype> findVCvPhenotypeByName(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPhenotype> findVCvPhenotypeByName(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPhenotypeByName", startResult, maxRows, name);
 		return new LinkedHashSet<VCvPhenotype>(query.getResultList());
 	}
@@ -125,7 +128,8 @@ public class VCvPhenotypeDAOImpl extends AbstractJpaDao<VCvPhenotype> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPhenotype> findVCvPhenotypeByNameContaining(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPhenotype> findVCvPhenotypeByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPhenotypeByNameContaining", startResult, maxRows, name);
 		return new LinkedHashSet<VCvPhenotype>(query.getResultList());
 	}
@@ -146,7 +150,8 @@ public class VCvPhenotypeDAOImpl extends AbstractJpaDao<VCvPhenotype> implements
 	 */
 
 	@Transactional
-	public VCvPhenotype findVCvPhenotypeByCvTermId(Integer cvTermId, int startResult, int maxRows) throws DataAccessException {
+	public VCvPhenotype findVCvPhenotypeByCvTermId(Integer cvTermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVCvPhenotypeByCvTermId", startResult, maxRows, cvTermId);
 			return (org.irri.iric.portal.chado.oracle.domain.VCvPhenotype) query.getSingleResult();
@@ -193,7 +198,8 @@ public class VCvPhenotypeDAOImpl extends AbstractJpaDao<VCvPhenotype> implements
 	 */
 
 	@Transactional
-	public VCvPhenotype findVCvPhenotypeByPrimaryKey(Integer cvTermId, int startResult, int maxRows) throws DataAccessException {
+	public VCvPhenotype findVCvPhenotypeByPrimaryKey(Integer cvTermId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVCvPhenotypeByPrimaryKey", startResult, maxRows, cvTermId);
 			return (org.irri.iric.portal.chado.oracle.domain.VCvPhenotype) query.getSingleResult();
@@ -219,13 +225,16 @@ public class VCvPhenotypeDAOImpl extends AbstractJpaDao<VCvPhenotype> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VCvPhenotype> findVCvPhenotypeByDefinitionContaining(String definition, int startResult, int maxRows) throws DataAccessException {
+	public Set<VCvPhenotype> findVCvPhenotypeByDefinitionContaining(String definition, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVCvPhenotypeByDefinitionContaining", startResult, maxRows, definition);
 		return new LinkedHashSet<VCvPhenotype>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -236,7 +245,7 @@ public class VCvPhenotypeDAOImpl extends AbstractJpaDao<VCvPhenotype> implements
 
 	@Override
 	public List getAllTerms() {
-		// TODO Auto-generated method stub
+		
 		return this.findAllVCvPhenotypes();
 	}
 
@@ -246,18 +255,16 @@ public class VCvPhenotypeDAOImpl extends AbstractJpaDao<VCvPhenotype> implements
 		return null;
 	}
 
-//	@Override
-//	public List getAllTerms(String organism) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List getAllTerms(String cv, String organism) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-	
-	
-	
+	// @Override
+	// public List getAllTerms(String organism) {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public List getAllTerms(String cv, String organism) {
+	// 
+	// return null;
+	// }
+
 }

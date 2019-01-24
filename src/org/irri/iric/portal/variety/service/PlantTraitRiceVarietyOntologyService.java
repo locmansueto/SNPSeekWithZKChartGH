@@ -18,12 +18,11 @@ import org.springframework.stereotype.Service;
 @Service("PlantTraitRiceVarietyOntologyService")
 public class PlantTraitRiceVarietyOntologyService implements OntologyService {
 
-
 	@Autowired
-	//@Qualifier("VCvPhenotypeByPtocoDAO")
+	// @Qualifier("VCvPhenotypeByPtocoDAO")
 	@Qualifier("VCvPhenotypeByPtocoPathDAO")
 	private CvTermPathDAO cvtermpathDAO;
-	
+
 	@Override
 	public String queryAccession(String q) throws Exception {
 		// TODO Auto-generated method stub
@@ -32,14 +31,12 @@ public class PlantTraitRiceVarietyOntologyService implements OntologyService {
 
 	@Override
 	public List getCVtermAncestors(String cv, String term) {
-		// TODO Auto-generated method stub
-		cvtermpathDAO= (CvTermPathDAO)AppContext.checkBean(cvtermpathDAO, "VCvPhenotypeByPtocoPathDAO");
 		
+		cvtermpathDAO = (CvTermPathDAO) AppContext.checkBean(cvtermpathDAO, "VCvPhenotypeByPtocoPathDAO");
+
 		return cvtermpathDAO.getAncestors(cv, term);
 	}
 
-	
-	
 	@Override
 	public List getCVtermDescendants(String cv, String term) {
 		// TODO Auto-generated method stub
@@ -48,20 +45,19 @@ public class PlantTraitRiceVarietyOntologyService implements OntologyService {
 
 	@Override
 	public List getCVtermDescendants(String cv, String term, Set dataset) {
-		// TODO Auto-generated method stub
-		cvtermpathDAO= (CvTermPathDAO)AppContext.checkBean(cvtermpathDAO, "VCvPhenotypeByPtocoPathDAO");
-		return cvtermpathDAO.getDescendants(cv, term, dataset);	}
+		
+		cvtermpathDAO = (CvTermPathDAO) AppContext.checkBean(cvtermpathDAO, "VCvPhenotypeByPtocoPathDAO");
+		return cvtermpathDAO.getDescendants(cv, term, dataset);
+	}
 
 	@Override
-	public List countLociInTerms(String organism, Collection genelist, String cv)
-			throws Exception {
+	public List countLociInTerms(String organism, Collection genelist, String cv) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String overRepresentationTest(String organism, Collection genelist,
-			String enrichmentType) throws Exception {
+	public String overRepresentationTest(String organism, Collection genelist, String enrichmentType) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -23,8 +23,8 @@ import org.irri.iric.portal.domain.CvTermUniqueValues;
 		@NamedQuery(name = "findVIricstockPhenotypeQualvalByPrimaryKey", query = "select myVIricstockPhenotypeQualval from VIricstockPhenotypeQualval myVIricstockPhenotypeQualval where myVIricstockPhenotypeQualval.qualValue = ?1 and myVIricstockPhenotypeQualval.phenotypeId = ?2"),
 		@NamedQuery(name = "findVIricstockPhenotypeQualvalByQualValue", query = "select myVIricstockPhenotypeQualval from VIricstockPhenotypeQualval myVIricstockPhenotypeQualval where myVIricstockPhenotypeQualval.qualValue = ?1  and  myVIricstockPhenotypeQualval.dataset in ( ?2)"),
 		@NamedQuery(name = "findVIricstockPhenotypeQualvalByQualValueContaining", query = "select myVIricstockPhenotypeQualval from VIricstockPhenotypeQualval myVIricstockPhenotypeQualval where myVIricstockPhenotypeQualval.qualValue like ?1  and  myVIricstockPhenotypeQualval.dataset in (?2)") })
-//@Table( name = "V_IRICSTOCK_PHENOTYPE_QUALVAL")
-@Table( name = "V_STOCK_PHENOTYPE_QUALVAL")
+// @Table( name = "V_IRICSTOCK_PHENOTYPE_QUALVAL")
+@Table(name = "V_STOCK_PHENOTYPE_QUALVAL")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockPhenotypeQualval")
 public class VIricstockPhenotypeQualval implements Serializable, CvTermUniqueValues {
@@ -53,9 +53,6 @@ public class VIricstockPhenotypeQualval implements Serializable, CvTermUniqueVal
 	@XmlElement
 	String dataset;
 
-	
-	
-	
 	public String getDataset() {
 		return dataset;
 	}
@@ -142,7 +139,8 @@ public class VIricstockPhenotypeQualval implements Serializable, CvTermUniqueVal
 			return false;
 		if (qualValue != null && !qualValue.equals(equalCheck.qualValue))
 			return false;
-		if ((phenotypeId == null && equalCheck.phenotypeId != null) || (phenotypeId != null && equalCheck.phenotypeId == null))
+		if ((phenotypeId == null && equalCheck.phenotypeId != null)
+				|| (phenotypeId != null && equalCheck.phenotypeId == null))
 			return false;
 		if (phenotypeId != null && !phenotypeId.equals(equalCheck.phenotypeId))
 			return false;
@@ -155,11 +153,8 @@ public class VIricstockPhenotypeQualval implements Serializable, CvTermUniqueVal
 
 	@Override
 	public String getValue() {
-		// TODO Auto-generated method stub
+		
 		return this.getQualValue();
 	}
-	
-	
-	
-	
+
 }

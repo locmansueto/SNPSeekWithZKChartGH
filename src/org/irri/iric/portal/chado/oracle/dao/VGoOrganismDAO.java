@@ -15,17 +15,19 @@ import org.springframework.dao.DataAccessException;
  */
 public interface VGoOrganismDAO extends JpaDao<VGoOrganism>, CvTermDAO {
 
-//	/**
-//	 * JPQL Query - findVGoOrganismByCommonName
-//	 *
-//	 */
-//	public Set<VGoOrganism> findVGoOrganismByCommonName(String commonName) throws DataAccessException;
-//
-//	/**
-//	 * JPQL Query - findVGoOrganismByCommonName
-//	 *
-//	 */
-//	public Set<VGoOrganism> findVGoOrganismByCommonName(String commonName, int startResult, int maxRows) throws DataAccessException;
+	// /**
+	// * JPQL Query - findVGoOrganismByCommonName
+	// *
+	// */
+	// public Set<VGoOrganism> findVGoOrganismByCommonName(String commonName) throws
+	// DataAccessException;
+	//
+	// /**
+	// * JPQL Query - findVGoOrganismByCommonName
+	// *
+	// */
+	// public Set<VGoOrganism> findVGoOrganismByCommonName(String commonName, int
+	// startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGoOrganismByCvterm
@@ -37,7 +39,8 @@ public interface VGoOrganismDAO extends JpaDao<VGoOrganism>, CvTermDAO {
 	 * JPQL Query - findVGoOrganismByCvterm
 	 *
 	 */
-	public Set<VGoOrganism> findVGoOrganismByCvterm(String cvterm, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGoOrganism> findVGoOrganismByCvterm(String cvterm, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGoOrganismByPrimaryKey
@@ -49,31 +52,36 @@ public interface VGoOrganismDAO extends JpaDao<VGoOrganism>, CvTermDAO {
 	 * JPQL Query - findVGoOrganismByPrimaryKey
 	 *
 	 */
-	public VGoOrganism findVGoOrganismByPrimaryKey(Integer cvtermId, int startResult, int maxRows) throws DataAccessException;
+	public VGoOrganism findVGoOrganismByPrimaryKey(Integer cvtermId, int startResult, int maxRows)
+			throws DataAccessException;
 
-//	/**
-//	 * JPQL Query - findVGoOrganismByCvName
-//	 *
-//	 */
-//	public Set<VGoOrganism> findVGoOrganismByCvName(String cvName) throws DataAccessException;
-//
-//	/**
-//	 * JPQL Query - findVGoOrganismByCvName
-//	 *
-//	 */
-//	public Set<VGoOrganism> findVGoOrganismByCvName(String cvName, int startResult, int maxRows) throws DataAccessException;
-//
-//	/**
-//	 * JPQL Query - findVGoOrganismByCvNameContaining
-//	 *
-//	 */
-//	public Set<VGoOrganism> findVGoOrganismByCvNameContaining(String cvName_1) throws DataAccessException;
-//
-//	/**
-//	 * JPQL Query - findVGoOrganismByCvNameContaining
-//	 *
-//	 */
-//	public Set<VGoOrganism> findVGoOrganismByCvNameContaining(String cvName_1, int startResult, int maxRows) throws DataAccessException;
+	// /**
+	// * JPQL Query - findVGoOrganismByCvName
+	// *
+	// */
+	// public Set<VGoOrganism> findVGoOrganismByCvName(String cvName) throws
+	// DataAccessException;
+	//
+	// /**
+	// * JPQL Query - findVGoOrganismByCvName
+	// *
+	// */
+	// public Set<VGoOrganism> findVGoOrganismByCvName(String cvName, int
+	// startResult, int maxRows) throws DataAccessException;
+	//
+	// /**
+	// * JPQL Query - findVGoOrganismByCvNameContaining
+	// *
+	// */
+	// public Set<VGoOrganism> findVGoOrganismByCvNameContaining(String cvName_1)
+	// throws DataAccessException;
+	//
+	// /**
+	// * JPQL Query - findVGoOrganismByCvNameContaining
+	// *
+	// */
+	// public Set<VGoOrganism> findVGoOrganismByCvNameContaining(String cvName_1,
+	// int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVGoOrganisms
@@ -97,7 +105,8 @@ public interface VGoOrganismDAO extends JpaDao<VGoOrganism>, CvTermDAO {
 	 * JPQL Query - findVGoOrganismByAccessionContaining
 	 *
 	 */
-	public Set<VGoOrganism> findVGoOrganismByAccessionContaining(String accession, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGoOrganism> findVGoOrganismByAccessionContaining(String accession, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGoOrganismByAccession
@@ -109,7 +118,8 @@ public interface VGoOrganismDAO extends JpaDao<VGoOrganism>, CvTermDAO {
 	 * JPQL Query - findVGoOrganismByAccession
 	 *
 	 */
-	public Set<VGoOrganism> findVGoOrganismByAccession(String accession_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGoOrganism> findVGoOrganismByAccession(String accession_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGoOrganismByOrganismId
@@ -121,19 +131,22 @@ public interface VGoOrganismDAO extends JpaDao<VGoOrganism>, CvTermDAO {
 	 * JPQL Query - findVGoOrganismByOrganismId
 	 *
 	 */
-	public Set<VGoOrganism> findVGoOrganismByOrganismId(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGoOrganism> findVGoOrganismByOrganismId(BigDecimal organismId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGoOrganismByCommonNameContaining
 	 *
 	 */
-//	public Set<VGoOrganism> findVGoOrganismByCommonNameContaining(String commonName_1) throws DataAccessException;
-//
-//	/**
-//	 * JPQL Query - findVGoOrganismByCommonNameContaining
-//	 *
-//	 */
-//	public Set<VGoOrganism> findVGoOrganismByCommonNameContaining(String commonName_1, int startResult, int maxRows) throws DataAccessException;
+	// public Set<VGoOrganism> findVGoOrganismByCommonNameContaining(String
+	// commonName_1) throws DataAccessException;
+	//
+	// /**
+	// * JPQL Query - findVGoOrganismByCommonNameContaining
+	// *
+	// */
+	// public Set<VGoOrganism> findVGoOrganismByCommonNameContaining(String
+	// commonName_1, int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGoOrganismByCvtermId
@@ -145,7 +158,8 @@ public interface VGoOrganismDAO extends JpaDao<VGoOrganism>, CvTermDAO {
 	 * JPQL Query - findVGoOrganismByCvtermId
 	 *
 	 */
-	public VGoOrganism findVGoOrganismByCvtermId(Integer cvtermId_1, int startResult, int maxRows) throws DataAccessException;
+	public VGoOrganism findVGoOrganismByCvtermId(Integer cvtermId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGoOrganismByCvtermContaining
@@ -157,8 +171,9 @@ public interface VGoOrganismDAO extends JpaDao<VGoOrganism>, CvTermDAO {
 	 * JPQL Query - findVGoOrganismByCvtermContaining
 	 *
 	 */
-	public Set<VGoOrganism> findVGoOrganismByCvtermContaining(String cvterm_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGoOrganism> findVGoOrganismByCvtermContaining(String cvterm_1, int startResult, int maxRows)
+			throws DataAccessException;
 
-	//List getAllTermsByOrganism(String organism);
+	// List getAllTermsByOrganism(String organism);
 
 }

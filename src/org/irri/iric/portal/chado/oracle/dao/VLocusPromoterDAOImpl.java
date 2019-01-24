@@ -34,17 +34,18 @@ import org.springframework.transaction.annotation.Transactional;
  * DAO to manage VLocusPromoter entities.
  * 
  */
-//@Repository("VLocusPromoterDAO")
+// @Repository("VLocusPromoterDAO")
 @Repository("LocusPromoterDAO")
 @Transactional
-public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
-		implements VLocusPromoterDAO {
+public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter> implements VLocusPromoterDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VLocusPromoter.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VLocusPromoter.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Production
@@ -62,7 +63,7 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -82,7 +83,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 	 *
 	 */
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureNameContaining(String pfeatureName) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureNameContaining(String pfeatureName)
+			throws DataAccessException {
 
 		return findVLocusPromoterByPfeatureNameContaining(pfeatureName, -1, -1);
 	}
@@ -94,8 +96,10 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureNameContaining(String pfeatureName, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVLocusPromoterByPfeatureNameContaining", startResult, maxRows, pfeatureName);
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureNameContaining(String pfeatureName, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVLocusPromoterByPfeatureNameContaining", startResult, maxRows,
+				pfeatureName);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
 
@@ -116,7 +120,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByContigId(BigDecimal contigId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByContigId(BigDecimal contigId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByContigId", startResult, maxRows, contigId);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -160,7 +165,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByCommonNameContaining(String commonName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByCommonNameContaining(String commonName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByCommonNameContaining", startResult, maxRows, commonName);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -182,7 +188,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByNameContaining(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByNameContaining", startResult, maxRows, name);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -204,7 +211,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByNotesContaining(String notes, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByNotesContaining(String notes, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByNotesContaining", startResult, maxRows, notes);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -226,7 +234,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureName(String pfeatureName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureName(String pfeatureName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByPfeatureName", startResult, maxRows, pfeatureName);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -236,7 +245,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 	 *
 	 */
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureTypeContaining(String pfeatureType) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureTypeContaining(String pfeatureType)
+			throws DataAccessException {
 
 		return findVLocusPromoterByPfeatureTypeContaining(pfeatureType, -1, -1);
 	}
@@ -248,8 +258,10 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureTypeContaining(String pfeatureType, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVLocusPromoterByPfeatureTypeContaining", startResult, maxRows, pfeatureType);
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureTypeContaining(String pfeatureType, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVLocusPromoterByPfeatureTypeContaining", startResult, maxRows,
+				pfeatureType);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
 
@@ -270,7 +282,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureEnd(Integer pfeatureEnd, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureEnd(Integer pfeatureEnd, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByPfeatureEnd", startResult, maxRows, pfeatureEnd);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -292,7 +305,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByNotes(String notes, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByNotes(String notes, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByNotes", startResult, maxRows, notes);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -314,7 +328,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByGeneOverlaps(String geneOverlaps, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByGeneOverlaps(String geneOverlaps, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByGeneOverlaps", startResult, maxRows, geneOverlaps);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -336,7 +351,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByOrganismId(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByOrganismId(BigDecimal organismId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByOrganismId", startResult, maxRows, organismId);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -358,7 +374,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByFmax(java.math.BigDecimal fmax, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByFmax(java.math.BigDecimal fmax, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByFmax", startResult, maxRows, fmax);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -380,7 +397,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByName(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByName(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByName", startResult, maxRows, name);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -390,7 +408,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 	 *
 	 */
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureChrContaining(String pfeatureChr) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureChrContaining(String pfeatureChr)
+			throws DataAccessException {
 
 		return findVLocusPromoterByPfeatureChrContaining(pfeatureChr, -1, -1);
 	}
@@ -402,7 +421,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureChrContaining(String pfeatureChr, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureChrContaining(String pfeatureChr, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByPfeatureChrContaining", startResult, maxRows, pfeatureChr);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -424,7 +444,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureStart(Integer pfeatureStart, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureStart(Integer pfeatureStart, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByPfeatureStart", startResult, maxRows, pfeatureStart);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -445,7 +466,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 	 */
 
 	@Transactional
-	public VLocusPromoter findVLocusPromoterByFeatureId(BigDecimal featureId, int startResult, int maxRows) throws DataAccessException {
+	public VLocusPromoter findVLocusPromoterByFeatureId(BigDecimal featureId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVLocusPromoterByFeatureId", startResult, maxRows, featureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VLocusPromoter) query.getSingleResult();
@@ -471,7 +493,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByContigName(String contigName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByContigName(String contigName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByContigName", startResult, maxRows, contigName);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -493,7 +516,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByCommonName(String commonName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByCommonName(String commonName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByCommonName", startResult, maxRows, commonName);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -515,7 +539,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByFmin(java.math.BigDecimal fmin, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByFmin(java.math.BigDecimal fmin, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByFmin", startResult, maxRows, fmin);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -537,7 +562,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByStrand(java.math.BigDecimal strand, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByStrand(java.math.BigDecimal strand, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByStrand", startResult, maxRows, strand);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -558,7 +584,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 	 */
 
 	@Transactional
-	public VLocusPromoter findVLocusPromoterByPrimaryKey(BigDecimal featureId, int startResult, int maxRows) throws DataAccessException {
+	public VLocusPromoter findVLocusPromoterByPrimaryKey(BigDecimal featureId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVLocusPromoterByPrimaryKey", startResult, maxRows, featureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VLocusPromoter) query.getSingleResult();
@@ -584,7 +611,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByContigNameContaining(String contigName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByContigNameContaining(String contigName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByContigNameContaining", startResult, maxRows, contigName);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -594,7 +622,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 	 *
 	 */
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByGeneOverlapsContaining(String geneOverlaps) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByGeneOverlapsContaining(String geneOverlaps)
+			throws DataAccessException {
 
 		return findVLocusPromoterByGeneOverlapsContaining(geneOverlaps, -1, -1);
 	}
@@ -606,8 +635,10 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByGeneOverlapsContaining(String geneOverlaps, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVLocusPromoterByGeneOverlapsContaining", startResult, maxRows, geneOverlaps);
+	public Set<VLocusPromoter> findVLocusPromoterByGeneOverlapsContaining(String geneOverlaps, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVLocusPromoterByGeneOverlapsContaining", startResult, maxRows,
+				geneOverlaps);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
 
@@ -628,7 +659,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureDb(BigDecimal pfeatureDb, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureDb(BigDecimal pfeatureDb, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByPfeatureDb", startResult, maxRows, pfeatureDb);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -650,7 +682,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureChr(String pfeatureChr, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureChr(String pfeatureChr, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByPfeatureChr", startResult, maxRows, pfeatureChr);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -672,7 +705,8 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureId(BigDecimal pfeatureId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureId(BigDecimal pfeatureId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByPfeatureId", startResult, maxRows, pfeatureId);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
@@ -694,13 +728,16 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusPromoter> findVLocusPromoterByPfeatureType(String pfeatureType, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusPromoter> findVLocusPromoterByPfeatureType(String pfeatureType, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusPromoterByPfeatureType", startResult, maxRows, pfeatureType);
 		return new LinkedHashSet<VLocusPromoter>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -709,23 +746,24 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 		return true;
 	}
 
-	
 	@Override
-	public Set<Locus> getLociWithPromoters(String contig, Collection posset, int db, String organism, Integer plusminus, String genemodel) {
+	public Set<Locus> getLociWithPromoters(String contig, Collection posset, int db, String organism, Integer plusminus,
+			String genemodel) {
 
-		// TODO Auto-generated method stub
+		
 
 		List listLoci = new ArrayList();
-		if(contig.toLowerCase().equals("any")) {
+		if (contig.toLowerCase().equals("any")) {
 			Map<String, Set<BigDecimal>> mapChr2Pos = MultiReferencePositionImpl.getMapContig2SNPPos(posset);
 			Iterator<String> itChr = mapChr2Pos.keySet().iterator();
-			while(itChr.hasNext()) {
+			while (itChr.hasNext()) {
 				String chr = itChr.next();
-				listLoci.addAll( getLocusPromoterByContigPositions(chr, mapChr2Pos.get(chr) , db,  organism , plusminus ,genemodel) );
+				listLoci.addAll(getLocusPromoterByContigPositions(chr, mapChr2Pos.get(chr), db, organism, plusminus,
+						genemodel));
 			}
-			
+
 		} else {
-			listLoci.addAll( getLocusPromoterByContigPositions(contig, posset, db, organism, plusminus, genemodel));
+			listLoci.addAll(getLocusPromoterByContigPositions(contig, posset, db, organism, plusminus, genemodel));
 		}
 		return new LinkedHashSet(listLoci);
 	}
@@ -741,154 +779,161 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 		// TODO Auto-generated method stub
 		return null;
 	}
-/*
+
+	/*
+	 * @Override public List<Locus> getLocusByRegion(String contig, Long start, Long
+	 * end, String organism) { // TODO Auto-generated method stub return null; }
+	 */
 	@Override
-	public List<Locus> getLocusByRegion(String contig, Long start, Long end,
-			String organism) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-*/
-	@Override
-	public List<Locus> getLocusByRegion(String contig, Long start, Long end,
-			String organism, String genemodel) {
+	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List getLocusByContigPositions(String contig, Collection posset,
-			String organism, Integer plusminus) {
+	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus) {
 		// TODO Auto-generated method stub
-		
-		//return getLocusPromoterByContigPositions(contig, posset, -1, organism,  plusminus, null);
+
+		// return getLocusPromoterByContigPositions(contig, posset, -1, organism,
+		// plusminus, null);
 		return null;
 	}
 
-	
 	@Override
-	public List getLocusByContigPositions(String contig, Collection posset, 
-			String organism, Integer plusminus, String genemodel) {
+	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus,
+			String genemodel) {
 		// TODO Auto-generated method stub
 		return null;
-		//return getLocusByContigPositions(contig, posset, -1, organism,  plusminus, genemodel);
+		// return getLocusByContigPositions(contig, posset, -1, organism, plusminus,
+		// genemodel);
 
 	}
-	
-	private List getLocusPromoterByContigPositions(String contig, Collection posset, int db,  String organism, Integer plusminus, String genemodel) {
-		if(AppContext.isOracle()) return getLocusPromoterByContigPositionsOracle( contig,  posset,  db,   organism,  plusminus,  genemodel);
-		else if(AppContext.isPostgres()) return getLocusPromoterByContigPositionsPostgres( contig,  posset,  db,   organism,  plusminus,  genemodel);
+
+	private List getLocusPromoterByContigPositions(String contig, Collection posset, int db, String organism,
+			Integer plusminus, String genemodel) {
+		if (AppContext.isOracle())
+			return getLocusPromoterByContigPositionsOracle(contig, posset, db, organism, plusminus, genemodel);
+		else if (AppContext.isPostgres())
+			return getLocusPromoterByContigPositionsPostgres(contig, posset, db, organism, plusminus, genemodel);
 		return null;
 	}
-	
-	private List getLocusPromoterByContigPositionsOracle(String contig, Collection posset, int db,  String organism, Integer plusminus, String genemodel) {
 
-		posset=AppContext.convertPos2Position(posset);
-		
-		String mpm="";
-		String ppm="";
-		if(plusminus!=null && plusminus.intValue()!=0 ) {
-			mpm= "-" + plusminus;
-			ppm= "+" + plusminus;
+	private List getLocusPromoterByContigPositionsOracle(String contig, Collection posset, int db, String organism,
+			Integer plusminus, String genemodel) {
+
+		posset = AppContext.convertPos2Position(posset);
+
+		String mpm = "";
+		String ppm = "";
+		if (plusminus != null && plusminus.intValue() != 0) {
+			mpm = "-" + plusminus;
+			ppm = "+" + plusminus;
 		}
-		
-		String anddb="";
-		if(db>0) anddb=" and pf.db=" + db + " ";
-		
-		List pos=new ArrayList();
-		
-		Set setpos[] = AppContext.setSlicer(new TreeSet(posset),900);
-		for(int i=0; i<setpos.length; i++ ) {
-			
-			StringBuffer sql=new StringBuffer();
-			sql.append( "SELECT distinct o.common_name, fsrc.feature_id AS contig_id, fsrc.uniquename AS contig_name,f.name AS name,f.feature_id,fl.fmin,fl.fmax,fl.strand,")
-		    .append("o.organism_id,dbms_lob.substr(pf.note, 1000) AS notes,pf.startpos pfeature_start,pf.endpos pfeature_end,pf.chrstr pfeature_chr,pf.promoter_id pfeature_id,")
-		    .append("pf.name pfeature_name,pf.db pfeature_db,ct.name pfeature_type,pf.gene_overlaps ")
-		    .append("FROM " + AppContext.getDefaultSchema() + ".feature f, " + AppContext.getDefaultSchema() + ".feature fsrc, " + AppContext.getDefaultSchema() + ".featureloc fl, " + AppContext.getDefaultSchema() + ".TMP_PROMOTER_1 pf, " + AppContext.getDefaultSchema() + ".organism o, " + AppContext.getDefaultSchema() + ".cvterm ct, ")
-		    
-		    .append( " (select distinct column_value pos from table(sys.odcinumberlist(" + AppContext.toCSV(setpos[i])+ "))) postable ")
-		    
-		  .append("WHERE pf.gene_id=f.feature_id and pf.type_id=ct.cvterm_id and f.feature_id = fl.feature_id AND f.organism_id = o.organism_id AND fl.srcfeature_id = fsrc.feature_id ")
-		  .append( " and pf.chrstr='" + contig.replace("chr0","").replace("chr","")  + "' and (postable.pos between (pf.startpos " + mpm + ") and (pf.endpos " + ppm + "))")
-		  .append(anddb);
-			
-			pos.addAll( executeSQL(sql.toString()) );
-		}
-		return pos;
-		
-	}
-	
-	private List getLocusPromoterByContigPositionsPostgres(String contig, Collection posset, int db,  String organism, Integer plusminus, String genemodel) {
 
-		posset=AppContext.convertPos2Position(posset);
-		
-		String mpm="";
-		String ppm="";
-		if(plusminus!=null && plusminus.intValue()!=0 ) {
-			mpm= "-" + plusminus;
-			ppm= "+" + plusminus;
-		}
-		
-		String anddb="";
-		if(db>0) anddb=" and pf.db=" + db + " ";
-		
-		List pos=new ArrayList();
-		
-		Set setpos[] = AppContext.setSlicer(new TreeSet(posset),900);
-		for(int i=0; i<setpos.length; i++ ) {
-			
-			StringBuffer sql=new StringBuffer();
-			sql.append( "SELECT distinct o.common_name, fsrc.feature_id AS contig_id, fsrc.uniquename AS contig_name,f.name AS name,f.feature_id,fl.fmin,fl.fmax,fl.strand,")
-		    .append("o.organism_id, substring(pf.note,1, 1000) AS notes,pf.startpos pfeature_start,pf.endpos pfeature_end,pf.chrstr pfeature_chr,pf.promoter_id pfeature_id,")
-		    .append("pf.name pfeature_name,pf.db pfeature_db,ct.name pfeature_type,pf.gene_overlaps ")
-		    .append("FROM " + AppContext.getDefaultSchema() + ".feature f, " + AppContext.getDefaultSchema() + ".feature fsrc, " + AppContext.getDefaultSchema() + ".featureloc fl, " + AppContext.getDefaultSchema() + ".TMP_PROMOTER_1 pf, " + AppContext.getDefaultSchema() + ".organism o, " + AppContext.getDefaultSchema() + ".cvterm ct, ")
-		    
-		    //.append( " (select distinct column_value pos from table(sys.odcinumberlist(" + AppContext.toCSV(setpos[i])+ "))) postable ")
-		    
-		    .append( " (select unnest(ARRAY[" + AppContext.toCSV(setpos[i]) + "]) pos)  postable ")
-		    
-		  .append("WHERE pf.gene_id=f.feature_id and pf.type_id=ct.cvterm_id and f.feature_id = fl.feature_id AND f.organism_id = o.organism_id AND fl.srcfeature_id = fsrc.feature_id ")
-		  .append( " and pf.chrstr='" + contig.replace("chr0","").replace("chr","")  + "' and (postable.pos between (pf.startpos " + mpm + ") and (pf.endpos " + ppm + "))")
-		  .append(anddb);
-			
-			pos.addAll( executeSQL(sql.toString()) );
+		String anddb = "";
+		if (db > 0)
+			anddb = " and pf.db=" + db + " ";
+
+		List pos = new ArrayList();
+
+		Set setpos[] = AppContext.setSlicer(new TreeSet(posset), 900);
+		for (int i = 0; i < setpos.length; i++) {
+
+			StringBuffer sql = new StringBuffer();
+			sql.append(
+					"SELECT distinct o.common_name, fsrc.feature_id AS contig_id, fsrc.uniquename AS contig_name,f.name AS name,f.feature_id,fl.fmin,fl.fmax,fl.strand,")
+					.append("o.organism_id,dbms_lob.substr(pf.note, 1000) AS notes,pf.startpos pfeature_start,pf.endpos pfeature_end,pf.chrstr pfeature_chr,pf.promoter_id pfeature_id,")
+					.append("pf.name pfeature_name,pf.db pfeature_db,ct.name pfeature_type,pf.gene_overlaps ")
+					.append("FROM " + AppContext.getDefaultSchema() + ".feature f, " + AppContext.getDefaultSchema()
+							+ ".feature fsrc, " + AppContext.getDefaultSchema() + ".featureloc fl, "
+							+ AppContext.getDefaultSchema() + ".TMP_PROMOTER_1 pf, " + AppContext.getDefaultSchema()
+							+ ".organism o, " + AppContext.getDefaultSchema() + ".cvterm ct, ")
+
+					.append(" (select distinct column_value pos from table(sys.odcinumberlist("
+							+ AppContext.toCSV(setpos[i]) + "))) postable ")
+
+					.append("WHERE pf.gene_id=f.feature_id and pf.type_id=ct.cvterm_id and f.feature_id = fl.feature_id AND f.organism_id = o.organism_id AND fl.srcfeature_id = fsrc.feature_id ")
+					.append(" and pf.chrstr='" + contig.replace("chr0", "").replace("chr", "")
+							+ "' and (postable.pos between (pf.startpos " + mpm + ") and (pf.endpos " + ppm + "))")
+					.append(anddb);
+
+			pos.addAll(executeSQL(sql.toString()));
 		}
 		return pos;
-		
+
+	}
+
+	private List getLocusPromoterByContigPositionsPostgres(String contig, Collection posset, int db, String organism,
+			Integer plusminus, String genemodel) {
+
+		posset = AppContext.convertPos2Position(posset);
+
+		String mpm = "";
+		String ppm = "";
+		if (plusminus != null && plusminus.intValue() != 0) {
+			mpm = "-" + plusminus;
+			ppm = "+" + plusminus;
+		}
+
+		String anddb = "";
+		if (db > 0)
+			anddb = " and pf.db=" + db + " ";
+
+		List pos = new ArrayList();
+
+		Set setpos[] = AppContext.setSlicer(new TreeSet(posset), 900);
+		for (int i = 0; i < setpos.length; i++) {
+
+			StringBuffer sql = new StringBuffer();
+			sql.append(
+					"SELECT distinct o.common_name, fsrc.feature_id AS contig_id, fsrc.uniquename AS contig_name,f.name AS name,f.feature_id,fl.fmin,fl.fmax,fl.strand,")
+					.append("o.organism_id, substring(pf.note,1, 1000) AS notes,pf.startpos pfeature_start,pf.endpos pfeature_end,pf.chrstr pfeature_chr,pf.promoter_id pfeature_id,")
+					.append("pf.name pfeature_name,pf.db pfeature_db,ct.name pfeature_type,pf.gene_overlaps ")
+					.append("FROM " + AppContext.getDefaultSchema() + ".feature f, " + AppContext.getDefaultSchema()
+							+ ".feature fsrc, " + AppContext.getDefaultSchema() + ".featureloc fl, "
+							+ AppContext.getDefaultSchema() + ".TMP_PROMOTER_1 pf, " + AppContext.getDefaultSchema()
+							+ ".organism o, " + AppContext.getDefaultSchema() + ".cvterm ct, ")
+
+					// .append( " (select distinct column_value pos from table(sys.odcinumberlist("
+					// + AppContext.toCSV(setpos[i])+ "))) postable ")
+
+					.append(" (select unnest(ARRAY[" + AppContext.toCSV(setpos[i]) + "]) pos)  postable ")
+
+					.append("WHERE pf.gene_id=f.feature_id and pf.type_id=ct.cvterm_id and f.feature_id = fl.feature_id AND f.organism_id = o.organism_id AND fl.srcfeature_id = fsrc.feature_id ")
+					.append(" and pf.chrstr='" + contig.replace("chr0", "").replace("chr", "")
+							+ "' and (postable.pos between (pf.startpos " + mpm + ") and (pf.endpos " + ppm + "))")
+					.append(anddb);
+
+			pos.addAll(executeSQL(sql.toString()));
+		}
+		return pos;
+
 	}
 
 	@Override
-	public List<Locus> getLocusByDescription(TextSearchOptions description,
-			String organism) {
+	public List<Locus> getLocusByDescription(TextSearchOptions description, String organism) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Locus> getLocusByDescription(TextSearchOptions description,
-			String organism, String genemodel) {
+	public List<Locus> getLocusByDescription(TextSearchOptions description, String organism, String genemodel) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym,
-			String organism) {
+	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym, String organism) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym,
-			String organism, String genemodel) {
+	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym, String organism, String genemodel) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
-	
-	
+
 	@Override
 	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel,
 			String featuretype) {
@@ -906,9 +951,10 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 	private Session getSession() {
 		return entityManager.unwrap(Session.class);
 	}
+
 	private List<Locus> executeSQL(String sql) {
-		//System.out.println("executing :" + sql);
-		//log.info("executing :" + sql);
+		// System.out.println("executing :" + sql);
+		// log.info("executing :" + sql);
 		AppContext.debug("executing " + sql);
 		List listResult = getSession().createSQLQuery(sql).addEntity(VLocusPromoter.class).list();
 		AppContext.debug("result " + listResult.size() + " loci");
@@ -929,7 +975,4 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter>
 		return null;
 	}
 
-	
-	
-	
 }

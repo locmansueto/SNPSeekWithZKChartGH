@@ -959,7 +959,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 	@Override
 	public void doAfterCompose(Window comp) throws Exception {
-		// TODO Auto-generated method stub
+		
 		super.doAfterCompose(comp);
 
 		try {
@@ -3446,7 +3446,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 						new org.zkoss.zk.ui.event.EventListener() {
 							@Override
 							public void onEvent(Event e) throws Exception {
-								// TODO Auto-generated method stub
+								
 								if (e.getName().equals(ListboxMessageBox.ON_OK)) {
 									// objSel= getObjSel(); //listboxOptions.getSelectedItem().getValue();
 									// AppContext.debug("objSel=" + objSel);
@@ -4662,7 +4662,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		@Override
 		public String toString() {
-			// TODO Auto-generated method stub
+			
 			return this.left + start + "\t" + end + this.right;
 		}
 
@@ -4698,7 +4698,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		@Override
 		public int compare(Object o1, Object o2) {
-			// TODO Auto-generated method stub
+			
 			GFF snp1 = (GFF) o1;
 			GFF snp2 = (GFF) o2;
 
@@ -8552,7 +8552,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			AppContext.debug("varids = " + table.getVarname().length);
 
 			Set ds = getDataset();
-			Map<BigDecimal, StockSample> mapVarId2Var = varietyfacade.getMapId2Sample(ds);
+			Map<String, Map<BigDecimal, StockSample>> mapDs = varietyfacade.getMapId2Sample(ds);
 
 			if (!isAppend) {
 
@@ -8561,6 +8561,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 					// if(delimiter.equals(",") && varname.contains(","))
 					// varname = "\"" + varname + "\"";
+					Map<BigDecimal, StockSample> mapVarId2Var = mapDs.get(table.getDataset()[i]);
 
 					Variety var = mapVarId2Var.get(BigDecimal.valueOf(table.getVarid()[i]));
 					String phenvalue = "";
@@ -8619,7 +8620,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 					// if(delimiter.equals(",") && varname.contains(","))
 					// varname = "\"" + varname + "\"";
-
+					Map<BigDecimal, StockSample> mapVarId2Var = mapDs.get(table.getDataset()[i]);
 					StockSample var = mapVarId2Var.get(BigDecimal.valueOf(table.getVarid()[i]));
 					String phenvalue = "";
 					if (mapVarid2Phenotype != null) {
@@ -8853,7 +8854,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			// Map<BigDecimal,Variety> mapVarId2Var =
 			// varietyfacade.getMapId2Variety(getDataset());
 			Set ds = getDataset();
-			Map<BigDecimal, StockSample> mapVarId2Sample = varietyfacade.getMapId2Sample(ds);
+			Map<String, Map<BigDecimal, StockSample>> mapDs = varietyfacade.getMapId2Sample(ds);
+
 			for (int i = 0; i < table.getVarid().length; i++) {
 
 				// if(mapVarId2Var.get(table.getVarid()[i])==null) throw new
@@ -8867,7 +8869,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				 * String indvid=irisid.replaceAll(" ","_"); if(getDataset().contains("hdra"))
 				 * indvid+="_"+table.getVarid()[i];
 				 */
-
+				Map<BigDecimal, StockSample> mapVarId2Sample = mapDs.get(table.getDataset()[i]);
 				String indvid = AppContext
 						.createSampleUniqueName(mapVarId2Sample.get(BigDecimal.valueOf(table.getVarid()[i])), ds);
 				buff.append(indvid).append("\t").append(indvid).append("\t0\t0\t0\t-9\t");
@@ -9036,11 +9038,12 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			// <BigDecimal,Variety> mapVarId2Var =
 			// varietyfacade.getMapId2Variety(getDataset());
 			Set ds = getDataset();
-			Map<BigDecimal, StockSample> mapVarId2Sample = varietyfacade.getMapId2Sample(ds);
+			Map<String, Map<BigDecimal, StockSample>> mapDs = varietyfacade.getMapId2Sample(ds);
 
 			Map<String, Integer> mapVarid2Count = new HashMap();
 
 			for (int i = 0; i < table.getVarid().length; i++) {
+				Map<BigDecimal, StockSample> mapVarId2Sample = mapDs.get(table.getDataset()[i]);
 
 				StockSample var = mapVarId2Sample.get(BigDecimal.valueOf(table.getVarid()[i]));
 
@@ -9610,6 +9613,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			Map mapSubpop2Allele2Count = new TreeMap();
 			Map mapSubpop2Genotype2Count = new TreeMap();
 
+			AppContext.debug("size: " + model.getSize());
 			for (int j = 0; j < model.getSize(); j++) {
 
 				// String subpop = model.getCellAt( model.getElementAt(j), 2).toString();
@@ -10559,7 +10563,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		@Override
 		public void sort(Comparator cmpr, boolean ascending) {
-			// TODO Auto-generated method stub
+			
 
 			try {
 				// sort biglistboxarray
@@ -10581,7 +10585,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		@Override
 		public String getSortDirection(Comparator cmpr) {
-			// TODO Auto-generated method stub
+			
 
 			if (Objects.equals(_sorting, cmpr))
 				return _sortDir ? "ascending" : "descending";
@@ -10684,7 +10688,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		@Override
 		public void render(Row row, Object data, int index) throws Exception {
-			// TODO Auto-generated method stub
+			
 
 			Object[] obj = (Object[]) data;
 

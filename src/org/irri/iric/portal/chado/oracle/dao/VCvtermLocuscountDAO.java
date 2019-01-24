@@ -23,7 +23,8 @@ public interface VCvtermLocuscountDAO extends JpaDao<VCvtermLocuscount>, CvTermL
 	 * JPQL Query - findVCvtermLocuscountByCvTermContaining
 	 *
 	 */
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvTermContaining(String cvTerm, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvTermContaining(String cvTerm, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvtermLocuscountByCvtermId
@@ -35,7 +36,8 @@ public interface VCvtermLocuscountDAO extends JpaDao<VCvtermLocuscount>, CvTermL
 	 * JPQL Query - findVCvtermLocuscountByCvtermId
 	 *
 	 */
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvtermId(Integer cvtermId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvtermId(Integer cvtermId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvtermLocuscountByCvTerm
@@ -47,7 +49,8 @@ public interface VCvtermLocuscountDAO extends JpaDao<VCvtermLocuscount>, CvTermL
 	 * JPQL Query - findVCvtermLocuscountByCvTerm
 	 *
 	 */
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvTerm(String cvTerm_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvTerm(String cvTerm_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvtermLocuscountByCvName
@@ -59,7 +62,8 @@ public interface VCvtermLocuscountDAO extends JpaDao<VCvtermLocuscount>, CvTermL
 	 * JPQL Query - findVCvtermLocuscountByCvName
 	 *
 	 */
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvName(String cvName, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvName(String cvName, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVCvtermLocuscounts
@@ -83,7 +87,8 @@ public interface VCvtermLocuscountDAO extends JpaDao<VCvtermLocuscount>, CvTermL
 	 * JPQL Query - findVCvtermLocuscountByLocusCount
 	 *
 	 */
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByLocusCount(Integer locusCount, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByLocusCount(Integer locusCount, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvtermLocuscountByCvAccContaining
@@ -95,7 +100,8 @@ public interface VCvtermLocuscountDAO extends JpaDao<VCvtermLocuscount>, CvTermL
 	 * JPQL Query - findVCvtermLocuscountByCvAccContaining
 	 *
 	 */
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvAccContaining(String cvAcc, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvAccContaining(String cvAcc, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvtermLocuscountByCvNameContaining
@@ -107,19 +113,22 @@ public interface VCvtermLocuscountDAO extends JpaDao<VCvtermLocuscount>, CvTermL
 	 * JPQL Query - findVCvtermLocuscountByCvNameContaining
 	 *
 	 */
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvNameContaining(String cvName_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvNameContaining(String cvName_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvtermLocuscountByPrimaryKey
 	 *
 	 */
-	public VCvtermLocuscount findVCvtermLocuscountByPrimaryKey(Integer organismId, Integer cvtermId_1) throws DataAccessException;
+	public VCvtermLocuscount findVCvtermLocuscountByPrimaryKey(Integer organismId, Integer cvtermId_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvtermLocuscountByPrimaryKey
 	 *
 	 */
-	public VCvtermLocuscount findVCvtermLocuscountByPrimaryKey(Integer organismId, Integer cvtermId_1, int startResult, int maxRows) throws DataAccessException;
+	public VCvtermLocuscount findVCvtermLocuscountByPrimaryKey(Integer organismId, Integer cvtermId_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvtermLocuscountByCvAcc
@@ -131,7 +140,8 @@ public interface VCvtermLocuscountDAO extends JpaDao<VCvtermLocuscount>, CvTermL
 	 * JPQL Query - findVCvtermLocuscountByCvAcc
 	 *
 	 */
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvAcc(String cvAcc_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByCvAcc(String cvAcc_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvtermLocuscountByOrganismId
@@ -143,6 +153,7 @@ public interface VCvtermLocuscountDAO extends JpaDao<VCvtermLocuscount>, CvTermL
 	 * JPQL Query - findVCvtermLocuscountByOrganismId
 	 *
 	 */
-	public Set<VCvtermLocuscount> findVCvtermLocuscountByOrganismId(Integer organismId_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvtermLocuscount> findVCvtermLocuscountByOrganismId(Integer organismId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

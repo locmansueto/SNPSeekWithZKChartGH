@@ -13,7 +13,7 @@ import org.springframework.dao.DataAccessException;
  * DAO to manage VLocusInteraction entities.
  * 
  */
-public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , FeatureInteractionDAO {
+public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction>, FeatureInteractionDAO {
 
 	/**
 	 * JPQL Query - findVLocusInteractionByQfeatureId
@@ -25,7 +25,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByQfeatureId
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByQfeatureId(BigDecimal qfeatureId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByQfeatureId(BigDecimal qfeatureId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByOrganismId
@@ -37,7 +38,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByOrganismId
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByOrganismId(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByOrganismId(BigDecimal organismId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByNameContaining
@@ -49,7 +51,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByNameContaining
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByNameContaining(String name, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByFmax
@@ -61,7 +64,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByFmax
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByFmax(Integer fmax, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByFmax(Integer fmax, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByNotesContaining
@@ -73,7 +77,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByNotesContaining
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByNotesContaining(String notes, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByNotesContaining(String notes, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByFmin
@@ -85,7 +90,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByFmin
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByFmin(Integer fmin, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByFmin(Integer fmin, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByNotes
@@ -97,7 +103,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByNotes
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByNotes(String notes_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByNotes(String notes_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByQfeatureName
@@ -109,7 +116,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByQfeatureName
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByQfeatureName(String qfeatureName, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByQfeatureName(String qfeatureName, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByPrimaryKey
@@ -121,7 +129,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByPrimaryKey
 	 *
 	 */
-	public VLocusInteraction findVLocusInteractionByPrimaryKey(BigDecimal featureId, int startResult, int maxRows) throws DataAccessException;
+	public VLocusInteraction findVLocusInteractionByPrimaryKey(BigDecimal featureId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByCommonName
@@ -133,7 +142,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByCommonName
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByCommonName(String commonName, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByCommonName(String commonName, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByContigId
@@ -145,7 +155,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByContigId
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByContigId(BigDecimal contigId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByContigId(BigDecimal contigId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByContigName
@@ -157,19 +168,22 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByContigName
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByContigName(String contigName, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByContigName(String contigName, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByContigNameContaining
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByContigNameContaining(String contigName_1) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByContigNameContaining(String contigName_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByContigNameContaining
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByContigNameContaining(String contigName_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByContigNameContaining(String contigName_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVLocusInteractions
@@ -187,13 +201,15 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByCommonNameContaining
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByCommonNameContaining(String commonName_1) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByCommonNameContaining(String commonName_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByCommonNameContaining
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByCommonNameContaining(String commonName_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByCommonNameContaining(String commonName_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByStrand
@@ -205,7 +221,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByStrand
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByStrand(Integer strand, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByStrand(Integer strand, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByName
@@ -217,7 +234,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByName
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByName(String name_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByName(String name_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByFeatureId
@@ -229,7 +247,8 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByFeatureId
 	 *
 	 */
-	public VLocusInteraction findVLocusInteractionByFeatureId(BigDecimal featureId_1, int startResult, int maxRows) throws DataAccessException;
+	public VLocusInteraction findVLocusInteractionByFeatureId(BigDecimal featureId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByScore
@@ -241,18 +260,21 @@ public interface VLocusInteractionDAO extends JpaDao<VLocusInteraction> , Featur
 	 * JPQL Query - findVLocusInteractionByScore
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByScore(BigDecimal score, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByScore(BigDecimal score, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByQfeatureNameContaining
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByQfeatureNameContaining(String qfeatureName_1) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByQfeatureNameContaining(String qfeatureName_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVLocusInteractionByQfeatureNameContaining
 	 *
 	 */
-	public Set<VLocusInteraction> findVLocusInteractionByQfeatureNameContaining(String qfeatureName_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VLocusInteraction> findVLocusInteractionByQfeatureNameContaining(String qfeatureName_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 }

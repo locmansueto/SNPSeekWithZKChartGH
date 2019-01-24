@@ -34,10 +34,12 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 		implements VLocusIntxnRicenetv2DAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VLocusIntxnRicenetv2.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VLocusIntxnRicenetv2.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Production
@@ -55,7 +57,7 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -75,7 +77,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 *
 	 */
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByContigNameContaining(String contigName) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByContigNameContaining(String contigName)
+			throws DataAccessException {
 
 		return findVLocusIntxnRicenetv2ByContigNameContaining(contigName, -1, -1);
 	}
@@ -87,8 +90,10 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByContigNameContaining(String contigName, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByContigNameContaining", startResult, maxRows, contigName);
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByContigNameContaining(String contigName, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByContigNameContaining", startResult, maxRows,
+				contigName);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
 
@@ -97,7 +102,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 *
 	 */
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByQfeatureId(Integer qfeatureId) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByQfeatureId(Integer qfeatureId)
+			throws DataAccessException {
 
 		return findVLocusIntxnRicenetv2ByQfeatureId(qfeatureId, -1, -1);
 	}
@@ -109,7 +115,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByQfeatureId(Integer qfeatureId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByQfeatureId(Integer qfeatureId, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByQfeatureId", startResult, maxRows, qfeatureId);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -119,7 +126,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 *
 	 */
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByCommonNameContaining(String commonName) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByCommonNameContaining(String commonName)
+			throws DataAccessException {
 
 		return findVLocusIntxnRicenetv2ByCommonNameContaining(commonName, -1, -1);
 	}
@@ -131,8 +139,10 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByCommonNameContaining(String commonName, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByCommonNameContaining", startResult, maxRows, commonName);
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByCommonNameContaining(String commonName, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByCommonNameContaining", startResult, maxRows,
+				commonName);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
 
@@ -141,7 +151,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 *
 	 */
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByFmax(java.math.BigDecimal fmax) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByFmax(java.math.BigDecimal fmax)
+			throws DataAccessException {
 
 		return findVLocusIntxnRicenetv2ByFmax(fmax, -1, -1);
 	}
@@ -153,7 +164,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByFmax(java.math.BigDecimal fmax, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByFmax(java.math.BigDecimal fmax, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByFmax", startResult, maxRows, fmax);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -175,7 +187,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByName(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByName(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByName", startResult, maxRows, name);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -185,7 +198,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 *
 	 */
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByOrganismId(Integer organismId) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByOrganismId(Integer organismId)
+			throws DataAccessException {
 
 		return findVLocusIntxnRicenetv2ByOrganismId(organismId, -1, -1);
 	}
@@ -197,7 +211,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByOrganismId(Integer organismId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByOrganismId(Integer organismId, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByOrganismId", startResult, maxRows, organismId);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -207,7 +222,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 *
 	 */
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByFmin(java.math.BigDecimal fmin) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByFmin(java.math.BigDecimal fmin)
+			throws DataAccessException {
 
 		return findVLocusIntxnRicenetv2ByFmin(fmin, -1, -1);
 	}
@@ -219,7 +235,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByFmin(java.math.BigDecimal fmin, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByFmin(java.math.BigDecimal fmin, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByFmin", startResult, maxRows, fmin);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -229,7 +246,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 *
 	 */
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByScore(java.math.BigDecimal score) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByScore(java.math.BigDecimal score)
+			throws DataAccessException {
 
 		return findVLocusIntxnRicenetv2ByScore(score, -1, -1);
 	}
@@ -241,7 +259,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByScore(java.math.BigDecimal score, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByScore(java.math.BigDecimal score, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByScore", startResult, maxRows, score);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -263,7 +282,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByNotes(String notes, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByNotes(String notes, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByNotes", startResult, maxRows, notes);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -273,7 +293,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 *
 	 */
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByStrand(java.math.BigDecimal strand) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByStrand(java.math.BigDecimal strand)
+			throws DataAccessException {
 
 		return findVLocusIntxnRicenetv2ByStrand(strand, -1, -1);
 	}
@@ -285,7 +306,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByStrand(java.math.BigDecimal strand, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByStrand(java.math.BigDecimal strand, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByStrand", startResult, maxRows, strand);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -307,7 +329,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findAllVLocusIntxnRicenetv2s(int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findAllVLocusIntxnRicenetv2s(int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findAllVLocusIntxnRicenetv2s", startResult, maxRows);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -317,7 +340,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 *
 	 */
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByContigName(String contigName) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByContigName(String contigName)
+			throws DataAccessException {
 
 		return findVLocusIntxnRicenetv2ByContigName(contigName, -1, -1);
 	}
@@ -329,7 +353,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByContigName(String contigName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByContigName(String contigName, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByContigName", startResult, maxRows, contigName);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -339,7 +364,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 *
 	 */
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByCommonName(String commonName) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByCommonName(String commonName)
+			throws DataAccessException {
 
 		return findVLocusIntxnRicenetv2ByCommonName(commonName, -1, -1);
 	}
@@ -351,7 +377,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByCommonName(String commonName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByCommonName(String commonName, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByCommonName", startResult, maxRows, commonName);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -361,7 +388,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 *
 	 */
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByNotesContaining(String notes) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByNotesContaining(String notes)
+			throws DataAccessException {
 
 		return findVLocusIntxnRicenetv2ByNotesContaining(notes, -1, -1);
 	}
@@ -373,7 +401,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByNotesContaining(String notes, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByNotesContaining(String notes, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByNotesContaining", startResult, maxRows, notes);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -395,7 +424,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByNameContaining(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByNameContaining", startResult, maxRows, name);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -417,7 +447,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByContigId(Integer contigId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByContigId(Integer contigId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByContigId", startResult, maxRows, contigId);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -438,7 +469,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 */
 
 	@Transactional
-	public VLocusIntxnRicenetv2 findVLocusIntxnRicenetv2ByFeatureId(Integer featureId, int startResult, int maxRows) throws DataAccessException {
+	public VLocusIntxnRicenetv2 findVLocusIntxnRicenetv2ByFeatureId(Integer featureId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVLocusIntxnRicenetv2ByFeatureId", startResult, maxRows, featureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VLocusIntxnRicenetv2) query.getSingleResult();
@@ -452,7 +484,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 *
 	 */
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByQfeatureNameContaining(String qfeatureName) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByQfeatureNameContaining(String qfeatureName)
+			throws DataAccessException {
 
 		return findVLocusIntxnRicenetv2ByQfeatureNameContaining(qfeatureName, -1, -1);
 	}
@@ -464,8 +497,10 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByQfeatureNameContaining(String qfeatureName, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByQfeatureNameContaining", startResult, maxRows, qfeatureName);
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByQfeatureNameContaining(String qfeatureName,
+			int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByQfeatureNameContaining", startResult, maxRows,
+				qfeatureName);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
 
@@ -485,7 +520,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 */
 
 	@Transactional
-	public VLocusIntxnRicenetv2 findVLocusIntxnRicenetv2ByPrimaryKey(Integer featureId, int startResult, int maxRows) throws DataAccessException {
+	public VLocusIntxnRicenetv2 findVLocusIntxnRicenetv2ByPrimaryKey(Integer featureId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVLocusIntxnRicenetv2ByPrimaryKey", startResult, maxRows, featureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VLocusIntxnRicenetv2) query.getSingleResult();
@@ -511,7 +547,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByRank(Integer rank, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByRank(Integer rank, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByRank", startResult, maxRows, rank);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -533,7 +570,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByDenserank(Integer denserank, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByDenserank(Integer denserank, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByDenserank", startResult, maxRows, denserank);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
@@ -543,7 +581,8 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	 *
 	 */
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByQfeatureName(String qfeatureName) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByQfeatureName(String qfeatureName)
+			throws DataAccessException {
 
 		return findVLocusIntxnRicenetv2ByQfeatureName(qfeatureName, -1, -1);
 	}
@@ -555,13 +594,16 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByQfeatureName(String qfeatureName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusIntxnRicenetv2> findVLocusIntxnRicenetv2ByQfeatureName(String qfeatureName, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVLocusIntxnRicenetv2ByQfeatureName", startResult, maxRows, qfeatureName);
 		return new LinkedHashSet<VLocusIntxnRicenetv2>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -571,59 +613,76 @@ public class VLocusIntxnRicenetv2DAOImpl extends AbstractJpaDao<VLocusIntxnRicen
 	}
 
 	@Override
-	public List<Locus> getInteractingFeatures(Collection<Locus> colLocus,
-			int type, Integer max) {
-		// TODO Auto-generated method stub
+	public List<Locus> getInteractingFeatures(Collection<Locus> colLocus, int type, Integer max) {
 		
-		Set locisId=new TreeSet();
+
+		Set locisId = new TreeSet();
 		Iterator<Locus> itLoc = colLocus.iterator();
-		while(itLoc.hasNext()) locisId.add( itLoc.next().getFeatureId() );
-		
-		if(!AppContext.isBypassViews()) {
-			Query query = createNamedQuery("findVLocusIntxnRicenetv2ByQfeatureIdIn",-1,-1, locisId);
-			if(max!=null) query.setMaxResults(max);
+		while (itLoc.hasNext())
+			locisId.add(itLoc.next().getFeatureId());
+
+		if (!AppContext.isBypassViews()) {
+			Query query = createNamedQuery("findVLocusIntxnRicenetv2ByQfeatureIdIn", -1, -1, locisId);
+			if (max != null)
+				query.setMaxResults(max);
 			return query.getResultList();
-		}
-		else {
-		
-			 //(select unnest(ARRAY[2750823,14314294,36051774,43161802]) pos)  postable
-			 //exists (  select t.column_value from (select unnest(ARRAY[2750823, 14314294, 36051774, 43161802])column_value) t where t.column_value=position) ) foo
-			
-			//SELECT DISTINCT o.common_name,fsrc.feature_id AS contig_id,fsrc.uniquename AS contig_name,f.name,f.feature_id, fl.fmin,fl.fmax,fl.strand,o.organism_id,"substring"(fp.value, 1000) AS notes,fq.feature_id AS qfeature_id,fq.name AS qfeature_name,fint.score,fint.rank,fint.denserank,ev.max AS maxscore,ev.count AS maxrank FROM feature fq, tmp_intxn_score fint,tmp_intxn_evidence ev,organism o,feature fsrc,featureloc fl,  (select unnest(ARRAY[55042]) feature_id)  fquery,  feature f LEFT JOIN featureprop fp ON f.feature_id = fp.feature_id AND (fp.type_id IN ( SELECT cvterm.cvterm_id  FROM cvterm WHERE cvterm.name = 'Note'))  WHERE ( (fint.gene1_id = fquery.feature_id AND fint.gene2_id = f.feature_id) OR (fint.gene2_id = fquery.feature_id AND fint.gene1_id = f.feature_id))  AND fint.intxn_evidence_id = 1 AND f.feature_id = fl.feature_id AND f.organism_id = o.organism_id AND fl.srcfeature_id = fsrc.feature_id AND ev.intxn_evidence_id = fint.intxn_evidence_id  
-			//		and fquery.feature_id=fq.feature_id limit 5;
-			
+		} else {
+
+			// (select unnest(ARRAY[2750823,14314294,36051774,43161802]) pos) postable
+			// exists ( select t.column_value from (select unnest(ARRAY[2750823, 14314294,
+			// 36051774, 43161802])column_value) t where t.column_value=position) ) foo
+
+			// SELECT DISTINCT o.common_name,fsrc.feature_id AS contig_id,fsrc.uniquename AS
+			// contig_name,f.name,f.feature_id,
+			// fl.fmin,fl.fmax,fl.strand,o.organism_id,"substring"(fp.value, 1000) AS
+			// notes,fq.feature_id AS qfeature_id,fq.name AS
+			// qfeature_name,fint.score,fint.rank,fint.denserank,ev.max AS maxscore,ev.count
+			// AS maxrank FROM feature fq, tmp_intxn_score fint,tmp_intxn_evidence
+			// ev,organism o,feature fsrc,featureloc fl, (select unnest(ARRAY[55042])
+			// feature_id) fquery, feature f LEFT JOIN featureprop fp ON f.feature_id =
+			// fp.feature_id AND (fp.type_id IN ( SELECT cvterm.cvterm_id FROM cvterm WHERE
+			// cvterm.name = 'Note')) WHERE ( (fint.gene1_id = fquery.feature_id AND
+			// fint.gene2_id = f.feature_id) OR (fint.gene2_id = fquery.feature_id AND
+			// fint.gene1_id = f.feature_id)) AND fint.intxn_evidence_id = 1 AND
+			// f.feature_id = fl.feature_id AND f.organism_id = o.organism_id AND
+			// fl.srcfeature_id = fsrc.feature_id AND ev.intxn_evidence_id =
+			// fint.intxn_evidence_id
+			// and fquery.feature_id=fq.feature_id limit 5;
+
 			/*
-		 String sql="SELECT DISTINCT o.common_name,fsrc.feature_id AS contig_id,fsrc.uniquename AS contig_name,f.name," +
-		    "f.feature_id, fl.fmin,fl.fmax,fl.strand,o.organism_id,substring(fp.value, 1000) AS notes,fq.feature_id AS qfeature_id,fq.name AS qfeature_name," +
-		    "fint.score,fint.rank,fint.denserank,ev.max AS maxscore,ev.count AS maxrank FROM feature fq,tmp_intxn_score fint,tmp_intxn_evidence ev,organism o,feature fsrc,"+
-		    "featureloc fl, " +
-		    " (select unnest(ARRAY" + locisId + ") queryfid)  queryfidtable, " +
-		    " feature f " +
-		    "LEFT JOIN featureprop fp ON f.feature_id = fp.feature_id AND (fp.type_id IN ( SELECT cvterm.cvterm_id " +
-		          " FROM cvterm WHERE cvterm.name = 'Note')) " + 
-		  " WHERE queryfidtable.queryfid=fq.feature_id " +
-		  " AND fint.INTXN_EVIDENCE_ID=1 " +
-		  " AND ( (fint.gene1_id = fq.feature_id AND fint.gene2_id = f.feature_id) OR (fint.gene2_id = fq.feature_id AND fint.gene1_id = f.feature_id)) " +
-		  " AND fint.intxn_evidence_id = 1 AND f.feature_id = fl.feature_id AND f.organism_id = o.organism_id AND fl.srcfeature_id = fsrc.feature_id AND ev.intxn_evidence_id = fint.intxn_evidence_id " +
-		  (max!=null?" limit "+max:"");
-		  */
-		String sql="SELECT DISTINCT o.common_name,fsrc.feature_id AS contig_id,fsrc.uniquename AS contig_name,f.name,f.feature_id, fl.fmin,fl.fmax,fl.strand,o.organism_id, substring(fp.value, 1000) AS notes,fq.feature_id AS qfeature_id,fq.name AS qfeature_name,fint.score,fint.rank,fint.denserank,ev.max AS maxscore,ev.count AS maxrank FROM feature fq, tmp_intxn_score fint,tmp_intxn_evidence ev,organism o,feature fsrc,featureloc fl,  (select unnest(ARRAY" + 
-				locisId + ") feature_id)  fquery,  feature f LEFT JOIN featureprop fp ON f.feature_id = fp.feature_id AND (fp.type_id IN ( SELECT cvterm.cvterm_id  FROM cvterm WHERE cvterm.name = 'Note'))  WHERE ( (fint.gene1_id = fquery.feature_id AND fint.gene2_id = f.feature_id) OR (fint.gene2_id = fquery.feature_id AND fint.gene1_id = f.feature_id))  AND fint.intxn_evidence_id = 1 AND f.feature_id = fl.feature_id AND f.organism_id = o.organism_id AND fl.srcfeature_id = fsrc.feature_id AND ev.intxn_evidence_id = fint.intxn_evidence_id " +  
-				" and fquery.feature_id=fq.feature_id " + (max!=null?" limit "+max:"");
-		  return AppContext.executeSQL(entityManager,VLocusIntxnRicenetv2.class, sql);
+			 * String
+			 * sql="SELECT DISTINCT o.common_name,fsrc.feature_id AS contig_id,fsrc.uniquename AS contig_name,f.name,"
+			 * +
+			 * "f.feature_id, fl.fmin,fl.fmax,fl.strand,o.organism_id,substring(fp.value, 1000) AS notes,fq.feature_id AS qfeature_id,fq.name AS qfeature_name,"
+			 * +
+			 * "fint.score,fint.rank,fint.denserank,ev.max AS maxscore,ev.count AS maxrank FROM feature fq,tmp_intxn_score fint,tmp_intxn_evidence ev,organism o,feature fsrc,"
+			 * + "featureloc fl, " + " (select unnest(ARRAY" + locisId +
+			 * ") queryfid)  queryfidtable, " + " feature f " +
+			 * "LEFT JOIN featureprop fp ON f.feature_id = fp.feature_id AND (fp.type_id IN ( SELECT cvterm.cvterm_id "
+			 * + " FROM cvterm WHERE cvterm.name = 'Note')) " +
+			 * " WHERE queryfidtable.queryfid=fq.feature_id " +
+			 * " AND fint.INTXN_EVIDENCE_ID=1 " +
+			 * " AND ( (fint.gene1_id = fq.feature_id AND fint.gene2_id = f.feature_id) OR (fint.gene2_id = fq.feature_id AND fint.gene1_id = f.feature_id)) "
+			 * +
+			 * " AND fint.intxn_evidence_id = 1 AND f.feature_id = fl.feature_id AND f.organism_id = o.organism_id AND fl.srcfeature_id = fsrc.feature_id AND ev.intxn_evidence_id = fint.intxn_evidence_id "
+			 * + (max!=null?" limit "+max:"");
+			 */
+			String sql = "SELECT DISTINCT o.common_name,fsrc.feature_id AS contig_id,fsrc.uniquename AS contig_name,f.name,f.feature_id, fl.fmin,fl.fmax,fl.strand,o.organism_id, substring(fp.value, 1000) AS notes,fq.feature_id AS qfeature_id,fq.name AS qfeature_name,fint.score,fint.rank,fint.denserank,ev.max AS maxscore,ev.count AS maxrank FROM feature fq, tmp_intxn_score fint,tmp_intxn_evidence ev,organism o,feature fsrc,featureloc fl,  (select unnest(ARRAY"
+					+ locisId
+					+ ") feature_id)  fquery,  feature f LEFT JOIN featureprop fp ON f.feature_id = fp.feature_id AND (fp.type_id IN ( SELECT cvterm.cvterm_id  FROM cvterm WHERE cvterm.name = 'Note'))  WHERE ( (fint.gene1_id = fquery.feature_id AND fint.gene2_id = f.feature_id) OR (fint.gene2_id = fquery.feature_id AND fint.gene1_id = f.feature_id))  AND fint.intxn_evidence_id = 1 AND f.feature_id = fl.feature_id AND f.organism_id = o.organism_id AND fl.srcfeature_id = fsrc.feature_id AND ev.intxn_evidence_id = fint.intxn_evidence_id "
+					+ " and fquery.feature_id=fq.feature_id " + (max != null ? " limit " + max : "");
+			return AppContext.executeSQL(entityManager, VLocusIntxnRicenetv2.class, sql);
 		}
-		
+
 	}
-	
-/*
-	private Session getSession() {
-		return entityManager.unwrap(Session.class);
-	}
-	private List executeSQL(String sql) 
-	{	if(AppContext.isLocalhost()) AppContext.debug("executing :" + sql);
-		//log.info("executing :" + sql);
-		return  getSession().createSQLQuery(sql).addEntity(VLocusIntxnRicenetv2.class).list();
-	}
-	*/
-	
+
+	/*
+	 * private Session getSession() { return entityManager.unwrap(Session.class); }
+	 * private List executeSQL(String sql) { if(AppContext.isLocalhost())
+	 * AppContext.debug("executing :" + sql); //log.info("executing :" + sql);
+	 * return
+	 * getSession().createSQLQuery(sql).addEntity(VLocusIntxnRicenetv2.class).list()
+	 * ; }
+	 */
+
 }

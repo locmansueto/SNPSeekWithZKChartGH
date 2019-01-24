@@ -24,7 +24,8 @@ public interface VSnpGenotypeRDBMSDAO extends JpaDao<VSnpGenotypeRDBMS>, SnpsStr
 	 * JPQL Query - findVSnpGenotypeRDBMSByRDBMSStockId
 	 *
 	 */
-	public VSnpGenotypeRDBMS findVSnpGenotypeRDBMSByRDBMSStockId(BigDecimal RDBMSStockId, int startResult, int maxRows) throws DataAccessException;
+	public VSnpGenotypeRDBMS findVSnpGenotypeRDBMSByRDBMSStockId(BigDecimal RDBMSStockId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpGenotypeRDBMSByRefcallContaining
@@ -36,7 +37,8 @@ public interface VSnpGenotypeRDBMSDAO extends JpaDao<VSnpGenotypeRDBMS>, SnpsStr
 	 * JPQL Query - findVSnpGenotypeRDBMSByRefcallContaining
 	 *
 	 */
-	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByRefcallContaining(String refcall, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByRefcallContaining(String refcall, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVSnpGenotypeRDBMSs
@@ -60,7 +62,8 @@ public interface VSnpGenotypeRDBMSDAO extends JpaDao<VSnpGenotypeRDBMS>, SnpsStr
 	 * JPQL Query - findVSnpGenotypeRDBMSByAllele2Containing
 	 *
 	 */
-	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByAllele2Containing(String allele2, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByAllele2Containing(String allele2, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpGenotypeRDBMSByMismatch
@@ -72,7 +75,8 @@ public interface VSnpGenotypeRDBMSDAO extends JpaDao<VSnpGenotypeRDBMS>, SnpsStr
 	 * JPQL Query - findVSnpGenotypeRDBMSByMismatch
 	 *
 	 */
-	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByMismatch(BigDecimal mismatch, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByMismatch(BigDecimal mismatch, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpGenotypeRDBMSByAllele1Containing
@@ -84,7 +88,8 @@ public interface VSnpGenotypeRDBMSDAO extends JpaDao<VSnpGenotypeRDBMS>, SnpsStr
 	 * JPQL Query - findVSnpGenotypeRDBMSByAllele1Containing
 	 *
 	 */
-	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByAllele1Containing(String allele1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByAllele1Containing(String allele1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpGenotypeRDBMSByAllele2
@@ -96,7 +101,8 @@ public interface VSnpGenotypeRDBMSDAO extends JpaDao<VSnpGenotypeRDBMS>, SnpsStr
 	 * JPQL Query - findVSnpGenotypeRDBMSByAllele2
 	 *
 	 */
-	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByAllele2(String allele2_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByAllele2(String allele2_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpGenotypeRDBMSByRefcall
@@ -108,7 +114,8 @@ public interface VSnpGenotypeRDBMSDAO extends JpaDao<VSnpGenotypeRDBMS>, SnpsStr
 	 * JPQL Query - findVSnpGenotypeRDBMSByRefcall
 	 *
 	 */
-	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByRefcall(String refcall_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByRefcall(String refcall_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpGenotypeRDBMSByPrimaryKey
@@ -120,7 +127,8 @@ public interface VSnpGenotypeRDBMSDAO extends JpaDao<VSnpGenotypeRDBMS>, SnpsStr
 	 * JPQL Query - findVSnpGenotypeRDBMSByPrimaryKey
 	 *
 	 */
-	public VSnpGenotypeRDBMS findVSnpGenotypeRDBMSByPrimaryKey(BigDecimal RDBMSStockId_1, int startResult, int maxRows) throws DataAccessException;
+	public VSnpGenotypeRDBMS findVSnpGenotypeRDBMSByPrimaryKey(BigDecimal RDBMSStockId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpGenotypeRDBMSByAllele1
@@ -132,6 +140,7 @@ public interface VSnpGenotypeRDBMSDAO extends JpaDao<VSnpGenotypeRDBMS>, SnpsStr
 	 * JPQL Query - findVSnpGenotypeRDBMSByAllele1
 	 *
 	 */
-	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByAllele1(String allele1_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpGenotypeRDBMS> findVSnpGenotypeRDBMSByAllele1(String allele1_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

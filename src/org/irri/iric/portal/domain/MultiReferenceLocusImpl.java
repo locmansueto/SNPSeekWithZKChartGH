@@ -6,100 +6,100 @@ import java.math.BigDecimal;
 
 /**
  * Implementation of MultiReferenceLocus
+ * 
  * @author LMansueto
  *
  */
-public class MultiReferenceLocusImpl implements  MultiReferenceLocus {
-	
+public class MultiReferenceLocusImpl implements MultiReferenceLocus {
+
 	private String organism;
 	private String contig;
 	private Integer start;
 	private Integer end;
 	private Integer strand;
 	private String uniquename;
-	
-	
-	public MultiReferenceLocusImpl(String organism, String contig, Integer start,
-			Integer end, Integer strand) {
+
+	public MultiReferenceLocusImpl(String organism, String contig, Integer start, Integer end, Integer strand) {
 		super();
 		this.organism = organism;
 		this.contig = contig;
 		this.start = start;
 		this.end = end;
 		this.strand = strand;
-		
+
 	}
-	public MultiReferenceLocusImpl(String organism, String contig, Integer start,
-			Integer end, Integer strand, String name) {
+
+	public MultiReferenceLocusImpl(String organism, String contig, Integer start, Integer end, Integer strand,
+			String name) {
 		super();
 		this.organism = organism;
 		this.contig = contig;
 		this.start = start;
 		this.end = end;
 		this.strand = strand;
-		this.uniquename=name;
-		
+		this.uniquename = name;
+
 	}
 
 	@Override
 	public String getOrganism() {
-		// TODO Auto-generated method stub
+		
 		return organism;
 	}
 
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
+		
 		return contig;
 	}
 
 	@Override
 	public Integer getFmin() {
-		// TODO Auto-generated method stub
+		
 		return start;
 	}
 
 	@Override
 	public Integer getFmax() {
-		// TODO Auto-generated method stub
+		
 		return end;
 	}
 
 	@Override
 	public Integer getStrand() {
-		// TODO Auto-generated method stub
+		
 		return strand;
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return "(" + organism + " " + contig + " " + start + "-" + end  + " " + strand + ")";
+		
+		return "(" + organism + " " + contig + " " + start + "-" + end + " " + strand + ")";
 	}
 
 	@Override
 	public String getUniquename() {
-		// TODO Auto-generated method stub
+		
 		return this.uniquename;
 	}
 
 	@Override
 	public Long getChr() {
-		// TODO Auto-generated method stub
+		
 		return Long.valueOf(getContig());
 	}
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
+
 	@Override
 	public BigDecimal getFeatureId() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
-	
 
 	/**
 	 */
@@ -107,47 +107,49 @@ public class MultiReferenceLocusImpl implements  MultiReferenceLocus {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		//result = (int) (prime * result + ((featureId == null) ? 0 : featureId.hashCode()));
+		// result = (int) (prime * result + ((featureId == null) ? 0 :
+		// featureId.hashCode()));
 		result = (int) (prime * result + ((organism == null) ? 0 : organism.hashCode()));
 		result = (int) (prime * result + ((contig == null) ? 0 : contig.hashCode()));
 		result = (int) (prime * result + ((start == null) ? 0 : start.hashCode()));
 		result = (int) (prime * result + ((end == null) ? 0 : end.hashCode()));
 		return result;
 	}
-	
+
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		Locus l1=(Locus)this;
-		Locus l2=(Locus)o;
-		//int ret = l1.getOrganismId().compareTo(l2.getOrganismId());
-		//if(ret!=0) return ret;
+		
+		Locus l1 = (Locus) this;
+		Locus l2 = (Locus) o;
+		// int ret = l1.getOrganismId().compareTo(l2.getOrganismId());
+		// if(ret!=0) return ret;
 		int ret = l1.getContig().compareTo(l2.getContig());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmin().compareTo(l2.getFmin());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmax().compareTo(l2.getFmax());
 		return ret;
-		
+
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return compareTo(obj)==0;
+		
+		return compareTo(obj) == 0;
 	}
+
 	/*
-	@Override
-	public String printFields(String delimiter) {
-		// TODO Auto-generated method stub=
-		return getUniquename() + delimiter + getContig() + delimiter + getFmin() + delimiter + getFmax() + delimiter
-				+ getStrand() + delimiter + getOrganism() + delimiter + getDescription();
-	}
-	*/
+	 * @Override public String printFields(String delimiter) { // TODO
+	 * Auto-generated method stub= return getUniquename() + delimiter + getContig()
+	 * + delimiter + getFmin() + delimiter + getFmax() + delimiter + getStrand() +
+	 * delimiter + getOrganism() + delimiter + getDescription(); }
+	 */
 	@Override
 	public String getFeatureType() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }

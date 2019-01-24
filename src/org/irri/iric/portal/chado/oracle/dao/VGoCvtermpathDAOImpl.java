@@ -26,17 +26,18 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */
 @Repository("VGoCvtermpathDAO")
-//@Repository("CvTermPathDAO")
+// @Repository("CvTermPathDAO")
 
 @Transactional
-public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
-		implements VGoCvtermpathDAO {
+public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath> implements VGoCvtermpathDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VGoCvtermpath.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VGoCvtermpath.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit Production
@@ -54,7 +55,7 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -86,7 +87,8 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoCvtermpath> findVGoCvtermpathBySubjCvtermContaining(String subjCvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoCvtermpath> findVGoCvtermpathBySubjCvtermContaining(String subjCvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoCvtermpathBySubjCvtermContaining", startResult, maxRows, subjCvterm);
 		return new LinkedHashSet<VGoCvtermpath>(query.getResultList());
 	}
@@ -108,7 +110,8 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoCvtermpath> findVGoCvtermpathByObjAccContaining(String objAcc, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoCvtermpath> findVGoCvtermpathByObjAccContaining(String objAcc, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoCvtermpathByObjAccContaining", startResult, maxRows, objAcc);
 		return new LinkedHashSet<VGoCvtermpath>(query.getResultList());
 	}
@@ -130,7 +133,8 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoCvtermpath> findVGoCvtermpathBySubjAcc(String subjAcc, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoCvtermpath> findVGoCvtermpathBySubjAcc(String subjAcc, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoCvtermpathBySubjAcc", startResult, maxRows, subjAcc);
 		return new LinkedHashSet<VGoCvtermpath>(query.getResultList());
 	}
@@ -174,7 +178,8 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoCvtermpath> findVGoCvtermpathBySubjAccContaining(String subjAcc, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoCvtermpath> findVGoCvtermpathBySubjAccContaining(String subjAcc, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoCvtermpathBySubjAccContaining", startResult, maxRows, subjAcc);
 		return new LinkedHashSet<VGoCvtermpath>(query.getResultList());
 	}
@@ -196,7 +201,8 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoCvtermpath> findVGoCvtermpathByCvName(String cvName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoCvtermpath> findVGoCvtermpathByCvName(String cvName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoCvtermpathByCvName", startResult, maxRows, cvName);
 		return new LinkedHashSet<VGoCvtermpath>(query.getResultList());
 	}
@@ -217,7 +223,8 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 	 */
 
 	@Transactional
-	public VGoCvtermpath findVGoCvtermpathByPrimaryKey(String subjAcc, String objAcc, int startResult, int maxRows) throws DataAccessException {
+	public VGoCvtermpath findVGoCvtermpathByPrimaryKey(String subjAcc, String objAcc, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVGoCvtermpathByPrimaryKey", startResult, maxRows, subjAcc, objAcc);
 			return (org.irri.iric.portal.chado.oracle.domain.VGoCvtermpath) query.getSingleResult();
@@ -243,7 +250,8 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoCvtermpath> findVGoCvtermpathByObjAcc(String objAcc, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoCvtermpath> findVGoCvtermpathByObjAcc(String objAcc, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoCvtermpathByObjAcc", startResult, maxRows, objAcc);
 		return new LinkedHashSet<VGoCvtermpath>(query.getResultList());
 	}
@@ -265,7 +273,8 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoCvtermpath> findVGoCvtermpathByObjCvterm(String objCvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoCvtermpath> findVGoCvtermpathByObjCvterm(String objCvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoCvtermpathByObjCvterm", startResult, maxRows, objCvterm);
 		return new LinkedHashSet<VGoCvtermpath>(query.getResultList());
 	}
@@ -287,7 +296,8 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoCvtermpath> findVGoCvtermpathByCvNameContaining(String cvName, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoCvtermpath> findVGoCvtermpathByCvNameContaining(String cvName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoCvtermpathByCvNameContaining", startResult, maxRows, cvName);
 		return new LinkedHashSet<VGoCvtermpath>(query.getResultList());
 	}
@@ -297,7 +307,8 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 	 *
 	 */
 	@Transactional
-	public Set<VGoCvtermpath> findVGoCvtermpathByPathdistance(java.math.BigDecimal pathdistance) throws DataAccessException {
+	public Set<VGoCvtermpath> findVGoCvtermpathByPathdistance(java.math.BigDecimal pathdistance)
+			throws DataAccessException {
 
 		return findVGoCvtermpathByPathdistance(pathdistance, -1, -1);
 	}
@@ -309,7 +320,8 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoCvtermpath> findVGoCvtermpathByPathdistance(java.math.BigDecimal pathdistance, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoCvtermpath> findVGoCvtermpathByPathdistance(java.math.BigDecimal pathdistance, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVGoCvtermpathByPathdistance", startResult, maxRows, pathdistance);
 		return new LinkedHashSet<VGoCvtermpath>(query.getResultList());
 	}
@@ -331,7 +343,8 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoCvtermpath> findVGoCvtermpathByCvtermId(Integer cvtermId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoCvtermpath> findVGoCvtermpathByCvtermId(Integer cvtermId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoCvtermpathByCvtermId", startResult, maxRows, cvtermId);
 		return new LinkedHashSet<VGoCvtermpath>(query.getResultList());
 	}
@@ -353,7 +366,8 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoCvtermpath> findVGoCvtermpathByObjCvtermContaining(String objCvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoCvtermpath> findVGoCvtermpathByObjCvtermContaining(String objCvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoCvtermpathByObjCvtermContaining", startResult, maxRows, objCvterm);
 		return new LinkedHashSet<VGoCvtermpath>(query.getResultList());
 	}
@@ -375,13 +389,16 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGoCvtermpath> findVGoCvtermpathBySubjCvterm(String subjCvterm, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGoCvtermpath> findVGoCvtermpathBySubjCvterm(String subjCvterm, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGoCvtermpathBySubjCvterm", startResult, maxRows, subjCvterm);
 		return new LinkedHashSet<VGoCvtermpath>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -390,50 +407,43 @@ public class VGoCvtermpathDAOImpl extends AbstractJpaDao<VGoCvtermpath>
 		return true;
 	}
 
-
 	@Override
 	public Set getUniqueValues(BigDecimal typeId, Set dataset) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-/*
-	@Override
-	public List getDescendants(String cv, String term, String dataset) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-*/
+
+	/*
+	 * @Override public List getDescendants(String cv, String term, String dataset)
+	 * {  return null; }
+	 */
 	@Override
 	public List getAncestors(String cv, String term) {
-		// TODO Auto-generated method stub
 		
-		Query query = createNamedQuery("findVGoCvtermpathByObjCvtermNegDist", -1,-1, cv, term);
+
+		Query query = createNamedQuery("findVGoCvtermpathByObjCvtermNegDist", -1, -1, cv, term);
 		List list = new ArrayList();
 		Set set = new LinkedHashSet();
 		Iterator<VGoCvtermpath> itGO = query.getResultList().iterator();
-		while(itGO.hasNext())
-			set.add( itGO.next().getSubjCvterm() );
-			//list.add(itGO.next().getSubjCvterm() );
+		while (itGO.hasNext())
+			set.add(itGO.next().getSubjCvterm());
+		// list.add(itGO.next().getSubjCvterm() );
 		list.addAll(set);
 		return list;
 	}
 
 	@Override
-	public List getDescendants(String cv, String term,  Set dataset) {
-		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVGoCvtermpathByObjCvtermPosDist", -1,-1, cv, term);
+	public List getDescendants(String cv, String term, Set dataset) {
+		
+		Query query = createNamedQuery("findVGoCvtermpathByObjCvtermPosDist", -1, -1, cv, term);
 		List list = new ArrayList();
 		Set set = new LinkedHashSet();
 		Iterator<VGoCvtermpath> itGO = query.getResultList().iterator();
-		while(itGO.hasNext())
-			set.add( itGO.next().getSubjCvterm() );
-			//list.add(itGO.next().getSubjCvterm() );
+		while (itGO.hasNext())
+			set.add(itGO.next().getSubjCvterm());
+		// list.add(itGO.next().getSubjCvterm() );
 		list.addAll(set);
 		return list;
 	}
-	
-	
-	
-	
+
 }

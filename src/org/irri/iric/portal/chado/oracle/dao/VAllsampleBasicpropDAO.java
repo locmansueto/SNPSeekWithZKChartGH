@@ -26,7 +26,8 @@ public interface VAllsampleBasicpropDAO extends JpaDao<VAllsampleBasicprop>, Sto
 	 * JPQL Query - findVAllsampleBasicpropByAssay
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByAssay(String assay, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByAssay(String assay, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByOriCountry
@@ -38,7 +39,8 @@ public interface VAllsampleBasicpropDAO extends JpaDao<VAllsampleBasicprop>, Sto
 	 * JPQL Query - findVAllsampleBasicpropByOriCountry
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByOriCountry(String oriCountry, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByOriCountry(String oriCountry, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByPrimaryKey
@@ -50,7 +52,8 @@ public interface VAllsampleBasicpropDAO extends JpaDao<VAllsampleBasicprop>, Sto
 	 * JPQL Query - findVAllsampleBasicpropByPrimaryKey
 	 *
 	 */
-	public VAllsampleBasicprop findVAllsampleBasicpropByPrimaryKey(Integer stockSampleId, int startResult, int maxRows) throws DataAccessException;
+	public VAllsampleBasicprop findVAllsampleBasicpropByPrimaryKey(Integer stockSampleId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByNameContaining
@@ -62,19 +65,22 @@ public interface VAllsampleBasicpropDAO extends JpaDao<VAllsampleBasicprop>, Sto
 	 * JPQL Query - findVAllsampleBasicpropByNameContaining
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByNameContaining(String name, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByStockSampleId
 	 *
 	 */
-	public VAllsampleBasicprop findVAllsampleBasicpropByStockSampleId(Integer stockSampleId_1) throws DataAccessException;
+	public VAllsampleBasicprop findVAllsampleBasicpropByStockSampleId(Integer stockSampleId_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByStockSampleId
 	 *
 	 */
-	public VAllsampleBasicprop findVAllsampleBasicpropByStockSampleId(Integer stockSampleId_1, int startResult, int maxRows) throws DataAccessException;
+	public VAllsampleBasicprop findVAllsampleBasicpropByStockSampleId(Integer stockSampleId_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByAssayContaining
@@ -86,19 +92,22 @@ public interface VAllsampleBasicpropDAO extends JpaDao<VAllsampleBasicprop>, Sto
 	 * JPQL Query - findVAllsampleBasicpropByAssayContaining
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByAssayContaining(String assay_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByAssayContaining(String assay_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropBySubpopulationContaining
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropBySubpopulationContaining(String subpopulation) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropBySubpopulationContaining(String subpopulation)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropBySubpopulationContaining
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropBySubpopulationContaining(String subpopulation, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropBySubpopulationContaining(String subpopulation,
+			int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByGsAccession
@@ -110,7 +119,8 @@ public interface VAllsampleBasicpropDAO extends JpaDao<VAllsampleBasicprop>, Sto
 	 * JPQL Query - findVAllsampleBasicpropByGsAccession
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByGsAccession(String gsAccession, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByGsAccession(String gsAccession, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByStockId
@@ -122,19 +132,22 @@ public interface VAllsampleBasicpropDAO extends JpaDao<VAllsampleBasicprop>, Sto
 	 * JPQL Query - findVAllsampleBasicpropByStockId
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByStockId(Integer stockId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByStockId(Integer stockId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropBySubpopulation
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropBySubpopulation(String subpopulation_1) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropBySubpopulation(String subpopulation_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropBySubpopulation
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropBySubpopulation(String subpopulation_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropBySubpopulation(String subpopulation_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVAllsampleBasicprops
@@ -146,7 +159,8 @@ public interface VAllsampleBasicpropDAO extends JpaDao<VAllsampleBasicprop>, Sto
 	 * JPQL Query - findAllVAllsampleBasicprops
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findAllVAllsampleBasicprops(int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findAllVAllsampleBasicprops(int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByDataset
@@ -158,7 +172,8 @@ public interface VAllsampleBasicpropDAO extends JpaDao<VAllsampleBasicprop>, Sto
 	 * JPQL Query - findVAllsampleBasicpropByDataset
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByDataset(String dataset, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByDataset(String dataset, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByHdf5Index
@@ -170,19 +185,22 @@ public interface VAllsampleBasicpropDAO extends JpaDao<VAllsampleBasicprop>, Sto
 	 * JPQL Query - findVAllsampleBasicpropByHdf5Index
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByHdf5Index(Integer hdf5Index, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByHdf5Index(Integer hdf5Index, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByBoxCodeContaining
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByBoxCodeContaining(String boxCode) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByBoxCodeContaining(String boxCode)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByBoxCodeContaining
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByBoxCodeContaining(String boxCode, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByBoxCodeContaining(String boxCode, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByName
@@ -194,43 +212,50 @@ public interface VAllsampleBasicpropDAO extends JpaDao<VAllsampleBasicprop>, Sto
 	 * JPQL Query - findVAllsampleBasicpropByName
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByName(String name_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByName(String name_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByGsAccessionContaining
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByGsAccessionContaining(String gsAccession_1) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByGsAccessionContaining(String gsAccession_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByGsAccessionContaining
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByGsAccessionContaining(String gsAccession_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByGsAccessionContaining(String gsAccession_1,
+			int startResult, int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByOriCountryContaining
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByOriCountryContaining(String oriCountry_1) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByOriCountryContaining(String oriCountry_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByOriCountryContaining
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByOriCountryContaining(String oriCountry_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByOriCountryContaining(String oriCountry_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByDatasetContaining
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByDatasetContaining(String dataset_1) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByDatasetContaining(String dataset_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByDatasetContaining
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByDatasetContaining(String dataset_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByDatasetContaining(String dataset_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVAllsampleBasicpropByBoxCode
@@ -242,6 +267,7 @@ public interface VAllsampleBasicpropDAO extends JpaDao<VAllsampleBasicprop>, Sto
 	 * JPQL Query - findVAllsampleBasicpropByBoxCode
 	 *
 	 */
-	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByBoxCode(String boxCode_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VAllsampleBasicprop> findVAllsampleBasicpropByBoxCode(String boxCode_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

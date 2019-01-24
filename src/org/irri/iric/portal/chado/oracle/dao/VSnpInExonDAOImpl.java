@@ -32,14 +32,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository("SnpInExonDAO")
 @Transactional
-public class VSnpInExonDAOImpl extends AbstractJpaDao<VSnpInExon> implements
-		VSnpInExonDAO, SnpsInExonDAO {
+public class VSnpInExonDAOImpl extends AbstractJpaDao<VSnpInExon> implements VSnpInExonDAO, SnpsInExonDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VSnpInExon.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VSnpInExon.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit Production
@@ -57,7 +58,7 @@ public class VSnpInExonDAOImpl extends AbstractJpaDao<VSnpInExon> implements
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -88,7 +89,8 @@ public class VSnpInExonDAOImpl extends AbstractJpaDao<VSnpInExon> implements
 	 */
 
 	@Transactional
-	public VSnpInExon findVSnpInExonByPrimaryKey(Integer snpFeatureId, int startResult, int maxRows) throws DataAccessException {
+	public VSnpInExon findVSnpInExonByPrimaryKey(Integer snpFeatureId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVSnpInExonByPrimaryKey", startResult, maxRows, snpFeatureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VSnpInExon) query.getSingleResult();
@@ -113,7 +115,8 @@ public class VSnpInExonDAOImpl extends AbstractJpaDao<VSnpInExon> implements
 	 */
 
 	@Transactional
-	public VSnpInExon findVSnpInExonBySnpFeatureId(Integer snpFeatureId, int startResult, int maxRows) throws DataAccessException {
+	public VSnpInExon findVSnpInExonBySnpFeatureId(Integer snpFeatureId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVSnpInExonBySnpFeatureId", startResult, maxRows, snpFeatureId);
 			return (org.irri.iric.portal.chado.oracle.domain.VSnpInExon) query.getSingleResult();
@@ -145,7 +148,9 @@ public class VSnpInExonDAOImpl extends AbstractJpaDao<VSnpInExon> implements
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -153,77 +158,81 @@ public class VSnpInExonDAOImpl extends AbstractJpaDao<VSnpInExon> implements
 	public boolean canBeMerged(VSnpInExon entity) {
 		return true;
 	}
-	
+
 	@Override
 	public Set getSnps(String chr, Integer start, Integer end) {
 		try {
-			Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdBetween", -1, -1, AppContext.convertRegion2Snpfeatureid(chr, start) , AppContext.convertRegion2Snpfeatureid(chr, end) );
-			return  new LinkedHashSet<VSnpInExon>(query.getResultList());
+			Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdBetween", -1, -1,
+					AppContext.convertRegion2Snpfeatureid(chr, start), AppContext.convertRegion2Snpfeatureid(chr, end));
+			return new LinkedHashSet<VSnpInExon>(query.getResultList());
 		} catch (NoResultException nre) {
 			nre.printStackTrace();
 			return null;
 		}
-		
+
 	}
-	
+
 	@Override
 	public Set getSnps(String chr, Collection poslist) {
 		try {
- 
-			if(chr.toLowerCase().equals("any")) {
-				Set setSnpfeatureid= new TreeSet();
+
+			if (chr.toLowerCase().equals("any")) {
+				Set setSnpfeatureid = new TreeSet();
 				Iterator<MultiReferencePosition> it = poslist.iterator();
 				StringBuffer buff = new StringBuffer();
-				while(it.hasNext()) {
+				while (it.hasNext()) {
 					MultiReferencePosition pos = it.next();
-					BigDecimal snpfearueid = AppContext.convertRegion2Snpfeatureid( pos.getContig(),  pos.getPosition().longValue()) ;
-					setSnpfeatureid.add( snpfearueid);
-					buff.append(snpfearueid + ", " );
+					BigDecimal snpfearueid = AppContext.convertRegion2Snpfeatureid(pos.getContig(),
+							pos.getPosition().longValue());
+					setSnpfeatureid.add(snpfearueid);
+					buff.append(snpfearueid + ", ");
 				}
-				//AppContext.debug(" snpfeatureid in " + buff);
-				
+				// AppContext.debug(" snpfeatureid in " + buff);
+
 				Set setAll = new HashSet();
 				Set sets[] = AppContext.setSlicer(setSnpfeatureid);
-				for(int iset=0; iset<sets.length; iset++) {
-					//Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
-					Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1,sets[iset]);
+				for (int iset = 0; iset < sets.length; iset++) {
+					// Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1,
+					// -1,setSnpfeatureid);
+					Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1, sets[iset]);
 					setAll.addAll(query.getResultList());
 				}
 				return setAll;
-				
-				//Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
-				//return new HashSet<SnpsNonsynAllele>(query.getResultList());
-			}
-			else if(chr.toLowerCase().equals("loci")) {
+
+				// Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1,
+				// -1,setSnpfeatureid);
+				// return new HashSet<SnpsNonsynAllele>(query.getResultList());
+			} else if (chr.toLowerCase().equals("loci")) {
 				Iterator<Locus> it = poslist.iterator();
-				//StringBuffer buff = new StringBuffer();
+				// StringBuffer buff = new StringBuffer();
 				Set setPos = new TreeSet();
-				while(it.hasNext()) {
-					Locus loc=it.next();
-					setPos.addAll( getSnps(loc.getContig(),  loc.getFmin(),  loc.getFmax()) ); 
+				while (it.hasNext()) {
+					Locus loc = it.next();
+					setPos.addAll(getSnps(loc.getContig(), loc.getFmin(), loc.getFmax()));
 				}
 				return setPos;
-			}
-			else  {
-				//Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1, AppContext.convertRegion2Snpfeatureid(chr, poslist) );
-				//return new LinkedHashSet<VSnpInExon>(query.getResultList());
-				
+			} else {
+				// Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1,
+				// AppContext.convertRegion2Snpfeatureid(chr, poslist) );
+				// return new LinkedHashSet<VSnpInExon>(query.getResultList());
+
 				Set setAll = new HashSet();
 				Set sets[] = AppContext.setSlicer(new HashSet(poslist));
-				for(int iset=0; iset<sets.length; iset++) {
-					//Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1,setSnpfeatureid);
-					Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1, AppContext.convertRegion2Snpfeatureid(chr, sets[iset]) );
+				for (int iset = 0; iset < sets.length; iset++) {
+					// Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1,
+					// -1,setSnpfeatureid);
+					Query query = createNamedQuery("findVSnpInExonBySnpFeatureIdIn", -1, -1,
+							AppContext.convertRegion2Snpfeatureid(chr, sets[iset]));
 					setAll.addAll(query.getResultList());
 				}
 				return setAll;
 			}
-					
+
 		} catch (NoResultException nre) {
 			nre.printStackTrace();
 			return null;
 		}
-		
-	}
 
+	}
 
 }

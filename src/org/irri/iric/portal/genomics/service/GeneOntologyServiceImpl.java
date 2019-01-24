@@ -40,7 +40,7 @@ public class GeneOntologyServiceImpl implements GeneOntologyService{
 	
 	@Override
 	public String queryAccession(String q) throws Exception {
-		// TODO Auto-generated method stub
+		
 
 		
 		  	//URL u=new URL("http://www.ebi.ac.uk/QuickGO/GTerm?id=GO:0003824&format=oboxml");
@@ -147,7 +147,7 @@ public class GeneOntologyServiceImpl implements GeneOntologyService{
 
 	@Override
 	public List getCVtermAncestors(String cv, String term) {
-		// TODO Auto-generated method stub
+		
 		cvtermpathDAO = (CvTermPathDAO)AppContext.checkBean(cvtermpathDAO, "CvTermPathDAO");
 		return cvtermpathDAO.getAncestors(cv, term);
 	}
@@ -160,14 +160,14 @@ public class GeneOntologyServiceImpl implements GeneOntologyService{
 	
 	@Override
 	public List getCVtermDescendants(String cv, String term, Set dataset) {
-		// TODO Auto-generated method stub
+		
 		cvtermpathDAO = (CvTermPathDAO)AppContext.checkBean(cvtermpathDAO, "CvTermPathDAO");
 		return cvtermpathDAO.getDescendants(cv, term, dataset);
 	}
 /*
 	@Override
 	public List getCVtermDescendants(String cv, String term, String dataset) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 */

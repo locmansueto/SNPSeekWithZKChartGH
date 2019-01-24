@@ -16,6 +16,7 @@ public interface Feature {
 	/**
 	 */
 	public void setDbxrefId(BigDecimal dbxrefId);
+
 	/**
 	 */
 	public BigDecimal getDbxrefId();
@@ -23,6 +24,7 @@ public interface Feature {
 	/**
 	 */
 	public void setOrganismId(BigDecimal organismId);
+
 	/**
 	 */
 	public BigDecimal getOrganismId();
@@ -58,6 +60,7 @@ public interface Feature {
 	/**
 	 */
 	public String getMd5checksum();
+
 	/**
 	 */
 	public void setTypeId(BigDecimal typeId);
@@ -76,32 +79,34 @@ public interface Feature {
 
 	/**
 	 */
-	public void setIsObsolete(Integer isObsolete) ;
+	public void setIsObsolete(Integer isObsolete);
 
 	/**
 	 */
-	public Integer getIsObsolete() ;
+	public Integer getIsObsolete();
 
 	/**
 	 */
-	public void setTimeaccessioned(Calendar timeaccessioned) ;
+	public void setTimeaccessioned(Calendar timeaccessioned);
 
 	/**
 	 */
 	public Calendar getTimeaccessioned();
+
 	/**
 	 */
-	public void setTimelastmodified(Calendar timelastmodified) ;
+	public void setTimelastmodified(Calendar timelastmodified);
 
 	/**
 	 */
 	public Calendar getTimelastmodified();
-	/**
-	 */
-	public void setUniquename(String uniquename) ;
 
 	/**
 	 */
-	public String getUniquename() ;
+	public void setUniquename(String uniquename);
+
+	/**
+	 */
+	public String getUniquename();
 
 }

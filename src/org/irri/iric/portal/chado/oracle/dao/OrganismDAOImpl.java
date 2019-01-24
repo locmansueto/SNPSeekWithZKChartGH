@@ -24,23 +24,23 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * DAO to manage Organism entities.
  * 
  */
 @Repository("OrganismDAO")
 @Transactional
-public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
-		OrganismDAO {
-	
-	//Map<String,org.irri.iric.portal.domain.Organism> mapName2Organism;
+public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements OrganismDAO {
+
+	// Map<String,org.irri.iric.portal.domain.Organism> mapName2Organism;
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { Organism.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { Organism.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit Production
@@ -58,7 +58,7 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -90,7 +90,8 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<Organism> findOrganismByGenusContaining(String genus, int startResult, int maxRows) throws DataAccessException {
+	public Set<Organism> findOrganismByGenusContaining(String genus, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findOrganismByGenusContaining", startResult, maxRows, genus);
 		return new LinkedHashSet<Organism>(query.getResultList());
 	}
@@ -134,7 +135,8 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<Organism> findOrganismBySpeciesContaining(String species, int startResult, int maxRows) throws DataAccessException {
+	public Set<Organism> findOrganismBySpeciesContaining(String species, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findOrganismBySpeciesContaining", startResult, maxRows, species);
 		return new LinkedHashSet<Organism>(query.getResultList());
 	}
@@ -156,7 +158,8 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<Organism> findOrganismByAbbreviationContaining(String abbreviation, int startResult, int maxRows) throws DataAccessException {
+	public Set<Organism> findOrganismByAbbreviationContaining(String abbreviation, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findOrganismByAbbreviationContaining", startResult, maxRows, abbreviation);
 		return new LinkedHashSet<Organism>(query.getResultList());
 	}
@@ -178,7 +181,8 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<Organism> findOrganismByCommonNameContaining(String commonName, int startResult, int maxRows) throws DataAccessException {
+	public Set<Organism> findOrganismByCommonNameContaining(String commonName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findOrganismByCommonNameContaining", startResult, maxRows, commonName);
 		return new LinkedHashSet<Organism>(query.getResultList());
 	}
@@ -220,9 +224,9 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 	 *
 	 */
 
-
 	@Transactional
-	public Organism findOrganismByOrganismId(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException {
+	public Organism findOrganismByOrganismId(BigDecimal organismId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findOrganismByOrganismId", startResult, maxRows, organismId);
 			return (org.irri.iric.portal.chado.oracle.domain.Organism) query.getSingleResult();
@@ -248,7 +252,8 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<Organism> findOrganismByAbbreviation(String abbreviation, int startResult, int maxRows) throws DataAccessException {
+	public Set<Organism> findOrganismByAbbreviation(String abbreviation, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findOrganismByAbbreviation", startResult, maxRows, abbreviation);
 		return new LinkedHashSet<Organism>(query.getResultList());
 	}
@@ -270,7 +275,8 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<Organism> findOrganismBySpecies(String species, int startResult, int maxRows) throws DataAccessException {
+	public Set<Organism> findOrganismBySpecies(String species, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findOrganismBySpecies", startResult, maxRows, species);
 		return new LinkedHashSet<Organism>(query.getResultList());
 	}
@@ -292,7 +298,8 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 	 */
 
 	@Transactional
-	public Organism findOrganismByPrimaryKey(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException {
+	public Organism findOrganismByPrimaryKey(BigDecimal organismId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findOrganismByPrimaryKey", startResult, maxRows, organismId);
 			return (org.irri.iric.portal.chado.oracle.domain.Organism) query.getSingleResult();
@@ -318,13 +325,16 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<Organism> findOrganismByCommonName(String commonName, int startResult, int maxRows) throws DataAccessException {
+	public Set<Organism> findOrganismByCommonName(String commonName, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findOrganismByCommonName", startResult, maxRows, commonName);
 		return new LinkedHashSet<Organism>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -335,24 +345,20 @@ public class OrganismDAOImpl extends AbstractJpaDao<Organism> implements
 
 	@Override
 	public Map<String, org.irri.iric.portal.domain.Organism> getMapName2Organism() {
-		// TODO Auto-generated method stub
-			Map mapName2Organism=new LinkedHashMap();
-			Iterator<Organism> itOrg=this.findAllOrganisms().iterator();
-			while(itOrg.hasNext()) {
-				Organism org=itOrg.next();
-				mapName2Organism.put(org.getName(), org);
-			}
-			return mapName2Organism;
+		
+		Map mapName2Organism = new LinkedHashMap();
+		Iterator<Organism> itOrg = this.findAllOrganisms().iterator();
+		while (itOrg.hasNext()) {
+			Organism org = itOrg.next();
+			mapName2Organism.put(org.getName(), org);
+		}
+		return mapName2Organism;
 	}
-
 
 	@Override
 	public org.irri.iric.portal.domain.Organism getOrganismByID(Integer id) {
-		// TODO Auto-generated method stub
+		
 		return findOrganismByOrganismId(BigDecimal.valueOf(id));
 	}
 
-	
-	
-	
 }

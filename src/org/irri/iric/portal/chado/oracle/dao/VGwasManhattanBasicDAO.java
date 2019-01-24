@@ -24,7 +24,8 @@ public interface VGwasManhattanBasicDAO extends JpaDao<VGwasManhattanBasic>, Man
 	 * JPQL Query - findAllVGwasManhattanBasics
 	 *
 	 */
-	public Set<VGwasManhattanBasic> findAllVGwasManhattanBasics(int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattanBasic> findAllVGwasManhattanBasics(int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBasicByPrimaryKey
@@ -36,43 +37,50 @@ public interface VGwasManhattanBasicDAO extends JpaDao<VGwasManhattanBasic>, Man
 	 * JPQL Query - findVGwasManhattanBasicByPrimaryKey
 	 *
 	 */
-	public VGwasManhattanBasic findVGwasManhattanBasicByPrimaryKey(BigDecimal gwasMarkerId, int startResult, int maxRows) throws DataAccessException;
+	public VGwasManhattanBasic findVGwasManhattanBasicByPrimaryKey(BigDecimal gwasMarkerId, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBasicByMinusLogp
 	 *
 	 */
-	public Set<VGwasManhattanBasic> findVGwasManhattanBasicByMinusLogp(java.math.BigDecimal minusLogp) throws DataAccessException;
+	public Set<VGwasManhattanBasic> findVGwasManhattanBasicByMinusLogp(java.math.BigDecimal minusLogp)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBasicByMinusLogp
 	 *
 	 */
-	public Set<VGwasManhattanBasic> findVGwasManhattanBasicByMinusLogp(BigDecimal minusLogp, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattanBasic> findVGwasManhattanBasicByMinusLogp(BigDecimal minusLogp, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBasicByGwasRunId
 	 *
 	 */
-	public Set<VGwasManhattanBasic> findVGwasManhattanBasicByGwasRunId(java.math.BigDecimal gwasRunId) throws DataAccessException;
+	public Set<VGwasManhattanBasic> findVGwasManhattanBasicByGwasRunId(java.math.BigDecimal gwasRunId)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBasicByGwasRunId
 	 *
 	 */
-	public Set<VGwasManhattanBasic> findVGwasManhattanBasicByGwasRunId(BigDecimal gwasRunId, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattanBasic> findVGwasManhattanBasicByGwasRunId(BigDecimal gwasRunId, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBasicByGwasMarkerId
 	 *
 	 */
-	public VGwasManhattanBasic findVGwasManhattanBasicByGwasMarkerId(BigDecimal gwasMarkerId_1) throws DataAccessException;
+	public VGwasManhattanBasic findVGwasManhattanBasicByGwasMarkerId(BigDecimal gwasMarkerId_1)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBasicByGwasMarkerId
 	 *
 	 */
-	public VGwasManhattanBasic findVGwasManhattanBasicByGwasMarkerId(BigDecimal gwasMarkerId_1, int startResult, int maxRows) throws DataAccessException;
+	public VGwasManhattanBasic findVGwasManhattanBasicByGwasMarkerId(BigDecimal gwasMarkerId_1, int startResult,
+			int maxRows) throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBasicByPosition
@@ -84,7 +92,8 @@ public interface VGwasManhattanBasicDAO extends JpaDao<VGwasManhattanBasic>, Man
 	 * JPQL Query - findVGwasManhattanBasicByPosition
 	 *
 	 */
-	public Set<VGwasManhattanBasic> findVGwasManhattanBasicByPosition(BigDecimal position, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattanBasic> findVGwasManhattanBasicByPosition(BigDecimal position, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVGwasManhattanBasicByChromosome
@@ -96,6 +105,7 @@ public interface VGwasManhattanBasicDAO extends JpaDao<VGwasManhattanBasic>, Man
 	 * JPQL Query - findVGwasManhattanBasicByChromosome
 	 *
 	 */
-	public Set<VGwasManhattanBasic> findVGwasManhattanBasicByChromosome(Long chromosome, int startResult, int maxRows) throws DataAccessException;
+	public Set<VGwasManhattanBasic> findVGwasManhattanBasicByChromosome(Long chromosome, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

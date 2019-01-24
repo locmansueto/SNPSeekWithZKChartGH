@@ -73,7 +73,8 @@ public class VSnpRefposindexPK implements Serializable {
 		if (!(obj instanceof VSnpRefposindexPK))
 			return false;
 		VSnpRefposindexPK equalCheck = (VSnpRefposindexPK) obj;
-		if ((snpFeatureId == null && equalCheck.snpFeatureId != null) || (snpFeatureId != null && equalCheck.snpFeatureId == null))
+		if ((snpFeatureId == null && equalCheck.snpFeatureId != null)
+				|| (snpFeatureId != null && equalCheck.snpFeatureId == null))
 			return false;
 		if (snpFeatureId != null && !snpFeatureId.equals(equalCheck.snpFeatureId))
 			return false;

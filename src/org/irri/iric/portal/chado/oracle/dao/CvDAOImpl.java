@@ -29,11 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CvDAOImpl extends AbstractJpaDao<Cv> implements CvDAO {
 
-	
-	private Map<String,org.irri.iric.portal.domain.Cv> mapName2Cv;
-	
+	private Map<String, org.irri.iric.portal.domain.Cv> mapName2Cv;
+
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
 	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { Cv.class }));
@@ -54,7 +54,7 @@ public class CvDAOImpl extends AbstractJpaDao<Cv> implements CvDAO {
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -186,7 +186,9 @@ public class CvDAOImpl extends AbstractJpaDao<Cv> implements CvDAO {
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -197,18 +199,16 @@ public class CvDAOImpl extends AbstractJpaDao<Cv> implements CvDAO {
 
 	@Override
 	public Map<String, org.irri.iric.portal.domain.Cv> getMapName2Cv() {
-		// TODO Auto-generated method stub
-		if(mapName2Cv==null) {
-			mapName2Cv=new HashMap();
-			Iterator<Cv> itCv= this.findAllCvs().iterator();
-			while(itCv.hasNext()) {
-				Cv cv=itCv.next();
+		
+		if (mapName2Cv == null) {
+			mapName2Cv = new HashMap();
+			Iterator<Cv> itCv = this.findAllCvs().iterator();
+			while (itCv.hasNext()) {
+				Cv cv = itCv.next();
 				mapName2Cv.put(cv.getName(), cv);
 			}
 		}
 		return mapName2Cv;
 	}
-	
-	
-	
+
 }

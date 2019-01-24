@@ -26,35 +26,36 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository("GWASRunDAO")
 @Transactional
-public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
-		VGwasRunDAO {
+public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements VGwasRunDAO {
 
 	@Override
 	public GWASRun getGWASRunByTrait(String trait) {
-		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVGwasRunByTrait",-1,-1, trait);
-		return (VGwasRun)query.getResultList().iterator().next();
+
+		Query query = createNamedQuery("findVGwasRunByTrait", -1, -1, trait);
+		return (VGwasRun) query.getResultList().iterator().next();
 	}
 
 	@Override
 	public GWASRun getGWASRunByCoterm(String coterm) {
-		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVGwasRunByCoterm",-1,-1, coterm);
-		return (VGwasRun)query.getResultList().iterator().next();
+
+		Query query = createNamedQuery("findVGwasRunByCoterm", -1, -1, coterm);
+		return (VGwasRun) query.getResultList().iterator().next();
 	}
 
 	@Override
 	public GWASRun getGWASRunByCodefinition(String codefinition) {
-		// TODO Auto-generated method stub
-		Query query = createNamedQuery("findVGwasRunByCodefinition",-1,-1, codefinition);
-		return (VGwasRun)query.getResultList().iterator().next();
+
+		Query query = createNamedQuery("findVGwasRunByCodefinition", -1, -1, codefinition);
+		return (VGwasRun) query.getResultList().iterator().next();
 	}
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VGwasRun.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VGwasRun.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Production
@@ -72,7 +73,7 @@ public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -104,7 +105,8 @@ public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasRun> findVGwasRunBySubpopulationId(BigDecimal subpopulationId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasRun> findVGwasRunBySubpopulationId(BigDecimal subpopulationId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasRunBySubpopulationId", startResult, maxRows, subpopulationId);
 		return new LinkedHashSet<VGwasRun>(query.getResultList());
 	}
@@ -125,7 +127,8 @@ public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
 	 */
 
 	@Transactional
-	public VGwasRun findVGwasRunByGwasRunId(BigDecimal gwasRunId, int startResult, int maxRows) throws DataAccessException {
+	public VGwasRun findVGwasRunByGwasRunId(BigDecimal gwasRunId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVGwasRunByGwasRunId", startResult, maxRows, gwasRunId);
 			return (org.irri.iric.portal.chado.oracle.domain.VGwasRun) query.getSingleResult();
@@ -151,7 +154,8 @@ public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasRun> findVGwasRunByRundate(java.util.Calendar rundate, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasRun> findVGwasRunByRundate(java.util.Calendar rundate, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasRunByRundate", startResult, maxRows, rundate);
 		return new LinkedHashSet<VGwasRun>(query.getResultList());
 	}
@@ -195,7 +199,8 @@ public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasRun> findVGwasRunByTraitId(java.math.BigDecimal traitId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasRun> findVGwasRunByTraitId(java.math.BigDecimal traitId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasRunByTraitId", startResult, maxRows, traitId);
 		return new LinkedHashSet<VGwasRun>(query.getResultList());
 	}
@@ -217,7 +222,8 @@ public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasRun> findVGwasRunBySubpopulation(String subpopulation, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasRun> findVGwasRunBySubpopulation(String subpopulation, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasRunBySubpopulation", startResult, maxRows, subpopulation);
 		return new LinkedHashSet<VGwasRun>(query.getResultList());
 	}
@@ -239,7 +245,8 @@ public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasRun> findVGwasRunByMethodContaining(String method, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasRun> findVGwasRunByMethodContaining(String method, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasRunByMethodContaining", startResult, maxRows, method);
 		return new LinkedHashSet<VGwasRun>(query.getResultList());
 	}
@@ -261,7 +268,8 @@ public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasRun> findVGwasRunByTraitContaining(String trait, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasRun> findVGwasRunByTraitContaining(String trait, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasRunByTraitContaining", startResult, maxRows, trait);
 		return new LinkedHashSet<VGwasRun>(query.getResultList());
 	}
@@ -283,7 +291,8 @@ public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasRun> findVGwasRunBySubpopulationContaining(String subpopulation, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasRun> findVGwasRunBySubpopulationContaining(String subpopulation, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasRunBySubpopulationContaining", startResult, maxRows, subpopulation);
 		return new LinkedHashSet<VGwasRun>(query.getResultList());
 	}
@@ -370,7 +379,8 @@ public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
 	 */
 
 	@Transactional
-	public VGwasRun findVGwasRunByPrimaryKey(BigDecimal gwasRunId, int startResult, int maxRows) throws DataAccessException {
+	public VGwasRun findVGwasRunByPrimaryKey(BigDecimal gwasRunId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVGwasRunByPrimaryKey", startResult, maxRows, gwasRunId);
 			return (org.irri.iric.portal.chado.oracle.domain.VGwasRun) query.getSingleResult();
@@ -396,13 +406,16 @@ public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGwasRun> findVGwasRunByQqplotContaining(String qqplot, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGwasRun> findVGwasRunByQqplotContaining(String qqplot, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGwasRunByQqplotContaining", startResult, maxRows, qqplot);
 		return new LinkedHashSet<VGwasRun>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -413,12 +426,10 @@ public class VGwasRunDAOImpl extends AbstractJpaDao<VGwasRun> implements
 
 	@Override
 	public List<GWASRun> getGWASRuns() {
-		// TODO Auto-generated method stub
-		List list=new ArrayList();
+
+		List list = new ArrayList();
 		list.addAll(findAllVGwasRuns());
 		return list;
 	}
-	
-	
-	
+
 }

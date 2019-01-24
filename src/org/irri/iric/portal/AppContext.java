@@ -207,7 +207,6 @@ public class AppContext {
 		try {
 			prop.load(is);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -218,8 +217,7 @@ public class AppContext {
 	// these to match server congiguration ) *********************************
 
 	public static void logQuery(String query) {
-		// TODO Auto-generated method stub
-
+		
 		long endTime = System.currentTimeMillis();
 		long endTimeDate = new Date().getTime();
 		logger.info("TIME " + datef.format(endTime) + " : TIMER: " + (endTime - startTime) + " ms (system),  "

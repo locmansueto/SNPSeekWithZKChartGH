@@ -36,31 +36,34 @@ import org.zkoss.zul.event.ListDataEvent;
 import org.zkoss.zul.ext.Sortable;
 
 /**
- * A faker MatrixModel is used to handle a unlimited big table data. 
+ * A faker MatrixModel is used to handle a unlimited big table data.
+ * 
  * @author jumperchen
  */
-public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header> extends
-		AbstractListModel<Row> implements MatrixModel<Row, Head, Cell, Header>, Sortable , VariantTable {
-	
-	private int frozenCols=AppContext.getSnpMatrixFrozenCols(); // 3;
+public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header> extends AbstractListModel<Row>
+		implements MatrixModel<Row, Head, Cell, Header>, Sortable, VariantTable {
+
+	private int frozenCols = AppContext.getSnpMatrixFrozenCols(); // 3;
 	private VariantStringData data;
 	private String message;
 	private Set<Position> setGapPos;
-	private Map<Integer,Position> mapIdx2Pos;
-	private Map<Integer,String> mapDeletionIdx2Refnuc;
-	
+	private Map<Integer, Position> mapIdx2Pos;
+	private Map<Integer, String> mapDeletionIdx2Refnuc;
+
 	// a rendering function
 	private interface Fun<T> {
 		public T apply(int index);
 	}
-	
-	// A faker of key list implementation that contains a key to speed up the performance.
-	// Because Java Collection framework didn't handle it well for huge data, it will
+
+	// A faker of key list implementation that contains a key to speed up the
+	// performance.
+	// Because Java Collection framework didn't handle it well for huge data, it
+	// will
 	// go through whole the list entries to receive the value for those methods,
 	// hashCode(), equals(), and toString()
 	private class FakerKeyList<T> extends AbstractList<T> {
 		final int _size;
-		Map<String, T> _updateCache = new HashMap<String,T> ();
+		Map<String, T> _updateCache = new HashMap<String, T>();
 		final Fun<?> _fn;
 		final String _key;
 
@@ -99,17 +102,17 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 		public int hashCode() {
 			return _key.hashCode();
 		}
-		
+
 		@Override
 		public boolean equals(Object obj) {
 			if (obj == this)
 				return true;
 			if (obj instanceof FakerKeyList) {
-				return _key.equals(((FakerKeyList)(obj))._key);
+				return _key.equals(((FakerKeyList) (obj))._key);
 			}
 			return false;
 		}
-		
+
 		@Override
 		public String toString() {
 			return _key;
@@ -121,13 +124,12 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 	private int _rowSize;
 
 	private Map<String, List<String>> _rowCache;
-	
-	
-	//private List<SnpsStringAllvars> _listSnpString;
+
+	// private List<SnpsStringAllvars> _listSnpString;
 	private List _listSnpString;
 
 	private List<String> _headerData;
-	//private List<String[]> _headerData;
+	// private List<String[]> _headerData;
 	private List<String> _headerData2;
 
 	private Comparator<Cell> _sorting;
@@ -149,8 +151,6 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 		return "natural";
 	}
 
-	
-	
 	public FakerMatrixModel() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -159,22 +159,21 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 	public FakerMatrixModel(VariantStringData data) {
 		super();
 		// TODO Auto-generated constructor stub
-		this.data=data;
-		if(data.hasIndel()) setGapPos = data.getIndelstringdata().getSetPosGapRegion(); // .getSetGapIdx();
-		
-		mapIdx2Pos=data.getMapIdx2Pos();
-		
-		 _FakerMatrixModel(data.getListVariantsString(), data.getListPos());
+		this.data = data;
+		if (data.hasIndel())
+			setGapPos = data.getIndelstringdata().getSetPosGapRegion(); // .getSetGapIdx();
+
+		mapIdx2Pos = data.getMapIdx2Pos();
+
+		_FakerMatrixModel(data.getListVariantsString(), data.getListPos());
 	}
 
-//	public FakerMatrixModel(VariantTableRandomImpl  table) {
-//		super();
-//		// TODO Auto-generated constructor stub
-//		 // _FakerMatrixModel(data.getListVariantsString(), data.getListPos());
-//	}
+	// public FakerMatrixModel(VariantTableRandomImpl table) {
+	// super();
+	// // TODO Auto-generated constructor stub
+	// // _FakerMatrixModel(data.getListVariantsString(), data.getListPos());
+	// }
 
-	
-	
 	public FakerMatrixModel(int colSize, int rowSize) {
 		_colSize = colSize;
 		_rowSize = rowSize;
@@ -184,75 +183,76 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 			@Override
 			public Object apply(int index) {
 				return "Header x = " + index;
-			}});
+			}
+		});
 		_headerData2 = new FakerKeyList<String>(colSize, 1, new Fun() {
 			@Override
 			public Object apply(int index) {
 				return "Header x = " + index;
-			}});
+			}
+		});
 	}
-//	
-	
-//	public FakerMatrixModel(List listSnpString, final String reference) {
-//		_colSize = reference.length()+3;
-//		_rowSize = listSnpString.size();
-//		_rowCache = new HashMap<String, List<String>>();
-//		_listSnpString = listSnpString;
-//		_headerData = new FakerKeyList<String>( reference.length()+3, 0, new Fun() {
-//			@Override
-//			public Object apply(int index) {
-//				//return "Header x = " + index;
-//				if(index>1)
-//					return reference.substring(index-3, index-2);
-//				else if(index==0)
-//					return "VarietyID";
-//				else
-//					return "Mismatch";
-//			}});
-//	}
-	
+	//
+
+	// public FakerMatrixModel(List listSnpString, final String reference) {
+	// _colSize = reference.length()+3;
+	// _rowSize = listSnpString.size();
+	// _rowCache = new HashMap<String, List<String>>();
+	// _listSnpString = listSnpString;
+	// _headerData = new FakerKeyList<String>( reference.length()+3, 0, new Fun() {
+	// @Override
+	// public Object apply(int index) {
+	// //return "Header x = " + index;
+	// if(index>1)
+	// return reference.substring(index-3, index-2);
+	// else if(index==0)
+	// return "VarietyID";
+	// else
+	// return "Mismatch";
+	// }});
+	// }
+
 	public FakerMatrixModel(List listSnpString, final List<SnpsAllvarsPos> listSnpsAllvarsPos) {
-		 _FakerMatrixModel( listSnpString, listSnpsAllvarsPos); 
+		_FakerMatrixModel(listSnpString, listSnpsAllvarsPos);
 	}
-	
+
 	private void _FakerMatrixModel(List listSnpString, final List<SnpsAllvarsPos> listSnpsAllvarsPos) {
-		_colSize = listSnpsAllvarsPos.size()+frozenCols;
+		_colSize = listSnpsAllvarsPos.size() + frozenCols;
 		_rowSize = listSnpString.size();
 		_rowCache = new HashMap<String, List<String>>();
 		_listSnpString = listSnpString;
-		
-		_headerData = new FakerKeyList<String>( listSnpsAllvarsPos.size()+frozenCols, 0, new Fun() {
+
+		_headerData = new FakerKeyList<String>(listSnpsAllvarsPos.size() + frozenCols, 0, new Fun() {
 			@Override
 			public Object apply(int index) {
-				//return "Header x = " + index;
+				// return "Header x = " + index;
 				//
-				if(index>=frozenCols) {
-					SnpsAllvarsPos snppos = listSnpsAllvarsPos.get(index-frozenCols);
-					return snppos.getPosition().toString() ;
-				}
-				else if(index==2)
+				if (index >= frozenCols) {
+					SnpsAllvarsPos snppos = listSnpsAllvarsPos.get(index - frozenCols);
+					return snppos.getPosition().toString();
+				} else if (index == 2)
 					return "Mismatch";
-				else if(index==1)
+				else if (index == 1)
 					return "IRIS ID";
-				else //if(index==0)
+				else // if(index==0)
 					return "Variety Name";
-			}});
-		_headerData2 = new FakerKeyList<String>( listSnpsAllvarsPos.size()+frozenCols, 1, new Fun() {
+			}
+		});
+		_headerData2 = new FakerKeyList<String>(listSnpsAllvarsPos.size() + frozenCols, 1, new Fun() {
 			@Override
 			public Object apply(int index) {
-				//return "Header x = " + index;
+				// return "Header x = " + index;
 				//
-				if(index>=frozenCols) {
-					SnpsAllvarsPos snppos = listSnpsAllvarsPos.get(index-frozenCols);
-					return snppos.getRefnuc() ;
-				}
-				else if(index==0)
+				if (index >= frozenCols) {
+					SnpsAllvarsPos snppos = listSnpsAllvarsPos.get(index - frozenCols);
+					return snppos.getRefnuc();
+				} else if (index == 0)
 					return "Reference";
 				else
 					return "";
-			}});
+			}
+		});
 	}
-	
 
 	public void update(Integer[] axis, String value) {
 		List<String> list = _rowCache.get(String.valueOf(axis[1]));
@@ -276,22 +276,21 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 			value = new FakerKeyList<String>(_colSize, rowIndex, new Fun() {
 				@Override
 				public Object apply(int index) {
-					
+
 					return _listSnpString.get(rowIndex);
-					
-					//return "y = " + rowIndex;
-					//return _listSnpString.get(rowIndex).getVarnuc();
+
+					// return "y = " + rowIndex;
+					// return _listSnpString.get(rowIndex).getVarnuc();
 					/*
-					List<String> extlist = new ArrayList();
-					SnpsStringAllvars snpstr = _listSnpString.get(rowIndex);
-					extlist.add(snpstr.getVar().toString());
-					extlist.add(snpstr.getMismatch().toString());
-					extlist.add(snpstr.getVarnuc());
-					return extlist;
-					*/
-					//return _listSnpString.get(rowIndex).getVarnuc();
-					
-				}});
+					 * List<String> extlist = new ArrayList(); SnpsStringAllvars snpstr =
+					 * _listSnpString.get(rowIndex); extlist.add(snpstr.getVar().toString());
+					 * extlist.add(snpstr.getMismatch().toString());
+					 * extlist.add(snpstr.getVarnuc()); return extlist;
+					 */
+					// return _listSnpString.get(rowIndex).getVarnuc();
+
+				}
+			});
 			_rowCache.put(key, value);
 		}
 		return (Row) value;
@@ -315,23 +314,24 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 	@SuppressWarnings("unchecked")
 	@Override
 	public Head getHeadAt(int rowIndex) {
-		if(rowIndex==0)
+		if (rowIndex == 0)
 			return (Head) _headerData;
-		else 
+		else
 			return (Head) _headerData2;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Cell getCellAt(Row rowData, int columnIndex) {
-		
-		if(setGapPos==null)
+
+		if (setGapPos == null)
 			return (Cell) rowData.get(columnIndex);
 		else {
-			//if(setGapIdx.contains(columnIndex)) return (Cell)"-";
-			if(setGapPos.contains(columnIndex)) return (Cell)"-";
+			// if(setGapIdx.contains(columnIndex)) return (Cell)"-";
+			if (setGapPos.contains(columnIndex))
+				return (Cell) "-";
 		}
-		return (Cell)"";
+		return (Cell) "";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -340,39 +340,38 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 		return (Header) headData.get(columnIndex);
 	}
 
-	
-	
 	@Override
 	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params, List listCDS)
 			throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params) {
-		// TODO Auto-generated method stub
-		this.data=data;
-		if(data.hasIndel()) setGapPos = data.getIndelstringdata().getSetPosGapRegion(); // .getSetGapPos();
-		mapIdx2Pos=data.getMapIdx2Pos();
-		 _FakerMatrixModel(data.getListVariantsString(), data.getListPos());
+		
+		this.data = data;
+		if (data.hasIndel())
+			setGapPos = data.getIndelstringdata().getSetPosGapRegion(); // .getSetGapPos();
+		mapIdx2Pos = data.getMapIdx2Pos();
+		_FakerMatrixModel(data.getListVariantsString(), data.getListPos());
 	}
 
 	@Override
 	public String getMessage() {
-		// TODO Auto-generated method stub
+		
 		return message;
 	}
 
 	@Override
 	public void setMessage(String message) {
-		// TODO Auto-generated method stub
-		this.message=message;
+		
+		this.message = message;
 	}
 
 	@Override
 	public VariantStringData getVariantStringData() {
-		// TODO Auto-generated method stub
+		
 		return data;
 	}
 
@@ -382,6 +381,4 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 		return null;
 	}
 
-	
-	
 }

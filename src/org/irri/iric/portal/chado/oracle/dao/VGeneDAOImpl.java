@@ -36,7 +36,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class VGeneDAOImpl extends AbstractJpaDao<VGene> implements VGeneDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
 	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VGene.class }));
@@ -57,7 +58,7 @@ public class VGeneDAOImpl extends AbstractJpaDao<VGene> implements VGeneDAO {
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -89,7 +90,8 @@ public class VGeneDAOImpl extends AbstractJpaDao<VGene> implements VGeneDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGene> findVGeneByPhase(java.math.BigDecimal phase, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGene> findVGeneByPhase(java.math.BigDecimal phase, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGeneByPhase", startResult, maxRows, phase);
 		return new LinkedHashSet<VGene>(query.getResultList());
 	}
@@ -133,7 +135,8 @@ public class VGeneDAOImpl extends AbstractJpaDao<VGene> implements VGeneDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGene> findVGeneByChr(java.math.BigDecimal chr, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGene> findVGeneByChr(java.math.BigDecimal chr, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGeneByChr", startResult, maxRows, chr);
 		return new LinkedHashSet<VGene>(query.getResultList());
 	}
@@ -177,7 +180,8 @@ public class VGeneDAOImpl extends AbstractJpaDao<VGene> implements VGeneDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGene> findVGeneByFmin(java.math.BigDecimal fmin, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGene> findVGeneByFmin(java.math.BigDecimal fmin, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGeneByFmin", startResult, maxRows, fmin);
 		return new LinkedHashSet<VGene>(query.getResultList());
 	}
@@ -224,7 +228,8 @@ public class VGeneDAOImpl extends AbstractJpaDao<VGene> implements VGeneDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGene> findVGeneByFmax(java.math.BigDecimal fmax, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGene> findVGeneByFmax(java.math.BigDecimal fmax, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGeneByFmax", startResult, maxRows, fmax);
 		return new LinkedHashSet<VGene>(query.getResultList());
 	}
@@ -293,13 +298,16 @@ public class VGeneDAOImpl extends AbstractJpaDao<VGene> implements VGeneDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGene> findVGeneByStrand(java.math.BigDecimal strand, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGene> findVGeneByStrand(java.math.BigDecimal strand, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGeneByStrand", startResult, maxRows, strand);
 		return new LinkedHashSet<VGene>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -310,103 +318,113 @@ public class VGeneDAOImpl extends AbstractJpaDao<VGene> implements VGeneDAO {
 
 	@Override
 	public Set findAllGene(Integer organismId) {
-		// TODO Auto-generated method stub
-		//return this.findAllVGenes();
-		Query query = createNamedQuery("findVGeneByOrg", -1,-1, organismId);
+
+		// return this.findAllVGenes();
+		Query query = createNamedQuery("findVGeneByOrg", -1, -1, organismId);
 		return new LinkedHashSet<VGene>(query.getResultList());
 	}
 
 	@Override
 	public Gene findGeneByName(String name, Integer organismId) {
-		// TODO Auto-generated method stub
-		//Set setGene  = this.findVGeneByName(name);
-		Query query = createNamedQuery("findVGeneByNameOrg", -1,-1, name, organismId);
+
+		// Set setGene = this.findVGeneByName(name);
+		Query query = createNamedQuery("findVGeneByNameOrg", -1, -1, name, organismId);
 		Set setGene = new LinkedHashSet<VGene>(query.getResultList());
-		
-		if(setGene.isEmpty()) return null;
-		if(setGene.size()>1) throw new RuntimeException("Multiple values of gene with name " + name);
-		return (Gene)setGene.iterator().next();
-		
+
+		if (setGene.isEmpty())
+			return null;
+		if (setGene.size() > 1)
+			throw new RuntimeException("Multiple values of gene with name " + name);
+		return (Gene) setGene.iterator().next();
+
 	}
 
-
-	private List executeSQL(String sql) 
-	{	if(AppContext.isLocalhost()) AppContext.debug("executing :" + sql);
-		//log.info("executing :" + sql);
-		return  getSession().createSQLQuery(sql).addEntity(VGene.class).list();
+	private List executeSQL(String sql) {
+		if (AppContext.isLocalhost())
+			AppContext.debug("executing :" + sql);
+		// log.info("executing :" + sql);
+		return getSession().createSQLQuery(sql).addEntity(VGene.class).list();
 	}
-	
 
 	private Session getSession() {
 		return entityManager.unwrap(Session.class);
 	}
-	
 
 	@Override
-	public List<Gene> findGeneWithNames(Collection<String> genenames,
-			Integer organismId) {
-		genenames=new TreeSet(genenames);
-		if(AppContext.isOracle()) return  findGeneWithNamesOracle(genenames, organismId);
-		else if(AppContext.isPostgres()) return  findGeneWithNamesPostgres(genenames, organismId);
+	public List<Gene> findGeneWithNames(Collection<String> genenames, Integer organismId) {
+		genenames = new TreeSet(genenames);
+		if (AppContext.isOracle())
+			return findGeneWithNamesOracle(genenames, organismId);
+		else if (AppContext.isPostgres())
+			return findGeneWithNamesPostgres(genenames, organismId);
 		return null;
 
 	}
-	
-	
-	private List<Gene> findGeneWithNamesOracle(Collection<String> genenames,
-			Integer organismId) {
-		// TODO Auto-generated method stub
+
+	private List<Gene> findGeneWithNamesOracle(Collection<String> genenames, Integer organismId) {
+
 		/*
-		Query query = createNamedQuery("findVGeneByNamesOrg", -1,-1, genenames, organismId);
-		return query.getResultList();
-		*/
-		
-		List listVars=new ArrayList();
-		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(genenames),900);
-		for(int i=0; i<setnames.length; i++) {
-			StringBuffer buffnames=new StringBuffer();
-			Iterator<String> itNames=setnames[i].iterator();
-			while(itNames.hasNext()) {
-				String name=itNames.next();
+		 * Query query = createNamedQuery("findVGeneByNamesOrg", -1,-1, genenames,
+		 * organismId); return query.getResultList();
+		 */
+
+		List listVars = new ArrayList();
+		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(genenames), 900);
+		for (int i = 0; i < setnames.length; i++) {
+			StringBuffer buffnames = new StringBuffer();
+			Iterator<String> itNames = setnames[i].iterator();
+			while (itNames.hasNext()) {
+				String name = itNames.next();
 				buffnames.append("'").append(name).append("'");
-				if(itNames.hasNext()) buffnames.append(",");
+				if (itNames.hasNext())
+					buffnames.append(",");
 			}
-			 //(select t.column_value from ( select unnest(ARRAY[" + buffnames + "]) column_value) t) 
-			String sql = "select v.* from   " + AppContext.getDefaultSchema() + ".V_GENE v,  table (sys.ODCIVarchar2List (" + buffnames + ")) n where n.column_value=v.name order by v.chr, v.fmin";
-			//String sql = "select v.* from   " + AppContext.getDefaultSchema() + ".V_GENE v,  (select t.column_value from ( select unnest(ARRAY[" + buffnames + "]) column_value) t)  n where n.column_value=v.name";
-			listVars.addAll(executeSQL(sql)); 
+			// (select t.column_value from ( select unnest(ARRAY[" + buffnames + "])
+			// column_value) t)
+			String sql = "select v.* from   " + AppContext.getDefaultSchema()
+					+ ".V_GENE v,  table (sys.ODCIVarchar2List (" + buffnames
+					+ ")) n where n.column_value=v.name order by v.chr, v.fmin";
+			// String sql = "select v.* from " + AppContext.getDefaultSchema() + ".V_GENE v,
+			// (select t.column_value from ( select unnest(ARRAY[" + buffnames + "])
+			// column_value) t) n where n.column_value=v.name";
+			listVars.addAll(executeSQL(sql));
 		}
-		
+
 		return listVars;
-		
+
 	}
 
-	private List<Gene> findGeneWithNamesPostgres(Collection<String> genenames,
-			Integer organismId) {
-		// TODO Auto-generated method stub
+	private List<Gene> findGeneWithNamesPostgres(Collection<String> genenames, Integer organismId) {
+
 		/*
-		Query query = createNamedQuery("findVGeneByNamesOrg", -1,-1, genenames, organismId);
-		return query.getResultList();
-		*/
-		
-		List listVars=new ArrayList();
-		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(genenames),900);
-		for(int i=0; i<setnames.length; i++) {
-			StringBuffer buffnames=new StringBuffer();
-			Iterator<String> itNames=setnames[i].iterator();
-			while(itNames.hasNext()) {
-				String name=itNames.next();
+		 * Query query = createNamedQuery("findVGeneByNamesOrg", -1,-1, genenames,
+		 * organismId); return query.getResultList();
+		 */
+
+		List listVars = new ArrayList();
+		Set setnames[] = AppContext.setSlicer(new LinkedHashSet(genenames), 900);
+		for (int i = 0; i < setnames.length; i++) {
+			StringBuffer buffnames = new StringBuffer();
+			Iterator<String> itNames = setnames[i].iterator();
+			while (itNames.hasNext()) {
+				String name = itNames.next();
 				buffnames.append("'").append(name).append("'");
-				if(itNames.hasNext()) buffnames.append(",");
+				if (itNames.hasNext())
+					buffnames.append(",");
 			}
-			 //(select t.column_value from ( select unnest(ARRAY[" + buffnames + "]) column_value) t) 
-			//String sql = "select v.* from   " + AppContext.getDefaultSchema() + ".V_GENE v,  table (sys.ODCIVarchar2List (" + buffnames + ")) n where n.column_value=v.name";
-			String sql = "select v.* from   " + AppContext.getDefaultSchema() + ".V_GENE v,  (select t.column_value from ( select unnest(ARRAY[" + buffnames + "]) column_value) t)  n where n.column_value=v.name order by v.chr, v.fmin";
-			listVars.addAll(executeSQL(sql)); 
+			// (select t.column_value from ( select unnest(ARRAY[" + buffnames + "])
+			// column_value) t)
+			// String sql = "select v.* from " + AppContext.getDefaultSchema() + ".V_GENE v,
+			// table (sys.ODCIVarchar2List (" + buffnames + ")) n where
+			// n.column_value=v.name";
+			String sql = "select v.* from   " + AppContext.getDefaultSchema()
+					+ ".V_GENE v,  (select t.column_value from ( select unnest(ARRAY[" + buffnames
+					+ "]) column_value) t)  n where n.column_value=v.name order by v.chr, v.fmin";
+			listVars.addAll(executeSQL(sql));
 		}
-		
+
 		return listVars;
-		
+
 	}
-	
+
 }

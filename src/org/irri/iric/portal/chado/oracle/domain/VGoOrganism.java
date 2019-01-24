@@ -15,32 +15,42 @@ import org.irri.iric.portal.domain.CvTerm;
 /**
  */
 
-@Entity(name="VGoOrganism")
+@Entity(name = "VGoOrganism")
 @NamedQueries({
 		@NamedQuery(name = "findAllVGoOrganisms", query = "select myVGoOrganism from VGoOrganism myVGoOrganism"),
 		@NamedQuery(name = "findVGoOrganismByAccession", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.accession = ?1"),
 		@NamedQuery(name = "findVGoOrganismByAccessionContaining", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.accession like ?1"),
-		
-		//@NamedQuery(name = "findVGoOrganismByCvCommonName", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where  myVGoOrganism.cvName = ?1 and myVGoOrganism.commonName = ?2"),
+
+		// @NamedQuery(name = "findVGoOrganismByCvCommonName", query = "select
+		// myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvName = ?1
+		// and myVGoOrganism.commonName = ?2"),
 
 		@NamedQuery(name = "findVGoOrganismByCvtermCvOrganism", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvterm = ?1 and myVGoOrganism.cvId= ?2 and   myVGoOrganism.organismId = ?3"),
-		//@NamedQuery(name = "findVGoOrganismByCvtermCvOrganism", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvterm = ?1 and myVGoOrganism.cvName= ?2 and   myVGoOrganism.organismId = ?3"),
+		// @NamedQuery(name = "findVGoOrganismByCvtermCvOrganism", query = "select
+		// myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvterm = ?1
+		// and myVGoOrganism.cvName= ?2 and myVGoOrganism.organismId = ?3"),
 		@NamedQuery(name = "findVGoOrganismByCvOrganism", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvId=?1 and myVGoOrganism.organismId=?2"),
-		
-		
-		//@NamedQuery(name = "findVGoOrganismByCommonName", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.commonName = ?1"),
-		//@NamedQuery(name = "findVGoOrganismByCommonNameContaining", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.commonName like ?1"),
-		//@NamedQuery(name = "findVGoOrganismByCvName", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvName = ?1"),
-		//@NamedQuery(name = "findVGoOrganismByCvNameContaining", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvName like ?1"),
+
+		// @NamedQuery(name = "findVGoOrganismByCommonName", query = "select
+		// myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.commonName =
+		// ?1"),
+		// @NamedQuery(name = "findVGoOrganismByCommonNameContaining", query = "select
+		// myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.commonName
+		// like ?1"),
+		// @NamedQuery(name = "findVGoOrganismByCvName", query = "select myVGoOrganism
+		// from VGoOrganism myVGoOrganism where myVGoOrganism.cvName = ?1"),
+		// @NamedQuery(name = "findVGoOrganismByCvNameContaining", query = "select
+		// myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvName like
+		// ?1"),
 		@NamedQuery(name = "findVGoOrganismByCvterm", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvterm = ?1"),
 		@NamedQuery(name = "findVGoOrganismByCvtermContaining", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvterm like ?1"),
 		@NamedQuery(name = "findVGoOrganismByCvtermId", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvtermId = ?1"),
 		@NamedQuery(name = "findVGoOrganismByOrganismId", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.organismId = ?1"),
 		@NamedQuery(name = "findVGoOrganismByPrimaryKey", query = "select myVGoOrganism from VGoOrganism myVGoOrganism where myVGoOrganism.cvtermId = ?1") })
-//@Table( name = "V_GO_ORGANISM")
-//@Table( name = "V_GO_CVTERMPATH_ORGANISM")
-//@Table( name = "V_LOCUS_CVTERM_CVTERMPATH")
-@Table( name = "V_CVTERM_CVTERMPATH_ORGANISM")
+// @Table( name = "V_GO_ORGANISM")
+// @Table( name = "V_GO_CVTERMPATH_ORGANISM")
+// @Table( name = "V_LOCUS_CVTERM_CVTERMPATH")
+@Table(name = "V_CVTERM_CVTERMPATH_ORGANISM")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VGoOrganism")
 public class VGoOrganism implements Serializable, CvTerm {
@@ -57,7 +67,7 @@ public class VGoOrganism implements Serializable, CvTerm {
 	/**
 	 */
 
-	//@Column(name = "ACCESSION")
+	// @Column(name = "ACCESSION")
 	@Column(name = "SUBJ_ACC")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -65,10 +75,10 @@ public class VGoOrganism implements Serializable, CvTerm {
 	/**
 	 */
 
-//	@Column(name = "CV_NAME")
-//	@Basic(fetch = FetchType.EAGER)
-//	@XmlElement
-//	String cvName;
+	// @Column(name = "CV_NAME")
+	// @Basic(fetch = FetchType.EAGER)
+	// @XmlElement
+	// String cvName;
 	/**
 	 */
 
@@ -77,8 +87,7 @@ public class VGoOrganism implements Serializable, CvTerm {
 	@XmlElement
 	BigDecimal cvId;
 
-	
-	//@Column(name = "CVTERM", length = 1024)
+	// @Column(name = "CVTERM", length = 1024)
 	@Column(name = "SUBJ_CVTERM", length = 1024)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -93,10 +102,10 @@ public class VGoOrganism implements Serializable, CvTerm {
 	/**
 	 */
 
-//	@Column(name = "COMMON_NAME")
-//	@Basic(fetch = FetchType.EAGER)
-//	@XmlElement
-//	String commonName;
+	// @Column(name = "COMMON_NAME")
+	// @Basic(fetch = FetchType.EAGER)
+	// @XmlElement
+	// String commonName;
 
 	/**
 	 */
@@ -122,17 +131,17 @@ public class VGoOrganism implements Serializable, CvTerm {
 		return this.accession;
 	}
 
-//	/**
-//	 */
-//	public void setCvName(String cvName) {
-//		this.cvName = cvName;
-//	}
-//
-//	/**
-//	 */
-//	public String getCvName() {
-//		return this.cvName;
-//	}
+	// /**
+	// */
+	// public void setCvName(String cvName) {
+	// this.cvName = cvName;
+	// }
+	//
+	// /**
+	// */
+	// public String getCvName() {
+	// return this.cvName;
+	// }
 
 	/**
 	 */
@@ -158,17 +167,17 @@ public class VGoOrganism implements Serializable, CvTerm {
 		return this.organismId;
 	}
 
-//	/**
-//	 */
-//	public void setCommonName(String commonName) {
-//		this.commonName = commonName;
-//	}
-//
-//	/**
-//	 */
-//	public String getCommonName() {
-//		return this.commonName;
-//	}
+	// /**
+	// */
+	// public void setCommonName(String commonName) {
+	// this.commonName = commonName;
+	// }
+	//
+	// /**
+	// */
+	// public String getCommonName() {
+	// return this.commonName;
+	// }
 
 	/**
 	 */
@@ -182,10 +191,10 @@ public class VGoOrganism implements Serializable, CvTerm {
 	public void copy(VGoOrganism that) {
 		setCvtermId(that.getCvtermId());
 		setAccession(that.getAccession());
-//		setCvName(that.getCvName());
+		// setCvName(that.getCvName());
 		setCvterm(that.getCvterm());
 		setOrganismId(that.getOrganismId());
-//		setCommonName(that.getCommonName());
+		// setCommonName(that.getCommonName());
 	}
 
 	/**
@@ -198,10 +207,10 @@ public class VGoOrganism implements Serializable, CvTerm {
 
 		buffer.append("cvtermId=[").append(cvtermId).append("] ");
 		buffer.append("accession=[").append(accession).append("] ");
-//		buffer.append("cvName=[").append(cvName).append("] ");
+		// buffer.append("cvName=[").append(cvName).append("] ");
 		buffer.append("cvterm=[").append(cvterm).append("] ");
 		buffer.append("organismId=[").append(organismId).append("] ");
-//		buffer.append("commonName=[").append(commonName).append("] ");
+		// buffer.append("commonName=[").append(commonName).append("] ");
 
 		return buffer.toString();
 	}
@@ -233,70 +242,68 @@ public class VGoOrganism implements Serializable, CvTerm {
 
 	@Override
 	public BigDecimal getCvTermId() {
-		// TODO Auto-generated method stub
+		
 		return this.cvtermId;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
+		
 		return this.cvterm;
 	}
 
 	@Override
 	public String getDefinition() {
-		// TODO Auto-generated method stub
+		
 		return this.accession;
 	}
-//
-//	@Override
-//	public int compareTo(LocusCvTerm o) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
-//
-//	@Override
-//	public String getUniquename() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public String getChr() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public Integer getFmin() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public Integer getFmax() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public Integer getStrand() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public String getContig() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public String getDescription() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-	
-	
-	
+	//
+	// @Override
+	// public int compareTo(LocusCvTerm o) {
+	// 
+	// return 0;
+	// }
+	//
+	// @Override
+	// public String getUniquename() {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public String getChr() {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public Integer getFmin() {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public Integer getFmax() {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public Integer getStrand() {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public String getContig() {
+	// 
+	// return null;
+	// }
+	//
+	// @Override
+	// public String getDescription() {
+	// 
+	// return null;
+	// }
+
 }

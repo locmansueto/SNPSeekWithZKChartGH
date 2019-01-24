@@ -12,7 +12,7 @@ import org.springframework.dao.DataAccessException;
  * DAO to manage VQtl entities.
  * 
  */
-public interface VQtlDAO extends JpaDao<VQtl> , QtlDAO {
+public interface VQtlDAO extends JpaDao<VQtl>, QtlDAO {
 
 	/**
 	 * JPQL Query - findVQtlByTraitNameContaining
@@ -24,7 +24,8 @@ public interface VQtlDAO extends JpaDao<VQtl> , QtlDAO {
 	 * JPQL Query - findVQtlByTraitNameContaining
 	 *
 	 */
-	public Set<VQtl> findVQtlByTraitNameContaining(String traitName, int startResult, int maxRows) throws DataAccessException;
+	public Set<VQtl> findVQtlByTraitNameContaining(String traitName, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVQtlByStart

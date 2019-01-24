@@ -25,7 +25,7 @@ public class VariantSequenceDAOImpl implements VariantSequenceDAO {
 
 	@Override
 	public String getFile(VariantSequenceQuery query) throws Exception {
-		// TODO Auto-generated method stub
+		
 
 		// AppContext.debug(query.toString());
 		AppContext.logQuery(query.toString());
@@ -33,8 +33,12 @@ public class VariantSequenceDAOImpl implements VariantSequenceDAO {
 		String destdir = query.getJobid();
 		if (destdir == null)
 			destdir = AppContext.getTempDir() + "vcf2fasta-" + AppContext.createTempFilename() + "/";
-		else
-			destdir = AppContext.getTempDir() + destdir + "/";
+		else {
+			if (AppContext.isWindows())
+				destdir = AppContext.getTempDir() + destdir + "\\";
+			else
+				destdir = AppContext.getTempDir() + destdir + "/";
+		}
 
 		// destdir=destdir.replace("vcf2fasta-", "vcf2fasta-" + query.getReference()
 		// +"-");
@@ -72,24 +76,22 @@ public class VariantSequenceDAOImpl implements VariantSequenceDAO {
 		bw = new BufferedWriter(new FileWriter(destdir + "vars.txt"));
 
 		bw.append("REFERENCE " + query.getReference() + "\n");
-		
-		
-		
+
 		Iterator<ArrayList<VAllstockBasicprop>> itVars = query.getColVars().iterator();
 		while (itVars.hasNext()) {
 			VAllstockBasicprop var = null;
-			
+
 			Object itVarValue = itVars.next();
-			
+
 			if (itVarValue instanceof List) {
 				List<VAllstockBasicprop> lst = (List<VAllstockBasicprop>) itVarValue;
 				var = lst.get(0);
 			}
-			
+
 			if (itVarValue instanceof VAllstockBasicprop) {
 				var = (VAllstockBasicprop) itVarValue;
 			}
-			
+
 			String boxcode = var.getIrisId().replace(" ", "_").trim();
 			bw.append(boxcode).append("\t").append(var.getName()).append("\n");
 		}

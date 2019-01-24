@@ -707,7 +707,7 @@ public class VCvPhenotypeByPtocoDAOImpl extends AbstractJpaDao<VCvPhenotypeByPto
 
 	@Override
 	public List getAncestors(String cv, String term) {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVCvPhenotypeByPtocoByObjCvtermNegDist", -1,-1, cv, term);
 		List list = new ArrayList();
 		Set set = new LinkedHashSet();
@@ -722,7 +722,7 @@ public class VCvPhenotypeByPtocoDAOImpl extends AbstractJpaDao<VCvPhenotypeByPto
 
 	@Override
 	public List getDescendants(String cv, String term, Set dataset) {
-		// TODO Auto-generated method stub
+		
 
 		List list = new ArrayList();
 		Set set = new LinkedHashSet();
@@ -766,13 +766,13 @@ public class VCvPhenotypeByPtocoDAOImpl extends AbstractJpaDao<VCvPhenotypeByPto
 	 * 
 	@Override
 	public Set getUniqueValues(BigDecimal typeId) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public List getAncestors(String cv, String term) {
-		// TODO Auto-generated method stub
+		
 		
 		Query query = createNamedQuery("findVGoCvtermpathByObjCvtermNegDist", -1,-1, cv, term);
 		List list = new ArrayList();
@@ -787,7 +787,7 @@ public class VCvPhenotypeByPtocoDAOImpl extends AbstractJpaDao<VCvPhenotypeByPto
 
 	@Override
 	public List getDescendants(String cv, String term) {
-		// TODO Auto-generated method stub
+		
 		Query query = createNamedQuery("findVGoCvtermpathByObjCvtermPosDist", -1,-1, cv, term);
 		List list = new ArrayList();
 		Set set = new LinkedHashSet();

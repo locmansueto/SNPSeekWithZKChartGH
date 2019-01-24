@@ -22,14 +22,13 @@ import org.irri.iric.portal.domain.FeatureInteraction;
 		@NamedQuery(name = "findVFeatureInteractionByFeatureInteractionId", query = "select myVFeatureInteraction from VFeatureInteraction myVFeatureInteraction where myVFeatureInteraction.featureInteractionId = ?1"),
 		@NamedQuery(name = "findVFeatureInteractionByGene1Id", query = "select myVFeatureInteraction from VFeatureInteraction myVFeatureInteraction where myVFeatureInteraction.gene1Id = ?1"),
 		@NamedQuery(name = "findVFeatureInteractionByGene2Id", query = "select myVFeatureInteraction from VFeatureInteraction myVFeatureInteraction where myVFeatureInteraction.gene2Id = ?1"),
-		
+
 		@NamedQuery(name = "findVFeatureInteractionByGeneIn", query = "select distinct myVFeatureInteraction from VFeatureInteraction myVFeatureInteraction where  myVFeatureInteraction.typeId = ?1 and (myVFeatureInteraction.gene1Id in(?2) or  myVFeatureInteraction.gene2Id in(?2))"),
-		
-		
+
 		@NamedQuery(name = "findVFeatureInteractionByPrimaryKey", query = "select myVFeatureInteraction from VFeatureInteraction myVFeatureInteraction where myVFeatureInteraction.featureInteractionId = ?1"),
 		@NamedQuery(name = "findVFeatureInteractionByScore", query = "select myVFeatureInteraction from VFeatureInteraction myVFeatureInteraction where myVFeatureInteraction.score = ?1"),
 		@NamedQuery(name = "findVFeatureInteractionByTypeId", query = "select myVFeatureInteraction from VFeatureInteraction myVFeatureInteraction where myVFeatureInteraction.typeId = ?1") })
-@Table( name = "V_FEATURE_INTERACTION")
+@Table(name = "V_FEATURE_INTERACTION")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VFeatureInteraction")
 public class VFeatureInteraction implements Serializable, FeatureInteraction {
@@ -205,7 +204,8 @@ public class VFeatureInteraction implements Serializable, FeatureInteraction {
 		if (!(obj instanceof VFeatureInteraction))
 			return false;
 		VFeatureInteraction equalCheck = (VFeatureInteraction) obj;
-		if ((featureInteractionId == null && equalCheck.featureInteractionId != null) || (featureInteractionId != null && equalCheck.featureInteractionId == null))
+		if ((featureInteractionId == null && equalCheck.featureInteractionId != null)
+				|| (featureInteractionId != null && equalCheck.featureInteractionId == null))
 			return false;
 		if (featureInteractionId != null && !featureInteractionId.equals(equalCheck.featureInteractionId))
 			return false;

@@ -454,6 +454,8 @@ public interface VarietyFacade {
 
 	public BigDecimal getPhenotypeId(String coTerm, String s);
 
+	public Map<BigDecimal, String> getAllTraits(Set<String> stringValues, boolean b);
+
 	// public List getVarietyByPassport(String sPassId);
 
 }

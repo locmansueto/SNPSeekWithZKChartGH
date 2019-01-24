@@ -7,7 +7,7 @@ public class AppContextNonstatic {
 
 	public AppContextNonstatic() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 		//new FilterConfig().getServletContext().getInitParameter("isAWS");
 		
 		//new ApplicationFilterConfig().getServletContext().getInitParameter("isAWS");

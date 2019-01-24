@@ -25,14 +25,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository("VLocusSynonymsDAO")
 @Transactional
-public class VLocusSynonymsDAOImpl extends AbstractJpaDao<VLocusSynonyms>
-		implements VLocusSynonymsDAO {
+public class VLocusSynonymsDAOImpl extends AbstractJpaDao<VLocusSynonyms> implements VLocusSynonymsDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VLocusSynonyms.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VLocusSynonyms.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Production
@@ -50,7 +51,7 @@ public class VLocusSynonymsDAOImpl extends AbstractJpaDao<VLocusSynonyms>
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -82,7 +83,8 @@ public class VLocusSynonymsDAOImpl extends AbstractJpaDao<VLocusSynonyms>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusSynonyms> findVLocusSynonymsByOrganismId(BigDecimal organismId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusSynonyms> findVLocusSynonymsByOrganismId(BigDecimal organismId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusSynonymsByOrganismId", startResult, maxRows, organismId);
 		return new LinkedHashSet<VLocusSynonyms>(query.getResultList());
 	}
@@ -104,7 +106,8 @@ public class VLocusSynonymsDAOImpl extends AbstractJpaDao<VLocusSynonyms>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusSynonyms> findVLocusSynonymsBySynonymContaining(String synonym, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusSynonyms> findVLocusSynonymsBySynonymContaining(String synonym, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusSynonymsBySynonymContaining", startResult, maxRows, synonym);
 		return new LinkedHashSet<VLocusSynonyms>(query.getResultList());
 	}
@@ -147,7 +150,8 @@ public class VLocusSynonymsDAOImpl extends AbstractJpaDao<VLocusSynonyms>
 	 */
 
 	@Transactional
-	public VLocusSynonyms findVLocusSynonymsBySynonymId(BigDecimal synonymId, int startResult, int maxRows) throws DataAccessException {
+	public VLocusSynonyms findVLocusSynonymsBySynonymId(BigDecimal synonymId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVLocusSynonymsBySynonymId", startResult, maxRows, synonymId);
 			return (org.irri.iric.portal.chado.oracle.domain.VLocusSynonyms) query.getSingleResult();
@@ -173,7 +177,8 @@ public class VLocusSynonymsDAOImpl extends AbstractJpaDao<VLocusSynonyms>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusSynonyms> findVLocusSynonymsBySynonym(String synonym, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusSynonyms> findVLocusSynonymsBySynonym(String synonym, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusSynonymsBySynonym", startResult, maxRows, synonym);
 		return new LinkedHashSet<VLocusSynonyms>(query.getResultList());
 	}
@@ -195,7 +200,8 @@ public class VLocusSynonymsDAOImpl extends AbstractJpaDao<VLocusSynonyms>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusSynonyms> findVLocusSynonymsByFeatureId(BigDecimal featureId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusSynonyms> findVLocusSynonymsByFeatureId(BigDecimal featureId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusSynonymsByFeatureId", startResult, maxRows, featureId);
 		return new LinkedHashSet<VLocusSynonyms>(query.getResultList());
 	}
@@ -216,7 +222,8 @@ public class VLocusSynonymsDAOImpl extends AbstractJpaDao<VLocusSynonyms>
 	 */
 
 	@Transactional
-	public VLocusSynonyms findVLocusSynonymsByPrimaryKey(BigDecimal synonymId, int startResult, int maxRows) throws DataAccessException {
+	public VLocusSynonyms findVLocusSynonymsByPrimaryKey(BigDecimal synonymId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVLocusSynonymsByPrimaryKey", startResult, maxRows, synonymId);
 			return (org.irri.iric.portal.chado.oracle.domain.VLocusSynonyms) query.getSingleResult();
@@ -242,7 +249,8 @@ public class VLocusSynonymsDAOImpl extends AbstractJpaDao<VLocusSynonyms>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusSynonyms> findVLocusSynonymsByLocus(String locus, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusSynonyms> findVLocusSynonymsByLocus(String locus, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusSynonymsByLocus", startResult, maxRows, locus);
 		return new LinkedHashSet<VLocusSynonyms>(query.getResultList());
 	}
@@ -264,13 +272,16 @@ public class VLocusSynonymsDAOImpl extends AbstractJpaDao<VLocusSynonyms>
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VLocusSynonyms> findVLocusSynonymsByLocusContaining(String locus, int startResult, int maxRows) throws DataAccessException {
+	public Set<VLocusSynonyms> findVLocusSynonymsByLocusContaining(String locus, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVLocusSynonymsByLocusContaining", startResult, maxRows, locus);
 		return new LinkedHashSet<VLocusSynonyms>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -281,26 +292,24 @@ public class VLocusSynonymsDAOImpl extends AbstractJpaDao<VLocusSynonyms>
 
 	@Override
 	public Set<String> getSynonyms(String name) {
-		// TODO Auto-generated method stub
-		Set names=new LinkedHashSet();
-		Iterator<VLocusSynonyms> itSyn=findVLocusSynonymsByLocus(name).iterator();
-		while(itSyn.hasNext()) {
-			 names.add( itSyn.next() );
+		
+		Set names = new LinkedHashSet();
+		Iterator<VLocusSynonyms> itSyn = findVLocusSynonymsByLocus(name).iterator();
+		while (itSyn.hasNext()) {
+			names.add(itSyn.next());
 		}
 		return names;
 	}
 
 	@Override
 	public Set<String> getSynonyms(BigDecimal feature_id) {
-		// TODO Auto-generated method stub
-		Set names=new LinkedHashSet();
-		Iterator<VLocusSynonyms> itSyn=findVLocusSynonymsByFeatureId(feature_id).iterator();
-		while(itSyn.hasNext()) {
-			 names.add( itSyn.next() );
+		
+		Set names = new LinkedHashSet();
+		Iterator<VLocusSynonyms> itSyn = findVLocusSynonymsByFeatureId(feature_id).iterator();
+		while (itSyn.hasNext()) {
+			names.add(itSyn.next());
 		}
 		return names;
 	}
-	
-	
-	
+
 }

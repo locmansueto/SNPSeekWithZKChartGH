@@ -6,675 +6,844 @@
 <!--  *********************   DEFINE CUSTOMIZED DISPLAY PROPERTIES  *********************************************************************************** -->
 
 
-<zk xmlns:h="native"  xmlns:w="http://www.zkoss.org/2005/zk/client">
+<zk xmlns:h="native" xmlns:w="http://www.zkoss.org/2005/zk/client">
 
 	<style>
-	
-	 .z-loading {
-            background-color:#808080;
-            border:1px outset #A0A0A0;
-            font-weight: bold;
-            padding:2px;
-			
-			cursor: wait;
-    		top: 50%;
-    		left: 45% !important;
-    		align: center;
-    		vertical-align: middle; 
-    		
-    		position: fixed;
-			margin-left: auto;
-    		margin-right: auto;
-    		display: block;
-    		 
-    
-        }
-        .z-loading-indicator {
-            color: gray;
-            border:0 none;
-            
-            width: 100%;
-    		height: 100%;        
-    
-        }
-        .z-loading { top: 50% !important; left: 45% !important; align:
-		center; vertical-align: middle; }
-        .z-loading-icon {
-            background-image: url(${c:encodeURL('~./zk/img/progress3.gif')}); 
-        }
-        
-        
-        .z-loading-icon {
-            background-image: url(${c:encodeURL('~./zk/img/progress3.gif')}); 
-        }
-    </style>
-    
-   	<style>
-       	<!-- cut/hide the vertical borders in the grid rows -->
+
+		.z-loading { background-color:#808080; border:1px outset
+		#A0A0A0; font-weight: bold; padding:2px;
+
+		cursor: wait; top: 50%; left: 45% !important; align: center;
+		vertical-align: middle;
+
+		position: fixed; margin-left: auto; margin-right: auto; display:
+		block;
+
+
+		} .z-loading-indicator { color: gray; border:0 none;
+
+		width: 100%; height: 100%;
+
+		} .z-loading { top: 50% !important; left: 45% !important; align:
+		center; vertical-align: middle; } .z-loading-icon {
+		background-image:
+		url(${c:encodeURL('~./zk/img/progress3.gif')}); }
+
+
+		.z-loading-icon { background-image:
+		url(${c:encodeURL('~./zk/img/progress3.gif')}); }
+	</style>
+
+	<style>
+		<!-- cut/hide the vertical borders in the grid rows -->
 		tr.z-row td.z-row-inner { border-right: 0px #CCC; }
-    </style>
+	</style>
+
+	<!--  style>
+		.no-highlight tr.z-grid-odd td.z-row-inner,tr.z-grid-odd .z-cell,tr.z-grid-odd, .no-highlight tr.z-row-over > td.z-row-inner
+		{
+		background:white;
+		}
 		
-<!--  style>
-.no-highlight tr.z-grid-odd td.z-row-inner,tr.z-grid-odd .z-cell,tr.z-grid-odd, .no-highlight tr.z-row-over > td.z-row-inner
-	      {
-	      background:white;
-	      }
-
-</style -->
+		</style -->
 
 
- <!--  style>
-.no-highlight
-    tr.overseld,td.overseld,tr.z-listitem-over,tr.z-listitem-over-seld
-  { background-image: none; background-color: none; }
- </style -->
+	<!--  style>
+		.no-highlight
+		tr.overseld,td.overseld,tr.z-listitem-over,tr.z-listitem-over-seld
+		{ background-image: none; background-color: none; }
+		</style -->
 
-<script type="text/javascript">
-<![CDATA[
-function treeLoaded(obj) {
-zAu.send(new zk.Event(zk.Widget.$(obj), "onTreeLoaded"));
-}
-]]>
+	<script type="text/javascript">
+		
+		<![CDATA[ function treeLoaded(obj) { zAu.send(new
+		zk.Event(zk.Widget.$(obj), "onTreeLoaded")); } ]]>
+		
 </script>
-<zscript><![CDATA[
-       String url  = (String)desktop.getExecution().getArg().get("href");
-	   ]]>
+	<zscript><![CDATA[
+	String url = (String) desktop.getExecution().getArg().get("href");
+]]>
 </zscript>
 
 
 
 
-<!--  *********************   INITIALIZE DISPLAY VARIABLES  *********************************************************************************** -->
+	<!--  *********************   INITIALIZE DISPLAY VARIABLES  *********************************************************************************** -->
 
-      
 
-<window id="winVariety" border="none" apply="org.irri.iric.portal.variety.zkui.VarietyQueryController">
-<vbox id="hboxQuery">
-<hbox>
-<!--  grid id="gridQuery" width="600px" height="250px" -->
-<!-- grid id="gridQuery" width="100%" height="340px" -->
-<!--  grid id="gridQuery" width="100%" height="360px" -->
 
-<vbox  height="400px">
-<grid id="gridQuery" width="100%">
-<rows>
+	<window id="winVariety" border="none"
+		apply="org.irri.iric.portal.variety.zkui.VarietyQueryController">
+		<vbox id="hboxQuery">
+			<hbox>
+				<!--  grid id="gridQuery" width="600px" height="250px" -->
+				<!-- grid id="gridQuery" width="100%" height="340px" -->
+				<!--  grid id="gridQuery" width="100%" height="360px" -->
 
-<!--  *********************   MESSAGEBOX  *********************************************************************************** -->
-    <row spans="4">
-		<textbox id="msgbox" readonly="true" value="${msg}" width="100%"/>
-	</row>
-   
-<!--  *********************   VARIETY QUERY OPTIONS  *********************************************************************************** -->   
-	 
-	<row spans="1,3" visible="true">
-		<label value="Variety set" style="font-size:14px;font-weight:bold;color:gray;"/>
-		<!--  listbox id="listboxDataset" class="z-dataset-dropdown" mold="select" width="200px"/ -->
-		
-		
-		<!--  listitem value="3k" label="3k Rice Genome Project" selected="true"/>
-		<listitem value="hdra" label="HDRA - High Density Rice Array"/>
-		<listitem value="gq92" label="GQ92 - Grain Quality Lab 92 Lines"/>
-		<listitem value="wissuwa" label="WISSUWA 9 Lines"/>
-		</listbox -->
-		
-		<bandbox id="bandboxVarietyset"  autodrop="true" readonly="true">
-					           <bandpopup width="200px">
-							  <listbox id="listboxDataset" checkmark="true" multiple="true" seltype="multiple"  width="200px">
-					             </listbox>
-					          </bandpopup>
-		</bandbox>
-		
-	</row>
-	
-	
-	<row spans="1,3">
-		<label value="Designation" style="font-size:14px;font-weight:bold;color:gray;"/>
-		
-		<hbox>
-		   <combobox id="comboVarname" autodrop="true" buttonVisible="false" width="150px" class="z-combobox-designation"/>
-		   <label pre="true" value="(ex. loto::gervex 104-c1)" style="font-size:10px" id="labelExampleVarname"/>
-		   </hbox>
-		
-	</row>
-	<zscript>
-	boolean isAccVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_ACCESSION);
+				<vbox height="400px">
+					<grid id="gridQuery" width="100%">
+						<rows>
+
+							<!--  *********************   MESSAGEBOX  *********************************************************************************** -->
+							<row spans="4">
+								<textbox id="msgbox" readonly="true"
+									value="${msg}" width="100%" />
+							</row>
+
+							<!--  *********************   VARIETY QUERY OPTIONS  *********************************************************************************** -->
+
+							<row spans="1,3" visible="true">
+								<label value="Variety set"
+									style="font-size:14px;font-weight:bold;color:gray;" />
+								<!--  listbox id="listboxDataset" class="z-dataset-dropdown" mold="select" width="200px"/ -->
+
+
+								<!--  listitem value="3k" label="3k Rice Genome Project" selected="true"/>
+									<listitem value="hdra" label="HDRA - High Density Rice Array"/>
+									<listitem value="gq92" label="GQ92 - Grain Quality Lab 92 Lines"/>
+									<listitem value="wissuwa" label="WISSUWA 9 Lines"/>
+									</listbox -->
+
+								<bandbox id="bandboxVarietyset"
+									autodrop="true" readonly="true">
+									<bandpopup width="200px">
+										<listbox id="listboxDataset"
+											checkmark="true" multiple="true" seltype="multiple"
+											width="200px">
+										</listbox>
+									</bandpopup>
+								</bandbox>
+
+							</row>
+
+
+							<row spans="1,3">
+								<label value="Designation"
+									style="font-size:14px;font-weight:bold;color:gray;" />
+
+								<hbox>
+									<combobox id="comboVarname"
+										autodrop="true" buttonVisible="false" width="150px"
+										class="z-combobox-designation" />
+									<label pre="true"
+										value="(ex. loto::gervex 104-c1)" style="font-size:10px"
+										id="labelExampleVarname" />
+								</hbox>
+
+							</row>
+							<zscript>
+	boolean isAccVisible = org.irri.iric.portal.AppContext
+			.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_ACCESSION);
 	String visibleAccStr = String.valueOf(isAccVisible);
-	</zscript>
-	<row  spans="1,3" visible="${visibleAccStr}">
-		<label value="Accession" style="font-size:14px;font-weight:bold;color:gray;"/>
-			<hbox>
-		    <combobox id="comboAccession" class="z-combobox-accession" autodrop="true" buttonVisible="false" width="150px"/>
-		    <label id="labelExampleAccession" pre="true" value="(ex. IRGC 122151)" style="font-size:10px"/>
-		    </hbox>
-		
-		    
-	</row>
-	
-	<zscript>
-	boolean isSubPopVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_SUBPOPULATION);
+</zscript>
+							<row spans="1,3"
+								visible="${visibleAccStr}">
+								<label value="Accession"
+									style="font-size:14px;font-weight:bold;color:gray;" />
+								<hbox>
+									<combobox id="comboAccession"
+										class="z-combobox-accession" autodrop="true"
+										buttonVisible="false" width="150px" />
+									<label id="labelExampleAccession"
+										pre="true" value="(ex. IRGC 122151)" style="font-size:10px" />
+								</hbox>
+
+
+							</row>
+
+							<zscript>
+	boolean isSubPopVisible = org.irri.iric.portal.AppContext
+			.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_SUBPOPULATION);
 	String visibleSubPopStr = String.valueOf(isSubPopVisible);
-	</zscript>
-	<row  spans="1,3" visible="${visibleSubPopStr}">
-		<label value="Subpopulation" style="font-size:14px;font-weight:bold;color:gray;"/>
-	
-		<hbox>
-	    <!--  combobox id="comboSubpopulation" class="z-subpopulation-dropdown" autocomplete="false" autodrop="false" buttonVisible="true" width="150px"/ -->
-	    <listbox id="listboxSubpopulation" class="z-subpopulation-dropdown" mold="select" width="150px"/>
-	    <label pre="true" value="(ex. trop)" style="font-size:10px"  id="labelExampleSubpop"/>
-	    </hbox>
-	   
-	</row>
-	
-	<zscript>
-	boolean isAssayVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_ASSAYID);
+</zscript>
+							<row spans="1,3"
+								visible="${visibleSubPopStr}">
+								<label value="Subpopulation"
+									style="font-size:14px;font-weight:bold;color:gray;" />
+
+								<hbox>
+									<!--  combobox id="comboSubpopulation" class="z-subpopulation-dropdown" autocomplete="false" autodrop="false" buttonVisible="true" width="150px"/ -->
+									<listbox id="listboxSubpopulation"
+										class="z-subpopulation-dropdown" mold="select" width="150px" />
+									<label pre="true" value="(ex. trop)"
+										style="font-size:10px" id="labelExampleSubpop" />
+								</hbox>
+
+							</row>
+
+							<zscript>
+	boolean isAssayVisible = org.irri.iric.portal.AppContext
+			.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_ASSAYID);
 	String visibleAssayStr = String.valueOf(isAssayVisible);
-	</zscript>
-	<row  spans="1,3" visible="${visibleAssayStr}">
-		<label  value="Assay ID" style="font-size:14px;font-weight:bold;color:gray;"/>
-		
-			<hbox>
-		    <combobox id="comboIrisId" class="z-combobox-irisid" autodrop="true" buttonVisible="false" width="150px"/>
-		    <label id="labelExampleIrisId" pre="true" value="(ex. iris 313-10000)" style="font-size:10px"/>
-		    </hbox>
-		   
-	</row>
-	<zscript>
-	boolean isCountryVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_COUNTRY);
+</zscript>
+							<row spans="1,3"
+								visible="${visibleAssayStr}">
+								<label value="Assay ID"
+									style="font-size:14px;font-weight:bold;color:gray;" />
+
+								<hbox>
+									<combobox id="comboIrisId"
+										class="z-combobox-irisid" autodrop="true"
+										buttonVisible="false" width="150px" />
+									<label id="labelExampleIrisId"
+										pre="true" value="(ex. iris 313-10000)"
+										style="font-size:10px" />
+								</hbox>
+
+							</row>
+							<zscript>
+	boolean isCountryVisible = org.irri.iric.portal.AppContext
+			.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_COUNTRY);
 	String visibleCountryStr = String.valueOf(isCountryVisible);
-	</zscript>
-	<row  spans="1,3" visible="${visibleCountryStr}">
-		<label value="Country" style="font-size:14px;font-weight:bold;color:gray;"/>
-	    <combobox id="comboCountry" class="z-combobox-country" autodrop="true" buttonVisible="false" width="150px"/>
-	  
-	</row>
+</zscript>
+							<row spans="1,3"
+								visible="${visibleCountryStr}">
+								<label value="Country"
+									style="font-size:14px;font-weight:bold;color:gray;" />
+								<combobox id="comboCountry"
+									class="z-combobox-country" autodrop="true"
+									buttonVisible="false" width="150px" />
 
-	<zscript>
-	boolean isPassportVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_PASSPORT);
+							</row>
+
+							<zscript>
+	boolean isPassportVisible = org.irri.iric.portal.AppContext
+			.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_PASSPORT);
 	String visiblePassportStr = String.valueOf(isPassportVisible);
-	</zscript>
-	<row  spans="1,3" visible="${visiblePassportStr}">
-	<hbox>
-	<label pre="true" value="Passport   " style="font-size:14px;font-weight:bold;color:gray;"/><label/> <a target="_blank" href="/passport_dict.pdf" label="Data dictionary"/>
-	</hbox>	
-		<vbox id="vboxPassportConstraints">
-		<hbox>
-		<listbox id="listboxPassport" class="z-passport-dropdown"  mold="select"  rows="1" width="300px"/>
-		<label pre="true" value = " = "/>
-		<listbox id="listboxPassportValue" class="z-passport-arrow" mold="select"  rows="1"/>
-		<button id="buttonAddPassConstraint" label="Add" tooltip="popupAddPassport"/>
-		</hbox>
-		</vbox>
-	</row>
-	<zscript>
-	boolean isPhenotypeVisible = org.irri.iric.portal.AppContext.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_PHENOTYPE);
+</zscript>
+							<row spans="1,3"
+								visible="${visiblePassportStr}">
+								<hbox>
+									<label pre="true"
+										value="Passport   "
+										style="font-size:14px;font-weight:bold;color:gray;" />
+									<label />
+									<a target="_blank"
+										href="/passport_dict.pdf" label="Data dictionary" />
+								</hbox>
+								<vbox id="vboxPassportConstraints">
+									<hbox>
+										<listbox id="listboxPassport"
+											class="z-passport-dropdown" mold="select" rows="1"
+											width="300px" />
+										<label pre="true" value=" = " />
+										<listbox
+											id="listboxPassportValue" class="z-passport-arrow"
+											mold="select" rows="1" />
+										<button
+											id="buttonAddPassConstraint" label="Add"
+											tooltip="popupAddPassport" />
+									</hbox>
+								</vbox>
+							</row>
+							<zscript>
+	boolean isPhenotypeVisible = org.irri.iric.portal.AppContext
+			.showItem(org.irri.iric.portal.WebserverPropertyConstants.SEARCH_VARIETY_BY_PHENOTYPE);
 	String visiblePhenotypeStr = String.valueOf(isPhenotypeVisible);
-	</zscript>
-	<row  spans="1,3" visible="${visiblePhenotypeStr}">
-		
-		<hbox>
-		<label pre="true" value="Phenotype " style="font-size:14px;font-weight:bold;color:gray;"/><label/>  <a target="_blank" href="/phenotype_dict.pdf" label="Data dictionary"/>
-		</hbox>	
+</zscript>
+							<row spans="1,3"
+								visible="${visiblePhenotypeStr}">
 
-		<vbox>
-		<hbox visible="false">
-			<!--  label pre="true" value="Rice Crop/Trait Ontology term " style="font-size:12px;font-weight:bold;color:gray;"/ -->
-			<!--  label pre="true" value="Rice Crop/Trait Ontology term " style="font-size:12px;font-weight:bold;color:gray;"/ -->
-			<a id="aCO" href="http://www.cropontology.org/ontology/CO_320/Rice" label="Rice Crop" style="font-size:12px;font-weight:bold" target="_ontologies" />
-			<label value="/"  style="font-size:12px;font-weight:bold" />
-			<!--  a id="aTO" href="http://palea.cgrb.oregonstate.edu/trait_ontology/cgi-bin/trait_amigo/term_details?term=TO:0000387" target="_ontologies" label="Plant Trait"  style="font-size:12px;font-weight:bold"/ -->
-			<a id="aTO" href="http://browser.planteome.org/amigo/term/TO:0000387" target="_ontologies" label="Plant Trait"  style="font-size:12px;font-weight:bold"/>
-			<label pre="true" value=" Ontology  "  style="font-size:12px;font-weight:bold"/>
-			<listbox id="listboxPtocoterm" class="z-phenotype-ontology" mold="select"  rows="1" width="250px" tooltip="popupListboxPtoco"/>
-		</hbox>
-		<vbox id="vboxPhenConstraints">
-		<hbox>
-		<listbox id="listboxPhenotypes" class="z-phenotype-dropdown"  mold="select"  rows="1" width="300px"/>
-		<listbox id="listboxPhenComparator" class="z-phenotype-check" mold="select" width="40px" rows="1"/>
-		<listbox id="listboxPhenValue" class="z-phenotype-empty" mold="select"  rows="1"/>
-		<button id="buttonAddPhenConstraint" class="z-phenotype-add" label="Add" tooltip="popupAddPhenotype"/>
-		<radiogroup id="rgTraitterm" />
-			<radio id="radioLegacyTrait" selected="true" radiogroup="rgTraitterm" label="Legacy" />
-			<radio id="radioCoTrait" radiogroup="rgTraitterm" label="CO Terms" />
-		</hbox>
-		</vbox>
-		</vbox>
-		
-		
-	</row>
+								<hbox>
+									<label pre="true" value="Phenotype "
+										style="font-size:14px;font-weight:bold;color:gray;" />
+									<label />
+									<a target="_blank"
+										href="/phenotype_dict.pdf" label="Data dictionary" />
+								</hbox>
 
-	
-	
-	</rows>
-</grid>
-
-	
-<grid width="100%">
-<rows>
-	<row  spans="1,3" visible="false">
-		<label value="Genotype" style="font-size:14px;font-weight:bold;color:gray;"/>
-	
-		<hbox>
-	    <listbox id="listboxAlleleFilter" mold="select" rows="1"/>
-	    <label pre="true" value=" (rank varieties by neighborhood to set of snp-alleles)" style="font-size:10px"/>
-	    </hbox>
-	   
-	</row>
-	
-	<row  spans="1,3">
-		<label value="My Variety List" style="font-size:14px;font-weight:bold;color:gray;"/>
-	
-		<hbox>
-	    <listbox id="listboxMyVariety" mold="select" rows="1"/>
-	    <label pre="true" value=" (return only varieties in my list)" style="font-size:10px"/>
-	    </hbox>
-	   
-	</row>
-	
-	
-	
-	<row  spans="1,3">
-		<label id="lb1" pre="true" style="font-size:12px;" value="(If Variety name or IRIS Id is specified,\nthe other filters are ignored)"/>
-     
-        
-	 		<hbox>
-	 		    <button id="buttonSearch" class="z-selectbutton" label="SEARCH"   style="font-size:16px;font-weight:bold;color:gray;"
-	    	   width="100px" height="50px"  autodisable="self"
-	    	   xmlns:w="http://www.zkoss.org/2005/zk/client"			    	   			    	   
-	    	   w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();"
-	    	   />
-	    	   <vbox width="10px"/>	
-	 		    <button id="buttonReset" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;"
-	    	   width="100px" height="30px"  autodisable="self"
-	    	   />	
-		
-	 		    <button id="showallButton" label="Show All"   style="font-size:14px;font-weight:bold;color:gray;"
-	    	   width="100px" height="30px"  autodisable="self" visible="true"
-	    	   />	
-	    	    <vbox width="10px"/>
-	    	</hbox>
-	</row>
-	
-</rows>
-</grid>
-
-</vbox>
-
- 	<tipBox height="230px" width="400px" desc="    VARIETY QUERY" 
-		details1= "  A. Select Variety Name or IRIS ID"
-		details2= "     Result: PASSPORT and PHENOTYPE data   "
-		details3= "  B. Select Country and/or Subpopulation " 
-		details4= "        and/or Passport and/or Phenotype     "
-		details5= "     If Passport/Phenotype is selected,"
-		details6= "        set the contraint Value " 
-		details7= "     Add multiple Passport/Phenotype as " 
-		details8= "        necessary. All constraints are ANDed" 
-		details9= "   Result Table: List of varieties matched  "
-	   details10= "   Tree: Phylogenetic tree for the result set"
-	   details11= "   MDS: Multi-dimensional scaling plot for "
-	   details12= "        the result set"
-		/>
-		
-</hbox>
+								<vbox>
+									<hbox visible="false">
+										<!--  label pre="true" value="Rice Crop/Trait Ontology term " style="font-size:12px;font-weight:bold;color:gray;"/ -->
+										<!--  label pre="true" value="Rice Crop/Trait Ontology term " style="font-size:12px;font-weight:bold;color:gray;"/ -->
+										<a id="aCO"
+											href="http://www.cropontology.org/ontology/CO_320/Rice"
+											label="Rice Crop" style="font-size:12px;font-weight:bold"
+											target="_ontologies" />
+										<label value="/"
+											style="font-size:12px;font-weight:bold" />
+										<!--  a id="aTO" href="http://palea.cgrb.oregonstate.edu/trait_ontology/cgi-bin/trait_amigo/term_details?term=TO:0000387" target="_ontologies" label="Plant Trait"  style="font-size:12px;font-weight:bold"/ -->
+										<a id="aTO"
+											href="http://browser.planteome.org/amigo/term/TO:0000387"
+											target="_ontologies" label="Plant Trait"
+											style="font-size:12px;font-weight:bold" />
+										<label pre="true"
+											value=" Ontology  " style="font-size:12px;font-weight:bold" />
+										<listbox id="listboxPtocoterm"
+											class="z-phenotype-ontology" mold="select" rows="1"
+											width="250px" tooltip="popupListboxPtoco" />
+									</hbox>
+									<vbox id="vboxPhenConstraints">
+										<hbox>
+											<listbox
+												id="listboxPhenotypes" class="z-phenotype-dropdown"
+												mold="select" rows="1" width="300px" />
+											<listbox
+												id="listboxPhenComparator" class="z-phenotype-check"
+												mold="select" width="40px" rows="1" />
+											<listbox
+												id="listboxPhenValue" class="z-phenotype-empty"
+												mold="select" rows="1" />
+											<button
+												id="buttonAddPhenConstraint" class="z-phenotype-add"
+												label="Add" tooltip="popupAddPhenotype" />
+											<radiogroup
+												id="rgTraitterm" />
+											<radio id="radioLegacyTrait"
+												selected="true" radiogroup="rgTraitterm" label="Legacy" />
+											<radio id="radioCoTrait"
+												radiogroup="rgTraitterm" label="CO Terms" />
+										</hbox>
+									</vbox>
+								</vbox>
 
 
-</vbox>    	   
+							</row>
 
-    	
-<separator bar="true"/>
-    
-                                           
- <vbox>
- 
- <!--  *********************   VARIETY INFORMATION DISPLAY  *********************************************************************************** -->
- 
 
-	
-					
- 	<grid id="gridGermplasm" class="gridview-visible" visible="false" width="100%"  >
-	        	<columns>
-                <column label="PASSPORT DATA"/>
-                <column label="PHENOTYPES" />
-            	</columns>
-		<rows>
-		<row>
-		
-		<cell align="left" valign="top">
-		   
-		<vbox pack="start">
-		<grid>
-		<rows>
-		<row> Designation<textbox id="textboxGermDesignation" class="designation-content" readonly="true"/></row>
-		<row> Accession<textbox id="textboxGermAccession" class="accession-content" readonly="true"/></row>
-		<row><label id="labelIRISId" value="IRIS ID"/><textbox id="textboxIRISId" class="irisidcontent" readonly="true"/></row>
-		<row> Subpopulation<textbox id="textboxGermSubpopulation" readonly="true"/></row>
-		<row> Country<textbox id="textboxGermCountry" readonly="true"/></row>
-		</rows>
-		</grid>
-		<hbox id="hboxRawfiles">
-		<label value="Raw files:   " pre="true"/>
-		<button id="buttonDownloadFastq" label="FastQ" target="_rawdownload"/><vbox width="15px"/>
-		<button id="buttonDownloadFastqc" label="FastQC" target="_rawdownload"/><vbox width="15px"/>
-		<button id="buttonDownloadBAM" label="BAM" target="_rawdownload"/><vbox width="15px"/>
-		<button id="buttonDownloadVCF" label="VCF" target="_rawdownload"/>
-		</hbox>
-		
-		<!--  *********************   PASSPORT INFORMATION DISPLAY  *********************************************************************************** -->
-		
-		<a target="_blank" href="/passport_dict.pdf" label="Passport data dictionary"/>
-		<listbox id="listboxGermPassport">
-			<listhead>
-			<listheader>DEFINITION</listheader>
-			<listheader>FIELD</listheader>
-			<listheader>VALUE</listheader>		
-			</listhead>
-		</listbox>
-		<separator bar="true"/>		
-		<hbox height="30px"/>
 
-		<checkbox id="checkboxShowMDSNeighbors"  checked="false" label="Show MDS Plot"/>
-		<div id="divMDSNeighbors" visible="false">
-		<label value="CLOSE RELATIVES (MDS Plot)" style="font-size:14;font-weight:bold"/>
-        <label value = "Drag area to zoom."/>
-        <charts id="chartMDSNeighbors" type="scatter" zoomType="xy"
-        	title="Neighboring varieties" width="500" height= "500" />
-		<hbox height="100%"/>
-		</div>
-		</vbox>
-		</cell>
-		
-		<!--  *********************   PHENOTYPE INFORMATION DISPLAY  *********************************************************************************** -->
-		
-		
-		<cell align="left" valign="top">
-		<a target="_blank" href="/phenotype_dict.pdf" label="Phenotype data dictionary"/>
-		<listbox id="listboxGermPhenotypes">
-			<listhead>
-			<listheader>DEFINITION</listheader>
-			<listheader>FIELD</listheader>
-			<listheader>VALUE</listheader>
-			</listhead>		
-		</listbox>
-		</cell>
+						</rows>
+					</grid>
 
-			    
-		</row>
-		</rows>
-   </grid>	                                              
-                                       
-   <splitter id="splitter" collapse="before"/>
 
-   <tabbox id="tabboxDisplay" width="100%" >  
-        <tabs>  
-            <tab id="tabTable" label="Table"/>  
-            <tab id="tabPhylo" label="Phylotree" visible="false"/>  
-             <!--  tab label="Geography"/ -->  
-            <tab id="tabMDS" label="MDS plot" visible="false"/>  
-        </tabs>  
-        <tabpanels>  
-            <tabpanel>
-            
-		<!--  *********************   VARIETY QUERY LIST RESULT DISPLAY  *********************************************************************************** -->
-            
-            
-				 <vbox>
-				 <hbox id="hboxAddtolist" visible="false">
-				 <label value="Download:  " pre="true"/>
-				 <button id="buttonDownloadCSV" label="CSV"/>
-				 <hbox width="5px"/>
-				 <button id="buttonDownloadTab" label="Tab"/>
-				 <hbox width="25px"/>
-				  <button id="buttonAddToList" label="Create List:"  autodisable="self" tooltip="popupCreateList"/>
-				  <label value="   List Name  " pre="true"/>
-				  <textbox id="txtboxListname" width="200px"/>
-				 </hbox>
-				 
-				 
-				 <hbox visible="false">
-				 <button id="buttonCheckAll" label="Check All"/><vbox width="20px"/><button id="buttonUncheckAll" label="Uncheck All"/><vbox width="20px"/>
-				 </hbox>
-				 
-				 
-				 <listbox id="listboxVarietyresult" class="listview-visible" fixedLayout="true" mold="paging" pageSize="100" visible="true"  >
-						<listhead>
-							<listheader  sort="auto"></listheader>
-							<listheader  sort="auto"></listheader>
-							<listheader  sort="auto"></listheader>
-							<listheader  sort="auto"></listheader>
-							<listheader  sort="auto"></listheader>
-						</listhead>		
-					</listbox>
+					<grid width="100%">
+						<rows>
+							<row spans="1,3" visible="false">
+								<label value="Genotype"
+									style="font-size:14px;font-weight:bold;color:gray;" />
+
+								<hbox>
+									<listbox id="listboxAlleleFilter"
+										mold="select" rows="1" />
+									<label pre="true"
+										value=" (rank varieties by neighborhood to set of snp-alleles)"
+										style="font-size:10px" />
+								</hbox>
+
+							</row>
+
+							<row spans="1,3">
+								<label value="My Variety List"
+									style="font-size:14px;font-weight:bold;color:gray;" />
+
+								<hbox>
+									<listbox id="listboxMyVariety"
+										mold="select" rows="1" />
+									<label pre="true"
+										value=" (return only varieties in my list)"
+										style="font-size:10px" />
+								</hbox>
+
+							</row>
+
+
+
+							<row spans="1,3">
+								<label id="lb1" pre="true"
+									style="font-size:12px;"
+									value="(If Variety name or IRIS Id is specified,\nthe other filters are ignored)" />
+
+
+								<hbox>
+									<button id="buttonSearch"
+										class="z-selectbutton" label="SEARCH"
+										style="font-size:16px;font-weight:bold;color:gray;"
+										width="100px" height="50px" autodisable="self"
+										xmlns:w="http://www.zkoss.org/2005/zk/client"
+										w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();" />
+									<vbox width="10px" />
+									<button id="buttonReset"
+										label="Reset"
+										style="font-size:14px;font-weight:bold;color:gray;"
+										width="100px" height="30px" autodisable="self" />
+
+									<button id="showallButton"
+										label="Show All"
+										style="font-size:14px;font-weight:bold;color:gray;"
+										width="100px" height="30px" autodisable="self" visible="true" />
+									<vbox width="10px" />
+								</hbox>
+							</row>
+
+						</rows>
+					</grid>
+
 				</vbox>
-            </tabpanel>
 
-            <tabpanel>  
-            
-          <!--  *********************   VARIETY QUERY LIST PHYLOGENETIC TREE DISPLAY  *********************************************************************************** -->
-            
-            
-				<!--  div style="overflow:auto;position:relative" --> 
-				<vbox> 
-				<!-- label value="The tree is constructed using  Neighbor-Joining method based on 400,000 core SNPs" style="font-family: arial;font-size:12px" / -->
-				
-				<hbox id="hboxSubpopColor1" >		
-				<label value="ind1A" style="color:#60e0c0"/>
-				<label value="ind1B" style="color:aquamarine"/>
-				<label value="ind2" style="color:#336622"/>
-				<label value="ind3" style="color:#339910"/>
-				<!--  label value="trop1" style="color:steelblue"/>
-				<label value="trop2" style="color:#2045c0"/ -->
-				<label value="trop" style="color:steelblue"/>
-				<label value="subtrop" style="color:#2045c0"/>
-				<label value="aro" style="color:purple"/>
-				<label value="temp" style="color:lightskyblue"/>
-				<label value="aus" style="color:orange"/>
-				<label value="admix" style="color:gray"/>
-				<label value="japx" style="color:#acacfc"/>
-				<label value="indx" style="color:#9cbb9c"/>
-				</hbox>
-
-				<hbox id="hboxSubpopColor2" visible="false">	
-				<label value="ind1" style="color:#60e0c0"/>	
-				<label value="ind1A" style="color:#60e0c0"/>	
-				<label value="ind1B" style="color:#65e5c5"/>	
-				<label value="ind1B-1" style="color:#50aa99"/>	
-				<label value="ind1B-2" style="color:#306600"/>	
-				<label value="ind2" style="color:#336622"/>	
-				<label value="ind2A" style="color:#306600"/>	
-				<label value="ind2B" style="color:#507755"/>	
-				<label value="ind3" style="color:#339910"/>	
-				<label value="ind3A" style="color:#339910"/>	
-				<label value="ind3B" style="color:#299506"/>	
-				<label value="ind3B-1" style="color:#a2cd5a"/>	
-				<label value="ind3B-2" style="color:#33cc77"/>	
-				<label value="trop" style="color:#4682b4"/>	
-				<label value="tropA" style="color:#4f94cd"/>	
-				<label value="tropB" style="color:#3163aa"/>	
-				<label value="subtrop" style="color:#2045c0"/>	
-				<label value="aro" style="color:purple"/>	
-				<label value="temp" style="color:lightskyblue"/>	
-				<label value="aus1" style="color:#ee9a00"/>	
-				<label value="aus2" style="color:#ad6020"/>	
-				<label value="ausx" style="color:#b07060"/>	
-				<label value="admix" style="color:gray"/>	
-				<label value="japx" style="color:#acacfc"/>	
-				<label value="indx" style="color:#9cbb9c"/>	
-				</hbox>
-					
-					
-				<!--  hbox id="hboxSubpopColor2" visible="false">	
-				<label value="ind1" style="color:#60e0c0"/>	
-				<label value="ind1.1" style="color:#60e0c0"/>	
-				<label value="ind1.2" style="color:#65e5c5"/>	
-				<label value="ind1.2.1" style="color:#50aa99"/>	
-				<label value="ind1.2.2" style="color:#306600"/>	
-				<label value="ind2" style="color:#336622"/>	
-				<label value="ind2.1" style="color:#306600"/>	
-				<label value="ind2.2" style="color:#507755"/>	
-				<label value="ind3" style="color:#339910"/>	
-				<label value="ind3.1" style="color:#339910"/>	
-				<label value="ind3.2" style="color:#299506"/>	
-				<label value="ind3.2.1" style="color:#a2cd5a"/>	
-				<label value="ind3.2.2" style="color:#33cc77"/>	
-				<label value="trop1" style="color:#4682b4"/>	
-				<label value="trop1.1" style="color:#4f94cd"/>	
-				<label value="trop1.2" style="color:#3163aa"/>	
-				<label value="trop2" style="color:#2045c0"/>	
-				<label value="aro" style="color:purple"/>	
-				<label value="temp" style="color:lightskyblue"/>	
-				<label value="aus1" style="color:#ee9a00"/>	
-				<label value="aus2" style="color:#ad6020"/>	
-				<label value="ausx" style="color:#b07060"/>	
-				<label value="admix" style="color:gray"/>	
-				<label value="japx" style="color:#acacfc"/>	
-				<label value="indx" style="color:#9cbb9c"/>	
-				</hbox -->
-					
-				
-				<!--  hbox v1>
-				<label value="admx" style="color:#006666"/>
-				<label value="aus" style="color:#CC7A52"/> 
-				<label value="trop/temp" style="color:#FF33CC"/>
-				<label value="inax" style="color:#00CC99"/> 
-				<label value="temp" style="color:#0066FF"/> 
-				<label value="aro" style="color:#AD8533"/> 
-				<label value="trop" style="color:#FF3300"/>
-				<label value="japx" style="color:#FFCC00"/>
-				<label value="ind1" style="color:#009900"/>
-				<label value="ind3" style="color:#99CC00"/>
-				<label value="ind2" style="color:#718C64"/>
-				<label value="indx" style="color:#A3FFA3"/>
-				<label value="temp/trop" style="color:#6600CC"/> 
-				</hbox -->
-				
-				<!-- hbox>
-				<label value="Color by subpopulation "/><label value="IND " style="color:blue"/> <label value="AUS " style="color:orange"/> <label value="TEMP " style="color:pink"/> <label value="MAGIC " style="color:violet"/>
-				<label value="TROP " style="color:green"/> <label value="ARO " style="color:silver"/> <label value="ADM " style="color:aqua"/> <label value="JAP " style="color:firebrick"/> <label value="NONE" style="color:black"/> 
-				</hbox -->
-				<!--  hbox>
-				<label value="Color by subpopulation: " pre="true"/>
-				<label value="NONE" style="color:black"/>
-				<label value="Aus_boro" style="color:green"/>
-				<label value="Aus_boro, Arom" style="color:greenyellow"/>
-				<label value="Aus_boro, AusB" style="color:darkolivegreen"/>
-				</hbox>
-				<hbox>
-				<label value="Basmati_sadri, Admx" style="color:sandybrown"/>
-				<label value="Basmati_sadri" style="color:peru"/>
-				<label value="Basmati_sadri, Arom" style="color:burlywood"/>
-				<label value="Intermediate type, Temp" style="color:gold"/>
-				<label value="Intermediate type, Japx" style="color:palegoldenrod"/>
-				<label value="Intermediate type, Arom" style="color:yellow"/>
-				<label value="Intermediate type" style="color:wheat"/>
-				<label value="Indica" style="color:blue"/>
-				<label value="Indica, AusB" style="color:dodgerblue"/>
-				<label value="Indica, Indi" style="color:aqua"/>
-				</hbox>
-				<hbox>
-				<label value="Japonica, Admx" style="color:crimson"/>
-				<label value="Temperate japonica, Indi" style="color:firebrick"/>
-				<label value="Temperate japonica, Temp" style="color:pink"/>
-				<label value="Temperate japonica, Admx" style="color:red"/>
-				<label value="Temperate japonica" style="color:deeppink"/>
-				<label value="Tropical japonica" style="color:lightsalmon"/>
-				<label value="Tropical japonica, Trop" style="color:palevioletred"/>
-				<label value="Tropical japonica, Admx" style="color:fuchsia"/>
-				<label value="Tropical japonica, Temp" style="color:hotpink"/>
-				<label value="Japonica" style="color:orangered"/>
-				</hbox -->
-								
-																
-				
-				<iframe id="iframePhylotree" style="height:1500px;width:2000px" />
-				<!-- 
-					  xmlns:ca="http://www.zkoss.org/2005/zk/client/attribute"
-				  	  ca:onload="treeLoaded(this)">
-				  	<attribute name="onCreate">
-				  		Clients.showBusy(self,"Loading tree...");
-				  	</attribute>
-				  	<attribute name="onTreeLoaded">
-				  		Clients.clearBusy(self);
-				  	</attribute>
-				</iframe -->  	  
-				  	  
-				</vbox>
-	
-							
-            </tabpanel>
-  
-
-		 <tabpanel>
-		 
-		  <!--  *********************   VARIETY QUERY MDS PLOT DISPLAY  *********************************************************************************** -->
-		 
-		 
-		        <vbox>
-			
-			<hbox>
-		        <label value = "Drag area to zoom."/>
-		        <checkbox id="checkboxShowMDSLabel" label = "Show variety names" checked="true" visible="false"/>
-			<vbox width="400px"/><label value="Highlight variety:  " pre="true" />
-			<listbox id="listboxHighlightVariety"   mold="select" width="200px"/>
-			<vbox width="50px"/><label value="list:  "  pre="true"/>
-<listbox id="listboxHighlightVarietyList" mold="select" width="150px"/><button id="buttonHighlight" label="Highlight variety" visible="false"/>
-
-
+				<tipBox height="230px" width="400px"
+					desc="    VARIETY QUERY"
+					details1="  A. Select Variety Name or IRIS ID"
+					details2="     Result: PASSPORT and PHENOTYPE data   "
+					details3="  B. Select Country and/or Subpopulation "
+					details4="        and/or Passport and/or Phenotype     "
+					details5="     If Passport/Phenotype is selected,"
+					details6="        set the contraint Value "
+					details7="     Add multiple Passport/Phenotype as "
+					details8="        necessary. All constraints are ANDed"
+					details9="   Result Table: List of varieties matched  "
+					details10="   Tree: Phylogenetic tree for the result set"
+					details11="   MDS: Multi-dimensional scaling plot for "
+					details12="        the result set" />
 
 			</hbox>
-<hbox>
-<label value="Size by phenotype value: " pre="true"/>
-<listbox id="listboxMDSPhenotype"   mold="select" width="200px"/>
-<label id="labelMDSPhenotype"/>
 
 
-</hbox>
+		</vbox>
 
 
-		        <charts id="chartMDS" type="scatter" zoomType="xy"
-		        	title="Varieties MDS plot" width="800" height= "800"  />
-		        <label value="Variety distance based on IBS using core SNPs"/>
+		<separator bar="true" />
 
-		        </vbox>
-         </tabpanel>
 
-         </tabpanels>
-    </tabbox>
-</vbox>
-	
-	
-	  <!--  *********************   INITIALIZATIONS OF DISPLAY COMPONENTS  *********************************************************************************** -->
-	
-	
-	    
+		<vbox>
+
+			<!--  *********************   VARIETY INFORMATION DISPLAY  *********************************************************************************** -->
+
+
+
+
+			<grid id="gridGermplasm" class="gridview-visible"
+				visible="false" width="100%">
+				<columns>
+					<column label="PASSPORT DATA" />
+					<column label="PHENOTYPES" />
+				</columns>
+				<rows>
+					<row>
+
+						<cell align="left" valign="top">
+
+							<vbox pack="start">
+								<grid>
+									<rows>
+										<row>
+											Designation
+											<textbox
+												id="textboxGermDesignation" class="designation-content"
+												readonly="true" />
+										</row>
+										<row>
+											Accession
+											<textbox
+												id="textboxGermAccession" class="accession-content"
+												readonly="true" />
+										</row>
+										<row>
+											<label id="labelIRISId"
+												value="IRIS ID" />
+											<textbox id="textboxIRISId"
+												class="irisidcontent" readonly="true" />
+										</row>
+										<row>
+											Subpopulation
+											<textbox
+												id="textboxGermSubpopulation" readonly="true" />
+										</row>
+										<row>
+											Country
+											<textbox
+												id="textboxGermCountry" readonly="true" />
+										</row>
+									</rows>
+								</grid>
+								<hbox id="hboxRawfiles">
+									<label value="Raw files:   "
+										pre="true" />
+									<button id="buttonDownloadFastq"
+										label="FastQ" target="_rawdownload" />
+									<vbox width="15px" />
+									<button id="buttonDownloadFastqc"
+										label="FastQC" target="_rawdownload" />
+									<vbox width="15px" />
+									<button id="buttonDownloadBAM"
+										label="BAM" target="_rawdownload" />
+									<vbox width="15px" />
+									<button id="buttonDownloadVCF"
+										label="VCF" target="_rawdownload" />
+								</hbox>
+
+								<!--  *********************   PASSPORT INFORMATION DISPLAY  *********************************************************************************** -->
+
+								<a target="_blank"
+									href="/passport_dict.pdf" label="Passport data dictionary" />
+								<listbox id="listboxGermPassport">
+									<listhead>
+										<listheader>
+											DEFINITION
+										</listheader>
+										<listheader>FIELD</listheader>
+										<listheader>VALUE</listheader>
+									</listhead>
+								</listbox>
+								<separator bar="true" />
+								<hbox height="30px" />
+
+								<checkbox id="checkboxShowMDSNeighbors"
+									checked="false" label="Show MDS Plot" />
+								<div id="divMDSNeighbors"
+									visible="false">
+									<label
+										value="CLOSE RELATIVES (MDS Plot)"
+										style="font-size:14;font-weight:bold" />
+									<label value="Drag area to zoom." />
+									<charts id="chartMDSNeighbors"
+										type="scatter" zoomType="xy" title="Neighboring varieties"
+										width="500" height="500" />
+									<hbox height="100%" />
+								</div>
+							</vbox>
+						</cell>
+
+						<!--  *********************   PHENOTYPE INFORMATION DISPLAY  *********************************************************************************** -->
+
+
+						<cell align="left" valign="top">
+							<a target="_blank"
+								href="/phenotype_dict.pdf" label="Phenotype data dictionary" />
+							<listbox id="listboxGermPhenotypes">
+								<listhead>
+									<listheader>DEFINITION</listheader>
+									<listheader>FIELD</listheader>
+									<listheader>VALUE</listheader>
+								</listhead>
+							</listbox>
+						</cell>
+
+
+					</row>
+				</rows>
+			</grid>
+
+			<splitter id="splitter" collapse="before" />
+
+			<tabbox id="tabboxDisplay" width="100%">
+				<tabs>
+					<tab id="tabTable" label="Table" />
+					<tab id="tabPhylo" label="Phylotree"
+						visible="false" />
+					<!--  tab label="Geography"/ -->
+					<tab id="tabMDS" label="MDS plot" visible="false" />
+				</tabs>
+				<tabpanels>
+					<tabpanel>
+
+						<!--  *********************   VARIETY QUERY LIST RESULT DISPLAY  *********************************************************************************** -->
+
+
+						<vbox>
+							<hbox id="hboxAddtolist" visible="false">
+								<label value="Download:  " pre="true" />
+								<button id="buttonDownloadCSV"
+									label="CSV" />
+								<hbox width="5px" />
+								<button id="buttonDownloadTab"
+									label="Tab" />
+								<hbox width="25px" />
+								<button id="buttonAddToList"
+									label="Create List:" autodisable="self"
+									tooltip="popupCreateList" />
+								<label value="   List Name  "
+									pre="true" />
+								<textbox id="txtboxListname"
+									width="200px" />
+							</hbox>
+
+
+							<hbox visible="false">
+								<button id="buttonCheckAll"
+									label="Check All" />
+								<vbox width="20px" />
+								<button id="buttonUncheckAll"
+									label="Uncheck All" />
+								<vbox width="20px" />
+							</hbox>
+
+
+							<listbox id="listboxVarietyresult"
+								class="listview-visible" fixedLayout="true" mold="paging"
+								pageSize="100" visible="true">
+								<listhead>
+									<listheader sort="auto"></listheader>
+									<listheader sort="auto"></listheader>
+									<listheader sort="auto"></listheader>
+									<listheader sort="auto"></listheader>
+									<listheader sort="auto"></listheader>
+								</listhead>
+							</listbox>
+						</vbox>
+					</tabpanel>
+
+					<tabpanel>
+
+						<!--  *********************   VARIETY QUERY LIST PHYLOGENETIC TREE DISPLAY  *********************************************************************************** -->
+
+
+						<!--  div style="overflow:auto;position:relative" -->
+						<vbox>
+							<!-- label value="The tree is constructed using  Neighbor-Joining method based on 400,000 core SNPs" style="font-family: arial;font-size:12px" / -->
+
+							<hbox id="hboxSubpopColor1">
+								<label value="ind1A"
+									style="color:#60e0c0" />
+								<label value="ind1B"
+									style="color:aquamarine" />
+								<label value="ind2"
+									style="color:#336622" />
+								<label value="ind3"
+									style="color:#339910" />
+								<!--  label value="trop1" style="color:steelblue"/>
+									<label value="trop2" style="color:#2045c0"/ -->
+								<label value="trop"
+									style="color:steelblue" />
+								<label value="subtrop"
+									style="color:#2045c0" />
+								<label value="aro" style="color:purple" />
+								<label value="temp"
+									style="color:lightskyblue" />
+								<label value="aus" style="color:orange" />
+								<label value="admix" style="color:gray" />
+								<label value="japx"
+									style="color:#acacfc" />
+								<label value="indx"
+									style="color:#9cbb9c" />
+							</hbox>
+
+							<hbox id="hboxSubpopColor2"
+								visible="false">
+								<label value="ind1"
+									style="color:#60e0c0" />
+								<label value="ind1A"
+									style="color:#60e0c0" />
+								<label value="ind1B"
+									style="color:#65e5c5" />
+								<label value="ind1B-1"
+									style="color:#50aa99" />
+								<label value="ind1B-2"
+									style="color:#306600" />
+								<label value="ind2"
+									style="color:#336622" />
+								<label value="ind2A"
+									style="color:#306600" />
+								<label value="ind2B"
+									style="color:#507755" />
+								<label value="ind3"
+									style="color:#339910" />
+								<label value="ind3A"
+									style="color:#339910" />
+								<label value="ind3B"
+									style="color:#299506" />
+								<label value="ind3B-1"
+									style="color:#a2cd5a" />
+								<label value="ind3B-2"
+									style="color:#33cc77" />
+								<label value="trop"
+									style="color:#4682b4" />
+								<label value="tropA"
+									style="color:#4f94cd" />
+								<label value="tropB"
+									style="color:#3163aa" />
+								<label value="subtrop"
+									style="color:#2045c0" />
+								<label value="aro" style="color:purple" />
+								<label value="temp"
+									style="color:lightskyblue" />
+								<label value="aus1"
+									style="color:#ee9a00" />
+								<label value="aus2"
+									style="color:#ad6020" />
+								<label value="ausx"
+									style="color:#b07060" />
+								<label value="admix" style="color:gray" />
+								<label value="japx"
+									style="color:#acacfc" />
+								<label value="indx"
+									style="color:#9cbb9c" />
+							</hbox>
+
+
+							<!--  hbox id="hboxSubpopColor2" visible="false">	
+								<label value="ind1" style="color:#60e0c0"/>	
+								<label value="ind1.1" style="color:#60e0c0"/>	
+								<label value="ind1.2" style="color:#65e5c5"/>	
+								<label value="ind1.2.1" style="color:#50aa99"/>	
+								<label value="ind1.2.2" style="color:#306600"/>	
+								<label value="ind2" style="color:#336622"/>	
+								<label value="ind2.1" style="color:#306600"/>	
+								<label value="ind2.2" style="color:#507755"/>	
+								<label value="ind3" style="color:#339910"/>	
+								<label value="ind3.1" style="color:#339910"/>	
+								<label value="ind3.2" style="color:#299506"/>	
+								<label value="ind3.2.1" style="color:#a2cd5a"/>	
+								<label value="ind3.2.2" style="color:#33cc77"/>	
+								<label value="trop1" style="color:#4682b4"/>	
+								<label value="trop1.1" style="color:#4f94cd"/>	
+								<label value="trop1.2" style="color:#3163aa"/>	
+								<label value="trop2" style="color:#2045c0"/>	
+								<label value="aro" style="color:purple"/>	
+								<label value="temp" style="color:lightskyblue"/>	
+								<label value="aus1" style="color:#ee9a00"/>	
+								<label value="aus2" style="color:#ad6020"/>	
+								<label value="ausx" style="color:#b07060"/>	
+								<label value="admix" style="color:gray"/>	
+								<label value="japx" style="color:#acacfc"/>	
+								<label value="indx" style="color:#9cbb9c"/>	
+								</hbox -->
+
+
+							<!--  hbox v1>
+								<label value="admx" style="color:#006666"/>
+								<label value="aus" style="color:#CC7A52"/> 
+								<label value="trop/temp" style="color:#FF33CC"/>
+								<label value="inax" style="color:#00CC99"/> 
+								<label value="temp" style="color:#0066FF"/> 
+								<label value="aro" style="color:#AD8533"/> 
+								<label value="trop" style="color:#FF3300"/>
+								<label value="japx" style="color:#FFCC00"/>
+								<label value="ind1" style="color:#009900"/>
+								<label value="ind3" style="color:#99CC00"/>
+								<label value="ind2" style="color:#718C64"/>
+								<label value="indx" style="color:#A3FFA3"/>
+								<label value="temp/trop" style="color:#6600CC"/> 
+								</hbox -->
+
+							<!-- hbox>
+								<label value="Color by subpopulation "/><label value="IND " style="color:blue"/> <label value="AUS " style="color:orange"/> <label value="TEMP " style="color:pink"/> <label value="MAGIC " style="color:violet"/>
+								<label value="TROP " style="color:green"/> <label value="ARO " style="color:silver"/> <label value="ADM " style="color:aqua"/> <label value="JAP " style="color:firebrick"/> <label value="NONE" style="color:black"/> 
+								</hbox -->
+							<!--  hbox>
+								<label value="Color by subpopulation: " pre="true"/>
+								<label value="NONE" style="color:black"/>
+								<label value="Aus_boro" style="color:green"/>
+								<label value="Aus_boro, Arom" style="color:greenyellow"/>
+								<label value="Aus_boro, AusB" style="color:darkolivegreen"/>
+								</hbox>
+								<hbox>
+								<label value="Basmati_sadri, Admx" style="color:sandybrown"/>
+								<label value="Basmati_sadri" style="color:peru"/>
+								<label value="Basmati_sadri, Arom" style="color:burlywood"/>
+								<label value="Intermediate type, Temp" style="color:gold"/>
+								<label value="Intermediate type, Japx" style="color:palegoldenrod"/>
+								<label value="Intermediate type, Arom" style="color:yellow"/>
+								<label value="Intermediate type" style="color:wheat"/>
+								<label value="Indica" style="color:blue"/>
+								<label value="Indica, AusB" style="color:dodgerblue"/>
+								<label value="Indica, Indi" style="color:aqua"/>
+								</hbox>
+								<hbox>
+								<label value="Japonica, Admx" style="color:crimson"/>
+								<label value="Temperate japonica, Indi" style="color:firebrick"/>
+								<label value="Temperate japonica, Temp" style="color:pink"/>
+								<label value="Temperate japonica, Admx" style="color:red"/>
+								<label value="Temperate japonica" style="color:deeppink"/>
+								<label value="Tropical japonica" style="color:lightsalmon"/>
+								<label value="Tropical japonica, Trop" style="color:palevioletred"/>
+								<label value="Tropical japonica, Admx" style="color:fuchsia"/>
+								<label value="Tropical japonica, Temp" style="color:hotpink"/>
+								<label value="Japonica" style="color:orangered"/>
+								</hbox -->
+
+
+
+							<iframe id="iframePhylotree"
+								style="height:1500px;width:2000px" />
+							<!-- 
+								xmlns:ca="http://www.zkoss.org/2005/zk/client/attribute"
+								ca:onload="treeLoaded(this)">
+								<attribute name="onCreate">
+								Clients.showBusy(self,"Loading tree...");
+								</attribute>
+								<attribute name="onTreeLoaded">
+								Clients.clearBusy(self);
+								</attribute>
+								</iframe -->
+
+						</vbox>
+
+
+					</tabpanel>
+
+
+					<tabpanel>
+
+						<!--  *********************   VARIETY QUERY MDS PLOT DISPLAY  *********************************************************************************** -->
+
+
+						<vbox>
+
+							<hbox>
+								<label value="Drag area to zoom." />
+								<checkbox id="checkboxShowMDSLabel"
+									label="Show variety names" checked="true" visible="false" />
+								<vbox width="400px" />
+								<label value="Highlight variety:  "
+									pre="true" />
+								<listbox id="listboxHighlightVariety"
+									mold="select" width="200px" />
+								<vbox width="50px" />
+								<label value="list:  " pre="true" />
+								<listbox
+									id="listboxHighlightVarietyList" mold="select" width="150px" />
+								<button id="buttonHighlight"
+									label="Highlight variety" visible="false" />
+
+
+
+							</hbox>
+							<hbox>
+								<label value="Size by phenotype value: "
+									pre="true" />
+								<listbox id="listboxMDSPhenotype"
+									mold="select" width="200px" />
+								<label id="labelMDSPhenotype" />
+
+
+							</hbox>
+
+
+							<charts id="chartMDS" type="scatter"
+								zoomType="xy" title="Varieties MDS plot" width="800"
+								height="800" />
+							<label
+								value="Variety distance based on IBS using core SNPs" />
+
+						</vbox>
+					</tabpanel>
+
+				</tabpanels>
+			</tabbox>
+		</vbox>
+
+
+		<!--  *********************   INITIALIZATIONS OF DISPLAY COMPONENTS  *********************************************************************************** -->
+
+
+
 		<!-- iframe id="iframePhylotree" style="height:1000px" widths="100%"/ -->
 
-  <!--  *********************   POPUP DEFINITIONS  *********************************************************************************** -->
+		<!--  *********************   POPUP DEFINITIONS  *********************************************************************************** -->
 
 
-<popup id="popupAddPhenotype" width="300px">
-        <html><![CDATA[
-          Add another phenotype constraint.
-        ]]></html>
-</popup>
-<popup id="popupAddPassport" width="300px">
-        <html><![CDATA[
-          Add another passport constraint.
-        ]]></html>
-</popup>
-<popup id="popupCreateList" width="300px">
-        <html><![CDATA[
-          Create a list out of the result.<br/>
-          Provide the list name in the box.
-        ]]></html>
-</popup>
+		<popup id="popupAddPhenotype" width="300px">
+			<html><![CDATA[ Add another phenotype constraint. ]]></html>
+		</popup>
+		<popup id="popupAddPassport" width="300px">
+			<html><![CDATA[ Add another passport constraint. ]]></html>
+		</popup>
+		<popup id="popupCreateList" width="300px">
+			<html>
+				<![CDATA[ Create a list out of the result.<br/> Provide
+				the list name in the box. ]]>
+			</html>
+		</popup>
 
-<popup id="popupListboxPtoco" width="300px">
-        <html><![CDATA[
-			Limits the last phenotype contraint choices only to traits belonging
-			to the selected CO_320 (Rice Trait)/TO term (Pland Trait).
-        ]]></html>
-</popup>
+		<popup id="popupListboxPtoco" width="300px">
+			<html>
+				<![CDATA[ Limits the last phenotype contraint choices
+				only to traits belonging to the selected CO_320 (Rice
+				Trait)/TO term (Pland Trait). ]]>
+			</html>
+		</popup>
 
-</window>
+	</window>
 
 
 </zk>

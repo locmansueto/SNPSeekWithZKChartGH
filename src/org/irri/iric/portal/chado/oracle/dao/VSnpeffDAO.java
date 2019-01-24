@@ -24,7 +24,8 @@ public interface VSnpeffDAO extends JpaDao<VSnpeff>, SnpsEffectDAO {
 	 * JPQL Query - findVSnpeffByPosition
 	 *
 	 */
-	public Set<VSnpeff> findVSnpeffByPosition(BigDecimal position, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpeff> findVSnpeffByPosition(BigDecimal position, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpeffByAnnotationContaining
@@ -36,7 +37,8 @@ public interface VSnpeffDAO extends JpaDao<VSnpeff>, SnpsEffectDAO {
 	 * JPQL Query - findVSnpeffByAnnotationContaining
 	 *
 	 */
-	public Set<VSnpeff> findVSnpeffByAnnotationContaining(String annotation, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpeff> findVSnpeffByAnnotationContaining(String annotation, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpeffBySnpFeatureId
@@ -48,7 +50,8 @@ public interface VSnpeffDAO extends JpaDao<VSnpeff>, SnpsEffectDAO {
 	 * JPQL Query - findVSnpeffBySnpFeatureId
 	 *
 	 */
-	public VSnpeff findVSnpeffBySnpFeatureId(BigDecimal snpFeatureId, int startResult, int maxRows) throws DataAccessException;
+	public VSnpeff findVSnpeffBySnpFeatureId(BigDecimal snpFeatureId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpeffByChromosome
@@ -60,7 +63,8 @@ public interface VSnpeffDAO extends JpaDao<VSnpeff>, SnpsEffectDAO {
 	 * JPQL Query - findVSnpeffByChromosome
 	 *
 	 */
-	public Set<VSnpeff> findVSnpeffByChromosome(Integer chromosome, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpeff> findVSnpeffByChromosome(Integer chromosome, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpeffByAnnotation
@@ -72,7 +76,8 @@ public interface VSnpeffDAO extends JpaDao<VSnpeff>, SnpsEffectDAO {
 	 * JPQL Query - findVSnpeffByAnnotation
 	 *
 	 */
-	public Set<VSnpeff> findVSnpeffByAnnotation(String annotation_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VSnpeff> findVSnpeffByAnnotation(String annotation_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVSnpeffs
@@ -96,6 +101,7 @@ public interface VSnpeffDAO extends JpaDao<VSnpeff>, SnpsEffectDAO {
 	 * JPQL Query - findVSnpeffByPrimaryKey
 	 *
 	 */
-	public VSnpeff findVSnpeffByPrimaryKey(BigDecimal snpFeatureId_1, int startResult, int maxRows) throws DataAccessException;
+	public VSnpeff findVSnpeffByPrimaryKey(BigDecimal snpFeatureId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

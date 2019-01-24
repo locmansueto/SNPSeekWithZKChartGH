@@ -20,58 +20,173 @@ import org.irri.iric.portal.domain.MergedLoci;
 
 @Entity
 @NamedQueries({
-	/*
-		@NamedQuery(name = "findAllVLocusCvtermpathIrics", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric"),
-//		@NamedQuery(name = "findVLocusCvtermpathIricByCommonName", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.commonName = ?1"),
-//		@NamedQuery(name = "findVLocusCvtermpathIricByCommonNameContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.commonName like ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByContigId", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.contigId = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByContigName", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.contigName = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByContigNameContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.contigName like ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByCvId", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.cvId = ?1"),
-//		@NamedQuery(name = "findVLocusCvtermpathIricByCvName", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.cvName = ?1"),
-//		@NamedQuery(name = "findVLocusCvtermpathIricByCvNameContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.cvName like ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByCvtermId", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.cvtermId = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByDb", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.db = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByDbContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.db like ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByFeatureId", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.featureId = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByFgenesh", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.fgenesh = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByFgeneshContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.fgenesh like ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByFmax", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.fmax = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByFmin", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.fmin = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByIric", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.iric = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByIricContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.iric like ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByMsu7", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.msu7 = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByMsu7Containing", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.msu7 like ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByName", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.name = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByNameContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.name like ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByNotes", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.notes = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByNotesContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.notes like ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByObjAcc", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.objAcc = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByObjAccContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.objAcc like ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByObjCvterm", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.objCvterm = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByObjCvtermContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.objCvterm like ?1"),
-*/		
+		/*
+		 * @NamedQuery(name = "findAllVLocusCvtermpathIrics", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric"
+		 * ), // @NamedQuery(name = "findVLocusCvtermpathIricByCommonName", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.commonName = ?1"
+		 * ), // @NamedQuery(name = "findVLocusCvtermpathIricByCommonNameContaining",
+		 * query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.commonName like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByContigId", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.contigId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByContigName", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.contigName = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByContigNameContaining", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.contigName like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByCvId", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.cvId = ?1"
+		 * ), // @NamedQuery(name = "findVLocusCvtermpathIricByCvName", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.cvName = ?1"
+		 * ), // @NamedQuery(name = "findVLocusCvtermpathIricByCvNameContaining", query
+		 * =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.cvName like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByCvtermId", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.cvtermId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByDb", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.db = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByDbContaining", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.db like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByFeatureId", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.featureId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByFgenesh", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.fgenesh = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByFgeneshContaining", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.fgenesh like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByFmax", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.fmax = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByFmin", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.fmin = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByIric", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.iric = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByIricContaining", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.iric like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByMsu7", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.msu7 = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByMsu7Containing", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.msu7 like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByName", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.name = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByNameContaining", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.name like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByNotes", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.notes = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByNotesContaining", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.notes like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByObjAcc", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.objAcc = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByObjAccContaining", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.objAcc like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByObjCvterm", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.objCvterm = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByObjCvtermContaining", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.objCvterm like ?1"
+		 * ),
+		 */
 		@NamedQuery(name = "findVLocusCvtermpathMsu7ByObjCvtermCvOrg", query = "select myVLocusCvtermpathIric from VLocusCvtermpathMsu7 myVLocusCvtermpathIric where myVLocusCvtermpathIric.objCvterm = ?1 and myVLocusCvtermpathIric.cvId=?2 and myVLocusCvtermpathIric.organismId=?3"),
 		@NamedQuery(name = "findVLocusCvtermpathMsu7ByCvOrgInFeatureId", query = "select myVLocusCvtermpathIric from VLocusCvtermpathMsu7 myVLocusCvtermpathIric where myVLocusCvtermpathIric.cvId=?1 and myVLocusCvtermpathIric.organismId=?2 and myVLocusCvtermpathIric.featureId in (?3)"),
-		
+
 		/*
-		@NamedQuery(name = "findVLocusCvtermpathIricByOrganismId", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.organismId = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByPathdistance", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.pathdistance = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByPrimaryKey", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.featureId = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByRapPred", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.rapPred = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByRapPredContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.rapPred like ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByRapRep", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.rapRep = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByRapRepContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.rapRep like ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricByStrand", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.strand = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricBySubjAcc", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.subjAcc = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricBySubjAccContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.subjAcc like ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricBySubjCvterm", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.subjCvterm = ?1"),
-		@NamedQuery(name = "findVLocusCvtermpathIricBySubjCvtermContaining", query = "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.subjCvterm like ?1") 
-		*/})
-@Table( name = "V_LOCUS_CVTERM_CVTERMPATH_MSU7")
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByOrganismId", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.organismId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByPathdistance", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.pathdistance = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByPrimaryKey", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.featureId = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByRapPred", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.rapPred = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByRapPredContaining", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.rapPred like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByRapRep", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.rapRep = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByRapRepContaining", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.rapRep like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricByStrand", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.strand = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricBySubjAcc", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.subjAcc = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricBySubjAccContaining", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.subjAcc like ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricBySubjCvterm", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.subjCvterm = ?1"
+		 * ),
+		 * 
+		 * @NamedQuery(name = "findVLocusCvtermpathIricBySubjCvtermContaining", query =
+		 * "select myVLocusCvtermpathIric from VLocusCvtermpathIric myVLocusCvtermpathIric where myVLocusCvtermpathIric.subjCvterm like ?1"
+		 * )
+		 */ })
+@Table(name = "V_LOCUS_CVTERM_CVTERMPATH_MSU7")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VLocusCvtermpathMsu7")
-public class VLocusCvtermpathMsu7 implements Serializable, MergedLoci, CvTerm, Comparable  {
+public class VLocusCvtermpathMsu7 implements Serializable, MergedLoci, CvTerm, Comparable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -141,12 +256,12 @@ public class VLocusCvtermpathMsu7 implements Serializable, MergedLoci, CvTerm, C
 	/**
 	 */
 
-//	@Column(name = "CV_NAME", length = 1020)
-//	@Basic(fetch = FetchType.EAGER)
-//	@XmlElement
-//	String cvName;
-//	/**
-//	 */
+	// @Column(name = "CV_NAME", length = 1020)
+	// @Basic(fetch = FetchType.EAGER)
+	// @XmlElement
+	// String cvName;
+	// /**
+	// */
 
 	@Column(name = "DB", length = 1020)
 	@Basic(fetch = FetchType.EAGER)
@@ -203,13 +318,13 @@ public class VLocusCvtermpathMsu7 implements Serializable, MergedLoci, CvTerm, C
 	BigDecimal organismId;
 	/**
 	 */
-//
-//	@Column(name = "COMMON_NAME", length = 1020)
-//	@Basic(fetch = FetchType.EAGER)
-//	@XmlElement
-//	String commonName;
-//	/**
-//	 */
+	//
+	// @Column(name = "COMMON_NAME", length = 1020)
+	// @Basic(fetch = FetchType.EAGER)
+	// @XmlElement
+	// String commonName;
+	// /**
+	// */
 
 	@Column(name = "IRIC", length = 1020)
 	@Basic(fetch = FetchType.EAGER)
@@ -352,17 +467,17 @@ public class VLocusCvtermpathMsu7 implements Serializable, MergedLoci, CvTerm, C
 		return this.cvId;
 	}
 
-//	/**
-//	 */
-//	public void setCvName(String cvName) {
-//		this.cvName = cvName;
-//	}
-//
-//	/**
-//	 */
-//	public String getCvName() {
-//		return this.cvName;
-//	}
+	// /**
+	// */
+	// public void setCvName(String cvName) {
+	// this.cvName = cvName;
+	// }
+	//
+	// /**
+	// */
+	// public String getCvName() {
+	// return this.cvName;
+	// }
 
 	/**
 	 */
@@ -459,18 +574,18 @@ public class VLocusCvtermpathMsu7 implements Serializable, MergedLoci, CvTerm, C
 	public BigDecimal getOrganismId() {
 		return this.organismId;
 	}
-//
-//	/**
-//	 */
-//	public void setCommonName(String commonName) {
-//		this.commonName = commonName;
-//	}
-//
-//	/**
-//	 */
-//	public String getCommonName() {
-//		return this.commonName;
-//	}
+	//
+	// /**
+	// */
+	// public void setCommonName(String commonName) {
+	// this.commonName = commonName;
+	// }
+	//
+	// /**
+	// */
+	// public String getCommonName() {
+	// return this.commonName;
+	// }
 
 	/**
 	 */
@@ -551,7 +666,7 @@ public class VLocusCvtermpathMsu7 implements Serializable, MergedLoci, CvTerm, C
 		setContigName(that.getContigName());
 		setNotes(that.getNotes());
 		setCvId(that.getCvId());
-		//setCvName(that.getCvName());
+		// setCvName(that.getCvName());
 		setDb(that.getDb());
 		setCvtermId(that.getCvtermId());
 		setSubjAcc(that.getSubjAcc());
@@ -560,7 +675,7 @@ public class VLocusCvtermpathMsu7 implements Serializable, MergedLoci, CvTerm, C
 		setObjCvterm(that.getObjCvterm());
 		setPathdistance(that.getPathdistance());
 		setOrganismId(that.getOrganismId());
-		//setCommonName(that.getCommonName());
+		// setCommonName(that.getCommonName());
 		setIric(that.getIric());
 		setMsu7(that.getMsu7());
 		setRapRep(that.getRapRep());
@@ -585,7 +700,7 @@ public class VLocusCvtermpathMsu7 implements Serializable, MergedLoci, CvTerm, C
 		buffer.append("contigName=[").append(contigName).append("] ");
 		buffer.append("notes=[").append(notes).append("] ");
 		buffer.append("cvId=[").append(cvId).append("] ");
-		//buffer.append("cvName=[").append(cvName).append("] ");
+		// buffer.append("cvName=[").append(cvName).append("] ");
 		buffer.append("db=[").append(db).append("] ");
 		buffer.append("cvtermId=[").append(cvtermId).append("] ");
 		buffer.append("subjAcc=[").append(subjAcc).append("] ");
@@ -594,7 +709,7 @@ public class VLocusCvtermpathMsu7 implements Serializable, MergedLoci, CvTerm, C
 		buffer.append("objCvterm=[").append(objCvterm).append("] ");
 		buffer.append("pathdistance=[").append(pathdistance).append("] ");
 		buffer.append("organismId=[").append(organismId).append("] ");
-		//buffer.append("commonName=[").append(commonName).append("] ");
+		// buffer.append("commonName=[").append(commonName).append("] ");
 		buffer.append("iric=[").append(iric).append("] ");
 		buffer.append("msu7=[").append(msu7).append("] ");
 		buffer.append("rapRep=[").append(rapRep).append("] ");
@@ -617,138 +732,143 @@ public class VLocusCvtermpathMsu7 implements Serializable, MergedLoci, CvTerm, C
 	/**
 	 */
 	public boolean equals(Object obj) {
-		return compareTo(obj)==0;
+		return compareTo(obj) == 0;
 		/*
-		if (obj == this)
-			return true;
-		if (!(obj instanceof VLocusCvtermpathIric))
-			return false;
-		VLocusCvtermpathIric equalCheck = (VLocusCvtermpathIric) obj;
-		if ((featureId == null && equalCheck.featureId != null) || (featureId != null && equalCheck.featureId == null))
-			return false;
-		if (featureId != null && !featureId.equals(equalCheck.featureId))
-			return false;
-		return true;
-		*/
+		 * if (obj == this) return true; if (!(obj instanceof VLocusCvtermpathIric))
+		 * return false; VLocusCvtermpathIric equalCheck = (VLocusCvtermpathIric) obj;
+		 * if ((featureId == null && equalCheck.featureId != null) || (featureId != null
+		 * && equalCheck.featureId == null)) return false; if (featureId != null &&
+		 * !featureId.equals(equalCheck.featureId)) return false; return true;
+		 */
 	}
 
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		VLocusCvtermpathMsu7 l1=(VLocusCvtermpathMsu7)this;
-		VLocusCvtermpathMsu7 l2=(VLocusCvtermpathMsu7)o;
+		
+		VLocusCvtermpathMsu7 l1 = (VLocusCvtermpathMsu7) this;
+		VLocusCvtermpathMsu7 l2 = (VLocusCvtermpathMsu7) o;
 		int ret = l1.getContig().compareTo(l2.getContig());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmin().compareTo(l2.getFmin());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmax().compareTo(l2.getFmax());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getStrand().compareTo(l2.getStrand());
 		return 0;
 	}
 
 	@Override
 	public BigDecimal getCvTermId() {
-		// TODO Auto-generated method stub
+		
 		return this.cvtermId;
 	}
 
 	@Override
 	public String getDefinition() {
-		// TODO Auto-generated method stub
+		
 		return subjCvterm;
 	}
 
 	@Override
 	public String getAccession() {
-		// TODO Auto-generated method stub
+		
 		return subjAcc;
 	}
 
 	@Override
 	public String getUniquename() {
-		// TODO Auto-generated method stub
+		
 		return name;
 	}
 
 	@Override
 	public Long getChr() {
-		// TODO Auto-generated method stub
+		
 		return Long.valueOf(AppContext.guessChrFromString(getContig()));
-		//return Long.valueOf(getContig());
+		// return Long.valueOf(getContig());
 	}
 
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
+		
 		return contigName;
 	}
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
+		
 		String mynotes = "no description";
-		if(this.notes!=null) mynotes=this.notes;
-		String strdb="";
-		if(db==null || db.isEmpty()) {
-			
-		} else strdb=db.toUpperCase()+":";
-		if(pathdistance>10000)
-			return  strdb + this.subjAcc + " " + this.subjCvterm +  " -*-> " + strdb + this.objAcc + " " + this.objCvterm + " (" + mynotes + ")" ;
-		else if(pathdistance==0)
-			 return strdb + this.subjAcc + " " + this.subjCvterm +  " (" + mynotes + ")" ;
+		if (this.notes != null)
+			mynotes = this.notes;
+		String strdb = "";
+		if (db == null || db.isEmpty()) {
+
+		} else
+			strdb = db.toUpperCase() + ":";
+		if (pathdistance > 10000)
+			return strdb + this.subjAcc + " " + this.subjCvterm + " -*-> " + strdb + this.objAcc + " " + this.objCvterm
+					+ " (" + mynotes + ")";
+		else if (pathdistance == 0)
+			return strdb + this.subjAcc + " " + this.subjCvterm + " (" + mynotes + ")";
 		else
-			return  strdb  + this.subjAcc + " " + this.subjCvterm +  " --" + pathdistance + "-> "+strdb + this.objAcc + " " + this.objCvterm + " (" + mynotes + ")" ;
+			return strdb + this.subjAcc + " " + this.subjCvterm + " --" + pathdistance + "-> " + strdb + this.objAcc
+					+ " " + this.objCvterm + " (" + mynotes + ")";
 
 	}
 
 	@Override
 	public String getIRICName() {
-		// TODO Auto-generated method stub
+		
 		return this.iric;
 	}
 
 	@Override
 	public String getMSU7Name() {
-		// TODO Auto-generated method stub
+		
 		return this.msu7;
 	}
 
 	@Override
 	public String getRAPPredName() {
-		// TODO Auto-generated method stub
+		
 		return this.rapPred;
 	}
 
 	@Override
 	public String getRAPRepName() {
-		// TODO Auto-generated method stub
+		
 		return this.rapRep;
 	}
 
 	@Override
 	public String getFGeneshName() {
-		// TODO Auto-generated method stub
+		
 		return this.fgenesh;
 	}
-	
+
 	@Override
 	public Set<String> getOverlappingGenes() {
-		// TODO Auto-generated method stub
 		
-		StringBuffer buff=new StringBuffer();
-		buff.append(  this.name );
-		if(getMSU7Name()!=null && !getMSU7Name().isEmpty()) buff.append(" " + getMSU7Name());
-		if(getRAPRepName()!=null && !getRAPRepName().isEmpty()) buff.append( " " + getRAPRepName());
-		if(getRAPPredName()!=null && !getRAPPredName().isEmpty()) buff.append(" " + getRAPPredName());
-		
-		Set locnamesets=new HashSet();
-		String names[]=buff.toString().trim().split("\\s+|,");
-		for(int i=0; i<names.length; i++)
-			locnamesets.add( names[i].trim() );
+
+		StringBuffer buff = new StringBuffer();
+		buff.append(this.name);
+		if (getMSU7Name() != null && !getMSU7Name().isEmpty())
+			buff.append(" " + getMSU7Name());
+		if (getRAPRepName() != null && !getRAPRepName().isEmpty())
+			buff.append(" " + getRAPRepName());
+		if (getRAPPredName() != null && !getRAPPredName().isEmpty())
+			buff.append(" " + getRAPPredName());
+
+		Set locnamesets = new HashSet();
+		String names[] = buff.toString().trim().split("\\s+|,");
+		for (int i = 0; i < names.length; i++)
+			locnamesets.add(names[i].trim());
 		locnamesets.remove("");
 		return locnamesets;
-		
+
 	}
 
 	@Override
@@ -756,6 +876,5 @@ public class VLocusCvtermpathMsu7 implements Serializable, MergedLoci, CvTerm, C
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
 }

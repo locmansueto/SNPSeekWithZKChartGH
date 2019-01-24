@@ -34,11 +34,12 @@ import ncsa.hdf.object.Dataset;
 public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements VGenotypeRunDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] {
-			VGenotypeRun.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VGenotypeRun.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit snpseekv3
@@ -56,7 +57,7 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -76,7 +77,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 	 *
 	 */
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDsDescriptionContaining(String dsDescription) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByDsDescriptionContaining(String dsDescription)
+			throws DataAccessException {
 
 		return findVGenotypeRunByDsDescriptionContaining(dsDescription, -1, -1);
 	}
@@ -88,8 +90,10 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDsDescriptionContaining(String dsDescription, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVGenotypeRunByDsDescriptionContaining", startResult, maxRows, dsDescription);
+	public Set<VGenotypeRun> findVGenotypeRunByDsDescriptionContaining(String dsDescription, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVGenotypeRunByDsDescriptionContaining", startResult, maxRows,
+				dsDescription);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
 
@@ -110,7 +114,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByVariantsetContaining(String variantset, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByVariantsetContaining(String variantset, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByVariantsetContaining", startResult, maxRows, variantset);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -132,7 +137,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDataset(String dataset, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByDataset(String dataset, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByDataset", startResult, maxRows, dataset);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -154,7 +160,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByVariantTypeId(Integer variantTypeId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByVariantTypeId(Integer variantTypeId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByVariantTypeId", startResult, maxRows, variantTypeId);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -176,7 +183,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByPlatformId(Integer platformId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByPlatformId(Integer platformId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByPlatformId", startResult, maxRows, platformId);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -198,7 +206,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDsDescription(String dsDescription, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByDsDescription(String dsDescription, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByDsDescription", startResult, maxRows, dsDescription);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -220,7 +229,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDataLocation(String dataLocation, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByDataLocation(String dataLocation, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByDataLocation", startResult, maxRows, dataLocation);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -230,7 +240,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 	 *
 	 */
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedBefore(java.util.Calendar datePerformed) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedBefore(java.util.Calendar datePerformed)
+			throws DataAccessException {
 
 		return findVGenotypeRunByDatePerformedBefore(datePerformed, -1, -1);
 	}
@@ -242,7 +253,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedBefore(java.util.Calendar datePerformed, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedBefore(java.util.Calendar datePerformed, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByDatePerformedBefore", startResult, maxRows, datePerformed);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -264,7 +276,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByVariantsetId(Integer variantsetId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByVariantsetId(Integer variantsetId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByVariantsetId", startResult, maxRows, variantsetId);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -286,7 +299,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByVariantset(String variantset, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByVariantset(String variantset, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByVariantset", startResult, maxRows, variantset);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -296,7 +310,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 	 *
 	 */
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDatePerformed(java.util.Calendar datePerformed) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByDatePerformed(java.util.Calendar datePerformed)
+			throws DataAccessException {
 
 		return findVGenotypeRunByDatePerformed(datePerformed, -1, -1);
 	}
@@ -308,7 +323,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDatePerformed(java.util.Calendar datePerformed, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByDatePerformed(java.util.Calendar datePerformed, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByDatePerformed", startResult, maxRows, datePerformed);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -329,7 +345,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 	 */
 
 	@Transactional
-	public VGenotypeRun findVGenotypeRunByGenotypeRunId(Integer genotypeRunId, int startResult, int maxRows) throws DataAccessException {
+	public VGenotypeRun findVGenotypeRunByGenotypeRunId(Integer genotypeRunId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVGenotypeRunByGenotypeRunId", startResult, maxRows, genotypeRunId);
 			return (VGenotypeRun) query.getSingleResult();
@@ -343,7 +360,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 	 *
 	 */
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByVsDescriptionContaining(String vsDescription) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByVsDescriptionContaining(String vsDescription)
+			throws DataAccessException {
 
 		return findVGenotypeRunByVsDescriptionContaining(vsDescription, -1, -1);
 	}
@@ -355,8 +373,10 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByVsDescriptionContaining(String vsDescription, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVGenotypeRunByVsDescriptionContaining", startResult, maxRows, vsDescription);
+	public Set<VGenotypeRun> findVGenotypeRunByVsDescriptionContaining(String vsDescription, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVGenotypeRunByVsDescriptionContaining", startResult, maxRows,
+				vsDescription);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
 
@@ -377,7 +397,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDatasetContaining(String dataset, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByDatasetContaining(String dataset, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByDatasetContaining", startResult, maxRows, dataset);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -387,7 +408,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 	 *
 	 */
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedAfter(java.util.Calendar datePerformed) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedAfter(java.util.Calendar datePerformed)
+			throws DataAccessException {
 
 		return findVGenotypeRunByDatePerformedAfter(datePerformed, -1, -1);
 	}
@@ -399,7 +421,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedAfter(java.util.Calendar datePerformed, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByDatePerformedAfter(java.util.Calendar datePerformed, int startResult,
+			int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByDatePerformedAfter", startResult, maxRows, datePerformed);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -443,7 +466,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByVsDescription(String vsDescription, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByVsDescription(String vsDescription, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByVsDescription", startResult, maxRows, vsDescription);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -464,7 +488,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 	 */
 
 	@Transactional
-	public VGenotypeRun findVGenotypeRunByPrimaryKey(Integer genotypeRunId, int startResult, int maxRows) throws DataAccessException {
+	public VGenotypeRun findVGenotypeRunByPrimaryKey(Integer genotypeRunId, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVGenotypeRunByPrimaryKey", startResult, maxRows, genotypeRunId);
 			return (VGenotypeRun) query.getSingleResult();
@@ -490,7 +515,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDataLocationContaining(String dataLocation, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByDataLocationContaining(String dataLocation, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByDataLocationContaining", startResult, maxRows, dataLocation);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
@@ -512,13 +538,16 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VGenotypeRun> findVGenotypeRunByDatasetId(Integer datasetId, int startResult, int maxRows) throws DataAccessException {
+	public Set<VGenotypeRun> findVGenotypeRunByDatasetId(Integer datasetId, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByDatasetId", startResult, maxRows, datasetId);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -530,42 +559,42 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 	@Override
 	public Set getPlatforms(String type) {
 		// TODO Auto-generated method stub
-		//return findAllVGenotypeRuns();
-		
-		Set platforms=new LinkedHashSet();
-		for(VGenotypeRun run:findAllVGenotypeRuns()) {
-			if(type==null || run.getVariantType().toUpperCase().equals(type.toUpperCase()))
+		// return findAllVGenotypeRuns();
+
+		Set platforms = new LinkedHashSet();
+		for (VGenotypeRun run : findAllVGenotypeRuns()) {
+			if (type == null || run.getVariantType().toUpperCase().equals(type.toUpperCase()))
 				platforms.add(run);
 		}
 		return platforms;
-		
-		//return null;
+
+		// return null;
 	}
 
 	@Override
 	public Set getPlatforms(Set setds, Set setvs, String type) {
 		// TODO Auto-generated method stub
-		//return findAllVGenotypeRuns();
-		
-		Set platforms=new LinkedHashSet();
-		for(VGenotypeRun run:findAllVGenotypeRuns()) {
-			if(type==null || run.getVariantType().toUpperCase().equals(type.toUpperCase())) {
-				if(setds.contains(run.getDataset()) && setvs.contains(run.getVariantset()))
+		// return findAllVGenotypeRuns();
+
+		Set platforms = new LinkedHashSet();
+		for (VGenotypeRun run : findAllVGenotypeRuns()) {
+			if (type == null || run.getVariantType().toUpperCase().equals(type.toUpperCase())) {
+				if (setds.contains(run.getDataset()) && setvs.contains(run.getVariantset()))
 					platforms.add(run);
 			}
-				
+
 		}
 		return platforms;
-		
-		//return null;
+
+		// return null;
 	}
 
 	@Override
 	public Set getPlatformRuns(Integer platformId) {
 		// TODO Auto-generated method stub
-		Set platforms=new LinkedHashSet();
-		for(VGenotypeRun run:findAllVGenotypeRuns()) {
-			if(run.getPlatformId().equals(platformId))
+		Set platforms = new LinkedHashSet();
+		for (VGenotypeRun run : findAllVGenotypeRuns()) {
+			if (run.getPlatformId().equals(platformId))
 				platforms.add(run);
 		}
 		return platforms;
@@ -574,18 +603,19 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 	@Override
 	public Set getDatasets(String type) {
 		// TODO Auto-generated method stub
-		Set set=new TreeSet();
-		for(VGenotypeRun run:findAllVGenotypeRuns()) {
-			if(type==null || run.getVariantType().toUpperCase().equals(type.toUpperCase()))
+		Set set = new TreeSet();
+		for (VGenotypeRun run : findAllVGenotypeRuns()) {
+			if (type == null || run.getVariantType().toUpperCase().equals(type.toUpperCase()))
 				set.add(run.getDataset());
 		}
 		return set;
 	}
+
 	@Override
 	public Set getDatasets() {
 		// TODO Auto-generated method stub
-		Set set=new TreeSet();
-		for(VGenotypeRun run:findAllVGenotypeRuns()) {
+		Set set = new TreeSet();
+		for (VGenotypeRun run : findAllVGenotypeRuns()) {
 			set.add(run.getDataset());
 		}
 		return set;
@@ -594,8 +624,8 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 	@Override
 	public Set getVariantsets() {
 		// TODO Auto-generated method stub
-		Set set=new TreeSet();
-		for(VGenotypeRun run:findAllVGenotypeRuns()) {
+		Set set = new TreeSet();
+		for (VGenotypeRun run : findAllVGenotypeRuns()) {
 			set.add(run.getVariantset());
 		}
 		return set;
@@ -604,33 +634,34 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 	@Override
 	public Set getVariantsets(String dataset) {
 		// TODO Auto-generated method stub
-		Set set=new TreeSet();
-		for(VGenotypeRun run:findAllVGenotypeRuns()) {
-			if(run.getDataset().equals(dataset))
-			set.add(run.getVariantset());
-		}
-		return set;
-	}
-	
-	@Override
-	public Set getVariantsets(Set dataset , String type) {
-		// TODO Auto-generated method stub
-		Set set=new TreeSet();
-		for(VGenotypeRun run:findAllVGenotypeRuns()) {
-			if(dataset.contains(run.getDataset()) && run.getVariantType().compareToIgnoreCase(type)==0)
+		Set set = new TreeSet();
+		for (VGenotypeRun run : findAllVGenotypeRuns()) {
+			if (run.getDataset().equals(dataset))
 				set.add(run.getVariantset());
 		}
 		return set;
 	}
+
 	@Override
-	public Set getVariantsets(String dataset , String type) {
+	public Set getVariantsets(Set dataset, String type) {
 		// TODO Auto-generated method stub
-		Set set=new TreeSet();
-		for(VGenotypeRun run:findAllVGenotypeRuns()) {
-			if(dataset.equals(run.getDataset()) && run.getVariantType().compareToIgnoreCase(type)==0)
+		Set set = new TreeSet();
+		for (VGenotypeRun run : findAllVGenotypeRuns()) {
+			if (dataset.contains(run.getDataset()) && run.getVariantType().compareToIgnoreCase(type) == 0)
 				set.add(run.getVariantset());
 		}
 		return set;
 	}
-	
+
+	@Override
+	public Set getVariantsets(String dataset, String type) {
+		// TODO Auto-generated method stub
+		Set set = new TreeSet();
+		for (VGenotypeRun run : findAllVGenotypeRuns()) {
+			if (dataset.equals(run.getDataset()) && run.getVariantType().compareToIgnoreCase(type) == 0)
+				set.add(run.getVariantset());
+		}
+		return set;
+	}
+
 }

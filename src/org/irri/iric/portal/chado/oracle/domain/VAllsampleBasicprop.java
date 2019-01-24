@@ -74,13 +74,13 @@ public class VAllsampleBasicprop implements Serializable, StockSample {
 	@Override
 	public void setCountry(String country) {
 		// TODO Auto-generated method stub
-		oriCountry=country;
+		oriCountry = country;
 	}
 
 	@Override
 	public void setAccession(String accession) {
 		// TODO Auto-generated method stub
-		gsAccession=accession;
+		gsAccession = accession;
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class VAllsampleBasicprop implements Serializable, StockSample {
 	@Override
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
-		StockSample s=(StockSample)o;
+		StockSample s = (StockSample) o;
 		return this.getStockSampleId().compareTo(s.getStockSampleId());
 	}
 
@@ -101,10 +101,16 @@ public class VAllsampleBasicprop implements Serializable, StockSample {
 	/**
 	 */
 
+	@Column(name = "sample_varietyset_id", nullable = false)
+	@Basic(fetch = FetchType.EAGER)
+	@Id
+	@XmlElement
+	BigDecimal sampleVarietySetId;
+	/**
+	 */
+
 	@Column(name = "stock_sample_id", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
-
-	@Id
 	@XmlElement
 	BigDecimal stockSampleId;
 	/**
@@ -362,13 +368,17 @@ public class VAllsampleBasicprop implements Serializable, StockSample {
 		if (!(obj instanceof VAllsampleBasicprop))
 			return false;
 		VAllsampleBasicprop equalCheck = (VAllsampleBasicprop) obj;
-		if ((stockSampleId == null && equalCheck.stockSampleId != null) || (stockSampleId != null && equalCheck.stockSampleId == null))
+		if ((stockSampleId == null && equalCheck.stockSampleId != null)
+				|| (stockSampleId != null && equalCheck.stockSampleId == null))
 			return false;
 		if (stockSampleId != null && !stockSampleId.equals(equalCheck.stockSampleId))
 			return false;
 		return true;
 	}
-	
-	
-	
+
+	@Override
+	public BigDecimal getSampleVarietySetId() {
+		return sampleVarietySetId;
+	}
+
 }

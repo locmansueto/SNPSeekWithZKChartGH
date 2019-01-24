@@ -31,11 +31,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class VSnpseekSettingsDAOImpl extends AbstractJpaDao<VSnpseekSettings> implements VSnpseekSettingsDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] {
-			VSnpseekSettings.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VSnpseekSettings.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit snpseekv3
@@ -53,7 +54,7 @@ public class VSnpseekSettingsDAOImpl extends AbstractJpaDao<VSnpseekSettings> im
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -107,7 +108,8 @@ public class VSnpseekSettingsDAOImpl extends AbstractJpaDao<VSnpseekSettings> im
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VSnpseekSettings> findVSnpseekSettingsByValueContaining(String value, int startResult, int maxRows) throws DataAccessException {
+	public Set<VSnpseekSettings> findVSnpseekSettingsByValueContaining(String value, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVSnpseekSettingsByValueContaining", startResult, maxRows, value);
 		return new LinkedHashSet<VSnpseekSettings>(query.getResultList());
 	}
@@ -129,7 +131,8 @@ public class VSnpseekSettingsDAOImpl extends AbstractJpaDao<VSnpseekSettings> im
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VSnpseekSettings> findVSnpseekSettingsByNameContaining(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VSnpseekSettings> findVSnpseekSettingsByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVSnpseekSettingsByNameContaining", startResult, maxRows, name);
 		return new LinkedHashSet<VSnpseekSettings>(query.getResultList());
 	}
@@ -150,7 +153,8 @@ public class VSnpseekSettingsDAOImpl extends AbstractJpaDao<VSnpseekSettings> im
 	 */
 
 	@Transactional
-	public VSnpseekSettings findVSnpseekSettingsByPrimaryKey(String name, int startResult, int maxRows) throws DataAccessException {
+	public VSnpseekSettings findVSnpseekSettingsByPrimaryKey(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVSnpseekSettingsByPrimaryKey", startResult, maxRows, name);
 			return (VSnpseekSettings) query.getSingleResult();
@@ -175,7 +179,8 @@ public class VSnpseekSettingsDAOImpl extends AbstractJpaDao<VSnpseekSettings> im
 	 */
 
 	@Transactional
-	public VSnpseekSettings findVSnpseekSettingsByName(String name, int startResult, int maxRows) throws DataAccessException {
+	public VSnpseekSettings findVSnpseekSettingsByName(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVSnpseekSettingsByName", startResult, maxRows, name);
 			return (VSnpseekSettings) query.getSingleResult();
@@ -201,13 +206,16 @@ public class VSnpseekSettingsDAOImpl extends AbstractJpaDao<VSnpseekSettings> im
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VSnpseekSettings> findVSnpseekSettingsByValue(String value, int startResult, int maxRows) throws DataAccessException {
+	public Set<VSnpseekSettings> findVSnpseekSettingsByValue(String value, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVSnpseekSettingsByValue", startResult, maxRows, value);
 		return new LinkedHashSet<VSnpseekSettings>(query.getResultList());
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *

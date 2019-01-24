@@ -50,30 +50,27 @@ import javax.persistence.*;
 public class VGenotypeRun implements Serializable, GenotypeRunPlatform {
 	@Override
 	public String getVariantType() {
-		// TODO Auto-generated method stub
+
 		return variantType;
 	}
 
 	@Override
 	public boolean useRDBMS() {
-		// TODO Auto-generated method stub
+
 		return !useHDF5();
 	}
 
 	@Override
 	public boolean useHDF5() {
-		// TODO Auto-generated method stub
-		return getLocation()!=null && !getLocation().isEmpty();
+
+		return getLocation() != null && !getLocation().isEmpty();
 	}
 
 	@Override
-	
+
 	/*
-	public int getVaridOffset() {
-		// TODO Auto-generated method stub
-		return varid_offset;
-	}
-	*/
+	 * public int getVaridOffset() { return varid_offset; }
+	 */
 
 	public String getMethod() {
 		return method;
@@ -185,14 +182,15 @@ public class VGenotypeRun implements Serializable, GenotypeRunPlatform {
 	String variantType;
 	/**
 	 */
-	
+
 	/*
-	@Column(name = "sampleid_offset")
-	@Basic(fetch = FetchType.EAGER)
-	@XmlElement
-	int varid_offset;
-*/
-	
+	 * @Column(name = "sampleid_offset")
+	 * 
+	 * @Basic(fetch = FetchType.EAGER)
+	 * 
+	 * @XmlElement int varid_offset;
+	 */
+
 	/**
 	 */
 	public void setGenotypeRunId(Integer genotypeRunId) {
@@ -368,7 +366,6 @@ public class VGenotypeRun implements Serializable, GenotypeRunPlatform {
 		buffer.append("dataset=[").append(dataset).append("] ");
 		buffer.append("dsDescription=[").append(dsDescription).append("] ");
 
-		
 		return buffer.toString();
 	}
 
@@ -390,7 +387,8 @@ public class VGenotypeRun implements Serializable, GenotypeRunPlatform {
 		if (!(obj instanceof VGenotypeRun))
 			return false;
 		VGenotypeRun equalCheck = (VGenotypeRun) obj;
-		if ((genotypeRunId == null && equalCheck.genotypeRunId != null) || (genotypeRunId != null && equalCheck.genotypeRunId == null))
+		if ((genotypeRunId == null && equalCheck.genotypeRunId != null)
+				|| (genotypeRunId != null && equalCheck.genotypeRunId == null))
 			return false;
 		if (genotypeRunId != null && !genotypeRunId.equals(equalCheck.genotypeRunId))
 			return false;
@@ -399,12 +397,8 @@ public class VGenotypeRun implements Serializable, GenotypeRunPlatform {
 
 	@Override
 	public String getLocation() {
-		// TODO Auto-generated method stub
+
 		return this.getDataLocation();
 	}
 
-
-	
-	
-	
 }

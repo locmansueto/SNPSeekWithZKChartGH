@@ -12,13 +12,17 @@ import org.irri.iric.portal.domain.SnpsStringAllvars;
 public interface IndelStringDAO extends SnpsStringDAO {
 
 	Map readSNPString(Set colVarids, String chr, Collection colpos);
-	Map readSNPString(String chr, Collection colpos);
-	
-	Map getMapAlleleId2Indel();
-	Map<BigDecimal, Integer> getMapVariety2Order();
-	Map<BigDecimal, Double> getMapVariety2Mismatch();
-	List<SnpsAllvarsPos> getListPos();
-	List<SnpsStringAllvars> getListResult();
 
+	Map readSNPString(String chr, Collection colpos);
+
+	Map getMapAlleleId2Indel();
+
+	Map<BigDecimal, Integer> getMapVariety2Order();
+
+	Map<BigDecimal, Double> getMapVariety2Mismatch();
+
+	List<SnpsAllvarsPos> getListPos();
+
+	List<SnpsStringAllvars> getListResult();
 
 }

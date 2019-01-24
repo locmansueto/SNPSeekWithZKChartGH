@@ -22,15 +22,13 @@ import org.irri.iric.portal.gwas.domain.ManhattanPlot;
 		@NamedQuery(name = "findVGwasManhattanBasicByGwasMarkerId", query = "select myVGwasManhattanBasic from VGwasManhattanBasic myVGwasManhattanBasic where myVGwasManhattanBasic.gwasMarkerId = ?1"),
 		@NamedQuery(name = "findVGwasManhattanBasicByGwasRunId", query = "select myVGwasManhattanBasic from VGwasManhattanBasic myVGwasManhattanBasic where myVGwasManhattanBasic.gwasRunId = ?1  order by  myVGwasManhattanBasic.chromosome, myVGwasManhattanBasic.position, myVGwasManhattanBasic.gwasMarkerId"),
 		@NamedQuery(name = "findVGwasManhattanBasicByMinusLogp", query = "select myVGwasManhattanBasic from VGwasManhattanBasic myVGwasManhattanBasic where myVGwasManhattanBasic.minusLogp = ?1"),
-		
+
 		@NamedQuery(name = "findVGwasManhattanBasicByGwasRunIdMinusLogp", query = "select myVGwasManhattanBasic from VGwasManhattanBasic myVGwasManhattanBasic where myVGwasManhattanBasic.gwasRunId = ?1 and myVGwasManhattanBasic.minusLogp >= ?2 order by  myVGwasManhattanBasic.chromosome, myVGwasManhattanBasic.position, myVGwasManhattanBasic.gwasMarkerId"),
 
-		
 		@NamedQuery(name = "findVGwasManhattanBasicByPosition", query = "select myVGwasManhattanBasic from VGwasManhattanBasic myVGwasManhattanBasic where myVGwasManhattanBasic.position = ?1"),
-		@NamedQuery(name = "findVGwasManhattanBasicByPrimaryKey", query = "select myVGwasManhattanBasic from VGwasManhattanBasic myVGwasManhattanBasic where myVGwasManhattanBasic.gwasMarkerId = ?1")
-		})
-//@Table( name = "V_GWAS_MANHATTAN_BASIC_")
-@Table( name = "V_GWAS_MANHATTAN_BASIC")
+		@NamedQuery(name = "findVGwasManhattanBasicByPrimaryKey", query = "select myVGwasManhattanBasic from VGwasManhattanBasic myVGwasManhattanBasic where myVGwasManhattanBasic.gwasMarkerId = ?1") })
+// @Table( name = "V_GWAS_MANHATTAN_BASIC_")
+@Table(name = "V_GWAS_MANHATTAN_BASIC")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VGwasManhattanBasic")
 public class VGwasManhattanBasic implements Serializable, ManhattanPlot {
@@ -72,9 +70,9 @@ public class VGwasManhattanBasic implements Serializable, ManhattanPlot {
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	BigDecimal position;
+
 	/**
 	 */
-
 
 	/**
 	 */
@@ -167,7 +165,6 @@ public class VGwasManhattanBasic implements Serializable, ManhattanPlot {
 		buffer.append("chromosome=[").append(chromosome).append("] ");
 		buffer.append("position=[").append(position).append("] ");
 
-
 		return buffer.toString();
 	}
 
@@ -189,7 +186,8 @@ public class VGwasManhattanBasic implements Serializable, ManhattanPlot {
 		if (!(obj instanceof VGwasManhattanBasic))
 			return false;
 		VGwasManhattanBasic equalCheck = (VGwasManhattanBasic) obj;
-		if ((gwasMarkerId == null && equalCheck.gwasMarkerId != null) || (gwasMarkerId != null && equalCheck.gwasMarkerId == null))
+		if ((gwasMarkerId == null && equalCheck.gwasMarkerId != null)
+				|| (gwasMarkerId != null && equalCheck.gwasMarkerId == null))
 			return false;
 		if (gwasMarkerId != null && !gwasMarkerId.equals(equalCheck.gwasMarkerId))
 			return false;
@@ -198,9 +196,11 @@ public class VGwasManhattanBasic implements Serializable, ManhattanPlot {
 
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
-		if(this.chromosome>9) return "chr" + chromosome;
-		else  return "chr0" + chromosome;
+		
+		if (this.chromosome > 9)
+			return "chr" + chromosome;
+		else
+			return "chr0" + chromosome;
 	}
 
 	@Override
@@ -211,35 +211,32 @@ public class VGwasManhattanBasic implements Serializable, ManhattanPlot {
 
 	@Override
 	public Long getChr() {
-		// TODO Auto-generated method stub
+		
 		return this.chromosome;
 	}
 
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
 	@Override
 	public BigDecimal getMarkerId() {
-		// TODO Auto-generated method stub
+		
 		return this.gwasMarkerId;
 	}
 
 	@Override
 	public Double getMinusLogPvalue() {
-		// TODO Auto-generated method stub
+		
 		return minusLogp.doubleValue();
 	}
 
 	@Override
 	public void setMinusLogPvalue(Double pval) {
-		// TODO Auto-generated method stub
-		minusLogp=BigDecimal.valueOf(pval);
+		
+		minusLogp = BigDecimal.valueOf(pval);
 	}
 
-	
-	
-	
 }

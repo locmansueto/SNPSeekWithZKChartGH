@@ -77,7 +77,8 @@ public class VIricstockPhenotypeQuanvalPK implements Serializable {
 			return false;
 		if (quanValue != null && !quanValue.equals(equalCheck.quanValue))
 			return false;
-		if ((phenotypeId == null && equalCheck.phenotypeId != null) || (phenotypeId != null && equalCheck.phenotypeId == null))
+		if ((phenotypeId == null && equalCheck.phenotypeId != null)
+				|| (phenotypeId != null && equalCheck.phenotypeId == null))
 			return false;
 		if (phenotypeId != null && !phenotypeId.equals(equalCheck.phenotypeId))
 			return false;

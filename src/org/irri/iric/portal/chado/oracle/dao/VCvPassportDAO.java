@@ -24,7 +24,8 @@ public interface VCvPassportDAO extends JpaDao<VCvPassport>, CvTermDAO {
 	 * JPQL Query - findVCvPassportByPrimaryKey
 	 *
 	 */
-	public VCvPassport findVCvPassportByPrimaryKey(Integer cvTermId, int startResult, int maxRows) throws DataAccessException;
+	public VCvPassport findVCvPassportByPrimaryKey(Integer cvTermId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPassportByDefinition
@@ -36,7 +37,8 @@ public interface VCvPassportDAO extends JpaDao<VCvPassport>, CvTermDAO {
 	 * JPQL Query - findVCvPassportByDefinition
 	 *
 	 */
-	public Set<VCvPassport> findVCvPassportByDefinition(String definition, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPassport> findVCvPassportByDefinition(String definition, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPassportByNameContaining
@@ -48,7 +50,8 @@ public interface VCvPassportDAO extends JpaDao<VCvPassport>, CvTermDAO {
 	 * JPQL Query - findVCvPassportByNameContaining
 	 *
 	 */
-	public Set<VCvPassport> findVCvPassportByNameContaining(String name, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPassport> findVCvPassportByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPassportByDefinitionContaining
@@ -60,7 +63,8 @@ public interface VCvPassportDAO extends JpaDao<VCvPassport>, CvTermDAO {
 	 * JPQL Query - findVCvPassportByDefinitionContaining
 	 *
 	 */
-	public Set<VCvPassport> findVCvPassportByDefinitionContaining(String definition_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPassport> findVCvPassportByDefinitionContaining(String definition_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVCvPassports
@@ -84,7 +88,8 @@ public interface VCvPassportDAO extends JpaDao<VCvPassport>, CvTermDAO {
 	 * JPQL Query - findVCvPassportByName
 	 *
 	 */
-	public Set<VCvPassport> findVCvPassportByName(String name_1, int startResult, int maxRows) throws DataAccessException;
+	public Set<VCvPassport> findVCvPassportByName(String name_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVCvPassportByCvTermId
@@ -96,6 +101,7 @@ public interface VCvPassportDAO extends JpaDao<VCvPassport>, CvTermDAO {
 	 * JPQL Query - findVCvPassportByCvTermId
 	 *
 	 */
-	public VCvPassport findVCvPassportByCvTermId(Integer cvTermId_1, int startResult, int maxRows) throws DataAccessException;
+	public VCvPassport findVCvPassportByCvTermId(Integer cvTermId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 }

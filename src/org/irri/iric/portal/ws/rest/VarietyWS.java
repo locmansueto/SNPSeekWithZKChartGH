@@ -38,7 +38,7 @@ public class VarietyWS {
 
 	public VarietyWS() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 		variety = (VarietyFacade) AppContext.checkBean(variety, "VarietyFacade");
 		mapVarReplace = new HashMap();
 
@@ -195,7 +195,7 @@ public class VarietyWS {
 	}
 
 	@GET
-	@Path("/COterms")
+	@Path("/COterms/trait")
 	@Produces("application/json")
 	public Response getCoTerms() throws JSONException {
 
@@ -236,7 +236,7 @@ public class VarietyWS {
 	}
 
 	@GET
-	@Path("/COterms/{coTerm}")
+	@Path("/COterms/trait/{coTerm}")
 	@Produces("application/json")
 	public Response getCOterms4AllVarieties(@PathParam("coTerm") String coTerm) throws JSONException {
 
@@ -271,7 +271,7 @@ public class VarietyWS {
 	}
 
 	@GET
-	@Path("/all/COterms/{coTerm}")
+	@Path("/all/COterms/trait/{coTerm}")
 	@Produces("application/json")
 	public Response getVarietyCOterm(@PathParam("coTerm") String coTerm) throws JSONException {
 
@@ -311,7 +311,7 @@ public class VarietyWS {
 	}
 
 	@GET
-	@Path("/{varid}/COterms/{coTerm}")
+	@Path("/{varid}/COterms/trait/{coTerm}")
 	@Produces("application/json")
 	public Response getVarietyCOterms(@PathParam("varid") String sVarId, @PathParam("coTerm") String coTerm)
 			throws JSONException {

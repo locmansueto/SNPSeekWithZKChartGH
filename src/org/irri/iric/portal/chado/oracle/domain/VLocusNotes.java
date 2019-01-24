@@ -3,8 +3,6 @@ package org.irri.iric.portal.chado.oracle.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-
-
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -17,7 +15,7 @@ import org.irri.iric.portal.domain.MultiReferenceLocus;
 /**
  */
 
-@Entity(name="VLocusNotes")
+@Entity(name = "VLocusNotes")
 @NamedQueries({
 		@NamedQuery(name = "findAllVLocusNotess", query = "select myVLocusNotes from VLocusNotes myVLocusNotes"),
 		@NamedQuery(name = "findVLocusNotesByCommonName", query = "select myVLocusNotes from VLocusNotes myVLocusNotes where myVLocusNotes.commonName = ?1"),
@@ -25,10 +23,10 @@ import org.irri.iric.portal.domain.MultiReferenceLocus;
 		@NamedQuery(name = "findVLocusNotesByContigId", query = "select myVLocusNotes from VLocusNotes myVLocusNotes where myVLocusNotes.contigId = ?1"),
 		@NamedQuery(name = "findVLocusNotesByContigName", query = "select myVLocusNotes from VLocusNotes myVLocusNotes where myVLocusNotes.contigName = ?1"),
 		@NamedQuery(name = "findVLocusNotesByContigNameContaining", query = "select myVLocusNotes from VLocusNotes myVLocusNotes where myVLocusNotes.contigName like ?1"),
-		
+
 		@NamedQuery(name = "findVLocusNotesByNotesContaining", query = "select myVLocusNotes from VLocusNotes myVLocusNotes where myVLocusNotes.notes like ?1"),
 		@NamedQuery(name = "findVLocusNotesByNameIn", query = "select myVLocusNotes from VLocusNotes myVLocusNotes where myVLocusNotes.name in (?1)"),
-		
+
 		@NamedQuery(name = "findVLocusNotesByFeatureId", query = "select myVLocusNotes from VLocusNotes myVLocusNotes where myVLocusNotes.featureId = ?1"),
 		@NamedQuery(name = "findVLocusNotesByFmax", query = "select myVLocusNotes from VLocusNotes myVLocusNotes where myVLocusNotes.fmax = ?1"),
 		@NamedQuery(name = "findVLocusNotesByFmin", query = "select myVLocusNotes from VLocusNotes myVLocusNotes where myVLocusNotes.fmin = ?1"),
@@ -37,8 +35,8 @@ import org.irri.iric.portal.domain.MultiReferenceLocus;
 		@NamedQuery(name = "findVLocusNotesByOrganismId", query = "select myVLocusNotes from VLocusNotes myVLocusNotes where myVLocusNotes.organismId = ?1"),
 		@NamedQuery(name = "findVLocusNotesByPrimaryKey", query = "select myVLocusNotes from VLocusNotes myVLocusNotes where myVLocusNotes.featureId = ?1"),
 		@NamedQuery(name = "findVLocusNotesByStrand", query = "select myVLocusNotes from VLocusNotes myVLocusNotes where myVLocusNotes.strand = ?1") })
-//@Table( name = "V_LOCUS_NOTES")
-@Table( name = "V_LOCUS_FEATURETYPE" )
+// @Table( name = "V_LOCUS_NOTES")
+@Table(name = "V_LOCUS_FEATURETYPE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VLocusNotes")
 public class VLocusNotes implements Serializable, MultiReferenceLocus {
@@ -98,19 +96,19 @@ public class VLocusNotes implements Serializable, MultiReferenceLocus {
 	 */
 
 	/*
-	@Column(name = "NOTES")
-	@Basic(fetch = FetchType.EAGER)
-	@Lob
-	@XmlElement
-	//byte[] notes;
-	Clob notes;
+	 * @Column(name = "NOTES")
+	 * 
+	 * @Basic(fetch = FetchType.EAGER)
+	 * 
+	 * @Lob
+	 * 
+	 * @XmlElement //byte[] notes; Clob notes;
 	 */
 	@Column(name = "NOTES")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String notes;
 
-	
 	@Column(name = "ORGANISM_ID", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -123,13 +121,11 @@ public class VLocusNotes implements Serializable, MultiReferenceLocus {
 	@XmlElement
 	String commonName;
 
-	
 	@Column(name = "FEATURE_TYPE")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String featureType;
 
-	
 	/**
 	 */
 	public void setFeatureId(BigDecimal featureId) {
@@ -216,7 +212,7 @@ public class VLocusNotes implements Serializable, MultiReferenceLocus {
 
 	/**
 	 */
-	//public void setNotes(byte[] notes) {
+	// public void setNotes(byte[] notes) {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
@@ -224,24 +220,16 @@ public class VLocusNotes implements Serializable, MultiReferenceLocus {
 	/**
 	 */
 	/*
-	public byte[] getNotes() {
-		return this.notes;
-	}
-	*/
+	 * public byte[] getNotes() { return this.notes; }
+	 */
 	public String getNotes() {
 		return this.notes;
 		/*
-		try {
-		return AppContext.clobStringConversion( this.notes );
-		} catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-		return null;
-		*/
+		 * try { return AppContext.clobStringConversion( this.notes ); } catch(Exception
+		 * ex) { ex.printStackTrace(); } return null;
+		 */
 	}
-	
-	 
+
 	/**
 	 */
 	public void setOrganismId(BigDecimal organismId) {
@@ -278,120 +266,108 @@ public class VLocusNotes implements Serializable, MultiReferenceLocus {
 	public void copy(VLocusNotes that) {
 		setFeatureId(that.getFeatureId());
 		setName(that.getName());
-		setFmin(BigDecimal.valueOf( that.getFmin() ));
-		setFmax(BigDecimal.valueOf( that.getFmax()) );
+		setFmin(BigDecimal.valueOf(that.getFmin()));
+		setFmax(BigDecimal.valueOf(that.getFmax()));
 		setStrand(that.getStrand());
 		setContigId(that.getContigId());
 		setContigName(that.getContigName());
-		//setNotes( new Clob( that.getNotes() ));
-		setNotes( that.getNotes() );
+		// setNotes( new Clob( that.getNotes() ));
+		setNotes(that.getNotes());
 		setOrganismId(that.getOrganismId());
 		setCommonName(that.getCommonName());
 		setFeatureType(that.getFeatureType());
 	}
 
-
 	/**
 	 */
 	/*
-	public boolean equals(Object obj) {
-		if (obj == this)
-			return true;
-		if (!(obj instanceof VLocusNotes))
-			return false;
-		VLocusNotes equalCheck = (VLocusNotes) obj;
-		if ((featureId == null && equalCheck.featureId != null) || (featureId != null && equalCheck.featureId == null))
-			return false;
-		if (featureId != null && !featureId.equals(equalCheck.featureId))
-			return false;
-		return true;
-	}
-	*/
-	
-	
+	 * public boolean equals(Object obj) { if (obj == this) return true; if (!(obj
+	 * instanceof VLocusNotes)) return false; VLocusNotes equalCheck = (VLocusNotes)
+	 * obj; if ((featureId == null && equalCheck.featureId != null) || (featureId !=
+	 * null && equalCheck.featureId == null)) return false; if (featureId != null &&
+	 * !featureId.equals(equalCheck.featureId)) return false; return true; }
+	 */
 
 	@Override
 	public String getUniquename() {
-		// TODO Auto-generated method stub
+
 		return this.name;
 	}
 
-	
-
 	@Override
 	public Long getChr() {
-		// TODO Auto-generated method stub
-		//return Long.valueOf(getContig());
-		return Long.valueOf( AppContext.guessChrFromString(getContig()));
+
+		// return Long.valueOf(getContig());
+		return Long.valueOf(AppContext.guessChrFromString(getContig()));
 		/*
-		try {
-			return Integer.valueOf( this.getContig().toLowerCase().replace("chr0","").replace("chr","") );
-		} catch(Exception ex) {
-			ex.printStackTrace();
-			AppContext.debug("can't convert contig " + getContig() + " to chromosome");
-		}
-		return null;
-		*/
+		 * try { return Integer.valueOf(
+		 * this.getContig().toLowerCase().replace("chr0","").replace("chr","") ); }
+		 * catch(Exception ex) { ex.printStackTrace();
+		 * AppContext.debug("can't convert contig " + getContig() + " to chromosome"); }
+		 * return null;
+		 */
 	}
 
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
+
 		return this.contigName;
 	}
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
+
 		return this.getNotes();
 	}
 
 	@Override
 	public String getOrganism() {
-		// TODO Auto-generated method stub
+
 		return this.organismId.toString();
 	}
-	
-	
-	
-	
+
 	/**
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		//result = (int) (prime * result + ((featureId == null) ? 0 : featureId.hashCode()));
+		// result = (int) (prime * result + ((featureId == null) ? 0 :
+		// featureId.hashCode()));
 		result = (int) (prime * result + ((organismId == null) ? 0 : organismId.hashCode()));
 		result = (int) (prime * result + ((contigName == null) ? 0 : contigName.hashCode()));
 		result = (int) (prime * result + ((fmin == null) ? 0 : fmin.hashCode()));
 		result = (int) (prime * result + ((fmax == null) ? 0 : fmax.hashCode()));
-		result = (int) (prime * result + ((featureType== null) ? 0 : featureType.hashCode()));
+		result = (int) (prime * result + ((featureType == null) ? 0 : featureType.hashCode()));
 		return result;
 	}
-	
+
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		VLocusNotes l1=(VLocusNotes)this;
-		VLocusNotes l2=(VLocusNotes)o;
+
+		VLocusNotes l1 = (VLocusNotes) this;
+		VLocusNotes l2 = (VLocusNotes) o;
 		int ret = l1.getOrganismId().compareTo(l2.getOrganismId());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getContig().compareTo(l2.getContig());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmin().compareTo(l2.getFmin());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmax().compareTo(l2.getFmax());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFeatureType().compareTo(l2.getFeatureType());
 		return ret;
-		
+
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return compareTo(obj)==0;
+
+		return compareTo(obj) == 0;
 	}
 
 	public String toString() {
@@ -420,6 +396,5 @@ public class VLocusNotes implements Serializable, MultiReferenceLocus {
 	public void setFeatureType(String featureType) {
 		this.featureType = featureType;
 	}
-	
-	
+
 }

@@ -16,8 +16,7 @@ import org.irri.iric.portal.domain.CvTerm;
  */
 
 @Entity
-@NamedQueries({
-		@NamedQuery(name = "findAllVCvPtocos", query = "select myVCvPtoco from VCvPtoco myVCvPtoco"),
+@NamedQueries({ @NamedQuery(name = "findAllVCvPtocos", query = "select myVCvPtoco from VCvPtoco myVCvPtoco"),
 		@NamedQuery(name = "findVCvPtocoByAccession", query = "select myVCvPtoco from VCvPtoco myVCvPtoco where myVCvPtoco.accession = ?1"),
 		@NamedQuery(name = "findVCvPtocoByAccessionContaining", query = "select myVCvPtoco from VCvPtoco myVCvPtoco where myVCvPtoco.accession like ?1"),
 		@NamedQuery(name = "findVCvPtocoByCvterm", query = "select myVCvPtoco from VCvPtoco myVCvPtoco where myVCvPtoco.cvterm = ?1"),
@@ -28,7 +27,7 @@ import org.irri.iric.portal.domain.CvTerm;
 		@NamedQuery(name = "findVCvPtocoByDefinition", query = "select myVCvPtoco from VCvPtoco myVCvPtoco where myVCvPtoco.definition = ?1"),
 		@NamedQuery(name = "findVCvPtocoByDefinitionContaining", query = "select myVCvPtoco from VCvPtoco myVCvPtoco where myVCvPtoco.definition like ?1"),
 		@NamedQuery(name = "findVCvPtocoByPrimaryKey", query = "select myVCvPtoco from VCvPtoco myVCvPtoco where myVCvPtoco.cvtermId = ?1") })
-@Table( name = "V_CV_PTOCO_PATH")
+@Table(name = "V_CV_PTOCO_PATH")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VCvPtoco")
 public class VCvPtoco implements Serializable, CvTerm {
@@ -192,16 +191,14 @@ public class VCvPtoco implements Serializable, CvTerm {
 
 	@Override
 	public BigDecimal getCvTermId() {
-		// TODO Auto-generated method stub
+		
 		return this.cvtermId;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
+		
 		return this.cvterm + " (" + this.db + ":" + this.accession + ")";
 	}
-	
-	
-	
+
 }

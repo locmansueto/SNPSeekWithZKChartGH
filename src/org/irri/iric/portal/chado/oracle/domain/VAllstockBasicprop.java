@@ -30,19 +30,18 @@ import org.irri.iric.portal.variety.VarietyFacade;
 		@NamedQuery(name = "findVAllstockBasicpropByNameContaining", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.name) like upper(?1)"),
 		@NamedQuery(name = "findVAllstockBasicpropByOriCountry", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.oriCountry) = upper(?1)"),
 		@NamedQuery(name = "findVAllstockBasicpropByOriCountryContaining", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.oriCountry) like upper(?1)"),
-		@NamedQuery(name = "findVAllstockBasicpropByPrimaryKey", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where myVAllstockBasicprop.allStockIdId = ?1") ,
-		
-		@NamedQuery(name = "findVAllstockBasicpropByPrimaryKeys", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where myVAllstockBasicprop.allStockIdId in (?1)") ,
-		@NamedQuery(name = "findVAllstockBasicpropByNameGsaccession", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.name) = upper(?1) and  upper(myVAllstockBasicprop.gsAccession) = upper(?2)"), 
-		@NamedQuery(name = "findVAllstockBasicpropByDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.dataset) = upper(?1)"), 
-	
+		@NamedQuery(name = "findVAllstockBasicpropByPrimaryKey", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where myVAllstockBasicprop.allStockIdId = ?1"),
+
+		@NamedQuery(name = "findVAllstockBasicpropByPrimaryKeys", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where myVAllstockBasicprop.allStockIdId in (?1)"),
+		@NamedQuery(name = "findVAllstockBasicpropByNameGsaccession", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.name) = upper(?1) and  upper(myVAllstockBasicprop.gsAccession) = upper(?2)"),
+		@NamedQuery(name = "findVAllstockBasicpropByDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.dataset) = upper(?1)"),
+
 		@NamedQuery(name = "findVAllstockBasicpropByGsaccession", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.gsAccession) = upper(?1)"),
 		@NamedQuery(name = "findVAllstockBasicpropBySubpopulation", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.subpopulation) = upper(?1)  order by myVAllstockBasicprop.name"),
-		@NamedQuery(name = "findVAllstockBasicpropByOriCountrySubpopulation", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.oriCountry) = upper(?1) and upper(myVAllstockBasicprop.subpopulation) = upper(?2)  order by myVAllstockBasicprop.name"), 
+		@NamedQuery(name = "findVAllstockBasicpropByOriCountrySubpopulation", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.oriCountry) = upper(?1) and upper(myVAllstockBasicprop.subpopulation) = upper(?2)  order by myVAllstockBasicprop.name"),
 
 		@NamedQuery(name = "findVAllstockBasicpropByGsaccessionLike", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where myVAllstockBasicprop.gsAccession like ?1"),
 
-		
 		@NamedQuery(name = "findAllVAllstockBasicpropsDatasets", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop  where upper(myVAllstockBasicprop.dataset) in (?1)"),
 		@NamedQuery(name = "findVAllstockBasicpropByBoxCodeDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.boxCode) = upper(?1) and upper(myVAllstockBasicprop.dataset) in (?2)"),
 		@NamedQuery(name = "findVAllstockBasicpropByBoxCodeContainingDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.boxCode) like upper(?1)  and upper(myVAllstockBasicprop.dataset) in (?2)"),
@@ -56,24 +55,22 @@ import org.irri.iric.portal.variety.VarietyFacade;
 		@NamedQuery(name = "findVAllstockBasicpropByNamesDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.name) in (?1) and upper(myVAllstockBasicprop.dataset) in (?2)"),
 		@NamedQuery(name = "findVAllstockBasicpropByNamesLikeDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.name) like upper(?1) and upper(myVAllstockBasicprop.dataset) in (?2)"),
 		@NamedQuery(name = "findVAllstockBasicpropByOriCountryContainingDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.oriCountry) like upper(?1) and upper(myVAllstockBasicprop.dataset) in (?2)"),
-		@NamedQuery(name = "findVAllstockBasicpropByPrimaryKeyDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where myVAllstockBasicprop.allStockIdId = ?1 and upper(myVAllstockBasicprop.dataset) in (?2)") ,
-		
-		@NamedQuery(name = "findVAllstockBasicpropByPrimaryKeysDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where myVAllstockBasicprop.allStockIdId in (?1) and upper(myVAllstockBasicprop.dataset) in (?2)") ,
-		@NamedQuery(name = "findVAllstockBasicpropByNameGsaccessionDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.name) = upper(?1) and  upper(myVAllstockBasicprop.gsAccession) = upper(?2) and upper(myVAllstockBasicprop.dataset) in (?2)"), 
-	
+		@NamedQuery(name = "findVAllstockBasicpropByPrimaryKeyDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where myVAllstockBasicprop.allStockIdId = ?1 and upper(myVAllstockBasicprop.dataset) in (?2)"),
+
+		@NamedQuery(name = "findVAllstockBasicpropByPrimaryKeysDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where myVAllstockBasicprop.allStockIdId in (?1) and upper(myVAllstockBasicprop.dataset) in (?2)"),
+		@NamedQuery(name = "findVAllstockBasicpropByNameGsaccessionDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.name) = upper(?1) and  upper(myVAllstockBasicprop.gsAccession) = upper(?2) and upper(myVAllstockBasicprop.dataset) in (?2)"),
+
 		@NamedQuery(name = "findVAllstockBasicpropByGsaccessionDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.gsAccession) = upper(?1) and upper(myVAllstockBasicprop.dataset) in (?2)"),
 		@NamedQuery(name = "findVAllstockBasicpropBySubpopulationDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.subpopulation) = upper(?1) and upper(myVAllstockBasicprop.dataset) in (?2)  order by myVAllstockBasicprop.name"),
-		@NamedQuery(name = "findVAllstockBasicpropByOriCountrySubpopulationDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.oriCountry) = upper(?1) and upper(myVAllstockBasicprop.subpopulation) = upper(?2)  and upper(myVAllstockBasicprop.dataset) in (?3) order by myVAllstockBasicprop.name") 
-})
+		@NamedQuery(name = "findVAllstockBasicpropByOriCountrySubpopulationDataset", query = "select myVAllstockBasicprop from VAllstockBasicprop myVAllstockBasicprop where upper(myVAllstockBasicprop.oriCountry) = upper(?1) and upper(myVAllstockBasicprop.subpopulation) = upper(?2)  and upper(myVAllstockBasicprop.dataset) in (?3) order by myVAllstockBasicprop.name") })
 
-
-//@Table( name = "V_allStockId_BASICPROP2")
-//@Table( name = "V_allStockId_BASICPROP_3024")
+// @Table( name = "V_allStockId_BASICPROP2")
+// @Table( name = "V_allStockId_BASICPROP_3024")
 @Table(name = "V_ALLSTOCK_BASICPROP")
-//@Table(name = "TMP_allStockId_BASICPROP_3024")
+// @Table(name = "TMP_allStockId_BASICPROP_3024")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VAllstockBasicprop")
-public class VAllstockBasicprop implements Serializable , Variety {
+public class VAllstockBasicprop implements Serializable, Variety {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -94,7 +91,7 @@ public class VAllstockBasicprop implements Serializable , Variety {
 	/**
 	 */
 
-	//@Column(name = "IRIS_UNIQUE_ID", length = 4000)
+	// @Column(name = "IRIS_UNIQUE_ID", length = 4000)
 	@Column(name = "ASSAY", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -109,17 +106,16 @@ public class VAllstockBasicprop implements Serializable , Variety {
 	/**
 	 */
 
-
 	@Column(name = "SUBPOPULATION", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String subpopulation;
-	
+
 	@Column(name = "BOX_CODE", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	String boxCode;
-	
+
 	@Column(name = "GS_ACCESSION", length = 4000)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -130,7 +126,6 @@ public class VAllstockBasicprop implements Serializable , Variety {
 	@XmlElement
 	String dataset;
 
-	
 	/**
 	 */
 	public void setallStockIdId(BigDecimal allStockIdId) {
@@ -164,10 +159,10 @@ public class VAllstockBasicprop implements Serializable , Variety {
 	/**
 	 */
 	public String getIrisUniqueId() {
-	 /*	if(this.irisUniqueId==null || this.irisUniqueId.isEmpty()) 
-			return getBoxCode();
-		else return this.irisUniqueId;
-		*/
+		/*
+		 * if(this.irisUniqueId==null || this.irisUniqueId.isEmpty()) return
+		 * getBoxCode(); else return this.irisUniqueId;
+		 */
 		return this.irisUniqueId;
 	}
 
@@ -247,108 +242,116 @@ public class VAllstockBasicprop implements Serializable , Variety {
 		if (!(obj instanceof Variety))
 			return false;
 		VAllstockBasicprop equalCheck = (VAllstockBasicprop) obj;
-		if ((allStockIdId == null && equalCheck.allStockIdId != null) || (allStockIdId != null && equalCheck.allStockIdId == null))
+		if ((allStockIdId == null && equalCheck.allStockIdId != null)
+				|| (allStockIdId != null && equalCheck.allStockIdId == null))
 			return false;
 		if (allStockIdId != null && !allStockIdId.equals(equalCheck.allStockIdId))
 			return false;
 		return true;
 	}
-	
 
-	
 	@Override
 	public String getIrisId() {
-		// TODO Auto-generated method stub
+
 		return this.getIrisUniqueId();
 	}
 
 	@Override
 	public String getCountry() {
-		// TODO Auto-generated method stub
-		if(getOriCountry()==null) return "";
+
+		if (getOriCountry() == null)
+			return "";
 		return this.getOriCountry();
 	}
 
 	@Override
 	public String getSubpopulation() {
-		// TODO Auto-generated method stub
-		if(subpopulation==null) return "";
+
+		if (subpopulation == null)
+			return "";
 		return this.subpopulation;
 	}
 
 	@Override
 	public void setCountry(String country) {
-		// TODO Auto-generated method stub
-		this.oriCountry=country;
-		
+
+		this.oriCountry = country;
+
 	}
 
 	@Override
 	public void setSubpopulation(String subpopulation) {
-		// TODO Auto-generated method stub
-		this.subpopulation=subpopulation;
+
+		this.subpopulation = subpopulation;
 	}
 
 	@Override
 	public BigDecimal getVarietyId() {
-		// TODO Auto-generated method stub
+
 		return this.getallStockIdId();
 	}
-	
-	
+
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		int ret = getName().compareTo( ((Variety)o).getName() ); 
-		if(ret==0)
-			ret = getVarietyId().compareTo( ((Variety)o).getVarietyId() );
-			
+
+		int ret = getName().compareTo(((Variety) o).getName());
+		if (ret == 0)
+			ret = getVarietyId().compareTo(((Variety) o).getVarietyId());
+
 		return ret;
 	}
 
 	@Override
 	public String printFields(String delimiter) {
-		// TODO Auto-generated method stub
+
 		String irisid = getIrisId();
-		if(irisid==null) irisid="";
+		if (irisid == null)
+			irisid = "";
 		String subpop = getSubpopulation();
-		if(subpop==null) subpop="";
+		if (subpop == null)
+			subpop = "";
 		String cntr = getCountry();
-		if(cntr==null) cntr="";
-		//return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr;
-		//return "\""+ this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter + "\"" + subpop + "\"" + delimiter + "\"" + cntr + "\"";
+		if (cntr == null)
+			cntr = "";
+		// return this.getName() + delimiter + irisid + delimiter + subpop + delimiter +
+		// cntr;
+		// return "\""+ this.getName() + "\"" + delimiter + "\"" + irisid + "\"" +
+		// delimiter + "\"" + subpop + "\"" + delimiter + "\"" + cntr + "\"";
 
 		String acc = this.getAccession();
-		if(acc==null) acc="";
-		
-		//return this.getName() + delimiter + irisid + delimiter + subpop + delimiter + cntr;
-		return "\""+ this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter + "\"" + acc + "\"" + delimiter +  "\"" + subpop + "\"" + delimiter + "\"" + cntr + "\"";
+		if (acc == null)
+			acc = "";
+
+		// return this.getName() + delimiter + irisid + delimiter + subpop + delimiter +
+		// cntr;
+		return "\"" + this.getName() + "\"" + delimiter + "\"" + irisid + "\"" + delimiter + "\"" + acc + "\""
+				+ delimiter + "\"" + subpop + "\"" + delimiter + "\"" + cntr + "\"";
 
 	}
 
 	@Override
 	public String getAccession() {
-		// TODO Auto-generated method stub
-		if(this.gsAccession!=null) return  gsAccession;
-		//else return this.getBoxCode();
-		else return "";
+
+		if (this.gsAccession != null)
+			return gsAccession;
+		// else return this.getBoxCode();
+		else
+			return "";
 	}
-	
+
 	@Override
 	public String getDataset() {
-		// TODO Auto-generated method stub
-		//return VarietyFacade.DATASET_SNPINDELV2_IUPAC;
+
+		// return VarietyFacade.DATASET_SNPINDELV2_IUPAC;
 		return dataset;
 	}
 
 	@Override
 	public void setAccession(String accession) {
-		// TODO Auto-generated method stub
-		//accession=accession.toUpperCase().replace("IRGC","").trim();
-		this.gsAccession=accession;
-		
+
+		// accession=accession.toUpperCase().replace("IRGC","").trim();
+		this.gsAccession = accession;
+
 	}
-	
-	
-	
+
 }

@@ -23,8 +23,8 @@ import org.irri.iric.portal.domain.CvTermUniqueValues;
 		@NamedQuery(name = "findVIricstockPhenotypeQuanvalByPhenotypeIdDataset", query = "select myVIricstockPhenotypeQuanval from VIricstockPhenotypeQuanval myVIricstockPhenotypeQuanval where myVIricstockPhenotypeQuanval.phenotypeId = ?1 and myVIricstockPhenotypeQuanval.dataset in (?2)"),
 		@NamedQuery(name = "findVIricstockPhenotypeQuanvalByPrimaryKey", query = "select myVIricstockPhenotypeQuanval from VIricstockPhenotypeQuanval myVIricstockPhenotypeQuanval where myVIricstockPhenotypeQuanval.quanValue = ?1 and myVIricstockPhenotypeQuanval.phenotypeId = ?2"),
 		@NamedQuery(name = "findVIricstockPhenotypeQuanvalByQuanValue", query = "select myVIricstockPhenotypeQuanval from VIricstockPhenotypeQuanval myVIricstockPhenotypeQuanval where myVIricstockPhenotypeQuanval.quanValue = ?1") })
-//@Table( name = "V_IRICSTOCK_PHENOTYPE_QUANVAL")
-@Table( name = "V_STOCK_PHENOTYPE_QUANVAL")
+// @Table( name = "V_IRICSTOCK_PHENOTYPE_QUANVAL")
+@Table(name = "V_STOCK_PHENOTYPE_QUANVAL")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VIricstockPhenotypeQuanval")
 public class VIricstockPhenotypeQuanval implements Serializable, CvTermUniqueValues {
@@ -53,7 +53,6 @@ public class VIricstockPhenotypeQuanval implements Serializable, CvTermUniqueVal
 	@XmlElement
 	String dataset;
 
-	
 	public String getDataset() {
 		return dataset;
 	}
@@ -71,8 +70,7 @@ public class VIricstockPhenotypeQuanval implements Serializable, CvTermUniqueVal
 	/**
 	 */
 	public BigDecimal getQuanValue() {
-		
-		
+
 		return this.quanValue;
 	}
 
@@ -142,7 +140,8 @@ public class VIricstockPhenotypeQuanval implements Serializable, CvTermUniqueVal
 			return false;
 		if (quanValue != null && !quanValue.equals(equalCheck.quanValue))
 			return false;
-		if ((phenotypeId == null && equalCheck.phenotypeId != null) || (phenotypeId != null && equalCheck.phenotypeId == null))
+		if ((phenotypeId == null && equalCheck.phenotypeId != null)
+				|| (phenotypeId != null && equalCheck.phenotypeId == null))
 			return false;
 		if (phenotypeId != null && !phenotypeId.equals(equalCheck.phenotypeId))
 			return false;
@@ -153,28 +152,24 @@ public class VIricstockPhenotypeQuanval implements Serializable, CvTermUniqueVal
 		return true;
 	}
 
-	//private static DecimalFormat twoDForm = new DecimalFormat("#.##");
-	
+	// private static DecimalFormat twoDForm = new DecimalFormat("#.##");
+
 	@Override
 	public String getValue() {
-		// TODO Auto-generated method stub
-		//return this.getQuanValue().toString();
 		
-		//this.getQuanValue().doubleValue()
-		//twoDForm.format( getQuanValue().doubleValue() ).replaceAll(target, replacement);
-		
-		 return String.format("%.2f" , getQuanValue() ).replaceAll("\\.0+$","");
-		 
-			/*
-				double roundTwoDecimals(double d) {
-			  DecimalFormat twoDForm = new DecimalFormat("#.##");
-			  return Double.valueOf(twoDForm.format(d));
-			}*/
-		
-				
+		// return this.getQuanValue().toString();
+
+		// this.getQuanValue().doubleValue()
+		// twoDForm.format( getQuanValue().doubleValue() ).replaceAll(target,
+		// replacement);
+
+		return String.format("%.2f", getQuanValue()).replaceAll("\\.0+$", "");
+
+		/*
+		 * double roundTwoDecimals(double d) { DecimalFormat twoDForm = new
+		 * DecimalFormat("#.##"); return Double.valueOf(twoDForm.format(d)); }
+		 */
+
 	}
-	
-	
-	
-	
+
 }

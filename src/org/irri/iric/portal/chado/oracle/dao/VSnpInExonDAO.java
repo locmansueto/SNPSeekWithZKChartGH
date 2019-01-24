@@ -22,7 +22,8 @@ public interface VSnpInExonDAO extends JpaDao<VSnpInExon> {
 	 * JPQL Query - findVSnpInExonByPrimaryKey
 	 *
 	 */
-	public VSnpInExon findVSnpInExonByPrimaryKey(Integer snpFeatureId, int startResult, int maxRows) throws DataAccessException;
+	public VSnpInExon findVSnpInExonByPrimaryKey(Integer snpFeatureId, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findVSnpInExonBySnpFeatureId
@@ -34,7 +35,8 @@ public interface VSnpInExonDAO extends JpaDao<VSnpInExon> {
 	 * JPQL Query - findVSnpInExonBySnpFeatureId
 	 *
 	 */
-	public VSnpInExon findVSnpInExonBySnpFeatureId(Integer snpFeatureId_1, int startResult, int maxRows) throws DataAccessException;
+	public VSnpInExon findVSnpInExonBySnpFeatureId(Integer snpFeatureId_1, int startResult, int maxRows)
+			throws DataAccessException;
 
 	/**
 	 * JPQL Query - findAllVSnpInExons

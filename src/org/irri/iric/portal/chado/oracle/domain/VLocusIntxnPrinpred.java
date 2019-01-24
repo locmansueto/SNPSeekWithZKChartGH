@@ -40,10 +40,10 @@ import org.irri.iric.portal.domain.Locus;
 		@NamedQuery(name = "findVLocusIntxnPrinpredByPrimaryKey", query = "select myVLocusIntxnPrinpred from VLocusIntxnPrinpred myVLocusIntxnPrinpred where myVLocusIntxnPrinpred.featureId = ?1"),
 		@NamedQuery(name = "findVLocusIntxnPrinpredByQfeatureId", query = "select myVLocusIntxnPrinpred from VLocusIntxnPrinpred myVLocusIntxnPrinpred where myVLocusIntxnPrinpred.qfeatureId = ?1"),
 		@NamedQuery(name = "findVLocusIntxnPrinpredByQfeatureName", query = "select myVLocusIntxnPrinpred from VLocusIntxnPrinpred myVLocusIntxnPrinpred where myVLocusIntxnPrinpred.qfeatureName = ?1"),
-		
+
 		@NamedQuery(name = "findVLocusIntxnPrinpredByQfeatureIdIn", query = "select myVLocusIntxnPrinpred from VLocusIntxnPrinpred myVLocusIntxnPrinpred where myVLocusIntxnPrinpred.qfeatureId in (?1) order by  myVLocusIntxnPrinpred.coexpScore desc"),
 		@NamedQuery(name = "findVLocusIntxnPrinpredByQfeatureNameIn", query = "select myVLocusIntxnPrinpred from VLocusIntxnPrinpred myVLocusIntxnPrinpred where myVLocusIntxnPrinpred.qfeatureName in (?1) order by  myVLocusIntxnPrinpred.coexpScore desc"),
-		
+
 		@NamedQuery(name = "findVLocusIntxnPrinpredByQfeatureNameContaining", query = "select myVLocusIntxnPrinpred from VLocusIntxnPrinpred myVLocusIntxnPrinpred where myVLocusIntxnPrinpred.qfeatureName like ?1"),
 		@NamedQuery(name = "findVLocusIntxnPrinpredByRssbpDenserank", query = "select myVLocusIntxnPrinpred from VLocusIntxnPrinpred myVLocusIntxnPrinpred where myVLocusIntxnPrinpred.rssbpDenserank = ?1"),
 		@NamedQuery(name = "findVLocusIntxnPrinpredByRssbpRank", query = "select myVLocusIntxnPrinpred from VLocusIntxnPrinpred myVLocusIntxnPrinpred where myVLocusIntxnPrinpred.rssbpRank = ?1"),
@@ -55,7 +55,7 @@ import org.irri.iric.portal.domain.Locus;
 		@NamedQuery(name = "findVLocusIntxnPrinpredByRssmfRank", query = "select myVLocusIntxnPrinpred from VLocusIntxnPrinpred myVLocusIntxnPrinpred where myVLocusIntxnPrinpred.rssmfRank = ?1"),
 		@NamedQuery(name = "findVLocusIntxnPrinpredByRssmfScore", query = "select myVLocusIntxnPrinpred from VLocusIntxnPrinpred myVLocusIntxnPrinpred where myVLocusIntxnPrinpred.rssmfScore = ?1"),
 		@NamedQuery(name = "findVLocusIntxnPrinpredByStrand", query = "select myVLocusIntxnPrinpred from VLocusIntxnPrinpred myVLocusIntxnPrinpred where myVLocusIntxnPrinpred.strand = ?1") })
-@Table( name = "V_LOCUS_INTXN_PRINPRED")
+@Table(name = "V_LOCUS_INTXN_PRINPRED")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/oracle/domain", name = "VLocusIntxnPrinpred")
 public class VLocusIntxnPrinpred implements Serializable, Locus {
@@ -231,7 +231,6 @@ public class VLocusIntxnPrinpred implements Serializable, Locus {
 	@XmlElement
 	Integer rssmfDenserank;
 
-	
 	@Column(name = "COEXP_MAXSCORE")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -243,7 +242,7 @@ public class VLocusIntxnPrinpred implements Serializable, Locus {
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	Integer coexpMaxrank;
-	
+
 	@Column(name = "RSSCC_MAXSCORE")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -271,7 +270,7 @@ public class VLocusIntxnPrinpred implements Serializable, Locus {
 	@Column(name = "RSSMF_MAXSCORE")
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
-	BigDecimal	rssmfMaxscore;
+	BigDecimal rssmfMaxscore;
 	/**
 	 */
 
@@ -279,7 +278,7 @@ public class VLocusIntxnPrinpred implements Serializable, Locus {
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	Integer rssmfMaxrank;
-	
+
 	/**
 	 */
 	public void setFeatureId(BigDecimal featureId) {
@@ -640,31 +639,32 @@ public class VLocusIntxnPrinpred implements Serializable, Locus {
 		return buffer.toString();
 	}
 
-//	/**
-//	 */
-//	@Override
-//	public int hashCode() {
-//		final int prime = 31;
-//		int result = 1;
-//		result = (int) (prime * result + ((featureId == null) ? 0 : featureId.hashCode()));
-//		return result;
-//	}
-//
-//	/**
-//	 */
-//	public boolean equals(Object obj) {
-//		if (obj == this)
-//			return true;
-//		if (!(obj instanceof VLocusIntxnPrinpred))
-//			return false;
-//		VLocusIntxnPrinpred equalCheck = (VLocusIntxnPrinpred) obj;
-//		if ((featureId == null && equalCheck.featureId != null) || (featureId != null && equalCheck.featureId == null))
-//			return false;
-//		if (featureId != null && !featureId.equals(equalCheck.featureId))
-//			return false;
-//		return true;
-//	}
-
+	// /**
+	// */
+	// @Override
+	// public int hashCode() {
+	// final int prime = 31;
+	// int result = 1;
+	// result = (int) (prime * result + ((featureId == null) ? 0 :
+	// featureId.hashCode()));
+	// return result;
+	// }
+	//
+	// /**
+	// */
+	// public boolean equals(Object obj) {
+	// if (obj == this)
+	// return true;
+	// if (!(obj instanceof VLocusIntxnPrinpred))
+	// return false;
+	// VLocusIntxnPrinpred equalCheck = (VLocusIntxnPrinpred) obj;
+	// if ((featureId == null && equalCheck.featureId != null) || (featureId != null
+	// && equalCheck.featureId == null))
+	// return false;
+	// if (featureId != null && !featureId.equals(equalCheck.featureId))
+	// return false;
+	// return true;
+	// }
 
 	/**
 	 */
@@ -672,67 +672,73 @@ public class VLocusIntxnPrinpred implements Serializable, Locus {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		//result = (int) (prime * result + ((featureId == null) ? 0 : featureId.hashCode()));
+		// result = (int) (prime * result + ((featureId == null) ? 0 :
+		// featureId.hashCode()));
 		result = (int) (prime * result + ((organismId == null) ? 0 : organismId.hashCode()));
 		result = (int) (prime * result + ((contigId == null) ? 0 : contigId.hashCode()));
 		result = (int) (prime * result + ((fmin == null) ? 0 : fmin.hashCode()));
 		result = (int) (prime * result + ((fmax == null) ? 0 : fmax.hashCode()));
 		return result;
 	}
-	
+
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		Locus l1=(Locus)this;
-		Locus l2=(Locus)o;
+		
+		Locus l1 = (Locus) this;
+		Locus l2 = (Locus) o;
 		int ret = l1.getContig().compareTo(l2.getContig());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmin().compareTo(l2.getFmin());
-		if(ret!=0) return ret;
+		if (ret != 0)
+			return ret;
 		ret = l1.getFmax().compareTo(l2.getFmax());
 		return ret;
-		
+
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return compareTo(obj)==0;
+		
+		return compareTo(obj) == 0;
 	}
-	
+
 	@Override
 	public String getUniquename() {
-		// TODO Auto-generated method stub
+		
 		return name;
 	}
 
 	@Override
 	public Long getChr() {
-		// TODO Auto-generated method stub
+		
 		return Long.valueOf(getContig());
 	}
 
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
+		
 		return this.contigName;
 	}
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-			StringBuffer buff=new StringBuffer();
-			
-			if(coexpScore!=null)
-			 buff.append(" COEXP:" + String.format("%.2f",coexpScore) + "/" + String.format("%.2f",coexpMaxscore) + " " +  coexpRank + "/" + coexpMaxrank);
-			if(rssccScore!=null)
-				buff.append(" CC" + String.format("%.2f",rssccScore) + "/" + String.format("%.2f",rssccMaxscore) + " " +  rssccRank + "/" + rssccMaxrank);
-			if(rssbpScore!=null)
-				buff.append(" BP" + String.format("%.2f",rssbpScore) + "/" + String.format("%.2f",rssbpMaxscore) + " " +  rssbpRank + "/" + rssbpMaxrank);
-			if(rssmfScore!=null)
-				buff.append(" MF" + String.format("%.2f",rssmfScore) + "/" + String.format("%.2f",rssmfMaxscore) + " " +  rssmfRank + "/" + rssmfMaxrank);
-			
-			
+		
+		StringBuffer buff = new StringBuffer();
+
+		if (coexpScore != null)
+			buff.append(" COEXP:" + String.format("%.2f", coexpScore) + "/" + String.format("%.2f", coexpMaxscore) + " "
+					+ coexpRank + "/" + coexpMaxrank);
+		if (rssccScore != null)
+			buff.append(" CC" + String.format("%.2f", rssccScore) + "/" + String.format("%.2f", rssccMaxscore) + " "
+					+ rssccRank + "/" + rssccMaxrank);
+		if (rssbpScore != null)
+			buff.append(" BP" + String.format("%.2f", rssbpScore) + "/" + String.format("%.2f", rssbpMaxscore) + " "
+					+ rssbpRank + "/" + rssbpMaxrank);
+		if (rssmfScore != null)
+			buff.append(" MF" + String.format("%.2f", rssmfScore) + "/" + String.format("%.2f", rssmfMaxscore) + " "
+					+ rssmfRank + "/" + rssmfMaxrank);
+
 		return buff + " " + this.notes;
 	}
 
@@ -741,6 +747,5 @@ public class VLocusIntxnPrinpred implements Serializable, Locus {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
 }

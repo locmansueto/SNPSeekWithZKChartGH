@@ -48,7 +48,7 @@ public class GenomicsWS {
 	
 	public GenomicsWS() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 		genomics = (GenomicsFacade)AppContext.checkBean(genomics, "GenomicsFacade");
 		workspace = (WorkspaceFacade)AppContext.checkBean(workspace, "WorkspaceFacade");
 		mapVarReplace = new HashMap();

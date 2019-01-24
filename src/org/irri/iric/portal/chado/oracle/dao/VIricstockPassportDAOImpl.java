@@ -23,14 +23,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository("IricstockPassportDAO")
 @Transactional
-public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport>
-		implements VIricstockPassportDAO {
+public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport> implements VIricstockPassportDAO {
 
 	/**
-	 * Set of entity classes managed by this DAO.  Typically a DAO manages a single entity.
+	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
+	 * entity.
 	 *
 	 */
-	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VIricstockPassport.class }));
+	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
+			Arrays.asList(new Class<?>[] { VIricstockPassport.class }));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit IRIC_Production
@@ -48,7 +49,7 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 	}
 
 	/**
-	 * Get the entity manager that manages persistence unit 
+	 * Get the entity manager that manages persistence unit
 	 *
 	 */
 	public EntityManager getEntityManager() {
@@ -80,7 +81,8 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPassport> findVIricstockPassportByName(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstockPassport> findVIricstockPassportByName(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstockPassportByName", startResult, maxRows, name);
 		return new LinkedHashSet<VIricstockPassport>(query.getResultList());
 	}
@@ -102,7 +104,8 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPassport> findVIricstockPassportByDefinition(String definition, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstockPassport> findVIricstockPassportByDefinition(String definition, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstockPassportByDefinition", startResult, maxRows, definition);
 		return new LinkedHashSet<VIricstockPassport>(query.getResultList());
 	}
@@ -124,7 +127,8 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPassport> findVIricstockPassportByValue(String value, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstockPassport> findVIricstockPassportByValue(String value, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstockPassportByValue", startResult, maxRows, value);
 		return new LinkedHashSet<VIricstockPassport>(query.getResultList());
 	}
@@ -134,7 +138,8 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 	 *
 	 */
 	@Transactional
-	public VIricstockPassport findVIricstockPassportByIricStockpropId(Integer iricStockpropId) throws DataAccessException {
+	public VIricstockPassport findVIricstockPassportByIricStockpropId(Integer iricStockpropId)
+			throws DataAccessException {
 
 		return findVIricstockPassportByIricStockpropId(iricStockpropId, -1, -1);
 	}
@@ -145,9 +150,11 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 	 */
 
 	@Transactional
-	public VIricstockPassport findVIricstockPassportByIricStockpropId(Integer iricStockpropId, int startResult, int maxRows) throws DataAccessException {
+	public VIricstockPassport findVIricstockPassportByIricStockpropId(Integer iricStockpropId, int startResult,
+			int maxRows) throws DataAccessException {
 		try {
-			Query query = createNamedQuery("findVIricstockPassportByIricStockpropId", startResult, maxRows, iricStockpropId);
+			Query query = createNamedQuery("findVIricstockPassportByIricStockpropId", startResult, maxRows,
+					iricStockpropId);
 			return (org.irri.iric.portal.chado.oracle.domain.VIricstockPassport) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
@@ -159,7 +166,8 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 	 *
 	 */
 	@Transactional
-	public VIricstockPassport findVIricstockPassportByPrimaryKey(BigDecimal iricStockpropId) throws DataAccessException {
+	public VIricstockPassport findVIricstockPassportByPrimaryKey(BigDecimal iricStockpropId)
+			throws DataAccessException {
 
 		return findVIricstockPassportByPrimaryKey(iricStockpropId, -1, -1);
 	}
@@ -170,7 +178,8 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 	 */
 
 	@Transactional
-	public VIricstockPassport findVIricstockPassportByPrimaryKey(BigDecimal iricStockpropId, int startResult, int maxRows) throws DataAccessException {
+	public VIricstockPassport findVIricstockPassportByPrimaryKey(BigDecimal iricStockpropId, int startResult,
+			int maxRows) throws DataAccessException {
 		try {
 			Query query = createNamedQuery("findVIricstockPassportByPrimaryKey", startResult, maxRows, iricStockpropId);
 			return (org.irri.iric.portal.chado.oracle.domain.VIricstockPassport) query.getSingleResult();
@@ -184,7 +193,8 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 	 *
 	 */
 	@Transactional
-	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(java.math.BigDecimal iricStockId, String dataset) throws DataAccessException {
+	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(java.math.BigDecimal iricStockId, String dataset)
+			throws DataAccessException {
 
 		return findVIricstockPassportByIricStockId(iricStockId, dataset, -1, -1);
 	}
@@ -196,7 +206,8 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(java.math.BigDecimal iricStockId, String dataset, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(java.math.BigDecimal iricStockId, String dataset,
+			int startResult, int maxRows) throws DataAccessException {
 		Query query = createNamedQuery("findVIricstockPassportByIricStockId", startResult, maxRows, iricStockId);
 		return new LinkedHashSet<VIricstockPassport>(query.getResultList());
 	}
@@ -218,7 +229,8 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPassport> findVIricstockPassportByNameContaining(String name, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstockPassport> findVIricstockPassportByNameContaining(String name, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstockPassportByNameContaining", startResult, maxRows, name);
 		return new LinkedHashSet<VIricstockPassport>(query.getResultList());
 	}
@@ -228,7 +240,8 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 	 *
 	 */
 	@Transactional
-	public Set<VIricstockPassport> findVIricstockPassportByDefinitionContaining(String definition) throws DataAccessException {
+	public Set<VIricstockPassport> findVIricstockPassportByDefinitionContaining(String definition)
+			throws DataAccessException {
 
 		return findVIricstockPassportByDefinitionContaining(definition, -1, -1);
 	}
@@ -240,8 +253,10 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPassport> findVIricstockPassportByDefinitionContaining(String definition, int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("findVIricstockPassportByDefinitionContaining", startResult, maxRows, definition);
+	public Set<VIricstockPassport> findVIricstockPassportByDefinitionContaining(String definition, int startResult,
+			int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("findVIricstockPassportByDefinitionContaining", startResult, maxRows,
+				definition);
 		return new LinkedHashSet<VIricstockPassport>(query.getResultList());
 	}
 
@@ -262,7 +277,8 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VIricstockPassport> findVIricstockPassportByValueContaining(String value, int startResult, int maxRows) throws DataAccessException {
+	public Set<VIricstockPassport> findVIricstockPassportByValueContaining(String value, int startResult, int maxRows)
+			throws DataAccessException {
 		Query query = createNamedQuery("findVIricstockPassportByValueContaining", startResult, maxRows, value);
 		return new LinkedHashSet<VIricstockPassport>(query.getResultList());
 	}
@@ -290,7 +306,9 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 	}
 
 	/**
-	 * Used to determine whether or not to merge the entity or persist the entity when calling Store
+	 * Used to determine whether or not to merge the entity or persist the entity
+	 * when calling Store
+	 * 
 	 * @see store
 	 * 
 	 *
@@ -299,45 +317,38 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 		return true;
 	}
 
-	
-	
 	@Override
 	public Set getPassportByStockId(BigDecimal id) {
-		// TODO Auto-generated method stub
-		//return null;
+		
+		// return null;
 		return findVIricstockPassportByIricStockId(id);
 	}
 
 	@Override
-	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(
-			BigDecimal iricStockId) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return findVIricstockPassportByIricStockId(iricStockId,"");
+	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(BigDecimal iricStockId)
+			throws DataAccessException {
+		
+		return findVIricstockPassportByIricStockId(iricStockId, "");
 	}
 
 	@Override
-	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(
-			BigDecimal iricStockId, int startResult, int maxRows)
-			throws DataAccessException {
+	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(BigDecimal iricStockId, int startResult,
+			int maxRows) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-//	@Override
-//	public Set findIricstockPassportByIricStockId(BigDecimal id) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	// @Override
+	// public Set findIricstockPassportByIricStockId(BigDecimal id) {
+	// 
+	// return null;
+	// }
 
-//	@Override
-//	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(
-//			BigDecimal iricStockId) throws DataAccessException {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	// @Override
+	// public Set<VIricstockPassport> findVIricstockPassportByIricStockId(
+	// BigDecimal iricStockId) throws DataAccessException {
+	// 
+	// return null;
+	// }
 
-	
-	
-	
-	
 }
