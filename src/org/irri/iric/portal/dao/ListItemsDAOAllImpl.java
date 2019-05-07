@@ -1016,7 +1016,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List getContigs(String organism) {
-		// TODO Auto-generated method stub
+		
 
 		if (!mapOrganismScaffolds.containsKey(organism)) {
 
@@ -1024,6 +1024,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 			// List contignames = new ArrayList();
 			LinkedHashMap contignames = new LinkedHashMap();
 
+			// TODO value for 19
 			if (orgid.equals(BigDecimal.valueOf(9)) || orgid.equals(BigDecimal.valueOf(16))) {
 				scaffolddao = (ScaffoldDAO) AppContext.checkBean(scaffolddao, "ScaffoldDAO");
 				Iterator<Scaffold> it = scaffolddao.getScaffolds(orgid).iterator();
@@ -1076,7 +1077,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Long getFeatureLength(String feature, String organism) {
-		// TODO Auto-generated method stub
+		
 
 		Map contigs = mapOrganismScaffolds.get(organism);
 		Long len = null;

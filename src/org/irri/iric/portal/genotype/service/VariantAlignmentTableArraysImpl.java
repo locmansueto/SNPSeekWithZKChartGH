@@ -98,6 +98,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 		this.contigarr = copyfrom.contigarr;
 		this.queryallele = copyfrom.queryallele;
 		this.allrefallelesmatch = copyfrom.allrefallelesmatch;
+		this.dataset = copyfrom.dataset;
 	}
 	//
 	// public VariantAlignmentTableArraysImpl(ListItemsDAO lisitemdao,

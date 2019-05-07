@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+
+  fix-postgresql-permissions:
+    image: 'snpseek/postgres_db:1.0'
+    user: root
+    command: chmod -R 700 /opt/bitnami/postgresql/data
+    volumes:
+      - /d/docker/postgresql:/bitnami
+      
+  postgresql:
+    image: 'snpseek/postgres_db:1.0'
+    ports:
+    - 5432:5432
+    volumes:
+      - /d/docker/postgresql:/bitnami
+    depends_on:
+      - fix-postgresql-permissions

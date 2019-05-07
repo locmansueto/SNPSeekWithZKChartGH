@@ -959,7 +959,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 	@Override
 	public void doAfterCompose(Window comp) throws Exception {
-		
+
 		super.doAfterCompose(comp);
 
 		try {
@@ -3446,7 +3446,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 						new org.zkoss.zk.ui.event.EventListener() {
 							@Override
 							public void onEvent(Event e) throws Exception {
-								
+
 								if (e.getName().equals(ListboxMessageBox.ON_OK)) {
 									// objSel= getObjSel(); //listboxOptions.getSelectedItem().getValue();
 									// AppContext.debug("objSel=" + objSel);
@@ -3963,7 +3963,11 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		try {
 
-			String selpos = listboxPosition.getSelectedItem().getLabel();
+			String selpos = "";
+
+			if (listboxPosition.getSelectedItem() != null)
+				selpos = listboxPosition.getSelectedItem().getLabel();
+			
 			if (selpos.isEmpty()) {
 				/*
 				 * biglistboxModel= new Object2StringMultirefsMatrixModel(varianttable,
@@ -4662,7 +4666,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		@Override
 		public String toString() {
-			
+
 			return this.left + start + "\t" + end + this.right;
 		}
 
@@ -4698,7 +4702,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		@Override
 		public int compare(Object o1, Object o2) {
-			
+
 			GFF snp1 = (GFF) o1;
 			GFF snp2 = (GFF) o2;
 
@@ -10563,7 +10567,6 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		@Override
 		public void sort(Comparator cmpr, boolean ascending) {
-			
 
 			try {
 				// sort biglistboxarray
@@ -10585,7 +10588,6 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		@Override
 		public String getSortDirection(Comparator cmpr) {
-			
 
 			if (Objects.equals(_sorting, cmpr))
 				return _sortDir ? "ascending" : "descending";
@@ -10688,7 +10690,6 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		@Override
 		public void render(Row row, Object data, int index) throws Exception {
-			
 
 			Object[] obj = (Object[]) data;
 

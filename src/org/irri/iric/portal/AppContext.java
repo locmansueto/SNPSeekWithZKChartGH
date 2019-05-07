@@ -189,7 +189,7 @@ public class AppContext {
 			operatingSytem = OS.valueOf(prop.get(PropertyConstants.OPERATING_SYSTEM).toString().toUpperCase());
 
 			InputStream isWebProp = AppContext.class
-					.getResourceAsStream("/config." + prop.getProperty(PropertyConstants.WEBSERVER) + ".properties");
+					.getResourceAsStream("/" + prop.getProperty(PropertyConstants.WEBSERVER) + ".properties");
 
 			webProp.load(isWebProp);
 
