@@ -40,6 +40,16 @@ public class LocalAlignmentImpl implements LocalAlignment {
 		this.sstart = sstart;
 		this.send = send;
 	}
+	public LocalAlignmentImpl(String qacc, String sacc, Double evalue, Integer qstart, Integer qend, Integer sstart, Integer send) {
+		super();
+		this.qacc = qacc;
+		this.sacc = sacc;
+		this.evalue = evalue;
+		this.qstart = Long.valueOf(qstart);
+		this.qend = Long.valueOf(qend);
+		this.sstart = Long.valueOf(sstart);
+		this.send = Long.valueOf(send);
+	}
 
 	public LocalAlignmentImpl(String qacc, String sacc, Double evalue, Long qstart, Long qend, Long sstart, Long send,
 			Integer sstrand, Double rawScore, Long alignmentLength, Double percentMatches, Long matches,

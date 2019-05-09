@@ -1,0 +1,94 @@
+<?page title="Module" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="winGalaxy" border="none" apply="org.irri.iric.portal.galaxy.zkui.GalaxyController">
+	<hbox height="20px"/>
+	
+	<div id="divDiscovery">
+	<hbox>
+		<label value="This is included Galaxy page. Select server"/>
+		<listbox id="listboxServer" width="200px" mold="select">
+			<listitem label="pollux" selected="true"/>
+			<listitem label="rice_dev"/>
+		</listbox>
+	</hbox>
+	<hbox>
+	 <label value="Select Lists"/>
+	 <vbox>
+	 <listbox id="listLists" multiple="true" checkmark="true"  width="150px"  height="200px" rows="0">
+	    <listhead><listheader label="Data lists" /></listhead>
+	    	<listitem label="locuslist"/>
+	    	<listitem label="samplelist"/>
+	    	<listitem label="snplist"/>
+	    	<listitem label="snpmatrix"/>
+	 </listbox>
+	 <button id="buttonWorkflows" label="Find Workflows"/>
+    </vbox>
+    
+    <vbox width="150px"/>
+
+	<vbox>
+	 <label value="Select Data"/>
+	 <button id="buttonAll" label="Check all" height="20px" visible="false"/>
+	 <button id="buttonNone" label="Uncheck all" height="20px" visible="false"/>
+	 <button id="buttonCommon" label="Check common" height="20px"/>
+	 
+	 <hbox height="20px"/>
+	 <button id="buttonDiscover" label="Find Tools"/>
+	 <hbox height="20px"/>
+	 <listbox id="listSection" multiple="true" checkmark="true" width="200px" height="150px">
+	  <listhead><listheader label="Tool Section" /></listhead></listbox>
+	</vbox>
+	 
+	 <vbox width="20px"/>
+	 <listbox id="listData" multiple="true" checkmark="true" width="300px" height="300px" rows="0">
+	    <listhead><listheader label="Data class" /></listhead></listbox>
+	 	<vbox width="10px"/>	 
+	 <listbox id="listFormat" multiple="true" checkmark="true"  width="300px"  height="300px" rows="0">
+	    <listhead><listheader label="Data format" /></listhead></listbox>
+	 
+    </hbox>
+    <hbox height="50px"/>
+    </div>
+
+	<!--  button id="buttonDiscover" label="Discover tools"/ -->
+	 <label value="Workflows accepting data lists"/>
+	 <listbox id="listTools" width="80%">
+	    <listhead>
+	    <listheader label="Workflow name" />
+	    <listheader label="Accepts" />
+	    <listheader label="All Inputs" />
+	    <listheader label="Description" />
+	    <listheader label="URL" />
+	    </listhead>
+	  </listbox>
+
+	<hbox height="50px"/>
+	<label value="Input parameters"/>
+	<hbox>
+	
+ 		<grid id="listInputs" width="60%">
+  		<columns>
+	    <column label="Parameter name" width="200px"/>
+	    <column label="Value"  width="300px"/>
+	    <column label="Description" />
+	    </columns>
+	    </grid>
+
+
+ 		<!--  listbox id="listInputs" width="50%" rows="0">
+  		<listhead>
+	    <listheader label="Parameter name" />
+	    <listheader label="Value" />
+	    <listheader label="Description" />
+	    </listhead>
+	    </listbox -->
+	    <vbox>
+	    <button id="buttonRun" label="Run Tool"/>
+	    <checkbox id="checkboxAsync" label="Run in backgroud"/>
+	    <label id="labelDownloadProgressMsg"/>
+	    <a id="aDownloadProgressURL"/>
+	    </vbox>
+	 </hbox>
+	    
+</window>
+</zk>

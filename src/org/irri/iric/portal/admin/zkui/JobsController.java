@@ -316,40 +316,52 @@ public class JobsController extends SelectorComposer<Component> {
 	@Listen("onClick =#buttonDownloadResult")
 	public void onclickDownloadresult() throws Exception {
 		AppContext.debug("onclickDownloadresult jobid=" + jobid);
-		if (jobsfacade.useS3()) {
-			String filetype = "application/zip";
-			byte f[] = jobsfacade.getS3Reader(jobid + ".zip");
-			Filedownload.save(f, filetype, jobid + ".zip");
-		} else {
-			String filetype = "application/zip";
-			Filedownload.save(new File(AppContext.getTempDir() + jobid + ".zip"), filetype);
+		
+		try {
+			
+			//if (jobsfacade.useS3()) {
+			if (false) {
+				String filetype = "application/zip";
+				byte f[] = jobsfacade.getS3Reader(jobid + ".zip");
+				Filedownload.save(f, filetype, jobid + ".zip");
+			} else {
+				String filetype = "application/zip";
+				Filedownload.save(new File(AppContext.getTempDir() + jobid + "/" +jobid + ".zip"), filetype);
+			}
+			// AppContext.debug("File download complete! Saved to: "+filename);
+			org.zkoss.zk.ui.Session zksession = Sessions.getCurrent();
+			AppContext.debug("snpallvars download complete!" + jobid + " Downloaded to:" + zksession.getRemoteHost() + "  "
+					+ zksession.getRemoteAddr());
+	
+			jobsfacade = (JobsFacade) AppContext.checkBean(jobsfacade, "JobsFacade");
+			jobsfacade.downloadJob(jobid);
+		} catch(Exception ex) {
+			ex.printStackTrace();
 		}
-		// AppContext.debug("File download complete! Saved to: "+filename);
-		org.zkoss.zk.ui.Session zksession = Sessions.getCurrent();
-		AppContext.debug("snpallvars download complete!" + jobid + " Downloaded to:" + zksession.getRemoteHost() + "  "
-				+ zksession.getRemoteAddr());
-
-		jobsfacade = (JobsFacade) AppContext.checkBean(jobsfacade, "JobsFacade");
-		jobsfacade.downloadJob(jobid);
 
 	}
 
 	@Listen("onClick =#buttonDownloadMessage")
 	public void onclickDownloadMessage() throws Exception {
-		AppContext.debug("buttonDownloadMessage jobid=" + jobid);
-		if (jobsfacade.useS3()) {
-			String filetype = "text/plain";
-			try {
-				byte f[] = jobsfacade.getS3Reader(jobid + ".zip");
-				Filedownload.save(f, filetype, jobid + ".error");
-			} catch (Exception ex) {
-				byte f[] = jobsfacade.getS3Reader(jobid + ".error");
-				Filedownload.save(f, filetype, jobid + ".error");
+		try {
+			AppContext.debug("buttonDownloadMessage jobid=" + jobid);
+			if (jobsfacade.useS3()) {
+				String filetype = "text/plain";
+				try {
+					byte f[] = jobsfacade.getS3Reader(jobid + ".zip");
+					Filedownload.save(f, filetype, jobid + ".error");
+				} catch (Exception ex) {
+					byte f[] = jobsfacade.getS3Reader(jobid + ".error");
+					Filedownload.save(f, filetype, jobid + ".error");
+				}
+			} else {
+				String filetype = "text/plain";
+				Filedownload.save(new File(AppContext.getTempDir() + jobid + "/" + jobid + ".error"), filetype);
+				// AppContext.debug("File download complete! Saved to: "+filename);
 			}
-		} else {
-			String filetype = "text/plain";
-			Filedownload.save(new File(AppContext.getTempDir() + jobid + ".error"), filetype);
-			// AppContext.debug("File download complete! Saved to: "+filename);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 

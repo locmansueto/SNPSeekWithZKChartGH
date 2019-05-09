@@ -16,7 +16,8 @@ public class VariantSequenceQuery extends Query {
 	Collection colVars;
 	Collection colLocus;
 
-	String method = "gatk";
+	//String method = "gatk";
+	String method = "galaxy";
 	String reference;
 
 	public VariantSequenceQuery(Collection<String> colVars, Collection<MultiReferenceLocus> colLocus) {

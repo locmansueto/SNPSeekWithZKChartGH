@@ -215,27 +215,157 @@ function doPosition() {
     <radiogroup id="synonymoussnps" />
     <radiogroup id="radiogroupShowsnps"/>
     
-    <hbox height="310px">
-    
-    
-    <vbox width="1000px" height="305px">
-    
+   <!--  for vertical spitter --> 
+   <vbox>
+
     <!--  MESSAGE BOX  -->
 	<textbox id="msgbox" readonly="true" value="${msg}" width="999px" rows="2"/>
+
+	<!-- query dialogs -->
+   <vbox> 
+   
+    <hbox height="310px">
+    <vbox width="1000px" height="305px">
+    
 	
     
+	<zscript>
+	import org.irri.iric.portal.genomics.zkui.LocalAlignmentSorter;
+	       Comparator aasc0 = new LocalAlignmentSorter(true,0,0);        
+	       Comparator adsc0 = new LocalAlignmentSorter(false,0,0);
+	       Comparator aasc1 = new LocalAlignmentSorter(true,1,2);        
+	       Comparator adsc1 = new LocalAlignmentSorter(false,1,2);
+	       Comparator aasc2 = new LocalAlignmentSorter(true,2,2);        
+	       Comparator adsc2 = new LocalAlignmentSorter(false,2,2);
+	       Comparator aasc3 = new LocalAlignmentSorter(true,3,0);        
+	       Comparator adsc3 = new LocalAlignmentSorter(false,3,0);
+	       Comparator aasc4 = new LocalAlignmentSorter(true,4,2);        
+	       Comparator adsc4 = new LocalAlignmentSorter(false,4,2);
+	       Comparator aasc5 = new LocalAlignmentSorter(true,5,2);        
+	       Comparator adsc5 = new LocalAlignmentSorter(false,5,2);
+	       Comparator aasc6 = new LocalAlignmentSorter(true,6,1);        
+	       Comparator adsc6 = new LocalAlignmentSorter(false,6,1);
+	       Comparator aasc7 = new LocalAlignmentSorter(true,7,2);        
+	       Comparator adsc7 = new LocalAlignmentSorter(false,7,2);
+	       Comparator aasc8 = new LocalAlignmentSorter(true,8,3);        
+	       Comparator adsc8 = new LocalAlignmentSorter(false,8,3);
+	</zscript>
     
+
     <!--  grid height="240px" -->
     <grid>
         <rows>
+			
+			<!--  *********************   COMPARE GENOMES REF, TARGET  ************************************* -->
         
+   
+   
+            <row spans="1,5,1" visible="false">
+ 				<label value="Compare genomes:" style="font-size:14px;font-weight:bold;color:gray;" /> 
+        		<vbox>
+					<hbox>
+						<label value="Reference" style="font-weight:bold"/>	
+		                <hbox width="3px"/>
+						<listbox  id="listboxAlignRef" mold="select" width="120px">
+							<listitem label="Nipponbare"/>
+							<listitem label="MH63"/>
+							<listitem label="ZS97"/>
+						</listbox>
+		                <hbox width="5px"/>
+						<label value="Chromosome"/>                
+				    	<listbox id="listboxAlignContig" mold="select"  width="120px"> 
+							<listitem label="chr01"/>
+							<listitem label="chr02"/>
+							<listitem label="chr03"/>
+						</listbox>
+						<label value="Start:"/>
+		                <intbox id="intboxAlignStart" width="70px" constraint="no negative" />
+		                <hbox width="3px"/>
+		                <label value="End:"/>
+		                <intbox id="intboxAlignEnd"  width="70px" constraint="no negative" />
+		                <label  value=""  style="font-size:10px"/>  
+		            </hbox>
+					<hbox>
+						<label value="Target" style="font-weight:bold"/>
+						<hbox width="3px"/>
+						<listbox id="listboxAlignTarget" mold="select" width="120px">
+							<listitem label="Nipponbare"/>
+							<listitem label="MH63"/>
+							<listitem label="ZS97"/>
+						</listbox>
+		             </hbox>
+
+				<listbox id="listboxAlignment" class="blast-table" mold="paging" pageSize="100" width="100%">
+	        	<listhead>
+                <listheader label="REFERENCE" width="150px"  sortAscending="${aasc0}" sortDescending="${adsc0}" />
+                <listheader label="R START" width="50px"  sortAscending="${aasc1}" sortDescending="${adsc1}" />
+                <listheader label="R END"  width="50px"  sortAscending="${aasc2}" sortDescending="${adsc2}" />
+                <listheader label="TARGET"  width="150px"  sortAscending="${aasc3}" sortDescending="${adsc3}" />
+                <listheader label="T START"  width="50px" sortAscending="${aasc4}" sortDescending="${adsc4}" />
+                <listheader label="T END"  width="50px"   sortAscending="${aasc5}" sortDescending="${adsc5}" />
+                <listheader label="T STRAND"  width="30px"  sortAscending="${aasc6}" sortDescending="${adsc6}" />
+                <listheader label="MATCHES"  width="80px"   sortAscending="${aasc7}" sortDescending="${adsc7}" />
+                <listheader label="E VALUE"  width="80px"  sortAscending="${aasc8}" sortDescending="${adsc8}" />
+            	</listhead>
+				</listbox>
+        		<separator bar="true" style="color:green" />
+        		</vbox>
+        		    <button id="buttonAlign" class="z-align-button" label="ALIGN"   style="font-size:16px;font-weight:bold;color:gray;"
+			    	   width="100px" height="50px"  autodisable="self"
+			    	   xmlns:w="http://www.zkoss.org/2005/zk/client"			    	   			    	   
+			    	   w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();"
+			    />
+        		
+        	</row>
+            <!--  row spans="1,5,1">
+ 				<label value="Compare genomes:" style="font-size:14px;font-weight:bold;color:gray;" /> 
+ 				<vbox>
+					<hbox>
+						<label value="Reference" style="font-weight:bold"/>	
+						<listbox mold="select" width="120px">
+							<listitem label="Nipponbare"/>
+							<listitem label="MH63"/>
+							<listitem label="ZS97"/>
+						</listbox>
+						<label value="Chromosome"/>                
+				    	<listbox mold="select"  width="120px"> 
+							<listitem>chr01</listitem>
+							<listitem>chr02</listitem>
+							<listitem>chr03</listitem>
+						</listbox>
+						<label value="Start:"/>
+		                <intbox  width="70px" constraint="no negative" />
+		                <hbox width="3px"/>
+		                <label value="End:"/>
+		                <intbox  width="70px" constraint="no negative" />
+		                <label  value=""  style="font-size:10px"/>  
+		            </hbox>
+					<hbox>
+						<label value="Target" style="font-weight:bold"/>	
+						<listbox  mold="select" width="120px">
+							<listitem label="Nipponbare"/>
+							<listitem label="MH63"/>
+							<listitem label="ZS97"/>
+						</listbox>
+		             </hbox>
+				</vbox>
+			</row -->
         	<!--  *********************   DATASET SELECTION  ************************************* -->
         
-                  <row spans="1,5,1">
+                <row spans="1,5,1">
 
 			    <label value="Datasets:" style="font-size:14px;font-weight:bold;color:gray;" /> 
 			     <vbox>
 					<hbox>
+					
+					<label value="Reference" visible="false"/>
+	            	<listbox id="listboxTargetReference" mold="select" rows="1"  visible="false">
+	            	<listitem label="Nipponbare"/>
+	            	<listitem label="MH63"/>
+	            	<listitem label="ZS97"/>
+	            	</listbox>
+					
+					
 					<label value="Variety set" style="font-weight:bold"/>					
 					<bandbox id="bandboxVarietyset"  autodrop="true" readonly="true">
 					           <bandpopup width="200px">
@@ -270,6 +400,7 @@ function doPosition() {
 					<separator bar="true" style="color:green" />
 					
 					</vbox>
+					<vbox/>
 			    </row>
         	<!--  *********************   VARIETY SELECTION  ************************************* -->
             <row spans="1,5,1">
@@ -353,6 +484,7 @@ function doPosition() {
             	
             	
             	<hbox>
+            	
                 <label id="labelChr" value="Chromosome"/>                
 			    <combobox id="selectChr" class="z-chromosome-input" buttonVisible="false"  readonly="false" autodrop="true" width="120px"> <!--  fulfill="onOpen" -->
 				</combobox>
@@ -603,6 +735,7 @@ import org.irri.iric.portal.genotype.zkui.GenotypeRunPlatformSorter;
 			    	   xmlns:w="http://www.zkoss.org/2005/zk/client"			    	   			    	   
 			    	   w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();"
 			    	/>
+			    	
 			    	</vbox>
 
             </row>
@@ -628,8 +761,13 @@ import org.irri.iric.portal.genotype.zkui.GenotypeRunPlatformSorter;
 	/>
 
 	</hbox>
-	<separator bar="true"/>
 	
+	</vbox>
+	
+	<!--  separator bar="true" visible="false" id="separator" width="100%"/ -->
+	<splitter id="splitter" collapse="before" open="true" width="100%" />
+	
+	<vbox>
     
     <label id="snpallvarsresultMsg" visible="false"/>
  
@@ -650,6 +788,7 @@ import org.irri.iric.portal.genotype.zkui.GenotypeRunPlatformSorter;
             <tab id="tabPhylo" label="Phylotree" visible="false"/>  
             <tab id="tabMDS" label="MDS plot" visible="false"/>  
             <tab id="tabJBrowsePhylo" label="PhyloJBrowse" visible="false"/>  
+            <tab id="tabGalaxy" label="Rice Galaxy" visible="false"/>  
         </tabs>  
         <tabpanels>
         
@@ -1058,7 +1197,8 @@ import org.irri.iric.portal.genotype.zkui.GenotypeRunPlatformSorter;
 	</hbox>
 	
 	
-	<iframe id= "iframeJbrowse"  align="left" visible="true" style="width:95%;height:3000px;border:0px inset;" src="${jbrowsestart}" />
+	<!--  iframe id= "iframeJbrowse"  align="left" visible="true" style="width:95%;height:3000px;border:0px inset;" src="${jbrowsestart}" / -->
+	<iframe id= "iframeJbrowse"  align="left" visible="true" style="width:95%;height:100%;border:0px inset;" src="${jbrowsestart}" />
 	</vbox>
 
   </tabpanel>
@@ -1433,10 +1573,18 @@ import org.irri.iric.portal.genotype.zkui.GenotypeRunPlatformSorter;
 	<label id="msgJbrowsePhylo"  visible="false" style="font-family: arial;font-size:12px" />
 	<iframe id= "iframeJbrowsePhylo"  align="left" visible="false" style="width:1500px;height:3000px;border:0px inset;" src="${jbrowsestart}" />
 	</vbox>
-</tabpanel>             
-            
+</tabpanel> 
+
+ <tabpanel id="tabpanelGalaxy" class="z-genotype-tabpanel" > <!--    vflex="1" style="overflow:auto" -->  
+	  <include id="includeGalaxy" src="galaxy.zul?embed=genotype"/>
+ </tabpanel>
+
+                        
 </tabpanels> 
 </tabbox> 
+</vbox>
+
+</vbox>
         
         <!--  *********************   DISPLAY INITIALIZATIONS  *********************************************************************************** -->
         

@@ -4,10 +4,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.irri</groupId>
 	<artifactId>iric-portal</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>4.0.3</version>
 	<packaging>war</packaging>
 	<name>snpseek</name>
 	<dependencies>
+	  	<dependency>
+	       <groupId>com.github.jmchilton.blend4j</groupId>
+	       <artifactId>blend4j</artifactId>
+	       <version>0.2.0</version>
+    	</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>

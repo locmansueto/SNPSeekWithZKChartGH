@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.irri.iric.portal.AppContext;
@@ -17,6 +18,9 @@ import org.irri.iric.portal.chado.oracle.domain.VAllstockBasicprop;
 import org.irri.iric.portal.dao.VariantSequenceDAO;
 import org.irri.iric.portal.domain.MultiReferenceLocus;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.domain.VarietyPlus;
+import org.irri.iric.portal.domain.VarietyPlusPlus;
+import org.irri.iric.portal.domain.VarietyPlusPlusImpl;
 import org.irri.iric.portal.genomics.VariantSequenceQuery;
 import org.springframework.stereotype.Repository;
 
@@ -31,8 +35,11 @@ public class VariantSequenceDAOImpl implements VariantSequenceDAO {
 		AppContext.logQuery(query.toString());
 
 		String destdir = query.getJobid();
-		if (destdir == null)
-			destdir = AppContext.getTempDir() + "vcf2fasta-" + AppContext.createTempFilename() + "/";
+		String jobname=destdir;
+		if (destdir == null) {
+			jobname="vcf2fasta-" + AppContext.createTempFilename(); 
+			destdir = AppContext.getTempDir() + jobname + "/";
+		}
 		else {
 			if (AppContext.isWindows())
 				destdir = AppContext.getTempDir() + destdir + "\\";
@@ -74,9 +81,7 @@ public class VariantSequenceDAOImpl implements VariantSequenceDAO {
 		bw.close();
 
 		bw = new BufferedWriter(new FileWriter(destdir + "vars.txt"));
-
 		bw.append("REFERENCE " + query.getReference() + "\n");
-
 		Iterator<ArrayList<VAllstockBasicprop>> itVars = query.getColVars().iterator();
 		while (itVars.hasNext()) {
 			VAllstockBasicprop var = null;
@@ -91,9 +96,27 @@ public class VariantSequenceDAOImpl implements VariantSequenceDAO {
 			if (itVarValue instanceof VAllstockBasicprop) {
 				var = (VAllstockBasicprop) itVarValue;
 			}
+		try {
+				String boxcode = var.getIrisId().replace(" ", "_").trim();
+				bw.append(boxcode).append("\t").append(var.getName()).append("\n");
+			} catch(Exception ex) {
+				//ex.printStackTrace();
+				if(var==null)  {
+					if (itVarValue instanceof VarietyPlusPlus) {
+						VarietyPlusPlus varp=(VarietyPlusPlus)itVarValue;
+						bw.append(varp.getBoxCode()).append("\t").append(varp.getName()).append("\n");
+					}
+					else if (itVarValue instanceof VarietyPlus) {
+						VarietyPlus varp=(VarietyPlus)itVarValue;
+						bw.append(varp.getBoxCode()).append("\t").append(varp.getName()).append("\n");
+					} else {
+						AppContext.debug("var==null  itVarValue="+ itVarValue.getClass().getCanonicalName());
+					}
 
-			String boxcode = var.getIrisId().replace(" ", "_").trim();
-			bw.append(boxcode).append("\t").append(var.getName()).append("\n");
+				}
+				else 
+					AppContext.debug(var.getName() + "  " + var.getIrisId());
+			}
 		}
 		bw.flush();
 		bw.close();
@@ -102,8 +125,44 @@ public class VariantSequenceDAOImpl implements VariantSequenceDAO {
 		 * bw=new BufferedWriter(new FileWriter(destdir + "dirpath.txt")); bw.append(
 		 * destdir +"\n"); bw.flush(); bw.close();
 		 */
+		if (query.getMethod().equals("galaxy")) {
 
-		if (query.getMethod().equals("gatk")) {
+			//String destdir, String varlistpath, Map<String, String> intervals, boolean concatSeqs, Set varset,
+			//String reference
+			
+			bw = new BufferedWriter(new FileWriter(destdir + "samplelist.txt"));
+			itVars = query.getColVars().iterator();
+			while (itVars.hasNext()) {
+				//VAllstockBasicprop var = null;
+				Variety var = null;
+				Object itVarValue = itVars.next();
+				if (itVarValue instanceof List) {
+					List<VAllstockBasicprop> lst = (List<VAllstockBasicprop>) itVarValue;
+					var = lst.get(0);
+				}
+				else if (itVarValue instanceof VAllstockBasicprop) {
+					var = (VAllstockBasicprop) itVarValue;
+				}
+				else if (itVarValue instanceof Variety) {
+					var = (Variety) itVarValue;
+				}
+				try {
+					String boxcode = var.getIrisId().replace(" ", "_").trim();
+					if(boxcode==null) {
+						boxcode=var.getBoxCode().replace(" ", "_").trim();
+					}
+					bw.append(boxcode).append("\t").append(var.getName()).append("\n");
+				} catch(Exception ex) {
+					ex.printStackTrace();
+					AppContext.debug("itVarValue=" + itVarValue.getClass().getCanonicalName());
+				}
+			}
+			bw.flush();
+			bw.close();
+			
+			new GalaxyAltSeqGenerator(destdir,jobname).getAltSequence(destdir + "samplelist.txt", mapLoc2Int, query.getReference());
+
+		} else if (query.getMethod().equals("gatk")) {
 
 			new GATKAltSeqGenerator(destdir).getAltSequence(destdir + "vars.txt", mapLoc2Int, query.getReference());
 

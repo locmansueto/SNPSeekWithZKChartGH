@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import java.util.regex.Pattern;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.SimpleListModelExt;
@@ -187,9 +188,10 @@ public class DownloadController extends SelectorComposer<Component> {
 			return;
 		}
 
-		if ((AppContext.isDev() && (setVarieties.size() > 10 || setLoci.size() > 5)) || setVarieties.size() > 100
-				|| setLoci.size() > 50) {
-
+		//if ((AppContext.isDev() && (setVarieties.size() > 10 || setLoci.size() > 5)) || setVarieties.size() > 100
+		//		|| setLoci.size() > 50) {
+		if ( setVarieties.size() > 10 || setLoci.size() > 10) {
+			// use asynchronous
 			try {
 				Callable<AsyncJobReport> callreport = callableDownloadsequence(setVarieties, setLoci);
 				AsyncJobReport report = callreport.call();
@@ -212,6 +214,7 @@ public class DownloadController extends SelectorComposer<Component> {
 			}
 
 		} else {
+			// wait to finish
 			labelDownloadProgressMsg.setVisible(false);
 			aDownloadProgressURL.setVisible(false);
 			AppContext.debug("waiting for varseq");
@@ -371,8 +374,22 @@ public class DownloadController extends SelectorComposer<Component> {
 			 */
 
 			if (jobid == null) {
-				String paths[] = dir.split("/");
-				String zipfilename = AppContext.getTempDir() + paths[paths.length - 1] + ".zip";
+				String paths[]= dir.split(Pattern.quote(File.separator));
+				/*
+				if(AppContext.isWindows()) {
+					paths=dir.split("\\\\");		
+					paths = path.split(Pattern.quote(File.separator));
+				} else {
+					paths = dir.split("/");
+				}
+				*/
+				//String fname=new File(dir).getName();
+				String zipfilename = AppContext.getTempDir() + paths[paths.length - 1] + paths[paths.length - 1].replace("\\","").replace("/","")+ ".zip";
+				//String zipfilename = AppContext.getTempDir() + paths[paths.length - 1] + paths[paths.length - 1].replace("\\","").replace("/","")+ ".zip";
+				
+				//String zipfilename = dir + paths[paths.length - 1] + ".zip";
+				
+				
 				// Filedownload.save(zipfilename, "application/zip");
 				Filedownload.save(new File(zipfilename), "application/zip");
 				// AppContext.debug("File download complete! Saved to: "+filename);

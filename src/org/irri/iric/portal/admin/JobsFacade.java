@@ -9,7 +9,8 @@ public interface JobsFacade {
 	public static String JOBSTATUS_ERROR="ERROR";
 	public static String JOBSTATUS_DONE="DONE";
 	public static String JOBSTATUS_SUBMITTED="QUEUED";
-	public static String JOBSTATUS_STARTING="STARTING";
+	//public static String JOBSTATUS_STARTING="STARTING";
+	public static String JOBSTATUS_STARTING="RUNNING";
 	public static String JOBSTATUS_REFUSED="REFUSED";
 	public static String JOBSTATUS_DOWNLOADED="DOWNLOADED";
 	public static String JOBSTATUS_MISSING="MISSING";

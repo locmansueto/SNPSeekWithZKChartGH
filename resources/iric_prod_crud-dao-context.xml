@@ -92,7 +92,7 @@
 
 	<!-- IRRI local pollux -->
 	<!-- property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/ -->
-	<bean class="org.apache.commons.dbcp.BasicDataSource"
+	<!-- bean class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" name="IRIC_ProductionDS">
 		<property name="driverClassName"
 			value="oracle.jdbc.driver.OracleDriver" />
@@ -102,7 +102,7 @@
 			value="jdbc:oracle:thin:@172.29.4.215:1521:orcl" />
 		<property name="maxIdle" value="16" />
 		<property name="maxActive" value="32" />
-	</bean>
+	</bean -->
 
 	<!-- AWS or ASTI -->
 	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
@@ -156,13 +156,24 @@
 		<property name="url" value="jdbc:postgresql://iric-rds-singapore-01.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric"/> 
 		<property name="maxIdle" value="1"/> <property name="maxActive" value="10"/> 
 		</bean> -->
-	<!-- <bean class="org.apache.comcd mons.dbcp.BasicDataSource" destroy-method="close" 
+	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
 		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver" 
 		/> <property name="username" value="iricadmin" /> <property name="password" 
 		value="!r1C4dmIn-irr1" /> <property name="url" value="jdbc:postgresql://iric-rds-singapore-prod-v1.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric" 
 		/> <property name="maxIdle" value="1" /> <property name="maxActive" value="10" 
-		/> </bean> -->
+		/> </bean -->
 
+	<bean class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" name="IRIC_ProductionDS_PG">
+		<property name="driverClassName"
+			value="org.postgresql.Driver" />
+		<property name="username" value="iricadmin" />
+		<property name="password" value="!r1C4dmIn-irr1" />
+		<property name="url"
+			value="jdbc:postgresql://iric-rds-singapore-prod-v1.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric" />
+		<property name="maxIdle" value="1" />
+		<property name="maxActive" value="10" />
+	</bean>
 	<!-- <AWS-RDS Beanstalk v2 -->
 	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
 		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver"/> 

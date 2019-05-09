@@ -5,9 +5,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -43,6 +46,7 @@ import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.StockSample;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.variety.VarietyFacade;
+import org.python.util.PythonInterpreter;
 import org.springframework.context.ApplicationContext;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zkplus.spring.SpringUtil;
@@ -189,7 +193,7 @@ public class AppContext {
 			operatingSytem = OS.valueOf(prop.get(PropertyConstants.OPERATING_SYSTEM).toString().toUpperCase());
 
 			InputStream isWebProp = AppContext.class
-					.getResourceAsStream("/config." + prop.getProperty(PropertyConstants.WEBSERVER) + ".properties");
+					.getResourceAsStream("/" + prop.getProperty(PropertyConstants.WEBSERVER) + ".properties");
 
 			webProp.load(isWebProp);
 
@@ -256,7 +260,7 @@ public class AppContext {
 	}
 
 	public static String getTempFolder() {
-		if (isLocalhost())
+		if (isWindows())
 			return "temp\\";
 		return "temp/";
 	}
@@ -291,6 +295,7 @@ public class AppContext {
 	// in server file system (where tomcat is deployed)
 	public static String getHaploscriptsDir() {
 		if (isAWSBeanstalk() || isAWSBeanstalkDev() || isLocalhost())
+		//if (isAWSBeanstalk() || isAWSBeanstalkDev())
 			// return getTomcatWebappsDir() + "ROOT/haplo/";
 			return getFlatfilesDir() + "haplo/";
 		else
@@ -546,6 +551,32 @@ public class AppContext {
 
 	}
 
+	public static String GALAXY_POLLUX="pollux";
+	public static String GALAXY_RICEDEV="rice_dev";
+	private static String galaxy_instance=GALAXY_POLLUX;
+	
+	public static void setGalaxyInstance(String i) {
+		galaxy_instance=i;
+	}
+	public static String getGalaxyInstance() {
+		return galaxy_instance;
+	}
+
+	public static String getGalaxyAddress() {
+		
+		if(getGalaxyInstance().equals(GALAXY_RICEDEV))
+			return "http://13.229.124.30:8080";
+		else 
+			return "http://172.29.4.215:8080";
+	}
+
+	public static String getGalaxyKey() {
+		if(getGalaxyInstance().equals(GALAXY_RICEDEV))
+			return "a80ef55feed828cdbe6500b2ba4f8bf7";
+		else 
+			return "0529d21031f8e190dc2ba26173627b92"; 
+	}
+			
 	public static String getPlinkDir() {
 
 		if (isPollux())
@@ -2457,6 +2488,46 @@ public class AppContext {
 		}
 
 		return strValues;
+	}
+/*
+	private static PythonInterpreter interp=null;
+	public static void initPythonInterp() {
+		// TODO Auto-generated method stub
+		if(interp==null) {
+			debug("initializing new PythonInterpreter()");
+			try {
+			interp=new PythonInterpreter();
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+			
+		}
+	}
+	public static PythonInterpreter getPythonInterp() {
+		// TODO Auto-generated method stub
+		initPythonInterp();
+		return interp;
+	}
+	*/
+	
+	public static String readURL(String a) throws Exception {
+	   
+		    URL url = new URL(a);
+            URLConnection conn = url.openConnection();
+
+            // open the stream and put it into BufferedReader
+            BufferedReader br = new BufferedReader(
+                               new InputStreamReader(conn.getInputStream()));
+
+            String inputLine;
+            StringBuffer buff=new StringBuffer();
+            while ((inputLine = br.readLine()) != null) {
+            	buff.append(inputLine);
+            }
+            br.close();
+            return buff.toString();
+		
+       
 	}
 
 	/// **

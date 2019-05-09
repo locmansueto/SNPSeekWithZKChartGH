@@ -323,6 +323,32 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	 */
 
 	@Override
+	public boolean sendGenotypeToGalaxy(String pedfilenameonly,
+			GenotypeQueryParams params) {
+		
+		List listCDS = new ArrayList();
+		locusDAO = (LocusDAO) AppContext.checkBean(locusDAO, "LocusNotesDAO");
+		if (params.hasChrPosRange()) {
+			listCDS = locusDAO.getLocusByRegion(params.getsChr(), params.getlStart(), params.getlEnd(),
+					params.getOrganism(), GenomicsFacade.GENEMODEL_MSU7_ONLY, GenomicsFacade.FEATURETYPE_GENE);
+			listCDS.addAll(locusDAO.getLocusByRegion(params.getsChr(), params.getlStart(), params.getlEnd(),
+					params.getOrganism(), GenomicsFacade.GENEMODEL_MSU7_ONLY, GenomicsFacade.FEATURETYPE_CDS));
+		} else if (params.hasSnpList()) {
+			listCDS = null;
+			// listCDS=locusDAO.getLocusByContigPositions(params.getsChr(),
+			// params.getPoslist(), params.getOrganism(), 0,
+			// GenomicsFacade.GENEMODEL_MSU7,GenomicsFacade.FEATURETYPE_GENE);
+			// listCDS.addAll(locusDAO.getLocusByContigPositions(params.getsChr(),
+			// params.getPoslist(), params.getOrganism(), 0,
+			// GenomicsFacade.GENEMODEL_MSU7,GenomicsFacade.FEATURETYPE_CDS));
+		}
+		AppContext.debug("genes and cds:" + listCDS);
+		return true;
+	
+	}
+
+	
+	@Override
 	public boolean displayHapotypeImage(String pedfilenameonly, String imageformat, boolean genomecoord,
 			GenotypeQueryParams params, double localWeight, double resFactor, int kgroups, int kheight,
 			String autogroup, String imagesize) {
@@ -348,6 +374,8 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 		return hi.createImage(pedfilenameonly + ".ped", pedfilenameonly + ".map", pedfilenameonly + ".summary.txt",
 				imageformat, listCDS, genomecoord, resFactor, localWeight, kgroups, kheight, autogroup, imagesize);
 	}
+	
+	
 
 	@Override
 	public Object[] constructPhylotree(VariantStringData dataset, PhylotreeQueryParams params) {

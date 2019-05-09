@@ -197,13 +197,17 @@ public class GwasFacadeImpl implements GwasFacade {
 	@Override
 	public List<String> getTraits(String pop, boolean useCOTrait) {
 		
-		if (mapPop2Trait == null)
+		if (mapPop2Trait == null || mapPop2Coterm==null)
 			getMapPop2Trait();
 		List l = new ArrayList();
-		if (useCOTrait)
+		if (useCOTrait) {
+			AppContext.debug("getTraits: pop=" + pop  + " mapPop2Coterm=" + mapPop2Coterm.get(pop) );
 			l.addAll(mapPop2Coterm.get(pop));
-		else
+		}
+		else {
+			AppContext.debug("getTraits: pop=" + pop  + " mapPop2Trait=" + mapPop2Trait.get(pop) );
 			l.addAll(mapPop2Trait.get(pop));
+		}
 
 		return l;
 	}

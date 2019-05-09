@@ -75,12 +75,12 @@
 								<label value="SNP -log(P) list"
 									pre="true" />
 								<listbox id="listboxSnplist"
-									mold="select" />
+									mold="select" width="150px"/>
 								<vbox width="30px" />
 								<label value="Variety phenotype list"
 									pre="true" />
 								<listbox id="listboxVarietylist"
-									mold="select" />
+									mold="select" width="150px"/>
 							</hbox>
 						</row>
 

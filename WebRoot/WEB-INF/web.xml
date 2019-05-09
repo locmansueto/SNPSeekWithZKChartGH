@@ -7,6 +7,12 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
     <servlet-class>
 			org.zkoss.zk.ui.http.DHtmlLayoutServlet
 		</servlet-class>
+	
+	<init-param>
+      <param-name>python.home</param-name>
+      <param-value>E:/jython2.7.0</param-value>
+    </init-param>
+    
     <init-param>
       <param-name>update-uri</param-name>
       <param-value>/zkau</param-value>

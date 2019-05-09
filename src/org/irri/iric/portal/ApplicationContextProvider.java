@@ -18,6 +18,8 @@ public class ApplicationContextProvider implements ApplicationContextAware {
 
     public void setApplicationContext(ApplicationContext ctx) throws BeansException {
         // Wiring the ApplicationContext into a static method
+    	
+        //AppContext.initPythonInterp();
         AppContext.setApplicationContext(ctx);
     }
 } // .EOF
