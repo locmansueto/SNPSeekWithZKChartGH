@@ -314,7 +314,11 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	private WorkspaceFacade workspace;
 
 	@Autowired
-	private JobsFacade jobsfacade;
+	@Qualifier("JobsFacade")
+	private JobsFacade jobsfacade_orig;
+	@Autowired
+	@Qualifier("GalaxyJobsFacade")
+	private JobsFacade jobsfacade_galaxy;
 
 	// attributes for SNP Query controller components
 	@Wire
@@ -1013,7 +1017,21 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				ex.printStackTrace();
 			}
 		}
-		getSession().putValue( "haplofilename", haplofilename);
+		Map mapParamvals=new HashMap();
+		/*
+		mapParamvals.put("locuslist",AppContext.getTempDir()+haplofilename+".bed");
+		mapParamvals.put("samplelist",AppContext.getTempDir()+haplofilename+".txt");
+		mapParamvals.put("snplist",AppContext.getTempDir()+haplofilename+".map");
+		mapParamvals.put("snpmatrix",AppContext.getTempDir()+haplofilename+".ped");
+		mapParamvals.put("reference", this.listboxReference.getSelectedItem().getLabel() );
+		*/
+		mapParamvals.put("locuslist",AppContext.getTempDir()+haplofilename+".bed");
+		mapParamvals.put("samplelist",AppContext.getTempDir()+haplofilename+".txt");
+		mapParamvals.put("snplist",AppContext.getTempDir()+haplofilename+".map");
+		mapParamvals.put("snpmatrix",AppContext.getTempDir()+haplofilename+".ped");
+		mapParamvals.put("reference", this.listboxReference.getSelectedItem().getLabel() );
+		getSession().putValue( "param_vals",mapParamvals);
+		//getSession().putValue( "haplofilename", haplofilename);
 	}
 	
 	public HttpSession getSession() {
@@ -8447,8 +8465,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 					// report = genotype.querydownloadGenotypeAsync(params);
 
-					jobsfacade = (JobsFacade) AppContext.checkBean(jobsfacade, "JobsFacade");
-
+					jobsfacade_orig = (JobsFacade) AppContext.checkBean(jobsfacade_orig, "JobsFacade");
+					JobsFacade jobsfacade=jobsfacade_orig;
 					if (params.getSubmitter() == null) {
 						msg = "Submitter ID required for long jobs.";
 					} else if (jobsfacade.checkSubmitter(params.getSubmitter())) {
@@ -9936,7 +9954,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			Map mapSubpop2Allele2Count = new TreeMap();
 			Map mapSubpop2Genotype2Count = new TreeMap();
 
-			AppContext.debug("size: " + model.getSize());
+			//AppContext.debug("size: " + model.getSize());
 			for (int j = 0; j < model.getSize(); j++) {
 
 				// String subpop = model.getCellAt( model.getElementAt(j), 2).toString();

@@ -2,6 +2,7 @@ package org.irri.iric.portal.galaxy.zkui;
 
 import java.util.Map;
 
+import org.codehaus.jettison.json.JSONObject;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -23,12 +24,15 @@ public class MatchedToolsRenderer implements ListitemRenderer{
 		// TODO Auto-generated method stub
 		Object[] o=(Object[])arg1;
 		listitem.setValue(arg1);
-		Tool t=(Tool)o[0];
-		addListcell(listitem,t.getName());
+		JSONObject t=(JSONObject)o[0];
+		addListcell(listitem,(String)t.get("name"));
 		addListcell(listitem,o[2].toString());
 		addListcell(listitem,o[1].toString());
-		addListcell(listitem,t.getDescription());
-		addListcell(listitem,t.getUrl());
+		if(t.has("label"))
+			addListcell(listitem,(String)t.get("label"));
+		else 
+			addListcell(listitem,"");
+		//addListcell(listitem,t.getUrl());
 	}
 	
 	private static String STYLE_INTERESTING = "font-weight:bold;color:red";

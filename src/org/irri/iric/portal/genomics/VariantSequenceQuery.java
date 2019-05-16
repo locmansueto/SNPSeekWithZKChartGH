@@ -56,4 +56,14 @@ public class VariantSequenceQuery extends Query {
 		return reference;
 	}
 
+	boolean sync;
+	public void setSync(boolean sync) {
+		// TODO Auto-generated method stub
+		this.sync=sync;
+	}
+	public boolean isSync() {
+		// TODO Auto-generated method stub
+		return sync;
+	}
+
 }

@@ -37,7 +37,9 @@ public class VariantSequenceDAOImpl implements VariantSequenceDAO {
 		String destdir = query.getJobid();
 		String jobname=destdir;
 		if (destdir == null) {
-			jobname="vcf2fasta-" + AppContext.createTempFilename(); 
+			if(query.getMethod().equals("galaxy"))
+				jobname="galaxywf-vcf2fasta-" + AppContext.createTempFilename(); 
+			else jobname="vcf2fasta-" + AppContext.createTempFilename(); 
 			destdir = AppContext.getTempDir() + jobname + "/";
 		}
 		else {
@@ -160,7 +162,7 @@ public class VariantSequenceDAOImpl implements VariantSequenceDAO {
 			bw.flush();
 			bw.close();
 			
-			new GalaxyAltSeqGenerator(destdir,jobname).getAltSequence(destdir + "samplelist.txt", mapLoc2Int, query.getReference());
+			String[] status=new GalaxyAltSeqGenerator(destdir,jobname).getAltSequence(destdir + "samplelist.txt", mapLoc2Int, query.getReference(),query.isSync());
 
 		} else if (query.getMethod().equals("gatk")) {
 

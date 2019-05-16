@@ -131,7 +131,9 @@
 		name="jpaProperties"> <props> <prop key="hibernate.hbm2ddl.auto">none</prop> 
 		<prop key="hibernate.default_schema">iric</prop> </props> </property> </bean> 
 		<tx:annotation-driven transaction-manager="transactionManagerIRICProduction_Oracle" 
-		/> <bean id="transactionManagerIRICProduction_Oracle" class="org.springframework.orm.jpa.JpaTransactionManager" 
+		/> 
+	
+	<bean id="transactionManagerIRICProduction_Oracle" class="org.springframework.orm.jpa.JpaTransactionManager" 
 		> <property name="entityManagerFactory" ref="IRIC_Production_Oracle" /> </bean> 
 		<bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" 
 		id="IRIC_Production"> <property name="dataSource" ref="IRIC_ProductionDS"/> 
@@ -156,14 +158,14 @@
 		<property name="url" value="jdbc:postgresql://iric-rds-singapore-01.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric"/> 
 		<property name="maxIdle" value="1"/> <property name="maxActive" value="10"/> 
 		</bean> -->
+		
 	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
 		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver" 
 		/> <property name="username" value="iricadmin" /> <property name="password" 
 		value="!r1C4dmIn-irr1" /> <property name="url" value="jdbc:postgresql://iric-rds-singapore-prod-v1.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric" 
 		/> <property name="maxIdle" value="1" /> <property name="maxActive" value="10" 
 		/> </bean -->
-
-	<bean class="org.apache.commons.dbcp.BasicDataSource"
+	<!-- bean class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" name="IRIC_ProductionDS_PG">
 		<property name="driverClassName"
 			value="org.postgresql.Driver" />
@@ -173,7 +175,8 @@
 			value="jdbc:postgresql://iric-rds-singapore-prod-v1.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric" />
 		<property name="maxIdle" value="1" />
 		<property name="maxActive" value="10" />
-	</bean>
+	</bean -->
+	
 	<!-- <AWS-RDS Beanstalk v2 -->
 	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
 		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver"/> 
@@ -212,6 +215,7 @@
 		<property name="maxIdle" value="1" />
 		<property name="maxActive" value="10" />
 	</bean>
+	
 	<!-- vm local -->
 	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
 		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver"/> 

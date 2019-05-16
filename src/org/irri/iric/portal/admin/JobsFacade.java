@@ -48,7 +48,7 @@ public interface JobsFacade {
 	
 	public void setLogDest(boolean forcelocal, boolean forces3);
 
-	public boolean useS3();
+	//protected boolean useS3();
 
 	public byte[] getS3Reader(String jobid);
 
@@ -62,6 +62,8 @@ public interface JobsFacade {
 	String setBucket(String b);
 
 	public void setLogLevel(String string);
+
+	public boolean useS3();
 
 	
 	

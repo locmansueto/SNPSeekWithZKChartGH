@@ -2,6 +2,7 @@ package org.irri.iric.portal.galaxy.zkui;
 
 import java.util.Map;
 
+import org.irri.iric.galaxy.service.MyWorksflow;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -30,8 +31,7 @@ public class MatchedWorkflowRenderer implements ListitemRenderer{
 		addListcell(listitem,t.getName());
 		addListcell(listitem,o[2].toString());
 		addListcell(listitem,o[1].toString());
-		addListcell(listitem,"");
-		addListcell(listitem,t.getUrl());
+		addListcell(listitem, ((MyWorksflow)t).getAnnotation() );
 	}
 	
 	private static String STYLE_INTERESTING = "font-weight:bold;color:red";

@@ -788,7 +788,7 @@ import org.irri.iric.portal.genotype.zkui.GenotypeRunPlatformSorter;
             <tab id="tabPhylo" label="Phylotree" visible="false"/>  
             <tab id="tabMDS" label="MDS plot" visible="false"/>  
             <tab id="tabJBrowsePhylo" label="PhyloJBrowse" visible="false"/>  
-            <tab id="tabGalaxy" label="Rice Galaxy" visible="false"/>  
+            <tab id="tabGalaxy" label="Galaxy Tools" visible="false"/>  
         </tabs>  
         <tabpanels>
         

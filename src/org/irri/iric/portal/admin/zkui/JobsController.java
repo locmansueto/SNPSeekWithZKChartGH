@@ -10,6 +10,7 @@ import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.admin.AsyncJob;
 import org.irri.iric.portal.admin.JobsFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -35,6 +36,13 @@ import org.zkoss.zul.Vbox;
 public class JobsController extends SelectorComposer<Component> {
 
 	@Autowired
+	@Qualifier("GalaxyJobsFacade")
+	private JobsFacade jobsfacade_galaxy;
+
+	@Autowired
+	@Qualifier("JobsFacade")
+	private JobsFacade jobsfacade_orig;
+	
 	private JobsFacade jobsfacade;
 
 	@Wire
@@ -86,14 +94,20 @@ public class JobsController extends SelectorComposer<Component> {
 		
 		super.doAfterCompose(comp);
 
-		jobsfacade = (JobsFacade) AppContext.checkBean(jobsfacade, "JobsFacade");
-
+		jobsfacade_orig = (JobsFacade) AppContext.checkBean(jobsfacade_orig, "JobsFacade");
+		jobsfacade_galaxy = (JobsFacade) AppContext.checkBean(jobsfacade_galaxy, "GalaxyJobsFacade");
+		jobsfacade=jobsfacade_orig;
 		Map<String, String[]> mapParams = Executions.getCurrent().getParameterMap();
 		String[] jobs = mapParams.get("jobid");
 		if (jobs == null) {
 			labelMessage.setValue("No provided job id");
 		} else {
 			jobid = jobs[0];
+			
+			if(jobid.startsWith("galaxy")) {
+				jobsfacade=jobsfacade_galaxy;	
+			}
+			
 			onclickUpdateJobstatus();
 			/*
 			 * String msg = jobsfacade.getJobStatus(jobs[0]); try { Double percent =
@@ -223,13 +237,15 @@ public class JobsController extends SelectorComposer<Component> {
 		try {
 			msg = jobsfacade.getJobStatus(jobid);
 			try {
-
 				Double percent = Double.valueOf(msg);
 				msg = percent.intValue() + "%";
 				buttonUpdateJobstatus.setVisible(true);
 			} catch (Exception ex) {
-			}
-			;
+				if(msg.equals(JobsFacade.JOBSTATUS_DONE) ||  msg.equals(JobsFacade.JOBSTATUS_ERROR)) {}
+				else {
+					buttonUpdateJobstatus.setVisible(true);
+				}
+			};
 			labelMessage.setValue("Status for job " + jobid + ": " + msg);
 			if (msg.equals(JobsFacade.JOBSTATUS_DONE)) {
 				/*
@@ -316,17 +332,20 @@ public class JobsController extends SelectorComposer<Component> {
 	@Listen("onClick =#buttonDownloadResult")
 	public void onclickDownloadresult() throws Exception {
 		AppContext.debug("onclickDownloadresult jobid=" + jobid);
-		
+		//if(jobid.endsWith(".zip")) jobid=jobid.replace(".zip","");
 		try {
 			
 			//if (jobsfacade.useS3()) {
 			if (false) {
-				String filetype = "application/zip";
-				byte f[] = jobsfacade.getS3Reader(jobid + ".zip");
-				Filedownload.save(f, filetype, jobid + ".zip");
+				//String filetype = "application/zip";
+				//byte f[] = jobsfacade.getS3Reader(jobid + ".zip");
+				//Filedownload.save(f, filetype, jobid + ".zip");
 			} else {
 				String filetype = "application/zip";
-				Filedownload.save(new File(AppContext.getTempDir() + jobid + "/" +jobid + ".zip"), filetype);
+				//Filedownload.save(new File(AppContext.getTempDir() + jobid+ "/" +jobid + ".zip"), filetype);
+				if(jobid.endsWith("zip"))
+					Filedownload.save(new File(AppContext.getTempDir() + jobid ), filetype);
+				else Filedownload.save(new File(AppContext.getTempDir() + jobid + ".zip"), filetype);
 			}
 			// AppContext.debug("File download complete! Saved to: "+filename);
 			org.zkoss.zk.ui.Session zksession = Sessions.getCurrent();

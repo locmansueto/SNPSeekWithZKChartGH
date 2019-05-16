@@ -8,6 +8,11 @@
 	<packaging>war</packaging>
 	<name>snpseek</name>
 	<dependencies>
+		<!--  dependency>
+		    <groupId>org.python</groupId>
+		    <artifactId>jython-standalone</artifactId>
+		    <version>2.7.0</version>
+		</dependency -->
 	  	<dependency>
 	       <groupId>com.github.jmchilton.blend4j</groupId>
 	       <artifactId>blend4j</artifactId>

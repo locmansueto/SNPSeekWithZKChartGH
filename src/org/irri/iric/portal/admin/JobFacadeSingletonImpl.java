@@ -848,7 +848,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 		}
 	}
 	
-	private boolean loadJobs(int level, boolean lock, boolean unlockAfter) {
+	protected boolean loadJobs(int level, boolean lock, boolean unlockAfter) {
 		
 		// check if exists, if not create
 		

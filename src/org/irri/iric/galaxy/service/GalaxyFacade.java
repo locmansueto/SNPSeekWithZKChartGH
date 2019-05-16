@@ -21,8 +21,12 @@ public interface GalaxyFacade {
 	List<String> getFileexts();
 	List<String> getDataclass();
 	Collection getSections();
-	String runWorkflow(Workflow matchingWorkflow, Map<String, String> mapInputname2Filename, String jobid, File outfile);
-	Future<AsyncJobReport> runWorkflowAsync(Workflow matchingWorkflow, Map<String, String> mapInputname2Filename, String jobid, File outfile);
+	String[] runWorkflow(Workflow matchingWorkflow, Map<String, String[]> mapParam2Value, String jobid);
+	String[] runWorkflowAsync(Workflow wf, Map<String, String[]> mapParam2Value, String jobid);
+
+	//Future<AsyncJobReport> runWorkflowAsync(Workflow matchingWorkflow, Map<String, String> mapInputname2Filename, String jobid, File outfile);
+	String updateStatus(String jobid, String histid);
+	Map[] discoverTools();
 		 
 
 }
