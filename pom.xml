@@ -19,7 +19,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305 -->
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
@@ -47,225 +46,11 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/commons-collections/commons-collections -->
-		<!-- <dependency> <groupId>commons-collections</groupId> <artifactId>commons-collections</artifactId> 
-			<version>3.2.2</version> </dependency> -->
 		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>jarfitsobj</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/jarfitsobj.jar</systemPath>
+			<groupId>org.zkoss.zk</groupId>
+			<artifactId>zuljsp</artifactId>
+			<version>1.6</version>
 		</dependency>
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>jarh5obj</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/jarh5obj.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>jarhdf5</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/jarhdf5-2.10.1.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>jarhdfobj</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/jarhdfobj.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/ojdbc14.jar</systemPath>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>jarnc2obj</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/jarnc2obj.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>myforester</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/myforester.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>aws-java-sdk-1.11.125</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/aws-java-sdk-1.11.125.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>greennohighlight</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/greennohighlight.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>greenlightwhitewin</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/greenlightwhitewin.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>mdsj</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/mdsj.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>sam-1.38</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/sam-1.38.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>selenium-java-2.53.0</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/selenium-java-2.53.0.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zcommon</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zcommon.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zel</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zel.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zhtml</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zhtml.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zk</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zk.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zkbind</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkbind.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zk-bootstrap</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zk-bootstrap.jar</systemPath>
-		</dependency>
-
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zkcharts</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkcharts.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zkcharts-sources</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkcharts-sources.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zkex</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkex.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zkmax</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkmax.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zkplus</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkplus.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zkspring-core</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkspring-core.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zkspring-security</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkspring-security.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zml</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zml.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zul</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zul.jar</systemPath>
-		</dependency>
-
-
 		<!-- https://mvnrepository.com/artifact/org.zkoss.theme/atlantic -->
 		<dependency>
 			<groupId>org.zkoss.theme</groupId>
@@ -283,19 +68,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.glassfish.hk2.external/asm-all-repackaged -->
 		<dependency>
 			<groupId>org.glassfish.hk2.external</groupId>
 			<artifactId>asm-all-repackaged</artifactId>
 			<version>2.2.0-b21</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.glassfish.hk2.external/cglib -->
-		<!-- <dependency> <groupId>org.glassfish.hk2.external</groupId> <artifactId>cglib</artifactId> 
-			<version>2.2.0-b23</version> </dependency> -->
-		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
-		<!-- <dependency> <groupId>commons-codec</groupId> <artifactId>commons-codec</artifactId> 
-			<version>1.11</version> </dependency> -->
-		<!-- https://mvnrepository.com/artifact/commons-httpclient/commons-httpclient -->
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
@@ -307,61 +84,38 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-		<!-- <dependency> <groupId>commons-io</groupId> <artifactId>commons-io</artifactId> 
-			<version>2.6</version> </dependency> -->
-		<!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-		<!-- <dependency> <groupId>org.apache.commons</groupId> <artifactId>commons-lang3</artifactId> 
-			<version>3.8.1</version> </dependency> -->
-		<!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
-		<!-- <dependency> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
-			<version>1.2</version> </dependency> -->
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
 			<version>3.6.1</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/commons-pool/commons-pool -->
 		<dependency>
 			<groupId>commons-pool</groupId>
 			<artifactId>commons-pool</artifactId>
 			<version>1.6</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/concurrent/concurrent -->
 		<dependency>
 			<groupId>concurrent</groupId>
 			<artifactId>concurrent</artifactId>
 			<version>1.3.4</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/net.sourceforge.cssparser/cssparser -->
 		<dependency>
 			<groupId>net.sourceforge.cssparser</groupId>
 			<artifactId>cssparser</artifactId>
 			<version>0.9.26</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
-		<!-- <dependency> <groupId>dom4j</groupId> <artifactId>dom4j</artifactId> 
-			<version>1.6.1</version> <exclusions> <exclusion> <groupId>*</groupId> <artifactId>*</artifactId> 
-			</exclusion> </exclusions> </dependency> -->
-		<!-- https://mvnrepository.com/artifact/org.directwebremoting/dwr -->
 		<dependency>
 			<groupId>org.directwebremoting</groupId>
 			<artifactId>dwr</artifactId>
 			<version>2.0.3</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/xml-apis/xml-apis -->
-		<!-- <dependency> <groupId>xml-apis</groupId> <artifactId>xml-apis</artifactId> 
-			<version>1.4.01</version> </dependency> -->
-
-		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
+		<!-- <dependency> <groupId>com.google.collections</groupId> <artifactId>google-collections</artifactId> 
+			<version>1.0</version> </dependency> -->
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
@@ -373,7 +127,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.google.inject.extensions/guice-assistedinject -->
+
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-assistedinject</artifactId>
@@ -385,7 +139,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.google.inject.extensions/guice-multibindings -->
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-multibindings</artifactId>
@@ -397,7 +150,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.google.inject.extensions/guice-persist -->
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-persist</artifactId>
@@ -409,7 +161,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.google.inject.extensions/guice-servlet -->
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-servlet</artifactId>
@@ -421,23 +172,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-annotations -->
-		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-annotations</artifactId> 
-			<version>3.5.6-Final</version> <exclusions> <exclusion> <groupId>*</groupId> 
-			<artifactId>*</artifactId> </exclusion> </exclusions> </dependency> -->
-		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-commons-annotations -->
-		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-commons-annotations</artifactId> 
-			<version>3.2.0.Final</version> <exclusions> <exclusion> <groupId>*</groupId> 
-			<artifactId>*</artifactId> </exclusion> </exclusions> </dependency> -->
-		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
-		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-core</artifactId> 
-			<version>3.5.6-Final</version> <exclusions> <exclusion> <groupId>*</groupId> 
-			<artifactId>*</artifactId> </exclusion> </exclusions> </dependency> -->
-		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>3.5.6-Final</version>
+			<version>3.5.5-Final</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javassist</groupId>
@@ -454,7 +193,7 @@
 			</exclusions>
 
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -466,21 +205,17 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.25</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-nop -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-nop</artifactId>
 			<version>1.7.25</version>
 
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.glassfish.hk2/hk2-locator -->
 		<dependency>
 			<groupId>org.glassfish.hk2</groupId>
 			<artifactId>hk2-locator</artifactId>
@@ -496,7 +231,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/net.sourceforge.htmlunit/htmlunit -->
 		<dependency>
 			<groupId>net.sourceforge.htmlunit</groupId>
 			<artifactId>htmlunit</artifactId>
@@ -529,7 +263,6 @@
 
 			</exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.lowagie/itext -->
 		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
@@ -541,13 +274,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
-		<!-- <dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-annotations</artifactId> 
-			<version>2.9.7</version> </dependency> -->
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-		<!-- <dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-core</artifactId> 
-			<version>2.9.7</version> </dependency> -->
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -559,6 +285,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -591,7 +318,7 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>4.0.1</version>
+			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
@@ -743,8 +470,8 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.4-1201-jdbc41</version>
 		</dependency>
-	
-	
+
+
 
 
 		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
@@ -848,7 +575,14 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jms</artifactId>
 			<version>3.2.9.RELEASE</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+		<!-- test -->
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-orm -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -875,6 +609,10 @@
 				</exclusion>
 				<exclusion>
 					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
 					<artifactId>spring-jdbc</artifactId>
 				</exclusion>
 			</exclusions>
@@ -894,6 +632,19 @@
 				<exclusion>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-web</artifactId>
+				</exclusion>
+
+			</exclusions>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>3.2.9.RELEASE</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -920,6 +671,12 @@
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-context</artifactId>
 				</exclusion>
+
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-web</artifactId>
+				</exclusion>
+
 				<exclusion>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-core</artifactId>
@@ -945,25 +702,415 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-		<!-- <dependency> <groupId>org.zkoss.zk</groupId> <artifactId>zk</artifactId> 
-			<version>8.5.0</version> </dependency> <dependency> <groupId>org.zkoss.zk</groupId> 
-			<artifactId>zhtml</artifactId> <version>8.5.0</version> </dependency> <dependency> 
-			<groupId>org.zkoss.zk</groupId> <artifactId>zkbind</artifactId> <version>8.5.0</version> 
-			</dependency> <dependency> <groupId>org.zkoss.zk</groupId> <artifactId>zkplus</artifactId> 
-			<version>8.5.0</version> </dependency> <dependency> <groupId>org.zkoss.zk</groupId> 
-			<artifactId>zkspring-core</artifactId> <version>3.0</version> </dependency> 
-			<dependency> <groupId>org.zkoss.zk</groupId> <artifactId>zkspring-security</artifactId> 
-			<version>3.0</version> </dependency> <dependency> <groupId>org.zkoss.zk</groupId> 
-			<artifactId>zuljsp</artifactId> <version>1.6</version> </dependency> <dependency> 
-			<groupId>org.zkoss.common</groupId> <artifactId>zel</artifactId> <version>8.5.0</version> 
-			</dependency> -->
+		<!-- additional -->
+		<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
 		<dependency>
-			<groupId>org.zkoss.zk</groupId>
-			<artifactId>zuljsp</artifactId>
-			<version>1.6</version>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-digester/commons-digester -->
+		<dependency>
+			<groupId>commons-digester</groupId>
+			<artifactId>commons-digester</artifactId>
+			<version>1.7</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-beanutils</groupId>
+					<artifactId>commons-beanutils</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-collections</groupId>
+					<artifactId>commons-collections</artifactId>
+				</exclusion>
+			</exclusions>
+
+
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.1</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcmail-jdk16 -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcmail-jdk16</artifactId>
+			<version>1.38</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bctsp-jdk14 -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bctsp-jdk14</artifactId>
+			<version>1.38</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.jhlabs/filters -->
+		<dependency>
+			<groupId>com.jhlabs</groupId>
+			<artifactId>filters</artifactId>
+			<version>2.0.235-1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>4.0.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/jfree/jcommon -->
+		<dependency>
+			<groupId>jfree</groupId>
+			<artifactId>jcommon</artifactId>
+			<version>1.0.15</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/jfree/jfreechart -->
+		<dependency>
+			<groupId>jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.0.13</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/jstl/jstl -->
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.5-RC2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/xml-apis/xml-apis -->
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+			<version>1.4.01</version>
+		</dependency>
+
+
+
+
+		<!-- Local LIBRARY -->
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>fits</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/fits.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>fits</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/flatly_green.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>gmapsz</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/gmapsz.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>green</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/green.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>green5</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/green5.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>greenblacktext</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/greenblacktext.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>greenlight</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/greenlight.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>sapphire</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/sapphire.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>silvertail</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/silvertail.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zul</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zul.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>jarfitsobj</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/jarfitsobj.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>jarh5obj</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/jarh5obj.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>jarhdf5</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/jarhdf5-2.10.1.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>jarhdfobj</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/jarhdfobj.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/ojdbc14.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>jarnc2obj</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/jarnc2obj.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>myforester</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/myforester.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>aws-java-sdk-1.11.125</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/aws-java-sdk-1.11.125.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>greennohighlight</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/greennohighlight.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>greenlightwhitewin</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/greenlightwhitewin.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>mdsj</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/mdsj.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>sam-1.38</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/sam-1.38.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>selenium-java-2.53.0</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/selenium-java-2.53.0.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zcommon</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zcommon.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zel</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zel.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zweb</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zweb.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zhtml</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zhtml.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zk</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zk.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zkbind</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkbind.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zk-bootstrap</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zk-bootstrap.jar</systemPath>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zkcharts</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkcharts.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zkcharts-sources</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkcharts-sources.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zkex</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkex.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zkmax</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkmax.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zkplus</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkplus.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zkspring-core</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkspring-core.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zkspring-security</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkspring-security.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.irri.iric</groupId>
+			<artifactId>zml</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zml.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<repositories>
