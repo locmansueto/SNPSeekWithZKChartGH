@@ -293,4 +293,6 @@ public interface GenotypeFacade {
 
 	public List getVariantsets(String dsi, String type);
 
+	boolean sendGenotypeToGalaxy(String pedfilenameonly, GenotypeQueryParams params);
+
 }

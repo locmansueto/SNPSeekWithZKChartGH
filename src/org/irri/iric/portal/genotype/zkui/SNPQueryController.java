@@ -22,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -53,6 +54,8 @@ import org.irri.iric.portal.domain.GenotypeRunPlatform;
 import org.irri.iric.portal.domain.IndelsAllvars;
 import org.irri.iric.portal.domain.IndelsAllvarsPos;
 import org.irri.iric.portal.domain.IndelsStringAllvars;
+import org.irri.iric.portal.domain.LocalAlignment;
+import org.irri.iric.portal.domain.LocalAlignmentImpl;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.MultiReferenceConversion;
 import org.irri.iric.portal.domain.MultiReferenceLocusImpl;
@@ -64,6 +67,7 @@ import org.irri.iric.portal.domain.StockSample;
 import org.irri.iric.portal.domain.TextSearchOptions;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.genomics.GenomicsFacade;
+import org.irri.iric.portal.genomics.zkui.BlastResultListitemRenderer;
 //import org.irri.iric.portal.genotype.domain.Gene;
 import org.irri.iric.portal.genotype.GenotypeFacade;
 import org.irri.iric.portal.genotype.GenotypeQueryParams;
@@ -170,6 +174,7 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Image;
+import org.zkoss.zul.Include;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.ListModel;
@@ -309,7 +314,11 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	private WorkspaceFacade workspace;
 
 	@Autowired
-	private JobsFacade jobsfacade;
+	@Qualifier("JobsFacade")
+	private JobsFacade jobsfacade_orig;
+	@Autowired
+	@Qualifier("GalaxyJobsFacade")
+	private JobsFacade jobsfacade_galaxy;
 
 	// attributes for SNP Query controller components
 	@Wire
@@ -649,6 +658,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	@Wire
 	private Tab tabJbrowse;
 	@Wire
+	private Tab tabGalaxy;
+	@Wire
 	private Tab tabMSA;
 	@Wire
 	private Tab tabPhylo;
@@ -938,14 +949,161 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	@Wire
 	private Hbox advanceOptions4;
 
+
+	@Wire
+	private Listbox listboxAlignment;
+	@Wire
+	private Listbox listboxAlignRef;
+	@Wire
+	private Listbox listboxAlignTarget;
+	@Wire
+	private Listbox listboxAlignContig;
+	@Wire
+	private Button buttonAlign;
+	@Wire
+	private Intbox intboxAlignStart;
+	@Wire
+	private Intbox intboxAlignEnd;
+	@Wire
+	private Listbox listboxTargetReference;
+	
+	@Wire
+	private Splitter splitter;
+	
+	// from tabGalaxy include
+	/*
+	@Wire
+	private Div divDiscovery;
+	@Wire
+	private Button buttonWorkflows;
+	*/
+	@Wire
+	private Include includeGalaxy;
+	
+	
 	public SNPQueryController() {
 		super();
 		// TODO Auto-generated constructor stub
 		AppContext.debug("created SNPQueryController " + this);
 	}
 
+	
+	@Listen("onSelect =#tabGalaxy")
+	public void onselectTabgalaxy() {
+//		try {
+//			includeGalaxy.query("window > div").setVisible(true);
+//			Component c=includeGalaxy.query("#winGalaxy > #buttonWorkflows");
+//			if(c!=null) {
+//				Events.sendEvent(new Event("onClick", c));
+//			}
+//		} catch(Exception ex) {
+//			ex.printStackTrace();
+//		}
+		
+		GenotypeQueryParams p= fillGenotypeQueryParams();
+		haplofilename = "snp3kvars-" + queryFilename();
+		Object2StringMultirefsMatrixModel matrixmodel = (Object2StringMultirefsMatrixModel) biglistboxArray.getModel();
+		VariantAlignmentTableArraysImpl table = (VariantAlignmentTableArraysImpl) matrixmodel.getData();
+		generateBigListboxPlink((VarietyFacade)AppContext.checkBean(varietyfacade,"VarietyFacade"), p , selectChr.getValue(), getDataset(),table, AppContext.getTempDir() + haplofilename);
+
+		if (selectChr.getValue()!=null && !selectChr.getValue().isEmpty() ) {
+			try {
+				BufferedWriter bw=new BufferedWriter(new FileWriter(AppContext.getTempDir() + haplofilename + ".bed"));
+				bw.write( selectChr.getValue() + "\t" + (intStart.getValue()-1) + "\t" + intStop.getValue());
+				bw.close();
+				AppContext.debug("bed file created");
+				//table.getVarid()
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		Map mapParamvals=new HashMap();
+		/*
+		mapParamvals.put("locuslist",AppContext.getTempDir()+haplofilename+".bed");
+		mapParamvals.put("samplelist",AppContext.getTempDir()+haplofilename+".txt");
+		mapParamvals.put("snplist",AppContext.getTempDir()+haplofilename+".map");
+		mapParamvals.put("snpmatrix",AppContext.getTempDir()+haplofilename+".ped");
+		mapParamvals.put("reference", this.listboxReference.getSelectedItem().getLabel() );
+		*/
+		mapParamvals.put("locuslist",AppContext.getTempDir()+haplofilename+".bed");
+		mapParamvals.put("samplelist",AppContext.getTempDir()+haplofilename+".txt");
+		mapParamvals.put("snplist",AppContext.getTempDir()+haplofilename+".map");
+		mapParamvals.put("snpmatrix",AppContext.getTempDir()+haplofilename+".ped");
+		mapParamvals.put("reference", this.listboxReference.getSelectedItem().getLabel() );
+		getSession().putValue( "param_vals",mapParamvals);
+		//getSession().putValue( "haplofilename", haplofilename);
+	}
+	
 	public HttpSession getSession() {
 		return (HttpSession) Executions.getCurrent().getSession().getNativeSession();
+	}
+
+	private static int getRandomNumberInRange(int min, int max) {
+
+		if (min >= max) {
+			throw new IllegalArgumentException("max must be greater than min");
+		}
+
+		Random r = new Random();
+		return r.nextInt((max - min) + 1) + min;
+	}
+	
+	@Listen("onClick =#buttonAlign")
+	public void onclickAlign() {
+
+		listboxAlignment.setItemRenderer(new BlastResultListitemRenderer());
+		
+		List locusalignmentresult=new ArrayList();
+		String qacc=listboxAlignContig.getSelectedItem().getLabel();
+		String target=listboxAlignTarget.getSelectedItem().getLabel();
+		
+		int lenq=intboxAlignEnd.getValue()- intboxAlignStart.getValue();
+		int sqtart= intboxAlignStart.getValue()+getRandomNumberInRange(0,100000);
+		
+		System.out.println("qacc=" + qacc);
+		locusalignmentresult.add(new 
+			LocalAlignmentImpl(qacc, "chr01|"+target.toLowerCase()  , 0.0,intboxAlignStart.getValue()+getRandomNumberInRange(0,10),
+					intboxAlignEnd.getValue()-getRandomNumberInRange(0,10), 
+					sqtart, sqtart+lenq+getRandomNumberInRange(0,100))); 
+		locusalignmentresult.add(new 
+				LocalAlignmentImpl(qacc, "chr01|"+target.toLowerCase()  , 0.0, intboxAlignStart.getValue()+getRandomNumberInRange(0,10),
+						intboxAlignEnd.getValue()-getRandomNumberInRange(0,10), 
+						sqtart, sqtart+lenq+getRandomNumberInRange(0,100))); 
+		locusalignmentresult.add(new 
+				LocalAlignmentImpl(qacc, "chr01|"+target.toLowerCase()  , 0.0,  intboxAlignStart.getValue()+getRandomNumberInRange(0,10),
+						intboxAlignEnd.getValue()-getRandomNumberInRange(0,10), 
+						sqtart, sqtart+lenq+getRandomNumberInRange(0,100))); 
+		locusalignmentresult.add(new 
+				LocalAlignmentImpl(qacc, "chr02|"+target.toLowerCase()  , 0.0,intboxAlignStart.getValue()+getRandomNumberInRange(0,10),
+						intboxAlignEnd.getValue()-getRandomNumberInRange(0,10), 
+						sqtart, sqtart+lenq+getRandomNumberInRange(0,100))); 
+		
+		listboxAlignment.setModel(new SimpleListModel(locusalignmentresult));
+
+	}
+	
+	private static Listitem getListItem(Listbox lb, Object value) {
+		for(Listitem  li:lb.getItems()) {
+			if(value instanceof String) {
+				if(li.getValue().toString().toLowerCase().equals( ((String) value).toLowerCase())) return li;
+			}
+			else if(li.getValue().equals(value)) return li;
+		}
+		return null;
+	}
+	
+	@Listen("onSelect =#listboxAlignment")
+	public void onselectAlign(Event e) throws InterruptedException{
+		System.out.println( "onSelect =#listboxAlignment");
+		LocalAlignment item=(LocalAlignment)listboxAlignment.getSelectedItem();
+		String contorg[]=item.getSacc().split("\\|");
+		intStart.setValue(item.getSstart().intValue());
+		intStop.setValue(item.getSend().intValue());
+		Listitem li= getListItem(listboxTargetReference,contorg[1]);
+		if(li!=null) listboxTargetReference.setSelectedItem(li);
+		//li= getListItem(listboxTargetReference,contorg[0]);
+		selectChr.setValue(contorg[0]);
+		
 	}
 
 	@Listen("onClick =#checkboxAdvanceOptions")
@@ -1214,6 +1372,76 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			prevDataset.add("3k");
 			fillVariantsetListbox();
 
+			
+			tabVista.addEventListener(org.zkoss.zk.ui.event.Events.ON_RIGHT_CLICK, 
+					new EventListener() { 
+					public void onEvent(org.zkoss.zk.ui.event.Event evt) { 
+						getSession().putValue("reference", listboxReference.getSelectedItem().getLabel());
+						getSession().putValue("contig", selectChr.getValue());
+						getSession().putValue("start", intStart.getValue());
+						getSession().putValue("end", intStop.getValue());
+						openNewTab("_exttab.zul?tab=vista");
+					}}); 
+				
+			tabHaplotype.addEventListener(org.zkoss.zk.ui.event.Events.ON_RIGHT_CLICK, 
+					new EventListener() { 
+					public void onEvent(org.zkoss.zk.ui.event.Event evt) { 
+						getSession().putValue("dataset",getDataset());
+						getSession().putValue("contig", selectChr.getValue());
+						getSession().putValue("queryparams",  fillGenotypeQueryParams());
+						Object2StringMultirefsMatrixModel matrixmodel = (Object2StringMultirefsMatrixModel) biglistboxArray.getModel();
+						getSession().putValue("table", (VariantAlignmentTableArraysImpl) matrixmodel.getData());
+						getSession().putValue("queryfilename",  queryFilename());
+						
+						openNewTab("_exttab.zul?tab=haplotype");
+					}}); 
+
+			
+			tabMDS.addEventListener(org.zkoss.zk.ui.event.Events.ON_RIGHT_CLICK, 
+					new EventListener() { 
+					public void onEvent(org.zkoss.zk.ui.event.Event evt) { 
+						if (queryResult == null)
+							return;
+						getSession().putValue("queryresult", queryResult);
+						getSession().putValue("dataset", getDataset());
+						openNewTab("_exttab.zul?tab=mds");
+					}}); 
+
+			
+			tabSnpeff.addEventListener(org.zkoss.zk.ui.event.Events.ON_RIGHT_CLICK, 
+					new EventListener() { 
+					public void onEvent(org.zkoss.zk.ui.event.Event evt) { 
+						if (queryResult == null)
+							return;
+						getSession().putValue("snpeff", queryResult);
+						openNewTab("_exttab.zul?tab=snpeff");
+					}}); 
+				
+			
+			tabJbrowse.addEventListener(org.zkoss.zk.ui.event.Events.ON_RIGHT_CLICK, 
+			new EventListener() { 
+			public void onEvent(org.zkoss.zk.ui.event.Event evt) { 
+				onselectTabJbrowse(true);
+			}}); 
+		
+			/*
+			tabJbrowse.addEventListener(org.zkoss.zk.ui.event.Events.ON_CLICK, 
+			new EventListener() { 
+			public void onEvent(org.zkoss.zk.ui.event.Event evt) { System.out.println("CLICK"); } }); 
+			*/
+
+
+			tabHaplotype.addEventListener(org.zkoss.zk.ui.event.Events.ON_RIGHT_CLICK, 
+			new EventListener() { 
+			public void onEvent(org.zkoss.zk.ui.event.Event evt) { 
+				try {
+					onselectTabHaplotype(true);
+				} catch(Exception ex) {
+					AppContext.debug(ex.getMessage());
+				}
+			}}); 
+		
+			
 			AppContext.debug("zulpage end.");
 
 		} catch (Exception ex) {
@@ -1664,6 +1892,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			tabTable.setSelected(true);
 			tabTableLarge.setVisible(false);
 			tabJbrowse.setVisible(false);
+			tabGalaxy.setVisible(false);
 			tabHaplotype.setVisible(false);
 			tabSnpeff.setVisible(false);
 			tabMSA.setVisible(false);
@@ -2246,6 +2475,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				if (listboxMySNPList.getSelectedIndex() > 0 || this.listboxMyLocusList.getSelectedIndex() > 0
 						|| this.listboxAlleleFilter.getSelectedIndex() > 0) {
 					tabJbrowse.setVisible(false);
+					tabGalaxy.setVisible(false);
 					tabHaplotype.setVisible(
 							true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
 					tabTableLarge.setVisible(false);
@@ -2262,6 +2492,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 					String chr = selectChr.getValue().trim();
 					if (!chr.isEmpty()) {
 						updateJBrowse(chr, intStart.getValue().toString(), intStop.getValue().toString(), "");
+						tabGalaxy.setVisible(true);
 						tabJbrowse.setVisible(
 								true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_JBROWSE));
 						tabHaplotype.setVisible(
@@ -2293,10 +2524,13 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				divPairwise.setVisible(false);
 
 				onScrollYTable(0);
-
+				
+				splitter.setOpen(false);
+				
 			} else if (mode == GenotypeFacade.snpQueryMode.SNPQUERY_VARIETIES && listSNPs.size() > 0) {
 
 				// show two-varieties table
+				
 				tabJbrowse.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_JBROWSE));
 				tabHaplotype
 						.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
@@ -2306,8 +2540,11 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				msgJbrowse.setVisible(false);
 				divTablePanel.setVisible(false);
 				// listboxSnpresult.setVisible(true);
+				splitter.setOpen(false);
+
 			} else {
 				tabJbrowse.setVisible(false);
+				tabGalaxy.setVisible(false);
 				tabHaplotype.setVisible(false);
 				tabSnpeff.setVisible(false);
 				tabPhylo.setVisible(false);
@@ -4317,11 +4554,34 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	// ********************************************** HANDLE JBROWSE TAB EVENTS
 	// ********************************************
 
+	public void openJbrowseTab(String url) {
+		getSession().putValue("jbrowse", url);
+		openNewTab("_exttab.zul?tab=jbrowse"); 
+	}
+	
+	public void openNewTab(String url) {
+		AppContext.debug("openning " + url + " in newtab");
+				
+		Executions.getCurrent().sendRedirect(url, "_blank");
+		/*
+		Events.sendEvent("onClick", buttonNewTab, null);
+		try {
+			Executions.forward( url);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		*/
+	}
+	
 	/**
 	 * JBrowse tab selected
 	 */
 	@Listen("onSelect = #tabJbrowse")
 	public void onselectTabJbrowse() {
+		onselectTabJbrowse(false);
+	}
+	
+	public void onselectTabJbrowse(boolean newTab) {
 		// tabboxDisplay.setHeight( "100%");
 
 		AppContext.debug("onselectTabJbrowse gfffile=" + gfffile + "\nurljbrowse=" + urljbrowse);
@@ -4334,8 +4594,14 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				// iframeJbrowse.setSrc( urljbrowse);
 				// iframeJbrowse.invalidate();
 				// iframeJbrowse.
+				if(newTab) {
+				} else {
+					msgJbrowse.setVisible(true);
+					iframeJbrowse.setVisible(true);
+				}
 				msgJbrowse.setVisible(true);
 				iframeJbrowse.setVisible(true);
+
 				return;
 			}
 			;
@@ -4426,14 +4692,40 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 							// + start + "&end=" + end + "&topn=" + topN + "&tmpfile=GFF_FILE&mindist=" +
 							// intPhyloMindist.getValue();
 
-							iframeJbrowse.setSrc(
-									urljbrowse.replace("GFF_FILE", gfffile).replace("{", "%7B").replace("}", "%7D"));
+							if(newTab) {
+								try {
+									urljbrowse=urljbrowse.replace("GFF_FILE", gfffile).replace("{", "%7B").replace("}", "%7D");
+									openJbrowseTab( urljbrowse);
+								} catch (Exception ex) {
+									AppContext.debug(ex.getMessage());
+								}
+							}
+							else {
+								urljbrowse=urljbrowse.replace("GFF_FILE", gfffile).replace("{", "%7B").replace("}", "%7D");
+								iframeJbrowse.setSrc(urljbrowse);
+								iframeJbrowse.invalidate();
+								msgJbrowse.setVisible(true);
+								iframeJbrowse.setVisible(true);
+							}
 						} else {
-							AppContext.resetTimer("viewing " + urljbrowse);
-							iframeJbrowse.setSrc(urljbrowse.replace("{", "%7B").replace("}", "%7D"));
-						}
 
-						iframeJbrowse.invalidate();
+							AppContext.resetTimer("viewing " + urljbrowse);
+							if(newTab) {
+								try {
+									urljbrowse=urljbrowse.replace("{", "%7B").replace("}", "%7D");
+									openJbrowseTab(urljbrowse);
+								} catch (Exception ex) {
+									AppContext.debug(ex.getMessage());
+								}
+							}
+							else {
+								urljbrowse=urljbrowse.replace("{", "%7B").replace("}", "%7D");
+								iframeJbrowse.setSrc(urljbrowse);
+								iframeJbrowse.invalidate();
+								msgJbrowse.setVisible(true);
+								iframeJbrowse.setVisible(true);
+							}
+						}
 
 						// divBlackSyn.setVisible(false);
 						divMismatch.setVisible(false);
@@ -4458,24 +4750,52 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				}
 			} else {
 
-				if (AppContext.showGenotypeTrack()) {
-					AppContext.resetTimer("viewing "
-							+ urljbrowse.replace("GFF_FILE", gfffile).replace("{", "%7B").replace("}", "%7D"));
-					iframeJbrowse
-							.setSrc(urljbrowse.replace("GFF_FILE", gfffile).replace("{", "%7B").replace("}", "%7D"));
+				if(newTab) {
+					try {
+					if (AppContext.showGenotypeTrack()) {
+						AppContext.resetTimer("viewing "
+								+ urljbrowse.replace("GFF_FILE", gfffile).replace("{", "%7B").replace("}", "%7D"));
+						urljbrowse=urljbrowse.replace("GFF_FILE", gfffile).replace("{", "%7B").replace("}", "%7D");
+						openJbrowseTab(urljbrowse);
+							//Executions.forward(urljbrowse.replace("GFF_FILE", gfffile).replace("{", "%7B").replace("}", "%7D"));
+							//xecutions.sendRedirect(urljbrowse.replace("GFF_FILE", gfffile).replace("{", "%7B").replace("}", "%7D"));
+								
+					} else {
+						AppContext.resetTimer("viewing " + urljbrowse.replace("{", "%7B").replace("}", "%7D"));
+						urljbrowse=urljbrowse.replace("{", "%7B").replace("}", "%7D");
+						openJbrowseTab(urljbrowse);
+						//Executions.sendRedirect(urljbrowse.replace("{", "%7B").replace("}", "%7D"));
+					} 
+					} catch(Exception ex) {
+						AppContext.debug(ex.getMessage());
+					}					
 				} else {
-					AppContext.resetTimer("viewing " + urljbrowse.replace("{", "%7B").replace("}", "%7D"));
-					iframeJbrowse.setSrc(urljbrowse.replace("{", "%7B").replace("}", "%7D"));
+					if (AppContext.showGenotypeTrack()) {
+						AppContext.resetTimer("viewing "
+								+ urljbrowse.replace("GFF_FILE", gfffile).replace("{", "%7B").replace("}", "%7D"));
+						urljbrowse=urljbrowse.replace("GFF_FILE", gfffile).replace("{", "%7B").replace("}", "%7D");
+						iframeJbrowse
+								.setSrc(urljbrowse);
+					} else {
+						AppContext.resetTimer("viewing " + urljbrowse.replace("{", "%7B").replace("}", "%7D"));
+						urljbrowse=urljbrowse.replace("{", "%7B").replace("}", "%7D");
+						iframeJbrowse.setSrc(urljbrowse);
+					}
+					iframeJbrowse.invalidate();
+					//
+					msgJbrowse.setVisible(true);
+					iframeJbrowse.setVisible(true);
 				}
-				iframeJbrowse.invalidate();
-				//
 			}
-			msgJbrowse.setVisible(true);
-			iframeJbrowse.setVisible(true);
+
 			Clients.clearBusy();
 
 			AppContext.debug("gfffile=" + gfffile);
+		} 
+		else if(newTab) {
+			openJbrowseTab(urljbrowse);
 		}
+		
 		AppContext.debug("onselectTabJbrowse gfffile=" + gfffile);
 
 	}
@@ -6198,7 +6518,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 	}
 
-	private Map orderMap(Map orig) {
+	public static  Map orderMap(Map orig) {
 		Map map = new TreeMap();
 		Iterator it = orig.keySet().iterator();
 		while (it.hasNext()) {
@@ -6208,12 +6528,12 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		return map;
 	}
 
-	private void writeSummary(boolean first, GenotypeQueryParams params, Map mapVarid2Order, Map mapVarid2Score,
+	private void writeSummary(VarietyFacade varietyfacade, Set dataset,boolean first, GenotypeQueryParams params, Map mapVarid2Order, Map mapVarid2Score,
 			Map mapVarid2Columns) {
-		writeSummary(first, params, mapVarid2Order, mapVarid2Score, mapVarid2Columns, false);
+		writeSummary(varietyfacade, dataset,first, params, mapVarid2Order, mapVarid2Score, mapVarid2Columns, false);
 	}
 
-	private void writeSummary(boolean first, GenotypeQueryParams params, Map mapVarid2Order, Map mapVarid2Score,
+	public static  void writeSummary(VarietyFacade varietyfacade, Set dataset,boolean first, GenotypeQueryParams params, Map mapVarid2Order, Map mapVarid2Score,
 			Map mapVarid2Columns, boolean plink) {
 		try {
 			String finalfilename = params.getFilename();
@@ -6236,7 +6556,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			}
 			NumberFormat formatter = new DecimalFormat("#0.00");
 
-			varietyfacade = (VarietyFacade) AppContext.checkBean(varietyfacade, "VarietyFacade");
+			//varietyfacade = (VarietyFacade) AppContext.checkBean(varietyfacade, "VarietyFacade");
 			Map<BigDecimal, Variety> mapId2Var = varietyfacade.getMapId2Variety(params.getDataset());
 
 			Map<Integer, BigDecimal> mapord2var = orderMap(mapVarid2Order);
@@ -6254,7 +6574,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 					if (irisid == null || irisid.isEmpty() || irisid.equals("NA"))
 						irisid = var.getName();
 					String indvid = irisid.replaceAll(" ", "_");
-					if (getDataset().contains("hdra"))
+					if (dataset.contains("hdra"))
 						indvid += "_" + var.getVarietyId();
 					irisid = indvid;
 				} else {
@@ -6473,6 +6793,11 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 	@Listen("onSelect = #tabHaplotype")
 	public void tabDisplayHaloptypeimage() throws Exception {
+		onselectTabHaplotype(false);
+	}
+	
+
+	public void onselectTabHaplotype(boolean newTab) throws Exception{
 		if (!biglistboxArray.isVisible())
 			return;
 
@@ -6512,11 +6837,11 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		haplofilename = "snp3kvars-" + queryFilename();
 		p.setFilename(AppContext.getTempDir() + haplofilename);
-		writeSummary(true, p,
+		writeSummary((VarietyFacade)AppContext.checkBean(varietyfacade, "VarietyFacade"), getDataset(), true, p,
 				/* AppContext.getTempDir() + qfilename, */table.getVariantStringData().getMapVariety2Order(),
 				table.getVariantStringData().getMapVariety2Mismatch(), mapVarid2Columns, true);
 
-		generateBigListboxPlink(table, AppContext.getTempDir() + haplofilename);
+		generateBigListboxPlink((VarietyFacade)AppContext.checkBean(varietyfacade,"VarietyFacade"), fillGenotypeQueryParams(), selectChr.getValue(), getDataset(),table, AppContext.getTempDir() + haplofilename);
 		genotype = (GenotypeFacade) AppContext.checkBean(genotype, "GenotypeFacade");
 
 		String res = this.listboxHaploResolution.getSelectedItem().getValue();
@@ -6572,13 +6897,21 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			buttonHaploOrder.setDisabled(false);
 			buttonHaploImage.setDisabled(false);
 
-			this.iframeHaplotype
-					.setSrc(AppContext.getHostname() + "/" + AppContext.getTempFolder() + haplofilename + ".ped.html");
-			this.iframeAutogroups.setSrc(AppContext.getHostname() + "/" + AppContext.getTempFolder() + haplofilename
-					+ ".ped.autogroup.html");
-			iframeAutogroups.invalidate();
-			iframeHaplotype.invalidate();
-			// hboxHaplotype.setVisible(true);
+			if(newTab) {
+				try {
+					Executions.forward(AppContext.getHostname() + "/" + AppContext.getTempFolder() + haplofilename + ".ped.html" );
+				} catch(Exception  ex) {
+					AppContext.debug(ex.getMessage());
+				}
+			} else {
+				this.iframeHaplotype
+						.setSrc(AppContext.getHostname() + "/" + AppContext.getTempFolder() + haplofilename + ".ped.html");
+				this.iframeAutogroups.setSrc(AppContext.getHostname() + "/" + AppContext.getTempFolder() + haplofilename
+						+ ".ped.autogroup.html");
+				iframeAutogroups.invalidate();
+				iframeHaplotype.invalidate();
+				// hboxHaplotype.setVisible(true);
+			}
 
 			AppContext.debug("displayHapotypeImage() loaded");
 
@@ -8136,8 +8469,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 					// report = genotype.querydownloadGenotypeAsync(params);
 
-					jobsfacade = (JobsFacade) AppContext.checkBean(jobsfacade, "JobsFacade");
-
+					jobsfacade_orig = (JobsFacade) AppContext.checkBean(jobsfacade_orig, "JobsFacade");
+					JobsFacade jobsfacade=jobsfacade_orig;
 					if (params.getSubmitter() == null) {
 						msg = "Submitter ID required for long jobs.";
 					} else if (jobsfacade.checkSubmitter(params.getSubmitter())) {
@@ -8684,7 +9017,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 	private void downloadBigListboxPlinkZip(VariantAlignmentTableArraysImpl table, String filename) {
 
-		generateBigListboxPlink(table, filename);
+		generateBigListboxPlink((VarietyFacade)AppContext.checkBean(varietyfacade,"VarietyFacade"), fillGenotypeQueryParams(), selectChr.getValue(), getDataset(),  table, filename);
 
 		try {
 			String allzipfilenames[] = new String[] { filename + ".map", filename + ".ped" };
@@ -8701,8 +9034,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 	}
 
-	private void generateBigListboxPlink(VariantAlignmentTableArraysImpl table, String filename) {
-
+	public static void generateBigListboxPlink(VarietyFacade varietyfacade,GenotypeQueryParams p,String chr,Set ds,VariantTable table1, String filename) {
+		VariantAlignmentTableArraysImpl table=(VariantAlignmentTableArraysImpl)table1;
 		// MAP files
 		// The fields in a MAP file are:
 		// Chromosome
@@ -8742,7 +9075,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		// NA10847).
 
 		try {
-			String chr = this.selectChr.getValue();
+			//String chr = this.selectChr.getValue();
 
 			StringBuffer buff = new StringBuffer();
 			StringBuffer buffref = new StringBuffer();
@@ -8752,7 +9085,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			String refs[] = table.getReference();
 			String contigs[] = table.getContigs();
 
-			String snpannots[] = table.getSNPGenomicAnnotation(this.fillGenotypeQueryParams());
+			//String snpannots[] = table.getSNPGenomicAnnotation(this.fillGenotypeQueryParams());
+			String snpannots[] = table.getSNPGenomicAnnotation(p);
 
 			for (int i = 0; i < positions.length; i++) {
 				if (!refs[i].equals("-")) {
@@ -8857,9 +9191,10 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			Object[][] varalleles = table.getVaralleles();
 			// Map<BigDecimal,Variety> mapVarId2Var =
 			// varietyfacade.getMapId2Variety(getDataset());
-			Set ds = getDataset();
+			//Set ds = getDataset();
 			Map<String, Map<BigDecimal, StockSample>> mapDs = varietyfacade.getMapId2Sample(ds);
 
+			StringBuffer buffSample=new StringBuffer();
 			for (int i = 0; i < table.getVarid().length; i++) {
 
 				// if(mapVarId2Var.get(table.getVarid()[i])==null) throw new
@@ -8877,7 +9212,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				String indvid = AppContext
 						.createSampleUniqueName(mapVarId2Sample.get(BigDecimal.valueOf(table.getVarid()[i])), ds);
 				buff.append(indvid).append("\t").append(indvid).append("\t0\t0\t0\t-9\t");
-
+				buffSample.append(indvid).append("\n");
 				// Family ID
 				// Sample ID
 				// Paternal ID
@@ -8902,6 +9237,12 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				}
 				buff.append("\n");
 			}
+			
+			writer = new FileWriter(filename + ".txt");
+			writer.append(buffSample.toString());
+			writer.flush();
+			writer.close();
+
 
 			writer = new FileWriter(filename + ".ped");
 			writer.append(buff.toString());
@@ -9617,7 +9958,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			Map mapSubpop2Allele2Count = new TreeMap();
 			Map mapSubpop2Genotype2Count = new TreeMap();
 
-			AppContext.debug("size: " + model.getSize());
+			//AppContext.debug("size: " + model.getSize());
 			for (int j = 0; j < model.getSize(); j++) {
 
 				// String subpop = model.getCellAt( model.getElementAt(j), 2).toString();
@@ -10887,7 +11228,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 	}
 
-	private String createVistaRef2Othersurl(String ref, String refcontig, long refstart, long refend, String target) {
+	public static String createVistaRef2Othersurl(String ref, String refcontig, long refstart, long refend, String target) {
 		String url = "";
 
 		if (ref.equals(Organism.REFERENCE_NIPPONBARE)) {

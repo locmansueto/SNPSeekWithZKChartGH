@@ -1,0 +1,94 @@
+<?page title="Module" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="winGalaxy" border="none" apply="org.irri.iric.portal.galaxy.zkui.GalaxyController">
+	<hbox height="20px"/>
+	
+	<div id="divDiscovery">
+	<hbox height="20px"/>
+	<label value="Workflow and Tool Input Datatypes" style="font-size:14px;font-weight:bold;color:gray;"/>
+	<hbox>
+		<label value="Select server"/>
+		<listbox id="listboxServer" width="200px" mold="select">
+			<listitem label="pollux" />
+			<listitem label="rice_dev"/>
+			<listitem label="aws" selected="true"/>
+		</listbox>
+	</hbox>
+	<hbox>
+	 <label value="Select Lists"/>
+	 <vbox>
+	 <listbox id="listLists" multiple="true" checkmark="true"  width="150px"  height="200px" rows="0">
+	    <listhead><listheader label="Data lists" /></listhead>
+	    	<listitem label="locuslist"/>
+	    	<listitem label="samplelist"/>
+	    	<listitem label="snplist"/>
+	    	<listitem label="snpmatrix"/>
+	 </listbox>
+	 <button id="buttonWorkflows" label="Find Workflows"/>
+    </vbox>
+    
+    <hbox>
+    <vbox width="50px"/>
+	<vbox>
+	 <label value="Select Data"/>
+	 <listbox id="listSection" multiple="true" checkmark="true" width="200px" height="100px">
+	  <listhead><listheader label="Tool Section" /></listhead></listbox>
+	 <hbox height="10px"/>
+	 <button id="buttonAll" label="Check all" height="20px" visible="false"/>
+	 <button id="buttonNone" label="Uncheck all" height="20px" visible="false"/>
+	 <button id="buttonCommon" label="Check common" height="20px"/>
+	 <hbox height="10px"/>
+	 <button id="buttonDiscover" label="Find Tools"/>
+	</vbox>
+	 
+	 <vbox width="20px"/>
+	 <listbox id="listData" multiple="true" checkmark="true" width="300px" height="250px" rows="0">
+	    <listhead><listheader label="Data class" /></listhead></listbox>
+	 	<vbox width="10px"/>	 
+	 <listbox id="listFormat" multiple="true" checkmark="true"  width="300px"  height="250px" rows="0">
+	    <listhead><listheader label="File extension" /></listhead></listbox>	 
+    </hbox>
+    
+    </hbox>
+    <hbox height="20px"/>
+    </div>
+
+	<!--  button id="buttonDiscover" label="Discover tools"/ -->
+	 <label value="Workflows accepting data lists" style="font-size:14px;font-weight:bold;color:gray;"/>
+	 <listbox id="listTools" width="80%" height="300px" vflex="1" sizedByContent="true">
+	    <listhead sizable="true">
+	    <listheader label="Workflow name" width="150px"/>
+	    <listheader label="Accepts"  width="150px"/>
+	    <listheader label="All Inputs" width="450px"/>
+	    <listheader label="Description"  width="300px"/>
+	    </listhead>
+	  </listbox>
+
+
+	<hbox height="20px"/>
+	<div visible="false">
+	 <button upload="true,maxsize=-1,native" onUpload="@command('onFileUpload')" label="Select File"/>
+	<fileupload id="uploadButton2"  label="Upload2" onUpload="System.out.println(event.media.getName())" />
+	<fileupload id="uploadButton"  label="Upload3"/>
+	<button id="buttonUpload" label="Upload"/>
+	</div>
+	<label value="Input parameters" style="font-size:14px;font-weight:bold;color:gray;"/>
+ 		<grid id="listInputs" width="80%">
+  		<columns>
+	    <column label="Parameter name" width="100px"/>
+	    <column label="Value"  width="300px"/>
+	    <column label="Description" width="300px"/>
+	    <column label="Type" width="1px" visible="false"/>
+	    </columns>
+	    </grid>
+	    <hbox height="20px"/>
+	    
+	    <vbox>
+	    <button id="buttonRun" label="Run Tool"/>
+	    <checkbox id="checkboxAsync" label="Run in backgroud"/>
+	    <label id="labelDownloadProgressMsg"/>
+	    <a id="aDownloadProgressURL" target="jobs"/>
+	    </vbox>
+	    
+</window>
+</zk>

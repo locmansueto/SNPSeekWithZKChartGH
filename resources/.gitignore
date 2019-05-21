@@ -1,2 +1,4 @@
 /config.properties
 /iric_prod_crud-dao-context.xml
+/config.localhost.properties
+/config.pollux.properties

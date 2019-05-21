@@ -23,6 +23,12 @@ public class AsyncJobImpl implements AsyncJob {
 	private Date dateStarted;
 	private String workerid;
 
+	public AsyncJobImpl(String jobid, String histid) {
+		this.jobid=jobid;
+		this.params=histid;
+		
+	}
+	
 	public AsyncJobImpl(String saveline) {
 		super();
 		AppContext.debug("AsyncJobImpl saveline=" + saveline);

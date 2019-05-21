@@ -100,8 +100,9 @@ public class VAllsampleBasicprop implements Serializable, StockSample {
 
 	/**
 	 */
-
+	
 	@Column(name = "sample_varietyset_id", nullable = false)
+	//@Column(name = "stock_sample_id", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	@XmlElement
@@ -379,6 +380,7 @@ public class VAllsampleBasicprop implements Serializable, StockSample {
 	@Override
 	public BigDecimal getSampleVarietySetId() {
 		return sampleVarietySetId;
+		//return stockSampleId;
 	}
 
 }

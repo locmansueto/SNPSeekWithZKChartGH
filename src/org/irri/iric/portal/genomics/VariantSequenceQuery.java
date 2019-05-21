@@ -16,7 +16,8 @@ public class VariantSequenceQuery extends Query {
 	Collection colVars;
 	Collection colLocus;
 
-	String method = "gatk";
+	//String method = "gatk";
+	String method = "galaxy";
 	String reference;
 
 	public VariantSequenceQuery(Collection<String> colVars, Collection<MultiReferenceLocus> colLocus) {
@@ -53,6 +54,16 @@ public class VariantSequenceQuery extends Query {
 
 	public String getReference() {
 		return reference;
+	}
+
+	boolean sync;
+	public void setSync(boolean sync) {
+		// TODO Auto-generated method stub
+		this.sync=sync;
+	}
+	public boolean isSync() {
+		// TODO Auto-generated method stub
+		return sync;
 	}
 
 }

@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -58,6 +59,7 @@ public class GATKAltSeqGenerator {
 		getAltSequence(workdir + "MANIFEST_AWS", intervals, concatSeqs, null, reference);
 	}
 
+	
 	void getAltSequence(String varlistpath, Map<String, String> intervals, String reference) {
 		Set varset = new LinkedHashSet();
 		try {
@@ -72,7 +74,6 @@ public class GATKAltSeqGenerator {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
 		getAltSequence(workdir + "MANIFEST_AWS", intervals, false, varset, reference);
 	}
 
@@ -533,7 +534,8 @@ public class GATKAltSeqGenerator {
 		mapLoc2Int.put("LOC_Os07g11020",
 				"chr07:6062889-6062983 chr07:6063303-6063608 chr07:6066306-6066402 chr07:6066791-6066847 chr07:6067050-6067599 chr07:6067770-6068086");
 
-		// new GATKAltSeqGenerator(null).getAltSequence(mapLoc2Int, false,"Nipponbare");
+		
+		new GATKAltSeqGenerator(null).getAltSequence(mapLoc2Int, false,"Nipponbare");
 
 		// System.out.println("..done");
 	}

@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import java.util.regex.Pattern;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.SimpleListModelExt;
@@ -64,6 +65,7 @@ public class DownloadController extends SelectorComposer<Component> {
 	private GenomicsFacade genomicsfacade;
 
 	@Autowired
+	@Qualifier("GalaxyJobsFacade")
 	private JobsFacade jobsfacade;
 
 	@Autowired
@@ -186,37 +188,60 @@ public class DownloadController extends SelectorComposer<Component> {
 			Messagebox.show("Please limit  " + AppContext.getMaxLocusListDownload("snp_all") + " loci");
 			return;
 		}
-
-		if ((AppContext.isDev() && (setVarieties.size() > 10 || setLoci.size() > 5)) || setVarieties.size() > 100
-				|| setLoci.size() > 50) {
-
-			try {
-				Callable<AsyncJobReport> callreport = callableDownloadsequence(setVarieties, setLoci);
-				AsyncJobReport report = callreport.call();
-				if (report != null) {
-					if (report.getMessage().equals(JobsFacade.JOBSTATUS_SUBMITTED)) {
-						this.labelDownloadProgressMsg.setValue("Job is submitted. Please monitor progress at ");
-						this.aDownloadProgressURL.setLabel(report.getUrlProgress());
-						this.aDownloadProgressURL.setHref(report.getUrlProgress());
-						aDownloadProgressURL.setVisible(true);
-						enableDownloadButtons(false);
-						AppContext.debug("job " + report.getJobid() + " submitted at " + report.getUrlProgress());
-					} else {
-						this.labelDownloadProgressMsg.setValue(report.getMessage());
-					}
-					labelDownloadProgressMsg.setVisible(true);
-				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				Messagebox.show(ex.getMessage());
+		
+		labelDownloadProgressMsg.setVisible(false);
+		aDownloadProgressURL.setVisible(false);
+		if ( setVarieties.size() * setLoci.size() > 10) {
+			// asynchronosu
+//			aDownloadProgressURL.setVisible(false);/			AppContext.debug("waiting for varseq");
+			String[] status=downloadsequence(setVarieties, setLoci, null, (String) listboxReference.getSelectedItem().getValue(),false);
+			if(!status[0].equals(JobsFacade.JOBSTATUS_ERROR)) {
+				aDownloadProgressURL.setHref(status[1]);
+				aDownloadProgressURL.setLabel(status[1]);
+				labelDownloadProgressMsg.setValue("Job is submitted. Please monitor progress at ");
+				labelDownloadProgressMsg.setVisible(true);
+				aDownloadProgressURL.setVisible(true);
 			}
 
 		} else {
-			labelDownloadProgressMsg.setVisible(false);
-			aDownloadProgressURL.setVisible(false);
-			AppContext.debug("waiting for varseq");
-			downloadsequence(setVarieties, setLoci, null, (String) listboxReference.getSelectedItem().getValue());
+			String[] status=downloadsequence(setVarieties, setLoci, null, (String) listboxReference.getSelectedItem().getValue(),true);
+			if(!status[0].equals(JobsFacade.JOBSTATUS_DONE)) {
+				Messagebox.show(status[1], status[0], Messagebox.OK, Messagebox.EXCLAMATION);
+			}
 		}
+
+//		//if ((AppContext.isDev() && (setVarieties.size() > 10 || setLoci.size() > 5)) || setVarieties.size() > 100
+//		//		|| setLoci.size() > 50) {
+//		if ( setVarieties.size() > 10 || setLoci.size() > 10) {
+//			// use asynchronous
+//			try {
+//				Callable<AsyncJobReport> callreport = callableDownloadsequence(setVarieties, setLoci);
+//				AsyncJobReport report = callreport.call();
+//				if (report != null) {
+//					if (report.getMessage().equals(JobsFacade.JOBSTATUS_SUBMITTED)) {
+//						this.labelDownloadProgressMsg.setValue("Job is submitted. Please monitor progress at ");
+//						this.aDownloadProgressURL.setLabel(report.getUrlProgress());
+//						this.aDownloadProgressURL.setHref(report.getUrlProgress());
+//						aDownloadProgressURL.setVisible(true);
+//						enableDownloadButtons(false);
+//						AppContext.debug("job " + report.getJobid() + " submitted at " + report.getUrlProgress());
+//					} else {
+//						this.labelDownloadProgressMsg.setValue(report.getMessage());
+//					}
+//					labelDownloadProgressMsg.setVisible(true);
+//				}
+//			} catch (Exception ex) {
+//				ex.printStackTrace();
+//				Messagebox.show(ex.getMessage());
+//			}
+//
+//		} else {
+//			// wait to finish
+//			labelDownloadProgressMsg.setVisible(false);
+//			aDownloadProgressURL.setVisible(false);
+//			AppContext.debug("waiting for varseq");
+//			downloadsequence(setVarieties, setLoci, null, (String) listboxReference.getSelectedItem().getValue());
+//		}
 	}
 
 	public Callable<AsyncJobReport> callableDownloadsequence(final Collection setVarieties, final Collection setLoci) {
@@ -225,7 +250,7 @@ public class DownloadController extends SelectorComposer<Component> {
 			public AsyncJobReport call() throws Exception {
 
 				Future future = null;
-				jobsfacade = (JobsFacade) AppContext.checkBean(jobsfacade, "JobsFacade");
+				jobsfacade = (JobsFacade) AppContext.checkBean(jobsfacade, "GalaxyJobsFacade");
 
 				String msg = JobsFacade.JOBSTATUS_SUBMITTED;
 				String jobid = "vcf2fasta-" + AppContext.createTempFilename();
@@ -345,12 +370,50 @@ public class DownloadController extends SelectorComposer<Component> {
 
 	}
 
-	public void downloadsequence(Collection setVarieties, Collection setLoci, String jobid, String reference) {
+	public String[] downloadsequence(Collection setVarieties, Collection setLoci, String jobid, String reference, boolean sync) {
 
 		try {
 
 			VariantSequenceQuery query = new VariantSequenceQuery(setVarieties, setLoci, jobid, reference);
 			query.setSubmitter(AppContext.getSubmitter());
+			query.setSync(sync);
+			genomicsfacade = (GenomicsFacade) AppContext.checkBean(genomicsfacade, "GenomicsFacade");
+			String dir = genomicsfacade.createVariantsFasta(query);
+
+				//String paths[]= dir.split(Pattern.quote(File.separator));
+				//String zipfilename = AppContext.getTempDir() + paths[paths.length - 1].replace("\\","") + ".zip";
+				String zipfilename= AppContext.getTempDir()  + new File(dir).getName()+".zip";
+				
+			if(sync) {
+				// Filedownload.save(zipfilename, "application/zip");
+				Filedownload.save(new File(zipfilename), "application/zip");
+				// AppContext.debug("File download complete! Saved to: "+filename);
+				org.zkoss.zk.ui.Session zksession = Sessions.getCurrent();
+				AppContext.debug("variantsequence download complete!" + zipfilename + " "
+						+ "Downloaded to:"
+						+ zksession.getRemoteHost() + "  " + zksession.getRemoteAddr());
+				return new String[] {JobsFacade.JOBSTATUS_DONE, zipfilename};
+			} else {
+				String fname=new File(dir).getName();
+				return new String[] {JobsFacade.JOBSTATUS_SUBMITTED, AppContext.getHostname()+AppContext.getHostDirectory()+ "_jobs.zul?jobid="+ fname};
+			}
+
+		
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			//Messagebox.show(ex.getMessage());
+			return new String[] {JobsFacade.JOBSTATUS_ERROR, ex.getMessage()};
+		}
+
+	}
+	
+	public String[] downloadsequence2(Collection setVarieties, Collection setLoci, String jobid, String reference, boolean sync) {
+
+		try {
+
+			VariantSequenceQuery query = new VariantSequenceQuery(setVarieties, setLoci, jobid, reference);
+			query.setSubmitter(AppContext.getSubmitter());
+			query.setSync(sync);
 			genomicsfacade = (GenomicsFacade) AppContext.checkBean(genomicsfacade, "GenomicsFacade");
 			String dir = genomicsfacade.createVariantsFasta(query);
 
@@ -371,20 +434,40 @@ public class DownloadController extends SelectorComposer<Component> {
 			 */
 
 			if (jobid == null) {
-				String paths[] = dir.split("/");
+				String paths[]= dir.split(Pattern.quote(File.separator));
+				/*
+				if(AppContext.isWindows()) {
+					paths=dir.split("\\\\");		
+					paths = path.split(Pattern.quote(File.separator));
+				} else {
+					paths = dir.split("/");
+				}
+				*/
+				//String fname=new File(dir).getName();
 				String zipfilename = AppContext.getTempDir() + paths[paths.length - 1] + ".zip";
+				//String zipfilename = AppContext.getTempDir() + paths[paths.length - 1] + paths[paths.length - 1].replace("\\","").replace("/","")+ ".zip";
+				
+				//String zipfilename = dir + paths[paths.length - 1] + ".zip";
+				
+				
 				// Filedownload.save(zipfilename, "application/zip");
 				Filedownload.save(new File(zipfilename), "application/zip");
 				// AppContext.debug("File download complete! Saved to: "+filename);
 				org.zkoss.zk.ui.Session zksession = Sessions.getCurrent();
-				AppContext.debug("variantsequence download complete!" + zipfilename + " Downloaded to:"
+				AppContext.debug("variantsequence download complete!" + zipfilename + " "
+						+ "Downloaded to:"
 						+ zksession.getRemoteHost() + "  " + zksession.getRemoteAddr());
+				return new String[] {JobsFacade.JOBSTATUS_DONE, zipfilename};
 			}
+			
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			Messagebox.show(ex.getMessage());
+			//Messagebox.show(ex.getMessage());
+			return new String[] {JobsFacade.JOBSTATUS_ERROR, ex.getMessage()};
 		}
+		
+		return new String[] {JobsFacade.JOBSTATUS_DONE, null};
 
 	}
 

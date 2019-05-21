@@ -28,6 +28,7 @@ import org.irri.iric.portal.domain.MultiReferencePositionImplAllelePvalue;
 //import org.irri.iric.portal.chado.oracle.domain.Organism;
 import org.irri.iric.portal.domain.Organism;
 import org.irri.iric.portal.domain.Position;
+import org.irri.iric.portal.domain.PositionLogPvalue;
 import org.irri.iric.portal.domain.PositionLogPvalueImpl;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 import org.irri.iric.portal.domain.Variety;
@@ -454,6 +455,8 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		if (listboxSnplist.getSelectedIndex() > 0 && listboxVarietylist.getSelectedIndex() > 0)
 			displayManhattanXY(listboxSnplist.getSelectedItem().getLabel(),
 					listboxVarietylist.getSelectedItem().getLabel());
+		else if (listboxSnplist.getSelectedIndex() > 0 )
+			displayManhattanXY(listboxSnplist.getSelectedItem().getLabel(),null);
 		else
 			displayManhattanXY();
 	}
@@ -464,6 +467,8 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		if (listboxSnplist.getSelectedIndex() > 0 && listboxVarietylist.getSelectedIndex() > 0)
 			displayManhattanXY(listboxSnplist.getSelectedItem().getLabel(),
 					listboxVarietylist.getSelectedItem().getLabel());
+		else if (listboxSnplist.getSelectedIndex() > 0 )
+			displayManhattanXY(listboxSnplist.getSelectedItem().getLabel(),null);
 		else
 			displayManhattanXY();
 	}
@@ -560,12 +565,12 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 			String posstr = pos.getChr() + "-" + pos.getPosition();
 
 			// if(pos.getLogPvalue()<minlogp) break;
-			if (pos.getMinusLogPvalue() < minlogp)
-
+			if (pos.getMinusLogPvalue() >= minlogp) {
 				mapPos2Values.put(posstr, pos.getMinusLogPvalue());
-			mapPos2Index.put(posstr, idx);
-			mapIndex2Pos.put(idx, posstr);
-			idx++;
+				mapPos2Index.put(posstr, idx);
+				mapIndex2Pos.put(idx, posstr);
+				idx++;
+			}
 		}
 		displayManhattanXY(mapPos2Values);
 
@@ -1114,8 +1119,11 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		String subpop = this.listboxSubpopulation.getSelectedItem().getLabel();
 
 		initDispayManhattan();
-		if (trait == null || trait.isEmpty() || subpop == null || subpop.isEmpty())
-			return;
+		if (trait == null || trait.isEmpty() || subpop == null || subpop.isEmpty()) {
+			if(listboxSnplist.getSelectedIndex()==0)
+				return;
+		}
+			
 
 		// double minlogp= Double.valueOf(comboboxMinlogP.getValue());
 		double minlogp = Double.valueOf(comboboxMinlogP.getSelectedItem().getLabel());
@@ -1737,35 +1745,53 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		gwas = (GwasFacade) AppContext.checkBean(gwas, "GwasFacade");
 
 		AppContext.resetTimer("querying p values");
-		mapPos2Values = gwas.getPosstr2MinusLogP(trait, subpop, minlogP, region);
-		if (mapPos2Values == null) {
-			Messagebox.show("No GWAS run for trait: " + trait + ", population: " + subpop);
-			return;
+		Set strsnplist =null;
+		mapPos2Index = new TreeMap();
+		mapIndex2Pos = new TreeMap();
+		mapPos2Values=new TreeMap();
+		if( trait==null || trait.isEmpty() || subpop==null || subpop.isEmpty()) {
+			if(snplist!=null) {
+				int idx = 0;
+				mapPos2Values=new TreeMap();
+				Iterator<Position> itPos = snplist.iterator();
+				while (itPos.hasNext()) {
+					PositionLogPvalueImpl spos = (PositionLogPvalueImpl)itPos.next();
+					String pos=spos.getChr() + "-" + spos.getPosition(); 
+					mapPos2Values.put(pos, spos.getMinusLogPvalue());
+					mapPos2Index.put(pos, idx);
+					mapIndex2Pos.put(idx, pos);
+					idx++;
+				}
+			} else return;
+		} else {
+			mapPos2Values = gwas.getPosstr2MinusLogP(trait, subpop, minlogP, region);
+			if (mapPos2Values == null) {
+				Messagebox.show("No GWAS run for trait: " + trait + ", population: " + subpop);
+				return;
+			}
+			strsnplist = new HashSet();
+			if (snplist != null) {
+				Iterator<Position> itPos = snplist.iterator();
+				while (itPos.hasNext()) {
+					Position spos = itPos.next();
+					strsnplist.add(spos.getChr() + "-" + spos.getPosition());
+				}
+			}
+			int idx = 0;
+			Iterator<String> itPos = mapPos2Values.keySet().iterator();
+			while (itPos.hasNext()) {
+				String pos = itPos.next();
+				if (snplist != null && !strsnplist.contains(pos))
+					continue;
+				mapPos2Index.put(pos, idx);
+				mapIndex2Pos.put(idx, pos);
+				idx++;
+			}
 		}
 
 		AppContext.resetTimer("displaying p values");
 
-		Set strsnplist = new HashSet();
-		if (snplist != null) {
-			Iterator<Position> itPos = snplist.iterator();
-			while (itPos.hasNext()) {
-				Position spos = itPos.next();
-				strsnplist.add(spos.getChr() + "-" + spos.getPosition());
-			}
-		}
 
-		mapPos2Index = new TreeMap();
-		mapIndex2Pos = new TreeMap();
-		int idx = 0;
-		Iterator<String> itPos = mapPos2Values.keySet().iterator();
-		while (itPos.hasNext()) {
-			String pos = itPos.next();
-			if (snplist != null && !strsnplist.contains(pos))
-				continue;
-			mapPos2Index.put(pos, idx);
-			mapIndex2Pos.put(idx, pos);
-			idx++;
-		}
 		displayManhattanXY(mapPos2Values);
 
 		String qqfilename = gwas.getQQPlotFile(trait, subpop);
