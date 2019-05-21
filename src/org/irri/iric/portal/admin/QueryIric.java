@@ -1,5 +1,6 @@
 package org.irri.iric.portal.admin;
 
+import org.irri.iric.portal.AppContext;
 import org.springframework.stereotype.Component;
 
 @Component("QueryIric")
@@ -273,7 +274,7 @@ public class QueryIric {
 	public static void main(String[] args) {
 		
 
-		System.out.println("hello world");
+		AppContext.debug("hello world");
 
 		// final ApplicationContext context = new
 		// ClassPathXmlApplicationContext(CONFIG_PATH);

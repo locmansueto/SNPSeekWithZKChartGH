@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.CvTermUniqueValues;
 import org.irri.iric.portal.variety.VarietyFacade;
 import org.zkoss.zul.Listbox;
@@ -32,7 +33,7 @@ public class ListboxPassport extends Listbox {
 
 		List listValues = new java.util.ArrayList();
 
-		// System.out.println("phenotype selected:" + getSelectedItem().getLabel());
+		// AppContext.debug("phenotype selected:" + getSelectedItem().getLabel());
 
 		if (!getSelectedItem().getLabel().trim().isEmpty()) {
 			Iterator<CvTermUniqueValues> itValues = variety
@@ -41,15 +42,15 @@ public class ListboxPassport extends Listbox {
 				CvTermUniqueValues value = itValues.next();
 
 				if (value == null) {
-					System.out.println("null value");
+					AppContext.debug("null value");
 					continue;
 				}
 
-				// System.out.println(value.toString());
+				// AppContext.debug(value.toString());
 
 				listValues.add(value.getValue());
 
-				// System.out.println(value.getValue());
+				// AppContext.debug(value.getValue());
 			}
 		}
 

@@ -26,6 +26,7 @@ import org.biojava3.core.sequence.template.Compound;
 
 import org.forester.io.writers.PhylogenyWriter;
 import org.forester.phylogeny.Phylogeny;
+import org.irri.iric.portal.AppContext;
 import org.forester.evoinference.matrix.distance.BasicSymmetricalDistanceMatrix;
 import org.forester.evoinference.matrix.distance.DistanceMatrix;
 import org.forester.evoinference.distance.NeighborJoining;
@@ -275,8 +276,8 @@ public class TreeConstructor<C extends AbstractSequence<D>, D extends Compound> 
 
 
 
-            System.out.println("Tree time " + (treeTime - readTime));
-            System.out.println(newick);
+            AppContext.debug("Tree time " + (treeTime - readTime));
+            AppContext.debug(newick);
 
             // treeConstructor.outputPhylipDistances("/Users/Scooter/mutualinformation/project/nuclear_receptor/PF00104_small.fasta.phylip");
 

@@ -1,3 +1,4 @@
+<%@page import="org.irri.iric.portal.AppContext"%>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.math.BigDecimal" %>
@@ -65,7 +66,8 @@ function getUrlVars()
     			
             
 <%
-		System.out.println("in jsp/phylo.jsp  " + request.getRequestURL() +  " map=" + request.getParameterMap());
+		
+		AppContext.debug("in jsp/phylo.jsp  " + request.getRequestURL() +  " map=" + request.getParameterMap());
 		String newick = (String)request.getSession().getAttribute("newick");
 		Integer objnvars = (Integer)request.getSession().getAttribute("nvars");
 		
@@ -74,7 +76,7 @@ function getUrlVars()
 		int intvars=objnvars;
 		int height=20*intvars;
 		int width = 2000;
-		System.out.println("fetched newick=" + newick.substring(0,10));
+		AppContext.debug("fetched newick=" + newick.substring(0,10));
 	%>
 		var nvars= <%= intvars  %>;
         var dataObject = { newick:  <%= newick %> };
@@ -89,7 +91,7 @@ function getUrlVars()
 		} else {
 		
 				Map mapParams=request.getParameterMap();
-				System.out.println("in jsp/phylo.jsp  " + request.getRequestURL() +  " map=" + mapParams);
+				AppContext.debug("in jsp/phylo.jsp  " + request.getRequestURL() +  " map=" + mapParams);
 				String newickfile=null;
 				String nvars=null;
 				if(mapParams.containsKey("newick")) newickfile=  ((String[])mapParams.get("newick"))[0];

@@ -405,7 +405,7 @@ public class TabixReader
 
 	public static void main(String[] args) {
 		if (args.length < 1) {
-			System.out.println("Usage: java -cp .:sam.jar TabixReader <in.gz> [region]");
+			AppContext.debug("Usage: java -cp .:sam.jar TabixReader <in.gz> [region]");
 			System.exit(1);
 		}
 		try {
@@ -413,14 +413,14 @@ public class TabixReader
 			TabixReader tr = new TabixReader(args[0]);
 			String s;
 			if (args.length == 1) { // no region is specified; print the whole file
-				System.out.println(args[0]);
+				AppContext.debug(args[0]);
 				while ((s = tr.readLine()) != null)
-					System.out.println(s);
+					AppContext.debug(s);
 			} else { // a region is specified; random access
-				System.out.println(args[0] + " " + args[1]);
+				AppContext.debug(args[0] + " " + args[1]);
 				TabixReader.Iterator iter = tr.query(args[1]); // get the iterator
 				while (iter != null && (s = iter.next()) != null)
-					System.out.println(s);
+					AppContext.debug(s);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

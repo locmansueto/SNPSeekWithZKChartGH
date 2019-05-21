@@ -110,13 +110,13 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 		  for(Workflow wf:workflowsClient.getWorkflows()) {
 			  
 			  	WorkflowDetails workflowDetails = workflowsClient.showWorkflow(wf.getId());
-			  	//System.out.println(wf.getName() + "  " + workflowDetails.getUrl());
+			  	//AppContext.debug(wf.getName() + "  " + workflowDetails.getUrl());
 			  	MyWorksflow mwf=new MyWorksflow(wf);
 			  	
 				 
 		    	Set params=new HashSet();
 		    	String wfjson=workflowsClient.exportWorkflow(wf.getId());
-		    	System.out.println(wfjson);
+		    	AppContext.debug(wfjson);
 		    	JSONObject jsonObj = new JSONObject(wfjson); 
 		    	JSONObject stepsarr=jsonObj.getJSONObject("steps");
 		    	
@@ -128,9 +128,9 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 			    	String alllabel=null;
 			    	String label=null;
 			    	if(o.getString("type").equals("parameter_input")) {
-				    	//System.out.println( o.getString("label") + "  " + o.getString("annotation") +  "   " + o.getString("tool_state"));
+				    	//AppContext.debug( o.getString("label") + "  " + o.getString("annotation") +  "   " + o.getString("tool_state"));
 				    	JSONObject jsonstate = new JSONObject(o.getString("tool_state"));
-				    	//System.out.println( jsonstate.get("optional") + "   "  + jsonstate.get("parameter_type"));
+				    	//AppContext.debug( jsonstate.get("optional") + "   "  + jsonstate.get("parameter_type"));
 				    	label= o.getString("label");
 				    	//alllabel=label+":"+ jsonstate.get("parameter_type")+":"+jsonstate.get("optional")+":"+o.getString("annotation");
 				    	String annotrun[]=o.getString("annotation").split("\\:");
@@ -138,7 +138,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 			    	}
 			    	else if(o.getString("type").equals("data_input")) {
 			    		label= o.getString("label");
-				    	//System.out.println( o.getString("label") + "  " + o.getString("annotation") +  "   " + o.getString("tool_state"));
+				    	//AppContext.debug( o.getString("label") + "  " + o.getString("annotation") +  "   " + o.getString("tool_state"));
 				    	alllabel= label+":data_input:"+o.getString("annotation")+":"+(o.has("value")?o.getString("value"):"")+":"+String.valueOf(i);
 				    }  else continue;
 			    	
@@ -158,7 +158,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 			    if(params.size()>0) mapWf2Params.put(mwf,params);
 		  		
 			    /*
-			    //System.out.println(workflowsClient.exportWorkflow(wf.getId() ));
+			    //AppContext.debug(workflowsClient.exportWorkflow(wf.getId() ));
 			  	//PyList cxxTestGenArgs = new PyList(); 
 			  	Set params=new HashSet();
 			    for(final Map.Entry<String, WorkflowInputDefinition> inputEntry : workflowDetails.getInputs().entrySet()) {
@@ -197,7 +197,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 				  String classtype=dfx;
 				  if(!tag.equals("file_ext")) classtype=mapDFX2Class.get(dfx);
 				  
-				  //System.out.println("dfx=" + dfx + "  class=" + classtype);
+				  //AppContext.debug("dfx=" + dfx + "  class=" + classtype);
 				  if(classtype==null) {
 					  AppContext.debug("No " + tag + " class for tag " + dfx);
 				  } else {
@@ -221,7 +221,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 			  if(o==null) continue;
 			  String dfx=o.toString();
 			  String classtype=mapDFX2Class.get(dfx);
-			  //System.out.println("dfx=" + dfx + "  class=" + classtype);
+			  //AppContext.debug("dfx=" + dfx + "  class=" + classtype);
 			  if(classtype==null) {
 				  AppContext.debug("No " + tag + " class for tag " + dfx);
 			  } else {
@@ -345,9 +345,9 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 	       
 	       /*
 	       InetAddress myHost = InetAddress.getLocalHost();
-           System.out.println(myHost.getHostName());
-           System.out.println(myHost.getHostAddress());
-           System.out.println(myHost.getCanonicalHostName());
+           AppContext.debug(myHost.getHostName());
+           AppContext.debug(myHost.getHostAddress());
+           AppContext.debug(myHost.getCanonicalHostName());
            */
 	       
 	       BufferedReader br=AppContext.bufferedReadURL( AppContext.getHostname() + AppContext.getHostDirectory() + "galaxy/galaxytools_" + AppContext.getGalaxyInstance()+".txt", null);
@@ -376,7 +376,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 					  String pname=(String)pdict.get("name");
 					  String paramprops=pdict.get("name") + ":"+ pdict.get("type") + ":" + (pdict.has("label")?pdict.get("label"):"") +":"+ 
 							  (pdict.has("value")?pdict.get("value"):"");
-					  //System.out.println( "    " + paramprops);
+					  //AppContext.debug( "    " + paramprops);
 					  if(nameStarts!=null) {
 						  for(String n:nameStarts) {
 							  if(pname.toLowerCase().startsWith(n.toLowerCase())) {
@@ -406,7 +406,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 					  matchedData.addAll(matchedExt);
 					  if(matchedData.size()>0) {
 						  mapTools2Params.put(jo, params);
-						  //System.out.println("matchedParams=" + matchedData);
+						  //AppContext.debug("matchedParams=" + matchedData);
 					  }
 				  } else {
 					  mapTools2Params.put(jo, params);
@@ -531,14 +531,14 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 	       Set setMatchExt=new HashSet();
 		  for(ToolSection wf:toolClient.getTools()) {
 			  
-			  System.out.println(sectioncnt + "   "  + wf.getName().toUpperCase());
+			  AppContext.debug(sectioncnt + "   "  + wf.getName().toUpperCase());
 			  sectioncnt++;
 			  if(sections!=null && !sections.contains(wf.getName())) continue;	
 		       int toolcnt=1;
 		       
 		       
 			  for(Tool t:wf.getElems()) {
-				  System.out.println(toolcnt + "   " +  t.getId() + "  " + t.getName() + "  " + t.getDescription() + "  " + t.getUrl());
+				  AppContext.debug(toolcnt + "   " +  t.getId() + "  " + t.getName() + "  " + t.getDescription() + "  " + t.getUrl());
 				  
 				  if(t.getName()==null) {
 					  continue;
@@ -547,7 +547,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 			      // JSONObject jsonObj = new JSONObject("{\"phonetype\":\"N95\",\"cat\":\"WP\"}");
 				  if(t.getUrl()!=null && !t.getUrl().isEmpty()) {
 					  JSONObject jsonObj=new JSONObject(AppContext.readURL( AppContext.getGalaxyAddress() + t.getUrl() ));
-					  System.out.println(jsonObj.toString(4));
+					  AppContext.debug(jsonObj.toString(4));
 				  }
 				  //jsonObj.keys()
 				  
@@ -581,7 +581,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 				  } catch(Exception ex) {
 					  ex.printStackTrace();
 					  Object ins= interp.get("result");
-					  System.out.println("result=" + ins);
+					  AppContext.debug("result=" + ins);
 					  continue;
 				  }
 				  if(interp.get("ti")==null) continue;
@@ -590,7 +590,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 				  PyList pl=(PyList)interp.get("inputParams");
 				  
 				  if(pl.size()==0) {
-					  System.out.println("inputParams.len=0");
+					  AppContext.debug("inputParams.len=0");
 					  continue;
 				  }
 
@@ -604,7 +604,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 					  PyDictionary  pdict= (PyDictionary)itPl.next();
 					  String pname=(String)pdict.get("name");
 					  String paramprops=pdict.get("name") + ":" +  pdict.get("type") + ":" + pdict.get("extensions") +":" + pdict.get("label");
-					  System.out.println( "    " + paramprops);
+					  AppContext.debug( "    " + paramprops);
 					  for(String n:nameStarts) {
 						  if(pname.toLowerCase().startsWith(n.toLowerCase())) {
 							  matchedName.add(pname+":"+ pdict.get("extensions"));
@@ -618,7 +618,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 							  PyList datalist= (PyList)edams.get("edam_data");
 							  PyList formatlist=  (PyList)edams.get("edam_formats");
 							  
-							  System.out.println(datalist + "\n" + formatlist);
+							  AppContext.debug(datalist + "\n" + formatlist);
 							  if(datalist!=null && !datalist.equals("None")) matchedData.addAll(findMatches(formats, datalist, mapDatatypes[1], "edam_data"));
 							  if(formatlist!=null && !formatlist.equals("None")) matchedData.addAll(findMatches(formats, formatlist, mapDatatypes[3], "edam_format"));
 						  }
@@ -626,13 +626,13 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 					  PyList extslist= (PyList)pdict.get("extensions");
 					  if(extslist!=null && !extslist.equals("None")) {
 						  matchedData.addAll(findMatches(formats, extslist, mapDatatypes[5], "file_ext"));
-						  System.out.println(extslist);
+						  AppContext.debug(extslist.toString());
 					  }
 					  params.add(pdict.get("name") + ":" +  pdict.get("type") + ":" + pdict.get("extensions") +":" + pdict.get("label")  );
 				  }
 				  if(matchedData.size()>0) {
 					  mapTools2Params.put(t, params);
-					  System.out.println("matchedParams=" + matchedData);
+					  AppContext.debug("matchedParams=" + matchedData);
 					  interp.exec("print(inputParams)");
 				  }
 				  interp.exec("del ti");
@@ -728,14 +728,14 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 	       Set setMatchExt=new HashSet();
 		  for(ToolSection wf:toolClient.getTools()) {
 			  
-			  System.out.println(sectioncnt + "   "  + wf.getName().toUpperCase());
+			  AppContext.debug(sectioncnt + "   "  + wf.getName().toUpperCase());
 			  sectioncnt++;
 			  if(sections!=null && !sections.contains(wf.getName())) continue;	
 		       int toolcnt=1;
 		       
 		       
 			  for(Tool t:wf.getElems()) {
-				  System.out.println(toolcnt + "   " +  t.getId() + "  " + t.getName() + "  " + t.getDescription() + "  " + t.getUrl());
+				  AppContext.debug(toolcnt + "   " +  t.getId() + "  " + t.getName() + "  " + t.getDescription() + "  " + t.getUrl());
 				  
 				  if(t.getName()==null) {
 					  continue;
@@ -744,7 +744,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 			      // JSONObject jsonObj = new JSONObject("{\"phonetype\":\"N95\",\"cat\":\"WP\"}");
 				  if(t.getUrl()!=null && !t.getUrl().isEmpty()) {
 					  JSONObject jsonObj=new JSONObject(AppContext.readURL( AppContext.getGalaxyAddress() + t.getUrl() ));
-					  System.out.println(jsonObj.toString(4));
+					  AppContext.debug(jsonObj.toString(4));
 				  }
 				  //jsonObj.keys()
 				  
@@ -757,7 +757,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 					  //interp.exec("try:\n    ti=toolClient.show_tool(tool_id='" + t.getId() + "',io_details=True)\n    print(ti)\nexcept Exception as e:\n    print(str(e))\n    instance = sys.exc_info()[1]");
 					  boolean done=exec_with_timeout(interp,"try:\n    ti=toolClient.show_tool(tool_id='" + t.getId() + "',io_details=True)\n    print(ti)\nexcept Exception as e:\n    print(str(e))\n    instance = sys.exc_info()[1]",1000);
 					  if(!done) {
-						  System.out.println("Interrupted: " + t.getId() + "  " + t.getName());
+						  AppContext.debug("Interrupted: " + t.getId() + "  " + t.getName());
 						  
 						  
 						   //interp.close();
@@ -782,22 +782,22 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 					  ex.printStackTrace();
 					  Object ins= interp.get("instance");
 					  if(ins==null) {
-						  System.out.println("interp.get(\"instance\")==null");
+						  AppContext.debug("interp.get(\"instance\")==null");
 						  continue;
 					  }
-					  System.out.println(ins.getClass());
-					  System.out.println(ins);
+					  AppContext.debug(ins.getClass().toString());
+					  AppContext.debug(ins.toString());
 					  
 					  continue;
 				  }
 				  interp.exec("hasti = 'no'\nif \"ti\" in self.__dict__:\n    hasti = 'yes'");
 				  if( interp.get("ti")==null ||  ((PyObject)interp.get("hasti")).toString().equals("no")) {
-					  System.out.println("ti not defined");
+					  AppContext.debug("ti not defined");
 					  continue;
 				  }
 				  interp.exec("if 'inputs' in ti.keys():\n    inputParams = ti['inputs']\nelse:\n    inputParams=[]\n");
-				  //System.out.println(interp.get("inputParams"));
-				  //System.out.println(interp.get("inputParams").getClass());
+				  //AppContext.debug(interp.get("inputParams"));
+				  //AppContext.debug(interp.get("inputParams").getClass());
 				  PyList pl=(PyList)interp.get("inputParams");
 
 				  Set<String> matchedData=new LinkedHashSet();
@@ -810,7 +810,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 					  PyDictionary  pdict=(PyDictionary)itPl.next();
 					  String pname=(String)pdict.get("name");
 					  String paramprops=pdict.get("name") + ":" +  pdict.get("type") + ":" + pdict.get("extensions") +":" + pdict.get("label");
-					  System.out.println( "    " + paramprops);
+					  AppContext.debug( "    " + paramprops);
 					  for(String n:nameStarts) {
 						  if(pname.toLowerCase().startsWith(n.toLowerCase())) {
 							  matchedName.add(pname+":"+ pdict.get("extensions"));
@@ -824,7 +824,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 							  PyList datalist= (PyList)edams.get("edam_data");
 							  PyList formatlist=  (PyList)edams.get("edam_formats");
 							  
-							  System.out.println(datalist + "\n" + formatlist);
+							  AppContext.debug(datalist + "\n" + formatlist);
 							  if(datalist!=null && !datalist.equals("None")) matchedData.addAll(findMatches(formats, datalist, mapDatatypes[1], "edam_data"));
 							  if(formatlist!=null && !formatlist.equals("None")) matchedData.addAll(findMatches(formats, formatlist, mapDatatypes[3], "edam_format"));
 						  }
@@ -832,13 +832,13 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 					  PyList extslist= (PyList)pdict.get("extensions");
 					  if(extslist!=null && !extslist.equals("None")) {
 						  matchedData.addAll(findMatches(formats, extslist, mapDatatypes[5], "file_ext"));
-						  System.out.println(extslist);
+						  AppContext.debug(extslist.toString());
 					  }
 					  params.add(pdict.get("name") + ":" +  pdict.get("type") + ":" + pdict.get("extensions") +":" + pdict.get("label")  );
 				  }
 				  if(matchedData.size()>0) {
 					  mapTools2Params.put(t, params);
-					  System.out.println("matchedParams=" + matchedData);
+					  AppContext.debug("matchedParams=" + matchedData);
 					  interp.exec("print(inputParams)");
 				  }
 				  interp.exec("del ti");
@@ -1018,7 +1018,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 		    	histid=histNewjob.getId();
 		 	}
 		    if(histid!=null) {
-		    	System.out.println("Retrieving " + jobid + " previous run result"); 
+		    	AppContext.debug("Retrieving " + jobid + " previous run result"); 
 		    	String status[]=updateRunning(histid, instance, historyClient,jobid);
 		    	if(status[0].equals("ok")) return JobsFacade.JOBSTATUS_DONE;
 		    	else if(status[0].equals("running"))  return JobsFacade.JOBSTATUS_STARTING;
@@ -1032,7 +1032,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 	 private String[] updateRunning(String historyId , GalaxyInstance instance , HistoriesClient historyClient, String jobid) {
 		  	
 		 		// already created, get result (last dataset in history)
-		    	System.out.println("Retrieving previous run result"); 
+		    	AppContext.debug("Retrieving previous run result"); 
 		    	
 				try {
 		    	
@@ -1043,14 +1043,14 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 				    	
 				    	JobsClient jobClient = instance.getJobsClient();
 				    	for(Job j:jobClient.getJobsForHistory(historyId)) {
-				    		System.out.println("job tool:" + j.getToolId() + " " +  j.getState() + " " + j.getUpdated());    
+				    		AppContext.debug("job tool:" + j.getToolId() + " " +  j.getState() + " " + j.getUpdated());    
 				    		success= success && j.getState().equals("ok"); 
 				    		running=running || j.getState().equals("running");
 				    		queued=queued || j.getState().equals("queued");
 				    		newjob=newjob || j.getState().equals("new");
 				    		
 				    	}
-				    	System.out.println("success=" + success +", running=" + running + ", newjob=" + newjob + ", queued=" + queued);
+				    	AppContext.debug("success=" + success +", running=" + running + ", newjob=" + newjob + ", queued=" + queued);
 				    	HistoryContents outputDataset=null;
 				    	if(!success ) {
 				    		if(running) return new String[] {"running",historyId};
@@ -1065,11 +1065,11 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 					        		outputDataset=historyDataset;
 					        }
 					       
-					    	System.out.println("outputDataset=" + outputDataset.getId() + ",  Job done..downloading history " + historyId + ", job " + jobid + " from galaxy to snpseek/temp " +  jobid + ".zip" );
+					    	AppContext.debug("outputDataset=" + outputDataset.getId() + ",  Job done..downloading history " + historyId + ", job " + jobid + " from galaxy to snpseek/temp " +  jobid + ".zip" );
 					        
 					        //historyClient.downloadDataset(historyId, outputDataset.getId(), outfile);	
 					    	Dataset ds=historyClient.showDataset(historyId, outputDataset.getId());
-					    	System.out.println("ds.getFileSize()=" + ds.getFileSize() 
+					    	AppContext.debug("ds.getFileSize()=" + ds.getFileSize() 
 					    	+" ds.getDownloadUrl()=" + ds.getDownloadUrl()
 					    	+" ds.getFullDownloadUrl()=" + ds.getFullDownloadUrl()
 					    	+" ds.getGalaxyUrl()=" +  ds.getGalaxyUrl()
@@ -1113,7 +1113,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 	    History histNewjob=(History)exists( historyClient.getHistories(),jobid);
 	    if(histNewjob!=null) {
 	    	// already created, get result (last dataset in history)
-	    	System.out.println("Retrieving " + jobid + " previous run result"); 
+	    	AppContext.debug("Retrieving " + jobid + " previous run result"); 
 	    	return updateRunning(histNewjob.getId(), instance, historyClient,jobid);
 	    }
 	    
@@ -1139,7 +1139,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 			  String input1Id = null;
 			  String input2Id = null;
 			  for(final HistoryContents historyDataset : historyClient.showHistoryContents(histNewjob.getId())) {		  
-			    //System.out.println("Hist dataset:" + historyDataset.getId() + " " + historyDataset.getName());		    
+			    //AppContext.debug("Hist dataset:" + historyDataset.getId() + " " + historyDataset.getName());		    
 			    for(String inpname:mapInputname2Filename.keySet()) {
 			    	if(mapInputname2Filename.get(inpname)[1].equals("data_input")) {
 				    	String shortname=new File(mapInputname2Filename.get(inpname)[0]).getName();
@@ -1157,7 +1157,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 		    
 		    /*
 		    try {
-		    System.out.println( AppContext.readURL(AppContext.getGalaxyAddress() + workflowDetails.getUrl() ));
+		    AppContext.debug( AppContext.readURL(AppContext.getGalaxyAddress() + workflowDetails.getUrl() ));
 		    } catch(Exception ex) {
 		    	ex.printStackTrace();
 		    }
@@ -1180,9 +1180,9 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 		    }
 
 		    
-		    System.out.println("Steps..");
+		    AppContext.debug("Steps..");
 		    for(final Map.Entry<String, WorkflowStepDefinition> inputEntry : workflowDetails.getSteps().entrySet()) {
-		    	System.out.println(inputEntry.getKey() + "  " + inputEntry.getValue().getType() + "  " + inputEntry.getValue().toString());
+		    	AppContext.debug(inputEntry.getKey() + "  " + inputEntry.getValue().getType() + "  " + inputEntry.getValue().toString());
 			 }
 
 		    
@@ -1193,19 +1193,19 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 		    
 		    for(String inpname:mapInpname2InputEntryKey.keySet()) {
 		    	
-		    	System.out.println("setting input_file=" + inpname +  ",  inputentryid=" + mapInpname2InputEntryKey.get(inpname) + ", datasetid=" + mapInputname2Datasetid.get(inpname));
+		    	AppContext.debug("setting input_file=" + inpname +  ",  inputentryid=" + mapInpname2InputEntryKey.get(inpname) + ", datasetid=" + mapInputname2Datasetid.get(inpname));
 			    inputs.setInput(mapInpname2InputEntryKey.get(inpname), new WorkflowInputs.WorkflowInput(mapInputname2Datasetid.get(inpname), WorkflowInputs.InputSourceType.HDA));
 			    //inputs.setInput(workflowInput2Id, new WorkflowInputs.WorkflowInput(input2Id, WorkflowInputs.InputSourceType.HDA));
 		    }
 		    
-		    System.out.println(mapParam2Stepno);
+		    AppContext.debug(mapParam2Stepno.toString());
 		    for(String param:mapInputname2Filename.keySet()) {
-		    	System.out.println(  mapInputname2Filename.get(param)[0] + "   "  + mapInputname2Filename.get(param)[1] +   "   " +  mapInputname2Filename.get(param)[2]);
+		    	AppContext.debug(  mapInputname2Filename.get(param)[0] + "   "  + mapInputname2Filename.get(param)[1] +   "   " +  mapInputname2Filename.get(param)[2]);
 		    	if(mapInputname2Filename.get(param)[1].equals("data_input")) continue;
 		    	//String step=(String)mapParam2Stepno.get(param);
 		    	String step= mapInputname2Filename.get(param)[2].split("-")[1];
 		    	if(step==null) continue;
-		    	System.out.println("setting param="  + param +  "  , step=" + step +", value=" + mapInputname2Filename.get(param)[0]);
+		    	AppContext.debug("setting param="  + param +  "  , step=" + step +", value=" + mapInputname2Filename.get(param)[0]);
 		    	//inputs.setStepParameter( Integer.parseInt(step),new ToolParameter(param, mapInputname2Filename.get(param)[0])); 
 		    	 //inputs.setStepParameter(Integer.parseInt(step), "Input parameter", mapInputname2Filename.get(param)[0]);
 		    	//inputs .setStepParameter(Integer.parseInt(step), "Input parameter", mapInputname2Filename.get(param)[0]);
@@ -1215,30 +1215,30 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 		    	 
 		    }
 		     
-			//System.out.println("setting param= reference 'Input parameter'  , step=" + 2 +", value=nipponbare");
+			//AppContext.debug("setting param= reference 'Input parameter'  , step=" + 2 +", value=nipponbare");
 		    // inputs.setToolParameter("vcf2fasta_tabgatk", "reference", "nipponbare");
 
 	    	 //workflowsClient.runWorkflowResponse(inputs).
 		    
 		    //final ClientResponse response = workflowsClient.runWorkflowResponse(inputs);
-		    //System.out.println("response=" + response.toString());
+		    //AppContext.debug("response=" + response.toString());
 		    
 		    final WorkflowOutputs output = workflowsClient.runWorkflow(inputs);
 		    
-		    System.out.println( "getOutputIds=" + output.getOutputIds());
+		    AppContext.debug( "getOutputIds=" + output.getOutputIds());
 		    
 		    JobsClient jc= instance.getJobsClient();
 		    for(Job j:jc.getJobsForHistory(output.getHistoryId())) {
-		    	System.out.println("job: "  + j.getId() + " " + j.getState() + "  " + j.getToolId() + "  " +  j.getUpdated() + "  "  + j.getUrl());
+		    	AppContext.debug("job: "  + j.getId() + " " + j.getState() + "  " + j.getToolId() + "  " +  j.getUpdated() + "  "  + j.getUrl());
 		    }
 
 		    //workflowsClient.( ) .showWorkflow(output.)
-		    System.out.println("job running in " + histNewjob.getUrl());
+		    AppContext.debug("job running in " + histNewjob.getUrl());
 		    
-		    System.out.println("Running workflow in history " + output.getHistoryId());
+		    AppContext.debug("Running workflow in history " + output.getHistoryId());
 		    String output2Id=null;
 		    for(String outputId : output.getOutputIds()) {
-		      System.out.println("  Workflow writing to output id " + outputId);
+		      AppContext.debug("  Workflow writing to output id " + outputId);
 		      output2Id=outputId;
 		    }
 		    
@@ -1264,7 +1264,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 	    History histNewjob=(History)exists( historyClient.getHistories(),jobid);
 	    if(histNewjob!=null) {
 	    	// already created, get result (last dataset in history)
-	    	System.out.println("Retrieving previous run result"); 
+	    	AppContext.debug("Retrieving previous run result"); 
 	    	
 	    	
 	    	boolean success=true;
@@ -1274,7 +1274,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 	    	
 	    	JobsClient jobClient = instance.getJobsClient();
 	    	for(Job j:jobClient.getJobsForHistory(histNewjob.getId())) {
-	    		System.out.println("job tool:" + j.getToolId() + " " +  j.getState() + " " + j.getUpdated());    
+	    		AppContext.debug("job tool:" + j.getToolId() + " " +  j.getState() + " " + j.getUpdated());    
 	    		success= success && j.getState().equals("ok"); 
 	    		running=running || j.getState().equals("running");
 	    		queued=queued || j.getState().equals("queued");
@@ -1312,7 +1312,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 		  String input1Id = null;
 		  String input2Id = null;
 		  for(final HistoryContents historyDataset : historyClient.showHistoryContents(histNewjob.getId())) {		  
-		    System.out.println("Hist dataset:" + historyDataset.getId() + " " + historyDataset.getName());
+		    AppContext.debug("Hist dataset:" + historyDataset.getId() + " " + historyDataset.getName());
 		    if(historyDataset.getName().equals("snplist.bed")) {
 		      input1Id = historyDataset.getId();
 		    }
@@ -1350,10 +1350,10 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 	    final WorkflowOutputs output = workflowsClient.runWorkflow(inputs);
 	    
 	    
-	    System.out.println("Running workflow in history " + output.getHistoryId());
+	    AppContext.debug("Running workflow in history " + output.getHistoryId());
 	    String output2Id=null;
 	    for(String outputId : output.getOutputIds()) {
-	      System.out.println("  Workflow writing to output id " + outputId);
+	      AppContext.debug("  Workflow writing to output id " + outputId);
 	      output2Id=outputId;
 	    }
 	    

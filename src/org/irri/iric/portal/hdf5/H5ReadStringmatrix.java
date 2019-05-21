@@ -379,7 +379,7 @@ public class H5ReadStringmatrix implements H5ReadMatrix {
 		}
 
 		for (int indx = 0; indx < str_data.length; indx++)
-			System.out.println(DATASETNAME + " [" + indx + "]: " + str_data[indx]);
+			AppContext.debug(DATASETNAME + " [" + indx + "]: " + str_data[indx]);
 
 		try {
 			H5.H5Tclose(type_id);

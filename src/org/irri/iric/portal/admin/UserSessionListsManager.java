@@ -66,7 +66,7 @@ public class UserSessionListsManager {
 		// locusService=(LocusService)AppContext.checkBean(locusService,
 		// "LocusService");
 		// listdao=(ListItemsDAO)AppContext.checkBean(listdao, "ListItemsDAO");
-		System.out.println("created UserSessionManager:" + this);
+		AppContext.debug("created UserSessionManager:" + this);
 	}
 
 	class DatasetPhenotypeParams {

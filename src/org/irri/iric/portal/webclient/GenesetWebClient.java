@@ -112,7 +112,7 @@ public class GenesetWebClient {
 
 		// Close the browser
 		driver.quit();
-		// System.out.println("done..");
+		// AppContext.debug("done..");
 		return driver.getCurrentUrl();
 	}
 
@@ -139,14 +139,14 @@ public class GenesetWebClient {
 
 		// Close the browser
 		driver.quit();
-		// System.out.println("done..");
+		// AppContext.debug("done..");
 
 		return driver.getCurrentUrl();
 	}
 
 	//
 	// private void postRicenetNetworkNGA(String genelist){
-	// System.out.println("postRicenetNetworkNGA .. ");
+	// AppContext.debug("postRicenetNetworkNGA .. ");
 	// if(genelist==null)
 	// genelist="LOC_Os01g32460 LOC_Os01g32380 LOC_Os08g34740 LOC_Os09g30412
 	// LOC_Os02g33180 LOC_Os12g36880 LOC_Os06g49430 LOC_Os02g54600 LOC_Os01g32660
@@ -174,16 +174,16 @@ public class GenesetWebClient {
 	// HtmlPage page2 = button.click(); //final line
 	//
 	//
-	// System.out.println(page2.asText());
+	// AppContext.debug(page2.asText());
 	//
-	// System.out.println("base URI: " + page2.getBaseURI());
+	// AppContext.debug("base URI: " + page2.getBaseURI());
 	//
 	//
 	// webClient.close();
 	// } catch(Exception ex) {
 	// ex.printStackTrace();
 	// }
-	// System.out.println("postRicenetNetworkNGA .. done");
+	// AppContext.debug("postRicenetNetworkNGA .. done");
 	//
 	// }
 	//
@@ -205,14 +205,14 @@ public class GenesetWebClient {
 	// WebElement query = driver.findElement(By.name("q"));
 	// query.sendKeys("Cheese");
 	//
-	// System.out.println("..done");
+	// AppContext.debug("..done");
 	//
 	// }
 	//
 	//
 	public static void main(String[] args) {
 
-		System.out.println("test");
+		AppContext.debug("test");
 		GenesetWebClient client = new GenesetWebClient();
 		Set sites = new HashSet();
 		sites.add(GenesetWebClient.RicenetNetworkNGA);
@@ -230,7 +230,7 @@ public class GenesetWebClient {
 	// public void mainSample(String[] args) {
 	// //WebClient webClient = new WebClient();
 	// try {
-	// System.out.println("starting...");
+	// AppContext.debug("starting...");
 	//
 	// WebClient webClient = new WebClient();
 	// final HtmlPage page = webClient.getPage("http://htmlunit.sourceforge.net");
@@ -241,19 +241,19 @@ public class GenesetWebClient {
 	// //Assert.assertTrue(pageAsXml.contains("<body class=\"composite\">"));
 	// assert(pageAsXml.contains("<body class=\"composite\">"));
 	//
-	// System.out.println("page as xml..");
-	// System.out.println(pageAsXml);
+	// AppContext.debug("page as xml..");
+	// AppContext.debug(pageAsXml);
 	//
 	// final String pageAsText = page.asText();
 	// //Assert.assertTrue(pageAsText.contains("Support for the HTTP and HTTPS
 	// protocols"));
 	// assert(pageAsText.contains("Support for the HTTP and HTTPS protocols"));
 	//
-	// System.out.println("page as text..");
-	// System.out.println(pageAsText);
+	// AppContext.debug("page as text..");
+	// AppContext.debug(pageAsText);
 	//
 	//
-	// System.out.println("done..");
+	// AppContext.debug("done..");
 	//
 	//
 	// } catch(Exception ex ) {

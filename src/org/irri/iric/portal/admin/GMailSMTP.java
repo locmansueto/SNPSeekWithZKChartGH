@@ -9,6 +9,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.irri.iric.portal.AppContext;
+
 public class GMailSMTP {
 	
 	public static void sendMailTLS(String[] args) {
@@ -41,7 +43,7 @@ public class GMailSMTP {
  
 			Transport.send(message);
  
-			System.out.println("Done");
+			AppContext.debug("Done");
  
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
@@ -76,7 +78,7 @@ public class GMailSMTP {
  
 			Transport.send(message);
  
-			System.out.println("Done");
+			AppContext.debug("Done");
  
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);

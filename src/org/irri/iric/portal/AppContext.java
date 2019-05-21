@@ -1350,7 +1350,7 @@ public class AppContext {
 			}
 		} 
 		*/
-		System.out.println(msg);
+		log.info(msg);
 	}
 
 	// display in debug mode

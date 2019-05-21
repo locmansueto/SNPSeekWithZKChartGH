@@ -44,7 +44,7 @@ public class ZKSessionCleaner implements SessionCleanup {
 		 * oraclesessionDao.findVOracleSessionsByAction( zksession.getNativeSession(
 		 * ).toString()).iterator(); while(itOracleSession.hasNext()) { VOracleSessions
 		 * orasession = itOracleSession.next();
-		 * System.out.println("Killing Oracle process: " + orasession.getSid() + "," +
+		 * AppContext.debug("Killing Oracle process: " + orasession.getSid() + "," +
 		 * orasession.getSerial_() + "," + orasession.getUsername() + "," +
 		 * orasession.getProgram() ); }
 		 */
@@ -54,17 +54,17 @@ public class ZKSessionCleaner implements SessionCleanup {
 		if (manager != null) {
 			zksession.removeAttribute("manager");
 			manager = null;
-			System.out.println("manager removed from zksession and freed");
+			AppContext.debug("manager removed from zksession and freed");
 		}
 		manager = ((HttpSession) zksession.getNativeSession()).getAttribute("manager");
 		if (manager != null) {
 			zksession.removeAttribute("manager");
 			manager = null;
-			System.out.println("manager removed from getNativeSession and freed");
+			AppContext.debug("manager removed from getNativeSession and freed");
 		}
 
 		if (AppContext.isIRRILAN())
-			// System.out.println("Cleaning onClose session " + zksession.getRemoteHost() +
+			// AppContext.debug("Cleaning onClose session " + zksession.getRemoteHost() +
 			// " " + zksession.getRemoteAddr() + " id=" +
 			// ((HttpSession)Sessions.getCurrent().getNativeSession()).getId() );
 			AppContext.debug("Cleaning onClose session " + zksession.getRemoteHost() + "  " + zksession.getRemoteAddr()
@@ -72,9 +72,9 @@ public class ZKSessionCleaner implements SessionCleanup {
 					+ zksession.getNativeSession());
 
 		if (!getSession().isConnected())
-			System.out.println("session is not connected");
+			AppContext.debug("session is not connected");
 		else if (!getSession().isOpen())
-			System.out.println("session is not open");
+			AppContext.debug("session is not open");
 		else {
 			try {
 				getSession().cancelQuery();
@@ -90,12 +90,12 @@ public class ZKSessionCleaner implements SessionCleanup {
 		 * //zksession.get entityManager =
 		 * (EntityManager)AppContext.checkBean(entityManager, "IRIC_Production");
 		 * 
-		 * if(entityManager.isOpen()) { System.out.println("Closing entity manager");
+		 * if(entityManager.isOpen()) { AppContext.debug("Closing entity manager");
 		 * 
 		 * java.sql.Connection connection =
 		 * entityManager.unwrap(java.sql.Connection.class); entityManager.close(); if(
 		 * connection!=null && !connection.isClosed()) {
-		 * System.out.println("Closing connection"); connection.close(); }
+		 * AppContext.debug("Closing connection"); connection.close(); }
 		 * 
 		 * }
 		 */

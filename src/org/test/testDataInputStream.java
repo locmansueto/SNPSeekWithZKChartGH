@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.irri.iric.portal.AppContext;
+
 public class testDataInputStream {
 
 	public static void main(String args[]) {
@@ -21,7 +23,7 @@ public class testDataInputStream {
 			String dir = "E:/";
 			File file = new File(dir + fileName + ".txt");
 
-			System.out.println(file.getAbsolutePath());
+			AppContext.debug(file.getAbsolutePath());
 
 			int it = 1;
 			boolean createFile = true;

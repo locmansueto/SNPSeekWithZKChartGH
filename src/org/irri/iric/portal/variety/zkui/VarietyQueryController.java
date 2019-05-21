@@ -457,7 +457,7 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 						url = "treeBrowser3023color2.html";
 					}
 
-					System.out.println(url);
+					AppContext.debug(url);
 					iframePhylotree.setSrc(url);
 					iframePhylotree.setVisible(true);
 

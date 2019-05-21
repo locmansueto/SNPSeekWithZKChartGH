@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.irri.iric.portal.AppContext;
+
 public class CancelQueryThread implements Runnable {
 	private org.hibernate.Session hsession = null;
 	String longRunningSQL = "select * from all_objects";
@@ -18,13 +20,13 @@ public class CancelQueryThread implements Runnable {
 		Statement stmt = null;
 
 		try {
-			System.out.println("Executing statement....");
+			AppContext.debug("Executing statement....");
 			rset = stmt.executeQuery(longRunningSQL);
-			System.out.println("Processing resultset now..");
+			AppContext.debug("Processing resultset now..");
 			while (rset.next()) {
 				i++;
 			}
-			System.out.println("Finished with resultset and statement now..");
+			AppContext.debug("Finished with resultset and statement now..");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

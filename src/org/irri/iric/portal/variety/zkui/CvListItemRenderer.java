@@ -1,5 +1,6 @@
 package org.irri.iric.portal.variety.zkui;
 
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.CvTerm;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listcell;
@@ -20,7 +21,7 @@ public class CvListItemRenderer implements ListitemRenderer {
 			CvTerm item = (CvTerm) value;
 			strdisplay = item.getDefinition();
 
-			System.out.println(
+			AppContext.debug(
 					"<listitem label=\"" + item.getDefinition() + "\" value=\"" + item.getCvTermId() + "\" />");
 
 			listitem.setValue(item.getCvTermId());

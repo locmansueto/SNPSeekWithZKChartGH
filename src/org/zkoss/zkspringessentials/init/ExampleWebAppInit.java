@@ -3,6 +3,7 @@
  */
 package org.zkoss.zkspringessentials.init;
 
+import org.irri.iric.portal.AppContext;
 import org.zkoss.zk.ui.WebApp;
 import org.zkoss.zk.ui.util.WebAppInit;
 
@@ -19,7 +20,7 @@ public class ExampleWebAppInit implements WebAppInit {
 	 */
 	public void init(WebApp wapp) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("Webapp init...");
+		AppContext.debug("Webapp init...");
 
 	}
 

@@ -78,7 +78,7 @@ var MySeqs = [];
 			}
 			
 			DecimalFormat formatter = new DecimalFormat("#0.00");     
-			System.out.println(formatter.format(4.0));
+			AppContext.debug(formatter.format(4.0));
 			Position[] pos = alignmentTable.getPosition();
 			for(int i=0; i<pos.length; i++) {
 				String strpos =  formatter.format(pos[i].getPosition().doubleValue()).replace(".00", "");

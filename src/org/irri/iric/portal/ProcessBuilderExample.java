@@ -31,10 +31,10 @@ public class ProcessBuilderExample
     StringBuilder stderr = commandExecutor.getStandardErrorFromCommand();
     
     // print the stdout and stderr
-    System.out.println("The numeric result of the command was: " + result);
-    System.out.println("STDOUT:");
-    System.out.println(stdout);
-    System.out.println("STDERR:");
-    System.out.println(stderr);
+    AppContext.debug("The numeric result of the command was: " + result);
+    AppContext.debug("STDOUT:");
+    AppContext.debug(stdout.toString());
+    AppContext.debug("STDERR:");
+    AppContext.debug(stderr.toString());
   }
 }

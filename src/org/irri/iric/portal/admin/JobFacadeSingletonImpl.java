@@ -166,12 +166,12 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 		StringBuffer s=new StringBuffer();
 		for(int i=0; i<level;i++) s.append("  ");
 		s.append(level + ": " + msg);
-		System.out.println(s);
+		AppContext.debug(s.toString());
 		//AppContext.debug(s.toString());
 	}
 	/*
 	private void log(String msg) {
-		System.out.println(msg);
+		AppContext.debug(msg);
 	}
 	*/
 	
@@ -597,7 +597,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 
 		//	log(level,"    " + line);
 		}
-		//System.out.println();
+		//AppContext.debug();
 	}
 
 	private static File createSampleFile(String data) throws IOException {
@@ -620,9 +620,9 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 
 	/*
 	 * private Writer getWriter() throws Exception { if(useS3()) {
-	 * System.out.println("Writing object");
+	 * AppContext.debug("Writing object");
 	 * 
-	 * System.out.println("Uploading a new object to S3 from a file\n"); File
+	 * AppContext.debug("Uploading a new object to S3 from a file\n"); File
 	 * file = File.createTempFile("aws-java-sdk-", ".txt"); file.deleteOnExit();
 	 * Writer writer = new OutputStreamWriter(new FileOutputStream(file));
 	 * return writer; } try { BufferedWriter bw=new BufferedWriter(new
@@ -735,7 +735,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 		if (useS3()) {
 			log(level,"Downloading an object " + activedonejobkey);
 			S3Object object = s3.getObject(new GetObjectRequest(getBucket(), activedonejobkey));
-			//System.out.println("Content-Type: " + object.getObjectMetadata().getContentType());
+			//AppContext.debug("Content-Type: " + object.getObjectMetadata().getContentType());
 			log(level,"S3 reader "+activedonejobkey );
 			return new BufferedReader(new InputStreamReader(object.getObjectContent()));
 		}
@@ -756,7 +756,7 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 		if (useS3()) {
 			log(level,"Downloading an object " + downlaodedjobkey);
 			S3Object object = s3.getObject(new GetObjectRequest(getBucket(), downlaodedjobkey));
-			//System.out.println("Content-Type: " + object.getObjectMetadata().getContentType());
+			//AppContext.debug("Content-Type: " + object.getObjectMetadata().getContentType());
 			log(level,"S3 reader "+downlaodedjobkey );
 			return new BufferedReader(new InputStreamReader(object.getObjectContent()));
 		}

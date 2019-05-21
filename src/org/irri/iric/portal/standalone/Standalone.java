@@ -41,16 +41,16 @@ public class Standalone {
 		try {
 			genomics = (GenomicsFacade) AppContext.checkBean(genomics, "GenomicsFacade");
 			List<String> org = genomics.getOrganisms();
-			System.out.println("orgs: " + org);
-			System.out.println("contig: " + genomics.getContigsByOrganism(org.get(0)));
+			AppContext.debug("orgs: " + org);
+			AppContext.debug("contig: " + genomics.getContigsByOrganism(org.get(0)));
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			System.out.println("Genomics.getOrganisms() exception");
+			AppContext.debug("Genomics.getOrganisms() exception");
 		}
 
 		try {
 			// gwas= (GwasFacade)AppContext.checkBean(gwas, "GwasFacade");
-			// System.out.println( "GwasFacade: " + gwas.getTraits());
+			// AppContext.debug( "GwasFacade: " + gwas.getTraits());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -58,20 +58,20 @@ public class Standalone {
 		try {
 
 			variety = (VarietyFacade) AppContext.checkBean(variety, "VarietyFacade");
-			System.out.println("variety: " + variety.getCountries(VarietyFacade.DATASET_SNPINDELV2_IUPAC));
+			AppContext.debug("variety: " + variety.getCountries(VarietyFacade.DATASET_SNPINDELV2_IUPAC));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		/*
 		 * try { workspace= (WorkspaceFacade)AppContext.checkBean(workspace,
-		 * "WorkspaceFacade"); System.out.println( "workspace: " +
+		 * "WorkspaceFacade"); AppContext.debug( "workspace: " +
 		 * workspace.getLocuslistNames()); }catch(Exception ex) { ex.printStackTrace();
 		 * }
 		 */
 
 		try {
 			genotype = (GenotypeFacade) AppContext.checkBean(genotype, "GenotypeFacade");
-			System.out.println("chromosomes: " + genotype.getChromosomes());
+			AppContext.debug("chromosomes: " + genotype.getChromosomes());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -79,7 +79,7 @@ public class Standalone {
 	}
 
 	public static void main(final String[] args) {
-		System.out.println("starting..");
+		AppContext.debug("starting..");
 		final ApplicationContext context = new ClassPathXmlApplicationContext(CONFIG_PATH);
 		// new XmlWebApplicationContext(); //CONFIG_PATH);
 
@@ -91,7 +91,7 @@ public class Standalone {
 		// org.springframework.context.support.SimpleThreadScope());
 
 		minimalSpringApp.sayHello();
-		System.out.println("done..");
+		AppContext.debug("done..");
 	}
 
 }

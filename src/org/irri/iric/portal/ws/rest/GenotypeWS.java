@@ -417,7 +417,7 @@ public class GenotypeWS {
 	 * @Path("/sendemail")
 	 * 
 	 * @Produces(MediaType.TEXT_PLAIN) public Response sendEmail(@FormParam("email")
-	 * String email) { System.out.println(email); return Response.ok("email=" +
+	 * String email) { AppContext.debug(email); return Response.ok("email=" +
 	 * email).build(); }
 	 */
 
@@ -428,7 +428,7 @@ public class GenotypeWS {
 	 * @POST
 	 * 
 	 * @Consumes(MediaType.APPLICATION_JSON) public void setJsonl(String array){
-	 * JSONArray o = new JSONArray(last_data); System.out.println(o.toString()); }
+	 * JSONArray o = new JSONArray(last_data); AppContext.debug(o.toString()); }
 	 */
 
 }

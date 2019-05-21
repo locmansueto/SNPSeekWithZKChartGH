@@ -265,7 +265,7 @@ public class JobsFacadeGalaxyImpl implements  JobsFacade {
 		s.append("GalaxyJob ");
 		for(int i=0; i<level;i++) s.append("  ");
 		s.append(level + ": " + msg);
-		System.out.println(s);
+		AppContext.debug(s.toString());
 		//AppContext.debug(s.toString());
 	}
 	

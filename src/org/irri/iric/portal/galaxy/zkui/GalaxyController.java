@@ -172,7 +172,7 @@ public class GalaxyController extends SelectorComposer<Window> {
 				jobid="galaxywf-"+  wf.getName().replace(" ","_").replace(":","_").replace("-","_").toLowerCase() + "-" + AppContext.createTempFilename() ;
 				if(sync) {
 					AppContext.debug("running synch job " + jobid);
-					System.out.println("Executing wf " + wf.getName() + " with params " + mapParam2Value);
+					AppContext.debug("Executing wf " + wf.getName() + " with params " + mapParam2Value);
 					String[] status=galaxy.runWorkflow(wf, mapParam2Value, jobid); 
 					AppContext.debug("runWorkflow Synch result:" + status[0]);
 					if(status[0].equals(JobsFacade.JOBSTATUS_DONE)) {
@@ -193,7 +193,7 @@ public class GalaxyController extends SelectorComposer<Window> {
 				}
 				else {
 					AppContext.debug("running asynch job " + jobid);
-					System.out.println("Submitting asynch wf " + wf.getName() + " with params " + mapParam2Value);
+					AppContext.debug("Submitting asynch wf " + wf.getName() + " with params " + mapParam2Value);
 					/*
 					Future future=galaxy.runWorkflowAsync(wf, mapParam2Value, jobid, new File(AppContext.getTempDir()+jobid)); 
 					ret=new Object[] {jobid,future};
@@ -306,7 +306,7 @@ public class GalaxyController extends SelectorComposer<Window> {
 	
 	@Listen("onUpload =#uploadButton")
 	public void onUpload(Event event) {
-		System.out.println(event);
+		AppContext.debug(event.toString());
 		try {
 			org.zkoss.util.media.Media media = ((UploadEvent) event).getMedia();
 				media.getStringData();
@@ -336,7 +336,7 @@ public class GalaxyController extends SelectorComposer<Window> {
 
             byte[] bFile = media.getByteData();
 
-            System.out.println(String.format("File Name: %s, Format: %s" , name, format ));
+            AppContext.debug(String.format("File Name: %s, Format: %s" , name, format ));
         }
     }
 	

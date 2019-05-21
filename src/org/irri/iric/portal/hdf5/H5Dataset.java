@@ -100,7 +100,7 @@ public class H5Dataset implements SnpsStringDAO {
 	public Dataset getDataset() throws Exception {
 		if (dataset == null) {
 
-			// System.out.println( "HDF5Constants.H5F_ACC_RDONLY="+
+			// AppContext.debug( "HDF5Constants.H5F_ACC_RDONLY="+
 			// HDF5Constants.H5F_ACC_RDONLY ); // HDF5Constants.H5F_ACC_RDONLY );
 
 			h5file = new H5File(filename, H5File.READ); // HDF5Constants.H5F_ACC_RDONLY );
@@ -121,7 +121,7 @@ public class H5Dataset implements SnpsStringDAO {
 				for (int idim = 0; idim < maxdims.length; idim++) {
 					buff.append("hdf5 file " + filename + " dim[" + idim + "]=" + maxdims[idim] + ",");
 				}
-				// System.out.println(buff.toString());
+				// AppContext.debug(buff.toString());
 				AppContext.debug(buff.toString());
 			}
 		}
@@ -131,7 +131,7 @@ public class H5Dataset implements SnpsStringDAO {
 	public void close() {
 		try {
 			h5file.close();
-			System.out.println("hdf5 file " + filename + " closed.");
+			AppContext.debug("hdf5 file " + filename + " closed.");
 		} catch (Exception ex) {
 		}
 	}

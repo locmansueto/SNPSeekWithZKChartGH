@@ -1060,7 +1060,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		int lenq=intboxAlignEnd.getValue()- intboxAlignStart.getValue();
 		int sqtart= intboxAlignStart.getValue()+getRandomNumberInRange(0,100000);
 		
-		System.out.println("qacc=" + qacc);
+		AppContext.debug("qacc=" + qacc);
 		locusalignmentresult.add(new 
 			LocalAlignmentImpl(qacc, "chr01|"+target.toLowerCase()  , 0.0,intboxAlignStart.getValue()+getRandomNumberInRange(0,10),
 					intboxAlignEnd.getValue()-getRandomNumberInRange(0,10), 
@@ -1094,7 +1094,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	
 	@Listen("onSelect =#listboxAlignment")
 	public void onselectAlign(Event e) throws InterruptedException{
-		System.out.println( "onSelect =#listboxAlignment");
+		AppContext.debug( "onSelect =#listboxAlignment");
 		LocalAlignment item=(LocalAlignment)listboxAlignment.getSelectedItem();
 		String contorg[]=item.getSacc().split("\\|");
 		intStart.setValue(item.getSstart().intValue());
@@ -1427,7 +1427,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			/*
 			tabJbrowse.addEventListener(org.zkoss.zk.ui.event.Events.ON_CLICK, 
 			new EventListener() { 
-			public void onEvent(org.zkoss.zk.ui.event.Event evt) { System.out.println("CLICK"); } }); 
+			public void onEvent(org.zkoss.zk.ui.event.Event evt) { AppContext.debug("CLICK"); } }); 
 			*/
 
 
@@ -10978,7 +10978,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				// AppContext.debug( "o1_0=" + o1.get(0) + " o2_0=" + o2.get(0));
 				// AppContext.debug( "o1[" + _mmc._x + "]=" + o1[_mmc._x] + ", o2[" + _mmc._x +
 				// "]=" + o2[_mmc._x]);
-				// System.out.println( "o1[" + _mmc._x + "]=" + o1.get(_mmc._x) + ", o2[" +
+				// AppContext.debug( "o1[" + _mmc._x + "]=" + o1.get(_mmc._x) + ", o2[" +
 				// _mmc._x + "]=" + o2.get(_mmc._x));
 
 				// return o1.get(_mmc._x).compareTo(o2.get(_mmc._x)) * (_acs ? 1 : -1);

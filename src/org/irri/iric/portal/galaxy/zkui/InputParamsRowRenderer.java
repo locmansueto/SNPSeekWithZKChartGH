@@ -74,7 +74,7 @@ public class InputParamsRowRenderer implements RowRenderer{
 	           					} catch (Exception ex) {
 	           						AppContext.debug(ex.getMessage());
 	           						ex.getStackTrace();
-	           						System.out.println("Select file failed");
+	           						AppContext.debug("Select file failed");
 	           					}
 	           				}
 	           			});
@@ -112,7 +112,7 @@ public class InputParamsRowRenderer implements RowRenderer{
 			new Textbox(typestepno).setParent(row);
 		} catch(Exception ex) {
 			ex.printStackTrace();
-			System.out.println(params[0]);
+			AppContext.debug(params[0]);
 		}
 
 	}

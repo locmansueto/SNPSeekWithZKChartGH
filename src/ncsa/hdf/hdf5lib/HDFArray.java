@@ -13,6 +13,8 @@
 
 package ncsa.hdf.hdf5lib;
 
+import org.irri.iric.portal.AppContext;
+
 import ncsa.hdf.hdf5lib.exceptions.HDF5Exception;
 import ncsa.hdf.hdf5lib.exceptions.HDF5JavaException;
 
@@ -513,7 +515,7 @@ public class HDFArray {
                 else {
                     /* check range of index */
                     if (index > (ArrayDescriptor.dimlen[i] - 1)) {
-                        System.out.println("out of bounds?");
+                        AppContext.debug("out of bounds?");
                         return null;
                     }
                     oo = java.lang.reflect.Array.get(oo, index);
@@ -1076,16 +1078,16 @@ class ArrayDescriptor {
      * Debug dump
      */
     public void dumpInfo() {
-        System.out.println("Type: " + theType);
-        System.out.println("Class: " + theClass);
-        System.out.println("NT: " + NT + " NTsize: " + NTsize);
-        System.out.println("Array has " + dims + " dimensions (" + totalSize
+        AppContext.debug("Type: " + theType);
+        AppContext.debug("Class: " + theClass);
+        AppContext.debug("NT: " + NT + " NTsize: " + NTsize);
+        AppContext.debug("Array has " + dims + " dimensions (" + totalSize
                 + " bytes)");
         int i;
         for (i = 0; i <= dims; i++) {
             Class tc = objs[i].getClass();
             String ss = tc.toString();
-            System.out.println(i + ":  start " + dimstart[i] + ": len "
+            AppContext.debug(i + ":  start " + dimstart[i] + ": len "
                     + dimlen[i] + " current " + currentindex[i]
                     + " bytetoindex " + bytetoindex[i] + " object " + objs[i]
                     + " otype " + ss);

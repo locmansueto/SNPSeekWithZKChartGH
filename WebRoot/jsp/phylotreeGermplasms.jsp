@@ -36,7 +36,7 @@
 <%
 	
 	
-		System.out.println("in jsp/phylotreeGermplasms.jsp  " + request.getRequestURL() +  " map=" + request.getParameterMap());
+		AppContext.debug("in jsp/phylotreeGermplasms.jsp  " + request.getRequestURL() +  " map=" + request.getParameterMap());
 	
 		String newick = "";
 
@@ -60,7 +60,7 @@
 				if(variety==null) throw new RuntimeException("variety==null");
 				
 				//if(request.getParameter("nsftvid")==null) throw new RuntimeException("request.getParameter(nsftvid)==null");
-				//System.out.println(request.getParameter("nsftvid"));
+				//AppContext.debug(request.getParameter("nsftvid"));
 				
 				String varlist = (String)request.getParameter("varid");
 
@@ -134,7 +134,7 @@
 						request.getSession().putValue("phyloorder",newicknodes[3]);
 					}
 					
-					System.out.println("jsp: newick file available");
+					AppContext.debug("jsp: newick file available");
 				}
 				
 				
@@ -152,7 +152,7 @@
 				}
 
 				
-				System.out.println("jsp: constructing tree");
+				AppContext.debug("jsp: constructing tree");
 				//newicknodes = genotype.constructPhylotreeMindist(request.getParameter("scale") , request.getParameter("chr") ,Integer.parseInt(request.getParameter("start")) ,
 				//										Integer.parseInt(request.getParameter("end")), (String)request.getParameter("mindist"));
 				
@@ -190,18 +190,18 @@
 						fw.close();
 					}
 					*/
-					System.out.println("jsp: newick file available");
+					AppContext.debug("jsp: newick file available");
 				}
 				
 			
 				
 		} 
 					
-		//System.out.println(newick);		
+		//AppContext.debug(newick);		
 		//newick=	"'" + newick.replace("'", "").replace("\"", "").replace("-","").replace("_","-") + "'" ; 
 		//newick=	"'" + newick.replace("'", "").replace("\"", "").replace("-","").replace("_","-") + "'" ; 
 		newick= "'" + newick.replace("\"", "").replace(":-",":")  + "'";
-		//System.out.println(newick);
+		//AppContext.debug(newick);
 		
 		int height=20*nvars;
 		//int width=20*nvars;

@@ -222,7 +222,7 @@ public class CreateZipMultipleFiles {
 	 public static void zipDir(String zipFileName, String dir) throws Exception {
 		    File dirObj = new File(dir);
 		    ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName));
-		    System.out.println("Creating : " + zipFileName);
+		    AppContext.debug("Creating : " + zipFileName);
 		    File filepref=new File(dir);
 		    addDir(dirObj, out, filepref.getAbsolutePath());
 		    out.close();
@@ -248,7 +248,7 @@ public class CreateZipMultipleFiles {
 		      */
 		      if(filename.startsWith("\\")) filename=filename.substring(1);
 		      
-		      System.out.println(" Adding: " + files[i].getAbsolutePath() + " with name " + filename );
+		      AppContext.debug(" Adding: " + files[i].getAbsolutePath() + " with name " + filename );
 
 		      out.putNextEntry(new ZipEntry(filename));
 		      

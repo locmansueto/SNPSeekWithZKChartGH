@@ -167,7 +167,7 @@ public class AppContextHardcoded {
     public static void resetTimer(String report) {
     	long endTime  = System.currentTimeMillis();  	
     	long endTimeDate  = new Date().getTime();  
-    	//System.out.println(endTime- startTime + " ms " + report);
+    	//AppContext.debug(endTime- startTime + " ms " + report);
     	debug( "TIMER: " + (endTime- startTime) + " ms (system),  " + ( endTimeDate-startTimeDate) + " ms (date) : " + report);
     	startTime=endTime;
     	startTimeDate = endTimeDate;
@@ -401,7 +401,7 @@ public class AppContextHardcoded {
     }
 
     public static void logger(String msg) {
-    	System.out.println(msg);
+    	AppContext.debug(msg);
     }
     
     // display on expected error
@@ -618,12 +618,12 @@ public class AppContextHardcoded {
     	
     	if (obj==null) {
     		log.debug(name + "==null using static");
-    		System.out.println(name + "==null using getApplicationContext");
+    		AppContext.debug(name + "==null using getApplicationContext");
     		obj = AppContextHardcoded.getApplicationContext().getBean(name);
     	}   	
     	if (obj==null) {
     		log.debug(name + "==null using SpringUtil");
-    		System.out.println(name + "==null using SpringUtil");
+    		AppContext.debug(name + "==null using SpringUtil");
     		obj = SpringUtil.getBean(name);
     	}
     	
@@ -631,7 +631,7 @@ public class AppContextHardcoded {
     	
     	/*
     	if (obj==null) {
-    		System.out.println(name + "==null using new!");
+    		AppContext.debug(name + "==null using new!");
     		log.debug(name + "==null using new!");
     		Class<?> c;
 			try {

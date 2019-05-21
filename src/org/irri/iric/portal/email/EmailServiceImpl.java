@@ -12,6 +12,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.irri.iric.portal.AppContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -196,12 +197,12 @@ public class EmailServiceImpl implements EmailService {
 		Transport transport = session.getTransport();
 
 		try {
-			System.out.println("Sending...");
+			AppContext.debug("Sending...");
 
 			transport.connect(HOST, SMTP_USERNAME, SMTP_PASSWORD);
 
 			transport.sendMessage(msg, msg.getAllRecipients());
-			System.out.println("Email sent!");
+			AppContext.debug("Email sent!");
 		} finally {
 			// Close and terminate the connection.
 			transport.close();

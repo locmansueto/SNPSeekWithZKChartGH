@@ -6,6 +6,8 @@ import ncsa.hdf.object.h5.*; // include the HDF5 object package
 
 import javax.swing.tree.TreeNode;
 
+import org.irri.iric.portal.AppContext;
+
 /**
  * Retreve and print HDF5 objects from file hdf5_test.h5
  * 
@@ -23,11 +25,11 @@ public class TestH5File {
 			// open file and retrieve the file structure
 			h5file.open();
 		} catch (Exception ex) {
-			System.out.println(ex);
+			AppContext.debug(ex.toString());
 		}
 
 		Object rootobj = ((javax.swing.tree.DefaultMutableTreeNode) h5file.getRootNode()).getUserObject();
-		System.out.println(
+		AppContext.debug(
 				"instanceof root" + rootobj.getClass().getCanonicalName() + " " + rootobj.getClass().getName());
 		// Group root = (Group) ((javax.swing.tree.DefaultMutableTreeNode)
 		// h5file.getRootNode()).getUserObject();
@@ -37,7 +39,7 @@ public class TestH5File {
 			Group root = (Group) rootobj;
 
 			Dataset dataset = (Dataset) root.getMemberList().get(0);
-			System.out.println("instanceof dataset " + dataset.getClass().getCanonicalName());
+			AppContext.debug("instanceof dataset " + dataset.getClass().getCanonicalName());
 			// Object readobj = dataset.read();
 
 			// initialize the dataset: load dataset information such as datatype
@@ -67,7 +69,7 @@ public class TestH5File {
 			byte[] dataRead = (byte[]) dataset.read();
 
 			// print out the data values
-			System.out.println("\n\nOriginal Data Values");
+			AppContext.debug("\n\nOriginal Data Values");
 			for (int i = 0; i < rows; i++) {
 				System.out.print("\n" + dataRead[i * cols]);
 				for (int j = 1; j < cols; j++) {
@@ -78,7 +80,7 @@ public class TestH5File {
 			// char[] copyTo = java.util.Arrays.copyOfRange(copyFrom, 2, 9);
 
 			/*
-			 * System.out.println("\n\nSubset Data Values"); for (int i = 0; i < cols; i++)
+			 * AppContext.debug("\n\nSubset Data Values"); for (int i = 0; i < cols; i++)
 			 * { System.out.print("\n" + new String( dataRead[i * rows] ) ; for (int j = 1;
 			 * j < rows; j++) { System.out.print("," + Byte.toString(dataRead[i * rows +
 			 * j])); } }
@@ -86,7 +88,7 @@ public class TestH5File {
 
 			/*
 			 * for (int i = 0; i < cols; i++) { byte[] byte3=new byte[cols]; for(int j=0; i<
-			 * rows ; i++) byte3[j]=dataRead[i * rows + j]; System.out.println( new String(
+			 * rows ; i++) byte3[j]=dataRead[i * rows + j]; AppContext.debug( new String(
 			 * byte3) ) ; }
 			 */
 			// System.out.print( new String( dataRead ));
@@ -102,16 +104,16 @@ public class TestH5File {
 			// int rank = dataset.getRank();
 			// dataset.getDatatype();
 			// dataset.getData();
-			System.out.println("rank " + dataset.getRank());
-			System.out.println(
+			AppContext.debug("rank " + dataset.getRank());
+			AppContext.debug(
 					"datatype " + dataset.getDatatype() + " " + dataset.getDatatype().getClass().getCanonicalName());
-			System.out.println("getdata " + dataset.getData().getClass().getCanonicalName());
+			AppContext.debug("getdata " + dataset.getData().getClass().getCanonicalName());
 
-			// System.out.println("getdims " +
+			// AppContext.debug("getdims " +
 			// dataRead.getDims().getClass().getCanonicalName());
 
 			/*
-			 * // print out the data values System.out.println("\n\nOriginal Data Values");
+			 * // print out the data values AppContext.debug("\n\nOriginal Data Values");
 			 * for (int i = 0; i < 20; i++) { System.out.print("\n" + dataRead[i * 10]); for
 			 * (int j = 1; j < 10; j++) { System.out.print(", " + dataRead[i * 10 + j]); }
 			 */
@@ -129,7 +131,7 @@ public class TestH5File {
 
 		try {
 			h5file.close();
-			System.out.println("hdf5 file closed.");
+			AppContext.debug("hdf5 file closed.");
 		} catch (Exception ex) {
 		}
 	}
@@ -137,7 +139,7 @@ public class TestH5File {
 	// print out the data object recusively
 	private static void printNode(javax.swing.tree.TreeNode node, String indent) {
 
-		System.out.println(indent + node);
+		AppContext.debug(indent + node);
 
 		int n = node.getChildCount();
 		for (int i = 0; i < n; i++) {
