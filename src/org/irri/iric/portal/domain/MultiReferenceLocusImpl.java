@@ -148,7 +148,6 @@ public class MultiReferenceLocusImpl implements MultiReferenceLocus {
 	 */
 	@Override
 	public String getFeatureType() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

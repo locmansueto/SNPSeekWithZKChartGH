@@ -92,7 +92,6 @@ public class JobFacadeSingletonImpl implements JobsFacade {
 	
 	public JobFacadeSingletonImpl() {
 		super();
-		// TODO Auto-generated constructor stub
 		AppContext.debug("JobFacadeSingletonImpl started.. loading jobs");
 
 		if (useS3()) {

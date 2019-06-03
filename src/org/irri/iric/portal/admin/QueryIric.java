@@ -23,7 +23,7 @@ public class QueryIric {
 	//
 	// public QueryIric() {
 	// super();
-	// // TODO Auto-generated constructor stub
+	// 
 	//
 	//
 	// allvarsdao = (VSnpAllvarsMinDAO)AppContext.checkBean(allvarsdao,

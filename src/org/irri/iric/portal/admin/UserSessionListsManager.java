@@ -60,7 +60,7 @@ public class UserSessionListsManager {
 
 	public UserSessionListsManager() {
 		super();
-		// TODO Auto-generated constructor stub
+		// 
 		// varietyprop2DAO=(VarietyDAO)AppContext.checkBean(varietyprop2DAO,
 		// "VarietyDAO");
 		// locusService=(LocusService)AppContext.checkBean(locusService,

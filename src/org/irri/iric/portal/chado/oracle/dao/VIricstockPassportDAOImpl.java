@@ -334,7 +334,6 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 	@Override
 	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(BigDecimal iricStockId, int startResult,
 			int maxRows) throws DataAccessException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -42,7 +42,6 @@ public class PairwiseListItemRenderer implements SNPRowRendererStyle, ListitemRe
 	 */
 	@Override
 	public void render(Listitem listitem, Object value, int index) throws Exception {
-		// TODO Auto-generated method stub
 		// Snp2linesId item = (Snp2linesId)value;
 		// Snps2Vars item = (Snps2Vars)value;
 

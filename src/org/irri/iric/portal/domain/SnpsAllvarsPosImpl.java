@@ -57,13 +57,11 @@ public class SnpsAllvarsPosImpl implements SnpsAllvarsPos, Comparable {
 
 	@Override
 	public BigDecimal getAlleleIndex() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public BigDecimal getSnpFeatureId() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

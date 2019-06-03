@@ -101,19 +101,16 @@ public class IndelAllvarsHDF5DAOImpl implements IndelsAllvarsDAO {
 	@Override
 	public Set<IndelsAllvars> findIndelAllvarsByVarChrPosIn(Collection varList, String chr, Collection posList,
 			List listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<IndelsAllvars> findIndelAllvarsByChrPosIn(String chr, Collection posList, List listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<IndelsAllvars> getAllIndelCalls() {
-		// TODO Auto-generated method stub
 		checkBeans();
 		return null;
 	}

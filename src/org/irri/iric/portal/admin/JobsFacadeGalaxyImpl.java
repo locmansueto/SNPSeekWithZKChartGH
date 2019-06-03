@@ -52,7 +52,6 @@ public class JobsFacadeGalaxyImpl implements  JobsFacade {
 	
 	public JobsFacadeGalaxyImpl() {
 		super();
-		// TODO Auto-generated constructor stub
 		initS3();
 	}
 
@@ -60,7 +59,6 @@ public class JobsFacadeGalaxyImpl implements  JobsFacade {
 
 	@Override
 	public String getJobStatus(String jobid) throws Exception {
-		// TODO Auto-generated method stub
 		galaxy=(GalaxyFacade)AppContext.checkBean(galaxy,"GalaxyFacade");
 		
 		String histid=(String)mapJobid2Historyid.get(jobid);
@@ -71,8 +69,7 @@ public class JobsFacadeGalaxyImpl implements  JobsFacade {
 
 	@Override
 	public boolean addJob(AsyncJob job) {
-		// TODO Auto-generated method stub
-		// job is added by sending a file to S3 with filename=jobid, content=galaxy_history_id,  last_status
+		// TODO job is added by sending a file to S3 with filename=jobid, content=galaxy_history_id,  last_status
 		try {
 				BufferedWriter bw=new BufferedWriter(new FileWriter(AppContext.getTempDir() + job.getJobId() ));
 				bw.append((String)job.getParams() + "\t" + job.getUrl() + '\t' + JobsFacade.JOBSTATUS_SUBMITTED);
@@ -130,98 +127,82 @@ public class JobsFacadeGalaxyImpl implements  JobsFacade {
 	
 	@Override
 	public boolean doneSubmitter(String ip) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean errorSubmitter(String ip) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean errorSubmitter(String ip, String filename, String msg) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean startSubmitter(String ip) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean downloadJob(String job) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean saveJobs() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void clearDownloadedJobs(boolean deletefiles) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void clearAllJobs() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public List<AsyncJob> getAllJobs(boolean active, boolean done, boolean downloaded) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean cancelJob(String ip) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public AsyncJob getRunningJobByIp(String ip) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public AsyncJob getRunningJobById(String jobid) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getAsyncStatus() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
 	public boolean checkSubmitter(String ip) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void setStatus(String filename, String msg) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public boolean useS3() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -249,13 +230,11 @@ public class JobsFacadeGalaxyImpl implements  JobsFacade {
 
 	@Override
 	public boolean copyToS3Error(String filename) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public String setBucket(String b) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

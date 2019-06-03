@@ -509,20 +509,17 @@ public class VConvertposNb2allrefs implements Serializable, SnpsAllvarsPos {
 
 	@Override
 	public BigDecimal getPosition() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
 	public Long getChr() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -530,37 +527,31 @@ public class VConvertposNb2allrefs implements Serializable, SnpsAllvarsPos {
 
 	@Override
 	public String getRefnuc() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setRefnuc(String refnuc) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public BigDecimal getAlleleIndex() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setAltnuc(String altnuc) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public String getAltnuc() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

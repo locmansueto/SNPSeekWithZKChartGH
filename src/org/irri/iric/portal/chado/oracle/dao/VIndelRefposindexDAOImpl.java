@@ -586,7 +586,7 @@ public class VIndelRefposindexDAOImpl extends AbstractJpaDao<VIndelRefposindex> 
 
 	/*
 	 * @Override public Map getMapIndelId2IndelsByIndelId(Collection indelids) { //
-	 * TODO Auto-generated method stub return null; }
+	 * 
 	 */
 
 	@Override

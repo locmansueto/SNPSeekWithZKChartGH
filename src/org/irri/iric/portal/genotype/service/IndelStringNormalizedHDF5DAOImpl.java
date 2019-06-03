@@ -127,44 +127,37 @@ public class IndelStringNormalizedHDF5DAOImpl implements IndelStringDAO {
 
 	@Override
 	public Map<BigDecimal, Integer> getMapVariety2Order() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map<BigDecimal, Double> getMapVariety2Mismatch() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<SnpsAllvarsPos> getListPos() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<SnpsStringAllvars> getListResult() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map[] readSNPString(List<SnpsAllvarsPos> listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map[] readSNPString(GenotypeRunPlatform run, String chr, List<SnpsAllvarsPos> listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map[] readSNPString(GenotypeRunPlatform run, Set<BigDecimal> colVarids, String chr,
 			List<SnpsAllvarsPos> listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

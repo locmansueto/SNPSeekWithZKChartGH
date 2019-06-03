@@ -272,7 +272,6 @@ public class VGwasManhattan implements Serializable, ManhattanPlot {
 
 	@Override
 	public String getRefnuc() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

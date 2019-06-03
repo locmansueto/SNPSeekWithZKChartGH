@@ -52,13 +52,11 @@ import org.irri.iric.portal.domain.SnpsSpliceAcceptor;
 public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Comparable {
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getRefnuc() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

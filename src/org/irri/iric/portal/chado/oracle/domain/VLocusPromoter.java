@@ -526,31 +526,26 @@ public class VLocusPromoter implements Serializable, LocusPromoter {
 
 	@Override
 	public String getIRICName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getMSU7Name() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getRAPPredName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getRAPRepName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getFGeneshName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -641,7 +636,6 @@ public class VLocusPromoter implements Serializable, LocusPromoter {
 
 	@Override
 	public String getFeatureType() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

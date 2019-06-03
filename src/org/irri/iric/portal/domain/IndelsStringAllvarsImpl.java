@@ -208,14 +208,12 @@ public class IndelsStringAllvarsImpl implements IndelsStringAllvars {
 
 	@Override
 	public void setVarnuc(String varnuc) {
-		// TODO Auto-generated method stub
-
+	
 	}
 
 	@Override
 	public void setMismatch(BigDecimal mismatch) {
-		// TODO Auto-generated method stub
-
+	
 	}
 
 	@Override

@@ -485,32 +485,27 @@ public class IndelStringNormalizedDAOImpl implements IndelStringDAO {
 
 	@Override
 	public Map readSNPString(String chr, int starvarid, int endvarid, int[][] posstartendIdxs) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map readSNPString(String chr, int[] posIdxs, int starvarid, int endvarid) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map[] readSNPString(List<SnpsAllvarsPos> listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map[] readSNPString(GenotypeRunPlatform run, String chr, List<SnpsAllvarsPos> listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map[] readSNPString(GenotypeRunPlatform run, Set<BigDecimal> colVarids, String chr,
 			List<SnpsAllvarsPos> listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

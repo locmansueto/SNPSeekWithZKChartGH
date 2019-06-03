@@ -336,7 +336,6 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements VCvPtoc
 
 	@Override
 	public List getAllTerms() {
-		// TODO Auto-generated method stub
 		List list = new ArrayList();
 		list.addAll(findAllVCvPtocos());
 		return list;
@@ -344,7 +343,6 @@ public class VCvPtocoDAOImpl extends AbstractJpaDao<VCvPtoco> implements VCvPtoc
 
 	@Override
 	public List getAllTerms(BigDecimal cvByName, BigDecimal organismByName) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

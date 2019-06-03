@@ -458,7 +458,6 @@ public class VIricstocksByPhenotype implements StockByPhenotype { // Serializabl
 
 	@Override
 	public void setValue(Object value) {
-		// TODO Auto-generated method stub
 
 	}
 

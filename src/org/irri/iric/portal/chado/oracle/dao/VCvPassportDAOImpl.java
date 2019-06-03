@@ -264,7 +264,6 @@ public class VCvPassportDAOImpl extends AbstractJpaDao<VCvPassport> implements V
 
 	@Override
 	public List getAllTerms(BigDecimal cvByName, BigDecimal organismByName) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

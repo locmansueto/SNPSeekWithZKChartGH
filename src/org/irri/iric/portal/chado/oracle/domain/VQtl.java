@@ -329,7 +329,6 @@ public class VQtl implements Serializable, Locus {
 
 	@Override
 	public Integer getStrand() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -354,13 +353,11 @@ public class VQtl implements Serializable, Locus {
 
 	@Override
 	public BigDecimal getFeatureId() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getFeatureType() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -71,25 +71,21 @@ public class IndelsAllvarsTransposedNormalizedPosDAO implements IndelsAllvarsPos
 
 	@Override
 	public List getSNPs(String chromosome, Integer startPos, Integer endPos, Set type, int firstRow, int maxRows) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List getSNPsInChromosome(String chr, Collection posset, Set type) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map getMapIndelId2Indels(String chromosome, Integer startPos, Integer endPos, Set variantset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map getMapIndelId2Indels(String chromosome, Collection poslist, Set variantset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

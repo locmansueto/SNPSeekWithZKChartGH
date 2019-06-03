@@ -931,7 +931,6 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 
 	@Override
 	public void setAltnuc(String altnuc) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -973,7 +972,6 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 
 	@Override
 	public String getAltnuc() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

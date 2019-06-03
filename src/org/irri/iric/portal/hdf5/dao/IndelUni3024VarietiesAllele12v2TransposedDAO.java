@@ -24,20 +24,17 @@ public class IndelUni3024VarietiesAllele12v2TransposedDAO extends H5Dataset impl
 
 	public IndelUni3024VarietiesAllele12v2TransposedDAO() {
 		super(AppContext.getFlatfilesDir() + "INDEL_geno_NB_trans_678b.h5", new H5ReadStringTransMatrix(), null);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Set<IndelsAllvars> getAllIndelCalls() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<IndelsAllvars> findIndelAllvarsByChrPosBetween(String chr, BigDecimal start, BigDecimal end,
 			List listpos) {
-		// TODO Auto-generated method stub
-
+	
 		return null;
 		// return readSNPString(chr,start.intValue(), end.intValue());
 		// createIndelsAllvars(Map<BigDecimal,Long[]> allele1, Map<BigDecimal,String[]>
@@ -47,33 +44,28 @@ public class IndelUni3024VarietiesAllele12v2TransposedDAO extends H5Dataset impl
 	@Override
 	public Set<IndelsAllvars> findIndelAllvarsByVarChrPosBetween(Collection varids, String chr, BigDecimal start,
 			BigDecimal end, List listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<IndelsAllvars> findIndelAllvarsByVarChrPosIn(Collection varList, String chr, int[][] posIdx,
 			List listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<IndelsAllvars> findIndelAllvarsByChrPosIn(String chr, int[][] posIdx, List listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<IndelsAllvars> findIndelAllvarsByVarChrPosIn(Collection varList, String chr, Collection posList,
 			List listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<IndelsAllvars> findIndelAllvarsByChrPosIn(String chr, Collection posList, List listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

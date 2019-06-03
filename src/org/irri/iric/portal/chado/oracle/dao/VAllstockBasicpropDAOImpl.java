@@ -909,7 +909,6 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Set findAllVarietyByExample(Variety germplasm, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -949,7 +948,6 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 
 	@Override
 	public Set findAllVarietyByExample(Variety germplasm) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

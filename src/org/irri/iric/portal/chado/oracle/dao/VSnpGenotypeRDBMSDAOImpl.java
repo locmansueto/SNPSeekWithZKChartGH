@@ -1116,7 +1116,6 @@ public class VSnpGenotypeRDBMSDAOImpl extends AbstractJpaDao<VSnpGenotypeRDBMS> 
 
 	@Override
 	public Map[] readSNPString(List<SnpsAllvarsPos> listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -1146,7 +1145,6 @@ public class VSnpGenotypeRDBMSDAOImpl extends AbstractJpaDao<VSnpGenotypeRDBMS> 
 
 	@Override
 	public Map readSNPString(String chr, int[] posIdxs) {
-		// TODO Auto-generated method stub
 		//
 		// String sql="select stock_sample_id, REPLACE(
 		// pos11832_al1||pos12340_al1||pos12742_al1||pos12911_al1, '0','?') allele1,
@@ -1172,37 +1170,31 @@ public class VSnpGenotypeRDBMSDAOImpl extends AbstractJpaDao<VSnpGenotypeRDBMS> 
 
 	@Override
 	public Map readSNPString(Set<BigDecimal> colVarids, String chr, int[] posIdxs) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map readSNPString(Set<BigDecimal> colVarids, String chr, int startIdx, int endIdx) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map readSNPString(Set colVarids, String chr, int[][] posidxstartend) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map readSNPString(String chr, int[][] posidxstartend) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map readSNPString(String chr, int starvarid, int endvarid, int[][] posstartendIdxs) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map readSNPString(String chr, int[] posIdxs, int starvarid, int endvarid) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

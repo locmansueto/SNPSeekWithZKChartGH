@@ -66,32 +66,28 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 
 	@Override
 	public List checkSNPsInChromosome(String chr, Collection posset, Set type) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<SnpsAllvarsPos> getSNPPoslist(GenotypeQueryParams params) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<SnpsEffect> getSnpEffects(List poslist) {
-		// TODO Auto-generated method stub
-
 		return null;
 	}
 
 	@Override
 	public long countSNPPoslist(GenotypeQueryParams params) {
-		
+
 		return -1;
 	}
 
 	@Override
 	public long countVariantStringData(GenotypeQueryParams params) {
-		
+
 		return -1;
 	}
 
@@ -371,9 +367,9 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 	}
 
 	private VariantStringData _queryVariantStringData(GenotypeQueryParams params) throws Exception {
-		
 
-		// if(true) {
+		// TODO: DAGS 
+		//if(true) {
 		// writeStatus(params.getFilename(), JobsFacade.JOBSTATUS_ERROR);
 		// //return null;
 		// throw new RuntimeException("Asynch _queryVariantStringData disabled.. check
@@ -844,7 +840,7 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 	// private VariantStringData _queryVariantStringDataPlink(GenotypeQueryParams
 	// params) throws Exception
 	// {
-	// 
+	//
 	//
 	// vargenservice= (VarietiesGenotypeService)AppContext.checkBean(vargenservice,
 	// "VarietiesGenotypeService") ;
@@ -994,14 +990,12 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 	@Override
 	public VariantStringData compare2VariantStrings(BigDecimal var1, BigDecimal var2, GenotypeQueryParams params)
 			throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public VariantTable fillVariantTable(VariantTable table, VariantStringData data, GenotypeQueryParams params)
 			throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -455,8 +455,8 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		if (listboxSnplist.getSelectedIndex() > 0 && listboxVarietylist.getSelectedIndex() > 0)
 			displayManhattanXY(listboxSnplist.getSelectedItem().getLabel(),
 					listboxVarietylist.getSelectedItem().getLabel());
-		else if (listboxSnplist.getSelectedIndex() > 0 )
-			displayManhattanXY(listboxSnplist.getSelectedItem().getLabel(),null);
+		else if (listboxSnplist.getSelectedIndex() > 0)
+			displayManhattanXY(listboxSnplist.getSelectedItem().getLabel(), null);
 		else
 			displayManhattanXY();
 	}
@@ -467,8 +467,8 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		if (listboxSnplist.getSelectedIndex() > 0 && listboxVarietylist.getSelectedIndex() > 0)
 			displayManhattanXY(listboxSnplist.getSelectedItem().getLabel(),
 					listboxVarietylist.getSelectedItem().getLabel());
-		else if (listboxSnplist.getSelectedIndex() > 0 )
-			displayManhattanXY(listboxSnplist.getSelectedItem().getLabel(),null);
+		else if (listboxSnplist.getSelectedIndex() > 0)
+			displayManhattanXY(listboxSnplist.getSelectedItem().getLabel(), null);
 		else
 			displayManhattanXY();
 	}
@@ -565,12 +565,13 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 			String posstr = pos.getChr() + "-" + pos.getPosition();
 
 			// if(pos.getLogPvalue()<minlogp) break;
-			if (pos.getMinusLogPvalue() >= minlogp) {
-				mapPos2Values.put(posstr, pos.getMinusLogPvalue());
-				mapPos2Index.put(posstr, idx);
-				mapIndex2Pos.put(idx, posstr);
-				idx++;
-			}
+			if (pos.getMinusLogPvalue() != null)
+				if (pos.getMinusLogPvalue() >= minlogp) {
+					mapPos2Values.put(posstr, pos.getMinusLogPvalue());
+					mapPos2Index.put(posstr, idx);
+					mapIndex2Pos.put(idx, posstr);
+					idx++;
+				}
 		}
 		displayManhattanXY(mapPos2Values);
 
@@ -1120,10 +1121,9 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 
 		initDispayManhattan();
 		if (trait == null || trait.isEmpty() || subpop == null || subpop.isEmpty()) {
-			if(listboxSnplist.getSelectedIndex()==0)
+			if (listboxSnplist.getSelectedIndex() == 0)
 				return;
 		}
-			
 
 		// double minlogp= Double.valueOf(comboboxMinlogP.getValue());
 		double minlogp = Double.valueOf(comboboxMinlogP.getSelectedItem().getLabel());
@@ -1745,24 +1745,25 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		gwas = (GwasFacade) AppContext.checkBean(gwas, "GwasFacade");
 
 		AppContext.resetTimer("querying p values");
-		Set strsnplist =null;
+		Set strsnplist = null;
 		mapPos2Index = new TreeMap();
 		mapIndex2Pos = new TreeMap();
-		mapPos2Values=new TreeMap();
-		if( trait==null || trait.isEmpty() || subpop==null || subpop.isEmpty()) {
-			if(snplist!=null) {
+		mapPos2Values = new TreeMap();
+		if (trait == null || trait.isEmpty() || subpop == null || subpop.isEmpty()) {
+			if (snplist != null) {
 				int idx = 0;
-				mapPos2Values=new TreeMap();
+				mapPos2Values = new TreeMap();
 				Iterator<Position> itPos = snplist.iterator();
 				while (itPos.hasNext()) {
-					PositionLogPvalueImpl spos = (PositionLogPvalueImpl)itPos.next();
-					String pos=spos.getChr() + "-" + spos.getPosition(); 
+					PositionLogPvalueImpl spos = (PositionLogPvalueImpl) itPos.next();
+					String pos = spos.getChr() + "-" + spos.getPosition();
 					mapPos2Values.put(pos, spos.getMinusLogPvalue());
 					mapPos2Index.put(pos, idx);
 					mapIndex2Pos.put(idx, pos);
 					idx++;
 				}
-			} else return;
+			} else
+				return;
 		} else {
 			mapPos2Values = gwas.getPosstr2MinusLogP(trait, subpop, minlogP, region);
 			if (mapPos2Values == null) {
@@ -1790,7 +1791,6 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		}
 
 		AppContext.resetTimer("displaying p values");
-
 
 		displayManhattanXY(mapPos2Values);
 

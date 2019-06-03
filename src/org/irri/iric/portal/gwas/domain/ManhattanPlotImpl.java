@@ -33,7 +33,6 @@ public class ManhattanPlotImpl implements ManhattanPlot {
 
 	@Override
 	public String getRefnuc() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -78,7 +77,6 @@ public class ManhattanPlotImpl implements ManhattanPlot {
 
 	@Override
 	public BigDecimal getMarkerId() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

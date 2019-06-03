@@ -51,7 +51,7 @@ public class LocusListItemRenderer implements ListitemRenderer {
 
 	public LocusListItemRenderer() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public LocusListItemRenderer(String prefixDesc) {

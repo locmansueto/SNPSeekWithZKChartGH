@@ -397,7 +397,6 @@ public class VGwasManhattanDAOImpl extends AbstractJpaDao<VGwasManhattan> implem
 
 	@Override
 	public List<ManhattanPlot> getMinusPValues(GWASRun run, Double minlogP, String region) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

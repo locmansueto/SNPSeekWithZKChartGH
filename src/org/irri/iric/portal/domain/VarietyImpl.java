@@ -120,7 +120,6 @@ public class VarietyImpl implements Variety {
 
 	@Override
 	public String getBoxCode() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -132,7 +131,6 @@ public class VarietyImpl implements Variety {
 
 	@Override
 	public String getDataset() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

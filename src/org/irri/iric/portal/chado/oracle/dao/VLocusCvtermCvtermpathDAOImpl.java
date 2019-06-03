@@ -861,13 +861,11 @@ public class VLocusCvtermCvtermpathDAOImpl extends AbstractJpaDao<VLocusCvtermCv
 
 	@Override
 	public List<Locus> getLocusByName(String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Collection getLocusByName(Collection<String> name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -885,8 +883,7 @@ public class VLocusCvtermCvtermpathDAOImpl extends AbstractJpaDao<VLocusCvtermCv
 
 	@Override
 	public List<Locus> getLocusByDescription(TextSearchOptions goterm, String organism) {
-		// TODO Auto-generated method stub
-
+	
 		return null;
 		/*
 		 * Set setLocus = new TreeSet(
@@ -901,52 +898,44 @@ public class VLocusCvtermCvtermpathDAOImpl extends AbstractJpaDao<VLocusCvtermCv
 	 */
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Locus> getLocusByDescription(TextSearchOptions description, String organism, String genemodel) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus,
 			String genemodel) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel,
 			String featuretype) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus,
 			String genemodel, String featuretype) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym, String organism) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym, String organism, String genemodel) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -974,14 +963,12 @@ public class VLocusCvtermCvtermpathDAOImpl extends AbstractJpaDao<VLocusCvtermCv
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus,
 			String genemodel, Set featuretype) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel,
 			Set featuretype) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

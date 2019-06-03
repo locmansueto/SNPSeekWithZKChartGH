@@ -630,6 +630,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 				maxRows = params.getPageSize().intValue();
 			}
 
+			// TODO: DAGS for slicing 
 			if (params.hasSnpList()) {
 				listpos = new ArrayList();
 				listpos.addAll(new TreeSet(params.getPoslist()));

@@ -130,7 +130,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public String[] constructPhylotree(String varids, String scale, Object topN, Object requestid, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -194,7 +193,6 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	@Override
 	public Map getUIforDataset(Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -467,52 +465,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 
 	}
 
-	// @Override
-	// public List getVarietyByCoTerm(String coTerm, Set dataset) {
-	//
-	// listitemsDAO = (ListItemsDAO) AppContext.checkBean(listitemsDAO,
-	// "ListItems");
-	//
-	// BigDecimal bdId = null;
-	//
-	// bdId = (BigDecimal) listitemsDAO.getCOTerms(dataset).get(coTerm);
-	//
-	// if (bdId != null)
-	// return getVarietyByPhenotype(bdId.toString(), dataset);
-	// return new ArrayList<>();
-	//
-	// }
-
-	/*
-	 * @Override public List getVarietyByPhenotype(String phenId, Set dataset) { //
-	 * TODO Auto-generated method stub varbyphenotypedao =
-	 * (VarietyByPhenotypeDAO)AppContext.checkBean(varbyphenotypedao,
-	 * "VIricstocksByPhenotypeDAO"); listitemsDAO =
-	 * (ListItemsDAO)AppContext.checkBean(listitemsDAO, "ListItems");
-	 * 
-	 * BigDecimal bdId=null; try { bdId= BigDecimal.valueOf(Long.valueOf(phenId)); }
-	 * catch(Exception ex) { bdId =
-	 * listitemsDAO.getPhenotypeDefinitions(dataset).get(phenId); }
-	 * 
-	 * 
-	 * return varbyphenotypedao.findVarietyByPhenotype(bdId, dataset);
-	 * 
-	 * }
-	 */
-
-	/*
-	 * // User Interface Listbox Items query methods
-	 * 
-	 * @Override public java.util.List getVarietyNames() { return
-	 * listitemsDAO.getVarietyNames();
-	 * 
-	 * }
-	 */
-	/*
-	 * @Override public java.util.List getIrisIds(String dataset) { return
-	 * listitemsDAO.getIrisIds(); }
-	 */
-
+	
 	@Override
 	public java.util.List getCountries(String dataset) {
 		return listitemsDAO.getCountries(dataset);
@@ -1311,16 +1264,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		return listitemsDAO.getAccessions(dataset);
 	}
 
-	/*
-	 * @Override public List getGermplasmByName(String name, Set dataset) { // TODO
-	 * Auto-generated method stub return
-	 * listitemsDAO.getGermplasmByName(name,dataset); }
-	 */
-	/*
-	 * @Override public List getGermplasmByNameLike(String name, Set dataset) { //
-	 * TODO Auto-generated method stub return
-	 * listitemsDAO.getGermplasmByNameLike(name,dataset); }
-	 */
+	
 	@Override
 	public List getGermplasmByNameLike(String name, Set dataset) {
 		Set s = new HashSet();

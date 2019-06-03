@@ -475,7 +475,6 @@ public class VCvPhenotypeByPtoco implements Serializable, CvTermUniqueValues {
 
 	@Override
 	public String getValue() {
-		// TODO Auto-generated method stub
 		return this.subjDefinition;
 	}
 

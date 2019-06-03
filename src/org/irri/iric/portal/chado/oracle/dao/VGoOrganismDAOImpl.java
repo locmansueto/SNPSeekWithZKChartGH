@@ -459,7 +459,6 @@ public class VGoOrganismDAOImpl extends AbstractJpaDao<VGoOrganism> implements V
 
 	@Override
 	public List<Locus> filterLocusWithCvterm(Collection<Locus> colLoc, Integer organismId, Integer cvId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -199,14 +199,12 @@ public class VIricstockPhenotypeQuanvalDAOImpl extends AbstractJpaDao<VIricstock
 	@Override
 	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(BigDecimal phenotypeId_1)
 			throws DataAccessException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<VIricstockPhenotypeQuanval> findVIricstockPhenotypeQuanvalByPhenotypeId(BigDecimal phenotypeId_1,
 			int startResult, int maxRows) throws DataAccessException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

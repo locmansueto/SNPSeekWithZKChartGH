@@ -41,8 +41,7 @@ public class VariantTableSerialImpl implements VariantTable {
 	@Override
 	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params, List listCDS)
 			throws Exception {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -116,25 +115,21 @@ public class VariantTableSerialImpl implements VariantTable {
 
 	@Override
 	public String getMessage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setMessage(String message) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public VariantStringData getVariantStringData() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String[] getContigs() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

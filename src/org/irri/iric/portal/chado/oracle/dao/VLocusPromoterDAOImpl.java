@@ -770,30 +770,25 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter> implem
 
 	@Override
 	public List<Locus> getLocusByName(String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Collection getLocusByName(Collection<String> name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/*
 	 * @Override public List<Locus> getLocusByRegion(String contig, Long start, Long
-	 * end, String organism) { // TODO Auto-generated method stub return null; }
 	 */
 	@Override
 	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus) {
-		// TODO Auto-generated method stub
-
+	
 		// return getLocusPromoterByContigPositions(contig, posset, -1, organism,
 		// plusminus, null);
 		return null;
@@ -802,7 +797,6 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter> implem
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus,
 			String genemodel) {
-		// TODO Auto-generated method stub
 		return null;
 		// return getLocusByContigPositions(contig, posset, -1, organism, plusminus,
 		// genemodel);
@@ -912,39 +906,33 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter> implem
 
 	@Override
 	public List<Locus> getLocusByDescription(TextSearchOptions description, String organism) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Locus> getLocusByDescription(TextSearchOptions description, String organism, String genemodel) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym, String organism) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Locus> getLocusBySynonyms(TextSearchOptions synonym, String organism, String genemodel) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel,
 			String featuretype) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus,
 			String genemodel, String featuretype) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -964,14 +952,12 @@ public class VLocusPromoterDAOImpl extends AbstractJpaDao<VLocusPromoter> implem
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus,
 			String genemodel, Set featuretype) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Locus> getLocusByRegion(String contig, Long start, Long end, String organism, String genemodel,
 			Set featuretype) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

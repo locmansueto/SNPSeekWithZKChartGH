@@ -111,7 +111,6 @@ public class MarkerAnnotationImpl implements MarkerAnnotation {
 
 	@Override
 	public String getRefnuc() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -442,7 +441,6 @@ public class MarkerAnnotationImpl implements MarkerAnnotation {
 
 	@Override
 	public Set<String> getAnnotations() {
-		// TODO Auto-generated method stub
 		Set<String> names = new LinkedHashSet();
 		if (mapGenes != null)
 			names.addAll(mapGenes.keySet());
@@ -464,37 +462,31 @@ public class MarkerAnnotationImpl implements MarkerAnnotation {
 
 	@Override
 	public Set<Locus> getGene() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<Locus> getQTL() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<Locus> getTraitGene() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<Locus> getNetworkGene() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<Locus> getOntologyGene() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<Locus> getPromoterGene() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -873,7 +873,6 @@ public class VLocusCvtermpathRap implements Serializable, MergedLoci, CvTerm, Co
 
 	@Override
 	public String getFeatureType() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

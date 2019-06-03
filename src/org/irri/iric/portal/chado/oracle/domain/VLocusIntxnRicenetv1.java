@@ -820,7 +820,6 @@ public class VLocusIntxnRicenetv1 implements Serializable, Locus {
 
 	@Override
 	public String getFeatureType() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

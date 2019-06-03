@@ -763,7 +763,6 @@ public class VLocusCvtermpathIric implements Serializable, MergedLoci, CvTerm, C
 
 	@Override
 	public String getFeatureType() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

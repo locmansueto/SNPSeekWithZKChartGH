@@ -1022,7 +1022,6 @@ public class VConvertposAny2allrefsDAOMVImpl extends AbstractJpaDao<VConvertposA
 	@Override
 	public MultiReferenceConversion convertPosition(MultiReferenceConversion fromPos, String toReference,
 			String toContig) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -587,7 +587,6 @@ public class VLocusCvtermCvtermpath implements Serializable, Locus, CvTerm, Comp
 
 	@Override
 	public String getFeatureType() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

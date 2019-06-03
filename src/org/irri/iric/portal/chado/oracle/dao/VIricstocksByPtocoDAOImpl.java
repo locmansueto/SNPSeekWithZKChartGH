@@ -29,43 +29,36 @@ public class VIricstocksByPtocoDAOImpl extends AbstractJpaDao<VIricstocksByPtoco
 
 	@Override
 	public List findVarietyByQuanPhenotypeLessThan(BigDecimal object, Set dataset, double value) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List findVarietyByQuanPhenotypeGreaterThan(BigDecimal object, Set dataset, double value) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List findVarietyByQuanPhenotypeEquals(BigDecimal object, Set dataset, double value) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List findVarietyByQualPhenotypeEquals(BigDecimal object, Set dataset, String value) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List findVarietyByQualPhenotypeLessThan(BigDecimal object, Set dataset, String value) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List findVarietyByQualPhenotypeGreaterThan(BigDecimal object, Set dataset, String value) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List findVarietyByPhenotype(BigDecimal phen, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

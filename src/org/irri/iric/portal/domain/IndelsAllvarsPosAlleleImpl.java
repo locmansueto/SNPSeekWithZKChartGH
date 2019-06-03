@@ -39,49 +39,49 @@ public class IndelsAllvarsPosAlleleImpl implements IndelsAllvarsPos {
 
 	// @Override
 	// public BigDecimal getPosition() {
-	// 
+	//
 	// return pos;
 	// }
 
 	@Override
 	public String getRefnuc() {
-		
+
 		return refnuc;
 	}
 
 	@Override
 	public void setRefnuc(String refnuc) {
-		
+
 		this.refnuc = refnuc;
 	}
 
 	@Override
 	public String getContig() {
-		
+
 		return contig;
 	}
 
 	@Override
 	public BigDecimal getAlleleIndex() {
-		
+
 		return alleleIndex;
 	}
 
 	@Override
 	public BigDecimal getSnpFeatureId() {
-		
+
 		return snpFeatureId;
 	}
 
 	@Override
 	public Integer getMaxDellength() {
-		
+
 		return maxdellength;
 	}
 
 	// @Override
 	// public Integer getDellength() {
-	// 
+	//
 	// try {
 	// int dellen=Integer.valueOf(insString);
 	// return dellen;
@@ -91,13 +91,13 @@ public class IndelsAllvarsPosAlleleImpl implements IndelsAllvarsPos {
 
 	@Override
 	public String getInsString() {
-		
+
 		return insString;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		
+
 		/*
 		 * IndelsAllvarsPosAlleleImpl o=(IndelsAllvarsPosAlleleImpl)obj;
 		 * 
@@ -127,14 +127,14 @@ public class IndelsAllvarsPosAlleleImpl implements IndelsAllvarsPos {
 
 	@Override
 	public String toString() {
-		
+
 		return getClass() + ": " + contig + "-" + pos + "-" + insString.toLowerCase();
 
 	}
 
 	@Override
 	public int hashCode() {
-		
+
 		// return toString().hashCode();
 		final int prime = 31;
 		int result = 1;
@@ -146,25 +146,25 @@ public class IndelsAllvarsPosAlleleImpl implements IndelsAllvarsPos {
 
 	@Override
 	public Integer getMaxInsLength() {
-		
+
 		return maxinslength;
 	}
 
 	@Override
 	public BigDecimal getPosition() {
-		
+
 		return this.pos;
 	}
 
 	// @Override
 	// public String getRefnuc() {
-	// 
+	//
 	// return this.refnuc;
 	// }
 
 	@Override
 	public int compareTo(Object o) {
-		
+
 		IndelsAllvarsPos obj = (IndelsAllvarsPos) o;
 		int ret = getContig().compareTo(obj.getContig());
 		if (ret == 0)
@@ -180,19 +180,17 @@ public class IndelsAllvarsPosAlleleImpl implements IndelsAllvarsPos {
 
 	@Override
 	public Long getChr() {
-		
+
 		return Long.valueOf(AppContext.guessChrFromString(contig));
 	}
 
 	@Override
 	public void setAltnuc(String altnuc) {
-		// TODO Auto-generated method stub
-		// this.altcall=altnuc;
+
 	}
 
 	@Override
 	public String getAltnuc() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

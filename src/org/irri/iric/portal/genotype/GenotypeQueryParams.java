@@ -293,8 +293,6 @@ public class GenotypeQueryParams extends Query {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-
 		String posvarids = ";submitter=" + this.submitter + ";downloadonly=" + this.bDownloadOnly + ";bAlleleFilter="
 				+ bAlleleFilter + ";bCountMissingAs05=" + bCountMissingAs05;
 		if (poslist != null)
@@ -548,12 +546,10 @@ public class GenotypeQueryParams extends Query {
 	}
 
 	public boolean hasLocusList() {
-		// TODO Auto-generated method stub
 		return this.colLoci != null && !this.colLoci.isEmpty();
 	}
 
 	public boolean hasSnpList() {
-		// TODO Auto-generated method stub
 		return this.poslist != null && !this.poslist.isEmpty();
 	}
 

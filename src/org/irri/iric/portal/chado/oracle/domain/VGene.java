@@ -315,7 +315,6 @@ public class VGene implements Serializable, Gene, Comparable {
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

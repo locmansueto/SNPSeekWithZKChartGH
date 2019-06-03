@@ -49,49 +49,41 @@ import javax.persistence.*;
 public class VAllsampleBasicprop implements Serializable, StockSample {
 	@Override
 	public BigDecimal getVarietyId() {
-		// TODO Auto-generated method stub
 		return stockId;
 	}
 
 	@Override
 	public String getIrisId() {
-		// TODO Auto-generated method stub
 		return assay;
 	}
 
 	@Override
 	public String getCountry() {
-		// TODO Auto-generated method stub
 		return oriCountry;
 	}
 
 	@Override
 	public String getAccession() {
-		// TODO Auto-generated method stub
 		return gsAccession;
 	}
 
 	@Override
 	public void setCountry(String country) {
-		// TODO Auto-generated method stub
 		oriCountry = country;
 	}
 
 	@Override
 	public void setAccession(String accession) {
-		// TODO Auto-generated method stub
 		gsAccession = accession;
 	}
 
 	@Override
 	public String printFields(String delimiter) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
 		StockSample s = (StockSample) o;
 		return this.getStockSampleId().compareTo(s.getStockSampleId());
 	}

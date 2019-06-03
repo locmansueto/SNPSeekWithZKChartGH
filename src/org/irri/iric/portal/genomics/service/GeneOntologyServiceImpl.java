@@ -154,7 +154,6 @@ public class GeneOntologyServiceImpl implements GeneOntologyService{
 
 	@Override
 	public List getCVtermDescendants(String cv, String term) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

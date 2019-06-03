@@ -69,7 +69,6 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 
 	@Override
 	public List<SnpsEffect> getSnpsEffects(List positions) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -81,7 +80,6 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 
 	@Override
 	public List<SnpsAllvarsPos> getSNPPoslist(GenotypeQueryParams params) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

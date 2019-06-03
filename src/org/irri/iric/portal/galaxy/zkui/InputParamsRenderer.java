@@ -22,7 +22,6 @@ public class InputParamsRenderer implements ListitemRenderer{
 
 	@Override
 	public void render(Listitem listitem, Object arg1, int arg2) throws Exception {
-		// TODO Auto-generated method stub
 		String[] ar=(String[])arg1;		
 		addListcell(listitem,ar[0]);
 		Textbox tb=addTextcell(listitem,"");

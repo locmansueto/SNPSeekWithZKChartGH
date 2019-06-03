@@ -696,26 +696,22 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 
 	@Override
 	public List<Locus> getCDSByRegion(String contig, Long start, Long end, String organism, String genemodel) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List getCDSByRegion(String contig, Long start, Long end, String organism) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Locus> getCDSByContigPositions(String contig, Collection colPos, String organism, Integer plusminus,
 			String genemodel) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List getCDSByContigPositions(String contig, Collection posset, String organism, Integer plusminus) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

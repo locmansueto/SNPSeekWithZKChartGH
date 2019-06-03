@@ -61,7 +61,6 @@ public class SnpsStringMultiHDF5nRDBMSHybridService implements VariantStringServ
 
 	@Override
 	public List checkSNPsInChromosome(String chr, Collection posset, Set variantset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -152,8 +151,7 @@ public class SnpsStringMultiHDF5nRDBMSHybridService implements VariantStringServ
 
 	/*
 	 * @Override public List checkSNPsInChromosome(String chr, Collection posset,
-	 * BigDecimal type) { 
-	 * //snpstringallvarsposDAO =
+	 * BigDecimal type) { //snpstringallvarsposDAO =
 	 * (SnpsAllvarsPosDAO)AppContext.checkBean(snpstringallvarsposDAO,
 	 * "VSnpRefposindexDAO") ; //AppContext.debug("reading VSnpRefposindexDAO");
 	 * //return snpstringallvarsposDAO.getSNPsInChromosome(chr, posset, type);
@@ -162,7 +160,6 @@ public class SnpsStringMultiHDF5nRDBMSHybridService implements VariantStringServ
 
 	@Override
 	public List<SnpsEffect> getSnpsEffects(List positions) {
-		
 
 		snpseffDAO = (SnpsEffectDAO) AppContext.checkBean(snpseffDAO, "SnpsEffectDAO");
 		List listFeatureid = new ArrayList();
@@ -177,20 +174,18 @@ public class SnpsStringMultiHDF5nRDBMSHybridService implements VariantStringServ
 
 	@Override
 	public List<SnpsAllvarsPos> getSNPPoslist(GenotypeQueryParams params) {
-		// TODO Auto-generated method stub
-
 		return null;
 	}
 
 	@Override
 	public long countVariantString(GenotypeQueryParams params) {
-		
+
 		return -1;
 	}
 
 	@Override
 	public long countSNPPoslist(GenotypeQueryParams params) {
-		
+
 		return -1;
 	}
 
@@ -659,7 +654,6 @@ public class SnpsStringMultiHDF5nRDBMSHybridService implements VariantStringServ
 	 */
 
 	private SNPsStringData getSNPsStringDataOtherRefs(GenotypeQueryParams params) {
-		
 
 		AppContext.debug("reading getSNPsStringDataOtherRefs");
 

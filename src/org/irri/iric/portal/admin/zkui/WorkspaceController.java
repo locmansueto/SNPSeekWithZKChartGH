@@ -211,7 +211,6 @@ public class WorkspaceController extends SelectorComposer<Component> {
 
 	public WorkspaceController() {
 		super();
-		// TODO Auto-generated constructor stub
 		AppContext.debug("created WorkspaceController:" + this);
 	}
 

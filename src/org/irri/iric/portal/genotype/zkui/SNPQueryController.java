@@ -2492,7 +2492,9 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 					String chr = selectChr.getValue().trim();
 					if (!chr.isEmpty()) {
 						updateJBrowse(chr, intStart.getValue().toString(), intStop.getValue().toString(), "");
-						tabGalaxy.setVisible(true);
+						// TODO FIX THIS AFTER TEST
+						//tabGalaxy.setVisible(true);
+						tabGalaxy.setVisible(false);
 						tabJbrowse.setVisible(
 								true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_JBROWSE));
 						tabHaplotype.setVisible(

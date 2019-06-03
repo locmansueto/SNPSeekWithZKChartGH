@@ -458,13 +458,11 @@ public class LocusServiceImpl implements LocusService {
 
 	@Override
 	public List getLocusByContigPositions(String contig, Collection posset, String organism, Integer plusminus) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List getCDSByContigPositions(String contig, Collection posset, String organism, Integer plusminus) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -340,7 +340,6 @@ public class VSnpeff implements Serializable, SnpsEffect {
 
 	@Override
 	public String getFeatureType() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

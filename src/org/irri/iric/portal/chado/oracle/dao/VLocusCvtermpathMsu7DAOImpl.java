@@ -1182,8 +1182,6 @@ public class VLocusCvtermpathMsu7DAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@Override
 	public List getLocusByDescription(String goterm, Integer organismId, Integer cvId) {
-		// TODO Auto-generated method stub
-		// return null;
 		Set setLocus = new TreeSet(findVLocusCvtermpathMsu7ByObjCvtermCvOrg(goterm, BigDecimal.valueOf(cvId),
 				BigDecimal.valueOf(organismId), -1, -1));
 		List list = new ArrayList();
@@ -1193,7 +1191,6 @@ public class VLocusCvtermpathMsu7DAOImpl extends AbstractJpaDao<VLocusCvtermpath
 
 	@Override
 	public List<Locus> filterLocusWithCvterm(Collection<Locus> colLoc, Integer organismId, Integer cvId) {
-		// TODO Auto-generated method stub
 		Set locisId = new TreeSet();
 		Iterator<Locus> itLoc = colLoc.iterator();
 		while (itLoc.hasNext())

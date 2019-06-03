@@ -275,14 +275,12 @@ public class VIricstockPassportValuesDAOImpl extends AbstractJpaDao<VIricstockPa
 	@Override
 	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(BigDecimal typeId)
 			throws DataAccessException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<VIricstockPassportValues> findVIricstockPassportValuesByTypeId(BigDecimal typeId, int startResult,
 			int maxRows) throws DataAccessException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

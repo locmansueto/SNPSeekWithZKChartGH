@@ -46,16 +46,11 @@ public class MultipleReferenceConverterDAOImpl implements MultipleReferenceConve
 	@Override
 	public MultiReferenceConversion convertPosition(MultiReferenceConversion fromPos, String toReference,
 			String toContig) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public MultiReferenceLocus convertLocus(MultiReferenceLocus fromLocus, String toReference, String toContig) {
-		// TODO Auto-generated method stub
-
-		// fromLocus.getOrganism()
-
 		return null;
 	}
 
@@ -63,7 +58,6 @@ public class MultipleReferenceConverterDAOImpl implements MultipleReferenceConve
 	public VariantStringData convertReferencePositions(VariantStringData variantstringdataNPB,
 			MultiReferenceLocus npbMultirefLocus, MultiReferenceLocus origMultiReferenceLocus, String toContig,
 			boolean isOtherRefs) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -295,20 +295,17 @@ public class H5Dataset implements SnpsStringDAO {
 
 	@Override
 	public Map[] readSNPString(List<SnpsAllvarsPos> listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map[] readSNPString(GenotypeRunPlatform run, String chr, List<SnpsAllvarsPos> listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map[] readSNPString(GenotypeRunPlatform run, Set<BigDecimal> colVarids, String chr,
 			List<SnpsAllvarsPos> listpos) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

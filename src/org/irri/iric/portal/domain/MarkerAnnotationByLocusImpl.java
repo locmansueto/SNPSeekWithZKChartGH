@@ -281,7 +281,6 @@ public class MarkerAnnotationByLocusImpl extends MarkerAnnotationImpl implements
 
 	@Override
 	public String getFeatureType() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

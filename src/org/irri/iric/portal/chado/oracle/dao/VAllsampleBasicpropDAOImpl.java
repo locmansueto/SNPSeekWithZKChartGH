@@ -37,7 +37,6 @@ public class VAllsampleBasicpropDAOImpl extends AbstractJpaDao<VAllsampleBasicpr
 	
 	@Override
 	public Set<Variety> getIRGCStocks() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -52,277 +51,232 @@ public class VAllsampleBasicpropDAOImpl extends AbstractJpaDao<VAllsampleBasicpr
 
 	@Override
 	public Set<StockSample> getSamplesById(Set sampleid) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<StockSample> getSamplesByStock(Set stock, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<StockSample> getSamplesByStock(Set stock) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<StockSample> getSamplesByAccession(Set accessions, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<StockSample> getSamplesByAccession(Set accessions) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<StockSample> getSamplesByVarnames(Set names, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<StockSample> getSamplesByVarnames(Set names) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set findAllVariety() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set findAllVariety(Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set findAllVarietyByCountry(String country) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set findAllVarietyByCountry(String country, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set findAllVarietyBySubpopulation(String subpopulation) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set findAllVarietyBySubpopulation(String subpopulation, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set findAllVarietyByExample(Variety germplasm) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set findAllVarietyByExample(Variety germplasm, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set findAllVarietyByCountryAndSubpopulation(String country, String subpopulation, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set findAllVarietyByCountryAndSubpopulation(String country, String subpopulation) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Variety findVarietyByName(String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Variety> findVarietyByName(String name, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Variety findVarietyByNameLike(String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Variety findVarietyByNameLike(String name, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Variety findVarietyByIrisId(String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Variety findVarietyByIrisId(String name, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Variety findVarietyById(BigDecimal id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Variety findVarietyById(BigDecimal id, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Variety findVarietyByAccession(String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Variety findVarietyByAccession(String name, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Variety> findVarietyByNamesLike(Collection names) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Variety> findVarietyByNamesLike(Collection names, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Variety> findVarietyByNames(Collection names) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Variety> findVarietyByNames(Collection names, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Variety> findVarietyByIrisIds(Collection names) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Variety> findVarietyByIrisIds(Collection names, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<Variety> findVarietiesByIrisId(String irisid) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<Variety> findVarietiesByIrisId(String irisid, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<Variety> findVarietiesByAccession(String accession) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 /*
 	@Override
 	public Set<Variety> findVarietiesByAccession(String accession, Set dataset) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 */
 	@Override
 	public Set<Variety> findVarietiesByName(String names) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<Variety> findVarietiesByName(String names, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<Variety> findVarietiesByNameAccession(String varname, String accession) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<Variety> findVarietiesByNameAccession(String varname, String accession, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Collection<Variety> findVarietyByIds(Set setQueryVarobj) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Collection<Variety> findVarietyByIds(Set setQueryVarobj, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Collection<Variety> findVarietiesByDataset(String dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Collection<Variety> findVarietiesByDatasets(Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set findAllVarietyByCountryAndSubpopulationDatasets(String country, String subpopulation, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

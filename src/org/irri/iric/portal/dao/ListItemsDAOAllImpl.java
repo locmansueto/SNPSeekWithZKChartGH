@@ -227,7 +227,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List getIRGCVarietyNames() {
-		// TODO Auto-generated method stub
 		if (setIRGCNames == null)
 			initIRGC();
 		return setIRGCNames;
@@ -235,7 +234,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List getIRGCAccessions() {
-		// TODO Auto-generated method stub
 		if (setIRGCAccessions == null)
 			initIRGC();
 		return setIRGCAccessions;
@@ -446,14 +444,11 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List<String> getGenenames() {
-		// TODO Auto-generated method stub
-
 		return getGenenames(AppContext.getDefaultOrganism());
 	}
 
 	@Override
 	public List<String> getGenenames(String organism) {
-		// TODO Auto-generated method stub
 
 		while (lockGenenameReader) {
 			try {
@@ -565,7 +560,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public java.util.List getAccessions(String dataset) {
-		// TODO Auto-generated method stub
 
 		List acc = mapDataset2germaccessions.get(dataset);
 		if (acc == null || acc.size() == 0)
@@ -615,7 +609,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	/*
 	 * @Override public Set getGermplasmBySubpopulation(String subpopulation) { //
-	 * TODO Auto-generated method stub
 	 * 
 	 * return getGermplasmBySubpopulation(subpopulation, VarietyFacade.DATASET_3K);
 	 * 
@@ -624,7 +617,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Set getGermplasmBySubpopulation(String subpopulation, Set dataset) {
-		// TODO Auto-generated method stub
 		return germdao.findAllVarietyBySubpopulation(subpopulation, dataset);
 	}
 
@@ -719,7 +711,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Set getGermplasmByExample(Variety germplasm, Set dataset) {
-		// TODO Auto-generated method stub
 
 		// VarietyDAO dao = this.getVarietyDAO(dataset);
 		germdao = (VarietyDAO) AppContext.checkBean(germdao, "VarietyDAO");
@@ -920,8 +911,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Map<String, BigDecimal> getPhenotypeDefinitions(String dataset) {
-		// TODO Auto-generated method stub
-
 		Map phenotypeDefinitions = this.mapDataset2phenotypeLegacyDefinitions.get(dataset);
 		if (phenotypeDefinitions == null)
 			initMoreConstraints();
@@ -949,7 +938,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Map<String, BigDecimal> getPassportDefinitions(String dataset) {
-		// TODO Auto-generated method stub
 		Map passportDefinitions = this.mapDataset2passportDefinitions.get(dataset);
 		if (passportDefinitions == null)
 			initMoreConstraints();
@@ -964,9 +952,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 	@Override
 	public Map<String, BigDecimal> getPtocoDefinitions(String dataset) {
 
-		// return new HashMap();
-
-		// TODO Auto-generated method stub
 		Map ptocoDefinitions = this.mapDataset2ptocoDefinitions.get(dataset);
 		if (ptocoDefinitions == null)
 			initMoreConstraints();
@@ -978,35 +963,8 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	}
 
-	// @Override
-	// public Integer getFeatureLength(String feature) {
-	// // TODO Auto-generated method stub
-	//
-	// /*
-	// java.util.Map<String,Integer> chrLength = new
-	// java.util.HashMap<String,Integer>();
-	// chrLength.put("1", 43270923);
-	// chrLength.put("2", 35937250);
-	// chrLength.put("3",36413819);
-	// chrLength.put("4",35502694);
-	// chrLength.put("5",29958434);
-	// chrLength.put("6",31248787);
-	// chrLength.put("7",29697621);
-	// chrLength.put("8",28443022);
-	// chrLength.put("9",23012720);
-	// chrLength.put("10",23207287);
-	// chrLength.put("11",29021106);
-	// chrLength.put("12",27531856);
-	//
-	// return chrLength.get(feature);
-	// */
-	//
-	// return getFeatureLength(feature, AppContext.getDefaultOrganism()).intValue();
-	// }
-
 	@Override
 	public List getOrganisms() throws Exception {
-		// TODO Auto-generated method stub
 		organismdao = (OrganismDAO) AppContext.checkBean(organismdao, "OrganismDAO");
 		if (mapOrgname2Org == null)
 			mapOrgname2Org = organismdao.getMapName2Organism();
@@ -1016,7 +974,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List getContigs(String organism) {
-		
 
 		if (!mapOrganismScaffolds.containsKey(organism)) {
 
@@ -1077,7 +1034,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Long getFeatureLength(String feature, String organism) {
-		
 
 		Map contigs = mapOrganismScaffolds.get(organism);
 		Long len = null;
@@ -1094,7 +1050,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Scaffold getFeature(String feature, String organism) {
-		// TODO Auto-generated method stub
 		scaffolddao = (ScaffoldDAO) AppContext.checkBean(scaffolddao, "ScaffoldDAO");
 		organismdao = (OrganismDAO) AppContext.checkBean(organismdao, "OrganismDAO");
 		Map mapOrgname2Org = organismdao.getMapName2Organism();
@@ -1158,7 +1113,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List<String> getPATOTermsWithLoci(String cv, String organism) {
-		// TODO Auto-generated method stub
 		List cvterms = mapCVOrg2Cvterms.get(cv + "-" + organism);
 		if (cvterms == null) {
 			cvterms = cvtermsFromFile("cvterms_" + cv + "_" + getOrganismByName(organism).getOrganismId() + ".tsv");
@@ -1203,14 +1157,9 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Cv getCvByName(String cv) {
-		// TODO Auto-generated method stub
 		cvDAO = (CvDAO) AppContext.checkBean(cvDAO, "CvDAO");
 		return cvDAO.getMapName2Cv().get(cv);
 	}
-
-	/*
-	 * private VarietyDAO getVarietyDAO(String dataset) { return germdao; }
-	 */
 
 	@Override
 	public List getVarietyNames() {
@@ -1226,9 +1175,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List getVarietyNames(Set dataset) {
-		// TODO Auto-generated method stub
-
-		// AppContext.debug("getVarietyNames: " + dataset);
 		if (dataset.size() == 0)
 			return getVarietyNames((String) dataset.iterator().next());
 		Set allnames = new TreeSet();
@@ -1248,7 +1194,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List getVarietyNames(String dataset) {
-		// TODO Auto-generated method stub
 		AppContext.debug("getVarietyNames: " + dataset);
 		List l = this.mapDataset2germnames.get(dataset);
 		if (l == null || l.size() == 0)
@@ -1259,7 +1204,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List getIrisIds(String dataset) {
-		// TODO Auto-generated method stub
 		List l = this.mapDataset2irisid.get(dataset);
 		if (l == null || l.size() == 0)
 			initNames(dataset);
@@ -1268,28 +1212,13 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List getSubpopulations(String dataset) {
-		// TODO Auto-generated method stub
 		List l = this.mapDataset2subpopulations.get(dataset);
 		if (l == null || l.size() == 0)
 			initNames(dataset);
 		return mapDataset2subpopulations.get(dataset);
 	}
 
-	/*
-	 * @Override public List getAccessions() { // TODO Auto-generated method stub
-	 * 
-	 * List all=getAccessions(VarietyFacade.DATASET_SNPINDELV2_IUPAC);
-	 * all.addAll(getAccessions(VarietyFacade.DATASET_SNP_HDRA)); return all; }
-	 * 
-	 */
-	/*
-	 * @Override public List getAccessions(String dataset) { // TODO Auto-generated
-	 * method stub if(dataset.equals(VarietyFacade.DATASET_SNP_HDRA)) {
-	 * if(this.accessionshdra==null) initNamesHdra(); return accessionshdra; } else
-	 * if(dataset.equals(VarietyFacade.DATASET_SNPINDELV2_IUPAC)) {
-	 * if(this.germaccessions==null) initNames(); return germaccessions; } return
-	 * null; }
-	 */
+	
 
 	@Override
 	public List getOrganismScaffolds(String organism) {
@@ -1299,8 +1228,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public void cleanDatasetCache(String dataset) {
-		// TODO Auto-generated method stub
-
+		
 		mapDataset2germnames.remove(dataset);
 		mapDataset2germaccessions.remove(dataset);
 		mapDataset2countries.remove(dataset);
@@ -1318,7 +1246,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public void cleanOrganismCache(String organism) {
-		// TODO Auto-generated method stub
 		mapOrg2Loci.remove(organism);
 		mapOrganismScaffolds.remove(organism);
 		mapOrgname2Org.remove(organism);
@@ -1326,69 +1253,59 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Set getPlatforms(String type) {
-		// TODO Auto-generated method stub
 		genotyperundao = (GenotypeRunPlatformDAO) AppContext.checkBean(genotyperundao, "GenotypeRunPlatformDAO");
 		return genotyperundao.getPlatforms(type);
 	}
 
 	@Override
 	public Set getPlatforms(Set setds, Set setvs, String type) {
-		// TODO Auto-generated method stub
 		genotyperundao = (GenotypeRunPlatformDAO) AppContext.checkBean(genotyperundao, "GenotypeRunPlatformDAO");
 		return genotyperundao.getPlatforms(setds, setvs, type);
 	}
 
 	@Override
 	public Set getDatasets(String type) {
-		// TODO Auto-generated method stub
 		genotyperundao = (GenotypeRunPlatformDAO) AppContext.checkBean(genotyperundao, "GenotypeRunPlatformDAO");
 		return genotyperundao.getDatasets(type);
 	}
 
 	@Override
 	public Set getDatasets() {
-		// TODO Auto-generated method stub
 		genotyperundao = (GenotypeRunPlatformDAO) AppContext.checkBean(genotyperundao, "GenotypeRunPlatformDAO");
 		return genotyperundao.getDatasets();
 	}
 
 	@Override
 	public Set getSnpsets(String dataset) {
-		// TODO Auto-generated method stub
 		genotyperundao = (GenotypeRunPlatformDAO) AppContext.checkBean(genotyperundao, "GenotypeRunPlatformDAO");
 		return genotyperundao.getVariantsets(dataset);
 	}
 
 	@Override
 	public Set getSnpsets(Set dataset, String type) {
-		// TODO Auto-generated method stub
 		genotyperundao = (GenotypeRunPlatformDAO) AppContext.checkBean(genotyperundao, "GenotypeRunPlatformDAO");
 		return genotyperundao.getVariantsets(dataset, type);
 	}
 
 	@Override
 	public Set getSnpsets(String dataset, String type) {
-		// TODO Auto-generated method stub
 		genotyperundao = (GenotypeRunPlatformDAO) AppContext.checkBean(genotyperundao, "GenotypeRunPlatformDAO");
 		return genotyperundao.getVariantsets(dataset, type);
 	}
 
 	@Override
 	public Set getSnpsets() {
-		// TODO Auto-generated method stub
 		genotyperundao = (GenotypeRunPlatformDAO) AppContext.checkBean(genotyperundao, "GenotypeRunPlatformDAO");
 		return genotyperundao.getVariantsets();
 	}
 
 	@Override
 	public List<Variety> getGermplasmByIrisIds(Collection names, Set dataset) {
-		// TODO Auto-generated method stub
 		return germdao.findVarietyByIrisIds(names, dataset);
 	}
 
 	@Override
 	public Variety getGermplasmByAccession(String name, String dataset) {
-		// TODO Auto-generated method stub
 		Set s = new HashSet();
 		s.add(dataset);
 		return germdao.findVarietyByAccession(name, s);
@@ -1396,8 +1313,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List<Variety> getGermplasmByNameLike(String name, Set dataset) {
-		// TODO Auto-generated method stub
-		// Set s=new HashSet(); s.add(dataset);
 		Set sn = new HashSet();
 		sn.add(name);
 		return germdao.findVarietyByNamesLike(sn, dataset);
@@ -1405,7 +1320,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List<Variety> getGermplasmByNamesLike(Collection names, Set dataset) {
-		// TODO Auto-generated method stub
 		Set s = new HashSet();
 		s.add(dataset);
 		return germdao.findVarietyByNamesLike(names, s);
@@ -1413,7 +1327,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List<Variety> getGermplasmByName(String name, String dataset) {
-		// TODO Auto-generated method stub
 		Set s = new HashSet();
 		s.add(dataset);
 		Set sn = new HashSet();
@@ -1423,7 +1336,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List<Variety> getGermplasmByNames(Collection names, String dataset) {
-		// TODO Auto-generated method stub
 		Set s = new HashSet();
 		s.add(dataset);
 		return germdao.findVarietyByNames(names, s);
@@ -1431,31 +1343,22 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Set getGermplasmByCountry(String country, Set dataset) {
-		// TODO Auto-generated method stub
 		return germdao.findAllVarietyByCountry(country, dataset);
 	}
 
 	@Override
 	public Set getGermplasm(Set dataset) {
-		// TODO Auto-generated method stub
 		return germdao.findAllVariety(dataset);
 	}
 
 	@Override
 	public Set<Variety> getGermplasmsByName(String names, Set dataset) {
-		// TODO Auto-generated method stub
 		return germdao.findVarietiesByName(names, dataset);
 	}
 
-	/*
-	 * @Override public Variety getGermplasmByAccession(String accession, String
-	 * dataset) { // TODO Auto-generated method stub Set s=new HashSet();
-	 * s.add(dataset); return germdao.findVarietyByAccession(accession, s) ; }
-	 */
-
+	
 	@Override
 	public Set<Variety> getGermplasmsByIrisId(String irisid, String dataset) {
-		// TODO Auto-generated method stub
 		Set s = new HashSet();
 		s.add(dataset);
 		return germdao.findVarietiesByIrisId(irisid, s);
@@ -1463,7 +1366,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Set getGermplasmsByNameAccession(String varname, String accession, String dataset) {
-		// TODO Auto-generated method stub
 		Set s = new HashSet();
 		s.add(dataset);
 		return germdao.findVarietiesByNameAccession(varname, accession, s);
@@ -1471,19 +1373,16 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Set getQuantTraits(Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map<String, Variety> getMapVarname2Variety(Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map getMapId2Variety(Set dataset) {
-		// TODO Auto-generated method stub
 		if (dataset.size() == 1)
 			return getMapId2Variety((String) dataset.iterator().next());
 		Map m = new HashMap();
@@ -1500,7 +1399,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List getSubpopulations(Set dataset) {
-		// TODO Auto-generated method stub
 		if (dataset.size() == 1)
 			return getSubpopulations((String) dataset.iterator().next());
 		Set set = new TreeSet();
@@ -1522,7 +1420,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List getAccessions(Set dataset) {
-		// TODO Auto-generated method stub
 		if (dataset.size() == 1)
 			return getAccessions((String) dataset.iterator().next());
 		Set set = new TreeSet();
@@ -1543,7 +1440,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Map getPhenotypeDefinitions(Set dataset) {
-		// TODO Auto-generated method stub
 		if (dataset.size() == 1)
 			return getPhenotypeDefinitions((String) dataset.iterator().next());
 		Map m = new HashMap();
@@ -1559,7 +1455,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Map getCOTerms(Set dataset) {
-		// TODO Auto-generated method stub
 		if (dataset.size() == 1)
 			return getCOTerms(((String) dataset.iterator().next()));
 		Map m = new HashMap();
@@ -1575,13 +1470,11 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Map getUIforDataset(Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map getPassportDefinitions(Set dataset) {
-		// TODO Auto-generated method stub
 		if (dataset.size() == 1)
 			return getPassportDefinitions((String) dataset.iterator().next());
 		Map m = new HashMap();
@@ -1596,7 +1489,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Map getPtocoDefinitions(Set dataset) {
-		// TODO Auto-generated method stub
 		if (dataset.size() == 1)
 			return getPtocoDefinitions((String) dataset.iterator().next());
 		Map m = new HashMap();
@@ -1611,7 +1503,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List getIrisIds(Set dataset) {
-		// TODO Auto-generated method stub
 		if (dataset.size() == 1)
 			return getIrisIds((String) dataset.iterator().next());
 		Set set = new TreeSet();
@@ -1628,7 +1519,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public List getCountries(Set dataset) {
-		// TODO Auto-generated method stub
 		if (dataset.size() == 1)
 			return getCountries((String) dataset.iterator().next());
 		Set set = new TreeSet();
@@ -1645,7 +1535,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public boolean hasNonsynData(Set variantset) {
-		// TODO Auto-generated method stub
 		boolean hasAll = true;
 		for (Object ds : variantset) {
 			Boolean hasNonsyn = mapDataset2Hasnonsyn.get(ds);
@@ -1662,7 +1551,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Map<BigDecimal, StockSample> getMapId2Sample(String dataset) {
-		// TODO Auto-generated method stub
 		Map m = this.mapDataset2Id2Sample.get(dataset);
 		if (m == null)
 			initSamples(dataset);
@@ -1698,7 +1586,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Map<String, StockSample> getMapAssay2Sample(String dataset) {
-		// TODO Auto-generated method stub
 		Map m = this.mapDataset2Assay2Sample.get(dataset);
 		if (m == null || m.size() == 0)
 			initSamples(dataset);
@@ -1749,7 +1636,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Map<String, StockSample> getMapAssay2Sample(Set dataset) {
-		// TODO Auto-generated method stub
 		if (dataset.size() == 1)
 			return getMapAssay2Sample((String) dataset.iterator().next());
 		Map m = new HashMap();
@@ -1783,7 +1669,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 	}
 
 	private Map<String, BigDecimal> getTraitItem(String dataset, boolean legacySelected) {
-		// TODO Auto-generated method stub
 		Map phenotypeDefinitions = null;
 		if (legacySelected)
 			phenotypeDefinitions = this.mapDataset2phenotypeLegacyDefinitions.get(dataset);
@@ -1806,7 +1691,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public Map<BigDecimal, String> getAllTraits(Set<String> dataset, boolean legacyPhenotype) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

@@ -750,7 +750,6 @@ public class VCvPhenotypeByPtocoDAOImpl extends AbstractJpaDao<VCvPhenotypeByPto
 
 	@Override
 	public Set getUniqueValues(BigDecimal typeId, Set dataset) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -805,7 +804,7 @@ public class VCvPhenotypeByPtocoDAOImpl extends AbstractJpaDao<VCvPhenotypeByPto
 /*
 	@Override
 	public List getDescendants(String cv, String term, String dataset) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 */

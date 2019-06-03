@@ -136,7 +136,6 @@ public class GwasFacadeImpl implements GwasFacade {
 
 	@Override
 	public Map<MultiReferencePosition, Double> getPos2MinusLogP(String trait, String subpop) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -533,7 +533,6 @@ public class VarietiesGenotypeSNPsIndelServiceImpl implements VarietiesGenotypeS
 
 	@Override
 	public Future queryVariantStringDataAsync(GenotypeQueryParams params) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

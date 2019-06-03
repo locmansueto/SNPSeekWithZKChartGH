@@ -49,13 +49,11 @@ import org.irri.iric.portal.domain.SnpsSpliceDonor;
 public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor, Comparable {
 	@Override
 	public String getContig() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getRefnuc() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

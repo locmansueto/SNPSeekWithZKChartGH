@@ -343,8 +343,7 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 	@Override
 	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params, List listCDS)
 			throws Exception {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -377,7 +376,6 @@ public class FakerMatrixModel<Head extends List, Row extends List, Cell, Header>
 
 	@Override
 	public String[] getContigs() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

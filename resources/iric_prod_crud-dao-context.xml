@@ -167,7 +167,7 @@
 		/> <property name="maxIdle" value="1" /> <property name="maxActive" value="10" 
 		/> </bean> -->
 
-	<!-- bean class="org.apache.commons.dbcp.BasicDataSource"
+	<!-- <bean class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" name="IRIC_ProductionDS_PG">
 		<property name="driverClassName"
 			value="org.postgresql.Driver" />
@@ -177,8 +177,8 @@
 			value="jdbc:postgresql://iric-rds-singapore-prod-v1.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric" />
 		<property name="maxIdle" value="1" />
 		<property name="maxActive" value="10" />
-	</bean -->
-	
+	</bean> 
+	 -->
 
 	<!-- <AWS-RDS Beanstalk v2 -->
 	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 

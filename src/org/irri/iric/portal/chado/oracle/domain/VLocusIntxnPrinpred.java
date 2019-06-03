@@ -744,7 +744,6 @@ public class VLocusIntxnPrinpred implements Serializable, Locus {
 
 	@Override
 	public String getFeatureType() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -251,7 +251,7 @@ public class VCvPhenotypeDAOImpl extends AbstractJpaDao<VCvPhenotype> implements
 
 	@Override
 	public List getAllTerms(BigDecimal cvByName, BigDecimal organismByName) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

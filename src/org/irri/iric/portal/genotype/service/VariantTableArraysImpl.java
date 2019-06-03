@@ -39,8 +39,7 @@ public class VariantTableArraysImpl implements VariantTable {
 	@Override
 	public void setVariantStringData(VariantStringData data, GenotypeQueryParams params, List listCDS)
 			throws Exception {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -181,7 +180,6 @@ public class VariantTableArraysImpl implements VariantTable {
 
 	@Override
 	public String[] getContigs() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

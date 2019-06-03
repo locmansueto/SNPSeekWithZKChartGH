@@ -558,7 +558,6 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@Override
 	public Set getPlatforms(String type) {
-		// TODO Auto-generated method stub
 		// return findAllVGenotypeRuns();
 
 		Set platforms = new LinkedHashSet();
@@ -573,7 +572,7 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@Override
 	public Set getPlatforms(Set setds, Set setvs, String type) {
-		// TODO Auto-generated method stub
+		
 		// return findAllVGenotypeRuns();
 
 		Set platforms = new LinkedHashSet();
@@ -591,7 +590,7 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@Override
 	public Set getPlatformRuns(Integer platformId) {
-		// TODO Auto-generated method stub
+		
 		Set platforms = new LinkedHashSet();
 		for (VGenotypeRun run : findAllVGenotypeRuns()) {
 			if (run.getPlatformId().equals(platformId))
@@ -602,7 +601,7 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@Override
 	public Set getDatasets(String type) {
-		// TODO Auto-generated method stub
+		
 		Set set = new TreeSet();
 		for (VGenotypeRun run : findAllVGenotypeRuns()) {
 			if (type == null || run.getVariantType().toUpperCase().equals(type.toUpperCase()))
@@ -613,7 +612,7 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@Override
 	public Set getDatasets() {
-		// TODO Auto-generated method stub
+		
 		Set set = new TreeSet();
 		for (VGenotypeRun run : findAllVGenotypeRuns()) {
 			set.add(run.getDataset());
@@ -623,7 +622,6 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@Override
 	public Set getVariantsets() {
-		// TODO Auto-generated method stub
 		Set set = new TreeSet();
 		for (VGenotypeRun run : findAllVGenotypeRuns()) {
 			set.add(run.getVariantset());
@@ -633,7 +631,6 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@Override
 	public Set getVariantsets(String dataset) {
-		// TODO Auto-generated method stub
 		Set set = new TreeSet();
 		for (VGenotypeRun run : findAllVGenotypeRuns()) {
 			if (run.getDataset().equals(dataset))
@@ -644,7 +641,6 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@Override
 	public Set getVariantsets(Set dataset, String type) {
-		// TODO Auto-generated method stub
 		Set set = new TreeSet();
 		for (VGenotypeRun run : findAllVGenotypeRuns()) {
 			if (dataset.contains(run.getDataset()) && run.getVariantType().compareToIgnoreCase(type) == 0)
@@ -655,7 +651,6 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 
 	@Override
 	public Set getVariantsets(String dataset, String type) {
-		// TODO Auto-generated method stub
 		Set set = new TreeSet();
 		for (VGenotypeRun run : findAllVGenotypeRuns()) {
 			if (dataset.equals(run.getDataset()) && run.getVariantType().compareToIgnoreCase(type) == 0)

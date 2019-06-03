@@ -1279,8 +1279,6 @@ public class AppContext {
 	}
 
 	public static String getDefaultVariantset() {
-		// TODO Auto-generated method stub
-		// return "refset"; // 3kfiltered;
 		return webProp.get(WebserverPropertyConstants.DEFAULT_VARIANT_SET).toString();
 	}
 
@@ -1350,7 +1348,7 @@ public class AppContext {
 			}
 		} 
 		*/
-		log.info(msg);
+		logger.info(msg);
 	}
 
 	// display in debug mode
@@ -1664,7 +1662,6 @@ public class AppContext {
 	 * @param string
 	 */
 	public static void waitForFile(String string) {
-		// TODO Auto-generated method stub
 		File newfile = new File(string);
 		while (!newfile.exists() && newfile.length() > 0) {
 			try {
@@ -2201,7 +2198,6 @@ public class AppContext {
 	}
 
 	public static boolean isBypassViews() {
-		// TODO Auto-generated method stub
 		return bBypassViews;
 	}
 
@@ -2263,7 +2259,6 @@ public class AppContext {
 	}
 
 	public static String getInstance() {
-		// TODO Auto-generated method stub
 		if (isAWSBeanstalk() || isAWSBeanstalkDev()) {
 			String ec2name = getEC2Tag("Name");
 			if (ec2name != null)
@@ -2486,7 +2481,6 @@ public class AppContext {
 	}
 
 	public static Set toUpperCase(Collection dataset) {
-		// TODO Auto-generated method stub
 		Set s = new LinkedHashSet();
 		for (Object ds : dataset) {
 			s.add(((String) ds).toUpperCase());
@@ -2518,26 +2512,7 @@ public class AppContext {
 
 		return strValues;
 	}
-/*
-	private static PythonInterpreter interp=null;
-	public static void initPythonInterp() {
-		// TODO Auto-generated method stub
-		if(interp==null) {
-			debug("initializing new PythonInterpreter()");
-			try {
-			interp=new PythonInterpreter();
-			} catch(Exception ex) {
-				ex.printStackTrace();
-			}
-			
-		}
-	}
-	public static PythonInterpreter getPythonInterp() {
-		// TODO Auto-generated method stub
-		initPythonInterp();
-		return interp;
-	}
-	*/
+
 	public static String readURL(String a) throws Exception {
 		return readURL(a,null); 
 	}	

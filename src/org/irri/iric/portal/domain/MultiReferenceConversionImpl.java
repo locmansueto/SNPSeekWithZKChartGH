@@ -86,25 +86,21 @@ public class MultiReferenceConversionImpl implements MultiReferenceConversion, C
 
 	@Override
 	public String getFromOrganism() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getFromContig() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public BigDecimal getFromPosition() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getFromRefcall() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

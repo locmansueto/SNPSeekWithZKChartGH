@@ -146,7 +146,6 @@ public class VCvPassport implements Serializable, CvTerm {
 
 	@Override
 	public String getAccession() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

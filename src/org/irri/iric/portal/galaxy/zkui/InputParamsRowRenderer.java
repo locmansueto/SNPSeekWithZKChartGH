@@ -29,7 +29,6 @@ public class InputParamsRowRenderer implements RowRenderer{
 	
 	@Override
 	public void render(Row row, Object obj, int i) throws Exception {
-		// TODO Auto-generated method stub
 		String[] params=null;
 		try {
 			params=(String[])obj;

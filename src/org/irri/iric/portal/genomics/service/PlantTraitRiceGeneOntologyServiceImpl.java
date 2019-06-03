@@ -18,7 +18,6 @@ public class PlantTraitRiceGeneOntologyServiceImpl implements OntologyService {
 
 	@Override
 	public List getCVtermDescendants(String cv, String term) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -35,19 +34,16 @@ public class PlantTraitRiceGeneOntologyServiceImpl implements OntologyService {
 
 	@Override
 	public String queryAccession(String q) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String overRepresentationTest(String organism, Collection genelist, String enrichmentType) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List countLociInTerms(String organism, Collection genelist, String cv) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
