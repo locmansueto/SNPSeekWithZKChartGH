@@ -30,7 +30,6 @@ public class SNPEffListitemRenderer implements ListitemRenderer {
 
 	@Override
 	public void render(Listitem arg0, Object arg1, int arg2) throws Exception {
-		
 
 		SnpsEffect snp = (SnpsEffect) arg1;
 		// String[] anns = snp.getAnnotation().split("\\|");
@@ -42,16 +41,18 @@ public class SNPEffListitemRenderer implements ListitemRenderer {
 		addListcell(arg0, Integer.valueOf(snp.getScore().intValue()).toString());
 
 		/*
-		 * <listheader label="POSITION" sort="auto" width="8%"/> <listheader
-		 * label="&quot;deleteriousness&quot rank;" sort="auto" width="50px"/>
-		 * <listheader label="ALT" sort="auto" width="20px"/> <listheader label="ANNOT"
-		 * sort="auto" width="80px"/> <listheader label="IMPACT" sort="auto"
-		 * width="50px"/> <listheader label="GENE" sort="auto" width="50px"/>
-		 * <listheader label="TRANS BIOTYPE" sort="auto" width="50px"/> <listheader
-		 * label="HGVS.c" sort="auto" width="50px"/> <listheader label="HGVS.P"
-		 * sort="auto" width="50px"/> <listheader label="ANN" sort="auto" /> <listheader
-		 * label="LOF" sort="auto" width="3%"/> <listheader label="NMD" sort="auto"
-		 * width="3%"/>
+		 * <listheader label="POSITION" sort="auto" width="8%"/> 
+		 * <listheader label="&quot;deleteriousness&quot rank;" sort="auto" width="50px"/>
+		 * <listheader label="ALT" sort="auto" width="20px"/> 
+		 * <listheader label="ANNOT" sort="auto" width="80px"/> 
+		 * <listheader label="IMPACT" sort="auto" width="50px"/> 
+		 * <listheader label="GENE" sort="auto" width="50px"/>
+		 * <listheader label="TRANS BIOTYPE" sort="auto" width="50px"/> 
+		 * <listheader label="HGVS.c" sort="auto" width="50px"/> 
+		 * <listheader label="HGVS.P" sort="auto" width="50px"/> 
+		 * <listheader label="ANN" sort="auto" /> 
+		 * <listheader label="LOF" sort="auto" width="3%"/> 
+		 * <listheader label="NMD" sort="auto"width="3%"/>
 		 */
 
 		/*
@@ -75,7 +76,36 @@ public class SNPEffListitemRenderer implements ListitemRenderer {
 			else if (infos[i].startsWith("NMD="))
 				mapInfos.put("NMD", infos[i].replace("NMD=", ""));
 		}
-		addListcell(arg0, (mapInfos.containsKey("ANN") ? mapInfos.get("ANN").replace(",", "\n") : ""));
+
+		if (mapInfos.containsKey("ANN")) {
+			String[] rowList = mapInfos.get("ANN").split(",");
+			Map<Integer, String> column = new HashMap<Integer, String>();
+			for (int i = 0; i <= 15; i++)
+				column.put(i, "");
+
+			for (String row : rowList) {
+				row = row.replaceAll("[|]", "|space");
+				String[] annList = row.split("\\|");
+				for (int i = 0; i <= 15; i++) {
+					String str =  (column.get(i).isEmpty() ? column.get(i) : column.get(i)+"\n"); 
+					column.put(i, (!annList[i].equals(null)  && !annList[i].equals("space") ? str + annList[i].replace("space", "") : str+"-"));
+				}
+			}
+			
+			for (int i = 0; i <= 15; i++) {
+				addListcell(arg0, column.get(i));
+			}
+
+			
+
+		} else {
+			for (int i = 0; i < 15; i++) {
+				addListcell(arg0, "");
+			}
+		}
+
+		// addListcell(arg0, (mapInfos.containsKey("ANN") ?
+		// mapInfos.get("ANN").replace(",", "\n") : ""));
 		addListcell(arg0, (mapInfos.containsKey("LOF") ? mapInfos.get("LOF").replace(",", "\n") : ""));
 		addListcell(arg0, (mapInfos.containsKey("NMD") ? mapInfos.get("NMD").replace(",", "\n") : ""));
 

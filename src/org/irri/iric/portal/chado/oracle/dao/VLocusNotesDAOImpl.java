@@ -453,7 +453,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 			// listResult=
 			// getSession().createSQLQuery(sql).addEntity(VLocusNotes.class).list();
 			listResult = getSession().createSQLQuery(sql).addEntity(VLocusNotes.class).list();
-
+			//listResult = executeNativeSQL(sql);
 		} catch (Exception ex) {
 
 			AppContext.debug(ex.getMessage());
@@ -1827,7 +1827,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 				+ " on f.feature_id=f3.feature_id" + " where f.feature_id=fl.feature_id " + " and ((fl.fmin>=" + start
 				+ " and fl.fmax<=" + end + ") " + " or (fl.fmin<=" + start + " and fl.fmax>=" + end + ") "
 				+ " or (fl.fmin<=" + start + " and fl.fmax>=" + start + ") " + " or (fl.fmin<=" + end + " and fl.fmax>="
-				+ end + ") " + " ) and lower(fsrc.uniquename)='" + contig.toLowerCase() + "' "
+				+ end + ") " + " ) and lower(fsrc.name)='" + contig.toLowerCase() + "' "
 				+ " and fsrc.feature_id=fl.srcfeature_id and f.organism_id=o.organism_id "
 				// + " and cvtype.name='gene' and cvtype.cvterm_id=f.type_id "
 				// + " and cvtype.name='" + featuretype + "'"
@@ -1967,7 +1967,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 				+ " where f.feature_id=fl.feature_id " + " and ((fl.fmin>=" + start + " and fl.fmax<=" + end + ") "
 				+ " or (fl.fmin<=" + start + " and fl.fmax>=" + end + ") " + " or (fl.fmin<=" + start + " and fl.fmax>="
 				+ start + ") " + " or (fl.fmin<=" + end + " and fl.fmax>=" + end + ") "
-				+ " ) and lower(fsrc.uniquename)='" + contig.toLowerCase() + "' "
+				+ " ) and lower(fsrc.name)='" + contig.toLowerCase() + "' "
 				+ " and fsrc.feature_id=fl.srcfeature_id and f.organism_id=o.organism_id "
 				// + " and lower(cvtype.name)='" + featuretype.toLowerCase() + "' and
 				// cvtype.cvterm_id=f.type_id "

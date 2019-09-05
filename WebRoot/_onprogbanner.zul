@@ -8,18 +8,20 @@
 </zscript>        
 
 
-<div style="background-color:white">
-<hbox height="10px" width="100%"/>
+<div style="background-color:green">
+<hbox height="10px" width="100%" />
 <hbox align="center" pack="center" height="100%" width="100%">
-<a target="_blank" href="http://iric.irri.org" image="/images/iric/iric_logo.png"/>
+<!-- <a target="_blank" href="http://iric.irri.org" image="/images/iric/iric_logo.png"/>  -->
 <vbox width="20px"/>
-<vbox align="stretch" height="80px">
-	<label pre="true" value="                    Rice SNP-Seek Database               " width="100%" 
-	style="color:green;background-color:white;font-weight:bold;font-family:arial;font-size:30px" />
+<vbox align="stretch" height="20px">
+	<!-- <label pre="true" value="Rice SNP-Seek Database" width="100%" 
+	style="color:green;background-color:white;font-weight:bold;font-family:arial;font-size:30px" /> -->
 	<hbox>
-	<menubar id="menubar" width="100%" orient="horizontal" autodrop="true"  style="background-color:white">
-		<menuitem src="/images/iric/home4.png" label="Home" href="index.zul"/>
-		<menu label="Search" src="/images/iric/query.png">
+	<menubar id="menubar" width="100%" orient="horizontal" autodrop="true"  style="background-color:green;">
+		<menuitem src="/images/iric/home4.png" label="Home"
+			href="index.zul" style="color:white;"/>
+			
+		<menu label="Search" src="/images/iric/query.png" style="color:white;">
 			<menupopup>
 				<menuitem src="/images/iric/gene1.png" label="Genotype" href="_snp.zul"/>
 				<menuitem src="/images/iric/var5.png" label="Varieties" href="_variety.zul"/>

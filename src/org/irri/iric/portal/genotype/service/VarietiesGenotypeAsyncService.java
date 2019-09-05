@@ -20,6 +20,7 @@ import java.util.concurrent.Future;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.CreateZipMultipleFiles;
+import org.irri.iric.portal.Timer;
 import org.irri.iric.portal.admin.AsyncJob;
 import org.irri.iric.portal.admin.AsyncJobImpl;
 import org.irri.iric.portal.admin.JobsFacade;
@@ -85,13 +86,13 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 
 	@Override
 	public long countSNPPoslist(GenotypeQueryParams params) {
-		
+
 		return -1;
 	}
 
 	@Override
 	public long countVariantStringData(GenotypeQueryParams params) {
-		
+
 		return -1;
 	}
 
@@ -291,12 +292,13 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 		return listVaridRange;
 	}
 
-	private List<Integer[]> sliceVarids(int cols, Collection varids, Map mapIdx2Sample) {
+	private List<Integer[]> sliceVarids(int cols, Collection varids, int varid_offset) {
 		List<Integer[]> listVaridRange = null;
-		int varid_offset = 0;
+		//int varid_offset = 0;
 		int maxvars = Long.valueOf(AppContext.getMaxGenotypeElements() / cols).intValue();
 		AppContext.debug("sliceVarids: maxvars=" + maxvars + "?" + AppContext.getMaxRows());
-
+		int maxTemp;
+		int minNum;
 		if (varids == null) {
 			if (maxvars > AppContext.getMaxRows()) {
 				listVaridRange = new ArrayList();
@@ -306,6 +308,9 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 				for (int i = 1 + varid_offset; i <= AppContext.getMaxRows() + varid_offset; i += maxvars) {
 					listVaridRange.add(
 							new Integer[] { i, Math.min(AppContext.getMaxRows() + varid_offset, i + maxvars - 1) });
+					maxTemp = i + maxvars - 1;
+					minNum = Math.min(AppContext.getMaxRows() + varid_offset, maxTemp);
+					AppContext.debug("i=" + i + "?" + minNum + "? " + maxTemp);
 				}
 			}
 		} else {
@@ -371,7 +376,6 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 	}
 
 	private VariantStringData _queryVariantStringData(GenotypeQueryParams params) throws Exception {
-		
 
 		// if(true) {
 		// writeStatus(params.getFilename(), JobsFacade.JOBSTATUS_ERROR);
@@ -402,6 +406,9 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 		if (params.isbIndel())
 			indelfactor = 5;
 
+		listVaridRange = sliceVarids(indelfactor * Integer.valueOf(Long.toString((params.getlEnd() - params.getlStart()) / 10)),
+				params.getColVarIds(), var_offset);
+
 		if (params.getPoslist() != null)
 			;// listVaridRange=sliceVarids(indelfactor*params.getPoslist().size(),
 				// params.getColVarIds(),var_offset);
@@ -414,51 +421,55 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 			// params.getColVarIds(),var_offset);
 		}
 
-		// //if(!params.hasVarlist()) {
-		// if(params.isbCoreonly()) {
-		// if(params.getPoslist()!=null)
-		// listVaridRange=sliceVarids(params.getPoslist().size()*indelfactor,
-		// params.getColVarIds(),var_offset);
-		// else if(params.getlEnd()!=null && params.getlStart()!=null) {
-		// listVaridRange=sliceVarids( indelfactor*Integer.valueOf(
-		// Long.toString((params.getlEnd()-params.getlStart())/300)) ,
-		// params.getColVarIds(),var_offset);
+		// if(!params.hasVarlist()) {
+		// if (params.isbCoreonly()) {
+		// if (params.getPoslist() != null)
+		// listVaridRange = sliceVarids(params.getPoslist().size() * indelfactor,
+		// params.getColVarIds(),
+		// var_offset);
+		// else if (params.getlEnd() != null && params.getlStart() != null) {
+		// listVaridRange = sliceVarids(
+		// indelfactor * Integer.valueOf(Long.toString((params.getlEnd() -
+		// params.getlStart()) / 300)),
+		// params.getColVarIds(), var_offset);
+		// } else if (params.getColLoci() != null) {
+		// listVaridRange = sliceVarids(indelfactor * params.getColLoci().size() * 10 /
+		// 30, params.getColVarIds(),
+		// var_offset);
 		// }
-		// else if(params.getColLoci()!=null) {
-		// listVaridRange=sliceVarids( indelfactor*params.getColLoci().size()*10/30 ,
-		// params.getColVarIds(),var_offset );
+		// } else if (params.getDataset().equals(VarietyFacade.DATASET_SNP_HDRA)) {
+		// if (params.getPoslist() != null)
+		// listVaridRange = sliceVarids(indelfactor * params.getPoslist().size(),
+		// params.getColVarIds(),
+		// var_offset);
+		// else if (params.getlEnd() != null && params.getlStart() != null) {
+		// listVaridRange = sliceVarids(
+		// indelfactor * Integer.valueOf(Long.toString((params.getlEnd() -
+		// params.getlStart()) / 150)),
+		// params.getColVarIds(), var_offset);
+		// } else if (params.getColLoci() != null) {
+		// listVaridRange = sliceVarids(indelfactor * params.getColLoci().size() * 10 /
+		// 15, params.getColVarIds(),
+		// var_offset);
 		// }
-		// }
-		// else if(params.getDataset().equals(VarietyFacade.DATASET_SNP_HDRA)) {
-		// if(params.getPoslist()!=null)
-		// listVaridRange=sliceVarids(indelfactor*params.getPoslist().size() ,
-		// params.getColVarIds(),var_offset);
-		// else if(params.getlEnd()!=null && params.getlStart()!=null) {
-		// listVaridRange=sliceVarids( indelfactor*Integer.valueOf(
-		// Long.toString((params.getlEnd()-params.getlStart())/150)) ,
-		// params.getColVarIds(),var_offset);
-		// }
-		// else if(params.getColLoci()!=null) {
-		// listVaridRange=sliceVarids( indelfactor*params.getColLoci().size()*10/15 ,
-		// params.getColVarIds(),var_offset);
-		// }
-		// }
-		// else {
+		// } else {
 		// // allpos
-		// if(params.getPoslist()!=null)
-		// listVaridRange=sliceVarids(indelfactor*params.getPoslist().size(),
-		// params.getColVarIds(),var_offset);
-		// else if(params.getlEnd()!=null && params.getlStart()!=null) {
-		// listVaridRange=sliceVarids( indelfactor*Integer.valueOf(
-		// Long.toString((params.getlEnd()-params.getlStart())/10)),
-		// params.getColVarIds(),var_offset);
+		// if (params.getPoslist() != null)
+		// listVaridRange = sliceVarids(indelfactor * params.getPoslist().size(),
+		// params.getColVarIds(),
+		// var_offset);
+		// else if (params.getlEnd() != null && params.getlStart() != null) {
+		// listVaridRange = sliceVarids(
+		// indelfactor * Integer.valueOf(Long.toString((params.getlEnd() -
+		// params.getlStart()) / 10)),
+		// params.getColVarIds(), var_offset);
+		// } else if (params.getColLoci() != null) {
+		// listVaridRange = sliceVarids(indelfactor * params.getColLoci().size() * 10,
+		// params.getColVarIds(),
+		// var_offset);
 		// }
-		// else if(params.getColLoci()!=null) {
-		// listVaridRange=sliceVarids( indelfactor*params.getColLoci().size()*10 ,
-		// params.getColVarIds(),var_offset);
 		// }
 		// }
-		// //}
 
 		VariantStringData data = null;
 
@@ -470,6 +481,8 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 			VariantStringData prevvarstrdata = null;
 
 			int rangecnt = 1;
+			// Timer time = new Timer();
+			// time.start();
 			while (itVars.hasNext()) {
 				Integer[] varids = itVars.next();
 
@@ -487,6 +500,7 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 				params.setColVarIds(null);
 				params.setVariantdata(prevvarstrdata);
 				data = null;
+				// TODO PUT TIMER HERE
 				data = vargenservice.queryVariantStringData(params);
 				mapVarid2Score.putAll(data.getMapVariety2Mismatch());
 
@@ -522,6 +536,7 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 				prevvarstrdata = data;
 				prevvarstrdata.clearVarietyData();
 			}
+			//time.stopAndGetTime();
 		} else if (params.hasVarlist()) {
 			VariantStringData prevvarstrdata = null;
 			Collection colAllvars = params.getColVarIds();
@@ -844,7 +859,7 @@ public class VarietiesGenotypeAsyncService implements VarietiesGenotypeService {
 	// private VariantStringData _queryVariantStringDataPlink(GenotypeQueryParams
 	// params) throws Exception
 	// {
-	// 
+	//
 	//
 	// vargenservice= (VarietiesGenotypeService)AppContext.checkBean(vargenservice,
 	// "VarietiesGenotypeService") ;

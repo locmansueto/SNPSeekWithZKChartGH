@@ -7,9 +7,9 @@ window.Boot_progressbox = function (){}
 
 <?component name="newProduct" macroURI="includedMacro.zul"?>
 
-<zk  xmlns:h="native">
+<zk xmlns:h="native">
 
-<zscript>
+	<zscript>
         import org.irri.iric.portal.AppContext;      
         String paramstr=AppContext.getJBrowseDefaulttracks(AppContext.getDefaultDataset());
         //DNA,msu7gff,snp3k

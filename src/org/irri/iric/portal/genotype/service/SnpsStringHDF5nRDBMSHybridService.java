@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.TimeUnit;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.ListItemsDAO;
@@ -810,6 +811,16 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 			int intStartStopIdx[][] = new int[listStartStop.size()][2];
 			Iterator<int[]> itStartStop = listStartStop.iterator();
 			int sscount = 0;
+			long startTime = System.nanoTime();
+			long endTime   = System.nanoTime();
+			
+			sampledao = (StockSampleDAO) AppContext.checkBean(sampledao, "StockSampleDAO");
+			
+			long totalTime = endTime - startTime;
+			
+			System.out.println("TIME: " +TimeUnit.SECONDS.convert(totalTime, TimeUnit.NANOSECONDS));
+			
+			// TODO
 			while (itStartStop.hasNext()) {
 				intStartStopIdx[sscount] = itStartStop.next();
 				// AppContext.debug("idxrange " + intStartStopIdx[sscount][0] + "-" +

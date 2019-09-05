@@ -8,7 +8,7 @@
 	<packaging>war</packaging>
 	<name>snpseek</name>
 	<dependencies>
-	<!-- https://mvnrepository.com/artifact/com.sleepycat/je -->
+		<!-- https://mvnrepository.com/artifact/com.sleepycat/je -->
 		<dependency>
 			<groupId>com.sleepycat</groupId>
 			<artifactId>je</artifactId>
@@ -1043,19 +1043,15 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.irri.iric</groupId>
+			<groupId>org.zkoss.zk</groupId>
 			<artifactId>zk</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zk.jar</systemPath>
+			<version>8.6.0.1</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.irri.iric</groupId>
-			<artifactId>zkbind</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/WebRoot/WEB-INF/lib/zkbind.jar</systemPath>
+			<groupId>org.zkoss.zk</groupId>
+			<artifactId>zbind</artifactId>
+			<version>6.0.0-RC</version>
 		</dependency>
 
 		<dependency>
@@ -1137,6 +1133,11 @@
 			<id>biojava-legacy-repo</id>
 			<name>BioJava's Git based legacy maven repo</name>
 			<url>https://github.com/biojava/maven-repo/raw/master/</url>
+		</repository>
+		<repository>
+			<id>ZK CE</id>
+			<name>ZK CE Repository</name>
+			<url>https://mavensync.zkoss.org/maven2</url>
 		</repository>
 	</repositories>
 

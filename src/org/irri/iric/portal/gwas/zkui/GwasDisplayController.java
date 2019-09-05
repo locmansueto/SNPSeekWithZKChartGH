@@ -560,12 +560,13 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 			String posstr = pos.getChr() + "-" + pos.getPosition();
 
 			// if(pos.getLogPvalue()<minlogp) break;
-			if (pos.getMinusLogPvalue() < minlogp)
-
-				mapPos2Values.put(posstr, pos.getMinusLogPvalue());
-			mapPos2Index.put(posstr, idx);
-			mapIndex2Pos.put(idx, posstr);
-			idx++;
+			if (pos.getMinusLogPvalue() != null)
+				if (pos.getMinusLogPvalue() >= minlogp) {
+					mapPos2Values.put(posstr, pos.getMinusLogPvalue());
+					mapPos2Index.put(posstr, idx);
+					mapIndex2Pos.put(idx, posstr);
+					idx++;
+				}
 		}
 		displayManhattanXY(mapPos2Values);
 

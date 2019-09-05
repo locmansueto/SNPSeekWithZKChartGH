@@ -30,4 +30,11 @@ public interface Scaffold {
 	 * @return
 	 */
 	public String getName();
+	
+	/**
+	 * scaffold/contig unique name
+	 * 
+	 * @return
+	 */
+	public String getUniquename();
 }

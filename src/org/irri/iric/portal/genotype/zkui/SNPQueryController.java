@@ -940,7 +940,6 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 	public SNPQueryController() {
 		super();
-		// TODO Auto-generated constructor stub
 		AppContext.debug("created SNPQueryController " + this);
 	}
 
@@ -1086,6 +1085,22 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				listboxReference.setSelectedIndex(0);
 
 			AppContext.debug("starting chrregion section...");
+
+			// author: bohemian
+			// https://stackoverflow.com/questions/13973503/sorting-strings-that-contains-number-in-java
+			Collections.sort(listContigs, new Comparator<String>() {
+				public int compare(String o1, String o2) {
+					return extractInt(o1) - extractInt(o2);
+				}
+
+				int extractInt(String s) {
+					String num = s.replaceAll("\\D", "");
+					// return 0 if no digits found
+					return num.isEmpty() ? 0 : Integer.parseInt(num);
+				}
+			});
+			// End sort
+
 			if (listContigs != null && !listContigs.isEmpty()) {
 				// List listConts = new ArrayList();
 				// listConts.add("");
@@ -1824,8 +1839,11 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				} else {
 
 					// Deligate query to API
+					GenotypeQueryParams params2 = params;
+					params2.setIncludedSnps(false, false, false);
 
-					queryRawResult = genotype.queryGenotype(params);
+					queryRawResult = genotype.queryGenotype(params2);
+					//
 
 					AppContext.debug("genotype.queryGenotype( params) " + queryRawResult.getListPos().size() + " x "
 							+ queryRawResult.getMapVariety2Mismatch().size());
@@ -1889,36 +1907,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				}
 
 				// set table column width
-				biglistboxArray.setRowHeight("29px");
-				biglistboxArray.setWidth("1100px");
-				int biglistcolwidth = 60;
-				int biglistcolwidthOverview = 10;
-				if (checkboxIndel.isChecked() && !checkboxAlignIndels.isChecked()) {
-					// display indel in description format
-
-					// adjust column width to fill 1000px
-					if (queryResult.getListPos().size() < (1000 / 60 - 3))
-						biglistcolwidth = 1000 / (3 + queryResult.getListPos().size());
-					else // biglistboxArray.setColWidth("60px");
-						biglistcolwidth = 60;
-				} else {
-					// show MSA format
-					if (queryResult.getListPos().size() < (1000 / 30 - 3)) {
-						biglistcolwidth = 1000 / (3 + queryResult.getListPos().size());
-					} else // biglistboxArray.setColWidth("30px"); {
-					{
-						biglistcolwidth = 30;
-					}
-
-					if (queryResult.getListPos().size() < (1000 / 10 - 3)) {
-						biglistcolwidthOverview = 1000 / (3 + queryResult.getListPos().size());
-					} else // biglistboxArray.setColWidth("30px"); {
-					{
-						biglistcolwidthOverview = 10;
-					}
-
-				}
-				biglistboxArray.setColWidth(biglistcolwidth + "px");
+				setTableSize();
 
 				// set table model and renderer
 				Object2StringMultirefsMatrixRenderer renderer = new Object2StringMultirefsMatrixRenderer(queryResult,
@@ -2328,8 +2317,66 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			Messagebox.show(ex.getMessage(), "Exception", Messagebox.OK, Messagebox.ERROR);
 
 		} finally {
+			// render after
+			oncheckShowsnps();
 			Clients.clearBusy();
 		}
+
+	}
+
+	private void setTableSize() {
+		biglistboxArray.setRowHeight("29px");
+		biglistboxArray.setColWidth("35px");
+		int width = 1050;
+		int biglistcolwidthOverview = 10;
+		// if (checkboxIndel.isChecked() && !checkboxAlignIndels.isChecked()) {
+		// // display indel in description format
+		//
+		// // adjust column width to fill 1000px
+		// if (queryResult.getListPos().size() < (1000 / 60 - 3))
+		// biglistcolwidth = 1000 / (3 + queryResult.getListPos().size());
+		// else // biglistboxArray.setColWidth("60px");
+		// biglistcolwidth = 60;
+		// } else {
+		// // show MSA format
+		// if (queryResult.getListPos().size() < (1000 / 30 - 3)) {
+		// biglistcolwidth = 1000 / (3 + queryResult.getListPos().size());
+		// } else // biglistboxArray.setColWidth("30px"); {
+		// {
+		// biglistcolwidth = 30;
+		// }
+		//
+		// if (queryResult.getListPos().size() < (1000 / 10 - 3)) {
+		// biglistcolwidthOverview = 1000 / (3 + queryResult.getListPos().size());
+		// } else // biglistboxArray.setColWidth("30px"); {
+		// {
+		// biglistcolwidthOverview = 10;
+		// }
+		//
+		// }
+
+		if (checkboxIndel.isChecked() && !checkboxAlignIndels.isChecked()) {
+			// display indel in description format
+
+			// adjust column width to fill 1000px
+			if (queryResult.getListPos().size() < 25)
+				width = ((queryResult.getListPos().size() + 6) * 35) + 25;
+
+		} else {
+			// show MSA format
+			if (queryResult.getListPos().size() < 25) {
+				width = ((queryResult.getListPos().size() + 6) * 35) + 25;
+			}
+
+			// if (queryResult.getListPos().size() < (1000 / 10 - 3)) {
+			// biglistcolwidthOverview = 1000 / (3 + queryResult.getListPos().size());
+			// } else // biglistboxArray.setColWidth("30px"); {
+			// {
+			// biglistcolwidthOverview = 10;
+			// }
+
+		}
+		biglistboxArray.setWidth(width + "px");
 
 	}
 
@@ -2438,7 +2485,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				return null;
 			intStart.setValue(gene.getFmin());
 			intStop.setValue(gene.getFmax());
-			selectChr.setValue(gene.getContig().toLowerCase());
+			selectChr.setValue(gene.getContig().replace("0", "").toUpperCase());
 			comboGene.setValue(gene.getUniquename());
 			sLocus = gene.getUniquename();
 
@@ -2621,20 +2668,30 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		if (listboxSubpopulation.getSelectedIndex() > 1) {
 			sSubpopulation = listboxSubpopulation.getSelectedItem().getLabel();
 			setVarieties = genotype.getVarietiesForSubpopulation(sSubpopulation, getDataset());
-			// if(listboxSubpopulation.getSelectedIndex()>1)
-			// sSubpopulation=listboxSubpopulation.getSelectedItem().getLabel();
 		} else if (listboxMyVarieties.getSelectedIndex() > 0) {
 			setVarieties = workspace.getVarieties(listboxMyVarieties.getSelectedItem().getLabel());
 		}
 
 		Set snpposlist = null;
+
+		/*
+		 * listboxMySNPList drop box in genotype.zul
+		 * 
+		 * Get SNP Selected list
+		 * 
+		 */
 		if (listboxMySNPList.getSelectedIndex() > 0) {
 			String chrlistname[] = listboxMySNPList.getSelectedItem().getLabel().split(":");
 			// snpposlist = workspace.getSnpPositions( Integer.valueOf(
 			// chrlistname[0].replace("CHR","").trim() ) , chrlistname[1].trim() );
 			snpposlist = workspace.getSnpPositions(chrlistname[0].trim(), chrlistname[1].trim());
 			contig = chrlistname[0].trim();
-		} else if (listboxAlleleFilter.getSelectedIndex() > 0) {
+		}
+		/*
+		 * listboxAlleleFilter: Match genotype: snp/alleles
+		 * 
+		 */
+		else if (listboxAlleleFilter.getSelectedIndex() > 0) {
 			String chrlistname[] = listboxAlleleFilter.getSelectedItem().getLabel().split(":");
 			// snpposlist = workspace.getSnpPositions( Integer.valueOf(
 			// chrlistname[0].replace("CHR","").trim() ) , chrlistname[1].trim() );
@@ -3079,6 +3136,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				Messagebox.show(ex.getMessage(), "Exception in oncheckShowsnps.updateBiglistboxArray", Messagebox.OK,
 						Messagebox.ERROR);
 			}
+
+			setTableSize();
 		}
 	}
 
@@ -3554,7 +3613,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 				}
 
-				selectChr.setValue(gene.getContig().toLowerCase());
+				// selectChr.setValue(gene.getContig().toLowerCase());
+				selectChr.setValue(gene.getContig().replace("0", "").toUpperCase());
 
 				/*
 				 * SimpleListModel model=(SimpleListModel)selectChr.getModel(); int lcount=0;
@@ -3749,13 +3809,14 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 	@Listen("onSelect = #tabMDS")
 	public void onselectTabMDS() {
+		AppContext.debug("selected index: " + listboxPhenotype.getSelectedIndex());
 		if (listboxPhenotype.getSelectedIndex() == 0)
 			show_mds_fromtable(chartMDS);
 		else {
 
 			List listvarnames = new ArrayList();
 			Set varnames = new TreeSet();
-			listvarnames.add("");
+			// listvarnames.add("");
 			java.util.Iterator<BigDecimal> itvars = queryResult.getMapVariety2Order().keySet().iterator();
 			while (itvars.hasNext()) {
 				BigDecimal varid = itvars.next();
@@ -3763,6 +3824,10 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 						((Variety) varietyfacade.getMapId2Variety(getDataset()).get(varid)).getName().toUpperCase());
 			}
 			listvarnames.addAll(varnames);
+			// AppContext.debug("listVarnames Size: " + listvarnames.size());
+			// listvarnames.add("A");
+			// listvarnames.add("B");
+			// listvarnames.add("C");
 			listboxHighlightVariety.setModel(new SimpleListModel(listvarnames));
 
 			onselectPhenotype();
@@ -3773,10 +3838,11 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	public void onselectPhenotype() {
 		// onselectPhenotype(varianttable);
 		// onclickClearFilterAllele();
-		if (listboxPhenotype.getSelectedItem().getLabel().equals("Create phenotype list...")) {
-			Executions.sendRedirect("_workspace.zul?from=variety&src=snp&phenotype=true");
-			return;
-		}
+		if (listboxPhenotype.getSelectedItem() != null)
+			if (listboxPhenotype.getSelectedItem().getLabel().equals("Create phenotype list...")) {
+				Executions.sendRedirect("_workspace.zul?from=variety&src=snp&phenotype=true");
+				return;
+			}
 
 		if (this.tabTable.isSelected())
 			onclickClearFilterAllele();
@@ -3967,7 +4033,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 			if (listboxPosition.getSelectedItem() != null)
 				selpos = listboxPosition.getSelectedItem().getLabel();
-			
+
 			if (selpos.isEmpty()) {
 				/*
 				 * biglistboxModel= new Object2StringMultirefsMatrixModel(varianttable,
