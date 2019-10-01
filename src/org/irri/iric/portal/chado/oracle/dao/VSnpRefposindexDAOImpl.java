@@ -1296,31 +1296,16 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex> impl
 		// return new ArrayList();
 	}
 
-	private List _getSNPsInChromosomePostgresBypass(String chr, Collection posset, Set variantset) {
+private List _getSNPsInChromosomePostgresBypass(String chr, Collection posset, Set variantset) {
 		
 
 		String sqldirect = "";
-
-		// sqldirect+="SELECT cast(mv_snp_refposindex.snp_feature_id as numeric)
-		// snp_feature_id, mv_snp_refposindex.type_id, mv_snp_refposindex.chromosome,
-		// mv_snp_refposindex.\"position\" + 1 AS \"position\",
-		// mv_snp_refposindex.refcall, mv_snp_refposindex.altcall, ";
-		// sqldirect+="mv_snp_refposindex.allele_index FROM " +
-		// AppContext.getDefaultSchema() + ".mv_snp_refposindex where (";
-
 		sqldirect += "SELECT sfl.snp_feature_id, sfl.srcfeature_id-" + AppContext.chr2srcfeatureidOffset()
 				+ " AS chromosome, sfl.position + 1 AS \"position\", sfl.refcall, '' AS altcall, ";
 		sqldirect += " vvs.hdf5_index AS allele_index, v.variantset_id AS type_id, v.name AS variantset FROM "
 				+ AppContext.getDefaultSchema() + ".snp_featureloc sfl, " + AppContext.getDefaultSchema()
 				+ ".variant_variantset vvs, " + AppContext.getDefaultSchema() + ".variantset v ";
 		sqldirect += " WHERE sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id and (";
-
-		// sqldirect+=" and NULLIF(replace(lower(srcf.name::text), 'chr'::text,
-		// ''::text), ''::text)::integer=" + bdChr;
-		// sqldirect+=" and sfl.organism_id=9 and sfl.srcfeature_id=" + bdChr+ "+2 ";
-		// sqldirect+=" and sfl.position between " + startPos + "-1 and " + endPos + "-1
-		// and v.name in (" + AppContext.toCSVquoted(variantset,"'") + ") order by
-		// sfl.position";
 
 		BigDecimal bdChr = null;
 		// if(chr.toLowerCase().equals("any")) {
@@ -1349,15 +1334,6 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex> impl
 				Collection setPos = (Collection) mapChr2Pos.get(contigstr);
 				poscount += setPos.size();
 
-				/*
-				 * sqldirect+
-				 * ="SELECT cast(mv_snp_refposindex.snp_feature_id as numeric) snp_feature_id, mv_snp_refposindex.type_id, mv_snp_refposindex.chromosome, mv_snp_refposindex.\"position\" + 1 AS \"position\", mv_snp_refposindex.refcall,  mv_snp_refposindex.altcall, "
-				 * ; sqldirect+="mv_snp_refposindex.allele_index FROM " +
-				 * AppContext.getDefaultSchema() + ".mv_snp_refposindex, " ;
-				 * sqldirect+="(select unnest(ARRAY" + setPos +
-				 * ") column_value) t where chromosome=" + contig + " and variantset in (" +
-				 * AppContext.toCSVquoted(variantset,"'") + ") and t.column_value-1=position ";
-				 */
 				sqldirect += "SELECT sfl.snp_feature_id, sfl.srcfeature_id-" + AppContext.chr2srcfeatureidOffset()
 						+ " AS chromosome, sfl.position + 1 AS \"position\", sfl.refcall, '' AS altcall, ";
 				sqldirect += " vvs.hdf5_index AS allele_index, v.variantset_id AS type_id, v.name AS variantset FROM "
@@ -1390,6 +1366,11 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex> impl
 			String sql = sqldirect; // "select SNP_FEATURE_ID, TYPE_ID , CHROMOSOME, POSITION , REFCALL , ''
 									// ALTCALL, ALLELE_INDEX from " + AppContext.getDefaultSchema() +
 									// ".V_SNP_REFPOSINDEX_V2 WHERE 1=1 and (";
+			
+			
+			sql+= " v.name in (" + AppContext.toCSVquoted(variantset, "'") + ") and sfl.organism_id="
+					+ AppContext.getDefaultOrganismId() + " and (";
+
 			Iterator<String> itContig = mapChr2Pos.keySet().iterator();
 			while (itContig.hasNext()) {
 				String contigstr = itContig.next();
@@ -1399,18 +1380,10 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex> impl
 				Iterator<Locus> itLocus = setLocus.iterator();
 				while (itLocus.hasNext()) {
 					Locus loc = itLocus.next();
-					// sql+= "( variantset in (" + AppContext.toCSVquoted(variantset,"'") +") and
-					// chromosome=" + loc.getChr() + " and position between " + (loc.getFmin()-1) +
-					// " and " + (loc.getFmax()-1) + ") ";
 
-					// sqldirect+=" and sfl.organism_id=9 and sfl.srcfeature_id=" + bdChr+ "+2 ";
-					// sqldirect+=" and sfl.position between " + startPos + "-1 and " + endPos + "-1
-					// and v.name in (" + AppContext.toCSVquoted(variantset,"'") + ") order by
-					// sfl.position";
-					sql += "( v.name in (" + AppContext.toCSVquoted(variantset, "'") + ") and sfl.organism_id="
-							+ AppContext.getDefaultOrganismId() + " and sfl.srcfeature_id=" + loc.getChr() + "+"
-							+ AppContext.chr2srcfeatureidOffset() + " and slf.position between " + (loc.getFmin() - 1)
-							+ " and " + (loc.getFmax() - 1) + ") ";
+					sql += "(  sfl.srcfeature_id=" + loc.getChr() + "+"
+							+ AppContext.chr2srcfeatureidOffset() + " and sfl.position between " + (loc.getFmin() - 1)
+							+ " and " + (loc.getFmax()-1) + ") ";
 
 					if (itLocus.hasNext())
 						sql += " or ";
@@ -1419,10 +1392,11 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex> impl
 					sql += " or ";
 
 			}
+			sql+=")";
 			;
 
 			// sql += ") order by CHROMOSOME, POSITION";
-			sql += ") order by sfl.srcfeature_id, sfl.srcfeature_id.POSITION";
+			sql += ") order by sfl.srcfeature_id, sfl.POSITION";
 
 			AppContext.debug("querying  mv_snp_refposindex with " + poscount + " loci");
 

@@ -218,7 +218,7 @@ public class H5ReadCharTransMatrix implements H5ReadMatrix {
 
 		dataset.init();
 
-		AppContext.debugIterate("reading char hdf5 " + dataset.getFile());
+		AppContext.debug("reading char trans hdf5 " + dataset.getFile());
 
 		// start, stride and sizes will determined the selected subset
 		long[] start = dataset.getStartDims();
@@ -266,12 +266,14 @@ public class H5ReadCharTransMatrix implements H5ReadMatrix {
 		if (input.endPosidx > maxpositions - 1)
 			input.endPosidx = (int) maxpositions - 1;
 
+		/*
 		AppContext.debug("input.startPosidx=" + input.startPosidx + " ;input.endPosidx=" + input.endPosidx
 				+ " ;input.listStartEndPosidx="
 				+ (input.listStartEndPosidx != null ? input.listStartEndPosidx.length : "null") + " ;input.listPosidx="
 				+ (input.listPosidx != null ? input.listPosidx.length : "null") + "input.startendVaridx="
 				+ (input.startendVaridx != null ? input.startendVaridx[0] + "-" + input.startendVaridx[1] : "null"));
-
+*/
+		
 		if (input.startPosidx > -1 && input.endPosidx > -1) {
 
 			// AppContext.debug("range query not implemeted for transposed geno matrix");
@@ -352,6 +354,7 @@ public class H5ReadCharTransMatrix implements H5ReadMatrix {
 			int varstartidx = 0;
 			if (input.startendVaridx != null) {
 				varstartidx = input.startendVaridx[0] - 1;
+				int iposall=0;
 				for (int iposrange = 0; iposrange < input.listStartEndPosidx.length; iposrange++) {
 
 					// start[DIM_POSITION] = input.listStartEndPosidx[iposrange][0] -1;
@@ -369,10 +372,12 @@ public class H5ReadCharTransMatrix implements H5ReadMatrix {
 					byte[] dataRead = (byte[]) dataset.read();
 					// print out the data values
 					cols = (int) query_vars;
-					for (int ipos = 0; ipos < n_dim_position; ipos++)
-						mapPosidxString.put(ipos, new String(
+					for (int ipos = 0; ipos < n_dim_position; ipos++) {
+						mapPosidxString.put(iposall, new String(
 								java.util.Arrays.copyOfRange(dataRead, (int) ipos * cols, (int) (ipos + 1) * cols))
 										.toCharArray());
+						iposall++;
+					}
 					// }
 				}
 
@@ -382,6 +387,7 @@ public class H5ReadCharTransMatrix implements H5ReadMatrix {
 				}
 
 			} else {
+				int iposall=0;
 				for (int iposrange = 0; iposrange < input.listStartEndPosidx.length; iposrange++) {
 
 					// start[DIM_POSITION] = input.listStartEndPosidx[iposrange][0] -1;
@@ -395,10 +401,12 @@ public class H5ReadCharTransMatrix implements H5ReadMatrix {
 					byte[] dataRead = (byte[]) dataset.read();
 					// print out the data values
 					cols = (int) n_varieties;
-					for (int ipos = 0; ipos < n_dim_position; ipos++)
-						mapPosidxString.put(ipos, new String(
+					for (int ipos = 0; ipos < n_dim_position; ipos++) {
+						mapPosidxString.put(iposall, new String(
 								java.util.Arrays.copyOfRange(dataRead, (int) ipos * cols, (int) (ipos + 1) * cols))
 										.toCharArray());
+						iposall++;
+					}
 					// }
 				}
 			}
