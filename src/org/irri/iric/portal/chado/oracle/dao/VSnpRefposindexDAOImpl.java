@@ -1390,6 +1390,10 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex> impl
 			String sql = sqldirect; // "select SNP_FEATURE_ID, TYPE_ID , CHROMOSOME, POSITION , REFCALL , ''
 									// ALTCALL, ALLELE_INDEX from " + AppContext.getDefaultSchema() +
 									// ".V_SNP_REFPOSINDEX_V2 WHERE 1=1 and (";
+			
+			
+			sql+= " v.name in (" + AppContext.toCSVquoted(variantset, "'") + ") and sfl.organism_id="
+					+ AppContext.getDefaultOrganismId() + " and (";
 			Iterator<String> itContig = mapChr2Pos.keySet().iterator();
 			while (itContig.hasNext()) {
 				String contigstr = itContig.next();
@@ -1407,10 +1411,16 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex> impl
 					// sqldirect+=" and sfl.position between " + startPos + "-1 and " + endPos + "-1
 					// and v.name in (" + AppContext.toCSVquoted(variantset,"'") + ") order by
 					// sfl.position";
+					
+					/*
 					sql += "( v.name in (" + AppContext.toCSVquoted(variantset, "'") + ") and sfl.organism_id="
 							+ AppContext.getDefaultOrganismId() + " and sfl.srcfeature_id=" + loc.getChr() + "+"
-							+ AppContext.chr2srcfeatureidOffset() + " and slf.position between " + (loc.getFmin() - 1)
+							+ AppContext.chr2srcfeatureidOffset() + " and sfl.position between " + (loc.getFmin() - 1)
 							+ " and " + (loc.getFmax() - 1) + ") ";
+							*/
+					sql += "(  sfl.srcfeature_id=" + loc.getChr() + "+"
+							+ AppContext.chr2srcfeatureidOffset() + " and sfl.position between " + (loc.getFmin() - 1)
+							+ " and " + (loc.getFmax()-1) + ") ";
 
 					if (itLocus.hasNext())
 						sql += " or ";
@@ -1419,10 +1429,11 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex> impl
 					sql += " or ";
 
 			}
+			sql+=")";
 			;
 
 			// sql += ") order by CHROMOSOME, POSITION";
-			sql += ") order by sfl.srcfeature_id, sfl.srcfeature_id.POSITION";
+			sql += ") order by sfl.srcfeature_id, sfl.POSITION";
 
 			AppContext.debug("querying  mv_snp_refposindex with " + poscount + " loci");
 

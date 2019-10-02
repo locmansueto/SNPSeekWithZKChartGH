@@ -70,12 +70,13 @@ public class H5ReadCharmatrix implements H5ReadMatrix {
 		// ;input.endPosidx=" + input.endPosidx + " ;input.listStartEndPosidx=" +
 		// input.listStartEndPosidx +
 		// " ;input.listPosidx=" + input.listPosidx);
+		/*
 		AppContext.debug("input.startPosidx=" + input.startPosidx + " ;input.endPosidx=" + input.endPosidx
 				+ " ;input.listStartEndPosidx="
 				+ (input.listStartEndPosidx != null ? input.listStartEndPosidx.length : "null") + " ;input.listPosidx="
 				+ (input.listPosidx != null ? input.listPosidx.length : "null") + "input.startendVaridx="
 				+ (input.startendVaridx != null ? input.startendVaridx[0] + "-" + input.startendVaridx[1] : "null"));
-
+*/
 		String hdf5char = "";
 		if (input.startPosidx > -1 && input.endPosidx > -1) {
 			// select the subset: starting at (4, 2)
@@ -262,9 +263,11 @@ public class H5ReadCharmatrix implements H5ReadMatrix {
 		} else
 			throw new RuntimeException("No variety indexes");
 
+		/*
 		AppContext.debug("input.startPosidx=" + input.startPosidx + " ;input.endPosidx=" + input.endPosidx
 				+ " ;input.listStartEndPosidx=" + input.listStartEndPosidx + " ;input.listPosidx=" + input.listPosidx);
-
+*/
+		
 		String hdf5readcharfxn = "";
 
 		if (input.startPosidx > -1 && input.endPosidx > -1) {

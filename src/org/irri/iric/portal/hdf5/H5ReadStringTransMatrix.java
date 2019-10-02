@@ -221,7 +221,7 @@ public class H5ReadStringTransMatrix implements H5ReadMatrix {
 
 		dataset.init();
 
-		AppContext.debugIterate("reading char hdf5 " + dataset.getFile());
+		AppContext.debug("reading string trans hdf5 " + dataset.getFile());
 
 		// start, stride and sizes will determined the selected subset
 		long[] start = dataset.getStartDims();
@@ -275,13 +275,14 @@ public class H5ReadStringTransMatrix implements H5ReadMatrix {
 
 		if (input.endPosidx > maxpositions - 1)
 			input.endPosidx = (int) maxpositions - 1;
-
+/*
 		AppContext.debug("input.startPosidx=" + input.startPosidx + " ;input.endPosidx=" + input.endPosidx
 				+ " ;input.listStartEndPosidx="
 				+ (input.listStartEndPosidx != null ? input.listStartEndPosidx.length : "null") + " ;input.listPosidx="
 				+ (input.listPosidx != null ? input.listPosidx.length : "null") + "input.startendVaridx="
 				+ (input.startendVaridx != null ? input.startendVaridx[0] + "-" + input.startendVaridx[1] : "null"));
-
+*/
+		
 		Map<Integer, List> mapPosidxString = new TreeMap();
 		int varstartidx = 0;
 

@@ -456,6 +456,8 @@ public interface VarietyFacade {
 
 	public Map<BigDecimal, String> getAllTraits(Set<String> stringValues, boolean b);
 
+	public Collection getPassportByAccession(String value);
+
 	// public List getVarietyByPassport(String sPassId);
 
 }

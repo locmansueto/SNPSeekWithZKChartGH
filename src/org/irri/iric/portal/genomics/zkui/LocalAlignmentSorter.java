@@ -1,11 +1,12 @@
 package org.irri.iric.portal.genomics.zkui;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.irri.iric.portal.domain.LocalAlignment;
 import org.irri.iric.portal.domain.Locus;
 
-public class LocalAlignmentSorter implements Comparator {
+public class LocalAlignmentSorter implements Comparator , Serializable {
 
 	private boolean asc = false;
 	private int index = 0;

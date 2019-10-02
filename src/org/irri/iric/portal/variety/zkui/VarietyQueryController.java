@@ -23,6 +23,7 @@ import org.irri.iric.portal.SimpleListModelExt;
 import org.irri.iric.portal.admin.WorkspaceFacade;
 import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.domain.CvTermUniqueValues;
+import org.irri.iric.portal.domain.Passport;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.domain.VarietyImpl;
 import org.irri.iric.portal.domain.VarietyPlus;
@@ -43,6 +44,7 @@ import org.zkoss.chart.Series;
 import org.zkoss.chart.model.DefaultXYModel;
 import org.zkoss.chart.plotOptions.ScatterPlotOptions;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
@@ -182,6 +184,12 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 	private Vbox vboxPassportConstraints;
 	@Wire
 	private Listbox listboxGermPassport;
+	@Wire
+	private Tab	tabPassportGenesys;
+	@Wire
+	private Tab	tabPassportIRGCIS;
+	@Wire
+	private Listbox	listboxGermPassportGenesys;
 	@Wire
 	private Iframe iframePhylotree;
 	@Wire
@@ -396,6 +404,8 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 
 			listboxGermPassport.setItemRenderer(new org.irri.iric.portal.variety.zkui.PassportListItemRenderer());
 			listboxGermPassport.setModel(new SimpleListModel(new java.util.ArrayList()));
+			listboxGermPassportGenesys.setItemRenderer(new org.irri.iric.portal.variety.zkui.PassportListItemRenderer());
+			//listboxGermPassportGenesys.setModel(new SimpleListModel(new java.util.ArrayList()));
 
 			listboxGermPhenotypes.setItemRenderer(new org.irri.iric.portal.variety.zkui.PhenotypesListRenderer());
 			listboxGermPhenotypes.setModel(new SimpleListModel(new java.util.ArrayList()));
@@ -1939,6 +1949,8 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 
 		AppContext.resetTimer("phenotype query start");
 
+		tabPassportIRGCIS.setSelected(true);
+
 		java.util.List listPhens = variety.getPhenotypesByGermplasm(variety2, dataset);
 		AppContext.debug(listPhens.size() + " phenotypes");
 		listboxGermPhenotypes.setModel(new SimpleListModel(listPhens));
@@ -1947,6 +1959,30 @@ public class VarietyQueryController extends SelectorComposer<Component> {
 
 		splitter.setOpen(true);
 
+	}
+	
+	
+	@Listen("onClick =#tabPassportGenesys")
+	public void ontabpassportGenesys() {
+		java.util.List listPassport = new ArrayList();
+		
+		String acc= textboxGermAccession.getValue().trim();
+		if(acc==null || acc.isEmpty())
+			acc=textboxGermDesignation.getValue().trim();
+		
+		listPassport.addAll(variety.getPassportByAccession(acc));
+		AppContext.debug(listPassport.size() + " genesys passports");
+		listboxGermPassportGenesys.setModel(new SimpleListModel(listPassport));
+		
+		for(Object o:listPassport) {
+			Passport p=(Passport)o;
+			if(p.getName().equals( "germplasmDbId")) {
+				
+				Executions.getCurrent().sendRedirect("https://purl.org/germplasm/id/"+p.getValue(), "genesys");
+				//Executions.getCurrent().sendRedirect("https://sandbox.genesys-pgr.org/a/"+p.getValue(), "genesys");
+				break;
+			}
+		}
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package org.irri.iric.portal.domain;
 
+
 public class LabelCount {
 
 	public String getLabel() {

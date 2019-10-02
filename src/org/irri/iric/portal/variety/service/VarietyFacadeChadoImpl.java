@@ -41,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 
 @Service("VarietyFacade")
 public class VarietyFacadeChadoImpl implements VarietyFacade {
@@ -243,7 +244,11 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	// private VCvPassportDAO cvtermsPassportdao;
 
 	@Autowired
+	@Qualifier("IricstockPassportDAO")
 	private IricstockPassportDAO passportdao;
+	@Autowired
+	@Qualifier("GenesysPassportDAO")
+	private IricstockPassportDAO passportdaogenesys;
 
 	// @Autowired
 	// @Qualifier("VCvPassportValuesDAOPostges")
@@ -481,7 +486,26 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	@Override
 	public Set getPassportByVarietyid(BigDecimal id) {
 		// return passportdao.findVIricstockPassportByIricStockId( );
-		return passportdao.getPassportByStockId(id);
+		try {
+			return passportdao.getPassportByStockId(id);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			Messagebox.show(ex.getMessage());
+		}
+		return null;
+	}
+
+	@Override
+	public Set getPassportByAccession(String acc) {
+		// return passportdao.findVIricstockPassportByIricStockId( );
+		try {
+			passportdaogenesys=(IricstockPassportDAO)AppContext.checkBean(passportdaogenesys , "GenesysPassportDAO");
+			return passportdaogenesys.getPassportByAccession(acc);
+		} catch(Exception ex) {
+		ex.printStackTrace();
+		Messagebox.show(ex.getMessage());
+		}
+		return null;
 	}
 
 	@Override
@@ -613,6 +637,12 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 	public Map<BigDecimal, Object> getPhenotypeValues(String phenotype, String dataset) {
 		Map mapVarid2Value = new HashMap();
 		AppContext.debug("get phenotype values for " + phenotype + ", " + dataset);
+
+		if (phenotype.contains("::") && phenotype.startsWith("CO_320")) {
+			phenotype=phenotype.split("::")[1];
+		}
+		AppContext.debug("get phenotype values for final " + phenotype + ", " + dataset);
+		
 		if (phenotype.contains("::") && !phenotype.startsWith("CO_320")) {
 			workspace = (WorkspaceFacade) AppContext.checkBean(workspace, "WorkspaceFacade");
 			mapVarid2Value.putAll(workspace.getVarietylistPhenotypeValues(phenotype, dataset));
@@ -631,6 +661,7 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 			}
 
 		}
+		AppContext.debug("getPhenotypeValues mapVarid2Value=" + mapVarid2Value.size());
 		return mapVarid2Value;
 	}
 

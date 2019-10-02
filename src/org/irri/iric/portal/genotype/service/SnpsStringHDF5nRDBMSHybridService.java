@@ -787,6 +787,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 
 			int previdx = -100;
 			int laststart = -100;
+			AppContext.debug("listStartStopIdx:");
 			while (itSnppos.hasNext()) {
 				SnpsAllvarsPos snppos = itSnppos.next();
 				buffRef.append(snppos.getRefnuc());
@@ -800,6 +801,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 				} else {
 					if (laststart >= 0 && previdx >= 0) {
 						listStartStop.add(new int[] { laststart, previdx });
+						AppContext.debug(laststart  + "-" + previdx);
 					}
 					laststart = indxs[indxscount];
 					previdx = indxs[indxscount];
@@ -807,6 +809,7 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 				indxscount++;
 			}
 			listStartStop.add(new int[] { laststart, previdx });
+			AppContext.debug(laststart  + "-" + previdx);
 
 			int intStartStopIdx[][] = new int[listStartStop.size()][2];
 			Iterator<int[]> itStartStop = listStartStop.iterator();
@@ -1060,31 +1063,38 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 					mapPos2Allele.put(snppos, setAlleles);
 				}
 				// hdf5 format v2
-				char chari1 = allele1str.charAt(icount);
-				if (chari1 != '0' && chari1 != '?')
-					setAlleles.add(chari1);
-				char chari2 = allele2str.charAt(icount);
-				if (chari2 != '0' && chari2 != '?')
-					setAlleles.add(chari2);
+				try {
+					char chari1 = allele1str.charAt(icount);
+					if (chari1 != '0' && chari1 != '?')
+						setAlleles.add(chari1);
+					char chari2 = allele2str.charAt(icount);
+					if (chari2 != '0' && chari2 != '?')
+						setAlleles.add(chari2);
 
-				if (chari1 != chari2) {
-					if (chari1 != snppos.getRefnuc().charAt(0)) {
-						Set allele2 = mapPos2AlleleHetero.get(snppos);
-						if (allele2 == null) {
-							allele2 = new HashSet();
-							mapPos2AlleleHetero.put(snppos, allele2);
+					if (chari1 != chari2) {
+						if (chari1 != snppos.getRefnuc().charAt(0)) {
+							Set allele2 = mapPos2AlleleHetero.get(snppos);
+							if (allele2 == null) {
+								allele2 = new HashSet();
+								mapPos2AlleleHetero.put(snppos, allele2);
+							}
+							allele2.add(chari1);
 						}
-						allele2.add(chari1);
-					}
-					if (chari2 != snppos.getRefnuc().charAt(0)) {
-						Set allele2 = mapPos2AlleleHetero.get(snppos);
-						if (allele2 == null) {
-							allele2 = new HashSet();
-							mapPos2AlleleHetero.put(snppos, allele2);
+						if (chari2 != snppos.getRefnuc().charAt(0)) {
+							Set allele2 = mapPos2AlleleHetero.get(snppos);
+							if (allele2 == null) {
+								allele2 = new HashSet();
+								mapPos2AlleleHetero.put(snppos, allele2);
+							}
+							allele2.add(chari2);
 						}
-						allele2.add(chari2);
 					}
+				
+				} catch(Exception ex) {
+					AppContext.debug("snpsposlist.len=" + snpsposlist.size() + "   icount=" + icount + "  allele1str.len=" + allele1str.length() + "  allele2str.len=" + allele2str.length() );
+					throw ex;
 				}
+
 
 				icount++;
 			}

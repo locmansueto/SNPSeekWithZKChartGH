@@ -47,6 +47,7 @@ public class VIricstockPhenotype implements Serializable, Phenotype {
 	 */
 
 	@Column(name = "STOCK_PHENOTYPE2_ID", nullable = false)
+	//@Column(name = "STOCK_PHENOTYPE_ID", nullable = false)
 	@Basic(fetch = FetchType.EAGER)
 	@Id
 	@XmlElement

@@ -323,6 +323,12 @@ public class VIricstockPassportDAOImpl extends AbstractJpaDao<VIricstockPassport
 		// return null;
 		return findVIricstockPassportByIricStockId(id);
 	}
+	@Override
+	public Set getPassportByAccession(String acc) {
+		
+		// return null;
+		return null;
+	}
 
 	@Override
 	public Set<VIricstockPassport> findVIricstockPassportByIricStockId(BigDecimal iricStockId)

@@ -3,6 +3,7 @@ package org.irri.iric.portal.admin;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
@@ -26,7 +27,7 @@ import org.zkoss.zul.Messagebox;
 
 @Service("WorkspaceFacade")
 @Scope(value="session",  proxyMode = ScopedProxyMode.INTERFACES)
-public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade {
+public class WorkspaceFacadeSessionScopedImpl  implements WorkspaceFacade , Serializable{
 
 	
 

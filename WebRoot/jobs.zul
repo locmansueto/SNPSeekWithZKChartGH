@@ -22,6 +22,11 @@
 
 </hbox>
 
+<iframe id="iframeHtmlresult" visible="false" width="100%" height="600px"/>
+<vbox id="vboxIframeHtml" visible="false" width="100%" height="2000px"/>
+
+
+
 </div>
 
 <vbox id="vboxAdmin" visible="false">
@@ -43,6 +48,8 @@
 </hbox>
 
 <iframe id="iframejobresults" visible="false" width="100%" height="600px"/>
+
+
 
 <vbox width="20px" />
 <listbox id="listboxJobs">

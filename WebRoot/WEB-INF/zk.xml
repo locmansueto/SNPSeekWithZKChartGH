@@ -43,6 +43,10 @@
 		</listener-class> 
 	</listener> 
 
+	<listener>
+    	<listener-class>org.irri.iric.portal.admin.zkui.RecycleZKPage</listener-class>
+	</listener>
+
 	
 <!-- 
 	<listener>

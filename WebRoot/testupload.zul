@@ -1,0 +1,8 @@
+<zk>
+<window xmlns="http://www.zkoss.org/2005/zul"
+        apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('vm') @init('org.irri.iric.portal.galaxy.zkui.TestUpload')">
+
+            <button upload="true,maxsize=-1,native" onUpload="@command('onFileUpload')" label="Select File"/>
+</window>
+</zk>

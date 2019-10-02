@@ -3,9 +3,12 @@ package org.irri.iric.portal;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.math.BigDecimal;
@@ -26,15 +29,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.zip.ZipFile;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
@@ -45,11 +51,14 @@ import org.hibernate.Session;
 import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.StockSample;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.galaxy.zkui.GalaxyCustomController;
 import org.irri.iric.portal.variety.VarietyFacade;
-import org.python.util.PythonInterpreter;
+//import org.python.util.PythonInterpreter;
 import org.springframework.context.ApplicationContext;
+import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zkplus.spring.SpringUtil;
+import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Listitem;
 
 import com.amazonaws.AmazonClientException;
@@ -65,6 +74,21 @@ import com.amazonaws.services.ec2.model.TagDescription;
 import com.amazonaws.util.EC2MetadataUtils;
 
 import org.apache.commons.io.FileUtils;
+
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.Consts;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.HttpEntity;
 
 
 /**
@@ -559,37 +583,80 @@ public class AppContext {
 		return pathToR;
 
 	}
-
-	public static String GALAXY_AWS="aws";
-	public static String GALAXY_POLLUX="pollux";
-	public static String GALAXY_RICEDEV="rice_dev";
-	private static String galaxy_instance=GALAXY_AWS;
 	
-	public static void setGalaxyInstance(String i) {
+	private static String galaxy_instance; 
+	private static GalaxyCustomController  galaxy_controller; 
+	public static void setGalaxyInstance(String i, GalaxyCustomController c) {
 		galaxy_instance=i;
+		galaxy_controller=c;
 	}
 	public static String getGalaxyInstance() {
 		return galaxy_instance;
 	}
-
+	
 	public static String getGalaxyAddress() {
-		
-		if(getGalaxyInstance().equals(GALAXY_RICEDEV))
-			return "http://13.229.124.30:8080";
-		else if(getGalaxyInstance().equals(GALAXY_POLLUX))
-			return "http://172.29.4.215:8080";
-		else
-			return "http://13.250.4.164:8080"; 
+		return galaxy_controller.getGalaxyAddress(galaxy_instance);
 	}
-
+	
 	public static String getGalaxyKey() {
-		if(getGalaxyInstance().equals(GALAXY_RICEDEV))
-			return "a80ef55feed828cdbe6500b2ba4f8bf7";
-		else if(getGalaxyInstance().equals(GALAXY_POLLUX))
-			return "0529d21031f8e190dc2ba26173627b92"; 
-		else 
-			return "dd7ecdf0096f104c0e3ac8fd7f8f8136";
+		return galaxy_controller.getGalaxyKey(galaxy_instance );
 	}
+	
+
+//
+//	public static String GALAXY_AWS_DEV="snpseek_dev";
+//	public static String GALAXY_AWS="snpseek";
+//	public static String GALAXY_POLLUX="pollux";
+//	public static String GALAXY_RICEDEV="rice_dev";
+//	public static String GALAXY_RICE="rice";
+//	private static String galaxy_instance=GALAXY_AWS;
+//	
+//	public static void setGalaxyInstance(String i) {
+//		galaxy_instance=i;
+//	}
+//	public static String getGalaxyInstance() {
+//		return galaxy_instance;
+//	}
+//
+//	
+//	public static String getGalaxyHistoryViewLink(String historyid) {
+//		
+//		if(getGalaxyInstance().equals(GALAXY_RICEDEV))
+//			return AppContext.getGalaxyAddress() + "/history/view/" + historyid;
+//		else if(getGalaxyInstance().equals(GALAXY_POLLUX))
+//			return AppContext.getGalaxyAddress() + "/histories/view?id=" + historyid;
+//		else if(getGalaxyInstance().equals(GALAXY_RICE))
+//			return AppContext.getGalaxyAddress() + "/history/view/" + historyid;
+//		else
+//			return AppContext.getGalaxyAddress() + "/histories/view?id=" + historyid;
+//	}
+//
+//
+//	public static String getGalaxyAddress() {
+//		
+//		if(getGalaxyInstance().equals(GALAXY_RICEDEV))
+//			return "http://13.229.124.30:8080";
+//		else if(getGalaxyInstance().equals(GALAXY_POLLUX))
+//			return "http://172.29.4.215:8080";
+//		else if(getGalaxyInstance().equals(GALAXY_RICE))
+//			return "http://13.250.174.27:8080";
+//		else
+//			return "http://13.229.217.149:8080"; 
+//	}
+//
+//	public static String getGalaxyKey() {
+//		if(getGalaxyInstance().equals(GALAXY_RICEDEV))
+//			return "a80ef55feed828cdbe6500b2ba4f8bf7";
+//		else if(getGalaxyInstance().equals(GALAXY_POLLUX))
+//			return "0529d21031f8e190dc2ba26173627b92"; 
+//		else if(getGalaxyInstance().equals(GALAXY_RICE))
+//			return  "053435438eeca0c4393ad8ebf66be404"; 
+//		else if (getGalaxyInstance().equals(GALAXY_AWS_DEV))
+//			// return "dd7ecdf0096f104c0e3ac8fd7f8f8136";  // dev, with ts , admin
+//			return "13d14be50c14abdfd035731d1d2f10db"; // ts
+//		else
+//			return "6a3612b1923b952e7d749b51eb5e0175";  // user snpseek
+//	}
 			
 	public static String getPlinkDir() {
 
@@ -2536,9 +2603,25 @@ public class AppContext {
             }
             br.close();
             return buff.toString();
-		
-       
 	}
+	
+
+	public static String readFile(String a) throws Exception {
+	   
+            // open the stream and put it into BufferedReader
+            BufferedReader br = new BufferedReader(
+                               new FileReader(a));
+
+            String inputLine;
+            StringBuffer buff=new StringBuffer();
+            while ((inputLine = br.readLine()) != null) {
+            	buff.append(inputLine);
+            }
+            br.close();
+            return buff.toString();
+	}
+	
+	
 	public static BufferedReader bufferedReadURL(String a,String key) throws Exception {
 		   
 	    URL url = new URL(a);
@@ -2554,12 +2637,12 @@ public class AppContext {
         return br;
 	}
 
-	
-	
 	public static boolean downloadURL(String uri, File destination) {
 		
 		try {
 			FileUtils.copyURLToFile(new URL(uri), destination);
+			System.out.println("File downloaded from " + uri + " to " + destination);
+	        
 			return true;
 		} catch(Exception ex) {
 			ex.printStackTrace();
@@ -2568,7 +2651,122 @@ public class AppContext {
 	}
 	
 	
+	public static boolean downloadURL2(String uri, File destination) {
+		
+		try {
+			FileUtils.copyURLToFile(new URL(uri), destination);
+			// check if zip, if not, make text
+			try {
+				ZipFile zipFile = new ZipFile(destination);
+				zipFile.close();
+				AppContext.debug("downloaded zip file " + destination + " from " + uri);
+			} catch(Exception ex) {
+				destination.renameTo( new File(destination.getAbsolutePath().replace(".zip", ".txt")));
+				AppContext.debug("downloaded txt file " + destination.getAbsolutePath().replace(".zip", ".txt") + " from " + uri);
+			}
+			
+			return true;
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
 
+	public static Map<String,String> getFilextMime() {
+		// TODO Auto-generated method stub
+		Map m=new LinkedHashMap();
+		m.put(".zip", "application/zip");
+		m.put(".pdf", "application/pdf");
+		m.put(".txt", "text/plain");
+		m.put(".csv", "text/csv");
+		m.put(".tsv", "text/tsv");
+		m.put(".tabular", "text/tsv");
+		return m;
+	}
+	
+	public static String readURLContent(String ip) {
+		try {
+		   URL url = new URL(ip);
+	       URLConnection con = url.openConnection();
+	       BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+	       String l=null;
+	       StringBuffer b=new StringBuffer();
+	       while ((l=in.readLine())!=null) {
+	           //System.out.println(l);
+	    	   b.append(l);
+	       }
+	       in.close();
+	       return b.toString();
+	       
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String uploadToServer(String serverdir, Media media) throws Exception {
+		//org.zkoss.util.media.Media media = Fileupload.get();
+		OutputStream outputStream = new FileOutputStream(new File(serverdir  + media.getName()));
+		InputStream inputStream = media.getStreamData();
+		byte[] buffer = new byte[1024];
+		for (int count; (count = inputStream.read(buffer)) != -1;) {
+			outputStream.write(buffer, 0, count);
+		}
+		outputStream.flush();
+		outputStream.close();
+		inputStream.close();
+		return media.getName();
+	}
+	
+
+
+	public static String sendPost(String url, Map<String, String> postParams, 
+	        Map<String, String> header, String cookies) {
+
+	    HttpPost httpPost = new HttpPost(url);
+	    List<NameValuePair> formParams = new ArrayList<NameValuePair>();
+	    //HttpClientBuilder clientBuilder = HttpClients.createDefault();
+	    //CloseableHttpClient httpclient = clientBuilder.build();
+	  CloseableHttpClient httpclient = HttpClients.createDefault();; //clientBuilder.build();
+
+	    if (header != null) {
+	        Iterator<Entry<String, String>> itCabecera = header.entrySet().iterator();
+	        while (itCabecera.hasNext()) {
+	            Entry<String, String> entry = itCabecera.next();
+
+	            httpPost.addHeader(entry.getKey(), entry.getValue());
+	        }
+	    }
+
+	    httpPost.setHeader("Cookie", cookies);
+
+	    if (postParams != null) {
+	        Iterator<Entry<String, String>> itParms = postParams.entrySet().iterator();
+	        while (itParms.hasNext()) {
+	            Entry<String, String> entry = itParms.next();
+
+	            formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+	        }
+	    }
+
+	    UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(formParams, Consts.UTF_8);
+	    httpPost.setEntity(formEntity);
+
+	    String pageContent=null;
+    	try {
+		    CloseableHttpResponse httpResponse = httpclient.execute(httpPost);
+		    HttpEntity entity = httpResponse.getEntity();
+		    if (entity != null) {
+		        pageContent = EntityUtils.toString(entity);
+		    }
+    	} catch(Exception ex) {
+    		ex.printStackTrace();
+    	}
+
+	    return pageContent;
+	}
+	
+	
 	/// **
 	// * is Amazon Web Service compile?
 	// */

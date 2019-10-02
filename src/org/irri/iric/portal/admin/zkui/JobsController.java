@@ -24,9 +24,11 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Filedownload;
+import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.SimpleListModel;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vbox;
@@ -88,11 +90,17 @@ public class JobsController extends SelectorComposer<Component> {
 	private Textbox textboxPhylosessions;
 	@Wire
 	private Iframe iframejobresults;
+	@Wire
+	private Iframe iframeHtmlresult;
+	@Wire
+	private Vbox vboxIframeHtml;	
+	
 
 	@Override
 	public void doAfterCompose(Component comp) throws Exception {
 		
 		super.doAfterCompose(comp);
+		
 
 		jobsfacade_orig = (JobsFacade) AppContext.checkBean(jobsfacade_orig, "JobsFacade");
 		jobsfacade_galaxy = (JobsFacade) AppContext.checkBean(jobsfacade_galaxy, "GalaxyJobsFacade");
@@ -261,6 +269,61 @@ public class JobsController extends SelectorComposer<Component> {
 				} else {
 					iframejobresults.setVisible(false);
 				}
+				
+				/*
+				if (new File(AppContext.getTempDir() + jobid + ".html").exists()) {
+					//iframeHtmlresult.setSrc("/temp/" + jobid + ".html");
+					
+					String urlhrml=AppContext.readFile(AppContext.getTempDir() + jobid + ".html");
+					urlhrml=urlhrml.substring(urlhrml.indexOf("http:"), (urlhrml.indexOf(".html")+5 ));
+					AppContext.debug("displaying frame " + urlhrml );
+					iframeHtmlresult.setSrc(urlhrml);
+					iframeHtmlresult.setVisible(true);
+				} else {
+					iframeHtmlresult.setVisible(false);
+					AppContext.debug("no html output " + AppContext.getTempDir() + jobid + ".html");
+				}
+				*/
+
+				if (new File(AppContext.getTempDir() + jobid + "-1.html").exists()) {
+					List l=vboxIframeHtml.getChildren();
+					for(Object obj:l) {
+						vboxIframeHtml.removeChild((Component)obj);
+					}
+					for(int ihtml=1; ihtml<11; ihtml++ ) {
+						
+						if(!new File(AppContext.getTempDir() + jobid + "-" + ihtml + ".html").exists()) {
+							AppContext.debug(AppContext.getTempDir() + jobid + "-" + ihtml + ".html + not found");
+							break;
+						}
+						Hbox hbox20=new Hbox();
+						hbox20.setHeight("20px");
+						hbox20.setParent(vboxIframeHtml );
+						Iframe iframe=new Iframe();
+						iframe.setWidth("100%");
+						iframe.setHeight("800px");
+
+						//String urlhrml=AppContext.readURL(status[ihtml]);
+						String urlhrml=AppContext.readFile(AppContext.getTempDir() + jobid + "-" + ihtml + ".html");
+						urlhrml=urlhrml.substring(urlhrml.indexOf("http:"), (urlhrml.indexOf(".html")+5 ));
+						AppContext.debug("displaying frame " + urlhrml );
+					
+						//iframe.setStyle("border: none;overflow:hidden;");
+						//iframe.setScrolling("no");
+						//Here is the trick. The script sets the frame's height as it's content's scrollHeight plus 8 maybe 10 pixels.
+						//iframe.setWidgetListener("onBind", "var f = document.getElementById('"+iframe.getUuid()+"');f.height=f.contentWindow.document.body.scrollHeight+8;");
+						
+						iframe.setSrc(urlhrml);
+						iframe.setVisible(true);
+						iframe.setParent(vboxIframeHtml);
+					}
+					vboxIframeHtml.setVisible(true);
+				}
+				else {
+					vboxIframeHtml.setVisible(false);
+					AppContext.debug(AppContext.getTempDir() + jobid + "-1.html + not found");
+				}
+
 
 			}
 			if (msg.equals(JobsFacade.JOBSTATUS_ERROR)) {
@@ -343,9 +406,51 @@ public class JobsController extends SelectorComposer<Component> {
 			} else {
 				String filetype = "application/zip";
 				//Filedownload.save(new File(AppContext.getTempDir() + jobid+ "/" +jobid + ".zip"), filetype);
-				if(jobid.endsWith("zip"))
-					Filedownload.save(new File(AppContext.getTempDir() + jobid ), filetype);
-				else Filedownload.save(new File(AppContext.getTempDir() + jobid + ".zip"), filetype);
+				if(jobid.endsWith("zip")) {
+					//Filedownload.save(new File(AppContext.getTempDir() + jobid ), filetype);
+					if( new File(AppContext.getTempDir()+jobid).exists()) {	
+						Filedownload.save(new File(AppContext.getTempDir()+jobid), "application/zip");
+					} else {
+						
+						boolean donwloaded=false;
+						for(String ext:AppContext.getFilextMime().keySet()) {
+							if( new File(AppContext.getTempDir()+jobid.replace(".zip", ext)).exists()) {	
+								Filedownload.save(new File(AppContext.getTempDir()+jobid.replace(".zip", ext)), AppContext.getFilextMime().get(ext));
+								donwloaded=true;
+								break;
+							}
+						}
+						if(!donwloaded) {
+							Messagebox.show("Unable to identify file type for job " + jobid, "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
+							if( new File(AppContext.getTempDir()+jobid.replace(".zip", "")).exists()) {	
+								Filedownload.save(new File(AppContext.getTempDir()+jobid.replace(".zip", "")),"application/octet-stream"); 
+							}
+						}
+
+					}
+				}
+				else {
+					
+					boolean donwloaded=false;
+					for(String ext:AppContext.getFilextMime().keySet()) {
+						if( new File(AppContext.getTempDir()+jobid+ext).exists()) {	
+							Filedownload.save(new File(AppContext.getTempDir()+jobid+ext), AppContext.getFilextMime().get(ext));
+							donwloaded=true;
+							break;
+						}
+					}
+					if(!donwloaded) {
+						Messagebox.show("Unable to identify file type for job " + jobid, "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
+						if( new File(AppContext.getTempDir()+jobid).exists()) {	
+							Filedownload.save(new File(AppContext.getTempDir()+jobid),"application/octet-stream"); 
+						}
+					}
+
+					
+					//Filedownload.save(new File(AppContext.getTempDir() + jobid + ".zip"), filetype);
+				}
+				
+				
 			}
 			// AppContext.debug("File download complete! Saved to: "+filename);
 			org.zkoss.zk.ui.Session zksession = Sessions.getCurrent();
@@ -375,8 +480,12 @@ public class JobsController extends SelectorComposer<Component> {
 				}
 			} else {
 				String filetype = "text/plain";
-				Filedownload.save(new File(AppContext.getTempDir() + jobid + "/" + jobid + ".error"), filetype);
+				try {
+					Filedownload.save(new File(AppContext.getTempDir() + jobid + ".error"), filetype);
 				// AppContext.debug("File download complete! Saved to: "+filename);
+				} catch(Exception ex) {
+					Filedownload.save(new File(AppContext.getTempDir() + jobid + "/" + jobid + ".error"), filetype);
+				}
 			}
 			
 		} catch(Exception ex) {

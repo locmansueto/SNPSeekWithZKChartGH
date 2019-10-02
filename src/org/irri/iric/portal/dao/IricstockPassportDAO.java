@@ -13,5 +13,6 @@ public interface IricstockPassportDAO {
 	 */
 	// public Set findIricstockPassportByIricStockId(BigDecimal id);
 
-	public Set getPassportByStockId(BigDecimal id);
+	public Set getPassportByStockId(BigDecimal id)  throws Exception;
+	public Set getPassportByAccession(String acc) throws Exception;
 }

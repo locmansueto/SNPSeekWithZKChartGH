@@ -462,18 +462,41 @@
 								</hbox>
 
 								<!--  *********************   PASSPORT INFORMATION DISPLAY  *********************************************************************************** -->
-
-								<a target="_blank"
-									href="/passport_dict.pdf" label="Passport data dictionary" />
-								<listbox id="listboxGermPassport">
-									<listhead>
-										<listheader>
-											DEFINITION
-										</listheader>
-										<listheader>FIELD</listheader>
-										<listheader>VALUE</listheader>
-									</listhead>
-								</listbox>
+	
+								<tabbox>
+									<tabs>
+										<tab id="tabPassportIRGCIS" label="IRGCIS"/>
+										<tab id="tabPassportGenesys" label="Genesys"/>
+									</tabs>
+								<tabpanels>
+									<tabpanel>
+										<a target="_blank"
+											href="/passport_dict.pdf" label="Passport data dictionary" />
+										<listbox id="listboxGermPassport">
+											<listhead>
+												<listheader>
+													DEFINITION
+												</listheader>
+												<listheader>FIELD</listheader>
+												<listheader>VALUE</listheader>
+											</listhead>
+										</listbox>
+									</tabpanel>
+									<tabpanel>
+										<listbox id="listboxGermPassportGenesys">
+											<listhead>
+												<listheader>
+													DEFINITION
+												</listheader>
+												<listheader>FIELD</listheader>
+												<listheader>VALUE</listheader>
+											</listhead>
+										</listbox>
+									</tabpanel>
+								</tabpanels>
+								</tabbox>
+								
+								
 								<separator bar="true" />
 								<hbox height="30px" />
 

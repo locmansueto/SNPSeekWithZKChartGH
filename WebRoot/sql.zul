@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+	<window title="Dynamic Columns" border="normal" width="1024px" apply="org.irri.iric.portal.admin.zkui.SQLTableContoller" viewModel="@id('vm') @init('pkg$org.irri.iric.portal.admin.zkui.DynamicColumnModel')">
+		<textarea id="textSql"  width="90%" rows="5"/>
+		<button id="buttonQuery" label="Execute"/>
+		<hbox height="30px" />
+		<grid id="gridModel" model="@load(vm.dataList)">
+			<columns>
+				<column label="Fixed 1"></column>
+	                        <column label="Fixed 2"></column>
+				<column forEach="${vm.columnList}" label="${each}"></column>
+			</columns>
+			<template name="model" var="r">
+				<row>
+					<label value="Fixed: ${r}"></label>
+					<label value="${r}"></label>
+					<label forEach="${vm.columnList}" value="@bind(r)"></label>
+				</row>
+			</template>
+          </grid>
+	</window>
+</zk>

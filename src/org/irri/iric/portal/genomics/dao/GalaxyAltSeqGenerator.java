@@ -124,8 +124,8 @@ public class GalaxyAltSeqGenerator {
 			}
 			bwsnp.close();
 			
-			String status=runWorkflow_vcf2fasta_by_gffmerge_gatk(AppContext.getGalaxyAddress(), 
-					AppContext.getGalaxyKey(),
+			String status=runWorkflow_vcf2fasta_by_gffmerge_gatk("http://13.229.217.149:8080", 
+					"6a3612b1923b952e7d749b51eb5e0175",
 					jobid, new File(outdir + "locuslist.bed"),new File(varlistpath),
 					  new File(outdir + jobid + ".zip"),reference,sync);
 			return new String[] {status,null};

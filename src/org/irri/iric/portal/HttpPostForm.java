@@ -24,6 +24,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 import com.gargoylesoftware.htmlunit.html.HtmlTextArea;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 
+
+
 public class HttpPostForm {
 
 	public void postRicenetNetworkNGA3(String genelist) throws Exception {
@@ -108,4 +110,7 @@ public class HttpPostForm {
 		AppContext.debug("postRicenetNetworkNGA .. done");
 
 	}
+	
+	
+
 }

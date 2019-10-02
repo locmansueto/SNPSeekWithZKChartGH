@@ -1,5 +1,7 @@
 package org.irri.iric.portal.hdf5;
 
+import org.irri.iric.portal.AppContext;
+
 public class InputParamsIdxs {
 
 	public InputParamsIdxs(int listPosidx[]) {
@@ -48,6 +50,12 @@ public class InputParamsIdxs {
 		this.listVaridx = listVaridx;
 		this.listStartEndPosidx = listStartEndPosidx;
 		this.startendVaridx = startEndVaridx;
+		
+		AppContext.debug("InputParamsIdxs: startPosidx=" + startPosidx + ", endPosidx=" + endPosidx 
+		+ " listPosidx=" + (listPosidx!=null?listPosidx.length:"null") + ", listVaridx=" +
+				(listVaridx!=null?listVaridx.length:"null") + ", listStartEndPosidx=" +
+		(listStartEndPosidx!=null?listStartEndPosidx.length:"null") + ",  startendVaridx=" +
+				(startendVaridx!=null?startendVaridx.length:"null") );
 
 	}
 

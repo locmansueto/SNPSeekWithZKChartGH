@@ -211,6 +211,8 @@ function doPosition() {
     
     
     <label id="labelScreenWidth" visible="false"/>
+    <!--  button id="buttonRefresh" visible="true" label="Refresh" / -->
+    <button id="bc" visible="false" label="Button clicker" use="org.irri.iric.portal.admin.zkui.ButtonClicker"/>
     <radiogroup id="snpcolor" />
     <radiogroup id="synonymoussnps" />
     <radiogroup id="radiogroupShowsnps"/>
@@ -559,7 +561,10 @@ function doPosition() {
 				    </div>
 					</hbox>
 					</vbox>
-					<button id="buttonReset" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;" width="75px" height="30px"  autodisable="self"/>
+					<vbox>
+					<button id="buttonRefresh" label="Update lists"   style="font-size:14px;font-weight:bold;color:gray;" width="95px" height="30px"  autodisable="self" visible="false"/>
+					<button id="buttonReset" label="Reset"   style="font-size:14px;font-weight:bold;color:gray;" width="95px" height="30px"  autodisable="self"/>
+					</vbox>
 				</hbox>
             </row>
             
@@ -1576,7 +1581,9 @@ import org.irri.iric.portal.genotype.zkui.GenotypeRunPlatformSorter;
 </tabpanel> 
 
  <tabpanel id="tabpanelGalaxy" class="z-genotype-tabpanel" > <!--    vflex="1" style="overflow:auto" -->  
-	  <include id="includeGalaxy" src="galaxy.zul?embed=genotype"/>
+	  <include id="includeGalaxy"/>
+	  <!--  include id="includeGalaxy" -->
+	  <!--  iframe id="iframeGalaxy" width="100%" height="2000px"/ -->	  
  </tabpanel>
 
                         

@@ -167,7 +167,8 @@
 		/> <property name="maxIdle" value="1" /> <property name="maxActive" value="10" 
 		/> </bean> -->
 
-	<!-- <bean class="org.apache.commons.dbcp.BasicDataSource"
+	<!-- ACTIVE AWS PROD -->
+	<!-- bean class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" name="IRIC_ProductionDS_PG">
 		<property name="driverClassName"
 			value="org.postgresql.Driver" />
@@ -177,9 +178,17 @@
 			value="jdbc:postgresql://iric-rds-singapore-prod-v1.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric" />
 		<property name="maxIdle" value="1" />
 		<property name="maxActive" value="10" />
-	</bean> 
-	 -->
-
+	</bean --> 
+	
+	<!-- localhost -->
+	<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
+		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver"/> 
+		<property name="username" value="postgres"/> <property name="password" value="iric-dev"/> 
+		<property name="url" value="jdbc:postgresql://localhost:5432/snpseekv3"/> 
+		<property name="maxIdle" value="1"/> <property name="maxActive" value="10"/> 
+		</bean>
+	
+	
 	<!-- <AWS-RDS Beanstalk v2 -->
 	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
 		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver"/> 
@@ -201,17 +210,10 @@
 		/> <property name="maxIdle" value="1" /> <property name="maxActive" value="10" 
 		/> </bean> -->
 
-	<!-- localhost -->
-	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
-		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver"/> 
-		<property name="username" value="postgres"/> <property name="password" value="iric-dev"/> 
-		<property name="url" value="jdbc:postgresql://localhost:5432/snpseekv3"/> 
-		<property name="maxIdle" value="1"/> <property name="maxActive" value="10"/> 
-		</bean -->
 
 
 	<!-- pollux -->
-	<bean class="org.apache.commons.dbcp.BasicDataSource"
+	<!-- bean class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" name="IRIC_ProductionDS_PG">
 		<property name="driverClassName"
 			value="org.postgresql.Driver" />
@@ -221,7 +223,7 @@
 			value="jdbc:postgresql://172.29.4.215:5432/iric" />
 		<property name="maxIdle" value="1" />
 		<property name="maxActive" value="10" />
-	</bean>
+	</bean -->
 	
 	<!-- vm local -->
 	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
