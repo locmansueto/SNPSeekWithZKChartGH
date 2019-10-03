@@ -1,9 +1,7 @@
 package org.irri.iric.portal.genomics.zkui;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,42 +12,29 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.HttpPostForm;
-import org.irri.iric.portal.admin.AsyncJobReport;
-import org.irri.iric.portal.admin.JobsFacade;
 import org.irri.iric.portal.admin.WorkspaceFacade;
-
+import org.irri.iric.portal.chado.oracle.domain.VLocusNotes;
 import org.irri.iric.portal.dao.ListItemsDAO;
-import org.irri.iric.portal.dao.WebsiteDAO;
 import org.irri.iric.portal.domain.LocalAlignment;
+import org.irri.iric.portal.domain.LocalAlignmentImpl;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.LocusPromoter;
-import org.irri.iric.portal.domain.LocalAlignmentImpl;
 import org.irri.iric.portal.domain.MarkerAnnotation;
 import org.irri.iric.portal.domain.MergedLoci;
 import org.irri.iric.portal.domain.TextSearchOptions;
-import org.irri.iric.portal.domain.Variety;
-import org.irri.iric.portal.genomics.GeneOntologyService;
 import org.irri.iric.portal.genomics.GenomicsFacade;
 import org.irri.iric.portal.genomics.WebsiteQuery;
 import org.irri.iric.portal.genomics.service.GenomicsFacadeImpl;
-import org.irri.iric.portal.variety.VarietyFacade;
-import org.irri.iric.portal.webclient.GenesetWebClient;
 //import org.irri.iric.portal.webclient.SnpseekWebClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.zkoss.zhtml.Form;
 import org.zkoss.zhtml.Input;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Components;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
@@ -440,7 +425,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 
 	@Override
 	public void doAfterCompose(Window comp) throws Exception {
-		
+
 		super.doAfterCompose(comp);
 
 		workspace = (WorkspaceFacade) AppContext.checkBean(workspace, "WorkspaceFacade");
@@ -524,7 +509,6 @@ public class LocusQueryController extends SelectorComposer<Window> {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
-				
 
 				if (timerCheckUrls.isRunning() || listFuture.size() > 0) {
 					if (Messagebox.show(
@@ -2341,35 +2325,60 @@ public class LocusQueryController extends SelectorComposer<Window> {
 			 * sortAscending="${lasc6}" sortDescending="${ldsc6}" /> </listhead> </listbox>
 			 */
 
-			StringBuffer buff = new StringBuffer();
-			if (listheaderOverlapping.isVisible())
-				buff.append("LOCUS").append(delimiter).append("CONTIG").append(delimiter).append("START")
-						.append(delimiter).append("STOP").append(delimiter).append("STRAND").append(delimiter)
-						.append("OVERLAPPING_GENE MODELS").append(delimiter).append("DESCRIPTION");
-			else
-				buff.append("LOCUS").append(delimiter).append("CONTIG").append(delimiter).append("START")
-						.append(delimiter).append("STOP").append(delimiter).append("STRAND").append(delimiter)
-						.append("DESCRIPTION");
-
-			buff.append("\n");
 			int isize = listboxLocus.getListModel().getSize();
-			for (int i = 0; i < isize; i++) {
-				MergedLoci align = (MergedLoci) listboxLocus.getListModel().getElementAt(i);
+			StringBuffer buff = new StringBuffer();
+			if (isize > 0) {
+				
 
-				if (listheaderOverlapping.isVisible())
-					buff.append(quote).append(align.getUniquename()).append(quote).append(delimiter)
-							.append(align.getContig()).append(delimiter).append(align.getFmin()).append(delimiter)
-							.append(align.getFmax()).append(delimiter).append(align.getStrand()).append(delimiter)
-							.append(quote).append(align.getOverlappingGenes()).append(quote).append(delimiter)
-							.append(quote).append(align.getDescription()).append(quote);
-				else
-					buff.append(quote).append(align.getUniquename()).append(quote).append(delimiter)
-							.append(align.getContig()).append(delimiter).append(align.getFmin()).append(delimiter)
-							.append(align.getFmax()).append(delimiter).append(align.getStrand()).append(delimiter)
-							.append(quote).append(align.getDescription()).append(quote);
-				buff.append("\n");
+				if (listboxLocus.getListModel().getElementAt(0) instanceof MergedLoci) {
+					if (listheaderOverlapping.isVisible())
+						buff.append("LOCUS").append(delimiter).append("CONTIG").append(delimiter).append("START")
+								.append(delimiter).append("STOP").append(delimiter).append("STRAND").append(delimiter)
+								.append("OVERLAPPING_GENE MODELS").append(delimiter).append("DESCRIPTION");
+					else
+						buff.append("LOCUS").append(delimiter).append("CONTIG").append(delimiter).append("START")
+								.append(delimiter).append("STOP").append(delimiter).append("STRAND").append(delimiter)
+								.append("DESCRIPTION");
+
+					buff.append("\n");
+					for (int i = 0; i < isize; i++) {
+						MergedLoci align = (MergedLoci) listboxLocus.getListModel().getElementAt(i);
+
+						if (listheaderOverlapping.isVisible())
+							buff.append(quote).append(align.getUniquename()).append(quote).append(delimiter)
+									.append(align.getContig()).append(delimiter).append(align.getFmin())
+									.append(delimiter).append(align.getFmax()).append(delimiter)
+									.append(align.getStrand()).append(delimiter).append(quote)
+									.append(align.getOverlappingGenes()).append(quote).append(delimiter).append(quote)
+									.append(align.getDescription()).append(quote);
+						else
+							buff.append(quote).append(align.getUniquename()).append(quote).append(delimiter)
+									.append(align.getContig()).append(delimiter).append(align.getFmin())
+									.append(delimiter).append(align.getFmax()).append(delimiter)
+									.append(align.getStrand()).append(delimiter).append(quote)
+									.append(align.getDescription()).append(quote);
+						buff.append("\n");
+					}
+				}
+
+				if (listboxLocus.getListModel().getElementAt(0) instanceof VLocusNotes) {
+					buff.append("LOCUS").append(delimiter).append("CONTIG").append(delimiter).append("START")
+							.append(delimiter).append("STOP").append(delimiter).append("STRAND").append(delimiter)
+							.append("DESCRIPTION");
+
+					buff.append("\n");
+					for (int i = 0; i < isize; i++) {
+						VLocusNotes align = (VLocusNotes) listboxLocus.getListModel().getElementAt(i);
+
+						buff.append(quote).append(align.getUniquename()).append(quote).append(delimiter)
+								.append(align.getContig()).append(delimiter).append(align.getFmin()).append(delimiter)
+								.append(align.getFmax()).append(delimiter).append(align.getStrand()).append(delimiter)
+								.append(quote).append(align.getDescription()).append(quote);
+						buff.append("\n");
+					}
+				}
+
 			}
-
 			String filetype = "text/plain";
 			String fileext = ".txt";
 			if (delimiter.equals(",")) {
@@ -2398,7 +2407,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 		Fileupload.get(new EventListener() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				
+
 				uploadString = null;
 				labelUploadSequence.setValue("");
 				try {

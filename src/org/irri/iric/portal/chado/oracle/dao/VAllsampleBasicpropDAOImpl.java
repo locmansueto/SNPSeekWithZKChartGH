@@ -53,6 +53,14 @@ public class VAllsampleBasicpropDAOImpl extends AbstractJpaDao<VAllsampleBasicpr
 	public Set<StockSample> getSamplesById(Set sampleid) {
 		return null;
 	}
+	
+	@Override
+	public Set<StockSample> getSamplesBySampleIdInDataset(Set dataset, Set sampleid) {
+		Query query = createNamedQuery("findVAllsampleBasicpropByDatasetInAndSampleId", -1, -1, sampleid, dataset);
+		return new LinkedHashSet<StockSample>(query.getResultList());
+	}
+	
+	
 
 	@Override
 	public Set<StockSample> getSamplesByStock(Set stock, Set dataset) {
@@ -751,6 +759,8 @@ public class VAllsampleBasicpropDAOImpl extends AbstractJpaDao<VAllsampleBasicpr
 	public boolean canBeMerged(VAllsampleBasicprop entity) {
 		return true;
 	}
+
+	
 	
 	
 	

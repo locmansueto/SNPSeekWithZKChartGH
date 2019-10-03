@@ -10,7 +10,9 @@ public interface StockSampleDAO extends VarietyDAO {
 	Set<StockSample> getSamples(Set dataset);
 
 	Set<StockSample> getSamplesById(Set sampleid);
-
+	
+	Set<StockSample> getSamplesBySampleIdInDataset(Set dataset, Set sampleid);
+	
 	Set<StockSample> getSamplesByStock(Set stock, Set dataset);
 
 	Set<StockSample> getSamplesByStock(Set stock);

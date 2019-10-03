@@ -396,7 +396,7 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex> impl
 				if (startPos != null && endPos != null) {
 					// AppContext.debug("findVSnpRefposindexByChrPosBetween: " + bdChr + " " +
 					// startPos + " " + endPos + " " + type);
-
+					// TIMER HERE DAGS
 					if (AppContext.isBypassViews()) {
 						
 						String sqldirect = "";

@@ -358,7 +358,7 @@ public class H5 implements java.io.Serializable {
 	        try {
 	        	String libpath = "lib";
 	        	if(AppContext.isWindows()) 
-		    		System.load( AppContext.getFlatfilesDir() +  libpath + "/jhdf5.dll" );
+		    		System.load( AppContext.getFlatfilesDir() +  libpath + "\\jhdf5.dll" );
 		    	else
 		    		System.load(  AppContext.getFlatfilesDir() + libpath + "/libjhdf5.so");
 	        	isLibraryLoaded = true;
@@ -382,7 +382,7 @@ public class H5 implements java.io.Serializable {
 	        		libpath = "lib-dev";
 	        	
 	        	if(AppContext.isWindows()) 
-		    		System.load( AppContext.getFlatfilesDir() +  libpath + "/jhdf5.dll" );
+		    		System.load( AppContext.getFlatfilesDir() +  libpath + "\\jhdf5.dll" );
 		    	else
 		    		System.load(  AppContext.getFlatfilesDir() + libpath + "/libjhdf5.so");
 	        	isLibraryLoaded = true;
@@ -405,7 +405,7 @@ public class H5 implements java.io.Serializable {
 	        		libpath = "lib-dev2";
 	        	
 	        	if(AppContext.isWindows()) 
-		    		System.load( AppContext.getFlatfilesDir() +  libpath + "/jhdf5.dll" );
+		    		System.load( AppContext.getFlatfilesDir() +  libpath + "\\jhdf5.dll" );
 		    	else
 		    		System.load(  AppContext.getFlatfilesDir() + libpath + "/libjhdf5.so");
 	        	isLibraryLoaded = true;
@@ -428,7 +428,7 @@ public class H5 implements java.io.Serializable {
 	        		libpath = "lib-dev2";
 	        	
 	        	if(AppContext.isWindows()) 
-		    		System.load( AppContext.getFlatfilesDir() +  libpath + "/jhdf5.dll" );
+		    		System.load( AppContext.getFlatfilesDir() +  libpath + "\\jhdf5.dll" );
 		    	else
 		    		System.load(  AppContext.getFlatfilesDir() + libpath + "/libjhdf5.so");
 	        	isLibraryLoaded = true;
@@ -451,7 +451,7 @@ public class H5 implements java.io.Serializable {
 	        		libpath = "lib-dev2";
 	        	
 	        	if(AppContext.isWindows()) 
-		    		System.load( AppContext.getFlatfilesDir() +  libpath + "/jhdf5.dll" );
+		    		System.load( AppContext.getFlatfilesDir() +  libpath + "\\jhdf5.dll" );
 		    	else
 		    		System.load(  AppContext.getFlatfilesDir() + libpath + "/libjhdf5.so");
 	        	isLibraryLoaded = true;

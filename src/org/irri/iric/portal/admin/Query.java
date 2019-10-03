@@ -1,6 +1,8 @@
 package org.irri.iric.portal.admin;
 
-public class Query {
+import java.io.Serializable;
+
+public class Query implements Serializable {
 	protected String jobid;
 	protected String submitter;
 	protected String filename;

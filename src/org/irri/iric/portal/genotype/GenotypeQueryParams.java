@@ -28,7 +28,7 @@ import org.zkoss.zk.ui.Sessions;
  *
  */
 
-public class GenotypeQueryParams extends Query {
+public class GenotypeQueryParams extends Query  {
 
 	/*
 	 * public static String SNP_ALL="all_snp"; public static String

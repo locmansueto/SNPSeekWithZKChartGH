@@ -1,5 +1,6 @@
 package org.irri.iric.portal.admin;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ import org.springframework.stereotype.Component;
 
 //@Component("UserSessionListsManager")
 //@Scope("prototype")
-public class UserSessionListsManager {
+public class UserSessionListsManager implements Serializable {
 
 	/**
 	 * Stores a map of name 2 variety list

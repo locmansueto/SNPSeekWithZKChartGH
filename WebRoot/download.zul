@@ -103,8 +103,9 @@
         <tabpanels>
           
           <!--  *********************   SNPS DATA DOWNLOAD TAB  *********************************************************************************** -->
+          
           <tabpanel>
-          <iframe align="left" visible="true" style="width:95%;height:4000px;border:0px inset;" src="http://oryzasnp-atcg-irri-org.s3-website-ap-southeast-1.amazonaws.com" />
+          <iframe align="left" visible="true" style="width:95%;height:4000px;border:0px inset;" src="https://oryzasnp-atcg-irri-org.s3-website-ap-southeast-1.amazonaws.com" />
           </tabpanel>
         
         <tabpanel>
@@ -168,7 +169,9 @@
         <!--  *********************   FASTQC REPORTS TAB  *********************************************************************************** -->      
         
          <tabpanel>
-         <iframe align="left" visible="true" style="width:95%;height:1000px;border:0px inset;" src="http://snp-seek.irri.org/3kfastqc/" />
+         
+         <iframe align="left" visible="true" style="width:95%;height:1000px;border:0px inset;" src="https://snp-seek.irri.org/3kfastqc/" />
+         
          </tabpanel>
          
          

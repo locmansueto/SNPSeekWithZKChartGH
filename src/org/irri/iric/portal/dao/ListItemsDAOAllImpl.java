@@ -1568,7 +1568,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 			Set setVarids = new HashSet();
 			for (int i = varidstartend[0]; i <= varidstartend[1]; i++)
 				setVarids.add(i);
-			samples = sampledao.getSamplesById(setVarids);
+			samples = sampledao.getSamplesBySampleIdInDataset(params.getDataset(), setVarids);
 		} else {
 			samples = sampledao.getSamples(params.getDataset());
 		}

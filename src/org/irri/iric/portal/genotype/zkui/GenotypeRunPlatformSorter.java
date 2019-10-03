@@ -1,11 +1,12 @@
 package org.irri.iric.portal.genotype.zkui;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.irri.iric.portal.domain.GenotypeRunPlatform;
 import org.irri.iric.portal.domain.SnpsEffect;
 
-public class GenotypeRunPlatformSorter implements Comparator {
+public class GenotypeRunPlatformSorter implements Comparator, Serializable {
 
 	private boolean asc = false;
 	private int index = -1;

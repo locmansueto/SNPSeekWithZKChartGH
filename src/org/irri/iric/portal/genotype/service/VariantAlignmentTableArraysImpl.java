@@ -579,6 +579,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 	@Override
 	public String[] getSNPGenomicAnnotation(GenotypeQueryParams genotypeQueryParams) {
 
+//		SNP annot to fill on missing DEBUG
 		if (geneAnnots == null) {
 			genomics = (GenomicsFacade) AppContext.checkBean(genomics, "GenomicsFacade");
 
