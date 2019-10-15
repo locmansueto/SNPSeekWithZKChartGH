@@ -148,7 +148,7 @@ public class VariantAlignmentTableArraysImpl implements VariantTableArray {
 			boolean includepos = true;
 			if (cdsonly) {
 				Iterator<Locus> itLoc = listCDS.iterator();
-				includepos = false;
+				//includepos = false;
 				while (itLoc.hasNext()) {
 					Locus loc = itLoc.next();
 					if ((loc.getChr() != null && posnuc.getChr() != null && posnuc.getChr() == loc.getChr())
