@@ -313,8 +313,11 @@ public class ExtTabController extends SelectorComposer<Window> {
         }
         else if(tab.equals("jbrowse")) {
 			String jbrowseparam = (String)getSession().getAttribute("jbrowse");
-        	iframeJbrowse.setSrc(jbrowseparam);
-        	divJbrowse.setVisible(true);
+			if(jbrowseparam==null)
+				iframeJbrowse.setSrc("jbrowse.zul?tracks=DNA,msu7gff,msu7snpsv2,msu7indelsv2");
+			else 
+				iframeJbrowse.setSrc(jbrowseparam);
+			divJbrowse.setVisible(true);
         }
         else if(tab.equals("vista")) {
 			String reference = (String)getSession().getAttribute("reference");

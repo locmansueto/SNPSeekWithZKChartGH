@@ -386,9 +386,7 @@ public class VSnpeffDAOImpl extends AbstractJpaDao<VSnpeff> implements VSnpeffDA
 			List listPresent = new ArrayList();
 			AppContext.debug("checking " + posset.size() + " snp positions");
 			Map mapChr2Pos = MultiReferencePositionImpl.getMapContig2SNPPos(posset);
-			String sql = "select * from ( "; // select SNP_FEATURE_ID, TYPE_ID , CHROMOSOME, POSITION , REFCALL ,
-												// ALLELE_INDEX from " + AppContext.getDefaultSchema() +
-												// ".V_SNP_REFPOSINDEX srp WHERE 1=1 and (";
+			String sql = "select * from ( ";
 			Iterator<String> itContig = mapChr2Pos.keySet().iterator();
 			while (itContig.hasNext()) {
 				String contigstr = itContig.next();
@@ -400,17 +398,10 @@ public class VSnpeffDAOImpl extends AbstractJpaDao<VSnpeff> implements VSnpeffDA
 
 				Set slicedset[] = AppContext.setSlicer(new TreeSet(setPos), 900);
 				for (int iset = 0; iset < slicedset.length; iset++) {
-					// sql += " select * from " + AppContext.getDefaultSchema() + ".v_snpeff where
-					// chromosome=" + contig + " and exists (select column_value from
-					// table(sys.odcinumberlist(" + slicedset[iset].toString().replace("[",
-					// "").replace("]", "") + " )) t where t.column_value=position) ";
-					// (select unnest(ARRAY[1792,6634,1306,5752,1299,11334]) column_value) t,
-					// select t.column_value from (select unnest(ARRAY[25777, 27188,
-					// 28781])column_value) t
 					sql += " select * from " + AppContext.getDefaultSchema() + ".v_snpeff where chromosome=" + contig
 							+ " and exists ( select t.column_value from (select unnest(ARRAY["
 							+ slicedset[iset].toString().replace("[", "").replace("]", "")
-							+ "])column_value)  t where t.column_value=position) foo ";
+							+ "])column_value)  t where t.column_value=position)  ";
 					if (iset < slicedset.length - 1)
 						sql += " union ";
 				}
@@ -421,11 +412,6 @@ public class VSnpeffDAOImpl extends AbstractJpaDao<VSnpeff> implements VSnpeffDA
 
 			sql += ") foo2 order by CHROMOSOME, POSITION";
 
-			/*
-			 * with names (fname,lname) as ( values ('John','Smith'), ('Mary','Jones') )
-			 * select city from user inner join names on fname=firstName and lname=lastName;
-			 * 
-			 */
 			AppContext.debug("querying  V_SNPEFF with " + poscount + " positions");
 			return new LinkedHashSet(executeSQL(sql));
 		} else if (chr.toLowerCase().equals("loci")) {

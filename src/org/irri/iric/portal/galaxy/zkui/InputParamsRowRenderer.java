@@ -2,6 +2,7 @@ package org.irri.iric.portal.galaxy.zkui;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.irri.iric.portal.AppContext;
@@ -19,6 +20,7 @@ import org.zkoss.zk.ui.util.Configuration;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Html;
@@ -108,10 +110,17 @@ public class InputParamsRowRenderer implements RowRenderer{
 				options= " ["+labels[5].replace("|",",")+"]";
 			}
 
+			boolean isdate=false;
+			String dateformat="";
 			if(labels.length>2) {
 				if(labels[2].contains("|")) {
 					new Label(labels[2].split("\\|")[0]).setParent(row);
 					new Label(optional+" " + labels[2].split("\\|")[1]).setParent(row);
+					String datelabel=labels[2].split("\\|")[1];
+					isdate=datelabel.toLowerCase().contains("date (");
+					if(isdate)
+						dateformat=datelabel.split("\\(")[1].replace(")", "").trim();
+
 				}
 				else if(labels[2].trim().isEmpty()) { 
 					new Label(labels[0].replaceAll("_\\d+$","")).setParent(row);
@@ -125,6 +134,7 @@ public class InputParamsRowRenderer implements RowRenderer{
 			else if(labels.length==1) { 
 				new Label(labels[0].replaceAll("_\\d+$","")).setParent(row);
 				new Label("").setParent(row);
+
 			}
 			else {
 				new Label("").setParent(row);
@@ -201,6 +211,13 @@ public class InputParamsRowRenderer implements RowRenderer{
 					else tbValue.setValue("");
 				}
 				hbox.setParent(row);
+			} else if(isdate) {
+				Datebox db=new Datebox();
+				db.setCols(50);
+				db.setFormat(  dateformat.replace("YYYY","yyyy").replace("YY","yy").replace("DD","dd").replace("mm","MM"));
+				db.setValue(new Date());
+				//<datebox id="db5" cols="12" format="yyyy/MM/dd" onCreate="self.value = new Date()" />) {
+				db.setParent(row);
 			}
 			else {
 				Textbox cb=new Textbox();

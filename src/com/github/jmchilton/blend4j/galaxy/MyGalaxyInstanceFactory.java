@@ -1,5 +1,10 @@
 package com.github.jmchilton.blend4j.galaxy;
 
+import com.github.jmchilton.blend4j.galaxy.GalaxyAuthWebResourceFactoryImpl;
+import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
+import com.github.jmchilton.blend4j.galaxy.GalaxyInstanceImpl;
+import com.github.jmchilton.blend4j.galaxy.WebResourceFactory;
+
 public class MyGalaxyInstanceFactory {
 
 

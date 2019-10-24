@@ -990,6 +990,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	 Map<BigDecimal, Object> mapVarid2Phenotype;
 	private String sPhenotype;
 	GenotypeQueryParams params;
+	private boolean refreshgalaxy;
 	
 	public SNPQueryController() {
 		super();
@@ -1001,6 +1002,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		AppContext.debug("refreshing listboxes");
 		refresh();
 	}
+	/*
 	@Listen("onVisibilityChange =#win") 
 	public void onvischangeWin() {
 		if(win.isVisible()) {
@@ -1008,6 +1010,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			refresh();
 		}
 	}
+	*/
 	
 	
 	//getAttribute("win$composer")
@@ -1026,19 +1029,20 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			biglistboxArray.setMatrixRenderer(renderer);
 			biglistboxArray.setModel( biglistboxArray.getModel());
 			*/
-			Object2StringMultirefsMatrixRenderer renderer = new Object2StringMultirefsMatrixRenderer(queryResult,
-					params);
-			biglistboxArray.setMatrixRenderer(renderer);
-			// biglistboxModel=new Object2StringMultirefsMatrixModel(varianttable, params
-			// /*fillGenotypeQueryParams() */,
-			// varietyfacade.getMapId2Variety(params.getDataset()), gridBiglistheader,
-			// mapVarid2Phenotype, sPhenotype);
-			biglistboxModel = new Object2StringMultirefsMatrixModel(varianttable,
-					params /* fillGenotypeQueryParams() */, varietyfacade.getMapId2Sample(params.getDataset()),
-					gridBiglistheader, mapVarid2Phenotype, sPhenotype);
-			biglistboxModel.setHeaderRows(biglistboxRows, lastY);
-			biglistboxArray.setModel(biglistboxModel); // strRef));
-			
+			if(queryResult!=null) {
+				Object2StringMultirefsMatrixRenderer renderer = new Object2StringMultirefsMatrixRenderer(queryResult,
+						params);
+				biglistboxArray.setMatrixRenderer(renderer);
+				// biglistboxModel=new Object2StringMultirefsMatrixModel(varianttable, params
+				// /*fillGenotypeQueryParams() */,
+				// varietyfacade.getMapId2Variety(params.getDataset()), gridBiglistheader,
+				// mapVarid2Phenotype, sPhenotype);
+				biglistboxModel = new Object2StringMultirefsMatrixModel(varianttable,
+						params /* fillGenotypeQueryParams() */, varietyfacade.getMapId2Sample(params.getDataset()),
+						gridBiglistheader, mapVarid2Phenotype, sPhenotype);
+				biglistboxModel.setHeaderRows(biglistboxRows, lastY);
+				biglistboxArray.setModel(biglistboxModel); // strRef));
+			}
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
@@ -1081,8 +1085,17 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		
 
 		//!--  include id="includeGalaxy" src="galaxy.zul?embed=genotype"/ -->
-		  includeGalaxy.setSrc("galaxy.zul?embed=genotype");
-		  includeGalaxy.invalidate();
+		if(refreshgalaxy) {
+			// new query parameters
+			includeGalaxy.setSrc("galaxy.zul?embed=genotype&refresh=1");
+			includeGalaxy.setSrc("galaxy.zul?embed=genotype");
+		}
+		else 
+			includeGalaxy.setSrc("galaxy.zul?embed=genotype");
+		
+		refreshgalaxy=false;
+		 
+		//includeGalaxy.invalidate();
 		//  iframeGalaxy.setSrc("galaxy.zul?embed=genotype");
 	}
 	
@@ -1290,6 +1303,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			listboxAlleleFilter.setModel(new ListModelList(listSNPlistAlleleNames));
 			listboxSNPListAlleles.setModel(new ListModelList(listSNPlistAlleleNames));
 			listboxHighlightVarietyList.setModel(new ListModelList(listVarlistNames));
+			listboxMyVarieties.setModel(new ListModelList(listVarlistNames));
 		} else {
 			if(listSNPlistNames.size()!=listboxMySNPList.getRows()) {
 				((ListModelList)listboxMySNPList.getModel()).clear(); 
@@ -1311,6 +1325,10 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			((ListModelList)listboxHighlightVarietyList.getModel()).clear(); 
 			((ListModelList)listboxHighlightVarietyList.getModel()).addAll(listVarlistNames);
 			}
+			if(listVarlistNames.size()!=listboxMyVarieties.getRows()) {
+			((ListModelList)listboxMyVarieties.getModel()).clear(); 
+			((ListModelList)listboxMyVarieties.getModel()).addAll(listVarlistNames);
+			}
 		}
 
 		
@@ -1319,7 +1337,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		listboxAlleleFilter.setSelectedIndex(0);
 		listboxSNPListAlleles.setSelectedIndex(0);
 		listboxHighlightVarietyList.setSelectedIndex(0);
-		
+		listboxMyVarieties.setSelectedIndex(0);
 
 	}
 
@@ -2152,6 +2170,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			this.tabHaploTree.setDisabled(true);
 			this.tabHaploAutogroups.setDisabled(true);
 
+			refreshgalaxy=true;  // reload
 			gfffile = null;
 			urljbrowse = null; // if has URL address, will render on TabSelect on JBrowse
 			urlphylo = null; // if has URL address, will render on TabSelect on Phylotree
@@ -3291,38 +3310,43 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	 */
 	@Listen("onClick = #buttonReset")
 	public void reset() {
-		comboVar1.setValue("");
-		comboVar2.setValue("");
-		this.radioUseAccession.setSelected(true);
-		checkboxMismatchOnly.setChecked(DEFAULT_MISMATCHONLY);
-		checkboxAllvarieties.setChecked(true);
-
-		this.listboxMyVarieties.setSelectedIndex(0);
-		// this.comboSubpopulation.setValue("");
-		listboxSubpopulation.setSelectedIndex(0);
-
-		intStart.setValue(null);
-		intStop.setValue(null);
-		comboGene.setValue("");
-		selectChr.setValue("");
-		this.listboxMySNPList.setSelectedIndex(0);
-		this.listboxMyLocusList.setSelectedIndex(0);
-
-		// this.checkboxCoreSNP.setChecked(false);
-		// this.listboxDataset.setSelectedIndex(0);
-		// this.listboxSnpset.setSelectedIndex(2);
-		// this.listboxGenotyperun.setSelectedItems(new HashSet());
-		this.selectPhyloTopN.setSelectedIndex(0);
-
-		this.radioColorMismatch.setSelected(true);
-		this.listboxPhenotype.setSelectedIndex(0);
-
-		msgbox.setValue("Select varieties, then set chromosome region or gene locus");
-
-		this.listboxPhenotype.setSelectedIndex(0);
-		this.checkboxIndel.setChecked(false);
-
-		setchrlength();
+		
+		try {
+			comboVar1.setValue("");
+			comboVar2.setValue("");
+			this.radioUseAccession.setSelected(true);
+			checkboxMismatchOnly.setChecked(DEFAULT_MISMATCHONLY);
+			checkboxAllvarieties.setChecked(true);
+	
+			this.listboxMyVarieties.setSelectedIndex(0);
+			// this.comboSubpopulation.setValue("");
+			listboxSubpopulation.setSelectedIndex(0);
+	
+			intStart.setValue(null);
+			intStop.setValue(null);
+			comboGene.setValue("");
+			selectChr.setValue("");
+			this.listboxMySNPList.setSelectedIndex(0);
+			this.listboxMyLocusList.setSelectedIndex(0);
+	
+			// this.checkboxCoreSNP.setChecked(false);
+			// this.listboxDataset.setSelectedIndex(0);
+			// this.listboxSnpset.setSelectedIndex(2);
+			// this.listboxGenotyperun.setSelectedItems(new HashSet());
+			this.selectPhyloTopN.setSelectedIndex(0);
+	
+			this.radioColorMismatch.setSelected(true);
+			this.listboxPhenotype.setSelectedIndex(0);
+	
+			msgbox.setValue("Select varieties, then set chromosome region or gene locus");
+	
+			this.listboxPhenotype.setSelectedIndex(0);
+			this.checkboxIndel.setChecked(false);
+	
+			setchrlength();
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	// *********************************************** HANDLE QUERY INTERFACE EVENTS
@@ -4901,6 +4925,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				// iframeJbrowse.invalidate();
 				// iframeJbrowse.
 				if(newTab) {
+					openJbrowseTab( urljbrowse);
 				} else {
 					msgJbrowse.setVisible(true);
 					iframeJbrowse.setVisible(true);
@@ -6999,7 +7024,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 						.getModel();
 				VariantAlignmentTableArraysImpl table = (VariantAlignmentTableArraysImpl) matrixmodel.getData();
 				double maxk = Math.min(15, table.getVariantStringData().getMapVariety2Mismatch().size());
-				double curpos = 5;
+				double curpos = 3;
 
 				sliderCuttreeThreshold.setMinpos(1.0);
 				sliderCuttreeThreshold.setMaxpos(maxk);

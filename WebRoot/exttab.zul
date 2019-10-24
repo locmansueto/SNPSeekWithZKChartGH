@@ -52,19 +52,42 @@
 <window border="none" apply="org.irri.iric.portal.genotype.zkui.ExtTabController"> 
    <div id="divSnpeff">
     
+    <!--  listbox id="listboxSnpeff" mold="paging" pageSize="100" sizedByContent="true" span="true">
+    <listhead sizable="true">
+	<listheader label="POSITION" sort="auto" width="10%"/>
+	<listheader label="&quot;DELETERIOUSNESS&quot;" sort="auto" width="10%"   sortAscending="${snpeffasc1}" sortDescending="${snpeffdsc1}" />
+	<listheader label="ANN" sort="auto" width="80%"/>
+	<listheader label="LOF" sort="auto"  width="5%"/>
+	<listheader label="NMD" sort="auto"  width="5%"/>
+	 </listhead>
+	 </listbox -->
+ 
+ 
     <listbox id="listboxSnpeff" mold="paging" pageSize="100" sizedByContent="true" span="true">
     <listhead sizable="true">
-
     
-<listheader label="POSITION" sort="auto" width="10%"/>
-<listheader label="&quot;DELETERIOUSNESS&quot;" sort="auto" width="10%"   sortAscending="${snpeffasc1}" sortDescending="${snpeffdsc1}" />
-<listheader label="ANN" sort="auto" width="80%"/>
-<listheader label="LOF" sort="auto"  width="5%"/>
-<listheader label="NMD" sort="auto"  width="5%"/>
-
- </listhead>
- </listbox>
- 
+		<listheader label="POSITION" sort="auto" width="10%"/>
+		<listheader label="&quot;DELETERIOUSNESS&quot;" sort="auto" width="10%"   sortAscending="${snpeffasc1}" sortDescending="${snpeffdsc1}" />
+		<listheader label="Alt (ANN)" sort="auto" width="10%"/>
+		<listheader label="Effect (ANN)" sort="auto" width="10%"/>
+		<listheader label="Putative_impact (ANN)" sort="auto" width="10%"/>
+		<listheader label="Gene Name (ANN)" sort="auto" width="10%"/>
+		<listheader label="Gene ID (ANN)" sort="auto" width="10%"/>
+		<listheader label="Feature type (ANN)" sort="auto" width="10%"/>
+		<listheader label="Feature ID (ANN)" sort="auto" width="10%"/>
+		<listheader label="Transcript Biotype (ANN)" sort="auto" width="10%"/>
+		<listheader label="Rank/Total (ANN)" sort="auto" width="10%"/>
+		<listheader label="HGV S.c (ANN)" sort="auto" width="10%"/>
+		<listheader label="HGV S.p (ANN)" sort="auto" width="10%"/>
+		<listheader label="cDNA position (ANN)" sort="auto" width="10%"/>
+		<listheader label="cDS position (ANN)" sort="auto" width="10%"/>
+		<listheader label="Protein position" sort="auto" width="10%"/>
+		<listheader label="Distance to feature (ANN)" sort="auto" width="10%"/>
+		<listheader label="Errors,Warnings Info msgs (ANN)" sort="auto" width="10%"/>
+		<listheader label="LOF" sort="auto"  width="10%"/>
+		<listheader label="NMD" sort="auto"  width="10%"/>
+		 </listhead>
+		 </listbox>
  
 	</div>
 	            
@@ -120,7 +143,9 @@
 	</hbox>
 	
 	
-	<iframe id= "iframeJbrowse"  align="left" visible="true" style="width:95%;height:100%;border:0px inset;" src="${jbrowsestart}" />
+	<!--  iframe id= "iframeJbrowse"  align="left" visible="true" style="width:95%;height:100%;border:0px inset;" src="${jbrowsestart}" / -->
+	 <iframe id="iframejbrowse" src="${jbrowsestart}" visible="true" width="100%" height="100%"/>
+      
 	</vbox>
 
   </div>

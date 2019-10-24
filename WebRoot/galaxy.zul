@@ -123,9 +123,12 @@
 		    <vbox>
 		    <button id="buttonRun" label="Run Tool"/>
 		    <checkbox id="checkboxAsync" label="Run in backgroud" checked="true"/>
-		    <label id="labelDownloadProgressMsg"/>
+		    
+		    <!--  label id="labelDownloadProgressMsg"/>
 		    <a id="aDownloadProgressURL" target="jobs"/>
-		    <a id="aGalaxyLink" label=""  target="galaxy"/>
+		    <a id="aGalaxyLink" label=""  target="galaxy"/ -->
+		    <vbox id="vboxProgress"/>
+		    
 		    </vbox>
 
    </vbox>

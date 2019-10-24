@@ -24,6 +24,7 @@ public class RecycleZKPage  extends org.zkoss.zkmax.ui.util.DesktopRecycle {
 	protected boolean shallCache(Desktop desktop, String path, int cause) {
 		// TODO Auto-generated method stub
 		//return super.shallCache(desktop, path, cause);
+		//if(path.contains("refresh")) return false;
 		
 		 boolean cached= path.contains("/_variety.zul") ||
 				 path.contains("/test-blbox.zul") ||
@@ -31,8 +32,7 @@ public class RecycleZKPage  extends org.zkoss.zkmax.ui.util.DesktopRecycle {
 				 path.contains("/_locus.zul") ||
 				 path.contains("/_jbrowse.zul") || 
 				 path.contains("/galaxy.zul") || 
-
-				 path.contains("/_gwas.zul");
+				 path.contains("/_gwas.zul")  ;
 		 AppContext.debug( path + " cached=" + cached);
 
 		 return cached;
@@ -44,6 +44,9 @@ public class RecycleZKPage  extends org.zkoss.zkmax.ui.util.DesktopRecycle {
 		// TODO Auto-generated method stub
 		//return super.shallReuse(desktop, path, secElapsed);
 		// return secElapsed >= 600; // refresh if > 10mins
+		if(path.contains("refresh")) return false;
+
+		
 		 boolean cached= path.contains("/_variety.zul") ||
 				 path.contains("/test-blbox.zul") ||
 				 path.contains("/_snp.zul") ||

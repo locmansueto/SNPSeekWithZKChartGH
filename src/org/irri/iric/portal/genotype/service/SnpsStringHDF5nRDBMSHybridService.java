@@ -111,16 +111,12 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 	@Override
 	public List<SnpsEffect> getSnpsEffects(List positions) {
 		
-
 		snpseffDAO = (SnpsEffectDAO) AppContext.checkBean(snpseffDAO, "SnpsEffectDAO");
-		List listFeatureid = new ArrayList();
-		Iterator<Snp> itPos = positions.iterator();
-		while (itPos.hasNext()) {
-			listFeatureid.add(itPos.next().getSnpFeatureId());
-		}
+		// group gy contig
 		List listEffs = new ArrayList();
-		listEffs.addAll(snpseffDAO.getSNPsByFeatureidIn(listFeatureid));
+		listEffs.addAll(snpseffDAO.getSNPsIn("any", positions, null));
 		return listEffs;
+		
 	}
 
 	@Override

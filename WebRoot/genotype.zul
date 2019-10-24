@@ -768,7 +768,8 @@ import org.irri.iric.portal.genotype.zkui.GenotypeRunPlatformSorter;
 	</vbox>
 	
 	<!--  separator bar="true" visible="false" id="separator" width="100%"/ -->
-	<splitter id="splitter" collapse="before" open="true" width="100%" />
+	
+	<splitter id="splitter" collapse="before" open="true" width="100%"/>
 	
 	<vbox>
     
@@ -1252,17 +1253,19 @@ import org.irri.iric.portal.genotype.zkui.GenotypeRunPlatformSorter;
  	<listbox id="listboxKgroupMethod" mold="select" width="230px">
   		<!--  listitem value="kmeans" label="K-means"  -->
   		<listitem value="nogroups" label="no grouping"/>
-  		<listitem value="autogroup" label="auto-group" selected="true"/>
-  		<listitem value="cuttreegroup" label="cuttree: groups"/>
+  		<listitem value="autogroup" label="auto-group"/>
+  		<listitem value="cuttreegroup" label="cuttree: groups"  selected="true"/>
   		<!--  listitem value="cuttreegroup_norm" label="cuttree: groups (relative # of groups)"/ -->
   		<listitem value="cuttreeheight" label="cuttree: height"/>
   		<listitem value="cuttreeheight_norm" label="cuttree: height (normalized log)"/>
   	</listbox> 	
   	<hbox width="10px"/>
   	<decimalbox id="intboxKgroupThreshold" value="0" visible="false"/>
-  	<slider id="sliderCuttreeThreshold" mode="decimal" step="1.0" maxpos="100.0" minpos="0.0" curpos="75.0" visible="false" width="150px"/>
-  	<textbox id="textboxCuttreeThreshold" value="75.0" readonly="true" width="60px" visible="false"/>
-  	<listbox id="listboxAutogroup" mold="select" width="150px"  visible="true">
+  	<!--  slider id="sliderCuttreeThreshold" mode="decimal" step="1.0" maxpos="100.0" minpos="0.0" curpos="75.0" visible="false" width="150px"/ -->
+  	<!--  textbox id="textboxCuttreeThreshold" value="75.0" readonly="true" width="60px" visible="false"/ -->
+  	<slider id="sliderCuttreeThreshold" mode="decimal" step="1.0" maxpos="15.0" minpos="1.0" curpos="3.0" visible="true" width="150px"/>
+  	<textbox id="textboxCuttreeThreshold" value="3.0" readonly="true" width="60px" visible="true"/>
+  	<listbox id="listboxAutogroup" mold="select" width="150px"  visible="false">
   		<listitem value="pamk" label="pamk"/>
   		<listitem value="calinski" label="calinski"    selected="true"/>
   	</listbox>
@@ -1560,7 +1563,7 @@ import org.irri.iric.portal.genotype.zkui.GenotypeRunPlatformSorter;
 			<vbox width="400px"/><label value="Highlight variety:  " pre="true" />
 			<listbox id="listboxHighlightVariety"   mold="select" width="200px"/>
 			<vbox width="50px"/><label value="list:  "  pre="true"/>
-<listbox id="listboxHighlightVarietyList" mold="select" width="150px"/><button id="buttonHighlight" label="Highlight variety" visible="false"/>
+			<listbox id="listboxHighlightVarietyList" mold="select" width="150px"/><button id="buttonHighlight" label="Highlight variety" visible="false"/>
 
 
 

@@ -168,7 +168,7 @@
 		/> </bean> -->
 
 	<!-- ACTIVE AWS PROD -->
-	<!-- bean class="org.apache.commons.dbcp.BasicDataSource"
+	<bean class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" name="IRIC_ProductionDS_PG">
 		<property name="driverClassName"
 			value="org.postgresql.Driver" />
@@ -178,15 +178,15 @@
 			value="jdbc:postgresql://iric-rds-singapore-prod-v1.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric" />
 		<property name="maxIdle" value="1" />
 		<property name="maxActive" value="10" />
-	</bean --> 
+	</bean> 
 	
 	<!-- localhost -->
-	<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
+	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
 		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver"/> 
 		<property name="username" value="postgres"/> <property name="password" value="iric-dev"/> 
 		<property name="url" value="jdbc:postgresql://localhost:5432/snpseekv3"/> 
 		<property name="maxIdle" value="1"/> <property name="maxActive" value="10"/> 
-	</bean>
+	</bean -->
 	
 	
 	<!-- <AWS-RDS Beanstalk v2 -->
@@ -195,7 +195,7 @@
 		<property name="username" value="postgres"/> <property name="password" value="1rRl-4Bi0"/> 
 		<property name="url" value="jdbc:postgresql://iric-rds-singapore-v2.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric2"/> 
 		<property name="maxIdle" value="1"/> <property name="maxActive" value="10"/> 
-		</bean -->
+		</bean-->
 
 	<!-- BITNAMI POSTGRESQL / DOCKER -->
 	<!-- <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 

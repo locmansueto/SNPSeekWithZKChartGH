@@ -1,9 +1,8 @@
 package org.irri.iric.portal.galaxy.zkui;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -13,27 +12,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 
 import javax.servlet.http.HttpSession;
-import javax.swing.JOptionPane;
+//import javax.swing.JOptionPane;
 
 //import org.codehaus.jettison.json.JSONObject;
 import org.irri.iric.galaxy.service.GalaxyFacade;
 import org.irri.iric.galaxy.service.MyTool;
 import org.irri.iric.galaxy.service.MyWorksflow;
 import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.admin.AsyncJob;
-import org.irri.iric.portal.admin.AsyncJobImpl;
-import org.irri.iric.portal.admin.AsyncJobReport;
 import org.irri.iric.portal.admin.JobsFacade;
-import org.irri.iric.portal.admin.WorkspaceFacade;
-import org.irri.iric.portal.genotype.GenotypeQueryParams;
-import org.irri.iric.portal.genotype.service.VariantAlignmentTableArraysImpl;
-import org.irri.iric.portal.genotype.zkui.Object2StringMultirefsMatrixModel;
-import org.irri.iric.portal.genotype.zkui.SNPQueryController;
-import org.irri.iric.portal.variety.VarietyFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -52,36 +40,31 @@ import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zkmax.zul.Biglistbox;
 import org.zkoss.zul.A;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Iframe;
-import org.zkoss.zul.Include;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.SimpleListModel;
-import org.zkoss.zul.Splitter;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vbox;
 import org.zkoss.zul.Window;
 
 import com.github.jmchilton.blend4j.galaxy.beans.Tool;
-import com.github.jmchilton.blend4j.galaxy.beans.Workflow;
 
 @Controller("GalaxyController")
 @Scope(value = "session")
@@ -94,6 +77,10 @@ public class GalaxyController extends SelectorComposer<Window> {
 	private GalaxyCustomController customcontroller=new DefaultGalaxyController();
 	//private GalaxyCustomController customcontroller; //=new SnpseekGalaxyController();
 	
+	private Set limitWf;
+	
+	@Wire
+	private Window winGalaxy;
 	
 	//@Autowired
 	//@Qualifier("VarietyFacade")
@@ -140,10 +127,14 @@ public class GalaxyController extends SelectorComposer<Window> {
 	private Div divDiscovery;
 	@Wire
 	private Checkbox checkboxAsync;
+	//@Wire
+	//private Label labelDownloadProgressMsg;
+	//@Wire
+	//private A aDownloadProgressURL;
+	//@Wire
+	//private A aGalaxyLink;
 	@Wire
-	private Label labelDownloadProgressMsg;
-	@Wire
-	private A aDownloadProgressURL;
+	private Vbox vboxProgress;
 	@Wire
 	private Button buttonUpload;
 	@Wire
@@ -153,8 +144,6 @@ public class GalaxyController extends SelectorComposer<Window> {
 	private Listheader listheaderSection;
 	@Wire
 	private Label labelMatchedTools;
-	@Wire
-	private A aGalaxyLink;
 	@Wire
 	private Iframe iframeHtmlResult;
 	@Wire
@@ -320,9 +309,9 @@ public class GalaxyController extends SelectorComposer<Window> {
 	
 	public Object[] onclickRun_(boolean sync) throws Exception {
 		
-		labelDownloadProgressMsg.setVisible(false);
-		aDownloadProgressURL.setVisible(false);
-		aGalaxyLink.setVisible(false);
+		//labelDownloadProgressMsg.setVisible(false);
+		//aDownloadProgressURL.setVisible(false);
+		//aGalaxyLink.setVisible(false);
 
 		Object[] ret=null;
 		try {
@@ -347,6 +336,10 @@ public class GalaxyController extends SelectorComposer<Window> {
 					value=((Textbox)rowcols.get(COL_VALUE)).getValue().trim();
 				else if(rowcols.get(COL_VALUE) instanceof Listbox)
 					value=((Listbox)rowcols.get(COL_VALUE)).getSelectedItem().getLabel().trim();
+				else if(rowcols.get(COL_VALUE) instanceof Datebox) {
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					value=  format.format(  ((Datebox)rowcols.get(COL_VALUE)).getValue() );
+				}
 				else if(rowcols.get(COL_VALUE) instanceof Hbox) 
 					value= ((Textbox)((Hbox)rowcols.get(COL_VALUE)).getFirstChild()).getValue().trim();
 
@@ -382,9 +375,9 @@ public class GalaxyController extends SelectorComposer<Window> {
 				}
 
 				
-				labelDownloadProgressMsg.setVisible(false);
-				aDownloadProgressURL.setVisible(false);
-				aGalaxyLink.setVisible(false);
+				//labelDownloadProgressMsg.setVisible(false);
+				//aDownloadProgressURL.setVisible(false);
+				//aGalaxyLink.setVisible(false);
 
 				//jobid="galaxywf-"+  wf.getId().replace(" ","_").replace("-","_") + "-" + AppContext.createTempFilename();
 				jobid="galaxywf-"+  wf.getName().replace(" ","_").replace(":","_").replace("-","_").toLowerCase() + "-" + AppContext.createTempFilename() ;
@@ -420,9 +413,13 @@ public class GalaxyController extends SelectorComposer<Window> {
 							}
 						}
 						
+						/*
 						this.aGalaxyLink.setLabel("Galaxy link: " +  customcontroller.getGalaxyHistoryViewLink(AppContext.getGalaxyInstance(), status[1]));
 						aGalaxyLink.setHref( customcontroller.getGalaxyHistoryViewLink( AppContext.getGalaxyInstance(), status[1]));
 						aGalaxyLink.setVisible(true);
+						*/
+						addProgresslink("Job is submitted. Please monitor progress at ", status[1], null);
+
 						
 						/*
 						if(status.length>2) {
@@ -509,9 +506,11 @@ public class GalaxyController extends SelectorComposer<Window> {
 									Filedownload.save(new File(AppContext.getTempDir()+jobid),"application/octet-stream"); 
 								}
 							}
-							this.aGalaxyLink.setLabel("Galaxy link: " +  customcontroller.getGalaxyHistoryViewLink(AppContext.getGalaxyInstance(), status[1]));
-							aGalaxyLink.setHref( customcontroller.getGalaxyAddress(AppContext.getGalaxyInstance()) + "/histories/view?id=" + status[1]);
-							aGalaxyLink.setVisible(true);
+							//this.aGalaxyLink.setLabel("Galaxy link: " +  customcontroller.getGalaxyHistoryViewLink(AppContext.getGalaxyInstance(), status[1]));
+							//aGalaxyLink.setHref( customcontroller.getGalaxyAddress(AppContext.getGalaxyInstance()) + "/histories/view?id=" + status[1]);
+							//aGalaxyLink.setVisible(true);
+							addProgresslink("Job is submitted. Please monitor progress at ", status[1], null);
+
 
 							} catch(Exception ex) {
 								ex.printStackTrace();
@@ -524,6 +523,7 @@ public class GalaxyController extends SelectorComposer<Window> {
 							}					
 					}
 					else if (status[0].equals(JobsFacade.JOBSTATUS_SUBMITTED)) {
+						/*
 						this.labelDownloadProgressMsg.setValue("Job is submitted. Please monitor progress at ");
 						this.aDownloadProgressURL.setLabel( AppContext.getHostname() + AppContext.getHostDirectory() + "_jobs.zul?jobid="  + jobid);
 						this.aDownloadProgressURL.setHref( AppContext.getHostname() + AppContext.getHostDirectory() + "_jobs.zul?jobid="  + jobid);
@@ -534,18 +534,30 @@ public class GalaxyController extends SelectorComposer<Window> {
 						labelDownloadProgressMsg.setVisible(true);
 						aDownloadProgressURL.setVisible(true);
 						aGalaxyLink.setVisible(true);
+						*/
+						
+						addProgresslink("Job is submitted. Please monitor progress at ", status[1], jobid);
+
 					} else if(status[0].equals(JobsFacade.JOBSTATUS_ERROR)) {
-						JOptionPane.showMessageDialog(null,  status[1], status[0], JOptionPane.ERROR_MESSAGE);
+						addProgresslink((String)status[0] + ": " + jobid + " " + status[1], null,null);
+
+						Messagebox.show( status[1], status[0],  Messagebox.OK,Messagebox.EXCLAMATION);
+						
+						/*
 						aGalaxyLink.setVisible(false);
 						this.labelDownloadProgressMsg.setValue((String)status[0] + ": " + jobid + " " + status[1]);
 						labelDownloadProgressMsg.setVisible(true);
-					} else {
+						*/
 						
+					} else {
+						/*
 						this.labelDownloadProgressMsg.setValue((String)status[0] + ": " + jobid);
 						labelDownloadProgressMsg.setVisible(true);
 						this.aGalaxyLink.setLabel("Galaxy link: " + customcontroller.getGalaxyAddress(AppContext.getGalaxyInstance()) + "/histories/view?id=" + status[1]);
 						aGalaxyLink.setHref( customcontroller.getGalaxyHistoryViewLink(AppContext.getGalaxyInstance(), status[1]));
 						aGalaxyLink.setVisible(true);
+						*/
+						addProgresslink((String)status[0] + ": " + jobid, status[1], null);
 					}
 					
 					
@@ -561,19 +573,48 @@ public class GalaxyController extends SelectorComposer<Window> {
 		
 	}
 	
+	
+	//@Wire
+		//private Label labelDownloadProgressMsg;
+		//@Wire
+		//private A aDownloadProgressURL;
+		//@Wire
+		//private A aGalaxyLink;
+	private void addProgresslink(String message, String historyid, String jobid) {
+		new Label(message).setParent( vboxProgress); 
+		if(jobid!=null) {
+			A joblink=new A();
+			joblink.setLabel( AppContext.getHostname() + AppContext.getHostDirectory() + "_jobs.zul?jobid="  + jobid);
+			joblink.setHref( AppContext.getHostname() + AppContext.getHostDirectory() + "_jobs.zul?jobid="  + jobid);
+			joblink.setTarget("_blank");
+			joblink.setParent( vboxProgress);
+		}
+
+		if(historyid!=null) {
+			A link=new A();
+			link.setLabel( "Galaxy link: " + customcontroller.getGalaxyAddress(AppContext.getGalaxyInstance()) + "/histories/view?id=" + historyid);
+			link.setHref( customcontroller.getGalaxyHistoryViewLink(AppContext.getGalaxyInstance(), historyid) );
+			link.setTarget("_blank");
+			link.setParent( vboxProgress);
+		}
+		Hbox h=new Hbox();
+		h.setHeight("15px");
+		h.setParent(vboxProgress );
+	}
+	
 	@Listen("onClick =#buttonRun")
 	public void onclickRun() {
 	
 		try {
 		if(!checkboxAsync.isChecked()) {
-			labelDownloadProgressMsg.setVisible(false);
-			aDownloadProgressURL.setVisible(false);
+			//labelDownloadProgressMsg.setVisible(false);
+			//aDownloadProgressURL.setVisible(false);
 			onclickRun_(true); 
 		} else {
 		
 			onclickRun_(false);
-			labelDownloadProgressMsg.setVisible(true);
-			aDownloadProgressURL.setVisible(true);
+			//labelDownloadProgressMsg.setVisible(true);
+			//aDownloadProgressURL.setVisible(true);
 		}
 		} catch(Exception ex) {
 			ex.printStackTrace();
@@ -723,7 +764,9 @@ public class GalaxyController extends SelectorComposer<Window> {
 		Object obj=listTools.getSelectedItem().getValue();
 		//String haplofilename=(String)getSession().getAttribute("haplofilename");
 		Map<String,String> mapParams=(Map)getSession().getAttribute("param_vals");
-		String haplofilename=(String)mapParams.get("filename");
+		
+		String haplofilename=null;
+		if(mapParams!=null) haplofilename=(String)mapParams.get("filename");
 		galaxy= (GalaxyFacade)AppContext.checkBean(galaxy,"GalaxyFacade");
 		//Map<String,String> mapList2Data=galaxy.getMapList2Data();
 		Map<String,Set> mapList2Data=galaxy.getMapList2Data();
@@ -914,7 +957,7 @@ public class GalaxyController extends SelectorComposer<Window> {
 		
 		try {
 			AppContext.debug("galaxy.onclickWorkflows_(sName, null, sSection)");
-			Map[] m=galaxy.discoverWorkflows(null);
+			Map[] m=galaxy.discoverWorkflows(null, limitWf);
 			 
 			//Map[] m= new Map[] {mapName2Wf, mapWf2Params, mapWfname2Wf};
 
@@ -1240,7 +1283,6 @@ public class GalaxyController extends SelectorComposer<Window> {
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
-				divDiscovery.setVisible(false);
 			}
 			
 		} catch(Exception ex) {
@@ -1263,8 +1305,41 @@ public class GalaxyController extends SelectorComposer<Window> {
 		listboxServer2.setModel(new SimpleListModel( l));
 		listboxServer2.setSelectedIndex(0);
 		
+		Map<String, String[]> mapParams = Executions.getCurrent().getParameterMap();
+		String[] wf = mapParams.get("workflow");
+		if(wf!=null) {
+			limitWf=new HashSet();
+			for(int iw=0; iw<wf.length; iw++) {
+			limitWf.add( wf[iw]);
+			}
+		}
+		
+		galaxy= (GalaxyFacade)AppContext.checkBean(galaxy,"GalaxyFacade");
+		if(mapParams.get("reset")!=null) {
+			galaxy.clearCache(null); 
+		}
+		 
+		
+
 		init();
-		showDetails(AppContext.isLocalhost());
+		
+		divDiscovery.setVisible(  mapParams.get("discover")!=null ); 
+		showDetails(mapParams.get("details")!=null);
+			
+		//showDetails(AppContext.isLocalhost());
+		
+		
+		winGalaxy.getPage().addEventListener(Events.ON_DESKTOP_RECYCLE, new EventListener() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				AppContext.debug("winGalaxy.getPage Events.ON_DESKTOP_RECYCLE,");
+				String[] refresh = mapParams.get("refresh");
+				if(refresh!=null) {
+					Executions.sendRedirect(null);
+				}
+			}
+		});
 		
 		} catch(Exception ex) {
 			ex.printStackTrace();
