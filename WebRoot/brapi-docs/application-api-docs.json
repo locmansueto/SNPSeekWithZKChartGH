@@ -1,4 +1,4 @@
-{"swaggerVersion":"1.2","apiVersion":"1.0","basePath":"http://snp-seek.irri.org/ws","resourcePath":"",
+{"swaggerVersion":"1.2","apiVersion":"1.0","basePath":"https://snp-seek.irri.org/ws","resourcePath":"",
 "apis":[
 
 	{"path":"/brapi/v1/calls","description":"Get calls and result formats",
@@ -33,7 +33,7 @@
 "operations":[{"nickname":"GET - get germplasm","method":"GET","summary":"Get  get germplasm", "notes":"Get germplasm","type":"string",
 "produces":["application/json"],
 "parameters":[
-{"name":"germplasmPUI", "paramType":"query","allowMultiple":false,"required":false,"type":"string", "description":"The name or synonym of external genebank accession identifier Example: http://snp-seek.irri.org/_variety.zul?irisid=313-9609" },
+{"name":"germplasmPUI", "paramType":"query","allowMultiple":false,"required":false,"type":"string", "description":"The name or synonym of external genebank accession identifier Example: https://snp-seek.irri.org/_variety.zul?irisid=313-9609" },
 {"name":"germplasmDbId", "description":"The name or synonym of external genebank accession",   "paramType":"query","allowMultiple":false,"required":false,"type":"string"},
 {"name":"germplasmName", "description":"The name or synonym of the accession Example: loto::gervex 104-c1",  "paramType":"query","allowMultiple":false,"required":false,"type":"string"},
 {"name":"pageSize","paramType":"query","allowMultiple":false,"required":false,"type":"int"},

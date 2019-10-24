@@ -1,4 +1,4 @@
-{"swaggerVersion":"1.2","apiVersion":"1.0","basePath":"http://snp-seek.irri.org/ws","resourcePath":"",
+{"swaggerVersion":"1.2","apiVersion":"1.0","basePath":"https://snp-seek.irri.org/ws","resourcePath":"",
 "apis":[
 
 	{"path":"/brapi/v1/calls","description":"Get calls and result formats",

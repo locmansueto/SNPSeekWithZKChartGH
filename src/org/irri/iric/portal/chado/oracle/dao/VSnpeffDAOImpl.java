@@ -378,8 +378,6 @@ public class VSnpeffDAOImpl extends AbstractJpaDao<VSnpeff> implements VSnpeffDA
 
 	private Set<SnpsEffect> getSNPsInPostgres(String chr, Collection posset) {
 
-		
-
 		if (chr.toLowerCase().equals("any")) {
 
 			long poscount = 0;

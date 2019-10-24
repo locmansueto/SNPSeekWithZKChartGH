@@ -105,7 +105,7 @@
           <!--  *********************   SNPS DATA DOWNLOAD TAB  *********************************************************************************** -->
           
           <tabpanel>
-          <iframe align="left" visible="true" style="width:95%;height:4000px;border:0px inset;" src="https://oryzasnp-atcg-irri-org.s3-website-ap-southeast-1.amazonaws.com" />
+          <iframe align="left" visible="true" style="width:95%;height:4000px;border:0px inset;" src="https://oryzasnp.irri.org/index.html" />
           </tabpanel>
         
         <tabpanel>
