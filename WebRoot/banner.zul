@@ -199,6 +199,7 @@
 		<menu label="Help" src="/images/iric/help.png" visible="${visibleHelpGenesStr}">
 			<menupopup>
 				<menuitem src="/images/iric/users_manual.png" label="User's Manual" href="_help.zul"/>	
+				<menuitem src="/images/iric/srccode.png" label="Development" href="https://bitbucket.org/irridev/iric_portal/src/master/" target="_blank"/>	
 				<menuitem src="/images/iric/users_manual.png" label="NAR Supplementary Materials" href="suppl/index.html" target="suppl"/>
 				<menuitem src="/images/iric/users_manual.png" label="Legacy Web Services" href="swagger-ui/index.html" target="swagger"/>
 				<menuitem src="/images/iric/users_manual.png" label="BrAPI v1 Web Services" href="swagger-brapi/index.html"  target="swagger"/>
@@ -230,6 +231,8 @@
 		<hbox>
 			<label value="By using SNP-Seek, you abide by the data use license stated " style="font-size:13px;color:white" />
 			<a href="https://s3.amazonaws.com/3kricegenome/README-3kRG-SNPs-Permissive-License.txt"   style="font-size:13px;color:white;font-weight: bold;">here</a>
+			<label value=", and development " style="font-size:13px;color:white" />
+			<a href="https://bitbucket.org/irridev/iric_portal/src/master/"   style="font-size:13px;color:white;font-weight: bold;">here</a>
 	</hbox>
 	</hbox>
 <vbox width="100%" height="3px"/>
