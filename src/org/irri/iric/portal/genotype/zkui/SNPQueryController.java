@@ -9504,6 +9504,10 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 					}
 
 					buffref.append(snpid).append("\t").append(refs[i]).append("\n");
+					if (snpannots != null)
+						buffannot.append(snpid).append("\t").append(snpannots[i]).append("\n");
+					else
+						buffannot.append(snpid).append("\t").append("U").append("\n");
 				}
 			}
 
