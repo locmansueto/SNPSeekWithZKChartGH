@@ -1379,6 +1379,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 			AppContext.debug("listReference=" + listReference.size());
 			List listContigs = genotype.getContigsForReference(AppContext.getDefaultOrganism());
 
+			AppContext.debug("Index listboxMyLocusList: " + listboxMyLocusList.getSelectedIndex() + " -> " + listboxMyLocusList.getSelectedItem());
 			// WorkspaceFacade workspace = SpringUtil.getBean("WorkspaceFacade");
 
 			//AppContext.debug("...genotype.zul mark 2");
@@ -1698,7 +1699,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 					}}); 
 					*/
 
-			
+			AppContext.debug("Index listboxMyLocusList: " + listboxMyLocusList.getSelectedIndex() + " -> " + listboxMyLocusList.getSelectedItem());
 			AppContext.debug("zulpage end.");
 
 		} catch (Exception ex) {
@@ -2128,6 +2129,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	// public void queryVariants(String filename, String delimiter) {
 	public void queryVariants() {
 
+		AppContext.debug("Index listboxMyLocusList: " + listboxMyLocusList.getSelectedIndex() + " -> " + listboxMyLocusList.getSelectedItem());
 		Clients.showBusy("Processing..");
 		GenotypeFacade.snpQueryMode mode = null;
 
@@ -2137,7 +2139,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 			// empty table from previous results
 			listboxSnpresult.setModel(new SimpleListModel(new java.util.ArrayList()));
-
+			
 			// hide the tables
 			divPairwise.setVisible(false);
 			gridBiglistheader.setVisible(false);
@@ -2977,7 +2979,11 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		Set snpposlist = null;
 		Set locuslist = null;
 
-		if (listboxMySNPList.getSelectedIndex() > 0) {
+		AppContext.debug("Index listboxMySNPList: " + listboxMySNPList.getSelectedIndex() + " -> " + listboxMySNPList.getSelectedItem());
+		AppContext.debug("Index listboxAlleleFilter: " + listboxAlleleFilter.getSelectedIndex() + " -> " + listboxAlleleFilter.getSelectedItem());
+		AppContext.debug("Index listboxMyLocusList: " + listboxMyLocusList.getSelectedIndex() + " -> " + listboxMyLocusList.getSelectedItem());
+		
+		if ((listboxMySNPList.getSelectedIndex()) > 0 && (listboxMySNPList.getSelectedItem() != null)) {
 
 			String chrlistname[] = listboxMySNPList.getSelectedItem().getLabel().split(":");
 			// snpposlist = workspace.getSnpPositions( Integer.valueOf(
@@ -2999,7 +3005,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				return null;
 			}
 
-		} else if (listboxAlleleFilter.getSelectedIndex() > 0) {
+		} else if ((listboxAlleleFilter.getSelectedIndex() > 0) && (listboxAlleleFilter.getSelectedItem() != null)) {
 
 			String chrlistname[] = listboxAlleleFilter.getSelectedItem().getLabel().split(":");
 			// snpposlist = workspace.getSnpPositions( Integer.valueOf(
@@ -3019,7 +3025,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				return null;
 			}
 
-		} else if (listboxMyLocusList.getSelectedIndex() > 0) {
+		} else if ((listboxMyLocusList.getSelectedIndex() > 0 ) && (listboxMyLocusList.getSelectedItem() != null) ) {
 
 			locuslist = workspace.getLoci(listboxMyLocusList.getSelectedItem().getLabel().trim());
 			int maxsize = AppContext.getMaxLocusListDownload(getVariantset());
@@ -3183,7 +3189,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		}
 
 		Set locuslist = null;
-		if (listboxMyLocusList.getSelectedIndex() > 0) {
+		if ((listboxMyLocusList.getSelectedIndex() > 0 ) && (listboxMyLocusList.getSelectedItem() != null)) {
 			locuslist = workspace.getLoci(listboxMyLocusList.getSelectedItem().getLabel());
 			contig = "loci";
 		}
@@ -4153,6 +4159,8 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		try {
 
+			AppContext.debug("Index listboxMyLocusList: " + listboxMyLocusList.getSelectedIndex() + " -> " + listboxMyLocusList.getSelectedItem());
+			
 			if (selectChr.getValue().trim().isEmpty())
 				return;
 			genotype = (GenotypeFacade) AppContext.checkBean(genotype, classGenotypefacade);

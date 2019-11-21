@@ -51,6 +51,7 @@ import org.hibernate.Session;
 import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.StockSample;
 import org.irri.iric.portal.domain.Variety;
+import org.irri.iric.portal.galaxy.zkui.DefaultGalaxyController;
 import org.irri.iric.portal.galaxy.zkui.GalaxyCustomController;
 import org.irri.iric.portal.variety.VarietyFacade;
 //import org.python.util.PythonInterpreter;
@@ -595,6 +596,13 @@ public class AppContext {
 	}
 	
 	public static String getGalaxyAddress() {
+		// fix
+    	if (galaxy_instance == null) {
+    		GalaxyCustomController customcontroller = new DefaultGalaxyController();
+    		List l = customcontroller.getGalaxyInstances();
+			setGalaxyInstance((String) l.get(0), customcontroller);
+    	}
+    	//
 		return galaxy_controller.getGalaxyAddress(galaxy_instance);
 	}
 	
