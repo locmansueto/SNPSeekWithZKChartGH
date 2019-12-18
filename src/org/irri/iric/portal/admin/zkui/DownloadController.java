@@ -35,6 +35,8 @@ import org.springframework.stereotype.Controller;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -136,7 +138,26 @@ public class DownloadController extends SelectorComposer<Component> {
 
 	@Listen("onClick = #buttonDownloadSequence")
 	public void onclickDownlaodsequence() {
+		String message = "DISCLAIMER: You are about to download a pseudo sequence. \n "
+				+ "It is a FASTA file generated from VCF and this is not an assembled sequence.";
+		int ret = Messagebox.show(message, "Download Sequence", Messagebox.YES | Messagebox.NO,
+				Messagebox.QUESTION, new EventListener<Event>() {
 
+					@Override
+					public void onEvent(Event evt) throws Exception {
+						if (Messagebox.ON_YES.equals(evt.getName())) {
+							
+							downloadEventSequence();
+						}
+
+					}
+				});
+		
+		System.out.println("RUNNING");
+
+	}
+
+	private void downloadEventSequence() {
 		varietyfacade = (VarietyFacade) AppContext.checkBean(varietyfacade, "VarietyFacade");
 		workspacefacade = (WorkspaceFacade) AppContext.checkBean(workspacefacade, "WorkspaceFacade");
 
@@ -406,7 +427,7 @@ public class DownloadController extends SelectorComposer<Component> {
 			} else {
 				String fname = new File(dir).getName();
 				return new String[] { JobsFacade.JOBSTATUS_SUBMITTED,
-						AppContext.getHostname() + AppContext.getHostDirectory() + "_jobs.zul?jobid=" + fname };
+						AppContext.getHostname() + AppContext.getHostDirectory() + "/_jobs.zul?jobid=" + fname };
 			}
 
 		} catch (Exception ex) {

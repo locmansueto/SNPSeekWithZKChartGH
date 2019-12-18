@@ -587,12 +587,8 @@ public class GalaxyController extends SelectorComposer<Window> {
 		new Label(message).setParent(vboxProgress);
 		if (jobid != null) {
 			A joblink = new A();
-			joblink.setLabel(AppContext.getHostname()
-					+ (AppContext.getHostDirectory().isEmpty() ? "/" : AppContext.getHostDirectory())
-					+ "_jobs.zul?jobid=" + jobid);
-			joblink.setHref(AppContext.getHostname()
-					+ (AppContext.getHostDirectory().isEmpty() ? "/" : AppContext.getHostDirectory())
-					+ "_jobs.zul?jobid=" + jobid);
+			joblink.setLabel(AppContext.getHostname() + "/_jobs.zul?jobid=" + jobid);
+			joblink.setHref(AppContext.getHostname()  + "/_jobs.zul?jobid=" + jobid);
 			joblink.setTarget("_blank");
 			joblink.setParent(vboxProgress);
 		}
