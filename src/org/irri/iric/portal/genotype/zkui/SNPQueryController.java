@@ -4594,8 +4594,13 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 					// Object alleleTable =
 					// ((Object[])origModel.getElementAt(i).get(poscolumnidx))[poscolumnidx];
 					Object alleleTable = null;
-					if (headercolumnidx < 5)
-						alleleTable = ((Object[]) origModel.getElementAt(i).get(headercolumnidx))[headercolumnidx];
+					Object alleleTable2 = null;
+					Object alleleTable3 = null;
+					if (headercolumnidx < 5) {
+						//alleleTable = ((Object[]) origModel.getElementAt(i).get(headercolumnidx))[headercolumnidx];
+						alleleTable = ((Object[]) origModel.getElementAt(i).get(selPosIdx))[selPosIdx];
+						//alleleTable3 = ((Object[]) origModel.getElementAt(i).get(poscolumnidx))[poscolumnidx];
+					}
 					else
 						alleleTable = ((Object[]) origModel.getElementAt(i).get(poscolumnidx))[poscolumnidx];
 
