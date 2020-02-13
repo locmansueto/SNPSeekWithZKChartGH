@@ -19,7 +19,7 @@
        	List listVarlistNames = new ArrayList();
        	listVarlistNames.add("");
        	listVarlistNames.addAll( workspace.getVarietylistNames());
-       	listVarlistNames.add("all");
+       	//listVarlistNames.add("all");
        	listVarlistNames.add("create new list...");
 
        	List listLocuslistNames = new ArrayList();

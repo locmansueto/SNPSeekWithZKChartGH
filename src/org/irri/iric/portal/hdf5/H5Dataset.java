@@ -103,7 +103,12 @@ public class H5Dataset implements SnpsStringDAO {
 			// AppContext.debug( "HDF5Constants.H5F_ACC_RDONLY="+
 			// HDF5Constants.H5F_ACC_RDONLY ); // HDF5Constants.H5F_ACC_RDONLY );
 
-			h5file = new H5File(filename, H5File.READ); // HDF5Constants.H5F_ACC_RDONLY );
+			try {
+				System.out.println("JLP = " + System.getProperty("java.library.path"));
+				h5file = new H5File(filename, H5File.READ); // HDF5Constants.H5F_ACC_RDONLY );
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 			// h5file = new H5File( filename); //, HDF5Constants.H5F_ACC_RDONLY);
 			// h5file = new H5File( filename, H5File.READ ); //,
 			// HDF5Constants.H5F_ACC_RDONLY);
@@ -250,7 +255,7 @@ public class H5Dataset implements SnpsStringDAO {
 
 	@Override
 	public Map readSNPString(Set colVarids, String chr, int posidxstartend[][]) {
-		
+
 		try {
 			// order varids based on file ordering for 1pass/smooth disk read
 			Set orderedVarids = new TreeSet(colVarids);
@@ -280,7 +285,7 @@ public class H5Dataset implements SnpsStringDAO {
 
 	@Override
 	public Map readSNPString(String chr, int posidxstartend[][]) {
-		
+
 		try {
 			// order varids based on file ordering for 1pass/smooth disk read
 			AppContext.debug("H5 querying " + this.filename + " " + posidxstartend.length + " ranges");

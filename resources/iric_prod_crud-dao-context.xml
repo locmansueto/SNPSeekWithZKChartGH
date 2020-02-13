@@ -92,17 +92,12 @@
 
 	<!-- IRRI local pollux -->
 	<!-- property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/ -->
-	<!-- bean class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close" name="IRIC_ProductionDS">
-		<property name="driverClassName"
-			value="oracle.jdbc.driver.OracleDriver" />
-		<property name="username" value="iricguest" />
-		<property name="password" value="iricguest" />
-		<property name="url"
-			value="jdbc:oracle:thin:@172.29.4.215:1521:orcl" />
-		<property name="maxIdle" value="16" />
-		<property name="maxActive" value="32" />
-	</bean -->
+	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
+		name="IRIC_ProductionDS"> <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" 
+		/> <property name="username" value="iricguest" /> <property name="password" 
+		value="iricguest" /> <property name="url" value="jdbc:oracle:thin:@172.29.4.215:1521:orcl" 
+		/> <property name="maxIdle" value="16" /> <property name="maxActive" value="32" 
+		/> </bean -->
 
 	<!-- AWS or ASTI -->
 	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
@@ -131,9 +126,7 @@
 		name="jpaProperties"> <props> <prop key="hibernate.hbm2ddl.auto">none</prop> 
 		<prop key="hibernate.default_schema">iric</prop> </props> </property> </bean> 
 		<tx:annotation-driven transaction-manager="transactionManagerIRICProduction_Oracle" 
-		/> 
-	
-	<bean id="transactionManagerIRICProduction_Oracle" class="org.springframework.orm.jpa.JpaTransactionManager" 
+		/> <bean id="transactionManagerIRICProduction_Oracle" class="org.springframework.orm.jpa.JpaTransactionManager" 
 		> <property name="entityManagerFactory" ref="IRIC_Production_Oracle" /> </bean> 
 		<bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" 
 		id="IRIC_Production"> <property name="dataSource" ref="IRIC_ProductionDS"/> 
@@ -178,36 +171,29 @@
 			value="jdbc:postgresql://iric-rds-singapore-prod-v1.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric" />
 		<property name="maxIdle" value="1" />
 		<property name="maxActive" value="10" />
-	</bean> 
-	
+	</bean>
 	<!-- localhost -->
 	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
 		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver"/> 
 		<property name="username" value="postgres"/> <property name="password" value="iric-dev"/> 
 		<property name="url" value="jdbc:postgresql://localhost:5432/snpseekv3"/> 
 		<property name="maxIdle" value="1"/> <property name="maxActive" value="10"/> 
-	</bean -->
-	
-	
-	<!-- <bean class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close" name="IRIC_ProductionDS_PG">
-		<property name="driverClassName"
-			value="org.postgresql.Driver" />
-		<property name="username" value="postgres" />
-		<property name="password" value="user12345" />
-		<property name="url"
-			value="jdbc:postgresql://127.0.0.1:5432/iric" />
-		<property name="maxIdle" value="1" />
-		<property name="maxActive" value="10" />
-	</bean>
-	 -->
+		</bean -->
+
+
+	<!-- <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
+		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver" 
+		/> <property name="username" value="postgres" /> <property name="password" 
+		value="user12345" /> <property name="url" value="jdbc:postgresql://127.0.0.1:5432/iric" 
+		/> <property name="maxIdle" value="1" /> <property name="maxActive" value="10" 
+		/> </bean> -->
 	<!-- <AWS-RDS Beanstalk v2 -->
 	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
 		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver"/> 
 		<property name="username" value="postgres"/> <property name="password" value="1rRl-4Bi0"/> 
 		<property name="url" value="jdbc:postgresql://iric-rds-singapore-v2.c2r9vateznp1.ap-southeast-1.rds.amazonaws.com:5432/iric2"/> 
 		<property name="maxIdle" value="1"/> <property name="maxActive" value="10"/> 
-		</bean-->
+		</bean -->
 
 	<!-- BITNAMI POSTGRESQL / DOCKER -->
 	<!-- <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
@@ -225,18 +211,12 @@
 
 
 	<!-- pollux -->
-	<!-- bean class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close" name="IRIC_ProductionDS_PG">
-		<property name="driverClassName"
-			value="org.postgresql.Driver" />
-		<property name="username" value="iric" />
-		<property name="password" value="iric-dev" />
-		<property name="url"
-			value="jdbc:postgresql://172.29.4.215:5432/iric" />
-		<property name="maxIdle" value="1" />
-		<property name="maxActive" value="10" />
-	</bean -->
-	
+	<!-- <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
+		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver" 
+		/> <property name="username" value="iric" /> <property name="password" value="iric-dev" 
+		/> <property name="url" value="jdbc:postgresql://172.29.4.72:5432/iric" /> 
+		<property name="maxIdle" value="1" /> <property name="maxActive" value="10" 
+		/> </bean> -->
 	<!-- vm local -->
 	<!-- bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" 
 		name="IRIC_ProductionDS_PG"> <property name="driverClassName" value="org.postgresql.Driver"/> 

@@ -134,6 +134,171 @@
 				<td width="15%"></td>
 				<td>
 					<h4>
+						<i>1/27/2019</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						
+						<li>BUG FIXED: "Add Filter" in genotype results</li>
+					</ul>
+					<h4>
+						<i>12/18/2019</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>ADDED: "Open Source License Agreement" file in the
+							project</li>
+						<li>ADDED: A pop-up disclaimer message before downloading a
+							sequence.</li>
+						<li>BUG FIXED: URL object in galaxyFacade class that is use
+							to refer to downloads in galaxy.</li>
+					</ul>
+					<h4>
+						<i>11/12/2019</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>BUG FIXED: NullPointer Exception in querying Genotype and
+							Galaxy download</li>
+					</ul>
+
+					<h4>
+						<i>11/12/2019</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>BUG FIXED: Haplotype view</li>
+						<li>BUG FIXED: errors in handling jobs for download.</li>
+
+					</ul>
+					<h4>
+						<i>10/28/2019</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>UPDATE: Removed unused files</li>
+						<li>ADDED: License file to Development Docs and in the menu</li>
+						<li>ADDED: New folder for Documentations</li>
+						<li>REMOVED: ZK charts in project that is publicly accessed
+							or for redistribution purposes. Requiring external developers to
+							get a license for ZK charts if they want to include charts.</li>
+					</ul>
+
+					<h4>
+						<i>10/21/2019</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>UPDATE: Changed link of "Report Bugs" page</li>
+					</ul>
+					<h4>
+						<i>10/01/2019</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>BUG FIXED: searched genotype using Locus MyList</li>
+						<li>UPDATE: beanstalk.properties - changed beanstalk config
+							to use https values</li>
+						<li>UPDATE: VSnpeffDAOImpl, SnpsStringHDF5nRDBMSHybridService
+							- SNP_EFF update</li>
+						<li>BUG FIXED: VariantAlignmentTableArraysImpl - change to
+							false.. genotype search using NONSYNONYMOUS and a list from user</li>
+
+					</ul>
+
+					<h4>
+						<i>09/05/2019</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>NEW: SNP-seek is now using HTTPS.</li>
+						<li>UPDATE: Improve SNP effect tab user interface</li>
+						<li>UPDATE: Chromosomes now sorted</li>
+						<li>BUG FIXED: Error when querying genotype directly using
+							non-synonymous option</li>
+						<li>BUG FIXED: Empty MDS plot view in the results of Genotype
+							Query</li>
+						<li>BUG FIXED: Empty SNP effect table.</li>
+						<li>BUG FIXED: Haplotype view error</li>
+						<li>BUG FIXED: Download CSV file does not have Snp effect
+							info</li>
+						<li>BUG FIXED: Bug regarding downloading a big dataset</li>
+						<li>BUG FIXED: Displaying of manhattan plot in GWAS tab</li>
+						<li>BUG FIXED: Bugs in download page caused by the merging.</li>
+						<li>BUG FIXED: Bugs in "Add Filter" feature in SNP genotype
+							page (SNP seek)</li>
+					</ul>
+
+					<h4>
+						<i>06/03/2019</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>UPDATE: Added Disclaimer note in the contactUS page</li>
+						<li>BUG FIXED: Manhattan plot not displaying due to
+							NullException when selecting SNP -log list</li>
+					</ul>
+
+					<h4>
+						<i>05/20/2019</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>BUG FIXED: Resolve upload in MyList by updating jars
+							used.</li>
+						<li>UPDATE: Merge remote-tracking branch
+							'origin/temp-with-galaxy' into SnpSeekMavenProj. Resolved
+							conflicting jars</li>
+					</ul>
+
+					<h4>
+						<i>05/16/2019</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>UPDATE: Added exttab, galaxy pages. Exttab moved the
+							tabpanels into a separate zul, allowing to be displayed in new
+							window on right click of tabs. Galaxy submit long running
+							computations into a galaxy instance using blend4j, bioblend and
+							jython.Uses python library included in WEB-INF/lib/Lib</li>
+						<li>UPDATE: right clickable tabs, Galaxy tab, vcf2fasta in
+							galaxy-dev. Right clickable tabs, Galaxy tab, vcf2fasta in
+							galaxy-dev http://13.250.4.164:8080</li>
+					</ul>
+
+					<h4>
+						<i>05/07/2019</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>UPDATE: Change naming convention in property files</li>
+						<li>UPDATE: Dockerfile to use updated docker image for the
+							portal</li>
+						<li>BUG FIXED: NullPointerException due to adding of filters</li>
+						<li>ADDED: "dataset"" Attribute to
+							VariantAlignmentTableArraysImpl class</li>
+
+					</ul>
+
+
+					<h4>
+						<i>12/05/2018</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>UPDATE: Database schema has changed. ADDED: 'dataset'
+							(String) in SnpAllVars object to make it more unique aside from
+							retrieving VarId alone</li>
+						<li>UPDATE: Changed Mapping Map(BigDecimal, StockSample) to
+							Map(String, Map(BigDecimal, StockSample)) to display multiple
+							dataset with similar samples</li>
+						<li>UPDATE: ListItemsDAOAllImpl - remove if statement that
+							handles one dataset. instead implemented it by retrieval by Set
+							regardless how many dataset.</li>
+						<li>UPDATE: Bug Fixed in displaying multiple dataset with
+							similar samples</li>
+						<li>ADDED: Dataset variable to IndelStringAllVarsImpl class
+							and a new Mapping variable Variety to Dataset variable.</li>
+						</li>
+
+
+					</ul>
+
+					<h4>
+						<i>11/06/2018</i>
+					</h4>
+					<ul style="list-style-type: disc">
+						<li>UPDATE: Project converted to a Maven project</li>
+					</ul>
+
+					<h4>
 						<i>10/16/2018</i>
 					</h4>
 					<ul style="list-style-type: disc">
