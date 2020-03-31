@@ -951,4 +951,12 @@ public class VAllstockBasicpropDAOImpl extends AbstractJpaDao<VAllstockBasicprop
 		return null;
 	}
 
+	@Override
+	public List<Variety> findVarietyByAccession(Collection names, Set dataset) {
+		Query query = createNamedQuery("findVAllstockBasicpropByAccessionsDataset", -1, -1,
+				AppContext.toUpperCase(names), AppContext.toUpperCase(dataset));
+		return query.getResultList();
+		
+	}
+
 }

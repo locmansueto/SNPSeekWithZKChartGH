@@ -178,6 +178,7 @@ public class DefaultGalaxyController implements GalaxyCustomController {
 
 		if ( p.getsChr()!=null && ! p.getsChr().isEmpty() ) {
 			try {
+				AppContext.info("Writing on: " + AppContext.getTempDir() + filename + ".bed");
 				BufferedWriter bw=new BufferedWriter(new FileWriter(AppContext.getTempDir() + filename + ".bed"));
 				bw.write(  p.getsChr() + "\t" + (p.getlStart()-1) + "\t" + p.getlEnd());
 				bw.close();

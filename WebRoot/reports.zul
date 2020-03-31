@@ -1,0 +1,205 @@
+<?page title="Report A Bug" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:c="client" xmlns:x="xhtml">
+	<style>
+
+		.z-loading { background-color:#808080; border:1px outset
+		#A0A0A0; font-weight: bold; padding:2px;
+
+		cursor: wait; top: 50%; left: 45% !important; align: center;
+		vertical-align: middle;
+
+		position: fixed; margin-left: auto; margin-right: auto; display:
+		block;
+
+
+		} .z-loading-indicator { color: gray; border:0 none;
+
+		width: 100%; height: 100%;
+
+		}
+
+		.z-loading { top: 50% !important; left: 45% !important; align:
+		center; vertical-align: middle; }
+
+	</style>
+	<window border="none"
+		apply="org.irri.iric.portal.report.zkui.ReportBugController">
+		<script type="text/javascript"
+			src='https://www.google.com/recaptcha/api.js' defer="true" />
+
+		<script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+			<![CDATA[ function afterValidate(response){
+			zk.Widget.$('$recaptcha').fire('onUserRespond',{'response':response},
+			{toServer:true}); } ]]>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		</script>
+
+		<hbox height="15px" />
+
+		<hbox height="15px" />
+
+		<div align="center" id="divBindgrid"
+			apply="org.zkoss.bind.BindComposer"
+			viewModel="@id('bugRep') @init('org.irri.iric.portal.report.BugReport')">
+			<panel width="750px" framable="true" border="normal">
+				<caption label="REPORT A BUG" style="color:white;" />
+				<toolbar hflex="1">
+					<vlayout hflex="1" spacing="6px">
+						<hlayout valign="middle">
+							<hlayout width="55px">
+								<label sclass="name" value="Name" />
+							</hlayout>
+							<textbox id="textboxName" hflex="1" />
+						</hlayout>
+						<hlayout valign="middle">
+							<hlayout width="55px">
+								<label sclass="name" value="Email" />
+							</hlayout>
+							<textbox id="textboxEmail" hflex="1" />
+						</hlayout>
+						<hlayout valign="top">
+							<hlayout valign="top" width="55px">
+								<label sclass="name" value="Title" />
+							</hlayout>
+							<textbox id="textboxTitle" hflex="1" />
+						</hlayout>
+						<hlayout valign="middle">
+							<hlayout width="55px">
+								<label sclass="name" value="Message" />
+							</hlayout>
+							<textbox id="textboxDesc" multiline="true"
+								rows="10" hflex="1" />
+						</hlayout>
+						<hlayout valign="middle">
+							<hlayout width="55px">
+								<label sclass="name" value="Screenshots" />
+							</hlayout>
+
+							<button width="85px" id="attachBtn"
+								upload="true,maxsize=10240" label="Attach" onUpload="addItem()" />
+							<textbox id="textboxTitle2" hflex="1"
+								readonly="true" />
+
+						</hlayout>
+						<hlayout valign="middle">
+							<vlayout id="flist" hflex="1"
+								sclass="fileList" style="align:left;" />
+
+						</hlayout>
+
+					</vlayout>
+				</toolbar>
+			</panel>
+
+		</div>
+		<hbox height="15px" />
+		<div align="center">
+			<x:div id="recaptcha" class="g-recaptcha"
+				data-sitekey="6Lfjt0AUAAAAAKmoYgrvFfibA8QNe4OdNC4MHR9m"
+				data-callback="afterValidate" width="400px" />
+		</div>
+		<hbox height="15px" />
+		<div align="center">
+			<button id="errorSubmitBtn">Submit</button>
+			<button>Reset</button>
+		</div>
+		<zscript><![CDATA[
+	import java.io.File;
+	import java.io.FileOutputStream;
+	import org.irri.iric.portal.AppContext;
+	void addItem() {
+		org.zkoss.util.media.Media media = event.getMedia();
+
+		if (media instanceof org.zkoss.image.Image) {
+			org.zkoss.zul.Image image = new org.zkoss.zul.Image();
+			image.setContent(media);
+			image.setWidth("400px");
+			image.setHeight("300px");
+
+			String path = AppContext.getFlatfilesDir();
+			File file = new File(path + media.getName());
+			file.createNewFile();
+			
+			FileOutputStream outputStream = new FileOutputStream(file);
+			outputStream.write(media.getByteData());
+			outputStream.close();
+
+			Hlayout hl = new Hlayout();
+			hl.setSpacing("6px");
+			hl.setClass("newFile");
+			hl.appendChild(new Label(file.getAbsolutePath()));
+			hl.appendChild(new Label(media.getName()));
+			A rm = new A("remove item");
+			rm.addEventListener(Events.ON_CLICK, new org.zkoss.zk.ui.event.EventListener() {
+				public void onEvent(Event event) throws Exception {
+					hl.detach();
+				}
+			});
+			hl.appendChild(rm);
+			flist.appendChild(hl);
+
+		}else{
+			org.zkoss.zul.Messagebox.show("Only Accepts image file.");
+		}
+
+	}
+]]></zscript>
+
+	</window>
+</zk>

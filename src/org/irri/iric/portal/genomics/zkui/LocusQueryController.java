@@ -940,6 +940,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 					timerCheckUrls.start();
 
 			} else {
+				
 				WebsiteQuery query = new WebsiteQuery(setSites, setLoci, AppContext.getPhantomjsExe());
 				genomics = (GenomicsFacade) AppContext.checkBean(genomics, "GenomicsFacade");
 				List listurl = genomics.queryWebsite(query, true);

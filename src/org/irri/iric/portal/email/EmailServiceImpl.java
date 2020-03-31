@@ -1,23 +1,31 @@
 package org.irri.iric.portal.email;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.irri.iric.portal.AppContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.zkoss.zul.Label;
 
 @Service("EmailService")
 public class EmailServiceImpl implements EmailService {
@@ -71,7 +79,7 @@ public class EmailServiceImpl implements EmailService {
 
 	@Override
 	public void sendSimpleMessage(String to, String subject, String text) throws Exception {
-		
+
 		/*
 		 * SimpleMailMessage message = new SimpleMailMessage(); message.setTo(to);
 		 * message.setSubject(subject); message.setText(text);
@@ -94,7 +102,7 @@ public class EmailServiceImpl implements EmailService {
 	// @Override
 	// public void sendSimpleMessage(List<String> to, List<String> cc, String
 	// subject, String text) throws Exception {
-	// 
+	//
 	//
 	//
 	// //String strto[]=new String[to.ize()];
@@ -156,7 +164,6 @@ public class EmailServiceImpl implements EmailService {
 	@Override
 	public void sendMessageWithAttachment(String to, String subject, String text, String pathToAttachment,
 			String filename) throws Exception {
-		
 
 		MimeMessage message = getJavaMailSender().createMimeMessage();
 		// message.setHeader("Message-ID", snpseek@systems.irri.org");
@@ -207,6 +214,101 @@ public class EmailServiceImpl implements EmailService {
 			// Close and terminate the connection.
 			transport.close();
 		}
+	}
+
+	@Override
+	public void sendSimpleMessage(List<String> to, List<String> cc, String subject, String text, List<Label> images)
+			throws Exception {
+		InternetAddress[] recipients = new InternetAddress[to.size()];
+		int i = 0;
+		for (String recipient : to)
+			recipients[i++] = new InternetAddress(recipient);
+
+		Properties props = System.getProperties();
+		props.put("mail.transport.protocol", "smtp");
+		props.put("mail.smtp.port", PORT);
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.auth", "true");
+
+		Session session = Session.getDefaultInstance(props);
+
+		// Create a default MimeMessage object.
+		Message message = new MimeMessage(session);
+
+		// Set From: header field of the header.
+		message.setFrom(new InternetAddress(FROM, FROMNAME));
+
+		// Set To: header field of the header.
+		message.setRecipients(Message.RecipientType.TO, recipients);
+
+		// Set Subject: header field
+		message.setSubject(subject);
+
+		message.setContent(text, "text/html");
+		// Create the message part
+		BodyPart messageBodyPart = new MimeBodyPart();
+
+		// Now set the actual message
+		messageBodyPart.setText(text);
+
+		// Create a multipar message
+		Multipart multipart = new MimeMultipart();
+
+		// Set text message part
+		multipart.addBodyPart(messageBodyPart);
+
+//
+//		// Send the complete message parts
+		MimeBodyPart mbp2 = null;
+		FileDataSource fds = null;
+		String img = "error-attachment";
+		
+		int counter = 0;
+		for (Label image : images) {
+			mbp2 = null;
+			fds = null;
+			mbp2 = new MimeBodyPart();
+			fds = new FileDataSource(new File(image.getValue()));
+			mbp2.setDataHandler(new DataHandler(fds));
+			mbp2.setFileName(img+"-"+ counter++ + "."+FilenameUtils.getExtension(image.getValue()));
+			multipart.addBodyPart(mbp2);
+
+		}
+		
+		message.setContent(multipart);
+
+		Transport transport = session.getTransport();
+
+		try {
+			AppContext.debug("Sending...");
+
+			transport.connect(HOST, SMTP_USERNAME, SMTP_PASSWORD);
+
+			transport.sendMessage(message, message.getAllRecipients());
+			AppContext.debug("Email sent!");
+		} finally {
+			// Close and terminate the connection.
+			transport.close();
+		}
+
+	}
+
+	private Multipart addAttachments(Multipart multipart, List<Label> images) throws MessagingException {
+		// Part two is attachment
+		MimeBodyPart messageBodyPart = new MimeBodyPart();
+		 
+		String img = "error-attachment";
+		int counter = 0;
+		for (Label label : images) {
+			
+			System.out.println(label.getValue());
+			DataSource source = new FileDataSource(new File(label.getValue()));
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName(img+"-"+ counter++ + "."+FilenameUtils.getExtension(label.getValue()));
+			multipart.addBodyPart(messageBodyPart);
+		}
+
+		return multipart;
 	}
 
 }

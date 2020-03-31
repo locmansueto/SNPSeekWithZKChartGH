@@ -21,6 +21,7 @@ import org.irri.iric.galaxy.service.GalaxyFacade;
 import org.irri.iric.galaxy.service.MyTool;
 import org.irri.iric.galaxy.service.MyWorksflow;
 import org.irri.iric.portal.AppContext;
+import org.irri.iric.portal.EmptyInputException;
 import org.irri.iric.portal.admin.JobsFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -357,7 +358,11 @@ public class GalaxyController extends SelectorComposer<Window> {
 
 			String jobid = null;
 
+			if (listTools.getSelectedItem() == null)
+				throw new EmptyInputException("Please select a workflow");
+
 			Object[] selobj = listTools.getSelectedItem().getValue();
+
 			List paramlist = new ArrayList();
 			if (selobj[0] instanceof Tool) {
 			} else if (selobj[0] instanceof MyWorksflow) {
@@ -568,11 +573,15 @@ public class GalaxyController extends SelectorComposer<Window> {
 				}
 
 			}
-		} catch (Exception ex) {
+		} catch (EmptyInputException ex) {
 			ex.printStackTrace();
-			Messagebox.show(ex.getMessage(), "ERROR", Messagebox.OK, Messagebox.EXCLAMATION);
-		}
-
+			Messagebox.show(ex.toString(), "ERROR", Messagebox.OK, Messagebox.EXCLAMATION);
+		} 
+		
+//		catch (Exception ex) {
+//			ex.printStackTrace();
+//			Messagebox.show(ex.getMessage(), "ERROR", Messagebox.OK, Messagebox.EXCLAMATION);
+//		}
 		return ret;
 
 	}
@@ -588,7 +597,7 @@ public class GalaxyController extends SelectorComposer<Window> {
 		if (jobid != null) {
 			A joblink = new A();
 			joblink.setLabel(AppContext.getHostname() + "/_jobs.zul?jobid=" + jobid);
-			joblink.setHref(AppContext.getHostname()  + "/_jobs.zul?jobid=" + jobid);
+			joblink.setHref(AppContext.getHostname() + "/_jobs.zul?jobid=" + jobid);
 			joblink.setTarget("_blank");
 			joblink.setParent(vboxProgress);
 		}

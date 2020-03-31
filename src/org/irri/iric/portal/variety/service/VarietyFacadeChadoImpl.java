@@ -1353,6 +1353,11 @@ public class VarietyFacadeChadoImpl implements VarietyFacade {
 		return listitemsDAO.getAllTraits(dataset, legacyPhenotype);
 	}
 
+	@Override
+	public List<Variety> getGermplasmsByAccession(Collection names, Set dataset) {
+		return varietydao.findVarietyByAccession(names, dataset);
+	}
+
 }
 
 // PAST CODES RETAINED

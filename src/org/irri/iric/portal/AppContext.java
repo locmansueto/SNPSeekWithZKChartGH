@@ -91,7 +91,6 @@ import org.apache.http.Consts;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.HttpEntity;
 
-
 /**
  * This class provides application-wide access to the Spring ApplicationContext.
  * The ApplicationContext is injected by the class "ApplicationContextProvider".
@@ -249,7 +248,7 @@ public class AppContext {
 	// these to match server congiguration ) *********************************
 
 	public static void logQuery(String query) {
-		
+
 		long endTime = System.currentTimeMillis();
 		long endTimeDate = new Date().getTime();
 		logger.info("TIME " + datef.format(endTime) + " : TIMER: " + (endTime - startTime) + " ms (system),  "
@@ -314,12 +313,11 @@ public class AppContext {
 
 	public static String getTempDir() {
 
-		/*if(isPollux()) 
-			return "/home/lmansueto/tomcattemp/";
-		else if( isAWSBeanstalk()) 
-			return "/IRCstorage/temp/";
-		*/
-		
+		/*
+		 * if(isPollux()) return "/home/lmansueto/tomcattemp/"; else if(
+		 * isAWSBeanstalk()) return "/IRCstorage/temp/";
+		 */
+
 		if (tempdir != null)
 			return tempdir;
 
@@ -329,7 +327,7 @@ public class AppContext {
 	// in server file system (where tomcat is deployed)
 	public static String getHaploscriptsDir() {
 		if (isAWSBeanstalk() || isAWSBeanstalkDev() || isLocalhost())
-		//if (isAWSBeanstalk() || isAWSBeanstalkDev())
+			// if (isAWSBeanstalk() || isAWSBeanstalkDev())
 			// return getTomcatWebappsDir() + "ROOT/haplo/";
 			return getFlatfilesDir() + "haplo/";
 		else
@@ -363,7 +361,8 @@ public class AppContext {
 	}
 
 	public static String getWebclientPath() {
-		return getFlatfilesDir() + "snpseek-webclient.jar";
+		
+		return getFlatfilesDir() + "snpseek-webclient-log.jar";
 	}
 
 	public static String setHostname(String hd) {
@@ -584,32 +583,33 @@ public class AppContext {
 		return pathToR;
 
 	}
-	
-	private static String galaxy_instance; 
-	private static GalaxyCustomController  galaxy_controller; 
+
+	private static String galaxy_instance;
+	private static GalaxyCustomController galaxy_controller;
+
 	public static void setGalaxyInstance(String i, GalaxyCustomController c) {
-		galaxy_instance=i;
-		galaxy_controller=c;
+		galaxy_instance = i;
+		galaxy_controller = c;
 	}
+
 	public static String getGalaxyInstance() {
 		return galaxy_instance;
 	}
-	
+
 	public static String getGalaxyAddress() {
 		// fix
-    	if (galaxy_instance == null) {
-    		GalaxyCustomController customcontroller = new DefaultGalaxyController();
-    		List l = customcontroller.getGalaxyInstances();
+		if (galaxy_instance == null) {
+			GalaxyCustomController customcontroller = new DefaultGalaxyController();
+			List l = customcontroller.getGalaxyInstances();
 			setGalaxyInstance((String) l.get(0), customcontroller);
-    	}
-    	//
+		}
+		//
 		return galaxy_controller.getGalaxyAddress(galaxy_instance);
 	}
-	
+
 	public static String getGalaxyKey() {
-		return galaxy_controller.getGalaxyKey(galaxy_instance );
+		return galaxy_controller.getGalaxyKey(galaxy_instance);
 	}
-	
 
 //
 //	public static String GALAXY_AWS_DEV="snpseek_dev";
@@ -665,7 +665,7 @@ public class AppContext {
 //		else
 //			return "6a3612b1923b952e7d749b51eb5e0175";  // user snpseek
 //	}
-			
+
 	public static String getPlinkDir() {
 
 		if (isPollux())
@@ -1405,24 +1405,18 @@ public class AppContext {
 		 * if(AppContext.isIRRILAN()) log.error(msg);
 		 */
 		/*
-		if (getLogLevel().equals("debug")) {
-			long endTime = System.currentTimeMillis();
-			long endTimeDate = new Date().getTime();
-			// debug( "TIMER: " + (endTime- startTime) + " ms (system), " + (
-			// endTimeDate-startTimeDate) + " ms (date) : " + report);
-			String timedif = "DEBUG TIMER: " + (endTime - startTime) + " ms (system),  " + (endTimeDate - startTimeDate)
-					+ " ms (date) : ";
-			startTime = endTime;
-			startTimeDate = endTimeDate;
-			// log.error(timedif + msg);
-
-			logger.info(timedif + msg);
-			//System.out.println("TIME " + endTimeDate + "  " + timedif);
-			if (msg == null || msg.replaceAll("\\s+", "").isEmpty()) {
-				logger.info("empty/null msg");
-			}
-		} 
-		*/
+		 * if (getLogLevel().equals("debug")) { long endTime =
+		 * System.currentTimeMillis(); long endTimeDate = new Date().getTime(); //
+		 * debug( "TIMER: " + (endTime- startTime) + " ms (system), " + ( //
+		 * endTimeDate-startTimeDate) + " ms (date) : " + report); String timedif =
+		 * "DEBUG TIMER: " + (endTime - startTime) + " ms (system),  " + (endTimeDate -
+		 * startTimeDate) + " ms (date) : "; startTime = endTime; startTimeDate =
+		 * endTimeDate; // log.error(timedif + msg);
+		 * 
+		 * logger.info(timedif + msg); //System.out.println("TIME " + endTimeDate + "  "
+		 * + timedif); if (msg == null || msg.replaceAll("\\s+", "").isEmpty()) {
+		 * logger.info("empty/null msg"); } }
+		 */
 		logger.info(msg);
 	}
 
@@ -1497,12 +1491,9 @@ public class AppContext {
 	/**
 	 * Generate list of uppercase, lowercase, blanks for use in UI listboxes
 	 * 
-	 * @param col
-	 *            initial list
-	 * @param upperlower
-	 *            create uppercase and lower case
-	 * @param addBlank
-	 *            add blank in first line
+	 * @param col        initial list
+	 * @param upperlower create uppercase and lower case
+	 * @param addBlank   add blank in first line
 	 * @return
 	 */
 	public static List createUniqueUpperLowerStrings(Collection col, boolean upperlower, boolean addBlank) {
@@ -1609,10 +1600,8 @@ public class AppContext {
 	 * SpringUtil.getBean(name); then
 	 * AppContext.getApplicationContext().getBean(name); then throw exception !
 	 * 
-	 * @param obj
-	 *            object to check
-	 * @param name
-	 *            bean name
+	 * @param obj  object to check
+	 * @param name bean name
 	 * @return
 	 */
 	public static Object checkBean(Object obj, String name) {
@@ -2054,17 +2043,18 @@ public class AppContext {
 	public static void copyFile(File from, File to) throws IOException {
 		Files.copy(from.toPath(), to.toPath());
 	}
+
 	public static void renameFile(File toBeRenamed, String new_name) {
-	    File fileWithNewName = new File(new_name);
-	    if (fileWithNewName.exists()) {
-	        throw new RuntimeException("file exists.");
-	    }
-	    // Rename file (or directory)
-	    boolean success = toBeRenamed.renameTo(fileWithNewName);
-	    if (!success) {
-	        // File was not successfully renamed
-	    	debug(toBeRenamed.getName() + " not successfully renamed to " + new_name);
-	    }
+		File fileWithNewName = new File(new_name);
+		if (fileWithNewName.exists()) {
+			throw new RuntimeException("file exists.");
+		}
+		// Rename file (or directory)
+		boolean success = toBeRenamed.renameTo(fileWithNewName);
+		if (!success) {
+			// File was not successfully renamed
+			debug(toBeRenamed.getName() + " not successfully renamed to " + new_name);
+		}
 	}
 
 	public static boolean isEqual(float a, float b) {
@@ -2161,13 +2151,14 @@ public class AppContext {
 
 	public static String getPhantomjsExe() {
 
-		if (isLocalhost())
-			return "E:\\selenium\\phantomjs-2.1.1-windows\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe";
-		else if (isPollux())
+		if (isWindows())
+			return getFlatfilesDir() + "phantomjs.exe";
+		else 
+		if (isPollux())
 			return "/home/lmansueto/phantomjs/phantomjs";
 		// else if(isAWS() || isASTI())
 		else
-			return getFlatfilesDir() + "phantomjs";
+			return "/usr/local/share/phantomjs/bin/phantomjs";
 
 		// return null;
 
@@ -2589,78 +2580,73 @@ public class AppContext {
 	}
 
 	public static String readURL(String a) throws Exception {
-		return readURL(a,null); 
-	}	
-	public static String readURL(String a, String key) throws Exception {
-	   
-		    URL url = new URL(a);
-            URLConnection conn = url.openConnection();
-			//conn.addRequestProperty("User-Agent", "Mozilla/4.0");
-		    conn.addRequestProperty("User-Agent", "");
-		    if(key!=null)
-		    	conn.setRequestProperty("Authorization", "Bearer " + key);
-
-            // open the stream and put it into BufferedReader
-            BufferedReader br = new BufferedReader(
-                               new InputStreamReader(conn.getInputStream()));
-
-            String inputLine;
-            StringBuffer buff=new StringBuffer();
-            while ((inputLine = br.readLine()) != null) {
-            	buff.append(inputLine);
-            }
-            br.close();
-            return buff.toString();
+		return readURL(a, null);
 	}
-	
+
+	public static String readURL(String a, String key) throws Exception {
+
+		URL url = new URL(a);
+		URLConnection conn = url.openConnection();
+		// conn.addRequestProperty("User-Agent", "Mozilla/4.0");
+		conn.addRequestProperty("User-Agent", "");
+		if (key != null)
+			conn.setRequestProperty("Authorization", "Bearer " + key);
+
+		// open the stream and put it into BufferedReader
+		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+		String inputLine;
+		StringBuffer buff = new StringBuffer();
+		while ((inputLine = br.readLine()) != null) {
+			buff.append(inputLine);
+		}
+		br.close();
+		return buff.toString();
+	}
 
 	public static String readFile(String a) throws Exception {
-	   
-            // open the stream and put it into BufferedReader
-            BufferedReader br = new BufferedReader(
-                               new FileReader(a));
 
-            String inputLine;
-            StringBuffer buff=new StringBuffer();
-            while ((inputLine = br.readLine()) != null) {
-            	buff.append(inputLine);
-            }
-            br.close();
-            return buff.toString();
+		// open the stream and put it into BufferedReader
+		BufferedReader br = new BufferedReader(new FileReader(a));
+
+		String inputLine;
+		StringBuffer buff = new StringBuffer();
+		while ((inputLine = br.readLine()) != null) {
+			buff.append(inputLine);
+		}
+		br.close();
+		return buff.toString();
 	}
-	
-	
-	public static BufferedReader bufferedReadURL(String a,String key) throws Exception {
-		   
-	    URL url = new URL(a);
-        URLConnection conn = url.openConnection();
-		//conn.addRequestProperty("User-Agent", "Mozilla/4.0");
-	    conn.addRequestProperty("User-Agent", "");
-	    if(key!=null)
-	    	conn.setRequestProperty("Authorization", "Bearer " + key);
 
-        // open the stream and put it into BufferedReader
-        BufferedReader br = new BufferedReader(
-                           new InputStreamReader(conn.getInputStream()));
-        return br;
+	public static BufferedReader bufferedReadURL(String a, String key) throws Exception {
+
+		URL url = new URL(a);
+		URLConnection conn = url.openConnection();
+		// conn.addRequestProperty("User-Agent", "Mozilla/4.0");
+		conn.addRequestProperty("User-Agent", "");
+		if (key != null)
+			conn.setRequestProperty("Authorization", "Bearer " + key);
+
+		// open the stream and put it into BufferedReader
+		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		return br;
 	}
 
 	public static boolean downloadURL(String uri, File destination) {
-		
+
 		try {
 			FileUtils.copyURLToFile(new URL(uri), destination);
 			System.out.println("File downloaded from " + uri + " to " + destination);
-	        
+
 			return true;
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return false;
 	}
-	
-	
+
 	public static boolean downloadURL2(String uri, File destination) {
-		
+
 		try {
 			FileUtils.copyURLToFile(new URL(uri), destination);
 			// check if zip, if not, make text
@@ -2668,21 +2654,22 @@ public class AppContext {
 				ZipFile zipFile = new ZipFile(destination);
 				zipFile.close();
 				AppContext.debug("downloaded zip file " + destination + " from " + uri);
-			} catch(Exception ex) {
-				destination.renameTo( new File(destination.getAbsolutePath().replace(".zip", ".txt")));
-				AppContext.debug("downloaded txt file " + destination.getAbsolutePath().replace(".zip", ".txt") + " from " + uri);
+			} catch (Exception ex) {
+				destination.renameTo(new File(destination.getAbsolutePath().replace(".zip", ".txt")));
+				AppContext.debug("downloaded txt file " + destination.getAbsolutePath().replace(".zip", ".txt")
+						+ " from " + uri);
 			}
-			
+
 			return true;
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return false;
 	}
 
-	public static Map<String,String> getFilextMime() {
+	public static Map<String, String> getFilextMime() {
 		// TODO Auto-generated method stub
-		Map m=new LinkedHashMap();
+		Map m = new LinkedHashMap();
 		m.put(".zip", "application/zip");
 		m.put(".pdf", "application/pdf");
 		m.put(".txt", "text/plain");
@@ -2691,30 +2678,30 @@ public class AppContext {
 		m.put(".tabular", "text/tsv");
 		return m;
 	}
-	
+
 	public static String readURLContent(String ip) {
 		try {
-		   URL url = new URL(ip);
-	       URLConnection con = url.openConnection();
-	       BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-	       String l=null;
-	       StringBuffer b=new StringBuffer();
-	       while ((l=in.readLine())!=null) {
-	           //System.out.println(l);
-	    	   b.append(l);
-	       }
-	       in.close();
-	       return b.toString();
-	       
-		} catch(Exception ex) {
+			URL url = new URL(ip);
+			URLConnection con = url.openConnection();
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String l = null;
+			StringBuffer b = new StringBuffer();
+			while ((l = in.readLine()) != null) {
+				// System.out.println(l);
+				b.append(l);
+			}
+			in.close();
+			return b.toString();
+
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return null;
 	}
 
 	public static String uploadToServer(String serverdir, Media media) throws Exception {
-		//org.zkoss.util.media.Media media = Fileupload.get();
-		OutputStream outputStream = new FileOutputStream(new File(serverdir  + media.getName()));
+		// org.zkoss.util.media.Media media = Fileupload.get();
+		OutputStream outputStream = new FileOutputStream(new File(serverdir + media.getName()));
 		InputStream inputStream = media.getStreamData();
 		byte[] buffer = new byte[1024];
 		for (int count; (count = inputStream.read(buffer)) != -1;) {
@@ -2725,56 +2712,54 @@ public class AppContext {
 		inputStream.close();
 		return media.getName();
 	}
-	
 
+	public static String sendPost(String url, Map<String, String> postParams, Map<String, String> header,
+			String cookies) {
 
-	public static String sendPost(String url, Map<String, String> postParams, 
-	        Map<String, String> header, String cookies) {
+		HttpPost httpPost = new HttpPost(url);
+		List<NameValuePair> formParams = new ArrayList<NameValuePair>();
+		// HttpClientBuilder clientBuilder = HttpClients.createDefault();
+		// CloseableHttpClient httpclient = clientBuilder.build();
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		; // clientBuilder.build();
 
-	    HttpPost httpPost = new HttpPost(url);
-	    List<NameValuePair> formParams = new ArrayList<NameValuePair>();
-	    //HttpClientBuilder clientBuilder = HttpClients.createDefault();
-	    //CloseableHttpClient httpclient = clientBuilder.build();
-	  CloseableHttpClient httpclient = HttpClients.createDefault();; //clientBuilder.build();
+		if (header != null) {
+			Iterator<Entry<String, String>> itCabecera = header.entrySet().iterator();
+			while (itCabecera.hasNext()) {
+				Entry<String, String> entry = itCabecera.next();
 
-	    if (header != null) {
-	        Iterator<Entry<String, String>> itCabecera = header.entrySet().iterator();
-	        while (itCabecera.hasNext()) {
-	            Entry<String, String> entry = itCabecera.next();
+				httpPost.addHeader(entry.getKey(), entry.getValue());
+			}
+		}
 
-	            httpPost.addHeader(entry.getKey(), entry.getValue());
-	        }
-	    }
+		httpPost.setHeader("Cookie", cookies);
 
-	    httpPost.setHeader("Cookie", cookies);
+		if (postParams != null) {
+			Iterator<Entry<String, String>> itParms = postParams.entrySet().iterator();
+			while (itParms.hasNext()) {
+				Entry<String, String> entry = itParms.next();
 
-	    if (postParams != null) {
-	        Iterator<Entry<String, String>> itParms = postParams.entrySet().iterator();
-	        while (itParms.hasNext()) {
-	            Entry<String, String> entry = itParms.next();
+				formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+			}
+		}
 
-	            formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-	        }
-	    }
+		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(formParams, Consts.UTF_8);
+		httpPost.setEntity(formEntity);
 
-	    UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(formParams, Consts.UTF_8);
-	    httpPost.setEntity(formEntity);
+		String pageContent = null;
+		try {
+			CloseableHttpResponse httpResponse = httpclient.execute(httpPost);
+			HttpEntity entity = httpResponse.getEntity();
+			if (entity != null) {
+				pageContent = EntityUtils.toString(entity);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 
-	    String pageContent=null;
-    	try {
-		    CloseableHttpResponse httpResponse = httpclient.execute(httpPost);
-		    HttpEntity entity = httpResponse.getEntity();
-		    if (entity != null) {
-		        pageContent = EntityUtils.toString(entity);
-		    }
-    	} catch(Exception ex) {
-    		ex.printStackTrace();
-    	}
-
-	    return pageContent;
+		return pageContent;
 	}
-	
-	
+
 	/// **
 	// * is Amazon Web Service compile?
 	// */

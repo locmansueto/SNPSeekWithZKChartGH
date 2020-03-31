@@ -2,24 +2,23 @@ package org.irri.iric.portal.genomics.dao;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Future;
 
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.dao.WebsiteDAO;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.genomics.WebsiteQuery;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Repository;
 
 @Repository("WebsiteDAO")
@@ -64,7 +63,7 @@ public class WebsiteDAOImpl implements WebsiteDAO {
 	// @Override
 	public List<String> getURL1(WebsiteQuery query) {
 		
-
+		
 		List listeURL = new ArrayList();
 		Iterator<String> itSites = query.getSite().iterator();
 		while (itSites.hasNext()) {
@@ -127,11 +126,10 @@ public class WebsiteDAOImpl implements WebsiteDAO {
 	@Override
 	public List<String> getURL(WebsiteQuery query) {
 		
-
 		List listeURL = new ArrayList();
 		Iterator<String> itSites = query.getSite().iterator();
 		while (itSites.hasNext()) {
-
+			System.out.println("Sites: " + itSites);
 			String infile = writeGenelistFile(query.getGenes(), itSites.next(), null);
 			try {
 
@@ -142,8 +140,22 @@ public class WebsiteDAOImpl implements WebsiteDAO {
 				// \"" + infile + "\"");
 
 				ProcessBuilder pb = new ProcessBuilder("java", "-jar", AppContext.getWebclientPath(), infile);
+				pb.redirectErrorStream(true);
+				
+				
 				Process proc = pb.start();
 
+				InputStream stderr = proc.getInputStream();
+			    InputStreamReader isr = new InputStreamReader(stderr);
+			    BufferedReader brT = new BufferedReader(isr);
+			    String line = null;
+
+			    System.out.println();
+			    while ((line = brT.readLine()) != null) {
+			        System.out.println(line);
+
+			    }
+			    
 				proc.waitFor();
 				AppContext.debug("stderr " + infile + ": " + AppContext.convertStreamToString(proc.getErrorStream()));
 				AppContext.debug("stdout " + infile + ": " + AppContext.convertStreamToString(proc.getInputStream()));

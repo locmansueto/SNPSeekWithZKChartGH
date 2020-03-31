@@ -8,8 +8,29 @@ window.Boot_progressbox = function (){}
 
 <?init class="org.zkoss.zk.ui.util.Composition"
         arg0="/template.zul"?>
+
 <zk>
 
-      <include self="@define(content)" href="https://riceinfo.atlassian.net/secure/CreateIssue!default.jspa"/>
+	<!--  zscript>         
+		String fromview="";
+		String from=Executions.getCurrent().getParameter("from");
+		if(from==null || from.isEmpty())
+		{ 
+		} else {
+		fromview= "?from=" + from;
+		String src=Executions.getCurrent().getParameter("src");
+		if(src==null || src.isEmpty())
+		{ 
+		} else fromview += "&#038;src=" + src;
+		}
+		</zscript -->
+	<zscript>
+ 			import org.irri.iric.portal.AppContext;
+	        String moduleparams="";
+	        moduleparams=AppContext.convertParams2URL(Executions.getCurrent().getParameterMap());	
+        </zscript>
+      <!--  <include self="@define(content)" href="https://riceinfo.atlassian.net/secure/CreateIssue!default.jspa"/>-->
+      <include self="@define(content)" src="/reports.zul${moduleparams}"/>
+      
 	
 </zk>

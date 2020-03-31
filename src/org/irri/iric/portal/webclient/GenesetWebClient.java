@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 //import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.stereotype.Service;
 import org.zkoss.zk.ui.Executions;
@@ -76,7 +77,7 @@ public class GenesetWebClient {
 		// WebDriver driver = new ChromeDriver();
 		WebDriver driver = new PhantomJSDriver();
 		// WebDriver driver = new HtmlUnitDriver();
-
+		
 		// And now use this to visit Google
 		driver.get("http://www.inetbio.org/ricenet/Network_nga_form_conv.php");
 		// Alternatively the same thing can be done like this

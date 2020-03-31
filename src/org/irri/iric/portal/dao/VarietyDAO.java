@@ -104,6 +104,8 @@ public interface VarietyDAO {
 	public Variety findVarietyByAccession(String name);
 
 	public Variety findVarietyByAccession(String name, Set dataset);
+	
+	public List<Variety> findVarietyByAccession(Collection names, Set dataset);
 
 	public List<Variety> findVarietyByNamesLike(Collection names);
 

@@ -39,6 +39,7 @@ import org.irri.iric.portal.domain.MultiReferenceLocus;
 @Table(name = "V_LOCUS_FEATURETYPE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "iric_prod_crud/org/irri/iric/portal/chado/domain", name = "VLocusNotes")
+@DiscriminatorValue("0")
 public class VLocusNotes implements Serializable, MultiReferenceLocus {
 	private static final long serialVersionUID = 1L;
 

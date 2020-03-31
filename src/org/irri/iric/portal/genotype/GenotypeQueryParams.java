@@ -220,6 +220,7 @@ public class GenotypeQueryParams extends Query  {
 		// setDataset.add(AppContext.getSNPSet());
 		// setDataset.add(SnpsAllvarsPosDAO.DATASET_SNPINDELV1);
 
+		organism = AppContext.getDefaultOrganism();
 		this.sChr = sChr;
 		this.lStart = lStart;
 		this.lEnd = lEnd;

@@ -401,9 +401,12 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	@Override
 	public List<String> queryWebsite(WebsiteQuery query, boolean display) throws Exception {
 
+		System.out.println("QUERY >>>> " + query.getSite().size());
 		websiteService = (WebsiteDAO) AppContext.checkBean(websiteService, "WebsiteDAO");
 		List<String> listURLs = websiteService.getURL(query);
+		System.out.println("List >>>> " + query);
 
+		
 		if (listURLs != null && display) {
 			Iterator<String> itUrl = listURLs.iterator();
 			int sitei = 0;

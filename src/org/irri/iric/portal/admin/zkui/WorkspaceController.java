@@ -1988,8 +1988,8 @@ public class WorkspaceController extends SelectorComposer<Component> {
 		Set<Variety> varset = new HashSet(variety.getGermplasmByNames(setNames, getDataset()));
 		if (varset.size() < setNames.size())
 			varset.addAll(variety.getGermplasmByIrisIds(setNames, getDataset()));
-		// if(varset.size()<setNames.size())
-		// varset.addAll( variety.getGermplasmsByAccessions(setNames, getDataset()));
+		if (varset.size() < setNames.size())
+			varset.addAll( variety.getGermplasmsByAccession(setNames, getDataset()));
 
 		/*
 		 * if(varset.size()<setNames.size()) varset.addAll(

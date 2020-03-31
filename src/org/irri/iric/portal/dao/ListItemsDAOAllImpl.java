@@ -1077,7 +1077,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 		List cvterms = mapCVOrg2Cvterms.get(cv + "-" + organism);
 		if (cvterms == null) {
 			cvterms = cvtermsFromFile("cvterms_" + cv + "_" + getOrganismByName(organism).getOrganismId() + ".tsv");
-			if (cvterms == null) {
+			if (cvterms == null || cvterms.isEmpty()) {
 				gotermorganismdao = (CvTermDAO) AppContext.checkBean(gotermorganismdao, "VGoOrganismDAO");
 				// cvterms = gotermorganismdao.getAllTerms(cv, organism);
 				cvterms = createCvtermMap(gotermorganismdao.getAllTerms(this.getCvByName(cv).getCvId(),
@@ -1093,15 +1093,19 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 	private List cvtermsFromFile(String filename) {
 		try {
 			Set listnames = new TreeSet();
-			BufferedReader br = new BufferedReader(new FileReader(AppContext.getFlatfilesDir() + filename));
-			String line = null;
-			while ((line = br.readLine()) != null) {
-				line = line.trim();
-				if (line.isEmpty())
-					continue;
-				listnames.add(line.split("\t")[3]);
-			}
-			br.close();
+			File cvtermsFile = new File(AppContext.getFlatfilesDir() + filename);
+			if (cvtermsFile.exists()) {
+				BufferedReader br = new BufferedReader(new FileReader(AppContext.getFlatfilesDir() + filename));
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					line = line.trim();
+					if (line.isEmpty())
+						continue;
+					listnames.add(line.split("\t")[3]);
+				}
+				br.close();
+			}else
+				AppContext.info(AppContext.getFlatfilesDir() + filename + "NOT FOUND");
 			List arr = new ArrayList();
 			arr.addAll(listnames);
 			return arr;
@@ -1218,8 +1222,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 		return mapDataset2subpopulations.get(dataset);
 	}
 
-	
-
 	@Override
 	public List getOrganismScaffolds(String organism) {
 		scaffolddao = (ScaffoldDAO) AppContext.checkBean(scaffolddao, "ScaffoldDAO");
@@ -1228,7 +1230,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 	@Override
 	public void cleanDatasetCache(String dataset) {
-		
+
 		mapDataset2germnames.remove(dataset);
 		mapDataset2germaccessions.remove(dataset);
 		mapDataset2countries.remove(dataset);
@@ -1356,7 +1358,6 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 		return germdao.findVarietiesByName(names, dataset);
 	}
 
-	
 	@Override
 	public Set<Variety> getGermplasmsByIrisId(String irisid, String dataset) {
 		Set s = new HashSet();

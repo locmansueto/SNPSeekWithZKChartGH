@@ -760,6 +760,12 @@ public class VAllsampleBasicpropDAOImpl extends AbstractJpaDao<VAllsampleBasicpr
 		return true;
 	}
 
+	@Override
+	public List<Variety> findVarietyByAccession(Collection names, Set dataset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 	

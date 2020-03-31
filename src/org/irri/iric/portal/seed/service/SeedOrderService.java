@@ -20,6 +20,7 @@ import java.util.TreeMap;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.CreateZipMultipleFiles;
 import org.irri.iric.portal.email.EmailService;
+import org.irri.iric.portal.report.BugReport;
 import org.irri.iric.portal.seed.InlineEditingViewModel;
 import org.irri.iric.portal.seed.OrderData;
 import org.irri.iric.portal.seed.Seed;
@@ -28,6 +29,8 @@ import org.irri.iric.portal.seed.SeedPriceDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.zkoss.image.Image;
+import org.zkoss.zul.Label;
 
 import com.google.common.io.Files;
 
@@ -50,7 +53,7 @@ public class SeedOrderService {
 
 	public SeedOrderService() {
 		super();
-		
+
 	}
 
 	private boolean generateHtml4Doc4j(OrderData order, String orderid, int page) throws Exception {
@@ -283,6 +286,16 @@ public class SeedOrderService {
 		return false;
 	}
 
+	public boolean sendEmail(List to, List cc, String subject, String message, List<Label> images) {
+		try {
+			emailservice.sendSimpleMessage(to, cc, subject, message, images);
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
 	public boolean sendEmail(String to, String smtppath, String smtfilename, String subject) {
 		// On clicking the order button you'd generate an order ID, which you'd send to
 		// us (Marionette "Monette" Alana) and to the user, to be quoted in subsequent
@@ -439,6 +452,48 @@ public class SeedOrderService {
 		return null;
 	}
 
+	public String sendAcknowledgement(BugReport bgRep) {
+		List to = new ArrayList();
+		List cc = new ArrayList();
+
+		StringBuffer buff = new StringBuffer();
+
+		buff.append("We thank you for reporting a bug. \n\n We will surely take a look on this and get back to you for updates. \n\n Cheers!");
+
+		to.add(bgRep.getEmail());
+
+		String repCode = generateOrderCode();
+
+		if (sendEmail(to, cc, "[SNP-SEEK] Acknowledgement of Receipt", buff.toString()))
+			return repCode;
+		return null;
+
+	}
+
+	public String report(BugReport report, List<Label> images) {
+		List to = new ArrayList();
+		List cc = new ArrayList();
+
+		StringBuffer buff = new StringBuffer();
+
+		buff.append(report.getMsg());
+		buff.append("\n\n Error reported by: " + report.getName() + " <" + report.getEmail() + ">");
+
+		if (AppContext.isAWSBeanstalk()) {
+			to.add("l.h.barboza@irri.org");
+			to.add("d.chebotarov@irri.org");
+			to.add("K.McNally@irri.org");
+			// cc.add(report.getEmail());
+		} else
+			to.add("l.h.barboza@irri.org");
+
+		String repCode = generateOrderCode();
+
+		if (sendEmail(to, cc, "[BUG REPORT] SNP-seek: " + report.getTitle(), buff.toString(), images))
+			return repCode;
+		return null;
+	}
+
 	// public String orderVerify(OrderData order, String pdfmethod) {
 	//
 	// String verifycode= generateVerifyCode() ;
@@ -588,13 +643,13 @@ public class SeedOrderService {
 	// }
 
 	public List getCountries() {
-		
+
 		seedpricedao = (SeedPriceDAO) AppContext.checkBean(seedpricedao, "SeedPriceDAO");
 		return seedpricedao.getCountries();
 	}
 
 	public String getCountryCategory(String c) {
-		
+
 		seedpricedao = (SeedPriceDAO) AppContext.checkBean(seedpricedao, "SeedPriceDAO");
 		return seedpricedao.getCountryCategory(c);
 	}
@@ -628,7 +683,7 @@ public class SeedOrderService {
 	}
 
 	public void updatePrice(InlineEditingViewModel vm, String usercat, String c) {
-		
+
 		if (usercat.equals("pub")) {
 			String ccat = getCountryCategory(c);
 			AppContext.debug("pub-" + ccat);
@@ -638,4 +693,5 @@ public class SeedOrderService {
 			vm.updatePrice(seedpricedao.getPricePer10gram("PL", usercat), 0.0);
 		}
 	}
+
 }

@@ -3,7 +3,7 @@ package org.irri.iric.portal.email;
 import java.util.List;
 
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
+import org.zkoss.zul.Label;
 
 public interface EmailService {
 	public JavaMailSender getJavaMailSender();
@@ -14,5 +14,9 @@ public interface EmailService {
 			String filename) throws Exception;
 
 	public void sendSimpleMessage(List<String> to, List<String> cc, String subject, String text) throws Exception;
+	
+	public void sendSimpleMessage(List<String> to, List<String> cc, String subject, String text, List<Label> images) throws Exception;
+	
+	
 
 }

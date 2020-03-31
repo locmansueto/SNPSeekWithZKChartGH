@@ -401,6 +401,8 @@ public interface VarietyFacade {
 	public Collection getGermplasmsByName(String varname, Set dataset);
 
 	public Variety getGermplasmsByAccession(String varname, Set dataset);
+	
+	public List<Variety> getGermplasmsByAccession(Collection varname, Set dataset);
 
 	public Map getMapId2Variety(Set dataset);
 

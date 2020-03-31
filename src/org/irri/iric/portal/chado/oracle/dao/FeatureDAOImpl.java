@@ -521,11 +521,12 @@ public class FeatureDAOImpl extends AbstractJpaDao<Feature> implements
 				+ " and organism_id=" + organismId;
 		List listFeature=executeSQL(sql);
 
+		// Does it really to be an exception? DAGS TODO
 		if(listFeature.size()==0) throw new RuntimeException("Empty feature with name " + featurename);
 		else if(listFeature.size()>1) throw new RuntimeException("Non-unique feature with name " + featurename);
 		FeaturePostgres feature = (FeaturePostgres)listFeature.get(0);
 		//return  AppContext.clobStringConversion(feature.getResidues());
-		return  feature.getResidues();
+		return feature.getResidues();
 		
 	}
 	/*

@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="com/google/gson/|org/brapi/client/ApiCallback.java|org/brapi/client/ApiClient.java|org/brapi/client/ApiException.java|org/brapi/client/ApiResponse.java|org/brapi/client/BrapiAttributes.java|org/brapi/client/BrapiVariety.java|org/brapi/client/Configuration.java|org/brapi/client/JSON.java|org/brapi/client/Pair.java|org/brapi/client/ProgressRequestBody.java|org/brapi/client/ProgressResponseBody.java|org/brapi/client/StringUtil.java|org/brapi/client/api/|org/brapi/client/auth/|org/brapi/client/model/" including="**/*.java" kind="src" output="target/classes" path="src">
+	<classpathentry excluding="com/google/gson/TypeAdapter.java|org/brapi/client/JSON.java|org/brapi/client/ApiClient.java|org/brapi/client/Configuration.java|org/brapi/client/api/GermplasmApi.java|org/brapi/client/api/GermplasmApiTest.java|org/brapi/client/api/PhenotypeApi.java|org/brapi/client/api/StudyApi.java|org/brapi/client/api/" including="**/*.java" kind="src" output="target/classes" path="src">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry excluding="**" kind="src" output="target/classes" path="resources">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_231">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
@@ -23,5 +18,12 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/galaxy-service.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/snpseek-webclient.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/snpseek-webclient-log.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
