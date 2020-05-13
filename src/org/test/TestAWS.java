@@ -1,6 +1,8 @@
 package org.test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -14,19 +16,26 @@ import com.amazonaws.services.ec2.model.CreateKeyPairRequest;
 import com.amazonaws.services.ec2.model.CreateKeyPairResult;
 import com.amazonaws.services.ec2.model.CreateSecurityGroupRequest;
 import com.amazonaws.services.ec2.model.CreateSecurityGroupResult;
+import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
+import com.amazonaws.services.ec2.model.DescribeInstancesResult;
+import com.amazonaws.services.ec2.model.DryRunResult;
+import com.amazonaws.services.ec2.model.DryRunSupportedRequest;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.InstanceType;
 import com.amazonaws.services.ec2.model.IpPermission;
 import com.amazonaws.services.ec2.model.IpRange;
 import com.amazonaws.services.ec2.model.KeyPair;
+import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
 import com.amazonaws.services.ec2.model.StartInstancesRequest;
+import com.amazonaws.services.ec2.model.StartInstancesResult;
+import com.amazonaws.services.elasticmapreduce.model.InstanceState;
 
 public class TestAWS {
 
 	@Test
-	public void testTimer() {
+	public void myStartAWS() {
 
 		BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIA4ULUT3ZVII6VURSJ",
 				"cNtA26jxPPLujOTDZE/xS/6XL0db05zUiCUCiRIl");
@@ -34,18 +43,75 @@ public class TestAWS {
 		AmazonEC2 client = AmazonEC2ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds))
 				.withRegion(Regions.AP_SOUTHEAST_1).build();
 
-		//createSecurityGroup(client);
+		// createSecurityGroup(client);
 
 		// String key = createKey(client);
 
-		//runInstance(client);
-		
-		StartInstancesRequest request = new StartInstancesRequest()
-			    .withInstanceIds("i-0c620d6cf53fe8afe");
-		
-		client.startInstances(request);
-		
+		// runInstance(client);
 
+		StartInstancesRequest request = new StartInstancesRequest().withInstanceIds("i-0c620d6cf53fe8afe");
+
+		// START INSTANCE
+		// StartInstancesResult ins = client.startInstances(request);
+
+		boolean done = false;
+		List<String> setOfInstances = new ArrayList();
+		setOfInstances.add("i-043b2e725d07ce079");
+		// setOfInstances.add("i-043b2e725d07ce079");
+
+		DescribeInstancesRequest descRequest = new DescribeInstancesRequest();
+		descRequest.setInstanceIds(setOfInstances);
+
+		DescribeInstancesResult response = client.describeInstances(descRequest);
+
+		for (Reservation reservation : response.getReservations()) {
+			for (Instance instance : reservation.getInstances()) {
+				System.out.printf(
+						"Found instance with id %s, " + "AMI %s, " + "type %s, " + "state %s "
+								+ "and monitoring state %s at %s \n",
+						instance.getInstanceId(), instance.getImageId(), instance.getInstanceType(),
+						instance.getState().getName(), instance.getMonitoring().getState(),
+						instance.getPublicIpAddress());
+
+				System.out.println("Instance is IP: " + instance.getPublicIpAddress());
+				System.out.println("STATE: " + instance.getState().getName().toUpperCase());
+				System.out.println("CONST: " + InstanceState.RUNNING);
+
+				if (instance.getState().getName().toUpperCase().equals(InstanceState.RUNNING.toString().toUpperCase()))
+					System.out.println("Instance is running");
+			}
+		}
+
+	}
+
+	public void gitStart() {
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIA4ULUT3ZVII6VURSJ",
+				"cNtA26jxPPLujOTDZE/xS/6XL0db05zUiCUCiRIl");
+
+		AmazonEC2 ec2 = AmazonEC2ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+				.withRegion(Regions.AP_SOUTHEAST_1).build();
+
+		String instance_id = "i-0c620d6cf53fe8afe";
+
+		DryRunSupportedRequest<StartInstancesRequest> dry_request = () -> {
+			StartInstancesRequest request = new StartInstancesRequest().withInstanceIds(instance_id);
+
+			return request.getDryRunRequest();
+		};
+
+		DryRunResult dry_response = ec2.dryRun(dry_request);
+
+		if (!dry_response.isSuccessful()) {
+			System.out.printf("Failed dry run to start instance %s", instance_id);
+
+			throw dry_response.getDryRunResponse();
+		}
+
+		StartInstancesRequest request = new StartInstancesRequest().withInstanceIds(instance_id);
+
+		ec2.startInstances(request);
+
+		System.out.printf("Successfully started instance %s", instance_id);
 	}
 
 	private void runInstance(AmazonEC2 client) {

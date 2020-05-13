@@ -45,21 +45,32 @@ import java.util.zip.ZipFile;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.Consts;
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.hibernate.Session;
 import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.StockSample;
 import org.irri.iric.portal.domain.Variety;
 import org.irri.iric.portal.galaxy.zkui.DefaultGalaxyController;
 import org.irri.iric.portal.galaxy.zkui.GalaxyCustomController;
-import org.irri.iric.portal.variety.VarietyFacade;
 //import org.python.util.PythonInterpreter;
 import org.springframework.context.ApplicationContext;
+import org.test.AWSInstanceCountdown;
+import org.test.AWSTimer;
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zkplus.spring.SpringUtil;
-import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Listitem;
 
 import com.amazonaws.AmazonClientException;
@@ -73,23 +84,6 @@ import com.amazonaws.services.ec2.model.DescribeTagsResult;
 import com.amazonaws.services.ec2.model.Filter;
 import com.amazonaws.services.ec2.model.TagDescription;
 import com.amazonaws.util.EC2MetadataUtils;
-
-import org.apache.commons.io.FileUtils;
-
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.Consts;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.HttpEntity;
 
 /**
  * This class provides application-wide access to the Spring ApplicationContext.
@@ -201,9 +195,14 @@ public class AppContext {
 
 	private static String ec2tagname = null;
 
+	private static String galaxyInstanceId = null;
+
 	private static Properties prop;
 
 	private static Properties webProp;
+
+	// private static AWSInstanceCountdown counter;
+	private static AWSTimer counter;
 
 	static {
 		try {
@@ -223,6 +222,12 @@ public class AppContext {
 					.getResourceAsStream("/" + prop.getProperty(PropertyConstants.WEBSERVER) + ".properties");
 
 			webProp.load(isWebProp);
+
+			galaxyInstanceId = "i-043b2e725d07ce079";
+//			// galaxyInstanceId = "i-0c620d6cf53fe8afe";
+//
+			counter = new AWSTimer(galaxyInstanceId);
+			counter.start();
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -361,7 +366,7 @@ public class AppContext {
 	}
 
 	public static String getWebclientPath() {
-		
+
 		return getFlatfilesDir() + "snpseek-webclient-log.jar";
 	}
 
@@ -2153,8 +2158,7 @@ public class AppContext {
 
 		if (isWindows())
 			return getFlatfilesDir() + "phantomjs.exe";
-		else 
-		if (isPollux())
+		else if (isPollux())
 			return "/home/lmansueto/phantomjs/phantomjs";
 		// else if(isAWS() || isASTI())
 		else
@@ -2758,6 +2762,14 @@ public class AppContext {
 		}
 
 		return pageContent;
+	}
+
+	public static void startGalaxy() {
+		counter.start();
+	}
+
+	public static String getGalaxyIPAddress() {
+		return counter.getPublicIPaddress();
 	}
 
 	/// **

@@ -52,6 +52,8 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.SimpleListModel;
+import org.zkoss.zul.Tab;
+import org.zkoss.zul.Tabpanel;
 
 @Controller()
 // @EnableAsync
@@ -110,6 +112,9 @@ public class DownloadController extends SelectorComposer<Component> {
 	private Combobox comboboxLocus;
 
 	@Wire
+	private Tab tabSequence;
+
+	@Wire
 	private Combobox comboQuerychr;
 	@Wire
 	private Listbox listboxQuerystrand;
@@ -140,20 +145,29 @@ public class DownloadController extends SelectorComposer<Component> {
 	public void onclickDownlaodsequence() {
 		String message = "DISCLAIMER: You are about to download a pseudo sequence. \n "
 				+ "It is a FASTA file generated from VCF and this is not an assembled sequence.";
-		int ret = Messagebox.show(message, "Download Sequence", Messagebox.YES | Messagebox.NO,
-				Messagebox.QUESTION, new EventListener<Event>() {
+		int ret = Messagebox.show(message, "Download Sequence", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+				new EventListener<Event>() {
 
 					@Override
 					public void onEvent(Event evt) throws Exception {
 						if (Messagebox.ON_YES.equals(evt.getName())) {
-							
+							// AppContext.startGalaxy();
 							downloadEventSequence();
 						}
 
 					}
 				});
-		
+
 		System.out.println("RUNNING");
+
+	}
+
+	@Listen("onSelect =#tabSequence")
+	public void onclickTabSequence() {
+		AppContext.startGalaxy();
+
+		Messagebox.show(
+				"We have removed query by all varieties. You may however visit https://registry.opendata.aws/3kricegenome/ to download.");
 
 	}
 

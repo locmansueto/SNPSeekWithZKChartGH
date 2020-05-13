@@ -48,35 +48,34 @@ import com.sun.jersey.api.client.ClientResponse;
 
 public class GalaxyAltSeqGenerator {
 
-
 	@Autowired
-	@Qualifier("GalaxyJobsFacade")	
+	@Qualifier("GalaxyJobsFacade")
 	private JobsFacade jobsfacade;
 	@Autowired
 	@Qualifier("GalaxyFacade")
 	private GalaxyFacade galaxy;
-	
+
 	String refseq = null; // "msu7.all.chrs.fa";
 	// String outfile="out4/altgenes";
 	String outdir = null;
 	String jobid = null;
 	String workdir = null;
 	String varlistpath = null; // "MANIFEST_AWS";
-	//String gatkpath = null; // workdir + "GenomeAnalysisTK.jar";
+	// String gatkpath = null; // workdir + "GenomeAnalysisTK.jar";
 
-	public GalaxyAltSeqGenerator(String destdir,String jobid_) {
+	public GalaxyAltSeqGenerator(String destdir, String jobid_) {
 		super();
 		// TODO Auto-generated constructor stub
 		outdir = destdir;
-		jobid=jobid_;
+		jobid = jobid_;
 		workdir = AppContext.getFlatfilesDir() + "getvcfseq/";
 
 		varlistpath = workdir + "MANIFEST_AWS";
-		//gatkpath = workdir + "GenomeAnalysisTK.jar";
+		// gatkpath = workdir + "GenomeAnalysisTK.jar";
 
 	}
 
-	String[] getAltSequence( String varlistpath, Map<String, String> intervals, String reference, boolean sync) {
+	String[] getAltSequence(String varlistpath, Map<String, String> intervals, String reference, boolean sync) {
 
 		// windows
 		/*
@@ -98,8 +97,7 @@ public class GalaxyAltSeqGenerator {
 		 */
 		// refseq=workdir+ "msu7.all.chrs.fa";
 
-		
-		if (reference.toLowerCase().equals("nipponbare") || reference.toLowerCase().equals("japonica nipponbare") ) {
+		if (reference.toLowerCase().equals("nipponbare") || reference.toLowerCase().equals("japonica nipponbare")) {
 			refseq = workdir + "msu7.all.chrs.fa";
 		} else {
 			workdir = workdir + reference + "/";
@@ -114,21 +112,20 @@ public class GalaxyAltSeqGenerator {
 		}
 
 		try {
-			
-			
+
 			BufferedWriter bwsnp = new BufferedWriter(new FileWriter(outdir + "locuslist.bed"));
-			for(String interval:intervals.values()) {
-				String cols[]=interval.split("\\:");
-				String cols2[]=cols[1].split("\\-");
-				bwsnp.append( cols[0]+"\t"+  (Integer.parseInt(cols2[0])-1)+"\t"+cols2[1]+"\n");
+			for (String interval : intervals.values()) {
+				String cols[] = interval.split("\\:");
+				String cols2[] = cols[1].split("\\-");
+				bwsnp.append(cols[0] + "\t" + (Integer.parseInt(cols2[0]) - 1) + "\t" + cols2[1] + "\n");
 			}
 			bwsnp.close();
-			
-			String status=runWorkflow_vcf2fasta_by_gffmerge_gatk("http://13.229.217.149:8080", 
-					"6a3612b1923b952e7d749b51eb5e0175",
-					jobid, new File(outdir + "locuslist.bed"),new File(varlistpath),
-					  new File(outdir + jobid + ".zip"),reference,sync);
-			return new String[] {status,null};
+
+			String status = runWorkflow_vcf2fasta_by_gffmerge_gatk(
+					"http://" + AppContext.getGalaxyIPAddress() + ":8080", "6a3612b1923b952e7d749b51eb5e0175", jobid,
+					new File(outdir + "locuslist.bed"), new File(varlistpath), new File(outdir + jobid + ".zip"),
+					reference, sync);
+			return new String[] { status, null };
 //			
 //			while(true) {
 //				String status=runWorkflow_vcf2fasta_by_gffmerge_gatk(AppContext.getGalaxyAddress(), 
@@ -161,56 +158,55 @@ public class GalaxyAltSeqGenerator {
 //			
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			return new String[] {JobsFacade.JOBSTATUS_ERROR,ex.getMessage()};
+			return new String[] { JobsFacade.JOBSTATUS_ERROR, ex.getMessage() };
 		}
 
 	}
-	
+
 	void writeStatus(String status) {
 		jobsfacade = (JobsFacade) AppContext.checkBean(jobsfacade, "JobsFacade");
 		jobsfacade.setStatus(new File(outdir).getName() + ".status", status);
 	}
 
+	public static Object exists(Collection c, String id) {
+		for (Object co : c) {
+			if (((History) co).getName().equals(id)) {
+				return co;
+			}
+		}
+		return null;
+	}
 
-	  public static Object exists(Collection c, String id) {
-		  for(Object co:c) {
-			  if( ((History)co).getName().equals(id)) {
-				  return co;
-			  }
-		  }
-		  return null;
-	  }
-	  
-	  public  String  runWorkflow_vcf2fasta_by_gffmerge_gatk(final String url, final String apiKey,
-			  String jobid, File snplist, File samplelist, File outfile,String ref,boolean sync) throws Exception {
-		  galaxy = (GalaxyFacade) AppContext.checkBean(galaxy, "GalaxyFacade");
-		  
-		  GalaxyInstance instance = GalaxyInstanceFactory.get(url, apiKey);
-		  WorkflowsClient workflowsClient = instance.getWorkflowsClient();
-		  Workflow matchingWorkflow=null;
-		  for(Workflow wf:workflowsClient.getWorkflows()) {
-			  if(wf.getName().equals("vcf2fasta")) matchingWorkflow=wf;
-				  
-		  }
-		  Map mapInputname2Filename=new HashMap();
-		  mapInputname2Filename.put("locuslist", new String[] {snplist.getAbsolutePath(), "data_input","0"});
-		  mapInputname2Filename.put("samplelist", new String[] {samplelist.getAbsolutePath(), "data_input","1"});
-		  mapInputname2Filename.put("reference", new String[] {ref, "text","vcf2fasta_tabgatk"});
-		  
-		  
-		  if(sync) {
-			  String status[]=galaxy.runWorkflow(matchingWorkflow, mapInputname2Filename, jobid);
-			  return status[0];
-		  } else {
-			  String status[]=galaxy.runWorkflowAsync(matchingWorkflow, mapInputname2Filename, jobid);
-			  return status[0];
-		  }
-		  
-		  //return galaxy.runWorkflow(matchingWorkflow, mapInputname2Filename, jobid, outfile);
-			
-	  }
-	  
-	  
+	public String runWorkflow_vcf2fasta_by_gffmerge_gatk(final String url, final String apiKey, String jobid,
+			File snplist, File samplelist, File outfile, String ref, boolean sync) throws Exception {
+		galaxy = (GalaxyFacade) AppContext.checkBean(galaxy, "GalaxyFacade");
+
+		GalaxyInstance instance = GalaxyInstanceFactory.get(url, apiKey);
+		WorkflowsClient workflowsClient = instance.getWorkflowsClient();
+		Workflow matchingWorkflow = null;
+		for (Workflow wf : workflowsClient.getWorkflows()) {
+			if (wf.getName().equals("vcf2fasta"))
+				matchingWorkflow = wf;
+
+		}
+		Map mapInputname2Filename = new HashMap();
+		mapInputname2Filename.put("locuslist", new String[] { snplist.getAbsolutePath(), "data_input", "0" });
+		mapInputname2Filename.put("samplelist", new String[] { samplelist.getAbsolutePath(), "data_input", "1" });
+		mapInputname2Filename.put("reference", new String[] { ref, "text", "vcf2fasta_tabgatk" });
+
+		if (sync) {
+			String status[] = galaxy.runWorkflow(matchingWorkflow, mapInputname2Filename, jobid);
+			return status[0];
+		} else {
+			String status[] = galaxy.runWorkflowAsync(matchingWorkflow, mapInputname2Filename, jobid);
+			return status[0];
+		}
+
+		// return galaxy.runWorkflow(matchingWorkflow, mapInputname2Filename, jobid,
+		// outfile);
+
+	}
+
 //	  public  String  runWorkflow_vcf2fasta_by_gffmerge_gatk_orig(final String url, final String apiKey,
 //			  String jobid, File snplist, File samplelist, File outfile) throws Exception {
 //	    final GalaxyInstance instance = GalaxyInstanceFactory.get(url, apiKey);
@@ -335,5 +331,5 @@ public class GalaxyAltSeqGenerator {
 //	    
 //	    
 //	  }
-	
+
 }

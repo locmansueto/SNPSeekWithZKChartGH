@@ -29,7 +29,7 @@ public class HaplotypeImageRHeatmapServiceImpl implements HaplotypeImageService 
 
 	@Override
 	public void HaplotypeImageService(String distdir) {
-		
+
 		this.destdir = destdir;
 	}
 
@@ -47,7 +47,6 @@ public class HaplotypeImageRHeatmapServiceImpl implements HaplotypeImageService 
 	public boolean createImage(String pedfile, String mapfile, String summaryfile, String format, List<Locus> listLocus,
 			boolean genomic_coords, double resolution, double local_weight, int kgroup, double kheight,
 			String autogroup, String imagesize) {
-		
 
 		boolean success = false;
 		try {
@@ -65,7 +64,7 @@ public class HaplotypeImageRHeatmapServiceImpl implements HaplotypeImageService 
 			else if (AppContext.isPollux())
 				system = "pollux";
 
-			// File fileScript=new File(AppContext.getFlatfilesDir() + "geno_heatmap.R");
+			// File fileScript = new File(AppContext.getFlatfilesDir() + "geno_heatmap.R");
 			File fileScript = new File(AppContext.getHaploscriptsDir() + "geno_heatmap.R");
 			File fileDest = new File(destdir);
 			File fileR = new File(AppContext.getPathToR());
@@ -169,7 +168,7 @@ public class HaplotypeImageRHeatmapServiceImpl implements HaplotypeImageService 
 			 */
 
 			bwlog.append("executing: " + cmdline);
-			AppContext.debug("executing: " + cmdline);
+			System.out.println("executing: " + cmdline);
 
 			// ProcessBuilder pbvcf = new ProcessBuilder("tabix", "-h",
 			// "http://s3.amazonaws.com/3kricegenome/" + line, intvals);
@@ -283,7 +282,7 @@ public class HaplotypeImageRHeatmapServiceImpl implements HaplotypeImageService 
 					+ fileDest.getAbsolutePath();
 
 			bwlog.append("\nexecuting: " + cmdline);
-			AppContext.debug("executing: " + cmdline);
+			System.out.println("executing: " + cmdline);
 
 			bwlog.close();
 

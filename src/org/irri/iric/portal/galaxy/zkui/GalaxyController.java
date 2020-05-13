@@ -576,8 +576,8 @@ public class GalaxyController extends SelectorComposer<Window> {
 		} catch (EmptyInputException ex) {
 			ex.printStackTrace();
 			Messagebox.show(ex.toString(), "ERROR", Messagebox.OK, Messagebox.EXCLAMATION);
-		} 
-		
+		}
+
 //		catch (Exception ex) {
 //			ex.printStackTrace();
 //			Messagebox.show(ex.getMessage(), "ERROR", Messagebox.OK, Messagebox.EXCLAMATION);
@@ -602,14 +602,15 @@ public class GalaxyController extends SelectorComposer<Window> {
 			joblink.setParent(vboxProgress);
 		}
 
-		if (historyid != null) {
-			A link = new A();
-			link.setLabel("Galaxy link: " + customcontroller.getGalaxyAddress(AppContext.getGalaxyInstance())
-					+ "/histories/view?id=" + historyid);
-			link.setHref(customcontroller.getGalaxyHistoryViewLink(AppContext.getGalaxyInstance(), historyid));
-			link.setTarget("_blank");
-			link.setParent(vboxProgress);
-		}
+		// Removed link
+		/*
+		 * if (historyid != null) { A link = new A(); link.setLabel("Galaxy link: " +
+		 * customcontroller.getGalaxyAddress(AppContext.getGalaxyInstance()) +
+		 * "/histories/view?id=" + historyid);
+		 * link.setHref(customcontroller.getGalaxyHistoryViewLink(AppContext.
+		 * getGalaxyInstance(), historyid)); link.setTarget("_blank");
+		 * link.setParent(vboxProgress); }
+		 */
 		Hbox h = new Hbox();
 		h.setHeight("15px");
 		h.setParent(vboxProgress);

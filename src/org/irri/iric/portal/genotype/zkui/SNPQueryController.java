@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.Callable;
@@ -47,7 +46,6 @@ import org.irri.iric.portal.admin.AsyncJobImpl;
 import org.irri.iric.portal.admin.AsyncJobReport;
 import org.irri.iric.portal.admin.JobsFacade;
 import org.irri.iric.portal.admin.WorkspaceFacade;
-import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
 import org.irri.iric.portal.domain.CvTermUniqueValues;
 import org.irri.iric.portal.domain.Gene;
 import org.irri.iric.portal.domain.GenotypeRunPlatform;
@@ -79,7 +77,6 @@ import org.irri.iric.portal.genotype.VariantTable;
 import org.irri.iric.portal.genotype.service.IndelStringHDF5nRDBMSHybridService;
 //import org.irri.iric.portal.genotype.service.IndelStringService;
 import org.irri.iric.portal.genotype.service.VariantAlignmentTableArraysImpl;
-
 /*
 import org.irri.iric.portal.genotype.service.GenotypeFacadeImpl;
 import org.irri.iric.portal.genotype.views.Snp2lines;
@@ -93,21 +90,16 @@ import org.irri.iric.portal.genotype.views.ViewSnpAllvarsPosId;
 */
 import org.irri.iric.portal.variety.VarietyFacade;
 import org.irri.iric.portal.variety.service.Data;
-import org.irri.iric.portal.variety.service.VarietyFacadeChadoImpl;
 import org.irri.iric.portal.variety.zkui.VarietyQueryController;
 import org.irri.iric.portal.zk.ListboxMessageBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.zkoss.chart.AxisLabels;
-import org.zkoss.chart.Chart;
 import org.zkoss.chart.Charts;
-import org.zkoss.chart.ChartsClickEvent;
 import org.zkoss.chart.ChartsEvent;
 import org.zkoss.chart.ChartsSelectionEvent;
-import org.zkoss.chart.Color;
 import org.zkoss.chart.Legend;
 import org.zkoss.chart.PlotLine;
 import org.zkoss.chart.Point;
@@ -119,84 +111,64 @@ import org.zkoss.chart.XAxis;
 import org.zkoss.chart.YAxis;
 import org.zkoss.chart.model.BoxPlotModel;
 import org.zkoss.chart.model.CategoryModel;
-import org.zkoss.chart.model.ChartsModel;
 import org.zkoss.chart.model.DefaultBoxPlotModel;
 import org.zkoss.chart.model.DefaultCategoryModel;
 import org.zkoss.chart.plotOptions.ColumnPlotOptions;
-import org.zkoss.chart.plotOptions.LinePlotOptions;
-import org.zkoss.chart.plotOptions.ScatterPlotOptions;
 import org.zkoss.json.JavaScriptValue;
 import org.zkoss.lang.Objects;
-//import org.zkoss.addon.Biglistbox;
-//import org.zkoss.addon.MatrixComparatorProvider;
-//import org.zkoss.addon.MatrixRenderer;
-import org.zkoss.zkmax.zul.MatrixComparatorProvider;
-import org.zkoss.zkmax.zul.MatrixModel;
-import org.zkoss.zkmax.zul.MatrixRenderer;
-import org.zkoss.zkmax.zul.Biglistbox;
-import org.zkoss.zkmax.zul.event.CellClickEvent;
-import org.zkoss.zkmax.zul.event.ScrollEventExt;
-import org.zkoss.zkmax.zul.event.SortEventExt;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Page;
-import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.event.ClientInfoEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.event.OpenEvent;
-import org.zkoss.zk.ui.event.SelectEvent;
-import org.zkoss.zk.ui.metainfo.EventHandler;
 //import org.zkoss.zk.ui.event.SelectEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zk.ui.util.Initiator;
-
-import org.zkoss.zkplus.spring.SpringUtil;
+import org.zkoss.zkmax.zul.Biglistbox;
+//import org.zkoss.addon.Biglistbox;
+//import org.zkoss.addon.MatrixComparatorProvider;
+//import org.zkoss.addon.MatrixRenderer;
+import org.zkoss.zkmax.zul.MatrixComparatorProvider;
+import org.zkoss.zkmax.zul.MatrixModel;
+import org.zkoss.zkmax.zul.event.CellClickEvent;
+import org.zkoss.zkmax.zul.event.ScrollEventExt;
+import org.zkoss.zkmax.zul.event.SortEventExt;
 import org.zkoss.zul.A;
 import org.zkoss.zul.Auxhead;
 import org.zkoss.zul.Auxheader;
 import org.zkoss.zul.Bandbox;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Cell;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
-import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Iframe;
-import org.zkoss.zul.Image;
 import org.zkoss.zul.Include;
-import org.zkoss.zul.Label;
 import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelExt;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listhead;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
-import org.zkoss.zul.ListitemComparator;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Paging;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
-import org.zkoss.zul.Selectbox;
 import org.zkoss.zul.SimpleListModel;
 import org.zkoss.zul.Slider;
 import org.zkoss.zul.Splitter;
@@ -206,26 +178,24 @@ import org.zkoss.zul.Tabpanel;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vbox;
 import org.zkoss.zul.Window;
-import org.zkoss.zul.event.ListDataListener;
-import org.zkoss.zul.event.PagingEvent;
-import org.zkoss.zul.ext.Selectable;
 
-import com.lowagie.text.ListItem;
-
-import org.forester.application.phyloxml_converter;
-
-import org.zkoss.zkplus.spring.SpringUtil;
-import javax.servlet.http.HttpSession;
-import org.irri.iric.portal.genotype.GenotypeFacade;
-import org.irri.iric.portal.admin.WorkspaceFacade;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.irri.iric.portal.genotype.zkui.FakerMatrixModel;
-import org.irri.iric.portal.AppContext;
-import org.irri.iric.portal.variety.VarietyFacade;
-import org.irri.iric.portal.dao.SnpsAllvarsPosDAO;
-import java.util.List;
-import java.util.ArrayList;
-import org.irri.iric.portal.genotype.zkui.GenotypeRunPlatformListItemsRenderer;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.ec2.AmazonEC2;
+import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
+import com.amazonaws.services.ec2.model.AuthorizeSecurityGroupIngressRequest;
+import com.amazonaws.services.ec2.model.CreateKeyPairRequest;
+import com.amazonaws.services.ec2.model.CreateKeyPairResult;
+import com.amazonaws.services.ec2.model.CreateSecurityGroupRequest;
+import com.amazonaws.services.ec2.model.CreateSecurityGroupResult;
+import com.amazonaws.services.ec2.model.Instance;
+import com.amazonaws.services.ec2.model.InstanceType;
+import com.amazonaws.services.ec2.model.IpPermission;
+import com.amazonaws.services.ec2.model.IpRange;
+import com.amazonaws.services.ec2.model.KeyPair;
+import com.amazonaws.services.ec2.model.RunInstancesRequest;
+import com.amazonaws.services.ec2.model.RunInstancesResult;
 
 @Controller
 @Scope(value = "session")
@@ -1051,6 +1021,28 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 	@Listen("onSelect =#tabGalaxy")
 	public void onselectTabgalaxy() {
 
+		/*
+		 * System.out.println("Start AWS instance"); BasicAWSCredentials awsCreds = new
+		 * BasicAWSCredentials("AKIA4ULUT3ZVII6VURSJ",
+		 * "cNtA26jxPPLujOTDZE/xS/6XL0db05zUiCUCiRIl");
+		 * 
+		 * AmazonEC2 client = AmazonEC2ClientBuilder.standard().withCredentials(new
+		 * AWSStaticCredentialsProvider(awsCreds))
+		 * .withRegion(Regions.AP_SOUTHEAST_1).build();
+		 * 
+		 * createSecurityGroup(client);
+		 * 
+		 * // String key = createKey(client);
+		 * 
+		 * runInstance(client);
+		 * 
+		 * System.out.println("instance Running");
+		 * 
+		 * /
+		 ************************/
+
+		AppContext.startGalaxy();
+		
 		GenotypeQueryParams p = fillGenotypeQueryParams();
 		String filename = "snp3kvars-" + queryFilename();
 		Object2StringMultirefsMatrixModel matrixmodel = (Object2StringMultirefsMatrixModel) biglistboxArray.getModel();
@@ -1088,6 +1080,59 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 
 		// includeGalaxy.invalidate();
 		// iframeGalaxy.setSrc("galaxy.zul?embed=genotype");
+	}
+
+	private void runInstance(AmazonEC2 client) {
+
+		RunInstancesRequest runInstancesRequest = new RunInstancesRequest();
+
+		runInstancesRequest.withImageId("ami-0c576d4e541a6937f").withInstanceType(InstanceType.T2Medium).withMinCount(1)
+				.withMaxCount(1).withKeyName("DevSNPSeek").withSecurityGroups("SNPSeekGalaxy-JavaSecurityGroup2");
+
+		RunInstancesResult result = client.runInstances(runInstancesRequest);
+
+		Instance instance = result.getReservation().getInstances().get(0);
+
+	}
+
+	private String createKey(AmazonEC2 client) {
+		CreateKeyPairRequest createKeyPairRequest = new CreateKeyPairRequest();
+
+		createKeyPairRequest.withKeyName("SNPseekRiceGalaxyKey");
+
+		CreateKeyPairResult createKeyPairResult = client.createKeyPair(createKeyPairRequest);
+
+		KeyPair keyPair = new KeyPair();
+
+		keyPair = createKeyPairResult.getKeyPair();
+
+		return keyPair.getKeyMaterial();
+
+	}
+
+	private void createSecurityGroup(AmazonEC2 client) {
+
+		CreateSecurityGroupRequest csgr = new CreateSecurityGroupRequest();
+		csgr.withGroupName("SNPSeekGalaxy-JavaSecurityGroup2")
+				.withDescription("SNP-seek to start RiceSNP-seek galaxy instance");
+
+		CreateSecurityGroupResult createSecurityGroupResult = client.createSecurityGroup(csgr);
+
+		IpPermission ipPermission = new IpPermission();
+
+		IpRange ipRange1 = new IpRange().withCidrIp("10.0.0.0/16");
+		IpRange ipRange2 = new IpRange().withCidrIp("255.0.0.0/32");
+
+		ipPermission.withIpv4Ranges(Arrays.asList(new IpRange[] { ipRange1, ipRange2 })).withIpProtocol("tcp")
+				.withFromPort(22).withToPort(22);
+
+		AuthorizeSecurityGroupIngressRequest authorizeSecurityGroupIngressRequest = new AuthorizeSecurityGroupIngressRequest();
+
+		authorizeSecurityGroupIngressRequest.withGroupName("SNPSeekGalaxy-JavaSecurityGroup2")
+				.withIpPermissions(ipPermission);
+
+		client.authorizeSecurityGroupIngress(authorizeSecurityGroupIngressRequest);
+
 	}
 
 	public void onselectTabgalaxy2() {

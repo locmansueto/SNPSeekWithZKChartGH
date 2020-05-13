@@ -29,9 +29,14 @@
 
 		<script>
 
+
+			
 			<![CDATA[ function afterValidate(response){
 			zk.Widget.$('$recaptcha').fire('onUserRespond',{'response':response},
 			{toServer:true}); } ]]>
+			
+			
+			
 		</script>
 
 		<hbox height="15px" />
@@ -77,7 +82,8 @@
 							</hlayout>
 
 							<button width="85px" id="attachBtn"
-								upload="true,maxsize=10240" label="Attach" onUpload="addItem()" />
+								upload="true,maxsize=10240,multiple=true" label="Attach"
+								onUpload="addItem()" />
 							<textbox id="textboxTitle2" hflex="1"
 								Value="NOTE: Attachments will be scan for virus and malicious attacks. This may take a while."
 								readonly="true" />
@@ -105,85 +111,106 @@
 			<button>Reset</button>
 		</div>
 		<zscript><![CDATA[
-		import java.io.File;
-		import java.io.FileOutputStream;
-		import java.util.Map;
-		import java.util.concurrent.TimeUnit;
-		import org.irri.iric.portal.AppContext;
-		import me.vighnesh.api.virustotal.VirusTotalAPI;
-		import me.vighnesh.api.virustotal.dao.FileScan;
-		import me.vighnesh.api.virustotal.dao.FileScanMetaData;
-		import me.vighnesh.api.virustotal.dao.FileScanReport;
-		import java.io.FileNotFoundException;
-		import java.io.IOException;
-		import me.vighnesh.api.virustotal.net.http.PublicAPIRequestRateLimitExceededException;
-		void addItem() {
-			org.zkoss.util.media.Media media = event.getMedia();
-	
-			if (media instanceof org.zkoss.image.Image) {
-	
-				String path = AppContext.getFlatfilesDir();
-				File file = new File(path + media.getName());
-				file.createNewFile();
-	
-				FileOutputStream outputStream = new FileOutputStream(file);
-				outputStream.write(media.getByteData());
-				outputStream.close();
-	
-				// SCAN FILE
-	
-				try {
-	
-					VirusTotalAPI virusTotal = VirusTotalAPI
-							.configure("34686f8603548ba3ee358f6396331ac97839d2785d17f7a6c137a6390d7d35c5");
-					FileScanMetaData scanFile = virusTotal.scanFile(file);
-	
-					System.out.println(scanFile.getMD5());
-					System.out.println("Getting Response Code: " + scanFile.getResponseCode());
-					FileScanReport fileReport = null;
-	
-					boolean resultRetrieve = false;
-					Map scans = null;
-	
-					int tries = 0;
-					while (!resultRetrieve && tries < 10) {
-						fileReport = virusTotal.getFileReport(scanFile.getMD5());
-						System.out.println("Query for result");
+	import java.io.File;
+	import java.io.FileOutputStream;
+	import java.util.Map;
+	import java.util.concurrent.TimeUnit;
+	import org.irri.iric.portal.AppContext;
+	import me.vighnesh.api.virustotal.VirusTotalAPI;
+	import me.vighnesh.api.virustotal.dao.FileScan;
+	import me.vighnesh.api.virustotal.dao.FileScanMetaData;
+	import me.vighnesh.api.virustotal.dao.FileScanReport;
+	import java.io.FileNotFoundException;
+	import java.io.IOException;
+	import me.vighnesh.api.virustotal.net.http.PublicAPIRequestRateLimitExceededException;
+	int totalVirus;
+	void addItem() {
+		org.zkoss.util.media.Media[] imgUploads = event.getMedias();
+
+		int numImages = 1;
+
+		if (imgUploads.length <= 4 || flist.getChildren().size() < 5) {
+
+			totalVirus = imgUploads.length;
+
+			System.out.println("total imgs: " + totalVirus);
+
+			for (org.zkoss.util.media.Media img : imgUploads) {
+
+				final org.zkoss.util.media.Media media = img;
+
+				final int imgId = numImages;
+
+				if (media instanceof org.zkoss.image.Image) {
+
+					final String path = AppContext.getFlatfilesDir();
+
+					final File file = new File(path + media.getName());
+					file.createNewFile();
+					System.out.println(path + media.getName());
+
+					FileOutputStream outputStream = new FileOutputStream(file);
+					outputStream.write(media.getByteData());
+					outputStream.close();
+
+					try {
+						boolean image = true;
+
+						// SCAN FILE
+
 						try {
-							scans = fileReport.getScans();
-							resultRetrieve = true;
-						} catch (NullPointerException e) {
-							System.out.println("waiting.. try.." + tries);
-							TimeUnit.SECONDS.sleep(30);
-							tries++;
-						}
-					}
-	
-					System.out.println("quit querying Loop");
-	
-					if (resultRetrieve) {
-						System.out.println("retrieved");
-						boolean isClean = true;
-	
-						for (String scan : scans.keySet()) {
-							FileScan report = scans.get(scan);
-							if (report.isDetected()) {
-								org.zkoss.zul.Messagebox.show("Attachment found to be malicious");
-								isClean = false;
-							}
-	
-						}
-	
-						if (isClean) {
-							if (flist.getChildren().size() <= 4) {
+
+							//							System.out.println("Scanning: ");
+							//							VirusTotalAPI virusTotal = VirusTotalAPI
+							//									.configure("34686f8603548ba3ee358f6396331ac97839d2785d17f7a6c137a6390d7d35c5");
+							//							FileScanMetaData scanFile = virusTotal.scanFile(file);
+							//
+							//							FileScanReport fileReport = null;
+							//
+							//							boolean resultRetrieve = true;
+							//							Map scans = null;
+							//
+							//							int tries = 0;
+							//
+							//							System.out.println("Retrieving results ");
+							//							while (!resultRetrieve && tries < 10) {
+							//								fileReport = virusTotal.getFileReport(scanFile.getMD5());
+							//								try {
+							//									scans = fileReport.getScans();
+							//									resultRetrieve = true;
+							//								} catch (NullPointerException e) {
+							//									System.out.println("Image ID: " + imgId + " is still being scan.. " + tries);
+							//									TimeUnit.SECONDS.sleep(30);
+							//									tries++;
+							//								}
+							//							}
+							//
+							//							
+							//							System.out.println("Checking if result is Retrieved..");
+							//							if (resultRetrieve) {
+							//								System.out.println("Image retrieved with id: " + imgId);
+							//								boolean isClean = true;
+							//
+							//								for (String scan : scans.keySet()) {
+							//									FileScan report = scans.get(scan);
+							//									if (report.isDetected()) {
+							//										org.zkoss.zul.Messagebox.show("Attachment found to be malicious");
+							//										isClean = false;
+							//									}
+							//
+							//								}
+
+							if (true) {
+
+								System.out.println("Rendering....");
 								Hlayout hl = new Hlayout();
 								hl.setSpacing("6px");
 								hl.setClass("newFile");
-	
+
 								//hl.appendChild(new Label(file.getAbsolutePath()).setVisible(false));
-								Label path = new Label(file.getAbsolutePath());
-								path.setVisible(false);
-								hl.appendChild(path);
+								Label aPath = new Label(file.getAbsolutePath());
+								aPath.setVisible(false);
+								hl.appendChild(aPath);
 								hl.appendChild(new Label(media.getName()));
 								//hl.appendChild(new Progressmeter(50));
 								A rm = new A("remove item");
@@ -194,33 +221,43 @@
 								});
 								hl.appendChild(rm);
 								flist.appendChild(hl);
-							} else {
-								org.zkoss.zul.Messagebox.show("Can only attach 4 images at a time.");
-	
+
 							}
+							//							} else {
+							//								org.zkoss.zul.Messagebox.show(
+							//										"Scanning for virus/malware is taking a long time. Pls Try attaching the image again later.");
+							//							}
+
+						} catch (FileNotFoundException e) {
+							org.zkoss.zul.Messagebox.show("Cannot find your image attachment.");
+
+						} catch (PublicAPIRequestRateLimitExceededException e) {
+							org.zkoss.zul.Messagebox.show(
+									"Attachment failed. Limit has been reached. Please try again later if you like to include image attachments");
+						} catch (IOException e) {
+
 						}
-					} else {
-						org.zkoss.zul.Messagebox.show(
-								"Scanning for virus/malware is taking a long time. Pls Try attaching the image again later.");
+
+						// END SCAN
+
+					} catch (Exception e) {
 					}
-	
-				} catch (FileNotFoundException e) {
-					org.zkoss.zul.Messagebox.show("Cannot find your image attachment.");
-	
-				} catch (PublicAPIRequestRateLimitExceededException e) {
-					org.zkoss.zul.Messagebox
-							.show("Attachment failed. Please try again later if you like to include image attachments");
-				} catch (IOException e) {
-	
+
+				} else {
+					org.zkoss.zul.Messagebox.show("Only Accepts image file.");
 				}
 
-			// END SCAN
-	
-			} else {
-				org.zkoss.zul.Messagebox.show("Only Accepts image file.");
 			}
-	
+
+		} else {
+			org.zkoss.zul.Messagebox.show("Can only attach 4 images at a time.");
+
 		}
+	}
+	void appendElement(Hlayout hl) {
+		System.out.println("Appending element");
+		flist.appendChild(hl);
+	}
 ]]></zscript>
 
 	</window>

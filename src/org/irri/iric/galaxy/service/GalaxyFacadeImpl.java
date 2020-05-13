@@ -3,7 +3,6 @@ package org.irri.iric.galaxy.service;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +31,18 @@ import org.springframework.stereotype.Service;
 //import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Messagebox;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.ec2.AmazonEC2;
+import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
+import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
+import com.amazonaws.services.ec2.model.DescribeInstancesResult;
+import com.amazonaws.services.ec2.model.Instance;
+import com.amazonaws.services.ec2.model.Reservation;
+import com.amazonaws.services.ec2.model.StartInstancesRequest;
+import com.amazonaws.services.ec2.model.StartInstancesResult;
+import com.amazonaws.services.elasticmapreduce.model.InstanceState;
 //import com.github.jmchilton.blend4j.galaxy.DefaultWebResourceFactoryImpl;
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstanceFactory;
@@ -39,19 +50,17 @@ import com.github.jmchilton.blend4j.galaxy.HistoriesClient;
 import com.github.jmchilton.blend4j.galaxy.JobsClient;
 import com.github.jmchilton.blend4j.galaxy.MyGalaxyInstanceFactory;
 import com.github.jmchilton.blend4j.galaxy.ToolsClient;
+import com.github.jmchilton.blend4j.galaxy.ToolsClient.FileUploadRequest;
 //import com.github.jmchilton.blend4j.galaxy.WebResourceFactory;
 import com.github.jmchilton.blend4j.galaxy.WorkflowsClient;
-import com.github.jmchilton.blend4j.galaxy.ToolsClient.FileUploadRequest;
 import com.github.jmchilton.blend4j.galaxy.beans.Dataset;
 import com.github.jmchilton.blend4j.galaxy.beans.History;
 import com.github.jmchilton.blend4j.galaxy.beans.HistoryContents;
-import com.github.jmchilton.blend4j.galaxy.beans.HistoryExport;
 import com.github.jmchilton.blend4j.galaxy.beans.Job;
 import com.github.jmchilton.blend4j.galaxy.beans.OutputDataset;
 import com.github.jmchilton.blend4j.galaxy.beans.Tool;
 import com.github.jmchilton.blend4j.galaxy.beans.ToolExecution;
 import com.github.jmchilton.blend4j.galaxy.beans.ToolInputs;
-import com.github.jmchilton.blend4j.galaxy.beans.ToolParameter;
 import com.github.jmchilton.blend4j.galaxy.beans.ToolSection;
 import com.github.jmchilton.blend4j.galaxy.beans.Workflow;
 import com.github.jmchilton.blend4j.galaxy.beans.WorkflowDetails;
@@ -59,8 +68,8 @@ import com.github.jmchilton.blend4j.galaxy.beans.WorkflowInputDefinition;
 import com.github.jmchilton.blend4j.galaxy.beans.WorkflowInputs;
 import com.github.jmchilton.blend4j.galaxy.beans.WorkflowOutputs;
 import com.github.jmchilton.blend4j.galaxy.beans.WorkflowStepDefinition;
-import com.github.jmchilton.blend4j.galaxy.beans.WorkflowStepDefinition.WorkflowStepOutput;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.mail.iap.ConnectionException;
 
 @Service("GalaxyFacade")
 // @EnableAsync
@@ -1304,8 +1313,9 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 
 			AppContext.debug("reading " + AppContext.getHostname() + AppContext.getHostDirectory()
 					+ "galaxy/galaxytools_" + AppContext.getGalaxyInstance() + ".txt");
-			BufferedReader br = AppContext.bufferedReadURL(AppContext.getHostname() +"/"+ AppContext.getHostDirectory()
-					+ "galaxy/galaxytools_" + AppContext.getGalaxyInstance() + ".txt", null);
+			BufferedReader br = AppContext.bufferedReadURL(AppContext.getHostname() + "/"
+					+ AppContext.getHostDirectory() + "galaxy/galaxytools_" + AppContext.getGalaxyInstance() + ".txt",
+					null);
 			// BufferedReader br=new BufferedReader(new
 			// FileReader(AppContext.getTomcatWebappsDir()+AppContext.getHostDirectory()
 			// +"galaxy/galaxytools_" + AppContext.getGalaxyInstance()+".txt"));
@@ -2443,18 +2453,43 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 
 	private String[] runTool_(MyTool matchingTool, Map<String, String[]> mapInputname2Filename, String jobid,
 			boolean sync) {
-		return runToolWorkflow_(matchingTool, null, mapInputname2Filename, jobid, sync);
+
+		
+
+		String[] result = null;
+		boolean connected = false;
+		int tries = 0;
+		while (!connected && tries < 10) {
+			try {
+
+				result = runToolWorkflow_(matchingTool, null, mapInputname2Filename, jobid, sync);
+				connected = true;
+			} catch (ConnectionException e) {
+				System.out.println("NOT CONNECTED: RETRYING" + tries);
+				tries++;
+				try {
+					TimeUnit.SECONDS.sleep(5);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+
+		return result;
 
 	}
 	// mapInputname2Filename
 	// Map<paramname, String[value,type,tool_id]
 
 	private String[] runToolWorkflow_(MyTool matchingTool, Workflow matchingWorkflow,
-			Map<String, String[]> mapInputname2Filename, String jobid, boolean sync) {
+			Map<String, String[]> mapInputname2Filename, String jobid, boolean sync) throws ConnectionException {
 
 		// mapParam2Value.put( param ,new String[] {value, typestepno[0],step});
 
-		AppContext.debug("in runToolWorkflow_ ");
+		System.out.println("in runToolWorkflow_ ");
+
+		// Check if instance is running
+//		instantiateIntance();
 
 		GalaxyInstance instance = null;
 		try {
@@ -2469,7 +2504,7 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 			// AppContext.getGalaxyKey());
 
 			// Find history
-			final HistoriesClient historyClient = instance.getHistoriesClient();
+			HistoriesClient historyClient = instance.getHistoriesClient();
 
 			History histNewjob = (History) exists(historyClient.getHistories(), jobid);
 			if (histNewjob != null) {
@@ -2815,7 +2850,30 @@ public class GalaxyFacadeImpl implements GalaxyFacade {
 
 	private String[] runWorkflow_(Workflow matchingWorkflow, Map<String, String[]> mapInputname2Filename, String jobid,
 			boolean sync) {
-		return runToolWorkflow_(null, matchingWorkflow, mapInputname2Filename, jobid, sync);
+
+		
+
+		String[] result = null;
+		boolean connected = false;
+		int tries = 0;
+		while (!connected && tries < 10) {
+			try {
+
+				result = runToolWorkflow_(null, matchingWorkflow, mapInputname2Filename, jobid, sync);
+				connected = true;
+			} catch (ConnectionException e) {
+				System.out.println("NOT CONNECTED: RETRYING" + tries);
+				tries++;
+				try {
+					TimeUnit.SECONDS.sleep(10);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+
+		return result;
 	}
 
 	// returns galaxy status (ok,new,running, etc), historyid

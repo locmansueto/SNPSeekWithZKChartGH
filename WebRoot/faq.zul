@@ -1,0 +1,106 @@
+<?page title="Report A Bug" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:c="client" xmlns:x="xhtml">
+	<style>
+
+		.z-loading { background-color:#808080; border:1px outset
+		#A0A0A0; font-weight: bold; padding:2px;
+
+		cursor: wait; top: 50%; left: 45% !important; align: center;
+		vertical-align: middle;
+
+		position: fixed; margin-left: auto; margin-right: auto; display:
+		block;
+
+
+		} .z-loading-indicator { color: gray; border:0 none;
+
+		width: 100%; height: 100%;
+
+		}
+
+		.z-loading { top: 50% !important; left: 45% !important; align:
+		center; vertical-align: middle; }
+
+	</style>
+	<window border="none">
+
+		<div>
+			<hbox height="15px" />
+		</div>
+		<div>
+			<vlayout>
+				<div align="center">
+					<label value="FREQUENTLY ASKED QUESTIONS"
+						style="font-size:20px;font-weight:bold;color:green;" />
+					<hbox height="10px" />
+
+				</div>
+			</vlayout>
+			<div>
+				<hbox height="25px" />
+			</div>
+			<div align="center">
+				<vlayout>
+					<tabbox id="tb" width="75%" height="380px"
+						mold="accordion">
+						<tabs>
+							<tab label="Sequence Download"
+								style="background-color: lightgreen;" />
+							<tab label="Haplotype Viewer"
+								style="background-color: lightgreen;" />
+							<tab label="Reporting Bugs"
+								style="background-color: lightgreen;" />
+						</tabs>
+						<tabpanels>
+							<tabpanel>
+								<div>
+									<tabbox id="seqDownload" width="95%"
+										height="380px" mold="accordion">
+										<tabs>
+
+											<tab
+												label="Description of what sequence that they will be1 downloading"
+												style="background-color: lightgray;" />
+											<tab
+												label="Description of what sequence that they will be 3downloading"
+												style="background-color: lightgray;" />
+											<tab
+												label="Description of what sequence that they will be downloading"
+												style="background-color: lightgray;" />
+
+										</tabs>
+										<tabpanels>
+											<tabpanel>
+												<div align="left">
+													<hlayout>
+														This is where
+														the answer
+														go......
+													</hlayout>
+												</div>
+											</tabpanel>
+											<tabpanel>
+
+											</tabpanel>
+											<tabpanel>
+
+											</tabpanel>
+										</tabpanels>
+									</tabbox>
+								</div>
+							</tabpanel>
+							<tabpanel>
+
+							</tabpanel>
+							<tabpanel>
+
+							</tabpanel>
+						</tabpanels>
+					</tabbox>
+				</vlayout>
+			</div>
+
+		</div>
+
+	</window>
+</zk>
