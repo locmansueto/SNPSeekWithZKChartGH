@@ -199,9 +199,8 @@ import com.amazonaws.services.ec2.model.RunInstancesResult;
 
 @Controller
 @Scope(value = "session")
-// @SessionAttributes({"GenotypeFacade","VarietyFacade","variantdata","queryparams","newick","phyloorder"})
 
-public class SNPQueryController extends SelectorComposer<Window> { // <Component> { //implements Initiator {
+public class SNPQueryController extends SelectorComposer<Window> {
 
 	private static final long serialVersionUID = 1L;
 	private static final Log log = LogFactory.getLog(SNPQueryController.class);
@@ -1042,7 +1041,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 		 ************************/
 
 		AppContext.startGalaxy();
-		
+
 		GenotypeQueryParams p = fillGenotypeQueryParams();
 		String filename = "snp3kvars-" + queryFilename();
 		Object2StringMultirefsMatrixModel matrixmodel = (Object2StringMultirefsMatrixModel) biglistboxArray.getModel();
@@ -6940,6 +6939,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				Integer ord = itOrder.next();
 				BigDecimal varid = mapord2var.get(ord);
 				Variety var = mapId2Var.get(varid);
+
 				bw.append("\"").append(var.getName()).append("\"").append("\t");
 
 				String irisid = var.getIrisId();
@@ -6971,6 +6971,7 @@ public class SNPQueryController extends SelectorComposer<Window> { // <Component
 				bw.append("\t").append(var.getSubpopulation()).append("\t")
 						.append(formatter.format(mapVarid2Score.get(varid))).append("\t")
 						.append(mapVarid2Columns.get(varid).toString()).append("\n");
+
 			}
 
 			bw.flush();

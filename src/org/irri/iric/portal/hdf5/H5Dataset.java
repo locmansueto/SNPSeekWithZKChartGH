@@ -209,7 +209,7 @@ public class H5Dataset implements SnpsStringDAO {
 			int varids[] = new int[orderedVarids.size()];
 			int icount = 0;
 			while (itVarid.hasNext()) {
-				if (mapSampleId2Idx == null)
+				if (mapSampleId2Idx == null || mapSampleId2Idx.isEmpty())
 					varids[icount] = itVarid.next().intValue() - varid_offset;
 				else
 					varids[icount] = mapSampleId2Idx.get(itVarid.next().intValue() - varid_offset).intValue();
@@ -265,7 +265,7 @@ public class H5Dataset implements SnpsStringDAO {
 			int icount = 0;
 			while (itVarid.hasNext()) {
 				// varids[icount]=itVarid.next().intValue()-varid_offset;
-				if (mapSampleId2Idx == null)
+				if (mapSampleId2Idx == null || mapSampleId2Idx.isEmpty())
 					varids[icount] = itVarid.next().intValue() - varid_offset;
 				else
 					varids[icount] = mapSampleId2Idx.get(itVarid.next().intValue() - varid_offset).intValue();

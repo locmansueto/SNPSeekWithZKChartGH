@@ -59,15 +59,7 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 import org.irri.iric.portal.CreateZipMultipleFiles;
 
-//@Secured("ROLE_IRRIUSER")
 @Service("GenotypeFacade")
-
-// The scope of this class is Session, it keeps a set of state variables for
-// results from previous Request within the Session
-// @Scope(value="session", proxyMode = ScopedProxyMode.INTERFACES)
-// @Scope(value="session", proxyMode = ScopedProxyMode.INTERFACES)
-
-// @EnableAsync
 public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 
 	@Override
