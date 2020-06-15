@@ -79,12 +79,7 @@
 					<menuitem src="/images/iric/genome1.png" label="IR 8" href="_jbrowse.zul?data=ir8v1&amp;tracks=IR8 DNA,ir8v1gff"/ -->
 					</menupopup>
 				</menu>
-				<!-- menuitem src="/images/iric/tree1.png" label="Tree (static)" href="_phylotree.zul"/ -->
-				<!--  menuitem src="/images/Centigrade-Widget-Icons/BriefcaseSpark-16x16.png" label="Tree (dynamic)" href="_phylotreedyn.zul"/ -->
 				
-				<!--  menuitem src="/images/iric/tree1.png" label="Tree (dynamic)" target="_blank" href="jsp/phylotreeGermplasms.jsp?scale=1&amp;varid=all"/ -->
-				<!--  menuitem src="/images/iric/tree1.png" label="Phylogenetic Tree (dynamic)" href="_phylotreedyn.zul"/ -->
-
 
 				<menu label="Phylogenetic tree" src="/images/iric/tree1.png" visible="${visiblePhylotreeStr}">
 					<menupopup>
@@ -212,6 +207,7 @@
 				<menuitem src="/images/iric/bug-32.ico" label="Report bugs" href="_bugs.zul"/> 
 				<menuitem src="/images/iric/email.png" label="Contact Us" href="_contactus.zul"/>
 				<menuitem src="/images/iric/about.png" label="Publications/Updates" href="_about.zul"/>	
+				<menuitem src="/images/iric/about.png" label="FAQs" href="_faq.zul"/>
 			</menupopup>
 		</menu>
 		

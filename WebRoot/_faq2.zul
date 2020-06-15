@@ -11,6 +11,6 @@ window.Boot_progressbox = function (){}
 <zk>
 
 
-      <include self="@define(content)" src="faq.html"/>
+      <include self="@define(content)" src="faqv1.html"/>
 	
 </zk>
