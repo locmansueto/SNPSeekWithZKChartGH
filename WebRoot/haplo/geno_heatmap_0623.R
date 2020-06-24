@@ -27,9 +27,9 @@ start.time <- Sys.time()
 
 normalize_distance=TRUE
 
-set.seed(1111)
+
 library(ggplot2)
-# require(vegan) # for Clinski
+
 
 #beanstalk
 legendpath="/var/lib/tomcat8/webapps/ROOT/haplo/legend.png"
@@ -474,9 +474,9 @@ start.time <- end.time
 usePackage("ggdendro")
 dhc <- as.dendrogram(hc) # ,hang=0.1)
 library(dendextend)
-hctree_heights = get_branches_heights(dhc)
+hctree_heights=get_branches_heights(dhc)
 
-set.seed(97531)
+
 #if(!is.na(autogroup) && autogroup!="nogroup" ) {
 if(autogroup=="pamk" || autogroup=="calinski") {
       # bend or elbow 
@@ -495,15 +495,11 @@ if(autogroup=="pamk" || autogroup=="calinski") {
         
         
       	mydata <- BB
-      	# maxk = min(15,nrow(mydata))
-        uniqmydata = unique(mydata)
-        cat("unique mydata=", nrow(uniqmydata),
-            "\nnrow(mydata)=",nrow(mydata),
-            "\nncol(mydata)=",ncol(mydata),"\n"  )
-        cat("has NA=", sum(is.na(mydata)),
-            "\nhasinf=", sum(is.infinite(mydata)), 
-            "\nhasnan=", sum(is.nan(mydata)),"\n")
-        maxk=min(15, dim(uniqmydata)[[1]] )
+      	maxk = min(15,nrow(mydata))
+        uniqmydata=unique(mydata)
+        cat("unique mydata=", nrow(uniqmydata),"\nnrow(mydata)=",nrow(mydata),"\nncol(mydata)=",ncol(mydata),"\n"  )
+        cat("has NA=", sum(is.na(mydata)),"\nhasinf=", sum(is.infinite(mydata)), "\nhasnan=", sum(is.nan(mydata)),"\n")
+        maxk=min(15,nrow(uniqmydata))
       
       
         
@@ -529,22 +525,12 @@ if(autogroup=="pamk" || autogroup=="calinski") {
         #cat("silhouette-optimal number of clusters:", ksil.best, "\n")
         #k_sil=ksil.best
       
-
-        ### Computing WSS (the "within" sum-of-squares)
-        wss <- numeric(maxk) # Initialize the vector to zeros
-        # First we compute wss[1] - scaled sum of variances of each SNP
-        # Then compute values of the Kmeans WSS for each k from 2 to maxK
-        wss[[1]] <- (nrow(mydata)-1)*sum(apply(mydata,2,var)) 
-        if(maxk >= 2){
-          for (i in 2:maxk ){
-            wss[[i]] <- sum( kmeans(mydata, centers=i)$withinss )
-          }
-        }
-
-        ## Plot the WSS
-        png( filename = paste0(pedfilename, ".kmeansSSE.png"))
-        plot(1:maxk, wss, type="b", xlab="Number of Clusters AA", ylab="Within groups sum of squares")
-        dev.off()
+      
+      png( filename = paste0(pedfilename, ".kmeansSSE.png"))
+      wss <- (nrow(mydata)-1)*sum(apply(mydata,2,var))
+        for (i in 2:maxk ) wss[i] <- sum(kmeans(mydata, centers=i)$withinss)
+      plot(1:maxk, wss, type="b", xlab="Number of Clusters AA", ylab="Within groups sum of squares")
+       dev.off()
 
       #png( filename = paste0(pedfilename, ".kmeansSSEt.png"))
       #mydata <- t(BB)
@@ -554,18 +540,17 @@ if(autogroup=="pamk" || autogroup=="calinski") {
       #dev.off()
 
       require(vegan)
-      set.seed(97531)
       png( filename = paste0(pedfilename, ".calinski.png"))
       
         tryCatch(
         {
         fit <- cascadeKM(scale( as.matrix(mydata), center = TRUE,  scale = TRUE), 1, maxk, iter = 1000)
-        h_calinski = plot(fit, sortg = TRUE, grpmts.plot = TRUE)
+        h_calinski=plot(fit, sortg = TRUE, grpmts.plot = TRUE)
 
         calinski.best <- as.numeric(which.max(fit$results[2,]))
         cat("Calinski criterion optimal number of clusters AA:", calinski.best, "\n")
-        kcalins = calinski.best
-        }, error = function(e) {
+        kcalins=calinski.best
+        }, error=function(e) {
           print("exception in cascadeKM ")
           print(e)
         }
@@ -574,12 +559,12 @@ if(autogroup=="pamk" || autogroup=="calinski") {
       dev.off()
 
       if(autogroup=='pamk') {
-        kcalc = k_pamk
+        kcalc=k_pamk
       } else if(autogroup=='calinski') {
         if(exists("kcalins")) {
-          kcalc = kcalins
+          kcalc=kcalins
           } else {
-            kcalc = k_pamk
+            kcalc=k_pamk
           }
       }
       
@@ -797,45 +782,44 @@ if(GENOMIC_COORD || SHOW_GENE) {
   
 
   if(GENOMIC_COORD) {
-    cat("# Taking GENOMIC_COORD branch.\n")
-    cat("ncol(MAsorted): ", ncol(MAsorted), " ; colnames(MAsorted): \n")
+    print("ncol(MAsorted)")
+    print(ncol(MAsorted))
      print(colnames(MAsorted))
 
-      MAgeno = matrix(NA, nrow(MAsorted),  floor((lastpos-firstpos+1)/resizeFactor) +1 )
-      cat("dim(MAgeno) : \n")
-      dimmageno = dim(MAgeno)
+      MAgeno=matrix(NA,nrow(MAsorted),  floor((lastpos-firstpos+1)/resizeFactor) +1 )
+      print("dim(MAgeno)")
+      dimmageno=dim(MAgeno)
       print(dimmageno)
       idxcount=2
-      xlabelbreaks = matrix(NA,nrow = 1, ncol = length(origcolnames))
+      xlabelbreaks=matrix(NA,1,length(origcolnames))
       for(idx in positionidx) {
-        magenoidx = floor(idx/resizeFactor) + 1
+        magenoidx=floor(idx/resizeFactor)+1
         #if(GENOMIC_COORD) {
           MAgeno[, magenoidx] = MAsorted[,idxcount]
         #} else {
         #  MAgeno[, magenoidx] = MAsorted[,idxcount-1]
         #}
-        xlabelbreaks[idxcount-1] = magenoidx
+        xlabelbreaks[idxcount-1]=magenoidx
         idxcount=idxcount+1
       }
       #magenoidx=floor(lastpos/resizeFactor)+1
       #MAgeno[, magenoidx] = MAsorted[,idxcount]
       #xlabelbreaks[idxcount-1]=magenoidx
-      cat("idxcount: ", idxcount, "\n")
-      
-      MAgeno <- as.data.frame(MAgeno)
-      MAgeno$FID <- MAsorted$FID
-      ncolmageno = ncol(MAgeno)
+      print("idxcount")
+      print(idxcount)
+      MAgeno<-as.data.frame(MAgeno)
+      MAgeno$FID<-MAsorted$FID
+      ncolmageno=ncol(MAgeno)
       #colnames(MAgeno)<-colnames(MAsorted)
       colnames(MAgeno)<- gsub( "V","",colnames(MAgeno))
-      cat("ncolmageno: ",ncolmageno, " ; colnames(MAgeno): \n" )
+      print("ncolmageno")
+      print(ncolmageno)
       print(colnames(MAgeno))
-      MAgeno<-MAgeno[ c(ncolmageno, seq(1:(ncolmageno-1)) ) ] # no comma - subsetting data frame as a list
-      # MAgeno<-MAgeno[, c(ncolmageno, seq(1:(ncolmageno-1)) ) ] # another way if no data frame conversion
-      
+      MAgeno<-MAgeno[ c(ncolmageno, seq(1:(ncolmageno-1))) ]
       print(colnames(MAgeno))
   }
 
-  bppersnp = (lastpos-firstpos)/length(positions)
+  bppersnp=(lastpos-firstpos)/length(positions)
 
     if(SHOW_GENE) {
 
