@@ -1,4 +1,4 @@
-package org.test;
+package org.irri.iric.portal.aws;
 
 public class AWSTimer {
 

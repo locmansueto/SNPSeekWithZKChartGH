@@ -1,4 +1,4 @@
-package org.test;
+package org.irri.iric.portal.aws;
 
 import java.util.ArrayList;
 import java.util.List;

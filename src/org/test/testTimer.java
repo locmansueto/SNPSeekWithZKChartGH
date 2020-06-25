@@ -1,5 +1,6 @@
 package org.test;
 
+import org.irri.iric.portal.aws.AWSTimer;
 import org.junit.Test;
 
 public class testTimer {
