@@ -1020,26 +1020,6 @@ public class SNPQueryController extends SelectorComposer<Window> {
 	@Listen("onSelect =#tabGalaxy")
 	public void onselectTabgalaxy() {
 
-		/*
-		 * System.out.println("Start AWS instance"); BasicAWSCredentials awsCreds = new
-		 * BasicAWSCredentials("AKIA4ULUT3ZVII6VURSJ",
-		 * "cNtA26jxPPLujOTDZE/xS/6XL0db05zUiCUCiRIl");
-		 * 
-		 * AmazonEC2 client = AmazonEC2ClientBuilder.standard().withCredentials(new
-		 * AWSStaticCredentialsProvider(awsCreds))
-		 * .withRegion(Regions.AP_SOUTHEAST_1).build();
-		 * 
-		 * createSecurityGroup(client);
-		 * 
-		 * // String key = createKey(client);
-		 * 
-		 * runInstance(client);
-		 * 
-		 * System.out.println("instance Running");
-		 * 
-		 * /
-		 ************************/
-
 		AppContext.startGalaxy();
 
 		GenotypeQueryParams p = fillGenotypeQueryParams();
@@ -1058,8 +1038,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			String sPhenotype = listboxPhenotype.getSelectedItem().getLabel();
 			mapParamvals.put("sample2pheno", varietyfacade.getPhenotypeValues(sPhenotype, getDataset()));
 			mapParamvals.put("phenoname", sPhenotype);
-			// AppContext.debug("onselectTabgalaxy " + getDataset() + " " + sPhenotype + "
-			// sample2pheno=" + mapParamvals.get("sample2pheno"));
+
 		}
 
 		AppContext.debug("update galaxy page");
@@ -1135,15 +1114,6 @@ public class SNPQueryController extends SelectorComposer<Window> {
 	}
 
 	public void onselectTabgalaxy2() {
-//		try {
-//			includeGalaxy.query("window > div").setVisible(true);
-//			Component c=includeGalaxy.query("#winGalaxy > #buttonWorkflows");
-//			if(c!=null) {
-//				Events.sendEvent(new Event("onClick", c));
-//			}
-//		} catch(Exception ex) {
-//			ex.printStackTrace();
-//		}
 
 		GenotypeQueryParams p = fillGenotypeQueryParams();
 		haplofilename = "snp3kvars-" + queryFilename();
@@ -1165,20 +1135,6 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			}
 		}
 		Map mapParamvals = new HashMap();
-		/*
-		 * mapParamvals.put("locuslist",AppContext.getTempDir()+haplofilename+".bed");
-		 * mapParamvals.put("samplelist",AppContext.getTempDir()+haplofilename+".txt");
-		 * mapParamvals.put("snplist",AppContext.getTempDir()+haplofilename+".map");
-		 * mapParamvals.put("snpmatrix",AppContext.getTempDir()+haplofilename+".ped");
-		 * mapParamvals.put("reference",
-		 * this.listboxReference.getSelectedItem().getLabel() );
-		 */
-		/*
-		 * mapParamvals.put("locuslist",AppContext.getTempDir()+haplofilename+".bed");
-		 * mapParamvals.put("samplelist",AppContext.getTempDir()+haplofilename+".txt");
-		 * mapParamvals.put("snplist",AppContext.getTempDir()+haplofilename+".map");
-		 * mapParamvals.put("snpmatrix",AppContext.getTempDir()+haplofilename+".ped");
-		 */
 		mapParamvals.put("locuslist", haplofilename + ".bed");
 		mapParamvals.put("samplelist", haplofilename + ".txt");
 		mapParamvals.put("phenolist", haplofilename + ".pheno");
@@ -9228,18 +9184,20 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 				}
 
-				String annots[] = table.getSNPGenomicAnnotation(fillGenotypeQueryParams());
-				if (annots != null) {
-					buff.append(
-							"MSU7 EFFECTS (cds-Non-synonymous/cds-Synonymous/Cds/3'UTR/5'UTR/Exon/splice Acceptor/splice Donor/Gene-intron/Promoter)")
-							.append(columnfillers); // .append(delimiter).append(delimiter).append(delimiter).append(delimiter).append(delimiter);
-					for (int i = 0; i < annots.length; i++) {
-						buff.append(annots[i]);
-						if (i < annots.length - 1)
-							buff.append(delimiter);
-					}
-					buff.append("\n");
-				}
+				/*
+				 * 
+				 * REMOVED FIRST LINE IN THE CSV DOWNLOADABLE
+				 * 
+				 * String annots[] = table.getSNPGenomicAnnotation(fillGenotypeQueryParams());
+				 * if (annots != null) { buff.append(
+				 * "MSU7 EFFECTS (cds-Non-synonymous/cds-Synonymous/Cds/3'UTR/5'UTR/Exon/splice Acceptor/splice Donor/Gene-intron/Promoter)"
+				 * ) .append(columnfillers); //
+				 * .append(delimiter).append(delimiter).append(delimiter).append(delimiter).
+				 * append(delimiter); for (int i = 0; i < annots.length; i++) {
+				 * buff.append(annots[i]); if (i < annots.length - 1) buff.append(delimiter); }
+				 * buff.append("\n"); }
+				 *	
+				 */
 
 				String queryallele[] = table.getQueryallele();
 				if (queryallele != null) {

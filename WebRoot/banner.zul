@@ -186,7 +186,7 @@
 		</menu>
 		<menuitem src="/images/iric/mylist.png" label="My Lists" href="_workspace.zul"/>
 		
-		<menuitem src="/images/iric/var5.png" label="Order Seeds" href="_seed.zul" visible="${visibleOrderGenesStr}"/>
+		<menuitem src="/images/iric/var5.png" label="Order Seeds" href="https://www.irri.org/rice-seeds" target="_blank"/>
 		
 		
 		<!--  menuitem src="/images/iric/download.png" label="Download" target="_blank" href="http://oryzasnp-atcg-irri-org.s3-website-ap-southeast-1.amazonaws.com"/ -->
