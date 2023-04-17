@@ -18,6 +18,7 @@
 
 
 
+
 		<class>org.irri.iric.portal.domain.LabelCount</class>
 		<class>org.irri.iric.portal.chado.oracle.domain.VSnpseekSettings</class>
 
@@ -53,6 +54,7 @@
 		<class>org.irri.iric.portal.chado.oracle.domain.VIricstocksByPhenotype</class>
 		<class>org.irri.iric.portal.chado.oracle.domain.VIricstocksByPtoco</class>
 		<class>org.irri.iric.portal.chado.oracle.domain.VSnpRefposindex</class>
+		<class>org.irri.iric.portal.chado.oracle.domain.VSnpRefposindexV3</class>
 		<class>org.irri.iric.portal.chado.oracle.domain.VSnpSpliceacceptor</class>
 		<class>org.irri.iric.portal.chado.oracle.domain.VSnpSplicedonor</class>
 

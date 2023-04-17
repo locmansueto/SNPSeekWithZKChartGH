@@ -61,6 +61,7 @@ import org.apache.http.util.EntityUtils;
 import org.hibernate.Session;
 import org.irri.iric.portal.aws.AWSInstanceCountdown;
 import org.irri.iric.portal.aws.AWSTimer;
+import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.domain.Position;
 import org.irri.iric.portal.domain.StockSample;
 import org.irri.iric.portal.domain.Variety;
@@ -99,6 +100,9 @@ public class AppContext {
 	private static Logger logger = Logger.getLogger(AppContext.class.getName());
 
 	private static ApplicationContext ctx;
+	
+	private static ListItemsDAO listitemsdao;
+	private static String setOrganism;
 
 	private static Connection jdbccon;
 	private static Map mapVariant2Order = null;
@@ -113,7 +117,7 @@ public class AppContext {
 	};
 
 	public static enum WEBSERVER {
-		LOCALHOST, AWS, AWSDEV, VMIRRI, POLLUX, ASTI, BEANSTALK, BEANSTALKDEV
+		LOCALHOST, AWS, AWSDEV, VMIRRI, POLLUX, ASTI, BEANSTALK, BEANSTALKDEV, CANNABISAWS
 	};
 
 	public static enum OS {
@@ -226,8 +230,8 @@ public class AppContext {
 			galaxyInstanceId = "i-043b2e725d07ce079";
 //			// galaxyInstanceId = "i-0c620d6cf53fe8afe";
 //
-			counter = new AWSTimer(galaxyInstanceId);
-			counter.start();
+			//counter = new AWSTimer(galaxyInstanceId);
+			//counter.start();
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -1309,6 +1313,20 @@ public class AppContext {
 		return Integer.MAX_VALUE;
 	}
 
+	
+	public static void setDefaultOrganism(String org) {
+		setOrganism=org;
+		AppContext.mydebug("default organism set to " + setOrganism);
+	}
+
+	public static String REFERENCE_NIPPONBARE() {
+		return AppContext.getDefaultOrganism();
+	}
+	public static  BigDecimal REFERENCE_NIPPONBARE_ID() {
+		return BigDecimal.valueOf(AppContext.getDefaultOrganismId());
+	}
+
+	
 	/**
 	 * Default organism
 	 * 
@@ -1316,15 +1334,21 @@ public class AppContext {
 	 */
 	public static String getDefaultOrganism() {
 
-		logger.info("TOMCAT DIRECTORY: " + webProp.getProperty(WebserverPropertyConstants.TOMCAT_SERVER));
-
-		defaultorganism = webProp.getProperty(WebserverPropertyConstants.DEFAULT_ORGANISM_NAME);
-
-		if (defaultorganism == null || defaultorganism.equals("."))
-			return "Japonica nipponbare";
-
-		return defaultorganism;
-
+		if(setOrganism!=null) {
+			AppContext.mydebug("get default organism at " + setOrganism);
+			return setOrganism;
+		} else
+		{
+			
+			logger.info("TOMCAT DIRECTORY: " + webProp.getProperty(WebserverPropertyConstants.TOMCAT_SERVER));
+	
+			defaultorganism = webProp.getProperty(WebserverPropertyConstants.DEFAULT_ORGANISM_NAME);
+	
+			if (defaultorganism == null || defaultorganism.equals("."))
+				return "cs10";
+	
+			return defaultorganism;
+		}
 		// return "rice";
 		// return "Japonica nipponbare";
 		// return "sorghum bicolor";
@@ -1333,18 +1357,43 @@ public class AppContext {
 	}
 
 	public static Integer getDefaultOrganismId() {
+		if(setOrganism!=null) {
+			if(setOrganism.equals("cs10")) {
+				return 3;
+			} else if(setOrganism.equals("pkv5")) {
+				return 2;
+			} else if(setOrganism.equals("fnv2")) {
+				return 25;
+			} else
+				return -1;
+		} else 
 		try {
 			return Integer.parseInt(webProp.get(WebserverPropertyConstants.DEFAULT_ORGANISM_ID).toString());
 		} catch (NumberFormatException ex) {
-			return 9;
+			return -1;
 		}
 
 	}
+	
+	
 
 	public static String getDefaultDataset() {
+		
+		if(setOrganism!=null) {
+			if(setOrganism.equals("cs10")) {
+				return "6_wgs_samples_cs10";
+			} else if(setOrganism.equals("pkv5")) {
+				//return "cs_assembly_ds";
+				return "6_wgs_samples_pkv5";
+			} else if(setOrganism.equals("fnv2")) {
+				//return "cs_assembly_ds";
+				return "6_wgs_samples_fnv2";
+			}
+			else
+				return "";
+		} else
 		return webProp.get(WebserverPropertyConstants.DEFAULT_DATASET).toString(); // VarietyFacade.DATASET_SNPINDELV2_IUPAC;
 		// return "refset" ; //VarietyFacade.DATASET_DEFAULT;
-
 	}
 
 	public static int chr2srcfeatureidOffset() {
@@ -1359,6 +1408,19 @@ public class AppContext {
 	}
 
 	public static String getDefaultVariantset() {
+		if(setOrganism!=null) {
+			if(setOrganism.equals("cs10")) {
+				return "6_wgs_datasets_cs10";
+				//return "assemblies_snps_vs_cs10";
+			} else if(setOrganism.equals("pkv5")) {
+				//return "assemblies_snps_vs_pkv5";
+				return "6_wgs_datasets_pkv5";
+			} else if(setOrganism.equals("fnv2")) {
+			//return "assemblies_snps_vs_pkv5";
+				return "6_wgs_datasets_fnv2";
+			} else
+				return "";
+		} else
 		return webProp.get(WebserverPropertyConstants.DEFAULT_VARIANT_SET).toString();
 	}
 
@@ -1394,6 +1456,7 @@ public class AppContext {
 			logger.info(timedif + msg);
 		}
 		log.error(msg);
+		mydebug(msg);
 	}
 
 	// display on expected warning
@@ -1403,6 +1466,11 @@ public class AppContext {
 
 	}
 
+	// display in debug mode
+	public static void mydebug(String msg) {
+		//logger.info(msg);
+		System.out.println(msg);
+	}
 	// display in debug mode
 	public static void debug(String msg) {
 		// logger(msg);
@@ -1422,7 +1490,10 @@ public class AppContext {
 		 * + timedif); if (msg == null || msg.replaceAll("\\s+", "").isEmpty()) {
 		 * logger.info("empty/null msg"); } }
 		 */
+		
 		logger.info(msg);
+		mydebug(msg);
+
 	}
 
 	// display in debug mode
@@ -1449,6 +1520,7 @@ public class AppContext {
 		/*
 		 * if(AppContext.isIRRILAN()) logger.info(msg);
 		 */
+		mydebug(msg);
 	}
 
 	/**
@@ -1477,16 +1549,28 @@ public class AppContext {
 	 * @return
 	 */
 	public static String guessChrFromString(String chr) {
-		return chr.toUpperCase().replace("CHR0", "").replace("CHR", "");
+		//return chr.toUpperCase().replace("CHR0", "").replace("CHR", "");
+		try {
+			return Integer.valueOf(chr.toUpperCase().replace("CHR0", "").replace("CHR", "")).toString() ;
+		} catch(Exception ex) { 
+			//listitemsdao.getFeature(chr).getFeatureId().toString();
+			return null;
+		}
 	}
 
 	public static String guessSrcfeataureidFromString(String chr) {
-		return Integer.toString(AppContext.chr2srcfeatureidOffset()
-				+ Integer.valueOf(chr.toUpperCase().replace("CHR0", "").replace("CHR", "")));
+		
+		try {
+			return Integer.toString(AppContext.chr2srcfeatureidOffset()
+					+ Integer.valueOf(chr.toUpperCase().replace("CHR0", "").replace("CHR", "")));
+		} catch(Exception ex) { 
+			return listitemsdao.getFeature(chr).getFeatureId().toString();
+		}
 	}
 
 	public static boolean isRice() {
-		return getDefaultOrganism().equals("Japonica nipponbare");
+		//return getDefaultOrganism().equals("Japonica nipponbare");
+		return false;
 	}
 
 	public static boolean showGenotypeTrack() {
@@ -1600,6 +1684,11 @@ public class AppContext {
 
 	}
 
+	
+	public static void setListItemsDAO(ListItemsDAO l) {
+		listitemsdao=l;
+	}
+	
 	/**
 	 * Utility to check if object is null (if autowired worked!) if null, use
 	 * SpringUtil.getBean(name); then
@@ -2497,8 +2586,8 @@ public class AppContext {
 
 	public static boolean reloadFromDB(String entity) {
 
-		return false;
-		// return true;
+		//return false;
+		 return true;
 		/*
 		 * if(entity.equals("gene")) {
 		 * 
@@ -2540,8 +2629,9 @@ public class AppContext {
 	// ************* PAST CODES RETAINED
 
 	public static String getLogLevel() {
-		if (isAWSBeanstalk())
-			return log_level;
+		//if (isAWSBeanstalk())
+		//	return log_level;
+		
 		// if(isIRRILAN() || isAWS) return "debug";
 		return "debug";
 	}

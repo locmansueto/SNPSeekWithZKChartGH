@@ -64,9 +64,9 @@ public class SnpsStringMultiHDF5nRDBMSHybridService implements VariantStringServ
 		return null;
 	}
 
-	static Set<Character> charMissing = new HashSet<Character>(Arrays.asList('0', '.', '?'));
+	static Set<Character> charMissing = new HashSet<Character>(Arrays.asList('0', '.', '?','8'));
 	static Set<Character> charSameasAllele1 = new HashSet<Character>(Arrays.asList('*'));
-	static Set<Character> charSymbols = new HashSet<Character>(Arrays.asList('0', '.', '?', '*'));
+	static Set<Character> charSymbols = new HashSet<Character>(Arrays.asList('0', '.', '?', '*','8'));
 
 	// Other refs HDF5 DAOs
 	private Map<BigDecimal, H5Dataset> mapFileId2DatasetDAO = new HashMap();
@@ -464,6 +464,7 @@ public class SnpsStringMultiHDF5nRDBMSHybridService implements VariantStringServ
 		SNPsStringData snpstrdata = null;
 		// snpstrdata=getSNPsStringDataOtherRefs(params);
 
+		/*
 		if (params.getOrganism().equals(AppContext.getDefaultOrganism()) && !params.isbShowAllRefAlleles())
 			// snpstrdata=getSNPsStringData(params, colVarids, chr, start, end,
 			// setPositions, colLocus);
@@ -473,10 +474,13 @@ public class SnpsStringMultiHDF5nRDBMSHybridService implements VariantStringServ
 					+ "  isbShowAllRefAlleles=" + params.isbShowAllRefAlleles());
 		else
 			snpstrdata = getSNPsStringDataOtherRefs(params);
+		
 
 		if (snpstrdata == null) {
 			throw new RuntimeException("getSNPsString:  snpstrdata==null");
 		}
+		*/
+		snpstrdata = getSNPsStringDataOtherRefs(params);
 
 		Map<String, Double> mapRef2Match = null;
 		String querystring = null;
@@ -505,7 +509,7 @@ public class SnpsStringMultiHDF5nRDBMSHybridService implements VariantStringServ
 			while (itPosAllele.hasNext()) {
 				// MultiReferencePositionImplAllelePvalue multipos=itPosAllele.next();
 				SnpsAllvarsMultirefsPos multipos = (SnpsAllvarsMultirefsPos) itPosAllele.next();
-				String allele = multipos.getAllele(Organism.REFERENCE_NIPPONBARE);
+				String allele = multipos.getAllele(AppContext.REFERENCE_NIPPONBARE());
 				if (allele != null && !allele.isEmpty())
 					buffNb.append(allele);
 				else
@@ -538,7 +542,7 @@ public class SnpsStringMultiHDF5nRDBMSHybridService implements VariantStringServ
 					snpstrdata.getMapPos2NonsynAlleles(), new HashSet(),
 					params.isbNonsynPlusSpliceSnps() || params.isbNonsynSnps(), params.isbCountMissingAs05()); // .isbExcludeSynonymous()
 																												// );
-			mapRef2Match.put(Organism.REFERENCE_NIPPONBARE, mismatchCount[1]);
+			mapRef2Match.put(AppContext.REFERENCE_NIPPONBARE(), mismatchCount[1]);
 			mismatchCount = SnpsStringMultiHDF5nRDBMSHybridService.countVarpairMismatch(snpstrdata.getListSnpsPos(),
 					buff9311.toString(), querystring, true, null, null, snpstrdata.getMapPos2NonsynAlleles(),
 					new HashSet(), params.isbNonsynPlusSpliceSnps() || params.isbNonsynSnps(),
@@ -1039,38 +1043,38 @@ public class SnpsStringMultiHDF5nRDBMSHybridService implements VariantStringServ
 
 				StringBuffer noalignbuf = new StringBuffer();
 
-				if (!lastpos.getContigName(Organism.REFERENCE_NIPPONBARE).isEmpty()) {
-					int aligncount = ipos.getAlignCount(Organism.REFERENCE_NIPPONBARE);
+				if (!lastpos.getContigName(AppContext.REFERENCE_NIPPONBARE()).isEmpty()) {
+					int aligncount = ipos.getAlignCount(AppContext.REFERENCE_NIPPONBARE());
 					String strcount = "";
 					if (aligncount > 1)
 						strcount = "(" + aligncount + " regions)";
 					if (!params.hasSnpList()) {
-						if (!lastpos.getContigName(Organism.REFERENCE_NIPPONBARE)
-								.equals(prevpos.getContigName(Organism.REFERENCE_NIPPONBARE))) // throw new
+						if (!lastpos.getContigName(AppContext.REFERENCE_NIPPONBARE())
+								.equals(prevpos.getContigName(AppContext.REFERENCE_NIPPONBARE()))) // throw new
 																								// RuntimeException("REFERENCE_NIPPONBARE
 																								// !lastpos.getContig().equals(prevpos.getContig():"
 																								// +
 																								// lastpos.getContigName(Organism.REFERENCE_NIPPONBARE)
 																								// + "," +
 																								// prevpos.getContigName(Organism.REFERENCE_NIPPONBARE));
-							strbuffMessage.append(Organism.REFERENCE_NIPPONBARE + "-["
-									+ lastpos.getContigName(Organism.REFERENCE_NIPPONBARE) + " "
-									+ lastpos.getPosition(Organism.REFERENCE_NIPPONBARE) + "-"
-									+ prevpos.getContigName(Organism.REFERENCE_NIPPONBARE) + " "
-									+ prevpos.getPosition(Organism.REFERENCE_NIPPONBARE) + "]" + strcount + ";");
+							strbuffMessage.append(AppContext.REFERENCE_NIPPONBARE() + "-["
+									+ lastpos.getContigName(AppContext.REFERENCE_NIPPONBARE()) + " "
+									+ lastpos.getPosition(AppContext.REFERENCE_NIPPONBARE()) + "-"
+									+ prevpos.getContigName(AppContext.REFERENCE_NIPPONBARE()) + " "
+									+ prevpos.getPosition(AppContext.REFERENCE_NIPPONBARE()) + "]" + strcount + ";");
 						else
-							strbuffMessage.append(Organism.REFERENCE_NIPPONBARE + "-"
-									+ lastpos.getContigName(Organism.REFERENCE_NIPPONBARE) + "["
-									+ lastpos.getPosition(Organism.REFERENCE_NIPPONBARE) + "-"
-									+ prevpos.getPosition(Organism.REFERENCE_NIPPONBARE) + "]" + strcount + ";");
+							strbuffMessage.append(AppContext.REFERENCE_NIPPONBARE() + "-"
+									+ lastpos.getContigName(AppContext.REFERENCE_NIPPONBARE()) + "["
+									+ lastpos.getPosition(AppContext.REFERENCE_NIPPONBARE()) + "-"
+									+ prevpos.getPosition(AppContext.REFERENCE_NIPPONBARE()) + "]" + strcount + ";");
 					} else
-						strbuffMessage.append(lastpos.getContigName(Organism.REFERENCE_NIPPONBARE) + "-"
-								+ lastpos.getPosition(Organism.REFERENCE_NIPPONBARE) + "\t");
+						strbuffMessage.append(lastpos.getContigName(AppContext.REFERENCE_NIPPONBARE()) + "-"
+								+ lastpos.getPosition(AppContext.REFERENCE_NIPPONBARE()) + "\t");
 				} else {
 					if (params.hasSnpList())
 						strbuffMessage.append("-\t");
 					else
-						noalignbuf.append(Organism.REFERENCE_NIPPONBARE + ",");
+						noalignbuf.append(AppContext.REFERENCE_NIPPONBARE() + ",");
 				}
 
 				if (!lastpos.getContigName(Organism.REFERENCE_9311).isEmpty()) {
@@ -1506,10 +1510,10 @@ public class SnpsStringMultiHDF5nRDBMSHybridService implements VariantStringServ
 				}
 				// hdf5 format v2
 				char chari1 = allele1str.charAt(icount);
-				if (chari1 != '0' && chari1 != '?')
+				if (chari1 != '0' && chari1 != '?' && chari1 != '8')
 					setAlleles.add(chari1);
 				char chari2 = allele2str.charAt(icount);
-				if (chari2 != '0' && chari2 != '?')
+				if (chari2 != '0' && chari2 != '?' && chari2 != '8')
 					setAlleles.add(chari2);
 
 				if (chari1 != chari2) {

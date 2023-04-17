@@ -183,8 +183,8 @@ enableTooltipster();
 			<!-- query dialogs -->
 			<vbox align="center">
 
-				<hbox height="310px">
-					<vbox width="1000px" height="305px">
+				<hbox id="hboxQueryDialog" height="310px">
+					<vbox width="1000px" id="vboxQueryDialog" height="305px">
 
 
 
@@ -351,19 +351,20 @@ enableTooltipster();
 									<vbox>
 										<hbox>
 
-											<label value="Reference"
-												visible="false" />
-											<listbox
-												id="listboxTargetReference" mold="select" rows="1"
-												visible="false">
-												<listitem
-													label="Nipponbare" />
-												<listitem label="MH63" />
-												<listitem label="ZS97" />
+											<label value="Reference" visible="false" />
+											<listbox id="listboxTargetReference" mold="select" rows="1" visible="false">
+												<listitem selected="true" label="cs10" />
+												<listitem label="pkv5" />
 											</listbox>
 
+											<label style="font-weight:bold" >Reference:</label>
+											<listbox
+												id="listboxReference" mold="select" rows="1"
+												disabled="false"  />
 
-											<label value="Variety set"
+
+											<vbox width="5px"/>
+											<label value="Cultivar set"
 												style="font-weight:bold" />
 											<bandbox
 												id="bandboxVarietyset" autodrop="true" readonly="true">
@@ -410,18 +411,18 @@ enableTooltipster();
 												</vbox>
 											</div>
 										</hbox>
-										<label
+										<label visible="false"
 											value="where are the other reference genome datasets?"
 											style="text-decoration:underline;font-style:italic;font-weight:bold;color:darkgreen"
 											tooltip="genotype_info" />
 										<separator bar="true"
 											style="color:green" />
-
+ 
 									</vbox>
 									<vbox />
 								</row>
 								<!--  *********************   VARIETY SELECTION  ************************************* -->
-								<row spans="1,5,1">
+								<row spans="1,5,1" id="rowVariety">
 
 									<label value="Varieties:"
 										style="font-size:14px;font-weight:bold;color:gray;" />
@@ -507,9 +508,8 @@ enableTooltipster();
 											id="advanceOptions2">
 											<label>Reference:</label>
 											<listbox
-												id="listboxReference" mold="select" rows="1"
-												disabled="false" tooltip="popupReference" />
-
+												id="listboxReference2" mold="select" rows="1"
+												disabled="false"  />
 
 											<vbox width="10px" />
 											<label pre="true"
@@ -566,7 +566,7 @@ enableTooltipster();
 										</hbox>
 
 
-										<hbox>
+										<hbox id="hboxRegionOptions">
 											<label>Gene locus:</label>
 
 											<custom-attributes
@@ -580,7 +580,9 @@ enableTooltipster();
 
 											<label
 												id="labelLocusExample" pre="true"
-												value="(ex. loc_os01g01010) " style="font-size:9px" />
+												value="(ex. loc_os01g01010) " style="font-size:10px" />
+												
+											<div id="divSNPLocusLists">
 
 											<label>SNP List</label>
 											<listbox
@@ -588,7 +590,6 @@ enableTooltipster();
 												width="100px" />
 
 											<vbox width="10px" />
-											<div visible="true">
 												<label>
 													Locus List
 												</label>
@@ -597,6 +598,7 @@ enableTooltipster();
 													tooltip="popupMyLocusList" width="100px" visible="true" />
 
 											</div>
+											
 										</hbox>
 										<hbox visible="false"
 											id="advanceOptions3">
@@ -656,7 +658,7 @@ enableTooltipster();
 												</div>
 											</hbox>
 										</vbox>
-										<vbox>
+										<!-- vbox>
 											<button id="buttonRefresh"
 												label="Update lists"
 												style="font-size:14px;font-weight:bold;color:gray;"
@@ -666,18 +668,20 @@ enableTooltipster();
 												label="Reset"
 												style="font-size:14px;font-weight:bold;color:gray;"
 												width="95px" height="30px" autodisable="self" />
-										</vbox>
+										</vbox -->
+										<vbox />
+										
 									</hbox>
 								</row>
 
-								<row spans="1,5,1">
+								<row spans="1,5,1" id="rowOptions">
 
 									<!--  *********************   SNP/INDELS QUERY OPTIONS  ************************************* -->
 									<vbox>
 										<label value="Options:"
 											style="font-size:14px;font-weight:bold;color:gray;" />
 										<hbox height="10px" />
-										<hbox>
+										<hbox visible="false">
 											<label
 												value="Advance options " pre="true"
 												style="font-size:12px;font-weight:bold;color:gray;" />
@@ -731,7 +735,7 @@ enableTooltipster();
 
 
 
-										<hbox>
+										<hbox visible="false">
 											<div visible="true">
 												<label value="Variant  "
 													pre="true" style="font-weight:bold;" />
@@ -866,7 +870,7 @@ enableTooltipster();
 													value="core_snp" label="Core (404k)" />
 											</listbox>
 										</hbox>
-										<hbox>
+										<hbox id="hboxShowSnps">
 
 											<label pre="true"
 												value="Include SNPs  " style="font-weight:bold;" />
@@ -945,7 +949,8 @@ enableTooltipster();
 
 									<!--  *********************   DOWNLOAD BUTTONS ************************************* -->
 
-									<vbox>
+									<vbox/>
+									<!-- vbox>
 										<button id="buttonSearch"
 											class="z-search-button" label="SEARCH"
 											style="font-size:16px;font-weight:bold;color:gray;"
@@ -961,14 +966,51 @@ enableTooltipster();
 											xmlns:w="http://www.zkoss.org/2005/zk/client"
 											w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();" />
 
-									</vbox>
+									</vbox -->
 
 								</row>
+								
+								
+								<!-- BUTTON ROWS -->
+								<row spans="1,5,1">
+									<vbox />
+									<hbox> 
+										<button id="buttonSearch"
+											class="z-search-button" label="SEARCH"
+											style="font-size:16px;font-weight:bold;color:gray;"
+											width="100px" height="50px" autodisable="self"
+											xmlns:w="http://www.zkoss.org/2005/zk/client"
+											w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();" />
+										<vbox width="10px" />
+										<button id="buttonDownloadFasta"
+											label="FASTA"
+											style="font-size:16px;font-weight:bold;color:gray;"
+											visible="false" width="100px" height="30px"
+											autodisable="self"
+											xmlns:w="http://www.zkoss.org/2005/zk/client"
+											w:onClick="var t = zk.Widget.$('$msgbox');t.$n().value=(' ');t.updateChange_();" />
+											
+										<vbox width="10px" />
+										<button id="buttonRefresh"
+											label="Update lists"
+											style="font-size:14px;font-weight:bold;color:gray;"
+											width="95px" height="30px" autodisable="self"
+											visible="false" />
+										<vbox width="10px" />
+										<button id="buttonReset"
+											label="Reset"
+											style="font-size:14px;font-weight:bold;color:gray;"
+											width="95px" height="30px" autodisable="self" />											
+									</hbox>
+									<vbox/>
+								</row>
+								
+								
 							</rows>
 						</grid>
 					</vbox>
 
-
+					<div id="divTipboxSNP">
 					<tipBox height="305px" width="400px"
 						desc="     SNP QUERY"
 						details1="  1. Select two varieties to compare; OR "
@@ -984,6 +1026,7 @@ enableTooltipster();
 						details12="    of allele mismatches in the region"
 						details13="   PhyloJBrowse: SNPs in JBrowse with varieties"
 						details14="    ordered using phylotree clustering result." />
+					</div>
 
 				</hbox>
 
@@ -1005,7 +1048,7 @@ enableTooltipster();
 					<!-- width="100%" -->
 					<tabs>
 						<tab id="tabTable" label="Table"
-							selected="true" />
+							selected="true" visible="false" />
 						<tab id="tabTableLarge" label="Overview"
 							visible="false" />
 						<!--  tab id="tabBiglist" label="BigTable" visible="true"/ -->
@@ -1287,8 +1330,14 @@ enableTooltipster();
 											</auxhead>
 											<columns>
 												<column
+													id="column4Header" label="cs10" width="300px" />
+												<!--  column
+													id="column4Header" label="cs10" width="150px" / -->
+												<column width="300px"></column>
+												<!--  column width="150px"></column -->
+												<!-- column
 													id="column4Header" label="Nipponbare" width="300px" />
-												<column width="100px"></column>
+												<column width="100px"></column -->
 												<column width="100px"></column>
 												<column width="150px"></column>
 												<column width="50px"></column>
@@ -2527,7 +2576,7 @@ enableTooltipster();
 
 
 
-		<popup id="popupReference" width="300px">
+		<!--  popup id="popupReference" width="300px">
 			<html>
 
 				
@@ -2537,7 +2586,7 @@ enableTooltipster();
 				
 				
 			</html>
-		</popup>
+		</popup -->
 
 
 		<popup id="popupShowallrefalleles" width="300px">

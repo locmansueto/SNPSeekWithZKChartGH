@@ -140,7 +140,7 @@ public class LocusServiceImpl implements LocusService {
 		// locuscvtermDAO =
 		// (LocusDAO)AppContext.checkBean(locuscvtermDAO,"VLocusCvtermCvtermpathDAO");
 
-		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(Organism.REFERENCE_NIPPONBARE))
+		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(AppContext.REFERENCE_NIPPONBARE()))
 			return getLocusByCvTerm(goterm, organism, cvname);
 
 		LocusCvTermDAO locusgenemodelcvtermDAO = null;
@@ -236,7 +236,7 @@ public class LocusServiceImpl implements LocusService {
 	public List getCvTermByLocus(Collection<Locus> colLocus, String organism, String cvname, String genemodel) {
 		
 
-		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(Organism.REFERENCE_NIPPONBARE))
+		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(AppContext.REFERENCE_NIPPONBARE()))
 			return getCvTermByLocus(colLocus, organism, cvname);
 
 		LocusCvTermDAO locusgenemodelcvtermDAO = null;
@@ -645,11 +645,11 @@ public class LocusServiceImpl implements LocusService {
 
 		List listLoci = new ArrayList();
 		if (loci == null) {
-			listLoci.addAll(locusnotesDAO.getLocusByContigPositions(contig, colPos, Organism.REFERENCE_NIPPONBARE,
+			listLoci.addAll(locusnotesDAO.getLocusByContigPositions(contig, colPos, AppContext.REFERENCE_NIPPONBARE(),
 					plusminus, genemodel));
 			mapCvterm2Loci.put(MarkerAnnotation.GENE_MODEL, listLoci);
 		} else {
-			listLoci.addAll(new LinkedHashSet(listitemsdao.findGeneFromName(loci, Organism.REFERENCE_NIPPONBARE)));
+			listLoci.addAll(new LinkedHashSet(listitemsdao.findGeneFromName(loci, AppContext.REFERENCE_NIPPONBARE())));
 			mapCvterm2Loci.put(MarkerAnnotation.GENE_MODEL, listLoci);
 		}
 
@@ -687,7 +687,7 @@ public class LocusServiceImpl implements LocusService {
 			}
 
 			Set<Locus> locset = new LinkedHashSet(
-					listitemsdao.findGeneFromName(locnameset, Organism.REFERENCE_NIPPONBARE));
+					listitemsdao.findGeneFromName(locnameset, AppContext.REFERENCE_NIPPONBARE()));
 
 			// if(AppContext.isIRRILAN()) {
 			if (true) {
@@ -727,17 +727,17 @@ public class LocusServiceImpl implements LocusService {
 							if (maxInteractingGenes != null)
 								tops = " (TOP " + maxInteractingGenes + ")";
 							mapInteracting2Loci.put(MarkerAnnotation.GENE_INT_RICENETV2 + tops,
-									getInteractionByLocus(genemodelgenes, Organism.REFERENCE_NIPPONBARE,
+									getInteractionByLocus(genemodelgenes, AppContext.REFERENCE_NIPPONBARE(),
 											FeatureInteractionDAO.INTERACTION_RICENETV2, maxInteractingGenes));
 							if (AppContext.isOracle()) {
 								mapInteracting2Loci.put(MarkerAnnotation.GENE_INT_RICENETV1 + tops,
-										getInteractionByLocus(genemodelgenes, Organism.REFERENCE_NIPPONBARE,
+										getInteractionByLocus(genemodelgenes, AppContext.REFERENCE_NIPPONBARE(),
 												FeatureInteractionDAO.INTERACTION_RICENETV1, maxInteractingGenes));
 								mapInteracting2Loci.put(MarkerAnnotation.GENE_INT_PRINEXPT + tops,
-										getInteractionByLocus(genemodelgenes, Organism.REFERENCE_NIPPONBARE,
+										getInteractionByLocus(genemodelgenes, AppContext.REFERENCE_NIPPONBARE(),
 												FeatureInteractionDAO.INTERACTION_PRINEXPT, maxInteractingGenes));
 								mapInteracting2Loci.put(MarkerAnnotation.GENE_INT_PRINPRED + tops,
-										getInteractionByLocus(genemodelgenes, Organism.REFERENCE_NIPPONBARE,
+										getInteractionByLocus(genemodelgenes, AppContext.REFERENCE_NIPPONBARE(),
 												FeatureInteractionDAO.INTERACTION_PRINPRED, maxInteractingGenes));
 							}
 						}
@@ -752,27 +752,27 @@ public class LocusServiceImpl implements LocusService {
 			 * AppContext.debug("gene objects = " + locset.size());
 			 */
 			mapCvterm2Loci.put(MarkerAnnotation.GENE_QTARO,
-					getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "qtaro_gene_traits"));
+					getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "qtaro_gene_traits"));
 			mapCvterm2Loci.put(MarkerAnnotation.GENE_TO,
-					getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "plant_trait_ontology"));
+					getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "plant_trait_ontology"));
 			mapCvterm2Loci.put(MarkerAnnotation.GENE_PO,
-					getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "plant_anatomy"));
+					getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "plant_anatomy"));
 			mapCvterm2Loci.put(MarkerAnnotation.GENE_PO_DEVT,
-					getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "plant_structure_development_stage"));
+					getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "plant_structure_development_stage"));
 			mapCvterm2Loci.put(MarkerAnnotation.GENE_GO_BP,
-					getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "biological_process"));
+					getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "biological_process"));
 			mapCvterm2Loci.put(MarkerAnnotation.GENE_GO_MF,
-					getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "molecular_function"));
+					getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "molecular_function"));
 			mapCvterm2Loci.put(MarkerAnnotation.GENE_GO_CC,
-					getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "cellular_component"));
+					getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "cellular_component"));
 
 		}
 		// List listQtlGramene = new ArrayList();
 		List listQtlQtaro = new ArrayList();
-		listQtlQtaro.addAll(qtldao.getLocusByContigPositions(contig, colPos, Organism.REFERENCE_NIPPONBARE, plusminus,
+		listQtlQtaro.addAll(qtldao.getLocusByContigPositions(contig, colPos, AppContext.REFERENCE_NIPPONBARE(), plusminus,
 				QtlDAO.QTL_QTARO));
 		// listQtlGramene.addAll( qtldao.getLocusByContigPositions(contig, colPos,
-		// Organism.REFERENCE_NIPPONBARE, plusminus, QtlDAO.QTL_GRAMENE) );
+		// AppContext.REFERENCE_NIPPONBARE(), plusminus, QtlDAO.QTL_GRAMENE) );
 		mapCvterm2Loci.put(MarkerAnnotation.QTL_QTARO, listQtlQtaro);
 		// mapCvterm2Loci.put(MarkerAnnotation.QTL_GRAMENE, listQtlGramene);
 
@@ -990,10 +990,10 @@ public class LocusServiceImpl implements LocusService {
 
 		List listAll = null;
 		if (start != null && stop != null)
-			listAll = locusnotesDAO.getLocusByRegion(contig, start, stop, Organism.REFERENCE_NIPPONBARE, genemodel,
+			listAll = locusnotesDAO.getLocusByRegion(contig, start, stop, AppContext.REFERENCE_NIPPONBARE(), genemodel,
 					set3p5pcds);
 		else
-			listAll = locusnotesDAO.getLocusByContigPositions(contig, colPos, Organism.REFERENCE_NIPPONBARE, plusminus,
+			listAll = locusnotesDAO.getLocusByContigPositions(contig, colPos, AppContext.REFERENCE_NIPPONBARE(), plusminus,
 					genemodel, set3p5pcds);
 
 		List setCDSUTRPromLoc = new ArrayList();
@@ -1014,24 +1014,24 @@ public class LocusServiceImpl implements LocusService {
 
 		/*
 		 * List setCDSUTRPromLoc =locusnotesDAO.getLocusByContigPositions(contig, colPos
-		 * , Organism.REFERENCE_NIPPONBARE, plusminus, genemodel,set3p5pcds); List
+		 * , AppContext.REFERENCE_NIPPONBARE(), plusminus, genemodel,set3p5pcds); List
 		 * le=locusnotesDAO.getLocusByContigPositions(contig, colPos ,
-		 * Organism.REFERENCE_NIPPONBARE, plusminus, genemodel,
+		 * AppContext.REFERENCE_NIPPONBARE(), plusminus, genemodel,
 		 * GenomicsFacade.FEATURETYPE_EXON); List
 		 * lp=locusnotesDAO.getLocusByContigPositions(contig, colPos ,
-		 * Organism.REFERENCE_NIPPONBARE, 400, genemodel,
+		 * AppContext.REFERENCE_NIPPONBARE(), 400, genemodel,
 		 * GenomicsFacade.FEATURETYPE_GENE); List
 		 * lg=locusnotesDAO.getLocusByContigPositions(contig, colPos ,
-		 * Organism.REFERENCE_NIPPONBARE, plusminus, genemodel,
+		 * AppContext.REFERENCE_NIPPONBARE(), plusminus, genemodel,
 		 * GenomicsFacade.FEATURETYPE_GENE);
 		 */
 
 		List lp = null;
 		if (start != null && stop != null)
-			lp = locusnotesDAO.getLocusByRegion(contig, start - 400, stop + 400, Organism.REFERENCE_NIPPONBARE,
+			lp = locusnotesDAO.getLocusByRegion(contig, start - 400, stop + 400, AppContext.REFERENCE_NIPPONBARE(),
 					genemodel, GenomicsFacade.FEATURETYPE_GENE);
 		else
-			lp = locusnotesDAO.getLocusByContigPositions(contig, colPos, Organism.REFERENCE_NIPPONBARE, plusminus + 400,
+			lp = locusnotesDAO.getLocusByContigPositions(contig, colPos, AppContext.REFERENCE_NIPPONBARE(), plusminus + 400,
 					genemodel, GenomicsFacade.FEATURETYPE_GENE);
 
 		Iterator<Position> itPos = colPos.iterator();
@@ -1162,12 +1162,12 @@ public class LocusServiceImpl implements LocusService {
 				 * listQtlQtaro = new ArrayList(); //listLoci.addAll(
 				 * locusnotesDAO.getLocusByContigPositions(chr, mapChr2Pos.get(chr) , genemodel,
 				 * plusminus) ); listLoci.addAll( getLocusByContigPositions(chr,
-				 * mapChr2Pos.get(chr) , Organism.REFERENCE_NIPPONBARE, plusminus , genemodel )
+				 * mapChr2Pos.get(chr) , AppContext.REFERENCE_NIPPONBARE(), plusminus , genemodel )
 				 * ); listQtlQtaro.addAll( qtldao.getLocusByContigPositions(chr,
-				 * mapChr2Pos.get(chr) , Organism.REFERENCE_NIPPONBARE, plusminus,
+				 * mapChr2Pos.get(chr) , AppContext.REFERENCE_NIPPONBARE(), plusminus,
 				 * QtlDAO.QTL_QTARO) ); listQtlGramene.addAll(
 				 * qtldao.getLocusByContigPositions(chr, mapChr2Pos.get(chr) ,
-				 * Organism.REFERENCE_NIPPONBARE, plusminus, QtlDAO.QTL_GRAMENE) ); Long strchr
+				 * AppContext.REFERENCE_NIPPONBARE(), plusminus, QtlDAO.QTL_GRAMENE) ); Long strchr
 				 * = Long.valueOf(
 				 * chr.toLowerCase().replaceAll("chr0","").replaceAll("chr",""));
 				 * listMarkers.addAll(mergeAnnotations(chr, strchr, mapChr2Pos.get(chr),
@@ -1184,11 +1184,11 @@ public class LocusServiceImpl implements LocusService {
 			 * List listLoci = new ArrayList(); List listQtlGramene = new ArrayList(); List
 			 * listQtlQtaro = new ArrayList(); listLoci.addAll(
 			 * locusnotesDAO.getLocusByContigPositions(contig, colPos ,
-			 * Organism.REFERENCE_NIPPONBARE, plusminus, genemodel) ); listQtlQtaro.addAll(
+			 * AppContext.REFERENCE_NIPPONBARE(), plusminus, genemodel) ); listQtlQtaro.addAll(
 			 * qtldao.getLocusByContigPositions(contig, colPos,
-			 * Organism.REFERENCE_NIPPONBARE, plusminus, QtlDAO.QTL_QTARO) );
+			 * AppContext.REFERENCE_NIPPONBARE(), plusminus, QtlDAO.QTL_QTARO) );
 			 * listQtlGramene.addAll( qtldao.getLocusByContigPositions(contig, colPos,
-			 * Organism.REFERENCE_NIPPONBARE, plusminus, QtlDAO.QTL_GRAMENE) ); Long strchr
+			 * AppContext.REFERENCE_NIPPONBARE(), plusminus, QtlDAO.QTL_GRAMENE) ); Long strchr
 			 * = Long.valueOf(
 			 * contig.toLowerCase().replaceAll("chr0","").replaceAll("chr",""));
 			 * listMarkers.addAll(mergeAnnotations(contig, strchr, colPos, plusminus,
@@ -1243,7 +1243,7 @@ public class LocusServiceImpl implements LocusService {
 		Map mapCvterm2Loci = new LinkedHashMap();
 		Map<String, Map<String, Collection>> mapGenemodel2Interacting2Loci = new LinkedHashMap();
 		List listLoci = new ArrayList();
-		listLoci.addAll(locusnotesDAO.getLocusByContigPositions(contig, colPos, Organism.REFERENCE_NIPPONBARE,
+		listLoci.addAll(locusnotesDAO.getLocusByContigPositions(contig, colPos, AppContext.REFERENCE_NIPPONBARE(),
 				plusminus, genemodel));
 		mapCvterm2Loci.put(MarkerAnnotation.GENE_MODEL, listLoci);
 
@@ -1293,7 +1293,7 @@ public class LocusServiceImpl implements LocusService {
 			}
 
 			Set<Locus> locset = new LinkedHashSet(
-					listitemsdao.findGeneFromName(locnameset, Organism.REFERENCE_NIPPONBARE));
+					listitemsdao.findGeneFromName(locnameset, AppContext.REFERENCE_NIPPONBARE()));
 
 			// if(AppContext.isIRRILAN()) {
 			// if(true) {
@@ -1338,17 +1338,17 @@ public class LocusServiceImpl implements LocusService {
 								tops = " (TOP " + maxInteractingGenes + ")";
 							if (!excludeAnnotation.contains(MarkerAnnotation.GENE_INT_RICENETV2))
 								mapInteracting2Loci.put(MarkerAnnotation.GENE_INT_RICENETV2 + tops,
-										getInteractionByLocus(genemodelgenes, Organism.REFERENCE_NIPPONBARE,
+										getInteractionByLocus(genemodelgenes, AppContext.REFERENCE_NIPPONBARE(),
 												FeatureInteractionDAO.INTERACTION_RICENETV2, maxInteractingGenes));
 							if (AppContext.isOracle()) {
 								mapInteracting2Loci.put(MarkerAnnotation.GENE_INT_RICENETV1 + tops,
-										getInteractionByLocus(genemodelgenes, Organism.REFERENCE_NIPPONBARE,
+										getInteractionByLocus(genemodelgenes, AppContext.REFERENCE_NIPPONBARE(),
 												FeatureInteractionDAO.INTERACTION_RICENETV1, maxInteractingGenes));
 								mapInteracting2Loci.put(MarkerAnnotation.GENE_INT_PRINEXPT + tops,
-										getInteractionByLocus(genemodelgenes, Organism.REFERENCE_NIPPONBARE,
+										getInteractionByLocus(genemodelgenes, AppContext.REFERENCE_NIPPONBARE(),
 												FeatureInteractionDAO.INTERACTION_PRINEXPT, maxInteractingGenes));
 								mapInteracting2Loci.put(MarkerAnnotation.GENE_INT_PRINPRED + tops,
-										getInteractionByLocus(genemodelgenes, Organism.REFERENCE_NIPPONBARE,
+										getInteractionByLocus(genemodelgenes, AppContext.REFERENCE_NIPPONBARE(),
 												FeatureInteractionDAO.INTERACTION_PRINPRED, maxInteractingGenes));
 							}
 						}
@@ -1364,33 +1364,33 @@ public class LocusServiceImpl implements LocusService {
 			 */
 			if (!excludeAnnotation.contains(MarkerAnnotation.GENE_QTARO))
 				mapCvterm2Loci.put(MarkerAnnotation.GENE_QTARO,
-						getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "qtaro_gene_traits"));
+						getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "qtaro_gene_traits"));
 
 			if (!excludeAnnotation.contains(MarkerAnnotation.GENE_TO))
 				mapCvterm2Loci.put(MarkerAnnotation.GENE_TO,
-						getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "plant_trait_ontology"));
+						getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "plant_trait_ontology"));
 			if (!excludeAnnotation.contains(MarkerAnnotation.GENE_PO))
 				mapCvterm2Loci.put(MarkerAnnotation.GENE_PO,
-						getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "plant_anatomy"));
+						getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "plant_anatomy"));
 			if (!excludeAnnotation.contains(MarkerAnnotation.GENE_PO_DEVT))
 				mapCvterm2Loci.put(MarkerAnnotation.GENE_PO_DEVT,
-						getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "plant_structure_development_stage"));
+						getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "plant_structure_development_stage"));
 			if (!excludeAnnotation.contains(MarkerAnnotation.GENE_GO_BP)) {
 				mapCvterm2Loci.put(MarkerAnnotation.GENE_GO_BP,
-						getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "biological_process"));
+						getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "biological_process"));
 				mapCvterm2Loci.put(MarkerAnnotation.GENE_GO_MF,
-						getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "molecular_function"));
+						getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "molecular_function"));
 				mapCvterm2Loci.put(MarkerAnnotation.GENE_GO_CC,
-						getCvTermByLocus(locset, Organism.REFERENCE_NIPPONBARE, "cellular_component"));
+						getCvTermByLocus(locset, AppContext.REFERENCE_NIPPONBARE(), "cellular_component"));
 			}
 
 		}
 		// List listQtlGramene = new ArrayList();
 		List listQtlQtaro = new ArrayList();
-		listQtlQtaro.addAll(qtldao.getLocusByContigPositions(contig, colPos, Organism.REFERENCE_NIPPONBARE, plusminus,
+		listQtlQtaro.addAll(qtldao.getLocusByContigPositions(contig, colPos, AppContext.REFERENCE_NIPPONBARE(), plusminus,
 				QtlDAO.QTL_QTARO));
 		// listQtlGramene.addAll( qtldao.getLocusByContigPositions(contig, colPos,
-		// Organism.REFERENCE_NIPPONBARE, plusminus, QtlDAO.QTL_GRAMENE) );
+		// AppContext.REFERENCE_NIPPONBARE(), plusminus, QtlDAO.QTL_GRAMENE) );
 		mapCvterm2Loci.put(MarkerAnnotation.QTL_QTARO, listQtlQtaro);
 		// mapCvterm2Loci.put(MarkerAnnotation.QTL_GRAMENE, listQtlGramene);
 

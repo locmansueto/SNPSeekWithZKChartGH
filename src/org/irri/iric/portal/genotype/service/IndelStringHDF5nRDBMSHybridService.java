@@ -359,7 +359,7 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 
 							char element = indelstring.getVarnuc().substring(j, j + 1).charAt(0);
 							if (element != '0' && element != '.' && element != ' ' && element != '*'
-									&& element != '?') {
+									&& element != '?' && element != '8') {
 
 								if (mapPos2allele2 != null && mapPos2allele2.get(pos) != null) {
 									char element2 = mapPos2allele2.get(pos);
@@ -422,12 +422,12 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 				j = varstringdata.convertMergedIdx2SnpIdx(iCols);
 
 				char element = snpstr.getVarnuc().substring(j, j + 1).charAt(0);
-				if (element != '0' && element != '.' && element != ' ' && element != '*' && element != '?') {
+				if (element != '0' && element != '.' && element != ' ' && element != '*' && element != '?'  && element != '8') {
 
 					if (mapPos2allele2 != null && mapPos2allele2.get(pos) != null) {
 						char element2 = mapPos2allele2.get(pos);
 						if (element2 != '0' && element2 != '.' && element2 != ' ' && element2 != '*'
-								&& element2 != element && element2 != '?') {
+								&& element2 != element && element2 != '?' && element2 != '8') {
 
 							SnpsAllvarsPos snppos = varstringdata.getListPos().get(iCols);
 							if (snppos.getRefnuc().charAt(0) == element)
@@ -660,7 +660,7 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 								j = objj;
 								element = indelstring.getVarnuc().substring(j, j + 1).charAt(0);
 								if (element != '0' && element != '.' && element != ' ' && element != '*'
-										&& element != '?') {
+										&& element != '?' && element != '8') {
 									snpAllele1 = String.valueOf(element);
 								} else {
 									hasSnp1Missing = true;
@@ -676,7 +676,7 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 
 									element2 = mapPos2allele2.get(pos);
 									if (element2 != '0' && element2 != '.' && element2 != ' ' && element2 != '*'
-											&& element2 != '?') {
+											&& element2 != '?' &&  element2 != '8') {
 										snpAllele2 = String.valueOf(element2);
 									} else {
 										hasSnp2Missing = true;
@@ -959,7 +959,7 @@ public class IndelStringHDF5nRDBMSHybridService implements VariantStringService 
 							char element = snpstr.getVarnuc().substring(j, j + 1).charAt(0);
 							String element1 = "";
 							if (element != '0' && element != '.' && element != ' ' && element != '*'
-									&& element != '?') {
+									&& element != '?' && element != '8') {
 								element1 = String.valueOf(element);
 								if (mapPos2allele2 != null && mapPos2allele2.get(pos) != null) {
 									char element2 = mapPos2allele2.get(pos);

@@ -72,9 +72,9 @@ if(T) {
        if(T) {
     #  geom_text(aes(x = x, y = y, label = label, angle = -90, hjust = 0),size=0.5,  data= label(ddata)) +
         if(length(ord_samples)>100) {
-            hdendo = hdendo + geom_text(aes(x = x, y = -0.01, label = label, angle = 0, hjust = 0, show.legend=F),size=0.3,  data= labs) 
+            hdendo = hdendo + geom_text(aes(x = x, y = -0.01, label = label, angle = 0, hjust = 0, show.legend=F),size=1.2,  data= labs) 
           } else {
-            hdendo = hdendo + geom_text(aes(x = x, y = -0.01, label = label, angle = 0, hjust = 0, show.legend=F),size=0.8,  data= labs) 
+            hdendo = hdendo + geom_text(aes(x = x, y = -0.01, label = label, angle = 0, hjust = 0, show.legend=F),size=2,  data= labs) 
           }
        } else {
         #hdendo = hdendo + geom_text(aes(x = x, y = -0.1, label = label, angle = 0, hjust = 0, colour=labscolour, show.legend=F),size=0.3,  data= label(ddata))  +

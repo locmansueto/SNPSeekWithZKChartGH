@@ -432,10 +432,12 @@ public class LocusQueryController extends SelectorComposer<Window> {
 		genomics = (GenomicsFacade) AppContext.checkBean(genomics, "GenomicsFacade");
 		List listOrgs = new ArrayList();
 		listOrgs.addAll(genomics.getOrganisms());
+		/*
 		listOrgs.add("Minghui 63");
 		listOrgs.add("Zeshan 97");
 		listOrgs.add("N22");
 		listOrgs.add("IR8");
+		*/
 
 		List listLocuslist = new ArrayList();
 		listLocuslist.add("");
@@ -454,7 +456,7 @@ public class LocusQueryController extends SelectorComposer<Window> {
 
 		listOrgs.add("ALL");
 		listboxOrganism.setModel(new SimpleListModel(listOrgs));
-		listboxOrganism.setSelectedIndex(0);
+		listboxOrganism.setSelectedIndex(1);
 		// listboxOrganism.setDisabled(true);
 
 		listboxMySNPList.setModel(new SimpleListModel(listMySnps));

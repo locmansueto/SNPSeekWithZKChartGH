@@ -1,6 +1,7 @@
 package org.irri.iric.portal.genotype.service;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -755,6 +756,8 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 				}
 			}
 		} else {
+			
+			try {
 
 			AppContext.debug("using HDF5");
 
@@ -1045,7 +1048,15 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 
 			} // else throw new RuntimeException("heteroSnps==null and
 				// mapVarid2Snpsstr_allele2==null ... no allele2 data");
+		
+	
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				//Messagebox.show(ex.getMessage(), "Exception", Messagebox.OK, Messagebox.ERROR);
+			}
+	
 		}
+
 
 		AppContext.resetTimer("to read indels");
 
@@ -1072,10 +1083,10 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 				// hdf5 format v2
 				try {
 					char chari1 = allele1str.charAt(icount);
-					if (chari1 != '0' && chari1 != '?')
+					if (chari1 != '0' && chari1 != '?' && chari1 != '8')
 						setAlleles.add(chari1);
 					char chari2 = allele2str.charAt(icount);
-					if (chari2 != '0' && chari2 != '?')
+					if (chari2 != '0' && chari2 != '?' && chari2 != '8')
 						setAlleles.add(chari2);
 
 					if (chari1 != chari2) {

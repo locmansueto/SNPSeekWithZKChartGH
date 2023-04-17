@@ -2080,7 +2080,7 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		 * excludeAnnotation);
 		 */
 
-		markerresult = genomics.getMarkerAnnotsByContigPositions(chr, colPos, Organism.REFERENCE_NIPPONBARE, 0,
+		markerresult = genomics.getMarkerAnnotsByContigPositions(chr, colPos, AppContext.REFERENCE_NIPPONBARE(), 0,
 				GenomicsFacade.GENEMODEL_IRIC, setAnnotations, 10, excludeAnnotation);
 
 		this.searchbyMySnpListQtl();
@@ -2127,7 +2127,7 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 		if (chrpad.length() == 1)
 			chrpad = "0" + chr;
 
-		String org = Organism.REFERENCE_NIPPONBARE;
+		String org = AppContext.REFERENCE_NIPPONBARE();
 
 		if (org.equals(AppContext.getDefaultOrganism()))
 			chrpad = "loc=" + chr; // + AppContext.getJbrowseContigSuffix(); //"|msu7";
@@ -2349,7 +2349,7 @@ public class GwasDisplayController extends SelectorComposer<Window> {
 				sChr = "chr" + sChr;
 
 			poslist.add(BigDecimal.valueOf(Double.valueOf(pos.split("\\-")[1])));
-			multicontlist.add(new MultiReferencePositionImpl(Organism.REFERENCE_NIPPONBARE, sChr,
+			multicontlist.add(new MultiReferencePositionImpl(AppContext.REFERENCE_NIPPONBARE(), sChr,
 					BigDecimal.valueOf(Double.valueOf(pos.split("\\-")[1]))));
 
 		}

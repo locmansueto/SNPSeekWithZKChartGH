@@ -12,6 +12,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.oracle.domain.VGenotypeRun;
 
 import org.skyway.spring.util.dao.AbstractJpaDao;
@@ -130,6 +131,13 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 		return findVGenotypeRunByDataset(dataset, -1, -1);
 	}
 
+	@Transactional
+	public Set<VGenotypeRun> findVGenotypeRunByDataset(String dataset,String reference) throws DataAccessException {
+
+		return findVGenotypeRunByDataset(dataset,reference,  -1, -1);
+	}
+
+	
 	/**
 	 * JPQL Query - findVGenotypeRunByDataset
 	 *
@@ -140,6 +148,13 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 	public Set<VGenotypeRun> findVGenotypeRunByDataset(String dataset, int startResult, int maxRows)
 			throws DataAccessException {
 		Query query = createNamedQuery("findVGenotypeRunByDataset", startResult, maxRows, dataset);
+		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
+	}
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<VGenotypeRun> findVGenotypeRunByDataset(String dataset,String reference, int startResult, int maxRows)
+			throws DataAccessException {
+		Query query = createNamedQuery("findVGenotypeRunByDatasetReference", startResult, maxRows, dataset);
 		return new LinkedHashSet<VGenotypeRun>(query.getResultList());
 	}
 
@@ -610,6 +625,24 @@ public class VGenotypeRunDAOImpl extends AbstractJpaDao<VGenotypeRun> implements
 		return set;
 	}
 
+	
+	@Override
+	public Set getDatasets(String type,String reference) {
+		
+		Set set = new TreeSet();
+		for (VGenotypeRun run : findAllVGenotypeRuns()) {
+			if (type == null || run.getVariantType().toUpperCase().equals(type.toUpperCase())
+				&&
+				(reference == null || run.getCommonname().toUpperCase().equals(reference.toUpperCase())))
+			
+			set.add(run.getDataset());
+		}
+		
+		AppContext.debug("getDatasets("+type+" , "+reference+")=" + set);
+		return set;
+	}
+
+	
 	@Override
 	public Set getDatasets() {
 		

@@ -49,6 +49,8 @@ public interface ScaffoldDAO {
 	 */
 	public Scaffold getScaffold(String scaffold, BigDecimal organism);
 
+	public Scaffold getScaffold(String scaffoldname);
+
 	/**
 	 * Get scaffold for scafoldname, organism name
 	 * 

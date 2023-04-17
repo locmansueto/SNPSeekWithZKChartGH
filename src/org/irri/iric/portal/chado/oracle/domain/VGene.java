@@ -23,12 +23,12 @@ import org.irri.iric.portal.domain.Locus;
 		@NamedQuery(name = "findVGeneByFmax", query = "select myVGene from VGene myVGene where myVGene.fmax = ?1"),
 		@NamedQuery(name = "findVGeneByFmin", query = "select myVGene from VGene myVGene where myVGene.fmin = ?1"),
 		@NamedQuery(name = "findVGeneByGeneId", query = "select myVGene from VGene myVGene where myVGene.geneId = ?1"),
-		@NamedQuery(name = "findVGeneByName", query = "select myVGene from VGene myVGene where upper(myVGene.name) = upper(?1)"),
-		@NamedQuery(name = "findVGeneByNameContaining", query = "select myVGene from VGene myVGene where upper(myVGene.name) like upper(?1)"),
+		@NamedQuery(name = "findVGeneByName", query = "select myVGene from VGene myVGene where (upper(myVGene.name) = upper(?1) or upper(myVGene.uniquename) = upper(?1))"),
+		@NamedQuery(name = "findVGeneByNameContaining", query = "select myVGene from VGene myVGene where ( upper(myVGene.name) like upper(?1) or upper(myVGene.uniquename) like upper(?1))"),
 
-		@NamedQuery(name = "findVGeneByNameOrg", query = "select myVGene from VGene myVGene where upper(myVGene.name) = upper(?1) and myVGene.organismId=?2"),
+		@NamedQuery(name = "findVGeneByNameOrg", query = "select myVGene from VGene myVGene where (upper(myVGene.name) = upper(?1) or upper(myVGene.uniquename) = upper(?1)) and myVGene.organismId=?2"),
 		@NamedQuery(name = "findVGeneByOrg", query = "select myVGene from VGene myVGene where myVGene.organismId= ?1"),
-		@NamedQuery(name = "findVGeneByNamesOrg", query = "select myVGene from VGene myVGene where myVGene.name in (?1) and myVGene.organismId=?2"),
+		@NamedQuery(name = "findVGeneByNamesOrg", query = "select myVGene from VGene myVGene where (myVGene.name in (?1)  or myVGene.uniquename in (?1) ) and myVGene.organismId=?2"),
 
 		@NamedQuery(name = "findVGeneByPhase", query = "select myVGene from VGene myVGene where myVGene.phase = ?1"),
 		@NamedQuery(name = "findVGeneByPrimaryKey", query = "select myVGene from VGene myVGene where myVGene.geneId = ?1"),
@@ -56,7 +56,12 @@ public class VGene implements Serializable, Gene, Comparable {
 	String name;
 	/**
 	 */
+	@Column(name = "UNIQUENAME", length = 4000)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String uniquename;
 
+	
 	@Column(name = "CHR", precision = 10)
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
@@ -295,7 +300,7 @@ public class VGene implements Serializable, Gene, Comparable {
 	@Override
 	public String getUniquename() {
 		
-		return this.getName();
+		return uniquename; // this.getName();
 	}
 
 	@Override

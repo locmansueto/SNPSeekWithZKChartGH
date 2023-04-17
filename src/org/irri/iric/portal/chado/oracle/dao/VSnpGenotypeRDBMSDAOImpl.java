@@ -526,8 +526,15 @@ public class VSnpGenotypeRDBMSDAOImpl extends AbstractJpaDao<VSnpGenotypeRDBMS> 
 	}
 
 	private Map[] _readSNPStringOracle(Collection colVarids, String chr, List<SnpsAllvarsPos> listpos) {
+		if (colVarids==null || colVarids.size()==0) {
+			colVarids=new ArrayList();
+			colVarids.add(9);
+			colVarids.add(10);
+			colVarids.add(13);
+			colVarids.add(15);
+			colVarids.add(16);
+		}
 		
-
 		// scafdao = (ScaffoldDAO)AppContext.checkBean(scafdao,"ScaffoldDAO");
 		// Scaffold contig= scafdao.getScaffold(chr, AppContext.getDefaultOrganism());
 
@@ -755,10 +762,26 @@ public class VSnpGenotypeRDBMSDAOImpl extends AbstractJpaDao<VSnpGenotypeRDBMS> 
 		return new Map[] { mapVar2StrAllele1s, mapVar2StrAllele2s };
 	}
 
+	private String toSql(Object s ) {
+		if (s instanceof String)
+			return ((String)s).replace(".","").replace("_", "");
+		return s.toString().replace(".","").replace("_", "");
+	}
+	
 	private Map[] _readSNPStringPostgres(GenotypeRunPlatform run, Collection colVarids, String chr,
 			List<SnpsAllvarsPos> listpos, Set setDataset, Set setRunIds) {
 		
-
+		if (colVarids==null || colVarids.isEmpty()) {
+			colVarids=new HashSet();
+			// stock_sample Id 7,8,11,13,14
+			
+			colVarids.add(BigDecimal.valueOf(7));
+			colVarids.add(BigDecimal.valueOf(8));
+			colVarids.add(BigDecimal.valueOf(11));
+			colVarids.add(BigDecimal.valueOf(13));
+			colVarids.add(BigDecimal.valueOf(14));
+		}
+		
 		Map<BigDecimal, StringBuffer> mapVar2StrAllele1 = new LinkedHashMap();
 		Map<BigDecimal, StringBuffer> mapVar2StrAllele2 = new LinkedHashMap();
 
@@ -771,97 +794,6 @@ public class VSnpGenotypeRDBMSDAOImpl extends AbstractJpaDao<VSnpGenotypeRDBMS> 
 			varidset = new Set[1];
 			varidset[0] = new LinkedHashSet(colVarids); // AppContext.setSlicer(setVarids, 1000);
 		}
-
-		/*
-		 * //Set varidset[] = new LinkedHashSet[1]; //varidset[0]=new
-		 * LinkedHashSet(colVarids); Set setDataset=new HashSet();
-		 * setDataset.add("wissuwa9"); Set setRunIds=new HashSet(); setRunIds.add(13);
-		 */
-		/*
-		 * 
-		 * select stock_sample_id+3024 stock_sample_id,
-		 * replace(p1_69679[1]||p1_69809[1]||p1_69856[1], '0','?') allele1,
-		 * replace(p1_69679[2]||p1_69809[2]||p1_69856[2], '0','?') allele2, 0 mismatch,
-		 * null refcall from crosstab( 'select sg.stock_sample_id, ''p''
-		 * ||(sfl.srcfeature_id-2)|| ''_'' ||(sfl.position+1) "position",
-		 * ARRAY[sg.allele1, sg.allele2] allele12 from public.snp_genotype sg,
-		 * public.snp_featureloc sfl where exists ( select t.column_value from (select
-		 * unnest(ARRAY[110,111,112])column_value) t where
-		 * t.column_value=sg.snp_feature_id) and sfl.snp_feature_id=sg.snp_feature_id
-		 * order by 1,2'::text) as final_result(stock_sample_id numeric, p1_69679
-		 * character varying[],p1_69809 character varying[],p1_69856 character
-		 * varying[]);
-		 */
-
-		/*
-		 * select diff2.stock_sample_id, sfl2.srcfeature_id, sfl2.position,
-		 * diff2.allele1, diff2.allele2 from ( select sg.stock_sample_id,
-		 * sfl.snp_feature_id, sg.allele1, sg.allele2 from public.snp_genotype sg,
-		 * public.snp_featureloc sfl where exists ( select t.column_value from (select
-		 * unnest(ARRAY[32770640,32770641,32770642,32770643,32770644,32770645,32770646,
-		 * 32770647,32770648,32770649,32770650,32770651,32770652,32770653,32770654,
-		 * 32770655,32770656,32770657,32770658,32770659,32770660,32770661,32770662,
-		 * 32770663,32770664,32770665,32770666,32770667,32770668,32770669,32770670,
-		 * 32770671,32770672,32770673,32770674,32770675,32770676,32770677,32770678,
-		 * 32770679,32770680,32770681,32770682,32770683,32770684,32770685,32770686,
-		 * 32770687,32770688,32770689,32770690,32770691,32770692,32770693,32770694,
-		 * 32770695,32770696,32770697,32770698,32770699,32770700,32770701,32770702,
-		 * 32770703,32770704,32770705,32770706,32770707,32770708,32770709,32770710,
-		 * 32770711,32770712,32770713,32770714,32770715,32770716,32770717,32770718,
-		 * 32770719,32770720,32770721,32770722,32770723,32770724,32770725,32770726,
-		 * 32770727,32770728,32770729,32770730,32770731,32770732,32770733,32770734,
-		 * 32770735,32770736,32770737,32770738,32770739,32770740,32770741,32770742,
-		 * 32770743,32770744,32770745,32770746,32770747,32770748,32770749,32770750,
-		 * 32770751,32770752,32770753,32770754,32770755,32770756,32770757,32770758,
-		 * 32770759,32770760,32770761,32770762,32770763,32770764,32770765,32770766,
-		 * 32770767,32770768,32770769,32770770,32770771])column_value) t where
-		 * t.column_value=sg.snp_feature_id) and sg.genotype_run_id=13 and
-		 * sfl.snp_feature_id=sg.snp_feature_id union select diff.stock_sample_id,
-		 * diff.snp_feature_id, '0' allele1, '0' allele2 from ( select
-		 * ss.stock_sample_id, t.snp_feature_id from stock_sample ss, dbxref dx, db,
-		 * (select
-		 * unnest(ARRAY[32770640,32770641,32770642,32770643,32770644,32770645,32770646,
-		 * 32770647,32770648,32770649,32770650,32770651,32770652,32770653,32770654,
-		 * 32770655,32770656,32770657,32770658,32770659,32770660,32770661,32770662,
-		 * 32770663,32770664,32770665,32770666,32770667,32770668,32770669,32770670,
-		 * 32770671,32770672,32770673,32770674,32770675,32770676,32770677,32770678,
-		 * 32770679,32770680,32770681,32770682,32770683,32770684,32770685,32770686,
-		 * 32770687,32770688,32770689,32770690,32770691,32770692,32770693,32770694,
-		 * 32770695,32770696,32770697,32770698,32770699,32770700,32770701,32770702,
-		 * 32770703,32770704,32770705,32770706,32770707,32770708,32770709,32770710,
-		 * 32770711,32770712,32770713,32770714,32770715,32770716,32770717,32770718,
-		 * 32770719,32770720,32770721,32770722,32770723,32770724,32770725,32770726,
-		 * 32770727,32770728,32770729,32770730,32770731,32770732,32770733,32770734,
-		 * 32770735,32770736,32770737,32770738,32770739,32770740,32770741,32770742,
-		 * 32770743,32770744,32770745,32770746,32770747,32770748,32770749,32770750,
-		 * 32770751,32770752,32770753,32770754,32770755,32770756,32770757,32770758,
-		 * 32770759,32770760,32770761,32770762,32770763,32770764,32770765,32770766,
-		 * 32770767,32770768,32770769,32770770,32770771]) snp_feature_id) t where
-		 * ss.dbxref_id=dx.dbxref_id and dx.db_id=db.db_id and db.name='wissuwa9' except
-		 * select sg.stock_sample_id, sfl.snp_feature_id from public.snp_genotype sg,
-		 * public.snp_featureloc sfl where exists ( select t.column_value from (select
-		 * unnest(ARRAY[32770640,32770641,32770642,32770643,32770644,32770645,32770646,
-		 * 32770647,32770648,32770649,32770650,32770651,32770652,32770653,32770654,
-		 * 32770655,32770656,32770657,32770658,32770659,32770660,32770661,32770662,
-		 * 32770663,32770664,32770665,32770666,32770667,32770668,32770669,32770670,
-		 * 32770671,32770672,32770673,32770674,32770675,32770676,32770677,32770678,
-		 * 32770679,32770680,32770681,32770682,32770683,32770684,32770685,32770686,
-		 * 32770687,32770688,32770689,32770690,32770691,32770692,32770693,32770694,
-		 * 32770695,32770696,32770697,32770698,32770699,32770700,32770701,32770702,
-		 * 32770703,32770704,32770705,32770706,32770707,32770708,32770709,32770710,
-		 * 32770711,32770712,32770713,32770714,32770715,32770716,32770717,32770718,
-		 * 32770719,32770720,32770721,32770722,32770723,32770724,32770725,32770726,
-		 * 32770727,32770728,32770729,32770730,32770731,32770732,32770733,32770734,
-		 * 32770735,32770736,32770737,32770738,32770739,32770740,32770741,32770742,
-		 * 32770743,32770744,32770745,32770746,32770747,32770748,32770749,32770750,
-		 * 32770751,32770752,32770753,32770754,32770755,32770756,32770757,32770758,
-		 * 32770759,32770760,32770761,32770762,32770763,32770764,32770765,32770766,
-		 * 32770767,32770768,32770769,32770770,32770771])column_value) t where
-		 * t.column_value=sg.snp_feature_id) and sg.genotype_run_id=13 and
-		 * sfl.snp_feature_id=sg.snp_feature_id ) as diff) as diff2, snp_featureloc sfl2
-		 * where sfl2.snp_feature_id=diff2.snp_feature_id order by
-		 * diff2.stock_sample_id, diff2.snp_feature_id;
-		 */
 
 		Set setposall = new LinkedHashSet(listpos);
 		Set posset[] = AppContext.setSlicer(setposall, 1500);
@@ -908,15 +840,22 @@ public class VSnpGenotypeRDBMSDAOImpl extends AbstractJpaDao<VSnpGenotypeRDBMS> 
 					// sqlAl2.append("COALESCE(NULLIF(").append( "p").append(pos.getChr() +"_"+
 					// pos.getPosition()).append("[2]").append(",''),'0')");
 
-					sqlAl1.append("p").append(pos.getChr() + "_" + pos.getPosition()).append("[1]");
-					sqlAl2.append("p").append(pos.getChr() + "_" + pos.getPosition()).append("[2]");
+					
+					if(AppContext.chr2srcfeatureidOffset()>-1) {
+						sqlAl1.append("p").append(pos.getChr() + "_" + pos.getPosition()).append("[1]");
+						sqlAl2.append("p").append(pos.getChr() + "_" + pos.getPosition()).append("[2]");
+					} else {
+						sqlAl1.append("p").append(toSql(pos.getContig()) + "_" + pos.getPosition()).append("[1]");
+						sqlAl2.append("p").append(toSql(pos.getContig()) + "_" + pos.getPosition()).append("[2]");
+					}
 
+					
 					// sqlAl1.append( "foo.allele12[0]"); //.append(pos.getChr() +"_"+
 					// pos.getPosition()).append("_al1");
 					// sqlAl2.append( "p").append(pos.getChr() +"_"+
 					// pos.getPosition()).append("_al2");
 
-					sqlPivot.append("p").append(pos.getChr() + "_" + pos.getPosition()).append(" character(1)[]");
+					sqlPivot.append("p").append(toSql(pos.getContig()) + "_" + pos.getPosition()).append(" character(1)[]");
 					sqlIds.append(pos.getSnpFeatureId().longValue());
 
 					if (itPos.hasNext()) {
@@ -929,44 +868,44 @@ public class VSnpGenotypeRDBMSDAOImpl extends AbstractJpaDao<VSnpGenotypeRDBMS> 
 					}
 				}
 
-				/*
-				 * String sql="select stock_sample_id , replace(" + sqlAl1 +
-				 * ", '0','?') allele1, replace(" + sqlAl2 +
-				 * ",'0','?') allele2, 0 mismatch, null refcall  \r\n" + " from crosstab(\r\n" +
-				 * "'select cast(sg.stock_sample_id as numeric) stock_sample_id, ''p''||(sfl.srcfeature_id-"
-				 * + AppContext.chr2srcfeatureidOffset() +
-				 * ")||''_''||(sfl.position+1) \"position\", ARRAY[sg.allele1, sg.allele2] allele12 from "
-				 * + AppContext.getDefaultSchema() + ".snp_genotype sg, " +
-				 * AppContext.getDefaultSchema() + ".snp_featureloc sfl \r\n" + //
-				 * "where  exists (select column_value from table(sys.odcinumberlist(" + sqlIds
-				 * + ")) t where t.column_value=sg.snp_feature_id) \r\n";
-				 * "where  exists ( select t.column_value from (select unnest(ARRAY[" + sqlIds +
-				 * "])column_value) t where t.column_value=sg.snp_feature_id) \r\n";
-				 * if(colVarids!=null) //sql+=
-				 * " and exists (select column_value from table(sys.odcinumberlist(" + sqlVarids
-				 * + ")) u where u.column_value=sg.stock_sample_id+3024) \r\n"; sql+=
-				 * " and exists (select u.column_value from (select unnest(ARRAY[" + sqlVarids +
-				 * "])column_value) u where u.column_value=sg.stock_sample_id) \r\n";
-				 * 
-				 * sql +=" and sg.genotype_run_id=" + run.getGenotypeRunId() +
-				 * " and sfl.snp_feature_id=sg.snp_feature_id order by 1,2' \r\n" + ")\r\n" +
-				 * " as final_result(stock_sample_id numeric, " + sqlPivot + ")\r\n" +
-				 * " order by stock_sample_id";
-				 */
+				String sql = "";
+				if(AppContext.chr2srcfeatureidOffset()>-1) {
+					sql = "select stock_sample_id , replace(" + sqlAl1 + ", '0','?') allele1, replace(" + sqlAl2
+							+ ",'0','?') allele2, 0 mismatch, null refcall  \r\n" + " from crosstab(\r\n" +
+							// "'select diff2.stock_sample_id, sfl2.srcfeature_id, sfl2.position,
+							// diff2.allele1, diff2.allele2 from " +
+							"'select diff2.stock_sample_id,  ''p''||(sfl2.srcfeature_id-"
+							+ AppContext.chr2srcfeatureidOffset()
+							+ ")||''_''||(sfl2.position+1) \"position\", ARRAY[diff2.allele1, diff2.allele2] allele12  from "
+							+ "(select  sg.stock_sample_id, sfl.snp_feature_id, sg.allele1, sg.allele2 from public.snp_genotype sg, public.snp_feature sfl ";
+				} else {
+					sql = "select stock_sample_id , replace(" + sqlAl1 + ", '0','?') allele1, replace(" + sqlAl2
+							+ ",'0','?') allele2, 0 mismatch, null refcall  \r\n" + " from crosstab(\r\n" +
+							// "'select diff2.stock_sample_id, sfl2.srcfeature_id, sfl2.position,
+							// diff2.allele1, diff2.allele2 from " +
+							
+							//"'select diff2.stock_sample_id,  ''p''||replace(diff2.contigname,''.'','''')"
+							
+							"'select diff2.stock_sample_id,  ''p''||''" + toSql(chr) 							
+							+ "''||''_''||(sfl2.position+1) \"position\", ARRAY[diff2.allele1, diff2.allele2] allele12  from "
+							//+ "(select  sg.stock_sample_id, sfl.snp_feature_id, f.name as contigname, sg.allele1, sg.allele2 from public.snp_genotype sg, public.snp_feature sfl, feature f ";
+							+ "(select  sg.stock_sample_id, sfl.snp_feature_id, sg.allele1, sg.allele2 from public.snp_genotype sg, public.snp_feature sfl ";
+				}
+				
 
-				String sql = "select stock_sample_id , replace(" + sqlAl1 + ", '0','?') allele1, replace(" + sqlAl2
-						+ ",'0','?') allele2, 0 mismatch, null refcall  \r\n" + " from crosstab(\r\n" +
-						// "'select diff2.stock_sample_id, sfl2.srcfeature_id, sfl2.position,
-						// diff2.allele1, diff2.allele2 from " +
-						"'select diff2.stock_sample_id,  ''p''||(sfl2.srcfeature_id-"
-						+ AppContext.chr2srcfeatureidOffset()
-						+ ")||''_''||(sfl2.position+1) \"position\", ARRAY[diff2.allele1, diff2.allele2] allele12  from "
-						+ "(select  sg.stock_sample_id, sfl.snp_feature_id, sg.allele1, sg.allele2 from public.snp_genotype sg, public.snp_feature sfl ";
 				if (setDataset != null)
 					sql += ", stock_sample ss, dbxref dx, db \r\n";
-				sql += " where  exists ( select t.column_value from (select unnest(ARRAY[" + sqlIds
+				
+				sql += " where exists ( select t.column_value from (select unnest(ARRAY[" + sqlIds
 						+ "])column_value) t where t.column_value=sg.snp_feature_id) " + " and sg.genotype_run_id in ("
 						+ AppContext.toCSV(setRunIds) + ") and sfl.snp_feature_id=sg.snp_feature_id ";
+				
+				/*
+				if (AppContext.chr2srcfeatureidOffset()<0) {
+					sql += " and f.feature_id=sfl.srcfeature_id ";
+				}
+				*/
+				
 				if (colVarids != null)
 					sql += " and exists (select u.column_value from (select unnest(ARRAY[" + sqlVarids
 							+ "])column_value) u where u.column_value=sg.stock_sample_id) \r\n";

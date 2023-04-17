@@ -772,7 +772,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 	public List<Locus> getLocusByDescription(TextSearchOptions description, String organism, String genemodel) {
 		
 
-		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(Organism.REFERENCE_NIPPONBARE)) {
+		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(AppContext.REFERENCE_NIPPONBARE())) {
 			return getLocusByDescription(description, organism);
 		}
 
@@ -1362,7 +1362,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 
 		String locusmapping = "";
 		String locuspref = "";
-		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(Organism.REFERENCE_NIPPONBARE)) {
+		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(AppContext.REFERENCE_NIPPONBARE())) {
 			return getLocusBySynonyms(synonym, organism);
 		} else if (genemodel.equals(GenomicsFacade.GENEMODEL_IRIC)) {
 			locuspref = " where fdesc.\"NAME\" like 'OsNippo%'";
@@ -1458,7 +1458,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 		String locusmapping = "";
 		String locuspref = "";
 		String sqlret = "select fdesc.*,  lm.name iric, lm.msu7, lm.rap_representative rap_rep, lm.rap_predicted rap_pred, lm.fgenesh from (";
-		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(Organism.REFERENCE_NIPPONBARE)) {
+		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(AppContext.REFERENCE_NIPPONBARE())) {
 			return getLocusBySynonyms(synonym, organism);
 			// locuspref = "where 1=1";
 		} else if (genemodel.equals(GenomicsFacade.GENEMODEL_IRIC)) {
@@ -1744,7 +1744,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 		// use left join to include even without description
 
 		String notes = "'' notes";
-		if (organism.equals(Organism.REFERENCE_NIPPONBARE))
+		if (organism.equals(AppContext.REFERENCE_NIPPONBARE()))
 			notes = "dbms_lob.substr(f3.value,1000,1) notes";
 
 		String sql = "select distinct f.feature_id, f.name name, fl.fmin, fl.fmax, fl.strand, fsrc.feature_id contig_id, fsrc.uniquename contig_name, "
@@ -1776,7 +1776,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 		// use left join to include even without description
 
 		String notes = "'' notes";
-		if (organism.equals(Organism.REFERENCE_NIPPONBARE))
+		if (organism.equals(AppContext.REFERENCE_NIPPONBARE()))
 			notes = "substr(f3.value,1,1000) notes";
 
 		String sqltype = "";
@@ -1848,7 +1848,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 		// use left join to include even without description
 
 		String notes = "'' notes";
-		if (organism.equals(Organism.REFERENCE_NIPPONBARE))
+		if (organism.equals(AppContext.REFERENCE_NIPPONBARE()))
 			notes = "substr(f3.value,1,1000) notes";
 
 		String sqltype = "";
@@ -1930,7 +1930,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 					setfeaturetype);
 
 		String locuspref = "";
-		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(Organism.REFERENCE_NIPPONBARE)) {
+		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(AppContext.REFERENCE_NIPPONBARE())) {
 			return getLocusByRegion(contig, start, end, organism, featuretype);
 		} else if (genemodel.equals(GenomicsFacade.GENEMODEL_IRIC)) {
 			locuspref = " and f.name like 'OsNippo%'";
@@ -1999,7 +1999,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 
 			String locusmapping = "";
 			String locuspref = "";
-			if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(Organism.REFERENCE_NIPPONBARE)) {
+			if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(AppContext.REFERENCE_NIPPONBARE())) {
 				// return getLocusByRegion( contig, start, end, organism,
 				// GenomicsFacade.GENEMODEL_ALL);
 				return getLocusByRegionPostgresNomapping(contig, start, end, organism, genemodel,
@@ -2068,7 +2068,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 
 		String locusmapping = "";
 		String locuspref = "";
-		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(Organism.REFERENCE_NIPPONBARE)) {
+		if (genemodel.equals(GenomicsFacade.GENEMODEL_ALL) || !organism.equals(AppContext.REFERENCE_NIPPONBARE())) {
 			return getLocusByRegion(contig, start, end, organism, GenomicsFacade.GENEMODEL_ALL);
 		} else if (genemodel.equals(GenomicsFacade.GENEMODEL_IRIC)) {
 			locuspref = " and f.name like 'OsNippo%'";
@@ -2576,7 +2576,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 		String locusmapping = "";
 		String locuspref = "";
 		if (genemodel == null || genemodel.equals(GenomicsFacade.GENEMODEL_ALL)
-				|| !organism.equals(Organism.REFERENCE_NIPPONBARE)) {
+				|| !organism.equals(AppContext.REFERENCE_NIPPONBARE())) {
 			return _getLocusByContigPositions(contig, posset, organism, plusminus, genemodel,
 					GenomicsFacade.FEATURETYPE_GENE);
 		} else if (genemodel.equals(GenomicsFacade.GENEMODEL_IRIC)) {
@@ -2663,7 +2663,7 @@ public class VLocusNotesDAOImpl extends AbstractJpaDao<VLocusNotes> implements V
 		String locuspref = "";
 		String sqlselect = "select flist.* , lm.name iric, lm.msu7, lm.rap_representative rap_rep, lm.rap_predicted rap_pred, lm.fgenesh from (";
 		if (genemodel == null || genemodel.equals(GenomicsFacade.GENEMODEL_ALL)
-				|| !organism.equals(Organism.REFERENCE_NIPPONBARE)) {
+				|| !organism.equals(AppContext.REFERENCE_NIPPONBARE())) {
 			return _getLocusByContigPositions(contig, posset, organism, plusminus, genemodel, featuretype);
 		} else if (genemodel.equals(GenomicsFacade.GENEMODEL_IRIC)) {
 			// locuspref=" and f.dbxref_id=dx.dbxref_id and dx.accession='osnippo:all_genes'

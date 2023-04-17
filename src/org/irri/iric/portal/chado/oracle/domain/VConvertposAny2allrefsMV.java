@@ -793,7 +793,7 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 	public String getContig() {
 
 		String ctgname = "";
-		if (fromOrganismId.equals(Organism.REFERENCE_NIPPONBARE_ID))
+		if (fromOrganismId.equals(AppContext.REFERENCE_NIPPONBARE_ID()))
 			ctgname = this.nbContigName;
 		else if (fromOrganismId.equals(Organism.REFERENCE_9311_ID))
 			ctgname = this._311ContigName;
@@ -810,8 +810,10 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 	@Override
 	public String getContigName(String organism) {
 
+		
+		
 		String ctgname = "";
-		if (organism.equals(Organism.REFERENCE_NIPPONBARE))
+		if (organism.equals(AppContext.REFERENCE_NIPPONBARE()))
 			ctgname = getNBContigName();
 		else if (organism.equals(Organism.REFERENCE_9311))
 			ctgname = get9311ContigName();
@@ -836,7 +838,7 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 	@Override
 	public BigDecimal getPosition(String organism) {
 
-		if (organism.equals(Organism.REFERENCE_NIPPONBARE))
+		if (organism.equals(Organism.REFERENCE_NIPPONBARE()))
 			return this.nbPosition;
 		else if (organism.equals(Organism.REFERENCE_9311))
 			return this.rice9311Position;
@@ -852,7 +854,7 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 	@Override
 	public Integer getAlignCount(String organism) {
 
-		if (organism.equals(Organism.REFERENCE_NIPPONBARE))
+		if (organism.equals(Organism.REFERENCE_NIPPONBARE()))
 			return this.nbAlignCount;
 		else if (organism.equals(Organism.REFERENCE_9311))
 			return this._311AlignCount;
@@ -868,7 +870,7 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 	@Override
 	public String getAllele(String organism) {
 
-		if (organism.equals(Organism.REFERENCE_NIPPONBARE))
+		if (organism.equals(Organism.REFERENCE_NIPPONBARE()))
 			return this.nbRefcall;
 		else if (organism.equals(Organism.REFERENCE_9311))
 			return this.rice9311Refcall;
@@ -884,7 +886,7 @@ public class VConvertposAny2allrefsMV implements Serializable, SnpsAllvarsMultir
 	@Override
 	public Long getChr() {
 
-		if (fromOrganismId.equals(Organism.REFERENCE_NIPPONBARE_ID))
+		if (fromOrganismId.equals(Organism.REFERENCE_NIPPONBARE_ID()))
 			return Long.valueOf(AppContext.guessChrFromString(this.nbContigName));
 		else if (fromOrganismId.equals(Organism.REFERENCE_KASALATH_ID))
 			return Long.valueOf(AppContext.guessChrFromString(this.kasalathContigName));

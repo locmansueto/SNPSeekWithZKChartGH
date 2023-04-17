@@ -28,6 +28,10 @@ import org.irri.iric.portal.domain.SnpsNonsynAllele;
 		@NamedQuery(name = "findVSnpNonsynallelePosByPositionBetween", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.chr = ?1 and myVSnpNonsynallelePos.position between ?2 and ?3 and myVSnpNonsynallelePos.typeId=?4 order by  myVSnpNonsynallelePos.chr , myVSnpNonsynallelePos.position"),
 		@NamedQuery(name = "findVSnpNonsynallelePosByPositionBetweenSnpset", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.chr = ?1 and myVSnpNonsynallelePos.position between ?2 and ?3 and myVSnpNonsynallelePos.typeId=?4 and  myVSnpNonsynallelePos.variantset in (?5) order by  myVSnpNonsynallelePos.chr , myVSnpNonsynallelePos.position"),
 
+		@NamedQuery(name = "findVSnpNonsynallelePosByContigPositionBetween", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.contig = ?1 and myVSnpNonsynallelePos.position between ?2 and ?3 and myVSnpNonsynallelePos.typeId=?4 order by  myVSnpNonsynallelePos.chr , myVSnpNonsynallelePos.position"),
+		@NamedQuery(name = "findVSnpNonsynallelePosByContigPositionBetweenSnpset", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.contig = ?1 and myVSnpNonsynallelePos.position between ?2 and ?3 and myVSnpNonsynallelePos.typeId=?4 and  myVSnpNonsynallelePos.variantset in (?5) order by  myVSnpNonsynallelePos.chr , myVSnpNonsynallelePos.position"),
+
+		
 		@NamedQuery(name = "findVSnpNonsynallelePosByPositionIn", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.chr = ?1 and  myVSnpNonsynallelePos.position in(?2)  and myVSnpNonsynallelePos.typeId=?3 order by  myVSnpNonsynallelePos.chr , myVSnpNonsynallelePos.position"),
 		@NamedQuery(name = "findVSnpNonsynallelePosBySnpFeatureIdBetween", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.snpFeatureId between ?1 and ?2 and myVSnpNonsynallelePos.typeId=?3 order by  myVSnpNonsynallelePos.chr , myVSnpNonsynallelePos.position"),
 		@NamedQuery(name = "findVSnpNonsynallelePosBySnpFeatureIdBetweenSnpset", query = "select myVSnpNonsynallelePos from VSnpNonsynallelePos myVSnpNonsynallelePos where myVSnpNonsynallelePos.snpFeatureId between ?1 and ?2 and myVSnpNonsynallelePos.typeId=?3 and myVSnpNonsynallelePos.variantset in (?4) order by  myVSnpNonsynallelePos.chr , myVSnpNonsynallelePos.position"),
@@ -72,6 +76,13 @@ public class VSnpNonsynallelePos implements Serializable, SnpsNonsynAllele, Comp
 	@Id
 	@XmlElement
 	BigDecimal chr;
+
+	@Column(name = "CONTIG")
+	@Basic(fetch = FetchType.EAGER)
+	@Id
+	@XmlElement
+	String contig;
+
 	/**
 	 */
 

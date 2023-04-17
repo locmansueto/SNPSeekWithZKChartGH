@@ -21,9 +21,13 @@ import javax.persistence.Query;
 import org.hibernate.Session;
 import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.chado.oracle.domain.VSnpRefposindex;
+import org.irri.iric.portal.chado.oracle.domain.VSnpRefposindexV3;
+import org.irri.iric.portal.dao.ListItemsDAO;
 import org.irri.iric.portal.domain.Locus;
 import org.irri.iric.portal.domain.MultiReferencePositionImpl;
 import org.skyway.spring.util.dao.AbstractJpaDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,13 +40,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex> implements VSnpRefposindexDAO {
 
+	@Autowired
+	@Qualifier("ListItems")
+	private ListItemsDAO listitemsdao;
+
+	
 	/**
 	 * Set of entity classes managed by this DAO. Typically a DAO manages a single
 	 * entity.
 	 *
 	 */
 	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(
-			Arrays.asList(new Class<?>[] { VSnpRefposindex.class }));
+			Arrays.asList(new Class<?>[] { VSnpRefposindex.class , VSnpRefposindexV3.class}));
 
 	/**
 	 * EntityManager injected by Spring for persistence unit Production
@@ -389,94 +398,141 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex> impl
 		
 		BigDecimal bdChr = null;
 		try {
-			chr = chr.toUpperCase().replace("CHROMOSOME0", "").replace("CHROMOSOME", "").replace("CHR0", "")
-					.replace("CHR", "");
+			//chr = chr.toUpperCase().replace("CHROMOSOME0", "").replace("CHROMOSOME", "").replace("CHR0", "")
+			//		.replace("CHR", "");
 			try {
-				bdChr = BigDecimal.valueOf(Long.valueOf(chr));
-				if (startPos != null && endPos != null) {
-					// AppContext.debug("findVSnpRefposindexByChrPosBetween: " + bdChr + " " +
-					// startPos + " " + endPos + " " + type);
-					// TIMER HERE DAGS
-					if (AppContext.isBypassViews()) {
-						
-						String sqldirect = "";
-						/*
-						 * sqldirect+
-						 * ="SELECT cast(mv_snp_refposindex.snp_feature_id as numeric) snp_feature_id, mv_snp_refposindex.type_id, mv_snp_refposindex.chromosome, mv_snp_refposindex.position + 1 AS \"position\", mv_snp_refposindex.refcall,  mv_snp_refposindex.altcall, "
-						 * ; sqldirect+="mv_snp_refposindex.allele_index FROM " +
-						 * AppContext.getDefaultSchema() +
-						 * ".mv_snp_refposindex where mv_snp_refposindex.chromosome=" + bdChr ;
-						 * sqldirect+=" and mv_snp_refposindex.position+1 between " + startPos + " and "
-						 * + endPos + " and mv_snp_refposindex.variantset in (" +
-						 * AppContext.toCSVquoted(variantset,"'") +
-						 * ") order by mv_snp_refposindex.position";
-						 */
-
-						// sqldirect+="SELECT sfl.snp_feature_id, NULLIF(replace(lower(srcf.name::text),
-						// 'chr'::text, ''::text), ''::text)::integer AS chromosome, sfl.position + 1 AS
-						// \"position\", sfl.refcall, ''::character varying(1) AS altcall, ";
-						sqldirect += "SELECT sfl.snp_feature_id, sfl.srcfeature_id-"
-								+ AppContext.chr2srcfeatureidOffset()
-								+ " AS chromosome, sfl.position + 1 AS \"position\", sfl.refcall, '' AS altcall, ";
-						sqldirect += " vvs.hdf5_index AS allele_index, v.variantset_id AS type_id, v.name AS variantset FROM "
-								+ AppContext.getDefaultSchema() + ".snp_featureloc sfl, "
-								+ AppContext.getDefaultSchema() + ".variant_variantset vvs, "
-								+ AppContext.getDefaultSchema() + ".variantset v ";
-						sqldirect += " WHERE sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
-						// sqldirect+=" and NULLIF(replace(lower(srcf.name::text), 'chr'::text,
-						// ''::text), ''::text)::integer=" + bdChr;
-						sqldirect += " and sfl.organism_id=" + AppContext.getDefaultOrganismId()
-								+ " and sfl.srcfeature_id=" + bdChr + "+" + AppContext.chr2srcfeatureidOffset();
-						sqldirect += " and sfl.position between " + startPos + "-1 and " + endPos + "-1 and v.name in ("
-								+ AppContext.toCSVquoted(variantset, "'") + ") order by sfl.position";
-
-						return executeSQL(sqldirect);
-					} else {
-						Query query = createNamedQuery("findVSnpRefposindexByChrPosBetweenVariantset", firstRow,
-								maxRows, bdChr, BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), variantset);
-						return query.getResultList();
-					}
-				} else {
-
+				
+				if(AppContext.chr2srcfeatureidOffset()<0) {
+					// chr is non-numeric,
+					
+					BigDecimal srcfeatureid=listitemsdao.getFeature(chr).getFeatureId();
+					// get scaffodid
+					
 					if (startPos != null && endPos != null) {
 						if (AppContext.isBypassViews()) {
+							
 							String sqldirect = "";
-							sqldirect += "SELECT sfl.snp_feature_id, sfl.srcfeature_id- "
-									+ AppContext.chr2srcfeatureidOffset()
-									+ " AS chromosome, sfl.position + 1 AS \"position\", sfl.refcall, ''  AS altcall, ";
+							sqldirect += "SELECT sfl.snp_feature_id, f.name "
+									+ " AS chromosome, sfl.position + 1 AS \"position\", sfl.refcall, '' AS altcall, ";
 							sqldirect += " vvs.hdf5_index AS allele_index, v.variantset_id AS type_id, v.name AS variantset FROM "
+									+ AppContext.getDefaultSchema() + ".feature f, "
 									+ AppContext.getDefaultSchema() + ".snp_featureloc sfl, "
 									+ AppContext.getDefaultSchema() + ".variant_variantset vvs, "
-									+ AppContext.getDefaultSchema() + ".feature fsrc," + AppContext.getDefaultSchema()
-									+ ".variantset v ";
-							sqldirect += " WHERE sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id and fsrc.feature_id=sfl.srcfeature_id ";
-							// sqldirect+=" and NULLIF(replace(lower(srcf.name::text), 'chr'::text,
-							// ''::text), ''::text)::integer=" + bdChr;
+									+ AppContext.getDefaultSchema() + ".variantset v ";
+							sqldirect += " WHERE sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
+							sqldirect += " and f.feature_id=sfl.srcfeature_id ";
 							sqldirect += " and sfl.organism_id=" + AppContext.getDefaultOrganismId()
-									+ " and upper(fsrc.name)='" + chr.toUpperCase() + "' ";
-							sqldirect += " and sfl.position between " + startPos + "-1 and " + endPos
-									+ "-1 and v.name in (" + AppContext.toCSVquoted(variantset, "'")
-									+ ") order by sfl.position";
-							return executeSQL(sqldirect);
-
+									+ " and sfl.srcfeature_id=" + srcfeatureid;
+							sqldirect += " and sfl.position between " + startPos + "-1 and " + endPos + " and v.name in ("
+									+ AppContext.toCSVquoted(variantset, "'") + ") order by sfl.position";
+	
+							return executeSQLV3(sqldirect);
 						} else {
-
-							Query query = createNamedQuery("findVSnpRefposindexByChrPosBetweenVariantset", firstRow,
-									maxRows, bdChr, BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos),
-									variantset);
+							Query query = createNamedQuery("findVSnpRefposindexBySrcfeatureidPosBetweenVariantset", firstRow,
+									maxRows, srcfeatureid, BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), variantset);
 							return query.getResultList();
 						}
 					} else {
 						// AppContext.debug("findVSnpRefposindexByChr: " + bdChr + " " + type);
-						Query query = createNamedQuery("findVSnpRefposindexByChrVariantset", firstRow, maxRows, bdChr,
+						Query query = createNamedQuery("findVSnpRefposindexBySrcfeatureidVariantset", firstRow, maxRows, srcfeatureid,
 								variantset);
 						return query.getResultList();
-					}
+					} 			 		
+				
+				} else {
+					chr = chr.toUpperCase().replace("CHROMOSOME0", "").replace("CHROMOSOME", "").replace("CHR0", "")
+							.replace("CHR", "");
+					
+					bdChr = BigDecimal.valueOf(Long.valueOf(chr));
 
-				}
+					if (startPos != null && endPos != null) {
+							// AppContext.debug("findVSnpRefposindexByChrPosBetween: " + bdChr + " " +
+							// startPos + " " + endPos + " " + type);
+							// TIMER HERE DAGS
+							if (AppContext.isBypassViews()) {
+								
+								String sqldirect = "";
+								/*
+								 * sqldirect+
+								 * ="SELECT cast(mv_snp_refposindex.snp_feature_id as numeric) snp_feature_id, mv_snp_refposindex.type_id, mv_snp_refposindex.chromosome, mv_snp_refposindex.position + 1 AS \"position\", mv_snp_refposindex.refcall,  mv_snp_refposindex.altcall, "
+								 * ; sqldirect+="mv_snp_refposindex.allele_index FROM " +
+								 * AppContext.getDefaultSchema() +
+								 * ".mv_snp_refposindex where mv_snp_refposindex.chromosome=" + bdChr ;
+								 * sqldirect+=" and mv_snp_refposindex.position+1 between " + startPos + " and "
+								 * + endPos + " and mv_snp_refposindex.variantset in (" +
+								 * AppContext.toCSVquoted(variantset,"'") +
+								 * ") order by mv_snp_refposindex.position";
+								 */
+		
+								// sqldirect+="SELECT sfl.snp_feature_id, NULLIF(replace(lower(srcf.name::text),
+								// 'chr'::text, ''::text), ''::text)::integer AS chromosome, sfl.position + 1 AS
+								// \"position\", sfl.refcall, ''::character varying(1) AS altcall, ";
+								sqldirect += "SELECT sfl.snp_feature_id, sfl.srcfeature_id-"
+										+ AppContext.chr2srcfeatureidOffset()
+										+ " AS chromosome, sfl.position + 1 AS \"position\", sfl.refcall, '' AS altcall, ";
+								sqldirect += " vvs.hdf5_index AS allele_index, v.variantset_id AS type_id, v.name AS variantset FROM "
+										+ AppContext.getDefaultSchema() + ".snp_featureloc sfl, "
+										+ AppContext.getDefaultSchema() + ".variant_variantset vvs, "
+										+ AppContext.getDefaultSchema() + ".variantset v ";
+								sqldirect += " WHERE sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
+								// sqldirect+=" and NULLIF(replace(lower(srcf.name::text), 'chr'::text,
+								// ''::text), ''::text)::integer=" + bdChr;
+								sqldirect += " and sfl.organism_id=" + AppContext.getDefaultOrganismId()
+										+ " and sfl.srcfeature_id=" + bdChr + "+" + AppContext.chr2srcfeatureidOffset();
+								sqldirect += " and sfl.position between " + startPos + "-1 and " + endPos + " and v.name in ("
+										+ AppContext.toCSVquoted(variantset, "'") + ") order by sfl.position";
+		
+								return executeSQL(sqldirect);
+							} else {
+								Query query = createNamedQuery("findVSnpRefposindexByChrPosBetweenVariantset", firstRow,
+										maxRows, bdChr, BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), variantset);
+								return query.getResultList();
+							}
+						} else {
+		
+							if (startPos != null && endPos != null) {
+								if (AppContext.isBypassViews()) {
+									String sqldirect = "";
+									sqldirect += "SELECT sfl.snp_feature_id, sfl.srcfeature_id- "
+											+ AppContext.chr2srcfeatureidOffset()
+											+ " AS chromosome, sfl.position + 1 AS \"position\", sfl.refcall, ''  AS altcall, ";
+									sqldirect += " vvs.hdf5_index AS allele_index, v.variantset_id AS type_id, v.name AS variantset FROM "
+											+ AppContext.getDefaultSchema() + ".snp_featureloc sfl, "
+											+ AppContext.getDefaultSchema() + ".variant_variantset vvs, "
+											+ AppContext.getDefaultSchema() + ".feature fsrc," + AppContext.getDefaultSchema()
+											+ ".variantset v ";
+									sqldirect += " WHERE sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id and fsrc.feature_id=sfl.srcfeature_id ";
+									// sqldirect+=" and NULLIF(replace(lower(srcf.name::text), 'chr'::text,
+									// ''::text), ''::text)::integer=" + bdChr;
+									sqldirect += " and sfl.organism_id=" + AppContext.getDefaultOrganismId()
+											+ " and upper(fsrc.name)='" + chr.toUpperCase() + "' ";
+									sqldirect += " and sfl.position between " + startPos + "-1 and " + endPos
+											+ " and v.name in (" + AppContext.toCSVquoted(variantset, "'")
+											+ ") order by sfl.position";
+									return executeSQL(sqldirect);
+		
+								} else {
+		
+									Query query = createNamedQuery("findVSnpRefposindexByChrPosBetweenVariantset", firstRow,
+											maxRows, bdChr, BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos),
+											variantset);
+									return query.getResultList();
+								}
+							} else {
+								// AppContext.debug("findVSnpRefposindexByChr: " + bdChr + " " + type);
+								Query query = createNamedQuery("findVSnpRefposindexByChrVariantset", firstRow, maxRows, bdChr,
+										variantset);
+								return query.getResultList();
+							}
+					} // else (startPos != null && endPos != null)
+
+				} // if AppContext.chr2srcfeatureidOffset()<0
+				
 			} catch (Exception ex) {
 				AppContext.debug("non-numeric chr: " + chr);
 				ex.printStackTrace();
+				
+				
 				if (startPos != null && endPos != null) {
 					Query query = createNamedQuery("findVSnpRefposindexByChrPosBetweenVariantset", firstRow, maxRows,
 							chr, BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos), variantset);
@@ -487,6 +543,7 @@ public class VSnpRefposindexDAOImpl extends AbstractJpaDao<VSnpRefposindex> impl
 							variantset);
 					return query.getResultList();
 				}
+				
 
 				// Query query = createNamedQuery("findVSnpRefposindexByVariantset", firstRow,
 				// maxRows, variantset);
@@ -1680,6 +1737,21 @@ private List _getSNPsInChromosomePostgresBypass(String chr, Collection posset, S
 	//
 	// return executeSQL(sql);
 	// }
+
+	private List executeSQLV3(String sql) {
+		if (AppContext.isIRRILAN())
+			AppContext.debug("executing :" + sql);
+		// log.info("executing :" + sql);
+		try {
+			List l = getSession().createSQLQuery(sql).addEntity(VSnpRefposindexV3.class).list();
+			AppContext.debug("rresult=" + l.size());
+			return l;
+		} catch (Exception ex) {
+			AppContext.debug("error executing :" + sql);
+			ex.printStackTrace();
+			throw ex;
+		}
+	}
 
 	private List executeSQL(String sql) {
 		if (AppContext.isIRRILAN())

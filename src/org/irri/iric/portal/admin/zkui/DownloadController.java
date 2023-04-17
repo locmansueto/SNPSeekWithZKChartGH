@@ -400,7 +400,7 @@ public class DownloadController extends SelectorComposer<Component> {
 		else
 			labelExampleContig.setValue("(ex. " + listContigs.get(1).toString().toLowerCase() + ") ");
 
-		if (selOrg.equals(Organism.REFERENCE_NIPPONBARE))
+		if (selOrg.equals(AppContext.REFERENCE_NIPPONBARE()))
 			labelExampleLocus.setValue("(ex. loc_os01g01010)");
 		else if (selOrg.equals(Organism.REFERENCE_IR64))
 			labelExampleLocus.setValue("(ex. osir64_00001g0100)");

@@ -285,6 +285,7 @@ public interface GenotypeFacade {
 	public boolean hasNonsyn(Set vs);
 
 	public List getVarietysets();
+	public List getVarietysets(String reference);
 
 	// public List getVariantsets(Set varietyset);
 	public List getVariantsets(Set varietyset, String type);

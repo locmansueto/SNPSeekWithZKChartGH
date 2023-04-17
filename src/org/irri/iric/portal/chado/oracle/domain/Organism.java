@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.*;
+
+import org.irri.iric.portal.AppContext;
+
 import javax.persistence.*;
 
 /**
@@ -216,5 +219,19 @@ public class Organism implements Serializable, org.irri.iric.portal.domain.Organ
 		return this.getCommonName();
 		// return this.getAbbreviation();
 	}
+
+	
+	public static String REFERENCE_NIPPONBARE() {
+		// TODO Auto-generated method stub
+		return AppContext.getDefaultOrganism();
+	}
+
+	public static  BigDecimal REFERENCE_NIPPONBARE_ID() {
+		// TODO Auto-generated method stub
+		return BigDecimal.valueOf(AppContext.getDefaultOrganismId());
+	}
+	
+	
+	
 
 }

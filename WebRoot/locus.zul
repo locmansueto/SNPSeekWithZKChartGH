@@ -57,7 +57,7 @@
 <listitem  label="Region" visible="${visibleRegionStr}"/>
 <listitem  id="listitemSequence" label="Sequence" visible="${visibleSequenceStr}"/>
 <listitem  label="SNP Annotator (My SNP List)" visible="${visibleSnpListStr}"/>
-<listitem  label="Gene set/networks" visible="${visibleGeneListStr}"/>
+<!--  listitem  label="Gene set/networks" visible="${visibleGeneListStr}"/ -->
 </listbox>
 
 <div id="divGeneModel">
@@ -412,7 +412,7 @@
 </rows>
 </grid>
 
-<tipBox height="210px" width="400px" desc="    LOCUS QUERY"
+<tipBox visible="false" height="210px" width="400px" desc="    LOCUS QUERY"
 		details1= "  Select reference genome" 
 		details2= "  Select search criterion:"
 		details3= "     a. gene function"
@@ -528,7 +528,7 @@
                 <listheader label="START"  width="100px"   sortAscending="${lasc2}" sortDescending="${ldsc2}" />
                 <listheader label="STOP"  width="100px"  sortAscending="${lasc3}" sortDescending="${ldsc3}" />
                 <listheader label="STRAND"  width="60px"  sortAscending="${lasc4}" sortDescending="${ldsc4}" />
-                <listheader id="listheaderOverlapping" label="OVERLAPPING GENE MODELS"  width="300px" sort="auto" />
+                <listheader id="listheaderOverlapping" visible="false" label="OVERLAPPING GENE MODELS"  width="300px" sort="auto" />
                 <listheader label="DESCRIPTION"    sortAscending="${lasc6}" sortDescending="${ldsc6}" />
             	</listhead>
 </listbox>		

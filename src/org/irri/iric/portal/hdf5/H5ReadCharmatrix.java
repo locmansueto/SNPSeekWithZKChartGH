@@ -321,6 +321,12 @@ public class H5ReadCharmatrix implements H5ReadMatrix {
 					rows = 1;
 				}
 				int cols = (int) n_dim_position;
+				
+				AppContext.debug( hdf5readcharfxn + " start[DIM_VARIETY]=" + String.valueOf(start[DIM_VARIETY]) + 
+						" start[DIM_POSITION]=" + start[DIM_POSITION] +
+						" sizes[DIM_VARIETY]=" + sizes[DIM_VARIETY] +
+								" sizes[DIM_POSITION]=" + sizes[DIM_POSITION] +								
+								" cols=" + cols + " rows=" + rows) ;
 				// read the data of the subset
 				byte[] dataRead = null;
 				try {
@@ -333,14 +339,17 @@ public class H5ReadCharmatrix implements H5ReadMatrix {
 					AppContext.debug("read=null for " + hfdata.filename + " " + maxdims[0] + "x" + maxdims[1] + "  ["
 							+ input.startPosidx + "-" + input.endPosidx + "]");
 					throw new RuntimeException("dataRead=null");
-				}
-				for (int i = 0; i < rows; i++) {
-					if (setVarsIds != null && !setVarsIds.contains(i + 1 + start_var))
-						continue;
-					String s = new String(java.util.Arrays.copyOfRange(dataRead, i * cols, i * cols + cols));
-					// AppContext.debug(s);
-					listVarString.put(BigDecimal.valueOf(i + 1 + start_var), s);
-				}
+				} 
+				//else 
+				//{
+					for (int i = 0; i < rows; i++) {
+						if (setVarsIds != null && !setVarsIds.contains(i + 1 + start_var))
+							continue;
+						String s = new String(java.util.Arrays.copyOfRange(dataRead, i * cols, i * cols + cols));
+						// AppContext.debug(s);
+						listVarString.put(BigDecimal.valueOf(i + 1 + start_var), s);
+					}
+				//}
 			}
 
 			else if (setVarsIds.size() > 1) {

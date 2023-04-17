@@ -27,6 +27,7 @@ import org.irri.iric.portal.domain.Scaffold;
 		// @NamedQuery(name = "findVScaffoldsOrganismByNameCommonName", query = "select
 		// myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where
 		// myVScaffoldsOrganism.name = ?1 and myVScaffoldsOrganism.commonName = ?2"),
+		@NamedQuery(name = "findVScaffoldsOrganismByContigName", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where upper(myVScaffoldsOrganism.name) = upper(?1)"),
 		@NamedQuery(name = "findVScaffoldsOrganismByNameCommonName", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where upper(myVScaffoldsOrganism.name) = upper(?1)  and myVScaffoldsOrganism.commonName = ?2"),
 		@NamedQuery(name = "findVScaffoldsOrganismByNameOrganismId", query = "select myVScaffoldsOrganism from VScaffoldsOrganism myVScaffoldsOrganism where upper(myVScaffoldsOrganism.name) = upper(?1)  and myVScaffoldsOrganism.organismId = ?2"),
 
@@ -148,7 +149,8 @@ public class VScaffoldsOrganism implements Serializable, Scaffold {
 	/**
 	 */
 	public BigDecimal getSeqlen() {
-		return this.seqlen;
+		if(seqlen==null) return BigDecimal.valueOf(1000000000);
+		return seqlen;
 	}
 
 	/**
@@ -266,8 +268,7 @@ public class VScaffoldsOrganism implements Serializable, Scaffold {
 
 	@Override
 	public long getLength() {
-		
-		return seqlen.longValue();
+		return  getSeqlen().longValue();
 	}
 
 	

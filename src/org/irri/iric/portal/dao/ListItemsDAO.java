@@ -109,7 +109,9 @@ public interface ListItemsDAO {
 
 	Long getFeatureLength(String feature, String organism);
 
-	Scaffold getFeature(String feature, String organism);
+	public Scaffold getFeature(String feature, String organism);
+
+	public Scaffold getFeature(String featurename);
 
 	List getGOTermsWithLoci(String cv, String organism);
 
@@ -153,6 +155,7 @@ public interface ListItemsDAO {
 	public Set getPlatforms(Set setds, Set setvs, String type);
 
 	public Set getDatasets(String type);
+	public Set getDatasets(String type, String reference);
 
 	public Set getDatasets();
 

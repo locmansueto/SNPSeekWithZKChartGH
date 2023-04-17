@@ -433,7 +433,7 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	public Map[] getMarkerGenomicsAnnotsByContigPositions(String chr, Collection listPos, String organism,
 			String genemodel) {
 		
-		if (!organism.equals(Organism.REFERENCE_NIPPONBARE))
+		if (!organism.equals(AppContext.REFERENCE_NIPPONBARE()))
 			throw new RuntimeException("getMarkerGenomicsAnnotsByContigPositions organism=" + organism);
 		if (!genemodel.equals(GenomicsFacade.GENEMODEL_MSU7_ONLY))
 			throw new RuntimeException("getMarkerGenomicsAnnotsByContigPositions genemodel=" + genemodel);
@@ -445,7 +445,7 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	public Map<Position, List<Locus>>[] getMarkerGenomicsAnnotsByRegion(String chr, List<SnpsAllvarsPos> listPos,
 			Long start, Long stop, String organism, String genemodel) {
 		
-		if (!organism.equals(Organism.REFERENCE_NIPPONBARE))
+		if (!organism.equals(AppContext.REFERENCE_NIPPONBARE()))
 			throw new RuntimeException("getMarkerGenomicsAnnotsByRegion organism=" + organism);
 		if (!genemodel.equals(GenomicsFacade.GENEMODEL_MSU7_ONLY))
 			throw new RuntimeException("getMarkerGenomicsAnnotsByRegion genemodel=" + genemodel);
@@ -469,7 +469,7 @@ public class GenomicsFacadeImpl implements GenomicsFacade {
 	public List<MarkerAnnotation> getMarkerAnnotsByContigPositions(String contig, Collection colPos, String organism,
 			Integer plusminus, String genemodel, Set annotations, Integer maxInteractingGenes, Set excludeAnnotations) {
 
-		if (!organism.equals(Organism.REFERENCE_NIPPONBARE))
+		if (!organism.equals(AppContext.REFERENCE_NIPPONBARE()))
 			throw new RuntimeException("getMarkerAnnotsByContigPositions organism=" + organism);
 		locusService = (LocusService) AppContext.checkBean(locusService, "LocusService");
 		return locusService.getMarkerAnnotsByContigPositions(contig, colPos, plusminus, genemodel, annotations,

@@ -275,7 +275,7 @@ public class Object2StringMultirefsMatrixModel<Head extends List, Row extends Li
 				listOtherRefs = new ArrayList();
 				if (mapOrg2MSU7Pos2ConvertedPos.size() > 0)
 					listOtherRefs.addAll(mapOrg2MSU7Pos2ConvertedPos.keySet());
-				listOtherRefs.remove(Organism.REFERENCE_NIPPONBARE);
+				listOtherRefs.remove(AppContext.REFERENCE_NIPPONBARE());
 			} else {
 				listOtherRefs = new ArrayList();
 				if (mapOrg2RefPos2ConvertedPos.size() > 0)
@@ -663,7 +663,7 @@ public class Object2StringMultirefsMatrixModel<Head extends List, Row extends Li
 
 						return ref;
 					} else if (index == 0)
-						return Organism.REFERENCE_NIPPONBARE;
+						return AppContext.REFERENCE_NIPPONBARE();
 					else
 						return "";
 				}
@@ -691,7 +691,7 @@ public class Object2StringMultirefsMatrixModel<Head extends List, Row extends Li
 							// AppContext.debug("mapOrg2RefPos2ConvertedPos="+ mapOrg2RefPos2ConvertedPos);
 
 							Map<BigDecimal, MultiReferencePosition> mapPos2Refpos = null;
-							if (params.getOrganism().equals(Organism.REFERENCE_NIPPONBARE))
+							if (params.getOrganism().equals(AppContext.REFERENCE_NIPPONBARE()))
 								mapPos2Refpos = mapOrg2MSU7Pos2ConvertedPos.get(listOtherRefs.get(0));
 							else
 								mapPos2Refpos = mapOrg2RefPos2ConvertedPos.get(listOtherRefs.get(0));
@@ -732,7 +732,7 @@ public class Object2StringMultirefsMatrixModel<Head extends List, Row extends Li
 						if (index >= frozenCols) {
 							SnpsAllvarsPos snppos = data.getVariantStringData().getListPos().get(index - frozenCols);
 							Map<BigDecimal, MultiReferencePosition> mapPos2Refpos = null;
-							if (params.getOrganism().equals(Organism.REFERENCE_NIPPONBARE))
+							if (params.getOrganism().equals(AppContext.REFERENCE_NIPPONBARE()))
 								mapPos2Refpos = mapOrg2MSU7Pos2ConvertedPos.get(listOtherRefs.get(1));
 							else
 								mapPos2Refpos = mapOrg2RefPos2ConvertedPos.get(listOtherRefs.get(1));
@@ -767,7 +767,7 @@ public class Object2StringMultirefsMatrixModel<Head extends List, Row extends Li
 						if (index >= frozenCols) {
 							SnpsAllvarsPos snppos = data.getVariantStringData().getListPos().get(index - frozenCols);
 							Map<BigDecimal, MultiReferencePosition> mapPos2Refpos = null;
-							if (params.getOrganism().equals(Organism.REFERENCE_NIPPONBARE))
+							if (params.getOrganism().equals(AppContext.REFERENCE_NIPPONBARE()))
 								mapPos2Refpos = mapOrg2MSU7Pos2ConvertedPos.get(listOtherRefs.get(2));
 							else
 								mapPos2Refpos = mapOrg2RefPos2ConvertedPos.get(listOtherRefs.get(2));
@@ -801,7 +801,7 @@ public class Object2StringMultirefsMatrixModel<Head extends List, Row extends Li
 						if (index >= frozenCols) {
 							SnpsAllvarsPos snppos = data.getVariantStringData().getListPos().get(index - frozenCols);
 							Map<BigDecimal, MultiReferencePosition> mapPos2Refpos = null;
-							if (params.getOrganism().equals(Organism.REFERENCE_NIPPONBARE))
+							if (params.getOrganism().equals(AppContext.REFERENCE_NIPPONBARE()))
 								mapPos2Refpos = mapOrg2MSU7Pos2ConvertedPos.get(listOtherRefs.get(3));
 							else
 								mapPos2Refpos = mapOrg2RefPos2ConvertedPos.get(listOtherRefs.get(3));

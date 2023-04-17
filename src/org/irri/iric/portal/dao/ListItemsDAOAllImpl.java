@@ -206,6 +206,8 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 		super();
 		// TODO Auto-generated constructor stub
 		germdao = (VarietyDAO) AppContext.checkBean(germdao, "VarietyDAO");
+		
+		AppContext.setListItemsDAO(this);
 	}
 
 	private void initIRGC() {
@@ -469,11 +471,22 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 			if (AppContext.reloadFromDB("v_gene_" + organism) || !new File(AppContext.getFlatfilesDir() + "v_gene_"
 					+ getOrganismByName(organism).getOrganismId().intValue() + ".csv").exists()) {
 				geneDAO = (GeneDAO) AppContext.checkBean(geneDAO, "GeneDAO");
+				
+				AppContext.mydebug( "getting genes for " + organism + "  ");
+				
+				//AppContext.mydebug(getOrganismByName(organism).toString());	
+				Organism org=getOrganismByName(organism);
 				java.util.Iterator<Gene> it = geneDAO
-						.findAllGene(getOrganismByName(organism).getOrganismId().intValue()).iterator();
+						.findAllGene(org.getOrganismId().intValue()).iterator();
+				
+				
 				while (it.hasNext()) {
 					Gene gene = it.next();
-					genenames.add(gene.getUniquename().toLowerCase());
+					//genenames.add(gene.getUniquename().toLowerCase());
+					genenames.add(gene.getName().toLowerCase());
+					if(gene.getUniquename()!=null)
+						genenames.add(gene.getUniquename().toLowerCase());
+						
 				}
 				try {
 					BufferedWriter br = new BufferedWriter(new FileWriter(AppContext.getFlatfilesDir() + "v_gene_"
@@ -1053,9 +1066,18 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 		scaffolddao = (ScaffoldDAO) AppContext.checkBean(scaffolddao, "ScaffoldDAO");
 		organismdao = (OrganismDAO) AppContext.checkBean(organismdao, "OrganismDAO");
 		Map mapOrgname2Org = organismdao.getMapName2Organism();
+		//System.out.println("scaffolddao=" + scaffolddao + " feature=" + feature +" organism=" + organism + " mapOrgname2Org=" + mapOrgname2Org);
+		
 		return scaffolddao.getScaffold(feature, ((Organism) mapOrgname2Org.get(organism)).getOrganismId());
 	}
 
+	@Override
+	public Scaffold getFeature(String featurename) {
+		scaffolddao = (ScaffoldDAO) AppContext.checkBean(scaffolddao, "ScaffoldDAO");
+		return scaffolddao.getScaffold(featurename);
+	}
+
+	
 	private List createCvtermMap(List cvterms) {
 		// Map mapCvid2Term=new LinkedHashMap();
 		List terms = new ArrayList();
@@ -1147,8 +1169,7 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 
 		organismdao = (OrganismDAO) AppContext.checkBean(organismdao, "OrganismDAO");
 		Map<String, Organism> mapOrg = organismdao.getMapName2Organism();
-		// AppContext.debug("getting organism " + name + " from " + mapOrg);
-
+		//AppContext.debug("getting organism " + name + " from " + mapOrg);
 		return mapOrg.get(name);
 	}
 
@@ -1271,6 +1292,13 @@ public class ListItemsDAOAllImpl implements ListItemsDAO {
 		return genotyperundao.getDatasets(type);
 	}
 
+	@Override
+	public Set getDatasets(String type,String reference) {
+		genotyperundao = (GenotypeRunPlatformDAO) AppContext.checkBean(genotyperundao, "GenotypeRunPlatformDAO");
+		return genotyperundao.getDatasets(type,reference);
+	}
+
+	
 	@Override
 	public Set getDatasets() {
 		genotyperundao = (GenotypeRunPlatformDAO) AppContext.checkBean(genotyperundao, "GenotypeRunPlatformDAO");

@@ -31,6 +31,10 @@ import org.irri.iric.portal.domain.SnpsEffect;
 		@NamedQuery(name = "findVSnpeffByChromosome", query = "select myVSnpeff from VSnpeff myVSnpeff where myVSnpeff.chromosome = ?1"),
 		@NamedQuery(name = "findVSnpeffByPosition", query = "select myVSnpeff from VSnpeff myVSnpeff where myVSnpeff.position = ?1"),
 
+		
+		@NamedQuery(name = "findVSnpeffByContigPositionBetween", query = "select myVSnpeff from VSnpeff myVSnpeff where  myVSnpeff.contig = ?1 and myVSnpeff.position between ?2 and ?3 order by myVSnpeff.position"),
+		@NamedQuery(name = "findVSnpeffByContigPositionBetweenSnpsets", query = "select myVSnpeff from VSnpeff myVSnpeff where  myVSnpeff.contig = ?1 and myVSnpeff.position between ?2 and ?3 and myVSnpeff.variantset in (?4) order by myVSnpeff.position"),
+
 		@NamedQuery(name = "findVSnpeffByPositionBetween", query = "select myVSnpeff from VSnpeff myVSnpeff where  myVSnpeff.chromosome = ?1 and myVSnpeff.position between ?2 and ?3 order by myVSnpeff.position"),
 		@NamedQuery(name = "findVSnpeffByPositionBetweenSnpsets", query = "select myVSnpeff from VSnpeff myVSnpeff where  myVSnpeff.chromosome = ?1 and myVSnpeff.position between ?2 and ?3 and myVSnpeff.variantset in (?4) order by myVSnpeff.position"),
 
@@ -67,6 +71,14 @@ public class VSnpeff implements Serializable, SnpsEffect {
 	@Basic(fetch = FetchType.EAGER)
 	@XmlElement
 	Integer chromosome;
+
+	
+	@Column(name = "CONTIG", length = 2054)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	String contig;
+
+	
 	/**
 	 */
 
@@ -235,9 +247,13 @@ public class VSnpeff implements Serializable, SnpsEffect {
 	@Override
 	public String getContig() {
 		
-		if (chromosome > 9)
-			return "chr" + chromosome;
-		return "chr0" + chromosome;
+		if(contig!=null) {
+			return contig;
+		} else {
+			if (chromosome > 9)
+				return "chr" + chromosome;
+			return "chr0" + chromosome;
+		}
 	}
 
 	/*

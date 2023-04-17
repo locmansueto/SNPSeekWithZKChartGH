@@ -29,6 +29,10 @@ import org.irri.iric.portal.domain.SnpsAllvarsPos;
 		@NamedQuery(name = "countVSnpRefposindexByChrPosIn", query = "select count(mySnpcoreRefposindex.snpFeatureId) from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and mySnpcoreRefposindex.position in(?2) and mySnpcoreRefposindex.typeId=?3"),
 		@NamedQuery(name = "countVSnpRefposindexByChr", query = "select count(mySnpcoreRefposindex.snpFeatureId) from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and  mySnpcoreRefposindex.typeId=?2"),
 
+		@NamedQuery(name = "findVSnpRefposindexBySrcfetureidPosBetweenVariantset", query = "select mySnpcoreRefposindex from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and mySnpcoreRefposindex.position between ?2 and ?3 and  mySnpcoreRefposindex.variantset in (?4) order by mySnpcoreRefposindex.position"),
+		@NamedQuery(name = "findVSnpRefposindexBySrcfetureidVariantset", query = "select mySnpcoreRefposindex from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and  mySnpcoreRefposindex.variantset in (?2) order by mySnpcoreRefposindex.position"),
+
+		
 		@NamedQuery(name = "findVSnpRefposindexByChrPosBetweenVariantset", query = "select mySnpcoreRefposindex from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and mySnpcoreRefposindex.position between ?2 and ?3 and  mySnpcoreRefposindex.variantset in (?4) order by mySnpcoreRefposindex.position"),
 		@NamedQuery(name = "findVSnpRefposindexByChrVariantset", query = "select mySnpcoreRefposindex from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and  mySnpcoreRefposindex.variantset in (?2) order by mySnpcoreRefposindex.position"),
 		@NamedQuery(name = "findVSnpRefposindexByChrPosInVariantset", query = "select mySnpcoreRefposindex from VSnpRefposindex mySnpcoreRefposindex where mySnpcoreRefposindex.chromosome = ?1 and mySnpcoreRefposindex.position in(?2) and mySnpcoreRefposindex.variantset in (?3)  order by mySnpcoreRefposindex.position"),

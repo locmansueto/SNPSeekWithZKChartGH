@@ -327,7 +327,7 @@ public class GenotypeQueryParams extends Query  {
 		String str = "GenotypeQueryParams: " + super.toString() + ";chr=" + sChr + ";start=" + lStart + ";end=" + lEnd
 				+ ";snp=" + bSNP + ";indel=" + bIndel + ";mismatchonly=" + bMismatchonly
 				+ (sSubpopulation != null ? ";subpupulation=" + sSubpopulation : "")
-				+ (sLocus != null ? ";locus=" + sLocus : "") + ";reference=" + this.organism + posvarids + ";snpset="
+				+ (sLocus != null ? ";locus=" + sLocus : "") + ";reference=" + this.organism + ";posvarids="+ posvarids + ";snpset="
 				+ snpset + ";hapmap=" + this.bGenerateHapmap + "\n" + AppContext.getSystemStatus();
 
 		/*

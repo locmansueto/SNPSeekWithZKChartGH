@@ -258,21 +258,41 @@ abstract public class SnpsPropertyDAO<T> extends AbstractJpaDao<T> {
 
 			// using position
 			String sqldirect = "";
-			sqldirect += "SELECT sfl.snp_feature_id, sfl.srcfeature_id-" + AppContext.chr2srcfeatureidOffset()
-					+ " AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset "
-					+ columnname;
-			sqldirect += " FROM " + AppContext.getDefaultSchema() + ".snp_featureloc sfl, "
-					+ AppContext.getDefaultSchema() + ".variant_variantset vvs, " + AppContext.getDefaultSchema()
-					+ ".variantset v, ";
-			sqldirect += AppContext.getDefaultSchema() + ".snp_featureloc sfl3k ";
-			sqldirect += " , snp_featureprop sfp  WHERE  sfl3k.snp_feature_id = sfp.snp_feature_id and sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
-			sqldirect += "  AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
-			sqldirect += " and sfl3k.organism_id=" + AppContext.getDefaultOrganismId() + " and sfl3k.srcfeature_id="
-					+ AppContext.guessSrcfeataureidFromString(chr);
-			sqldirect += " and sfl3k.position=sfl.position and sfl3k.srcfeature_id=sfl.srcfeature_id and sfl.organism_id="
-					+ AppContext.getDefaultOrganismId();
-			sqldirect += " and sfl3k.position between " + start + "-1 and " + end + "-1 and v.name in ("
-					+ AppContext.toCSVquoted(variantset, "'") + ") order by sfl3k.position";
+			if ( AppContext.chr2srcfeatureidOffset()>-1) {
+				sqldirect += "SELECT sfl.snp_feature_id, sfl.srcfeature_id-" + AppContext.chr2srcfeatureidOffset()
+						+ " AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset "
+						+ columnname;
+				sqldirect += " FROM " + AppContext.getDefaultSchema() + ".snp_featureloc sfl, "
+						+ AppContext.getDefaultSchema() + ".variant_variantset vvs, " + AppContext.getDefaultSchema()
+						+ ".variantset v, ";
+				sqldirect += AppContext.getDefaultSchema() + ".snp_featureloc sfl3k ";
+				sqldirect += " , snp_featureprop sfp  WHERE  sfl3k.snp_feature_id = sfp.snp_feature_id and sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
+				sqldirect += "  AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
+				sqldirect += " and sfl3k.organism_id=" + AppContext.getDefaultOrganismId() + " and sfl3k.srcfeature_id="
+						+ AppContext.guessSrcfeataureidFromString(chr);
+				sqldirect += " and sfl3k.position=sfl.position and sfl3k.srcfeature_id=sfl.srcfeature_id and sfl.organism_id="
+						+ AppContext.getDefaultOrganismId();
+				sqldirect += " and sfl3k.position between " + start + "-1 and " + end + "-1 and v.name in ("
+						+ AppContext.toCSVquoted(variantset, "'") + ") order by sfl3k.position";
+			} else {
+				sqldirect += "SELECT sfl.snp_feature_id, f.name as contig,  null "
+						+ " AS chromosome, sfl.position + 1 AS \"position\", v.variantset_id AS type_id, v.name AS variantset "
+						+ columnname;
+				sqldirect += " FROM " + AppContext.getDefaultSchema() + ".snp_featureloc sfl, "
+						+ AppContext.getDefaultSchema() + ".variant_variantset vvs, " + AppContext.getDefaultSchema()
+						+ ".variantset v, ";
+				sqldirect += AppContext.getDefaultSchema() + ".snp_featureloc sfl3k, ";
+				sqldirect += AppContext.getDefaultSchema() + ".feature f ";
+				sqldirect += " , snp_featureprop sfp  WHERE sfl.srcfeature_id=f.feature_id and  sfl3k.snp_feature_id = sfp.snp_feature_id and sfl.snp_feature_id = vvs.variant_feature_id AND vvs.variantset_id = v.variantset_id ";
+				sqldirect += "  AND sfp.type_id in (select cvterm_id from cvterm where name='" + propname + "')";
+				sqldirect += " and sfl3k.organism_id=" + AppContext.getDefaultOrganismId() + " and sfl3k.srcfeature_id="
+						+ AppContext.guessSrcfeataureidFromString(chr);
+				sqldirect += " and sfl3k.position=sfl.position and sfl3k.srcfeature_id=sfl.srcfeature_id and sfl.organism_id="
+						+ AppContext.getDefaultOrganismId();
+				sqldirect += " and sfl3k.position between " + start + "-1 and " + end + "-1 and v.name in ("
+						+ AppContext.toCSVquoted(variantset, "'") + ") order by sfl3k.position";
+																							
+			}
 			return new LinkedHashSet(executeSQL(sqldirect, retclass));
 
 			/*

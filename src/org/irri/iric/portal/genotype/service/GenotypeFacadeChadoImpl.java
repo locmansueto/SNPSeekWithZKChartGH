@@ -74,6 +74,16 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	}
 
 	@Override
+	public List getVarietysets(String reference) {
+			listitemsDAO = (ListItemsDAO) AppContext.checkBean(listitemsDAO, "ListItems");
+		List l = new ArrayList();
+		l.addAll(listitemsDAO.getDatasets("SNP",reference));
+		return l;
+
+	}
+
+	
+	@Override
 	public List getVariantsets(Set varietyset, String type) {
 		
 		listitemsDAO = (ListItemsDAO) AppContext.checkBean(listitemsDAO, "ListItems");

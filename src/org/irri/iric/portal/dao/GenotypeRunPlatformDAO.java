@@ -9,6 +9,7 @@ public interface GenotypeRunPlatformDAO {
 	public Set getPlatformRuns(Integer platformId);
 
 	public Set getDatasets(String type);
+	public Set getDatasets(String type, String reference);
 
 	public Set getDatasets();
 

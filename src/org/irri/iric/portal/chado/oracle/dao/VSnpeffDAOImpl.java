@@ -388,27 +388,40 @@ public class VSnpeffDAOImpl extends AbstractJpaDao<VSnpeff> implements VSnpeffDA
 			Iterator<String> itContig = mapChr2Pos.keySet().iterator();
 			while (itContig.hasNext()) {
 				String contigstr = itContig.next();
-				String contig = contigstr.toUpperCase().replace("CHR0", "").replace("CHR", "");
 				Collection setPos = (Collection) mapChr2Pos.get(contigstr);
 				poscount += setPos.size();
-
 				setPos = AppContext.convertPos2Position(setPos);
-
 				Set slicedset[] = AppContext.setSlicer(new TreeSet(setPos), 900);
-				for (int iset = 0; iset < slicedset.length; iset++) {
-					sql += " select * from " + AppContext.getDefaultSchema() + ".v_snpeff where chromosome=" + contig
-							+ " and exists ( select t.column_value from (select unnest(ARRAY["
-							+ slicedset[iset].toString().replace("[", "").replace("]", "")
-							+ "])column_value)  t where t.column_value=position)  ";
-					if (iset < slicedset.length - 1)
-						sql += " union ";
+				
+				if(AppContext.guessChrFromString(chr)!=null) {
+					String contig = contigstr.toUpperCase().replace("CHR0", "").replace("CHR", "");
+					for (int iset = 0; iset < slicedset.length; iset++) {
+						sql += " select * from " + AppContext.getDefaultSchema() + ".v_snpeff where chromosome=" + contig
+								+ " and exists ( select t.column_value from (select unnest(ARRAY["
+								+ slicedset[iset].toString().replace("[", "").replace("]", "")
+								+ "])column_value)  t where t.column_value=position)  ";
+						if (iset < slicedset.length - 1)
+							sql += " union ";
+					}
+				} else {
+					// contig string
+					for (int iset = 0; iset < slicedset.length; iset++) {
+						sql += " select * from " + AppContext.getDefaultSchema() + ".v_snpeff where contig='" + contigstr + "'"
+								+ " and exists ( select t.column_value from (select unnest(ARRAY["
+								+ slicedset[iset].toString().replace("[", "").replace("]", "")
+								+ "])column_value)  t where t.column_value=position)  ";
+						if (iset < slicedset.length - 1)
+							sql += " union ";
+					}
 				}
+				
+				
 				if (itContig.hasNext())
 					sql += " union ";
 			}
 			;
 
-			sql += ") foo2 order by CHROMOSOME, POSITION";
+			sql += ") foo2 order by CHROMOSOME, contig, POSITION";
 
 			AppContext.debug("querying  V_SNPEFF with " + poscount + " positions");
 			return new LinkedHashSet(executeSQL(sql));
@@ -449,19 +462,32 @@ public class VSnpeffDAOImpl extends AbstractJpaDao<VSnpeff> implements VSnpeffDA
 		} else {
 
 			String sql = "select * from ( ";
-			String contig = chr.toUpperCase().replace("CHR0", "").replace("CHR", "");
-
 			posset = AppContext.convertPos2Position(posset);
 			Set slicedset[] = AppContext.setSlicer(new TreeSet(posset), 900);
-			for (int iset = 0; iset < slicedset.length; iset++) {
-				sql += " select * from " + AppContext.getDefaultSchema() + ".v_snpeff where chromosome=" + contig
-						+ " and exists (  select t.column_value from (select unnest(ARRAY["
-						+ slicedset[iset].toString().replace("[", "").replace("]", "")
-						+ "])column_value) t where t.column_value=position) ";
-				if (iset < slicedset.length - 1)
-					sql += " union ";
+
+			if(AppContext.guessChrFromString(chr)!=null) {
+				String contig = chr.toUpperCase().replace("CHR0", "").replace("CHR", "");
+				for (int iset = 0; iset < slicedset.length; iset++) {
+					sql += " select * from " + AppContext.getDefaultSchema() + ".v_snpeff where chromosome=" + contig
+							+ " and exists (  select t.column_value from (select unnest(ARRAY["
+							+ slicedset[iset].toString().replace("[", "").replace("]", "")
+							+ "])column_value) t where t.column_value=position) ";
+					if (iset < slicedset.length - 1)
+						sql += " union ";
+				}
+				sql += ") foo order by CHROMOSOME, POSITION";
+			} else {
+				for (int iset = 0; iset < slicedset.length; iset++) {
+					sql += " select * from " + AppContext.getDefaultSchema() + ".v_snpeff where contig='" + chr + "'"
+							+ " and exists (  select t.column_value from (select unnest(ARRAY["
+							+ slicedset[iset].toString().replace("[", "").replace("]", "")
+							+ "])column_value) t where t.column_value=position) ";
+					if (iset < slicedset.length - 1)
+						sql += " union ";
+				}
+				sql += ") foo order by CHROMOSOME, POSITION";
 			}
-			sql += ") foo order by CHROMOSOME, POSITION";
+			
 			return new LinkedHashSet(executeSQL(sql));
 		}
 	}
@@ -472,10 +498,18 @@ public class VSnpeffDAOImpl extends AbstractJpaDao<VSnpeff> implements VSnpeffDA
 		// Query query = createNamedQuery("findVSnpeffByPositionBetween", -1, -1,
 		// Integer.valueOf(AppContext.guessChrFromString(chr)),
 		// BigDecimal.valueOf(start), BigDecimal.valueOf(end));
-		Query query = createNamedQuery("findVSnpeffByPositionBetweenSnpsets", -1, -1,
-				Integer.valueOf(AppContext.guessChrFromString(chr)), BigDecimal.valueOf(start), BigDecimal.valueOf(end),
-				ds);
-		return new LinkedHashSet(query.getResultList());
+		Integer intChr=Integer.valueOf(AppContext.guessChrFromString(chr));
+		if( intChr!=null) {
+			Query query = createNamedQuery("findVSnpeffByPositionBetweenSnpsets", -1, -1,
+					intChr, BigDecimal.valueOf(start), BigDecimal.valueOf(end),
+					ds);
+			return new LinkedHashSet(query.getResultList());
+		} else {
+			Query query = createNamedQuery("findVSnpeffByContigPositionBetweenSnpsets", -1, -1,
+					chr, BigDecimal.valueOf(start), BigDecimal.valueOf(end),
+					ds);
+			return new LinkedHashSet(query.getResultList());
+		}
 	}
 
 	@Override

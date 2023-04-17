@@ -372,21 +372,21 @@ public class ExtTabController extends SelectorComposer<Window> {
 
 
 	private void updateVistaTab(String ref, String contig, Integer start, Integer end) {
-		if (ref.equals(Organism.REFERENCE_NIPPONBARE))
+		if (ref.equals(AppContext.REFERENCE_NIPPONBARE()))
 			updateVistaSubtabs(ref, contig, start, end, Organism.REFERENCE_9311, Organism.REFERENCE_IR64,
 					Organism.REFERENCE_KASALATH, Organism.REFERENCE_DJ123);
 		else if (ref.equals(Organism.REFERENCE_9311))
-			updateVistaSubtabs(ref, contig, start, end, Organism.REFERENCE_NIPPONBARE, Organism.REFERENCE_IR64,
+			updateVistaSubtabs(ref, contig, start, end, AppContext.REFERENCE_NIPPONBARE(), Organism.REFERENCE_IR64,
 					Organism.REFERENCE_KASALATH, Organism.REFERENCE_DJ123);
 		else if (ref.equals(Organism.REFERENCE_IR64))
-			updateVistaSubtabs(ref, contig, start, end, Organism.REFERENCE_9311, Organism.REFERENCE_NIPPONBARE,
+			updateVistaSubtabs(ref, contig, start, end, Organism.REFERENCE_9311, AppContext.REFERENCE_NIPPONBARE(),
 					Organism.REFERENCE_KASALATH, Organism.REFERENCE_DJ123);
 		else if (ref.equals(Organism.REFERENCE_KASALATH))
 			updateVistaSubtabs(ref, contig, start, end, Organism.REFERENCE_9311, Organism.REFERENCE_IR64,
-					Organism.REFERENCE_NIPPONBARE, Organism.REFERENCE_DJ123);
+					AppContext.REFERENCE_NIPPONBARE(), Organism.REFERENCE_DJ123);
 		else if (ref.equals(Organism.REFERENCE_DJ123))
 			updateVistaSubtabs(ref, contig, start, end, Organism.REFERENCE_9311, Organism.REFERENCE_IR64,
-					Organism.REFERENCE_KASALATH, Organism.REFERENCE_NIPPONBARE);
+					Organism.REFERENCE_KASALATH, AppContext.REFERENCE_NIPPONBARE());
 	}
 
 	@Listen("onClick =#tabVista1")

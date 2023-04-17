@@ -480,13 +480,26 @@ public class VScaffoldsOrganismDAOImpl extends AbstractJpaDao<VScaffoldsOrganism
 	}
 
 	@Override
-	public Scaffold getScaffold(String scaffold, String organism) {
+	public Scaffold getScaffold(String scaffold) {
 		
+		
+		Query query = createNamedQuery("findVScaffoldsOrganismByContigName", -1, -1, scaffold);
+		List result=query.getResultList();
+		if(result.size()==1)
+			return (Scaffold)result.get(0);
+		else if(result.size()==0)
+			return null;
+		else throw new RuntimeException("findVScaffoldsOrganismByContigName " +  scaffold + " size=" + result.size());
+	}
+
+	
+	
+	@Override
+	public Scaffold getScaffold(String scaffold, String organism) {
 		
 		if(organism.equals(AppContext.getDefaultOrganism())) {
 			scaffold=scaffold.replace("r0","r");
 		}
-
 		
 		Query query = createNamedQuery("findVScaffoldsOrganismByNameCommonName", -1, -1, scaffold, organism);
 		List result=query.getResultList();

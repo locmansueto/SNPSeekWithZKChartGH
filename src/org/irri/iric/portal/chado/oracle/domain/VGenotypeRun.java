@@ -26,6 +26,7 @@ import javax.persistence.*;
 		@NamedQuery(name = "findVGenotypeRunByDataLocation", query = "select myVGenotypeRun from VGenotypeRun myVGenotypeRun where myVGenotypeRun.dataLocation = ?1"),
 		@NamedQuery(name = "findVGenotypeRunByDataLocationContaining", query = "select myVGenotypeRun from VGenotypeRun myVGenotypeRun where myVGenotypeRun.dataLocation like ?1"),
 		@NamedQuery(name = "findVGenotypeRunByDataset", query = "select myVGenotypeRun from VGenotypeRun myVGenotypeRun where myVGenotypeRun.dataset = ?1"),
+		@NamedQuery(name = "findVGenotypeRunByDatasetReference", query = "select myVGenotypeRun from VGenotypeRun myVGenotypeRun where myVGenotypeRun.dataset = ?1 and myVGenotypeRun.common_name = ?2"),
 		@NamedQuery(name = "findVGenotypeRunByDatasetContaining", query = "select myVGenotypeRun from VGenotypeRun myVGenotypeRun where myVGenotypeRun.dataset like ?1"),
 		@NamedQuery(name = "findVGenotypeRunByDatasetId", query = "select myVGenotypeRun from VGenotypeRun myVGenotypeRun where myVGenotypeRun.datasetId = ?1"),
 		@NamedQuery(name = "findVGenotypeRunByDatePerformed", query = "select myVGenotypeRun from VGenotypeRun myVGenotypeRun where myVGenotypeRun.datePerformed = ?1"),
@@ -165,6 +166,17 @@ public class VGenotypeRun implements Serializable, GenotypeRunPlatform {
 	String dataset;
 	/**
 	 */
+	
+	
+	@Column(name = "common_name")
+	@Basic(fetch = FetchType.EAGER)
+
+	@XmlElement
+	String common_name;
+	/**
+	 */
+	
+	
 
 	@Column(name = "ds_description")
 	@Basic(fetch = FetchType.EAGER)
@@ -344,6 +356,7 @@ public class VGenotypeRun implements Serializable, GenotypeRunPlatform {
 		setDatasetId(that.getDatasetId());
 		setDataset(that.getDataset());
 		setDsDescription(that.getDsDescription());
+		
 	}
 
 	/**
@@ -365,6 +378,8 @@ public class VGenotypeRun implements Serializable, GenotypeRunPlatform {
 		buffer.append("datasetId=[").append(datasetId).append("] ");
 		buffer.append("dataset=[").append(dataset).append("] ");
 		buffer.append("dsDescription=[").append(dsDescription).append("] ");
+		buffer.append("common_name=[").append(common_name).append("] ");
+		
 
 		return buffer.toString();
 	}
@@ -399,6 +414,11 @@ public class VGenotypeRun implements Serializable, GenotypeRunPlatform {
 	public String getLocation() {
 
 		return this.getDataLocation();
+	}
+
+	public String getCommonname() {
+		// TODO Auto-generated method stub
+		return common_name;
 	}
 
 }

@@ -32,8 +32,13 @@ library(ggplot2)
 # require(vegan) # for Clinski
 
 #beanstalk
-legendpath="/var/lib/tomcat8/webapps/ROOT/haplo/legend.png"
-plink_root="/IRCstorage/snpseekdata/current/plink/"
+#legendpath="/var/lib/tomcat8/webapps/ROOT/haplo/legend.png"
+#plink_root="/IRCstorage/snpseekdata/current/plink/"
+
+#ICGRC
+legendpath="/usr/local/tomcat/webapps/iric-portal/haplo/legend.png"
+plink_root="/transfer/tomcat/plink/"
+
 
 #popcolumnfactor=1.05
 popcolumnfactor=0.001
@@ -180,6 +185,12 @@ pedfilename=args[4]
 mapfilename=args[5]
 summaryfilename= args[6]
 imageformat=args[2]
+
+# rename samples in ped file
+system(paste0("python rename-pedsamples.py ",pedfilename))
+system(paste0("mv ",pedfilename," ",pedfilename , ".orignames"))
+system(paste0("mv ",pedfilename,".newnames ",pedfilename))
+
 
 GENOMIC_COORD=F
 if(!is.na(args[7])) {

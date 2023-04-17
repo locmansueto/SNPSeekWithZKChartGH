@@ -47,7 +47,7 @@ public class VSnpNonsynallelePosDAOImpl extends SnpsPropertyDAO<VSnpNonsynallele
 		
 		Set s = new HashSet();
 		s.add(ds);
-		Map m = variantset2snppropCount("nonsynonymous_variant", s);
+		Map m = variantset2snppropCount("missense_variant", s);
 		return (Long) m.get(ds) > 0;
 	}
 
@@ -338,7 +338,7 @@ public class VSnpNonsynallelePosDAOImpl extends SnpsPropertyDAO<VSnpNonsynallele
 	public Set<SnpsNonsynAllele> findSnpNonsynAlleleByChrPosBetween(String chr, Integer start, Integer end,
 			BigDecimal dataset) throws DataAccessException {
 
-		return findSnpsPropertyByChrPosBetween(chr, start, end, dataset, "nonsynonymous_variant", "VSnpNonsynallelePos",
+		return findSnpsPropertyByChrPosBetween(chr, start, end, dataset, "missense_variant", "VSnpNonsynallelePos",
 				", sfp.value AS allele_nonsyn", VSnpNonsynallelePos.class);
 		// if(AppContext.isBypassViews()) {
 		//
@@ -386,7 +386,7 @@ public class VSnpNonsynallelePosDAOImpl extends SnpsPropertyDAO<VSnpNonsynallele
 			Set variantset) throws DataAccessException {
 		
 
-		return findSnpsPropertyByChrPosBetween(chr, start, end, variantset, "nonsynonymous_variant",
+		return findSnpsPropertyByChrPosBetween(chr, start, end, variantset, "missense_variant",
 				"VSnpNonsynallelePos", ", sfp.value AS allele_nonsyn", VSnpNonsynallelePos.class);
 
 		// if(AppContext.isBypassViews()) {
@@ -459,7 +459,7 @@ public class VSnpNonsynallelePosDAOImpl extends SnpsPropertyDAO<VSnpNonsynallele
 	@Override
 	public Set<SnpsNonsynAllele> findSnpNonsynAlleleByFeatureidIn(Collection featureid) throws DataAccessException {
 
-		return findSnpsPropertyByFeatureidIn(featureid, "nonsynonymous_variant", "VSnpNonsynallelePos",
+		return findSnpsPropertyByFeatureidIn(featureid, "missense_variant", "VSnpNonsynallelePos",
 				", sfp.value AS allele_nonsyn", VSnpNonsynallelePos.class);
 
 		//
@@ -516,7 +516,7 @@ public class VSnpNonsynallelePosDAOImpl extends SnpsPropertyDAO<VSnpNonsynallele
 	public Set<SnpsNonsynAllele> findSnpNonsynAlleleByChrPosIn(String chr, Collection poslist, Set dataset) {
 		
 
-		return findSnpsPropertyByChrPosIn(chr, poslist, dataset, "nonsynonymous_variant", "VSnpNonsynallelePos",
+		return findSnpsPropertyByChrPosIn(chr, poslist, dataset, "missense_variant", "VSnpNonsynallelePos",
 				", sfp.value AS allele_nonsyn", VSnpNonsynallelePos.class);
 
 		// Set setSnpfeatureid = new HashSet();

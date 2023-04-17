@@ -1262,7 +1262,7 @@ public class VConvertposAny2allrefsDAOMVImpl extends AbstractJpaDao<VConvertposA
 						mapContigId2Name.put(posconv.getNbContigId(), cont_Nb);
 					}
 				}
-				MultiReferencePosition conv = new MultiReferencePositionImpl(Organism.REFERENCE_NIPPONBARE, cont_Nb,
+				MultiReferencePosition conv = new MultiReferencePositionImpl(AppContext.REFERENCE_NIPPONBARE(), cont_Nb,
 						posconv.getNbPosition(), posconv.getNbRefcall());
 				mapRefPos2ConvertedPos_NB.put(refPos, conv);
 			}
@@ -1282,14 +1282,14 @@ public class VConvertposAny2allrefsDAOMVImpl extends AbstractJpaDao<VConvertposA
 					fromcontig.getName());
 			variantstringdataNPB.addMapOrg2RefPosConverterPos(Organism.REFERENCE_KASALATH, mapRefPos2ConvertedPos_Kas,
 					fromcontig.getName());
-			variantstringdataNPB.addMapOrg2RefPosConverterPos(Organism.REFERENCE_NIPPONBARE, mapRefPos2ConvertedPos_NB,
+			variantstringdataNPB.addMapOrg2RefPosConverterPos(AppContext.REFERENCE_NIPPONBARE(), mapRefPos2ConvertedPos_NB,
 					fromcontig.getName());
 		} else {
 			variantstringdataNPB.addMapOrg2RefPosConverterPos(Organism.REFERENCE_9311, mapRefPos2ConvertedPos_9311);
 			variantstringdataNPB.addMapOrg2RefPosConverterPos(Organism.REFERENCE_IR64, mapRefPos2ConvertedPos_IR64);
 			variantstringdataNPB.addMapOrg2RefPosConverterPos(Organism.REFERENCE_DJ123, mapRefPos2ConvertedPos_DJ123);
 			variantstringdataNPB.addMapOrg2RefPosConverterPos(Organism.REFERENCE_KASALATH, mapRefPos2ConvertedPos_Kas);
-			variantstringdataNPB.addMapOrg2RefPosConverterPos(Organism.REFERENCE_NIPPONBARE, mapRefPos2ConvertedPos_NB);
+			variantstringdataNPB.addMapOrg2RefPosConverterPos(AppContext.REFERENCE_NIPPONBARE(), mapRefPos2ConvertedPos_NB);
 
 		}
 
@@ -1424,14 +1424,14 @@ public class VConvertposAny2allrefsDAOMVImpl extends AbstractJpaDao<VConvertposA
 		setMissingRefAllele.add(Organism.REFERENCE_DJ123);
 		setMissingRefAllele.add(Organism.REFERENCE_IR64);
 		setMissingRefAllele.add(Organism.REFERENCE_KASALATH);
-		setMissingRefAllele.add(Organism.REFERENCE_NIPPONBARE);
+		setMissingRefAllele.add(AppContext.REFERENCE_NIPPONBARE());
 		Iterator<VConvertposAny2allrefsMV> itpos = filteredinset.iterator();
 		while (itpos.hasNext()) {
 			VConvertposAny2allrefsMV vpos = itpos.next();
 			if (vpos.getRice9311ContigId() != null)
 				setMissingRefAllele.remove(Organism.REFERENCE_9311);
 			if (vpos.getNbContigId() != null)
-				setMissingRefAllele.remove(Organism.REFERENCE_NIPPONBARE);
+				setMissingRefAllele.remove(AppContext.REFERENCE_NIPPONBARE());
 			if (vpos.getKasalathContigId() != null)
 				setMissingRefAllele.remove(Organism.REFERENCE_KASALATH);
 			if (vpos.getIr64ContigId() != null)
@@ -1463,20 +1463,20 @@ public class VConvertposAny2allrefsDAOMVImpl extends AbstractJpaDao<VConvertposA
 
 					if (vpos.getNbContigId() != null) {
 
-						// if(setMissingRefAlleleTmp.contains(Organism.REFERENCE_NIPPONBARE)) {
+						// if(setMissingRefAlleleTmp.contains(AppContext.REFERENCE_NIPPONBARE())) {
 						if (false) {
 							mapFillOrgPos2Pos.put(
-									Organism.REFERENCE_NIPPONBARE + "-" + vpos.getContig() + "-" + vpos.getPosition(),
+									AppContext.REFERENCE_NIPPONBARE() + "-" + vpos.getContig() + "-" + vpos.getPosition(),
 									vpos);
-							setUsed2Fill.add(Organism.REFERENCE_NIPPONBARE);
+							setUsed2Fill.add(AppContext.REFERENCE_NIPPONBARE());
 						} else {
-							StringBuffer listPos = mapOrg2Message.get(Organism.REFERENCE_NIPPONBARE);
+							StringBuffer listPos = mapOrg2Message.get(AppContext.REFERENCE_NIPPONBARE());
 							if (listPos == null) {
 								listPos = new StringBuffer();
-								mapOrg2Message.put(Organism.REFERENCE_NIPPONBARE, listPos);
+								mapOrg2Message.put(AppContext.REFERENCE_NIPPONBARE(), listPos);
 							}
-							if (setHasMsg.contains(Organism.REFERENCE_NIPPONBARE)) {
-								setHasMsg.remove(Organism.REFERENCE_NIPPONBARE);
+							if (setHasMsg.contains(AppContext.REFERENCE_NIPPONBARE())) {
+								setHasMsg.remove(AppContext.REFERENCE_NIPPONBARE());
 								listPos.append("\n");
 							}
 							listPos.append(vpos.getContig() + "-" + vpos.getFromPosition() + "-" + vpos.getFromRefcall()
@@ -1573,15 +1573,15 @@ public class VConvertposAny2allrefsDAOMVImpl extends AbstractJpaDao<VConvertposA
 					}
 				}
 
-				if (setMissingRefAllele.contains(Organism.REFERENCE_NIPPONBARE)) {
+				if (setMissingRefAllele.contains(AppContext.REFERENCE_NIPPONBARE())) {
 					VConvertposAny2allrefsMV fillpos = mapFillOrgPos2Pos
-							.get(Organism.REFERENCE_NIPPONBARE + "-" + vpos.getContig() + "-" + vpos.getPosition());
+							.get(AppContext.REFERENCE_NIPPONBARE() + "-" + vpos.getContig() + "-" + vpos.getPosition());
 					if (fillpos != null) {
 						vpos.setNbContigId(fillpos.getNbContigId());
 						vpos.setNbPosition(fillpos.getNbPosition());
 						vpos.setNbRefcall(fillpos.getNbRefcall());
 						vpos.setNbContigName(fillpos.getNbContigName());
-						AppContext.debug(Organism.REFERENCE_NIPPONBARE + "-" + vpos.getContig() + "-"
+						AppContext.debug(AppContext.REFERENCE_NIPPONBARE() + "-" + vpos.getContig() + "-"
 								+ vpos.getPosition() + " filled");
 					}
 
@@ -1695,8 +1695,8 @@ public class VConvertposAny2allrefsDAOMVImpl extends AbstractJpaDao<VConvertposA
 	public List getSNPs(String chromosome, Integer startPos, Integer endPos, Set variantset, StringBuffer buff) {
 
 		scaffolddao = (ScaffoldDAO) AppContext.checkBean(scaffolddao, "ScaffoldDAO");
-		Set result = findVConvertposAny2allrefsByFromOrgIdContigIdPosBetween(Organism.REFERENCE_NIPPONBARE_ID,
-				scaffolddao.getScaffold(chromosome, Organism.REFERENCE_NIPPONBARE_ID).getFeatureId(),
+		Set result = findVConvertposAny2allrefsByFromOrgIdContigIdPosBetween(AppContext.REFERENCE_NIPPONBARE_ID(),
+				scaffolddao.getScaffold(chromosome, AppContext.REFERENCE_NIPPONBARE_ID()).getFeatureId(),
 				BigDecimal.valueOf(startPos), BigDecimal.valueOf(endPos));
 		return mergeSamePosDifferentSnpFeatureId(result, buff);
 	}
@@ -1734,7 +1734,7 @@ public class VConvertposAny2allrefsDAOMVImpl extends AbstractJpaDao<VConvertposA
 	@Override
 	public List getSNPsInChromosome(String chr, Collection posset, Set variantset) {
 
-		return getSNPsInChromosome(chr, posset, variantset, Organism.REFERENCE_NIPPONBARE_ID);
+		return getSNPsInChromosome(chr, posset, variantset, AppContext.REFERENCE_NIPPONBARE_ID());
 	}
 
 	// @Transactional

@@ -151,6 +151,7 @@ import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Grid;
+import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Include;
@@ -207,6 +208,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 	@Wire
 	private Window win;
+	private String displayModeQuery="";
 
 	// url address of tab frames
 	private String urljbrowse, gfffile, urlphylo, urljbrowsephylo;
@@ -943,6 +945,24 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 	@Wire
 	private Splitter splitter;
+	
+	@Wire
+	private Hbox hboxRegionOptions;
+	@Wire
+	private Row rowOptions;
+	@Wire
+	private Row rowVariety;	
+	@Wire
+	private Div divTipboxSNP;
+	@Wire 
+	private Hbox hboxQueryDialog;
+	@Wire 
+	private Vbox vboxQueryDialog;
+	@Wire
+	private Hbox hboxShowSnps;
+	@Wire
+	private Div divSNPLocusLists;
+	
 
 	// from tabGalaxy include
 	/*
@@ -1017,6 +1037,8 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 	}
 
+
+	
 	@Listen("onSelect =#tabGalaxy")
 	public void onselectTabgalaxy() {
 
@@ -1335,6 +1357,25 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 	}
 
+	private void setDatasetVariantset(String reference) {
+		
+		// Set setVarietyset=genotype.gets
+		SimpleListModel listmodel2 = new SimpleListModel(genotype.getVarietysets(reference));
+		listmodel2.setMultiple(true);
+		listboxVarietyset.setModel(listmodel2);
+		listboxVarietyset.setSelectedIndex(0);
+	
+		Set selDS = new HashSet();
+		selDS.add(AppContext.getDefaultDataset()); // "3k");
+		setVarietyset(selDS);
+	
+		Set selVS = new HashSet();
+		selVS.add(AppContext.getDefaultVariantset()); // "3kfiltered");
+		setVariantset(selVS);
+	}
+	
+	
+	
 	@Override
 	public void doAfterCompose(Window comp) throws Exception {
 
@@ -1358,7 +1399,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 			AppContext.debug("...genotype.zul init start");
 
-			List genenames = genotype.getGenenames();
+			listLoci = genotype.getGenenames();
 			AppContext.debug("...genotype.zul mark 1a");
 			List varnames = genotype.getVarnames(VarietyFacade.DATASET_SNPINDELV2_IUPAC);
 			AppContext.debug("...genotype.zul mark 1b");
@@ -1370,7 +1411,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			List subpopulations = genotype.getSubpopulations(VarietyFacade.DATASET_SNPINDELV2_IUPAC);
 			List listReference = genotype.getReferenceGenomes();
 			AppContext.debug("listReference=" + listReference.size());
-			List listContigs = genotype.getContigsForReference(AppContext.getDefaultOrganism());
+			listContigs = genotype.getContigsForReference(AppContext.getDefaultOrganism());
 
 			AppContext.debug("Index listboxMyLocusList: " + listboxMyLocusList.getSelectedIndex() + " -> "
 					+ listboxMyLocusList.getSelectedItem());
@@ -1417,14 +1458,14 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			String msg = (varnames != null ? varnames.size() : "null") + " variety names, "
 					+ (varaccessions1 == null ? "null" : varaccessions1.size()) + " variety accessions, "
 					+ (subpopulations == null ? "null" : subpopulations.size()) + " subpopulations, "
-					+ (genenames == null ? "null" : genenames.size()) + " genes for selection";
+					+ (listLoci == null ? "null" : listLoci.size()) + " genes for selection";
 			// setgenenames = null;
 
 			AppContext.debug("msg=" + msg);
 
 			// genenames = AppContext.createUniqueUpperLowerStrings(genenames, true, false);
 
-			AppContext.debug("genenames=" + genenames.size());
+			AppContext.debug("genenames=" + listLoci.size());
 
 			List subpopulationstmp = new ArrayList();
 			subpopulationstmp.add("all varieties");
@@ -1472,9 +1513,17 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 			AppContext.debug("starting refgenome section... listReference=" + listReference);
 			listboxReference.setModel(new SimpleListModel(listReference));
-			if (listReference.size() > 0)
-				listboxReference.setSelectedIndex(0);
-
+			if (listReference.size() > 0) {
+				int selindex=0;
+				int icnt=0;
+				for(Object lab:listReference) { 
+					if(lab.toString().equals( AppContext.getDefaultOrganism()))
+						selindex=icnt;
+					icnt++;
+				}
+				listboxReference.setSelectedIndex(selindex);
+			}
+			
 			AppContext.debug("starting chrregion section...");
 
 			// author: bohemian
@@ -1508,7 +1557,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 			AppContext.debug("starting genelocus section...");
 			// ListModel geneComboModel= new ListModelList(genenames);
-			ListModel geneComboModel = new SimpleListModelExt(genenames);
+			ListModel geneComboModel = new SimpleListModelExt(listLoci);
 			comboGene.setModel(geneComboModel);
 
 			listboxVarietyAlleleFilter.setModel(
@@ -1524,41 +1573,44 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			 * listboxGenotyperun.setModel(listmodel);
 			 */
 
-			// Set setVarietyset=genotype.gets
-			SimpleListModel listmodel2 = new SimpleListModel(genotype.getVarietysets());
-			listmodel2.setMultiple(true);
-			listboxVarietyset.setModel(listmodel2);
-			listboxVarietyset.setSelectedIndex(0);
-			/*
-			 * if(l==null)
-			 * AppContext.debug("checkboxdroplistGenotyperun.getListbox()==null"); else
-			 * l.setModel(new SimpleListModel(genotype.getVarietysets()));
-			 */
-
-			/*
-			 * Set sSelItems=new HashSet(); sSelItems.add(
-			 * listboxGenotyperun.getItemAtIndex(1));
-			 * listboxGenotyperun.setSelectedItems(sSelItems);
-			 */
-
-			Set selDS = new HashSet();
-			selDS.add(AppContext.getDefaultDataset()); // "3k");
-			setVarietyset(selDS);
-
-			Set selVS = new HashSet();
-			selVS.add(AppContext.getDefaultVariantset()); // "3kfiltered");
-			setVariantset(selVS);
-
-			/*
-			 * bandboxVarietyset.setValue("3k"); bandboxVariantset.setValue("3kfiltered");
-			 * Set selitem=new HashSet(); for(Listitem item:listboxVarietyset.getItems()) {
-			 * if(item.getLabel().equals("3k")) { selitem.add(item); break; } }
-			 * listboxVarietyset.setSelectedItems(selitem);
-			 * 
-			 * selitem=new HashSet(); for(Listitem item:listboxVariantset.getItems()) {
-			 * if(item.getLabel().equals("3kfiltered")) { selitem.add(item); break; } }
-			 * listboxVariantset.setSelectedItems(selitem);
-			 */
+			
+			setDatasetVariantset(AppContext.getDefaultOrganism());
+			
+//			// Set setVarietyset=genotype.gets
+//			SimpleListModel listmodel2 = new SimpleListModel(genotype.getVarietysets(listboxReference.getSelectedItem().getLabel()));
+//			listmodel2.setMultiple(true);
+//			listboxVarietyset.setModel(listmodel2);
+//			listboxVarietyset.setSelectedIndex(0);
+//			/*
+//			 * if(l==null)
+//			 * AppContext.debug("checkboxdroplistGenotyperun.getListbox()==null"); else
+//			 * l.setModel(new SimpleListModel(genotype.getVarietysets()));
+//			 */
+//
+//			/*
+//			 * Set sSelItems=new HashSet(); sSelItems.add(
+//			 * listboxGenotyperun.getItemAtIndex(1));
+//			 * listboxGenotyperun.setSelectedItems(sSelItems);
+//			 */
+//
+//			Set selDS = new HashSet();
+//			selDS.add(AppContext.getDefaultDataset()); // "3k");
+//			setVarietyset(selDS);
+//
+//			Set selVS = new HashSet();
+//			selVS.add(AppContext.getDefaultVariantset()); // "3kfiltered");
+//			setVariantset(selVS);
+//
+//			/*
+//			 * bandboxVarietyset.setValue("3k"); bandboxVariantset.setValue("3kfiltered");
+//			 * Set selitem=new HashSet(); for(Listitem item:listboxVarietyset.getItems()) {
+//			 * if(item.getLabel().equals("3k")) { selitem.add(item); break; } }
+//			 * listboxVarietyset.setSelectedItems(selitem);
+//			 * 
+//			 * selitem=new HashSet(); for(Listitem item:listboxVariantset.getItems()) {
+//			 * if(item.getLabel().equals("3kfiltered")) { selitem.add(item); break; } }
+//			 * listboxVariantset.setSelectedItems(selitem);
+//			 */
 
 			listboxPhenotype.setModel(new SimpleListModel(listPhenotype));
 
@@ -1582,6 +1634,9 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			buttonDownloadFasta.setVisible(AppContext.isLocalhost());
 			// checkboxCoreSNP.setChecked( AppContext.isUsingsharedData() );
 			// checkboxCoreSNP.setDisabled(AppContext.isUsingsharedData() );
+			
+			updateExamples(); 
+
 
 			String from = Executions.getCurrent().getParameter("from");
 			if (from != null) {
@@ -1603,11 +1658,39 @@ public class SNPQueryController extends SelectorComposer<Window> {
 					ex.printStackTrace();
 				}
 			}
+			
+			String mode = Executions.getCurrent().getParameter("mode");
+			displayModeQuery=mode;
+			if (displayModeQuery==null)
+				displayModeQuery="";
+			if (mode != null) {
+				if(mode.equals("basic")) {
+					hboxRegionOptions.setVisible(true);
+					rowOptions.setVisible(true);
+					rowVariety.setVisible(false);
+					divTipboxSNP.setVisible(false);
+					hboxQueryDialog.setHeight("155px");
+					vboxQueryDialog.setHeight("150px");
+					hboxShowSnps.setVisible(true);
+					divSNPLocusLists.setVisible(false);
+							
+				} else {
+					hboxRegionOptions.setVisible(true);
+					rowOptions.setVisible(true);
+					hboxQueryDialog.setHeight("310px");
+					vboxQueryDialog.setHeight("305px");
+					hboxShowSnps.setVisible(true);
+					divSNPLocusLists.setVisible(true);
+					
+				}
+			}
+			
 
 			// this.comp = comp;
 
 			// prevDataset=getDataset();
-			prevDataset.add("3k");
+			//prevDataset.add("3k" );
+			prevDataset.add(AppContext.getDefaultDataset());
 			fillVariantsetListbox();
 
 			tabVista.addEventListener(org.zkoss.zk.ui.event.Events.ON_RIGHT_CLICK, new EventListener() {
@@ -1675,6 +1758,70 @@ public class SNPQueryController extends SelectorComposer<Window> {
 				}
 			});
 
+			// process prepopulate data matrix
+			
+			/*
+			String reference = Executions.getCurrent().getParameter("reference");
+			String varietyset = Executions.getCurrent().getParameter("dataset");
+			String variantset = Executions.getCurrent().getParameter("variantset");
+			if (reference != null && varietyset!=null && variantset!=null) {
+				System.out.println("Autoquery " + reference + " " + varietyset + " " + variantset);
+				//Messagebox.show(ex.getMessage(), "Exception", Messagebox.OK, Messagebox.ERROR);
+				//Messagebox.show("Autoquery " + reference + " " + varietyset + " " + variantset,"Information",Messagebox.OK,Messagebox.INFORMATION);
+				
+				int selindex=-1;
+				if (listReference.size() > 0) {
+					int icnt=0;
+					for(Object lab:listReference) { 
+						if(lab.toString().equals( reference))
+							selindex=icnt;
+						icnt++;
+					}
+				}
+				if(selindex>-1) {
+					Messagebox.show("Autoquery selected reference=" +  selindex ,"Information",Messagebox.OK,Messagebox.INFORMATION);
+					listboxReference.setSelectedIndex(selindex);
+					Events.sendEvent("onSelect", listboxReference, null); 
+					//onselectReference();
+					
+					Set sVariety=new HashSet();
+					sVariety.add( varietyset);
+					setVarietyset(sVariety);
+					//listboxVarietyset.getItems()
+					Set sVariant=new HashSet();
+					sVariant.add( variantset);
+					setVariantset(sVariant);
+					
+					if(reference.equals("cs10"))
+						selectChr.setValue( "NC_044371.1");
+					else if(reference.equals("pkv5"))
+						selectChr.setValue( "CM010790.2");
+					else
+						Messagebox.show("Cant find refrence " +  reference ,"Information",Messagebox.OK,Messagebox.INFORMATION);
+						
+					//selectChr.setSelectedIndex(1); 
+					intStart.setValue(10000);
+					intStop.setValue(20000);
+					
+					
+					Messagebox.show("querying " + listboxReference.getSelectedItem().getLabel() + ", chr " + selectChr.getValue() +  ", " + 
+							intStart.getValue() + "-" + intStop.getValue() + ", " + getDataset() + ", " + getVariantset(),"Information",Messagebox.OK,Messagebox.INFORMATION);
+					
+					
+					Events.postEvent("onClick", buttonSearch, null); //si
+					//Messagebox.show("Autoquery done" + reference + " " + varietyset + " " + variantset,"Information",Messagebox.OK,Messagebox.INFORMATION);
+				}
+				
+				}
+				//Messagebox.show("Autoquery references=" + labels ,"Information",Messagebox.OK,Messagebox.INFORMATION);
+ 
+				 
+
+			//}
+
+			
+			*/
+			
 			/*
 			 * addEventListener(org.zkoss.zk.ui.event.Events.ON_RIGHT_CLICK, new
 			 * EventListener() { public void onEvent(org.zkoss.zk.ui.event.Event evt) { if
@@ -1691,9 +1838,115 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			Messagebox.show(ex.getMessage(), "Exception", Messagebox.OK, Messagebox.ERROR);
 			throw ex;
 		}
+		
+		doFinally2();
 
 	}
 
+	//@Override
+	public void doFinally2() {
+		//Messagebox.show("onCreate()","Information",Messagebox.OK,Messagebox.INFORMATION);
+		//System.out.println("doFinally()");
+		
+		try {
+		String reference = Executions.getCurrent().getParameter("reference");
+		String varietyset = Executions.getCurrent().getParameter("dataset");
+		String variantset = Executions.getCurrent().getParameter("variantset");
+		if (reference != null && varietyset!=null && variantset!=null) {
+			//System.out.println("Autoquery " + reference + " " + varietyset + " " + variantset);
+			//Messagebox.show(ex.getMessage(), "Exception", Messagebox.OK, Messagebox.ERROR);
+			//Messagebox.show("Autoquery " + reference + " " + varietyset + " " + variantset,"Information",Messagebox.OK,Messagebox.INFORMATION);
+			
+			List listReference=genotype.getReferenceGenomes();
+			int selindex=-1;
+			if (listReference.size() > 0) {
+				int icnt=0;
+				for(Object lab:listReference) { 
+					if(lab.toString().equals( reference))
+						selindex=icnt;
+					icnt++;
+				}
+				
+			}
+			if(selindex>-1) {
+				//Messagebox.show("Autoquery selected reference=" +  selindex ,"Information",Messagebox.OK,Messagebox.INFORMATION);
+				//onselectReference();
+				listboxReference.setSelectedIndex(selindex);
+				Events.sendEvent( "onSelect", listboxReference,null);
+				
+				Set sVariety=new HashSet();
+				sVariety.add( varietyset);
+				setVarietyset(sVariety);
+				fillVariantsetListbox();
+				//listboxVarietyset.getItems()
+				//Events.sendEvent("onSelect",listboxVarietyset,null);
+				Set sVariant=new HashSet();
+				sVariant.add( variantset);
+				setVariantset(sVariant);
+
+				//Events.sendEvent("onSelect",listboxVariantset,null);
+				//onOpen = #bandboxVariantset")
+				//		public void onOpenvariantset(OpenEvent 
+				//Events.sendEvent("onOpen",bandboxVariantset,new OpenEvent("onOpen",bandboxVariantset,false));
+				bandboxVariantset.setValue(variantset);
+				//bandboxVariantset.setValue(variantset);
+				update_runslist();
+				
+				String cont = Executions.getCurrent().getParameter("cont");
+				String start = Executions.getCurrent().getParameter("start");
+				String stop = Executions.getCurrent().getParameter("stop");
+				if(cont!=null && start!=null && stop!=null) {
+					selectChr.setValue(cont.toUpperCase());
+					intStart.setValue(Integer.valueOf(start));
+					intStop.setValue(Integer.valueOf(stop));
+					
+				} else {
+					if(reference.equals("cs10")) {
+						selectChr.setValue( "NC_044371.1");
+						//this.bandboxRunid.setText("16");
+						//Set srunid=new  HashSet();
+						//srunid.add("16");
+						//setRunids(srunid); 
+					}
+					else if(reference.equals("pkv5"))
+						selectChr.setValue( "CM010790.2");
+					else if(reference.equals("fnv2"))
+						selectChr.setValue( "CM011605.1");
+					else
+						Messagebox.show("Cant find refrence " +  reference ,"Information",Messagebox.OK,Messagebox.INFORMATION);
+					intStart.setValue(10000);
+					intStop.setValue(20000);
+
+				}
+
+				//Messagebox.show("dataset=" + getDataset() + ", variantset=" +getVariantset() + " runids=" +  getRunids() ,
+				//		"Information",Messagebox.OK,Messagebox.INFORMATION);
+
+				
+				//Events.sendEvent( "onSelect", selectChr,null);
+				
+				//selectChr.setSelectedIndex(1); 
+				
+				//System.out.println("querying " + listboxReference.getSelectedItem().getLabel() + ", chr " + selectChr.getValue() +  ", " + 
+				//		intStart.getValue() + "-" + intStop.getValue() + ", " + getDataset() + ", " + getVariantset());
+				
+				//Messagebox.show("querying " + listboxReference.getSelectedItem().getLabel() + ", chr " + selectChr.getValue() +  ", " + 
+				//		intStart.getValue() + "-" + intStop.getValue() + ", " + getDataset() + ", " + getVariantset(),"Information",Messagebox.OK,Messagebox.INFORMATION);
+				
+				
+				//Events.postEvent("onClick",buttonSearch,null);
+				queryVariants();
+				//Messagebox.show("Autoquery done" + reference + " " + varietyset + " " + variantset,"Information",Messagebox.OK,Messagebox.INFORMATION);
+			}
+			
+			}
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			Messagebox.show(ex.getMessage(),"Exception", Messagebox.OK,Messagebox.ERROR);
+		}
+		
+	}
+	
 	@Listen("onSelect = #listboxVarietyset")
 	public void onSelectcheckboxdroplistGenotyperun(Event e) throws InterruptedException {
 
@@ -1776,7 +2029,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 				Collection vsdsi = genotype.getVariantsets((String) dsi, "SNP");
 				l.addAll(vsdsi);
 				if (vsdsi.size() == 1)
-					singlevariants.add(dsi);
+					singlevariants.addAll(vsdsi);
 
 				Label labl = new Label("    " + (String) dsi);
 				labl.setStyle("font-weight:bold");
@@ -1800,11 +2053,14 @@ public class SNPQueryController extends SelectorComposer<Window> {
 						firstradio = r;
 					radiocnt++;
 				}
+				
 				if (selRadio != null)
 					rg.setSelectedItem(selRadio);
 				else
 					rg.setSelectedItem(firstradio);
-				// firstradio.setSelected(true);
+					
+				//rg.setSelectedItem(firstradio);
+				//firstradio.setSelected(true);
 			}
 		}
 		AppContext.debug(l.size() + " variantsets");
@@ -1834,6 +2090,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			setVarietyset(getDataset());
 			return;
 		}
+		//else 
 		fillVariantsetListbox();
 
 	}
@@ -1846,8 +2103,10 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			}
 			str += (String) li;
 		}
-		bandboxVariantset.setValue(str);
+		//bandboxVariantset.setValue(str);
+		bandboxVariantset.setText(str);
 
+		AppContext.debug("setVariantset=" + s);
 		String curvariantset = null;
 		for (Object comp : bandboxVariantset.getChildren().get(0).getChildren().get(0).getChildren()) {
 			if (comp instanceof Label) {
@@ -1946,7 +2205,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 						if (strval.isEmpty())
 							strval = r.getLabel();
 						else
-							strval += ", " + r.getLabel();
+							strval += "," + r.getLabel();
 					}
 				}
 			}
@@ -2132,6 +2391,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			listboxSnpresult.setWidth("1000px");
 
 			tabTable.setSelected(true);
+			tabTable.setVisible(false);
 			tabTableLarge.setVisible(false);
 			tabJbrowse.setVisible(false);
 			tabGalaxy.setVisible(false);
@@ -2202,12 +2462,12 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 			String selcontig = params.getsChr();
 
-			if (this.listboxMySNPList.getSelectedIndex() > 0)
-				msgbox.setValue("SEARCHING: in " + this.listboxReference.getSelectedItem().getLabel() + " contig "
-						+ selcontig + " , list " + listboxMySNPList.getSelectedItem().getLabel());
-			else if (intStart.getValue() != null && intStop.getValue() != null && !selcontig.isEmpty())
+			if (intStart.getValue() != null && intStop.getValue() != null && !selcontig.isEmpty())
 				msgbox.setValue("SEARCHING: in " + this.listboxReference.getSelectedItem().getLabel() + " contig "
 						+ selcontig + " [" + intStart.getValue() + "-" + intStop.getValue() + "]");
+			else if (this.listboxMySNPList.getSelectedIndex() > 0)
+				msgbox.setValue("SEARCHING: in " + this.listboxReference.getSelectedItem().getLabel() + " contig "
+						+ selcontig + " , list " + listboxMySNPList.getSelectedItem().getLabel());
 			else
 				msgbox.setValue(
 						"SEARCHING: in " + this.listboxReference.getSelectedItem().getLabel() + " contig " + selcontig);
@@ -2294,11 +2554,16 @@ public class SNPQueryController extends SelectorComposer<Window> {
 					return;
 
 				} else {
+					
+					try {
 
 					// Deligate query to API
 					GenotypeQueryParams params2 = params;
 					params2.setIncludedSnps(false, false, false);
+					params2.setOrganism(AppContext.getDefaultOrganism(),false,false);
 
+					AppContext.debug("params2=" + params2);
+					
 					queryRawResult = genotype.queryGenotype(params2);
 					//
 
@@ -2346,9 +2611,26 @@ public class SNPQueryController extends SelectorComposer<Window> {
 					varianttable = genotype.fillGenotypeTable(varianttable, queryRawResult, params);
 
 					AppContext.resetTimer("to format to table..");
+					
+					} catch (InvocationTargetException ex) {
+						AppContext.debug("InvocationTargetException getCause printStackTrace");
+						ex.getCause().printStackTrace();
+						AppContext.debug("InvocationTargetException printStackTrace");
+						ex.printStackTrace();
+						
+						Messagebox.show(ex.getCause().getMessage(), "InvocationTargetException", Messagebox.OK, Messagebox.ERROR);
+
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						Messagebox.show(ex.getMessage(), "Exception", Messagebox.OK, Messagebox.ERROR);
+
+					}
 
 				}
 
+				if(varianttable==null)
+					Messagebox.show("varianttable==null");
+			
 				// query variants
 				queryResult = varianttable.getVariantStringData();
 				mapVariety2Phyloorder = null;
@@ -2429,8 +2711,8 @@ public class SNPQueryController extends SelectorComposer<Window> {
 					if (params.isbShowNPBPositions()) {
 						this.auxheader11Header.setLabel(params.getOrganism() + " positions");
 						this.auxheader21Header.setLabel(params.getOrganism() + " allele");
-						this.auxheader3Header.setLabel("Nipponbare positions");
-						this.column4Header.setLabel("Nipponbare");
+						this.auxheader3Header.setLabel(params.getOrganism() + " positions");
+						this.column4Header.setLabel(params.getOrganism()); // "Nipponbare");
 						this.auxhead1Header.setVisible(true);
 						this.auxhead2Header.setVisible(true);
 						biglistboxRows = 16;
@@ -2483,8 +2765,8 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 					// reference is nipponbare
 
-					this.auxheader3Header.setLabel("Nipponbare positions");
-					this.column4Header.setLabel("Nipponbare");
+					this.auxheader3Header.setLabel(params.getOrganism() + " positions" ); //"Nipponbare positions");
+					this.column4Header.setLabel(params.getOrganism() ); //"Nipponbare");
 					this.auxhead1Header.setVisible(false);
 					this.auxhead2Header.setVisible(false);
 
@@ -2530,6 +2812,16 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 				// set message
 				msgbox.setValue(new String(msgbox.getValue() + varianttable.getMessage()).replace("\n\n", "\n"));
+				
+				if(varianttable.getVariantStringData().getListVariantsString().size()<20) {
+					int varrows=varianttable.getVariantStringData().getListVariantsString().size();
+					String pxheight=Integer.valueOf((5+varrows)*800/25).toString() + "px";
+					gridBiglistheader.setHeight(pxheight );
+					biglistboxArray.setHeight( pxheight);
+				} else {
+					gridBiglistheader.setHeight("800px" );
+					biglistboxArray.setHeight("800px");
+				}
 
 				/*
 				 * if(params.getDataset().equals(VarietyFacade.DATASET_SNP_HDRA))
@@ -2685,6 +2977,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 			if (mode == GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS && listSNPs.size() > 0) {
 				// non-empty all-variety query, display JBrowse, Phylo and Alignment tabs
+				tabTable.setVisible(true);
 				if (this.listboxReference.getSelectedItem().getLabel().equals(AppContext.getDefaultOrganism()))
 					tabSnpeff.setVisible(
 							true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_SNP_EFFECT));
@@ -2693,9 +2986,10 @@ public class SNPQueryController extends SelectorComposer<Window> {
 				if (listboxMySNPList.getSelectedIndex() > 0 || this.listboxMyLocusList.getSelectedIndex() > 0
 						|| this.listboxAlleleFilter.getSelectedIndex() > 0) {
 					tabJbrowse.setVisible(false);
-					tabGalaxy.setVisible(true);
-					tabHaplotype.setVisible(
-							true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
+					tabGalaxy.setVisible( !displayModeQuery.equals("basic") && true);
+					//tabHaplotype.setVisible( !displayModeQuery.equals("basic") && 
+					//		true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
+					tabHaplotype.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
 					tabTableLarge.setVisible(false);
 					tabPhylo.setVisible(false);
 					tabMDS.setVisible(false);
@@ -2712,9 +3006,11 @@ public class SNPQueryController extends SelectorComposer<Window> {
 						updateJBrowse(chr, intStart.getValue().toString(), intStop.getValue().toString(), "");
 						// TODO FIX THIS AFTER TEST
 						// tabGalaxy.setVisible(true);
-						tabGalaxy.setVisible(true);
-						tabJbrowse.setVisible(
+						tabGalaxy.setVisible(true && !displayModeQuery.equals("basic"));
+						tabJbrowse.setVisible(  !displayModeQuery.equals("basic") &&
 								true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_JBROWSE));
+						//tabHaplotype.setVisible(  !displayModeQuery.equals("basic") &&
+						//		true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
 						tabHaplotype.setVisible(
 								true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
 
@@ -2748,12 +3044,14 @@ public class SNPQueryController extends SelectorComposer<Window> {
 				splitter.setOpen(false);
 
 			} else if (mode == GenotypeFacade.snpQueryMode.SNPQUERY_VARIETIES && listSNPs.size() > 0) {
-
+				tabTable.setVisible(true);
 				// show two-varieties table
 
-				tabJbrowse.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_JBROWSE));
+				tabJbrowse.setVisible( !displayModeQuery.equals("basic") && true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_JBROWSE));
+				//tabHaplotype
+				//		.setVisible( !displayModeQuery.equals("basic") && true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
 				tabHaplotype
-						.setVisible(true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
+						.setVisible( true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_HAPLOTYPE));
 				tabSnpeff.setVisible(
 						this.listboxReference.getSelectedItem().getLabel().equals(AppContext.getDefaultOrganism())
 								&& AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_SNP_EFFECT));
@@ -2763,6 +3061,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 				splitter.setOpen(false);
 
 			} else {
+				tabTable.setVisible(false);
 				tabJbrowse.setVisible(false);
 				tabGalaxy.setVisible(false);
 				tabHaplotype.setVisible(false);
@@ -2775,9 +3074,37 @@ public class SNPQueryController extends SelectorComposer<Window> {
 				divTablePanel.setVisible(false);
 				tabVista.setVisible(false);
 			}
+			
+			/*
+			String displaymode = Executions.getCurrent().getParameter("mode");
+			if(displayMode.equals("basic") || displaymode.equals("basic")) {
+				displaymode="basic";
+			}
+			
+			if (displaymode != null) {
+				if(displaymode.equals("basic")) {
+					tabJbrowse.setVisible(false);
+					tabGalaxy.setVisible(false);
+					tabHaplotype.setVisible(false);
+					//tabSnpeff.setVisible(false);
+					tabPhylo.setVisible(false);
+					tabMDS.setVisible(false);
+					tabMSA.setVisible(false);
+					iframeJbrowse.setVisible(false);
+					msgJbrowse.setVisible(false);
+					divTablePanel.setVisible(false);
+					tabVista.setVisible(false);
+				}
+			}
+			*/
+			
 
 		} catch (InvocationTargetException ex) {
+			AppContext.debug("InvocationTargetException getCause printStackTrace");
 			ex.getCause().printStackTrace();
+			AppContext.debug("InvocationTargetException printStackTrace");
+			ex.printStackTrace();
+			
 			Messagebox.show(ex.getCause().getMessage(), "InvocationTargetException", Messagebox.OK, Messagebox.ERROR);
 
 		} catch (Exception ex) {
@@ -2907,7 +3234,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 		String selcontig = selectChr.getValue();
 
 		String sSubpopulation = null;
-		GenotypeFacade.snpQueryMode mode = null;
+		GenotypeFacade.snpQueryMode mode = GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS;
 
 		if (checkboxAllvarieties.isChecked()) {
 			mode = GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS;
@@ -3041,7 +3368,20 @@ public class SNPQueryController extends SelectorComposer<Window> {
 				return null;
 			}
 
-			if (genotype.getFeature(selcontig, this.listboxReference.getSelectedItem().getLabel()) == null) {
+			String ref=listboxReference.getSelectedItem().getLabel();
+			if(ref==null || ref.isBlank()) {
+				
+				try {
+				ref=(String)genotype.getReferenceGenomes().get( listboxReference.getSelectedIndex() );
+				} catch(Exception ex) {
+					ex.printStackTrace();
+				}
+				//Messagebox.show("validateValues Contig " + selcontig + " reference indx=" + listboxReference.getSelectedIndex() + " reference label=" +  
+				//		   listboxReference.getSelectedItem().getLabel() + " newref=" + ref, "CHECK values",Messagebox.OK, Messagebox.EXCLAMATION);
+			}
+			
+			
+			if (genotype.getFeature(selcontig, ref) == null) {
 				Messagebox.show(
 						"Contig " + selcontig + " not found in " + listboxReference.getSelectedItem().getLabel(),
 						"INVALID CONTIG VALUE", Messagebox.OK, Messagebox.EXCLAMATION);
@@ -3050,9 +3390,10 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			;
 
 			// int chrlen = genotype.getFeatureLength( selectChr.getValue());
-			int chrlen = genotype.getFeatureLength(selcontig, this.listboxReference.getSelectedItem().getLabel()); // .getFeatureLength(
+			//int chrlen = genotype.getFeatureLength(selcontig, this.listboxReference.getSelectedItem().getLabel()); // .getFeatureLength(
 																													// selectChr.getValue());
-
+			int chrlen = genotype.getFeatureLength(selcontig, ref); 
+			
 			if (intStop == null || intStart == null || !intStop.isValid() || !intStart.isValid()
 					|| intStop.getValue() == null || intStart.getValue() == null) {
 				Messagebox.show("Please provide start and end positions", "INVALID POSITION VALUE", Messagebox.OK,
@@ -3148,13 +3489,16 @@ public class SNPQueryController extends SelectorComposer<Window> {
 		}
 
 		Set snpposlist = null;
-
+		Set locuslist = null;
+		
+		try {
 		/*
 		 * listboxMySNPList drop box in genotype.zul
 		 * 
 		 * Get SNP Selected list
 		 * 
 		 */
+		
 		if (listboxMySNPList.getSelectedIndex() > 0) {
 			String chrlistname[] = listboxMySNPList.getSelectedItem().getLabel().split(":");
 			// snpposlist = workspace.getSnpPositions( Integer.valueOf(
@@ -3174,10 +3518,13 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			contig = chrlistname[0].trim();
 		}
 
-		Set locuslist = null;
+
 		if ((listboxMyLocusList.getSelectedIndex() > 0) && (listboxMyLocusList.getSelectedItem() != null)) {
 			locuslist = workspace.getLoci(listboxMyLocusList.getSelectedItem().getLabel());
 			contig = "loci";
+		}
+		} catch(Exception ex) {
+			ex.printStackTrace();
 		}
 
 		String genename = comboGene.getValue().trim().toUpperCase();
@@ -3364,7 +3711,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 	@Listen("onClick =#checkboxShowAllRefAlleles")
 	public void onclickShowallrefss() {
-		if (listboxReference.getSelectedItem().getLabel().equals(Organism.REFERENCE_NIPPONBARE)) {
+		if (listboxReference.getSelectedItem().getLabel().equals(AppContext.REFERENCE_NIPPONBARE())) {
 			set3kAllOnly(false);
 			if (checkboxShowAllRefAlleles.isChecked()) {
 				this.checkboxIndel.setChecked(false);
@@ -3462,6 +3809,19 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 	}
 
+	
+	private void updateExamples() {
+		if(listContigs.size()>0) 
+			labelChrExample.setValue("(ex. " + listContigs.get(1) +")");
+		else
+			labelChrExample.setValue("");
+		if(listLoci.size()>0) 
+			labelLocusExample.setValue("(ex. " + listLoci.get(1) +")");
+		else
+			labelLocusExample.setValue("");
+		
+	}
+	
 	@Listen("onSelect =#listboxReference")
 	public void onselectReference() {
 
@@ -3469,6 +3829,10 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			genotype = (GenotypeFacade) AppContext.checkBean(genotype, "GenotypeFacade");
 
 			String selOrg = listboxReference.getSelectedItem().getLabel();
+			if(selOrg==null || selOrg.isBlank()) {
+				selOrg=(String)genotype.getReferenceGenomes().get( listboxReference.getSelectedIndex() );
+				//System.out.println("selOrg changed from using index=" + listboxReference.getSelectedIndex() );
+			}
 
 			// get contigs for selected reference
 			listContigs = AppContext.createUniqueUpperLowerStrings(genotype.getContigsForReference(selOrg), true, true);
@@ -3480,108 +3844,129 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 			selectChr.setModel(new SimpleListModel(listContigs));
 			comboGene.setModel(new SimpleListModel(listLoci));
+			
+			AppContext.setDefaultOrganism( selOrg );
+			
+			
+			setDatasetVariantset(selOrg);
+			
+			/*
+			Set selDS = new HashSet();
+			selDS.add(AppContext.getDefaultDataset()); // "3k");
+			setVarietyset(selDS);
 
-			if (selOrg.equals(Organism.REFERENCE_9311))
-				labelChr.setValue("Chromosome/Scaffold");
-			else if (selOrg.equals(Organism.REFERENCE_NIPPONBARE) || selOrg.equals(Organism.REFERENCE_KASALATH))
-				labelChr.setValue("Chromosome");
-			else
-				labelChr.setValue("Scaffold");
+			Set selVs = new HashSet();
+			selVs.add(AppContext.getDefaultVariantset()); // "3k");
+			setVariantset( selVs);
+			*/
 
-			if (selOrg.equals(Organism.REFERENCE_9311))
-				labelChrExample.setValue("(ex. 9311_chr01, scaffold01_4619) ");
-			else if (selOrg.equals(Organism.REFERENCE_KASALATH))
-				labelChrExample.setValue("(ex. chr01, um) ");
-			// else if(selOrg.equals(AppContext.getDefaultOrganism()))
-			// labelChrExample.setValue("(ex. 9311_chr01, scaffold01_4619) " );
-			else
-				labelChrExample.setValue("(ex. " + listContigs.get(1).toString().toLowerCase() + ") ");
+			fillVariantsetListbox(); 
+			
+			update_runslist();			
+			
+			updateExamples(); 
 
-			if (selOrg.equals(Organism.REFERENCE_NIPPONBARE))
-				labelLocusExample.setValue("(ex. loc_os01g01010)");
-			else if (selOrg.equals(Organism.REFERENCE_IR64))
-				labelLocusExample.setValue("(ex. osir64_00001g0100)");
-			else if (selOrg.equals(Organism.REFERENCE_9311))
-				labelLocusExample.setValue("(ex. os9311_01g010100)");
-			else if (selOrg.equals(Organism.REFERENCE_KASALATH))
-				labelLocusExample.setValue("(ex. oskasal01g010050)");
-			else if (selOrg.equals(Organism.REFERENCE_DJ123))
-				labelLocusExample.setValue("(ex. osdj12_00001g010100)");
-
-			selectChr.setValue("");
-			comboGene.setValue("");
-
-			// hide/disable some features if reference is not Nipponbare
-			if (!selOrg.equals(Organism.REFERENCE_NIPPONBARE)) {
-				checkboxShowNPBPosition.setChecked(false);
-				// divShowNPBPositions.setVisible(true);
-
-				// this.comboGene.setDisabled(true);
-				listboxMySNPList.setSelectedIndex(0);
-				this.listboxMySNPList.setDisabled(true);
-				listboxMyLocusList.setSelectedIndex(0);
-				this.listboxMyLocusList.setDisabled(true);
-				this.listboxAlleleFilter.setSelectedIndex(0);
-				this.listboxAlleleFilter.setDisabled(true);
-				this.listboxVarietyAlleleFilter.setSelectedIndex(0);
-				this.listboxVarietyAlleleFilter.setDisabled(true);
-
-				// this.comboGene.setValue("");
-				// this.comboGene.setDisabled(true);
-
-				this.checkboxIndel.setDisabled(true);
-				this.checkboxIndel.setChecked(false);
-
-				this.radioAllSnps.setSelected(true);
-				this.radioAllSnps.setDisabled(true);
-				this.radioNonsynSnps.setDisabled(true);
-				this.radioNonsynHighlights.setDisabled(true);
-				this.radioNonsynSnpsPlusSplice.setDisabled(true);
-
-				// this.checkboxCoreSNP.setChecked(false);
-				// this.checkboxCoreSNP.setDisabled(true);
-
-				this.checkboxShowAllRefAlleles.setChecked(true);
-				checkboxShowAllRefAlleles.setDisabled(true);
-
-				// enable only 3kall
-				// this.listboxGenotyperun.setSelectedIndex(0);
-				// listboxGenotyperun.setDisabled(true);
-
-				/*
-				 * this.listboxDataset.setSelectedIndex(0); listboxDataset.setDisabled(true);
-				 * this.listboxSnpset.setSelectedIndex(0); listboxSnpset.setDisabled(true);
-				 */
-				// this.listboxDataset.setSelectedIndex(0);
-
-			} else {
-				checkboxShowNPBPosition.setChecked(false);
-				divShowNPBPositions.setVisible(false);
-				// this.comboGene.setDisabled(false);
-				this.listboxMySNPList.setDisabled(false);
-				this.listboxMyLocusList.setDisabled(false);
-				this.listboxAlleleFilter.setDisabled(false);
-				this.listboxVarietyAlleleFilter.setDisabled(false);
-
-				this.comboGene.setValue("");
-				this.comboGene.setDisabled(false);
-				this.radioAllSnps.setDisabled(false);
-				this.radioNonsynHighlights.setDisabled(false);
-				this.radioNonsynSnpsPlusSplice.setDisabled(false);
-				this.checkboxIndel.setDisabled(false);
-
-				// this.checkboxCoreSNP.setDisabled(false);
-				this.checkboxShowAllRefAlleles.setChecked(false);
-				checkboxShowAllRefAlleles.setDisabled(false);
-
-				// enable , select 3kfiltered
-				// this.listboxGenotyperun.setSelectedIndex(1);
-				// listboxGenotyperun.setDisabled(true);
-				/*
-				 * listboxDataset.setDisabled(false); this.listboxDataset.setSelectedIndex(0);
-				 * this.listboxSnpset.setSelectedIndex(2); listboxSnpset.setDisabled(false);
-				 */
-			}
+//			if (selOrg.equals(Organism.REFERENCE_9311))
+//				labelChr.setValue("Chromosome/Scaffold");
+//			else if (selOrg.equals(Organism.REFERENCE_NIPPONBARE) || selOrg.equals(Organism.REFERENCE_KASALATH))
+//				labelChr.setValue("Chromosome");
+//			else
+//				labelChr.setValue("Scaffold");
+//
+//			if (selOrg.equals(Organism.REFERENCE_9311))
+//				labelChrExample.setValue("(ex. 9311_chr01, scaffold01_4619) ");
+//			else if (selOrg.equals(Organism.REFERENCE_KASALATH))
+//				labelChrExample.setValue("(ex. chr01, um) ");
+//			// else if(selOrg.equals(AppContext.getDefaultOrganism()))
+//			// labelChrExample.setValue("(ex. 9311_chr01, scaffold01_4619) " );
+//			else
+//				labelChrExample.setValue("(ex. " + listContigs.get(1).toString().toLowerCase() + ") ");
+//
+//			if (selOrg.equals(Organism.REFERENCE_NIPPONBARE))
+//				labelLocusExample.setValue("(ex. loc_os01g01010)");
+//			else if (selOrg.equals(Organism.REFERENCE_IR64))
+//				labelLocusExample.setValue("(ex. osir64_00001g0100)");
+//			else if (selOrg.equals(Organism.REFERENCE_9311))
+//				labelLocusExample.setValue("(ex. os9311_01g010100)");
+//			else if (selOrg.equals(Organism.REFERENCE_KASALATH))
+//				labelLocusExample.setValue("(ex. oskasal01g010050)");
+//			else if (selOrg.equals(Organism.REFERENCE_DJ123))
+//				labelLocusExample.setValue("(ex. osdj12_00001g010100)");
+//
+//			selectChr.setValue("");
+//			comboGene.setValue("");
+//
+//			// hide/disable some features if reference is not Nipponbare
+//			if (!selOrg.equals(Organism.REFERENCE_NIPPONBARE)) {
+//				checkboxShowNPBPosition.setChecked(false);
+//				// divShowNPBPositions.setVisible(true);
+//
+//				// this.comboGene.setDisabled(true);
+//				listboxMySNPList.setSelectedIndex(0);
+//				this.listboxMySNPList.setDisabled(true);
+//				listboxMyLocusList.setSelectedIndex(0);
+//				this.listboxMyLocusList.setDisabled(true);
+//				this.listboxAlleleFilter.setSelectedIndex(0);
+//				this.listboxAlleleFilter.setDisabled(true);
+//				this.listboxVarietyAlleleFilter.setSelectedIndex(0);
+//				this.listboxVarietyAlleleFilter.setDisabled(true);
+//
+//				// this.comboGene.setValue("");
+//				// this.comboGene.setDisabled(true);
+//
+//				this.checkboxIndel.setDisabled(true);
+//				this.checkboxIndel.setChecked(false);
+//
+//				this.radioAllSnps.setSelected(true);
+//				this.radioAllSnps.setDisabled(true);
+//				this.radioNonsynSnps.setDisabled(true);
+//				this.radioNonsynHighlights.setDisabled(true);
+//				this.radioNonsynSnpsPlusSplice.setDisabled(true);
+//
+//				// this.checkboxCoreSNP.setChecked(false);
+//				// this.checkboxCoreSNP.setDisabled(true);
+//
+//				this.checkboxShowAllRefAlleles.setChecked(true);
+//				checkboxShowAllRefAlleles.setDisabled(true);
+//
+//				// enable only 3kall
+//				// this.listboxGenotyperun.setSelectedIndex(0);
+//				// listboxGenotyperun.setDisabled(true);
+//
+//				/*
+//				 * this.listboxDataset.setSelectedIndex(0); listboxDataset.setDisabled(true);
+//				 * this.listboxSnpset.setSelectedIndex(0); listboxSnpset.setDisabled(true);
+//				 */
+//				// this.listboxDataset.setSelectedIndex(0);
+//
+//			} else {
+//				checkboxShowNPBPosition.setChecked(false);
+//				divShowNPBPositions.setVisible(false);
+//				// this.comboGene.setDisabled(false);
+//				this.listboxMySNPList.setDisabled(false);
+//				this.listboxMyLocusList.setDisabled(false);
+//				this.listboxAlleleFilter.setDisabled(false);
+//				this.listboxVarietyAlleleFilter.setDisabled(false);
+//
+//				this.comboGene.setValue("");
+//				this.comboGene.setDisabled(false);
+//				this.radioAllSnps.setDisabled(false);
+//				this.radioNonsynHighlights.setDisabled(false);
+//				this.radioNonsynSnpsPlusSplice.setDisabled(false);
+//				this.checkboxIndel.setDisabled(false);
+//
+//				// this.checkboxCoreSNP.setDisabled(false);
+//				this.checkboxShowAllRefAlleles.setChecked(false);
+//				checkboxShowAllRefAlleles.setDisabled(false);
+//
+//				// enable , select 3kfiltered
+//				// this.listboxGenotyperun.setSelectedIndex(1);
+//				// listboxGenotyperun.setDisabled(true);
+//				/*
+//				 * listboxDataset.setDisabled(false); this.listboxDataset.setSelectedIndex(0);
+//				 * this.listboxSnpset.setSelectedIndex(2); listboxSnpset.setDisabled(false);
+//				 */
+//			}
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -3683,6 +4068,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 	 * Handle create variety list from table
 	 */
 
+
 	@Listen("onClick = #buttonCreateVarlist")
 	public void onclickCreateVarlist() {
 		workspace = (WorkspaceFacade) AppContext.checkBean(workspace, "WorkspaceFacade");
@@ -3726,7 +4112,11 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			if (listboxMyLocusList.getSelectedIndex() > 0) {
 
 				if (listboxMyLocusList.getSelectedItem().getLabel().equals("create new list...")) {
-					Executions.sendRedirect("_workspace.zul?from=locus&src=snp");
+					if (displayModeQuery.equals("basic"))
+						Executions.sendRedirect("workspace.zul?from=locus&src=snp&mode=basic");
+					else 
+						Executions.sendRedirect("_workspace.zul?from=locus&src=snp");
+						
 				} else {
 					this.selectChr.setValue("");
 					this.comboGene.setValue("");
@@ -3823,7 +4213,11 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			listboxAlleleFilter.setSelectedIndex(0);
 
 			if (listboxMySNPList.getSelectedItem().getLabel().equals("create new list...")) {
-				Executions.sendRedirect("_workspace.zul?from=snp&src=snp");
+				
+				if (displayModeQuery.equals("basic"))
+					Executions.sendRedirect("workspace.zul?from=snp&src=snp&mode=basic");
+				else 
+					Executions.sendRedirect("_workspace.zul?from=snp&src=snp");
 			} else {
 				updateSnplistSelection(listboxMySNPList);
 				this.checkboxIndel.setChecked(false);
@@ -4105,7 +4499,8 @@ public class SNPQueryController extends SelectorComposer<Window> {
 				}
 
 				// selectChr.setValue(gene.getContig().toLowerCase());
-				selectChr.setValue(gene.getContig().replace("0", "").toUpperCase());
+				//selectChr.setValue(gene.getContig().replace("0", "").toUpperCase());
+				selectChr.setValue(gene.getContig().toUpperCase());
 
 				/*
 				 * SimpleListModel model=(SimpleListModel)selectChr.getModel(); int lcount=0;
@@ -11519,21 +11914,21 @@ public class SNPQueryController extends SelectorComposer<Window> {
 	}
 
 	private void updateVistaTab(String ref, String contig, Integer start, Integer end) {
-		if (ref.equals(Organism.REFERENCE_NIPPONBARE))
+		if (ref.equals(AppContext.REFERENCE_NIPPONBARE()))
 			updateVistaSubtabs(ref, contig, start, end, Organism.REFERENCE_9311, Organism.REFERENCE_IR64,
 					Organism.REFERENCE_KASALATH, Organism.REFERENCE_DJ123);
 		else if (ref.equals(Organism.REFERENCE_9311))
-			updateVistaSubtabs(ref, contig, start, end, Organism.REFERENCE_NIPPONBARE, Organism.REFERENCE_IR64,
+			updateVistaSubtabs(ref, contig, start, end, AppContext.REFERENCE_NIPPONBARE(), Organism.REFERENCE_IR64,
 					Organism.REFERENCE_KASALATH, Organism.REFERENCE_DJ123);
 		else if (ref.equals(Organism.REFERENCE_IR64))
-			updateVistaSubtabs(ref, contig, start, end, Organism.REFERENCE_9311, Organism.REFERENCE_NIPPONBARE,
+			updateVistaSubtabs(ref, contig, start, end, Organism.REFERENCE_9311, AppContext.REFERENCE_NIPPONBARE(),
 					Organism.REFERENCE_KASALATH, Organism.REFERENCE_DJ123);
 		else if (ref.equals(Organism.REFERENCE_KASALATH))
 			updateVistaSubtabs(ref, contig, start, end, Organism.REFERENCE_9311, Organism.REFERENCE_IR64,
-					Organism.REFERENCE_NIPPONBARE, Organism.REFERENCE_DJ123);
+					AppContext.REFERENCE_NIPPONBARE(), Organism.REFERENCE_DJ123);
 		else if (ref.equals(Organism.REFERENCE_DJ123))
 			updateVistaSubtabs(ref, contig, start, end, Organism.REFERENCE_9311, Organism.REFERENCE_IR64,
-					Organism.REFERENCE_KASALATH, Organism.REFERENCE_NIPPONBARE);
+					Organism.REFERENCE_KASALATH, AppContext.REFERENCE_NIPPONBARE());
 	}
 
 	@Listen("onClick =#tabVista1")
@@ -11630,7 +12025,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			String target) {
 		String url = "";
 
-		if (ref.equals(Organism.REFERENCE_NIPPONBARE)) {
+		if (ref.equals(AppContext.REFERENCE_NIPPONBARE())) {
 			if (target.equals(Organism.REFERENCE_9311))
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=37668";
 			else if (target.equals(Organism.REFERENCE_IR64))
@@ -11640,7 +12035,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			else if (target.equals(Organism.REFERENCE_DJ123))
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat06&run=21641";
 		} else if (ref.equals(Organism.REFERENCE_9311)) {
-			if (target.equals(Organism.REFERENCE_NIPPONBARE))
+			if (target.equals(AppContext.REFERENCE_NIPPONBARE()))
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&run=37668&base=4144";
 			else if (target.equals(Organism.REFERENCE_IR64))
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat07&run=36371";
@@ -11651,7 +12046,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 		} else if (ref.equals(Organism.REFERENCE_IR64)) {
 			if (target.equals(Organism.REFERENCE_9311))
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&run=36371&base=4146";
-			else if (target.equals(Organism.REFERENCE_NIPPONBARE))
+			else if (target.equals(AppContext.REFERENCE_NIPPONBARE()))
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&run=37870&base=4146";
 			else if (target.equals(Organism.REFERENCE_KASALATH))
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat08&run=35323";
@@ -11662,7 +12057,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&run=37794&base=3591";
 			else if (target.equals(Organism.REFERENCE_IR64))
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&run=35323&base=3591";
-			else if (target.equals(Organism.REFERENCE_NIPPONBARE))
+			else if (target.equals(AppContext.REFERENCE_NIPPONBARE()))
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&run=37665&base=3591";
 			else if (target.equals(Organism.REFERENCE_DJ123))
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?base=orySat11&run=38038";
@@ -11673,7 +12068,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?run=36564&base=4153";
 			else if (target.equals(Organism.REFERENCE_KASALATH))
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?run=38038&base=4153";
-			else if (target.equals(Organism.REFERENCE_NIPPONBARE))
+			else if (target.equals(AppContext.REFERENCE_NIPPONBARE()))
 				url = "http://pipeline.lbl.gov/tbrowser/tbrowser/?run=21641&base=4153";
 		}
 		url += "&pos=" + refcontig + ":" + refstart + "-" + refend + "&genes=user&indx=0&cutoff=50";

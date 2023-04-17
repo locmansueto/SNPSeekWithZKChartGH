@@ -272,13 +272,21 @@ public class H5 implements java.io.Serializable {
 	private final static Vector<Integer> OPEN_IDS = new Vector<Integer>();
 
 	static {
+		try {
 		loadH5Lib();
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
 	}
 
 	public static void loadH5Lib() {
 		// Make sure that the library is loaded only once
 		if (isLibraryLoaded)
 			return;
+		
+		//String jhdf5file="hdf5_java.dll";
+		String jhdf5file="jhdf5.dll";
 
 		// first try loading library by name from user supplied library path
 		s_libraryName = System.getProperty(H5_LIBRARY_NAME_PROPERTY_KEY, null);
@@ -345,8 +353,8 @@ public class H5 implements java.io.Serializable {
 			try {
 				String libpath = "lib";
 				if (AppContext.isWindows()) {
-					System.out.println(AppContext.getFlatfilesDir() + libpath + "\\jhdf5.dll");
-					System.load(AppContext.getFlatfilesDir() + libpath + "\\jhdf5.dll");
+					System.out.println(AppContext.getFlatfilesDir() + libpath + "\\"+jhdf5file);
+					System.load(AppContext.getFlatfilesDir() + libpath + "\\"+jhdf5file);
 				} else
 					System.load(AppContext.getFlatfilesDir() + libpath + "/libjhdf5.so");
 				isLibraryLoaded = true;
@@ -371,7 +379,7 @@ public class H5 implements java.io.Serializable {
 					libpath = "lib-dev";
 
 				if (AppContext.isWindows())
-					System.load(AppContext.getFlatfilesDir() + libpath + "\\jhdf5.dll");
+					System.load(AppContext.getFlatfilesDir() + libpath + "\\"+jhdf5file);
 				else
 					System.load(AppContext.getFlatfilesDir() + libpath + "/libjhdf5.so");
 				isLibraryLoaded = true;
@@ -395,7 +403,7 @@ public class H5 implements java.io.Serializable {
 					libpath = "lib-dev2";
 
 				if (AppContext.isWindows())
-					System.load(AppContext.getFlatfilesDir() + libpath + "\\jhdf5.dll");
+					System.load(AppContext.getFlatfilesDir() + libpath + "\\"+jhdf5file);
 				else
 					System.load(AppContext.getFlatfilesDir() + libpath + "/libjhdf5.so");
 				isLibraryLoaded = true;
@@ -419,7 +427,7 @@ public class H5 implements java.io.Serializable {
 					libpath = "lib-dev2";
 
 				if (AppContext.isWindows())
-					System.load(AppContext.getFlatfilesDir() + libpath + "\\jhdf5.dll");
+					System.load(AppContext.getFlatfilesDir() + libpath + "\\"+jhdf5file);
 				else
 					System.load(AppContext.getFlatfilesDir() + libpath + "/libjhdf5.so");
 				isLibraryLoaded = true;
@@ -443,7 +451,7 @@ public class H5 implements java.io.Serializable {
 					libpath = "lib-dev2";
 
 				if (AppContext.isWindows())
-					System.load(AppContext.getFlatfilesDir() + libpath + "\\jhdf5.dll");
+					System.load(AppContext.getFlatfilesDir() + libpath + "\\"+jhdf5file);
 				else
 					System.load(AppContext.getFlatfilesDir() + libpath + "/libjhdf5.so");
 				isLibraryLoaded = true;
@@ -460,13 +468,21 @@ public class H5 implements java.io.Serializable {
 			}
 		}
         
+		try {
+		AppContext.debug("lib loaded1");
 
 		/* Important! Exit quietly */
 		try {
 			H5.H5dont_atexit();
 		} catch (HDF5LibraryException e) {
+			e.printStackTrace();
+			System.exit(1);
+		} catch (Exception e) {
+			e.printStackTrace();
 			System.exit(1);
 		}
+		
+		AppContext.debug("lib loaded2");
 
 		/* Important! Disable error output to C stdout */
 		if (!log.isDebugEnabled())
@@ -476,12 +492,20 @@ public class H5 implements java.io.Serializable {
 		 * Optional: confirm the version This will crash immediately if not the
 		 * specified version.
 		 */
+		AppContext.debug("lib loaded3");
 
+		/*
 		Integer majnum = Integer.getInteger("ncsa.hdf.hdf5lib.H5.hdf5maj", null);
 		Integer minnum = Integer.getInteger("ncsa.hdf.hdf5lib.H5.hdf5min", null);
 		Integer relnum = Integer.getInteger("ncsa.hdf.hdf5lib.H5.hdf5rel", null);
 		if ((majnum != null) && (minnum != null) && (relnum != null)) {
 			H5.H5check_version(majnum.intValue(), minnum.intValue(), relnum.intValue());
+		}
+		*/
+		AppContext.debug("lib loaded4");
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			throw ex;
 		}
 
 	}

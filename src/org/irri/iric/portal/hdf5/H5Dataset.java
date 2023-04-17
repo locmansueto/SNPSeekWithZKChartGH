@@ -1,5 +1,6 @@
 package org.irri.iric.portal.hdf5;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import org.irri.iric.portal.dao.SnpsStringDAO;
 import org.irri.iric.portal.domain.GenotypeRunPlatform;
 import org.irri.iric.portal.domain.SnpsAllvarsPos;
 
+//import hdf.hdf5lib.HDF5Constants;
 import ncsa.hdf.object.Dataset;
 import ncsa.hdf.object.Group;
 import ncsa.hdf.object.h5.*;
@@ -104,9 +106,13 @@ public class H5Dataset implements SnpsStringDAO {
 			// HDF5Constants.H5F_ACC_RDONLY ); // HDF5Constants.H5F_ACC_RDONLY );
 
 			try {
-				System.out.println("JLP = " + System.getProperty("java.library.path"));
-				h5file = new H5File(filename, H5File.READ); // HDF5Constants.H5F_ACC_RDONLY );
+				System.out.println("JLP = " + System.getProperty("java.library.path") + "\nfilename=" + filename);
+				 h5file = new H5File(filename, H5File.READ); // HDF5Constants.H5F_ACC_RDONLY
+				// );
+				//h5file = new H5File(filename, HDF5Constants.H5F_ACC_RDONLY);
+				System.out.println("h5file=" + h5file);
 			} catch (Exception ex) {
+				AppContext.debug(filename + " H5File Exception\nh5file=" + h5file);
 				ex.printStackTrace();
 			}
 			// h5file = new H5File( filename); //, HDF5Constants.H5F_ACC_RDONLY);
