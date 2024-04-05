@@ -228,10 +228,18 @@ public class VSnpSpliceacceptor implements Serializable, SnpsSpliceAcceptor, Com
 	@Override
 	public int compareTo(Object o) {
 
-		VSnpSpliceacceptor acc = (VSnpSpliceacceptor) o;
-		int ret = this.getChr().compareTo(acc.getChr());
+		VSnpSpliceacceptor p = (VSnpSpliceacceptor) o;
+		//int ret = this.getChr().compareTo(acc.getChr());
+		
+		int ret = 0;
+		if (getChr()!=null && (p.getChr()!=null)) {
+			ret = getChr().compareTo(p.getChr());
+		} else {
+			ret= getContig().compareTo(p.getContig());
+		}
+		
 		if (ret == 0)
-			ret = this.getPosition().compareTo(acc.getPosition());
+			ret = this.getPosition().compareTo(p.getPosition());
 		return ret;
 	}
 

@@ -286,7 +286,14 @@ public class VSnpNonsynallelePos implements Serializable, SnpsNonsynAllele, Comp
 		 * 
 		 */
 
-		int ret = this.chr.compareTo(((VSnpNonsynallelePos) o).chr);
+		int ret = 0;
+
+		if (this.chr!=null && ((VSnpNonsynallelePos) o).chr!=null) 
+			ret = this.chr.compareTo(((VSnpNonsynallelePos) o).chr);
+		else
+			ret = this.contig.compareTo(((VSnpNonsynallelePos) o).contig);
+		
+		
 		if (ret == 0)
 			ret = this.position.compareTo(((VSnpNonsynallelePos) o).position);
 		if (ret == 0)

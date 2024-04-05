@@ -181,7 +181,9 @@ public class IndelsAllvarsPosAlleleImpl implements IndelsAllvarsPos {
 	@Override
 	public Long getChr() {
 
-		return Long.valueOf(AppContext.guessChrFromString(contig));
+		if(AppContext.guessChrFromString(contig)!=null)
+			return Long.valueOf(AppContext.guessChrFromString(contig));
+		return null;
 	}
 
 	@Override

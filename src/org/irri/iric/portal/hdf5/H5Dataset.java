@@ -1,5 +1,7 @@
 package org.irri.iric.portal.hdf5;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -113,7 +115,10 @@ public class H5Dataset implements SnpsStringDAO {
 				System.out.println("h5file=" + h5file);
 			} catch (Exception ex) {
 				AppContext.debug(filename + " H5File Exception\nh5file=" + h5file);
-				ex.printStackTrace();
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				ex.printStackTrace(pw);
+				System.out.println(sw.toString());
 			}
 			// h5file = new H5File( filename); //, HDF5Constants.H5F_ACC_RDONLY);
 			// h5file = new H5File( filename, H5File.READ ); //,

@@ -1,6 +1,8 @@
 package org.irri.iric.portal.genotype.service;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -1051,8 +1053,12 @@ public class SnpsStringHDF5nRDBMSHybridService implements VariantStringService {
 		
 	
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				//ex.printStackTrace();
 				//Messagebox.show(ex.getMessage(), "Exception", Messagebox.OK, Messagebox.ERROR);
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				ex.printStackTrace(pw);
+				System.out.println(sw.toString());
 			}
 	
 		}

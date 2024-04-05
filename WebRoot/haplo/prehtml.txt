@@ -15,8 +15,7 @@
 
   <style type="text/css">
     body { font:13px/1.4 Arial, sans-serif; margin:0px; background:white; }
-#tooltip { text-align:center; background:black; color:white; padding:3px 0; width:500px; position:fixed; display:none; white-space:nowrap; }
-
+	tooltip { text-align:left; background:black; color:white; padding:3px 0; width:800px; position:fixed; display:none; white-space:nowrap; }
   </style>
 
   <title></title>

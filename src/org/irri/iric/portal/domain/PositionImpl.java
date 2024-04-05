@@ -171,8 +171,10 @@ public class PositionImpl implements Position {
 
 	@Override
 	public Long getChr() {
+		if(AppContext.guessChrFromString(contig)!=null)
+			return Long.valueOf(AppContext.guessChrFromString(contig));
+		return null;
 		
-		return Long.valueOf(AppContext.guessChrFromString(contig));
 	}
 
 }

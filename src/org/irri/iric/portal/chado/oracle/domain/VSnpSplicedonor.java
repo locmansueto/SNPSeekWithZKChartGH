@@ -226,10 +226,21 @@ public class VSnpSplicedonor implements Serializable, SnpsSpliceDonor, Comparabl
 	@Override
 	public int compareTo(Object o) {
 		
-		VSnpSplicedonor acc = (VSnpSplicedonor) o;
-		int ret = this.getChr().compareTo(acc.getChr());
+		VSnpSplicedonor p = (VSnpSplicedonor) o;
+		//int ret = this.getChr().compareTo(acc.getChr());
+		
+		
+		//int ret = this.getChr().compareTo(acc.getChr());
+		
+		int ret = 0;
+		if (getChr()!=null && (p.getChr()!=null)) {
+			ret = getChr().compareTo(p.getChr());
+		} else {
+			ret= getContig().compareTo(p.getContig());
+		}
+		
 		if (ret == 0)
-			ret = this.getPosition().compareTo(acc.getPosition());
+			ret = this.getPosition().compareTo(p.getPosition());
 		return ret;
 	}
 

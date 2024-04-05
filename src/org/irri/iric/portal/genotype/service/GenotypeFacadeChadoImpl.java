@@ -3,6 +3,9 @@ package org.irri.iric.portal.genotype.service;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -440,7 +443,19 @@ public class GenotypeFacadeChadoImpl implements GenotypeFacade {
 	@Override
 	public VariantStringData queryGenotype(GenotypeQueryParams params) throws Exception {
 		genotypeservice = (VarietiesGenotypeService) AppContext.checkBean(genotypeservice, "VarietiesGenotypeService");
-		return genotypeservice.queryVariantStringData(params);
+		try {
+			return genotypeservice.queryVariantStringData(params);
+		} catch(Exception ex) {
+
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			ex.printStackTrace(pw);
+			if(ex instanceof InvocationTargetException) {
+				ex.getCause().printStackTrace(pw);
+			}
+			System.out.println(sw.toString());
+			throw ex;
+		}
 	}
 
 	@Override

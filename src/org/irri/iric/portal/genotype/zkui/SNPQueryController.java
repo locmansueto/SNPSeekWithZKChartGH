@@ -172,7 +172,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 import org.zkoss.zul.SimpleListModel;
 import org.zkoss.zul.Slider;
-import org.zkoss.zul.Splitter;
+//import org.zkoss.zul.Splitter;
+import org.zkoss.zul.Separator;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabbox;
 import org.zkoss.zul.Tabpanel;
@@ -943,9 +944,10 @@ public class SNPQueryController extends SelectorComposer<Window> {
 	@Wire
 	private Listbox listboxTargetReference;
 
+	//@Wire
+	//private Splitter splitter;
 	@Wire
-	private Splitter splitter;
-	
+	private Separator separator;
 	@Wire
 	private Hbox hboxRegionOptions;
 	@Wire
@@ -1400,6 +1402,13 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			AppContext.debug("...genotype.zul init start");
 
 			listLoci = genotype.getGenenames();
+			Set hs=new HashSet();
+			hs.addAll(listLoci);
+			listLoci = new ArrayList();
+			listLoci.addAll(hs);
+			Collections.sort(listLoci); 
+
+			
 			AppContext.debug("...genotype.zul mark 1a");
 			List varnames = genotype.getVarnames(VarietyFacade.DATASET_SNPINDELV2_IUPAC);
 			AppContext.debug("...genotype.zul mark 1b");
@@ -2348,6 +2357,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 		return l;
 	}
 
+	
 	@Listen("onSelect =#tabSnpeff")
 	public void onselectSnpeff() {
 
@@ -2355,6 +2365,9 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			return;
 		genotype = (GenotypeFacade) AppContext.checkBean(genotype, "GenotypeFacade");
 		List listSnpeffs = genotype.getSnpEffects(queryResult.getListPos());
+		
+		//AppContext.quickPrint( "onselectSnpeff listSnpeffs=" + listSnpeffs.size() );
+		
 		listboxSnpeff.setItemRenderer(new SNPEffListitemRenderer());
 		this.listboxSnpeff.setModel(new SimpleListModel(listSnpeffs));
 	}
@@ -3041,7 +3054,10 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 				onScrollYTable(0);
 
-				splitter.setOpen(false);
+				//splitter.setOpen(false);
+				//splitter.setOpen(true);
+				separator.setVisible(false);
+				separator.setVisible(true);
 
 			} else if (mode == GenotypeFacade.snpQueryMode.SNPQUERY_VARIETIES && listSNPs.size() > 0) {
 				tabTable.setVisible(true);
@@ -3058,7 +3074,10 @@ public class SNPQueryController extends SelectorComposer<Window> {
 				msgJbrowse.setVisible(false);
 				divTablePanel.setVisible(false);
 				// listboxSnpresult.setVisible(true);
-				splitter.setOpen(false);
+				//splitter.setOpen(false);
+				//splitter.setOpen(true);
+				separator.setVisible(false);
+				separator.setVisible(true);
 
 			} else {
 				tabTable.setVisible(false);
@@ -3116,6 +3135,8 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			oncheckShowsnps();
 			Clients.clearBusy();
 		}
+		
+		
 
 	}
 
@@ -3280,7 +3301,8 @@ public class SNPQueryController extends SelectorComposer<Window> {
 				return null;
 			intStart.setValue(gene.getFmin());
 			intStop.setValue(gene.getFmax());
-			selectChr.setValue(gene.getContig().replace("0", "").toUpperCase());
+			//selectChr.setValue(gene.getContig().replace("0", "").toUpperCase());
+			selectChr.setValue(gene.getContig().toUpperCase());
 			comboGene.setValue(gene.getUniquename());
 			sLocus = gene.getUniquename();
 
@@ -3811,12 +3833,14 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 	
 	private void updateExamples() {
+		Random ran = new Random();
 		if(listContigs.size()>0) 
-			labelChrExample.setValue("(ex. " + listContigs.get(1) +")");
+			labelChrExample.setValue("(ex. " + listContigs.get(ran.nextInt(listContigs.size())) +")");
 		else
 			labelChrExample.setValue("");
-		if(listLoci.size()>0) 
-			labelLocusExample.setValue("(ex. " + listLoci.get(1) +")");
+		if(listLoci.size()>0)  {
+			labelLocusExample.setValue("(ex. " + listLoci.get(ran.nextInt(listLoci.size()) ) +")");
+		}
 		else
 			labelLocusExample.setValue("");
 		
@@ -3839,7 +3863,12 @@ public class SNPQueryController extends SelectorComposer<Window> {
 
 			// get loci for reference
 			listLoci = AppContext.createUniqueUpperLowerStrings(genotype.getLociForReference(selOrg), true, true);
-
+			Set hs=new HashSet();
+			hs.addAll(listLoci);
+			listLoci = new ArrayList();
+			listLoci.addAll(hs);
+			Collections.sort(listLoci); 
+			
 			AppContext.debug(selectChr.getChildren().size() + " contigs, " + listLoci.size() + " loci in combobox ");
 
 			selectChr.setModel(new SimpleListModel(listContigs));
@@ -4949,7 +4978,7 @@ public class SNPQueryController extends SelectorComposer<Window> {
 					poscolumnidx = selPosIdx;
 				} else {
 					headercolumnidx = selPosIdx - 1;
-					poscolumnidx = selPosIdx - 1;
+					poscolumnidx = selPosIdx; // - 1;
 				}
 
 				try {
@@ -7540,11 +7569,13 @@ public class SNPQueryController extends SelectorComposer<Window> {
 		hctreemaxlog2height = -1;
 		hctreeminlog2height = -1;
 		GenotypeQueryParams p = this.fillGenotypeQueryParams();
+		/*
 		if (!p.isRegion()) {
 			this.listboxHaploResolution.setSelectedIndex(0);
 			this.listboxHaploResolution.setDisabled(true);
 		} else
 			this.listboxHaploResolution.setDisabled(false);
+		*/
 		// hboxHaplotype.setVisible(false);
 		AppContext.debug("tabDisplayHaloptypeimage()");
 		buttonHaplotypelog.setVisible(false);
@@ -10103,7 +10134,10 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			for (int i = 0; i < positions.length; i++) {
 				if (!refs[i].equals("-")) {
 					int pos = positions[i].getPosition().intValue();
-					chr = positions[i].getChr().toString();
+					
+					//chr = positions[i].getChr().toString();
+					chr = positions[i].getContig(); // .getChr().toString();
+					
 					String contigname = null;
 					if (contigs != null)
 						contigname = contigs[i];

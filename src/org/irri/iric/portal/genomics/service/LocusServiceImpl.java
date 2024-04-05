@@ -1084,7 +1084,7 @@ public class LocusServiceImpl implements LocusService {
 				itLoc = lg.iterator();
 				while (itLoc.hasNext()) {
 					Locus loc = itLoc.next();
-					if (pos.getChr() == loc.getChr()
+					if ( pos.getChr() == loc.getChr()
 							&& ((fpos <= loc.getFmax().floatValue() && fpos >= loc.getFmin().floatValue())
 									|| (fpos >= loc.getFmax().floatValue() && fpos <= loc.getFmin().floatValue()))) {
 						// setGeneSnp.put(pos,loc);

@@ -301,7 +301,9 @@ public class VSnpRefposindex implements Serializable, SnpsAllvarsPos, Comparable
 	@Override
 	public Long getChr() {
 
-		return getChromosome().longValue();
+		if(getChromosome()!=null)
+			return getChromosome().longValue();
+		return null;
 	}
 
 	@Override

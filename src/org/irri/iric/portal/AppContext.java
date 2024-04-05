@@ -252,7 +252,11 @@ public class AppContext {
 
 		webserver = (WEBSERVER) prop.get(PropertyConstants.WEBSERVER);
 	}
-
+/*
+	public static void quickPrint(String msg) {
+		System.out.println(msg);
+	}
+	*/
 	// ******************************** DEPLOYMENT-SPECIFIC SETTINGS (change
 	// these to match server congiguration ) *********************************
 
@@ -1438,6 +1442,7 @@ public class AppContext {
 		// logger.info(msg);
 		// log.debug(msg);
 		log.error(msg);
+		System.out.println("ERROR " +msg);
 	}
 
 	// display on expected error
@@ -1457,12 +1462,14 @@ public class AppContext {
 		}
 		log.error(msg);
 		mydebug(msg);
+		System.out.println("ERROR " +msg);
 	}
 
 	// display on expected warning
 	public static void warning(String msg) {
 		// logger(msg);
 		log.warn(msg);
+		System.out.println("WARN " +msg);
 
 	}
 
@@ -1493,6 +1500,8 @@ public class AppContext {
 		
 		logger.info(msg);
 		mydebug(msg);
+		System.out.println("DEBUG " +msg);
+
 
 	}
 
@@ -1515,6 +1524,8 @@ public class AppContext {
 			startTimeDate = endTimeDate;
 			// logger.info(timedif + msg);
 			logger.info(timedif + msg);
+			System.out.println("INFO " +msg);
+
 		}
 
 		/*

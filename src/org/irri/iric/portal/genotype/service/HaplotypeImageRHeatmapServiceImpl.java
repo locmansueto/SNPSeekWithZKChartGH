@@ -464,7 +464,10 @@ public class HaplotypeImageRHeatmapServiceImpl implements HaplotypeImageService 
 				// chr01 10100044599 0 44599
 				String cols[] = line.split("\t");
 				xcount++;
-				bw.append("mapX[" + xcount + "]=\"" + cols[1] + ";" + cols[0] + "-" + cols[3] + "\";\n");
+				if(cols[1].equals(cols[0] + "-" + cols[3]))
+					bw.append("mapX[" + xcount + "]=\"" + cols[1] + "\";\n");
+				else
+					bw.append("mapX[" + xcount + "]=\"" + cols[1] + ";" + cols[0] + "-" + cols[3] + "\";\n");
 			}
 			bw.append("var nX=" + xcount + ";\n");
 			bw.flush();
@@ -486,8 +489,11 @@ public class HaplotypeImageRHeatmapServiceImpl implements HaplotypeImageService 
 
 				String cols[] = line.split("\t");
 				ycount++;
-				bw.append("mapY[" + Integer.valueOf(cols[0]) + "]=\"" + cols[2] + ";" + cols[3] + ";" + cols[4]
-						+ "\";\n");
+				if(cols[2].equals(cols[3]))
+					bw.append("mapY[" + Integer.valueOf(cols[0]) + "]=\"" + cols[2] + ";" + cols[4]	+ "\";\n");
+				else
+					bw.append("mapY[" + Integer.valueOf(cols[0]) + "]=\"" + cols[2] + ";" + cols[3] + ";" + cols[4]	+ "\";\n");
+					
 			}
 			bw.append("var nY=" + ycount + ";\n");
 			bw.append("\n\n\n");

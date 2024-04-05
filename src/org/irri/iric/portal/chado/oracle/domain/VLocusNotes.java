@@ -299,7 +299,10 @@ public class VLocusNotes implements Serializable, MultiReferenceLocus {
 	public Long getChr() {
 
 		// return Long.valueOf(getContig());
-		return Long.valueOf(AppContext.guessChrFromString(getContig()));
+		
+		if(AppContext.guessChrFromString(getContig())!=null) 
+			return Long.valueOf(AppContext.guessChrFromString(getContig()));
+		return null;
 		/*
 		 * try { return Integer.valueOf(
 		 * this.getContig().toLowerCase().replace("chr0","").replace("chr","") ); }

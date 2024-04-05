@@ -342,6 +342,7 @@ public class Data {
 			mapSub2Color = new HashMap();
 			mapSub2Color.put("all".toUpperCase(), "black");
 			mapSub2Color.put("none".toUpperCase(), "lightgray");
+			/*
 			mapSub2Color.put("ind1A".toUpperCase(), "#60e0c0");
 			mapSub2Color.put("ind1B".toUpperCase(), "aquamarine");
 			mapSub2Color.put("ind2".toUpperCase(), "#336622");
@@ -356,6 +357,22 @@ public class Data {
 			mapSub2Color.put("admix".toUpperCase(), "gray");
 			mapSub2Color.put("japx".toUpperCase(), "#acacfc");
 			mapSub2Color.put("indx".toUpperCase(), "#9cbb9c");
+			*/
+
+			mapSub2Color.put("bldt".toUpperCase(),"magenta");
+			mapSub2Color.put("basal cannabis".toUpperCase(),"#00ff01");
+			mapSub2Color.put("drug".toUpperCase(),"red");
+			mapSub2Color.put("drug type feral".toUpperCase(),"orange");
+			mapSub2Color.put("drug-type".toUpperCase(),"red");
+			mapSub2Color.put("hemp".toUpperCase(),"cyan");
+			mapSub2Color.put("hemp-type".toUpperCase(),"blue");
+			mapSub2Color.put("na".toUpperCase(),"white");
+			mapSub2Color.put("nldt".toUpperCase(),"pink");
+			mapSub2Color.put("type i".toUpperCase(),"darkred");
+			mapSub2Color.put("type ii".toUpperCase(),"darkgreen");
+			mapSub2Color.put("type iii".toUpperCase(),"darkblue");
+			mapSub2Color.put("csativa".toUpperCase(),"gray");
+					
 
 			/*
 			 * admixed #BEBEBE admixed-indica #AADDAA admixed-japonica #9BC0EB aromatic
@@ -378,7 +395,9 @@ public class Data {
 			mapSub2Color.put("temperate-japonica".toUpperCase(), "#499BD1");
 			mapSub2Color.put("tropical-japonica".toUpperCase(), "#3359D6");
 		}
-		return mapSub2Color.get(subpop.trim().toUpperCase());
+		if(mapSub2Color.containsKey(subpop.trim().toUpperCase()))
+				return mapSub2Color.get(subpop.trim().toUpperCase());
+		return "gray";
 	}
 
 	public static String getGeneralSubpopulation(String subpop) {

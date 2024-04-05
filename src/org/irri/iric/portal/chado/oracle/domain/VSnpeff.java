@@ -262,15 +262,22 @@ public class VSnpeff implements Serializable, SnpsEffect {
 	 */
 	@Override
 	public Long getChr() {
-		
-		return Long.valueOf(this.chromosome);
+		if(chromosome!=null) {
+			return Long.valueOf(this.chromosome);
+		}
+		return null;
 	}
 
 	@Override
 	public int compareTo(Object arg0) {
 		
 		Locus p = (Locus) arg0;
-		int ret = getChr().compareTo(p.getChr());
+		int ret = 0;
+		if (getChr()!=null && (p.getChr()!=null)) {
+			ret = getChr().compareTo(p.getChr());
+		} else {
+			ret= getContig().compareTo(p.getContig());
+		}
 		if (ret != 0)
 			return ret;
 		ret = getFmin().compareTo(p.getFmin());
@@ -336,15 +343,23 @@ public class VSnpeff implements Serializable, SnpsEffect {
 			Iterator<SnpEffectAnn> itanns = getANNObj().iterator();
 			while (itanns.hasNext()) {
 				try {
-					String annots[] = itanns.next().getAnnotation().split("&");
+					SnpEffectAnn sfann=itanns.next();
+					if(sfann!=null ) {
+					String ann= sfann.getAnnotation();
+					if(ann!=null) {
+					String annots[] =ann.split("&");
+					if (annots!=null) {
 					for (int in = 0; in < annots.length; in++) {
 						int rank = AppContext.getMapVariantRank(annots[in]);
 						if (rank < minrank)
 							minrank = rank;
 					}
+					}
+					}
+					}
 				} catch (Exception ex) {
-					AppContext.debug("annotation=" + annotation);
-					ex.printStackTrace();
+					//AppContext.debug("annotation=" + annotation);
+					//ex.printStackTrace();
 				}
 
 			}

@@ -1032,14 +1032,13 @@ enableTooltipster();
 
 			</vbox>
 
-			<!--  separator bar="true" visible="false" id="separator" width="100%"/ -->
+			<separator bar="true" visible="true" id="separator" width="100%"/>
 
-			<splitter id="splitter" collapse="before" open="true"
-				width="100%" />
+			<!--  splitter id="splitter" collapse="before" open="true" width="100%" / -->
 
-			<vbox>
+			
 
-				<label id="snpallvarsresultMsg" visible="false" />
+				<!--  label id="snpallvarsresultMsg" visible="false" / -->
 
 
 
@@ -1178,7 +1177,7 @@ enableTooltipster();
 
 										<hbox id="hboxFilterAllele"
 											visible="false">
-											<hbox>
+											<hbox visible="false">
 												<button
 													id="buttonCreateVarlist" label="Create List" />
 												<label pre="true"
@@ -1187,7 +1186,7 @@ enableTooltipster();
 													id="textboxVarlistName" />
 												<vbox width="40px" />
 											</hbox>
-											<vbox width="100px" />
+											<vbox width="500px" />
 
 											<vbox>
 												<hbox>
@@ -1264,13 +1263,13 @@ enableTooltipster();
 										<label value="non-synonymous "
 											style="color:red;background:black;font-weight:bold"
 											pre="true" />
-										<label value="splice donor SNP "
+										<!--  label value="splice donor SNP "
 											style="color:aqua" pre="true" />
 										<label
 											value="splice acceptor SNP " style="color:chartreuse"
 											pre="true" />
 										<label value="gap - "
-											pre="true" />
+											pre="true" / -->
 
 									</hbox>
 									<hbox
@@ -1549,8 +1548,11 @@ enableTooltipster();
 
 						<tabpanel id="tabpanelSnpeff">
 
+   						
+                        <!--  borderlayout width="100%" height="100%"><center autoscroll="true" -->
+                        
 							<listbox id="listboxSnpeff" mold="paging"
-								pageSize="100" sizedByContent="true" span="true">
+								pageSize="100" sizedByContent="false" span="false"  width="90%" style="white-space:nowrap;">
 								<listhead sizable="true">
 
 									<!--  listheader label="POSITION" sort="auto" width="8%"/>
@@ -1638,6 +1640,10 @@ enableTooltipster();
 
 								</listhead>
 							</listbox>
+							
+							<!--  /center></borderlayout -->
+							
+							
 
 
 						</tabpanel>
@@ -1734,7 +1740,7 @@ enableTooltipster();
 							<hbox>
 								<label value="Resolution " pre="true" />
 								<listbox id="listboxHaploResolution"
-									mold="select" width="100px">
+									mold="select" width="100px" disabled="true">
 									<listitem value="SNP"
 										label="per SNP" selected="true" />
 									<listitem value="100"
@@ -1835,8 +1841,8 @@ enableTooltipster();
 									</tabs>
 									<tabpanels>
 										<tabpanel>
-											<iframe id="iframeHaplotype"
-												width="90%" height="1000px" />
+											<!--  iframe id="iframeHaplotype" width="90%" height="1000px" / -->
+											<iframe id="iframeHaplotype" width="90%" height="1000px"/>
 										</tabpanel>
 										<tabpanel>
 											<vbox
@@ -1850,7 +1856,7 @@ enableTooltipster();
 												<div
 													style="overflow:auto;position:relative">
 													<listbox
-														id="listboxGroupAlleleMatrix" width="80%">
+														id="listboxGroupAlleleMatrix" width="800">
 														<listhead
 															id="listheadGroupAlleleMatrix" sizable="true">
 															<listheader
@@ -2018,7 +2024,7 @@ enableTooltipster();
 
 													<charts
 														id="chartGroupAlleleFrequency" type="line"
-														title="Group Allele frequency" width="1000" height="400"
+														title="Group Allele frequency" width="800" height="400"
 														zoomType="xy" />
 												</hbox>
 											</vbox>
@@ -2308,7 +2314,6 @@ enableTooltipster();
 
 					</tabpanels>
 				</tabbox>
-			</vbox>
 
 		</vbox>
 

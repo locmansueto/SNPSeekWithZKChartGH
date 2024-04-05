@@ -547,7 +547,9 @@ public class VLocusCvtermCvtermpath implements Serializable, Locus, CvTerm, Comp
 	public Long getChr() {
 		
 		// return Long.valueOf(getContig());
-		return Long.valueOf(AppContext.guessChrFromString(getContig()));
+		if(AppContext.guessChrFromString(getContig())!=null)
+			return Long.valueOf(AppContext.guessChrFromString(getContig()));
+		return null;
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.*;
 import javax.persistence.*;
 
+import org.irri.iric.portal.AppContext;
 import org.irri.iric.portal.domain.IndelsAllvarsPos;
 import org.irri.iric.portal.domain.Position;
 
@@ -363,7 +364,10 @@ public class VIndelRefposindex implements Serializable, IndelsAllvarsPos {
 	@Override
 	public Long getChr() {
 
-		return this.chromosome.longValue();
+		if (chromosome!=null)
+			return this.chromosome.longValue();
+		return null;
+
 	}
 
 	@Override

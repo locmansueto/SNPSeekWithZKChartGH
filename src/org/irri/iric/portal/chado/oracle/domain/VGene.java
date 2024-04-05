@@ -133,7 +133,9 @@ public class VGene implements Serializable, Gene, Comparable {
 	/**
 	 */
 	public Long getChr() {
-		return Long.valueOf(AppContext.guessChrFromString(this.chr));
+		if(AppContext.guessChrFromString(this.chr)!=null)
+			return Long.valueOf(AppContext.guessChrFromString(this.chr));
+		return null;
 	}
 
 	/**

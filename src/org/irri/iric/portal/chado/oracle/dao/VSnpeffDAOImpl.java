@@ -1,5 +1,6 @@
 package org.irri.iric.portal.chado.oracle.dao;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -259,7 +260,10 @@ public class VSnpeffDAOImpl extends AbstractJpaDao<VSnpeff> implements VSnpeffDA
 		if (AppContext.isLocalhost())
 			AppContext.debug("executing :" + sql);
 		// log.info("executing :" + sql);
-		return getSession().createSQLQuery(sql).addEntity(VSnpeff.class).list();
+		List l=getSession().createSQLQuery(sql).addEntity(VSnpeff.class).list();
+		//AppContext.quickPrint("executeSQL l=" + l.size());
+		
+		return l;
 	}
 
 	private Session getSession() {
@@ -273,6 +277,7 @@ public class VSnpeffDAOImpl extends AbstractJpaDao<VSnpeff> implements VSnpeffDA
 			return getSNPsInOracle(chr, posset);
 		else if (AppContext.isPostgres())
 			return getSNPsInPostgres(chr, posset);
+		//AppContext.quickPrint("getSNPsIn return null");
 		return null;
 
 	}
@@ -424,7 +429,19 @@ public class VSnpeffDAOImpl extends AbstractJpaDao<VSnpeff> implements VSnpeffDA
 			sql += ") foo2 order by CHROMOSOME, contig, POSITION";
 
 			AppContext.debug("querying  V_SNPEFF with " + poscount + " positions");
-			return new LinkedHashSet(executeSQL(sql));
+			try {
+				List<VSnpeff> l=executeSQL(sql);
+				Set s=new LinkedHashSet<VSnpeff>();
+				Iterator it=l.iterator();
+				while( it.hasNext()) {
+					s.add(it.next());
+				}
+				//AppContext.quickPrint( "getSNPsInPostgres any{ sql=" + sql + "   s=" + s.size());
+				return s;
+			} catch(Exception ex) {
+				ex.printStackTrace();
+				throw ex;
+			}
 		} else if (chr.toLowerCase().equals("loci")) {
 
 			long poscount = 0;
@@ -457,8 +474,21 @@ public class VSnpeffDAOImpl extends AbstractJpaDao<VSnpeff> implements VSnpeffDA
 			sql += ") foo order by CHROMOSOME, POSITION";
 
 			AppContext.debug("querying  V_SNPEFF with " + poscount + " loci");
-
-			return new LinkedHashSet(executeSQL(sql));
+			try {
+				Set s=new LinkedHashSet(executeSQL(sql));
+				//AppContext.quickPrint( "getSNPsInPostgres loci{ sql=" + sql + "   s=" + s.size());
+				return s;
+			/*
+			} catch (InvocationTargetException e) {
+			    // Answer:
+				AppContext.quickPrint( "getSNPsInPostgres InvocationTargetException");
+			    e.getCause().printStackTrace(); */
+			} catch(Exception ex) {
+				//AppContext.quickPrint( "getSNPsInPostgres Exception");
+			    ex.printStackTrace();
+			}
+			return new HashSet();
+			
 		} else {
 
 			String sql = "select * from ( ";
@@ -488,7 +518,10 @@ public class VSnpeffDAOImpl extends AbstractJpaDao<VSnpeff> implements VSnpeffDA
 				sql += ") foo order by CHROMOSOME, POSITION";
 			}
 			
-			return new LinkedHashSet(executeSQL(sql));
+			Set s=new LinkedHashSet(executeSQL(sql));
+			//AppContext.quickPrint( "getSNPsInPostgres else{ sql=" + sql + "   s=" + s.size());
+			return s;
+			
 		}
 	}
 

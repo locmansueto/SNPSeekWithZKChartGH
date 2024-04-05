@@ -110,13 +110,22 @@ $( '.coords' ).
                     //$( tooltip ).text( 'x:' + coorx + ', clientX:' + clientx + ', minx:' + minx  + "\n y:" + coory + ', clienty:' + clienty + ', miny:' + miny).css({
 
                     
-
+/*
                     $( tooltip ).text(getXYlabel(coorx,coory)).css({
+                     	'white-space': 'nowrap',
+                     	right:  Math.max(10, Math.min(pagewidth-100,clientx - 30))+500,
                         left:  Math.max(10, Math.min(pagewidth-100,clientx - 30)),
                         top: Math.max(10, Math.min(pageheight-50,clienty - 30))
                     }).show();
+*/
+
+                    $( tooltip ).text(getXYlabel(coorx,coory)).css({
+            	        left:  Math.max(10, Math.min(pagewidth-100,clientx - 30)), width:'800px',
+						top: clienty + 5
+                    }).show();
 
                 }
+
 
 
             }).

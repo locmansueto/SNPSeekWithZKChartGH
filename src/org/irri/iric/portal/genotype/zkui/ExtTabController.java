@@ -342,6 +342,7 @@ public class ExtTabController extends SelectorComposer<Window> {
     		}
     		genotype = (GenotypeFacade) AppContext.checkBean(genotype, "GenotypeFacade");
     		List listSnpeffs = genotype.getSnpEffects(queryResult.getListPos());
+    		//AppContext.quickPrint( "doAfterCompose listSnpeffs=" + listSnpeffs.size());
     		listboxSnpeff.setItemRenderer(new SNPEffListitemRenderer());
     		listboxSnpeff.setModel(new SimpleListModel(listSnpeffs));
         	divSnpeff.setVisible(true);
