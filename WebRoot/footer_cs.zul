@@ -1,0 +1,16 @@
+﻿<?page title="footer" contentType="text/html;charset=UTF-8" ?>
+<zk >
+<div style="background-color:whitesmoke;color:white;font-family:arial;font-size:10px" >
+
+<vbox height="25px">
+<hbox height="5px"/>
+<hbox  align="center" pack="center">
+<label value="©2022 International Cannabis Genomics Research Consortium" style="font-size:11px;color:darkgreen"/>
+<vbox width="100px"/>
+<!-- label value="This site is under development. We schedule mainitenance every Monday, 8-9:00 GMT (4-5PM Manila)"  style="font-size:11px"/ -->
+<!-- label value="Site is currently under maintenance"  style="font-size:13px;color:red"/ -->
+</hbox>	
+</vbox>
+</div>
+
+</zk>

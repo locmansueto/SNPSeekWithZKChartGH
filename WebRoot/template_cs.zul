@@ -1,0 +1,44 @@
+<zk>
+
+<!-- script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-54609377-1', 'auto');
+  ga('send', 'pageview');
+</script -->
+
+
+<!--  script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84565607-1', 'auto');
+  ga('send', 'pageview');
+</script -->
+
+
+    <borderlayout hflex="1" vflex="1">
+        <north height="120px" border="none" >
+            <include src="/banner_cs.zul"/>
+        </north>
+        <!--  west width="100px" border="none" collapsible="true"  title="Navigation" 
+                splittable="true">
+            <include src="/sidebar.zul"/>
+        </west -->
+        <!-- west width="100px" border="none" collapsible="true"  title="Navigation" 
+                splittable="true" minsize="300">
+            <include src="/sidebar.zul"/>
+        </west -->
+        <center id="mainContent" autoscroll="true" border="none" flex="true"
+                self="@insert(content)">
+        </center>
+        <south height="30px" border="none">
+            <include src="/footer_cs.zul"/>
+        </south>
+    </borderlayout>
+</zk>
