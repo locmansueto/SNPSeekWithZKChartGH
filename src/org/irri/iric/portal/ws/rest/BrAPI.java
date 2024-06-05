@@ -1057,8 +1057,8 @@ public class BrAPI {
 	 * the accession // the following need review (should be removed?)
 	 * //'germplasmSubTaxa (optional, text, `cv. Charger, subsp. aestivum`) ... The
 	 * name or synonym of MCPD subTaxa. Exact Match, abreviations must be MCPD
-	 * compliant (�subsp.� for 'subspecies'; �convar.� for 'convariety' �var.� for
-	 * variety; �f.� for 'form'; �Group� for �cultivar group�) //+ panel (optional,
+	 * compliant (subsp. for 'subspecies'; convar. for 'convariety' var. for
+	 * variety; f. for 'form'; Group for cultivar group) //+ panel (optional,
 	 * text, `breedingProgramPanel2011`) ... The name of a specific panel //+
 	 * collection (optional, text, `BRCCollection_Wheat`) ... The name of a specific
 	 * Collection 'pageSize' : 100, // (optional, integer, `1000`) ... The size of

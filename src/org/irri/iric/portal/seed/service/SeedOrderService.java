@@ -100,7 +100,7 @@ public class SeedOrderService {
 						.replace("DESIGNATION1", s.getVarname())
 						.replace("PRICEPERGRAM1", AppContext.decf.format(s.getPricePerGram()))
 						.replace("QUANTITY1", s.getGram().toString())
-						.replace("PRICE1", AppContext.decf.format(s.getPrice())).replace("�?", "");
+						.replace("PRICE1", AppContext.decf.format(s.getPrice())).replace("?", "");
 
 				bw.append(strrow); // .append();
 

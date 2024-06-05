@@ -2991,11 +2991,15 @@ public class SNPQueryController extends SelectorComposer<Window> {
 			if (mode == GenotypeFacade.snpQueryMode.SNPQUERY_ALLVARIETIESPOS && listSNPs.size() > 0) {
 				// non-empty all-variety query, display JBrowse, Phylo and Alignment tabs
 				tabTable.setVisible(true);
+				/*
 				if (this.listboxReference.getSelectedItem().getLabel().equals(AppContext.getDefaultOrganism()))
 					tabSnpeff.setVisible(
 							true && AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_SNP_EFFECT));
 				else
 					tabSnpeff.setVisible(false);
+				*/
+				tabSnpeff.setVisible(AppContext.showItem(WebserverPropertyConstants.SHOW_GENOTYPE_SNP_EFFECT));
+				
 				if (listboxMySNPList.getSelectedIndex() > 0 || this.listboxMyLocusList.getSelectedIndex() > 0
 						|| this.listboxAlleleFilter.getSelectedIndex() > 0) {
 					tabJbrowse.setVisible(false);

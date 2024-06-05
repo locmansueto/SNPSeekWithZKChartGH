@@ -58,7 +58,7 @@ public class LocalAlignmentBLASTlocalDAOImpl implements LocalAlignmentDAO {
 
 		String command = AppContext.getPathToLocalBlast() + query.getQuerytype() + " -db "
 				+ AppContext.getPathToLocalBlastData() + query.getDbname() + " -query " + tmpfasta + " -outfmt \""
-				+ outfmt + "\" -evalue " + query.getEvalue(); // " + " �out " + tmpfasta + ".out" ; // tabular
+				+ outfmt + "\" -evalue " + query.getEvalue(); // " + " out " + tmpfasta + ".out" ; // tabular
 
 		// String command = "notepad.exe";
 		AppContext.debug("Executing " + command);
@@ -70,7 +70,7 @@ public class LocalAlignmentBLASTlocalDAOImpl implements LocalAlignmentDAO {
 		ProcessBuilder pb = new ProcessBuilder(AppContext.getPathToLocalBlast() + query.getQuerytype(), "-db",
 				AppContext.getPathToLocalBlastData() + query.getDbname(), "-query", tmpfasta, "-outfmt", outfmt,
 				"-evalue", String.valueOf(query.getEvalue()));
-		// "�out", tmpfasta + ".out");
+		// "out", tmpfasta + ".out");
 		// Map<String, String> env = pb.environment();
 		// env.put("VAR1", "myValue");
 		// env.remove("OTHERVAR");
@@ -249,7 +249,7 @@ public class LocalAlignmentBLASTlocalDAOImpl implements LocalAlignmentDAO {
 
 		String command = AppContext.getPathToLocalBlast() + query.getQuerytype() + " -db "
 				+ AppContext.getPathToLocalBlastData() + query.getDbname() + " -query " + tmpfasta + " -outfmt \""
-				+ outfmt + "\" -evalue " + query.getEvalue() + "  �out " + tmpfasta + ".out"; // tabular
+				+ outfmt + "\" -evalue " + query.getEvalue() + "  out " + tmpfasta + ".out"; // tabular
 
 		// String command = "notepad.exe";
 		AppContext.debug("Executing " + command);
@@ -261,7 +261,7 @@ public class LocalAlignmentBLASTlocalDAOImpl implements LocalAlignmentDAO {
 		ProcessBuilder pb = new ProcessBuilder(AppContext.getPathToLocalBlast() + query.getQuerytype(), "-db",
 				AppContext.getPathToLocalBlastData() + query.getDbname(), "-query", tmpfasta, "-outfmt", outfmt,
 				"-evalue", String.valueOf(query.getEvalue()));
-		// "�out", tmpfasta + ".out");
+		// "out", tmpfasta + ".out");
 		// Map<String, String> env = pb.environment();
 		// env.put("VAR1", "myValue");
 		// env.remove("OTHERVAR");

@@ -78,7 +78,7 @@ public class SeedPriceDAO {
 		mapCountry2Category.put("Cambodia", "lowmid");
 		mapCountry2Category.put("Cameroon", "lowmid");
 		mapCountry2Category.put("Congo, Rep.", "lowmid");
-		mapCountry2Category.put("C�te d'Ivoire", "lowmid");
+		mapCountry2Category.put("Cte d'Ivoire", "lowmid");
 		mapCountry2Category.put("Djibouti", "lowmid");
 		mapCountry2Category.put("Egypt, Arab Rep.", "lowmid");
 		mapCountry2Category.put("El Salvador", "lowmid");
@@ -91,7 +91,7 @@ public class SeedPriceDAO {
 		mapCountry2Category.put("Jordan", "lowmid");
 		mapCountry2Category.put("Kenya", "lowmid");
 		mapCountry2Category.put("Kiribati", "lowmid");
-		mapCountry2Category.put("Kosovo �", "lowmid");
+		mapCountry2Category.put("Kosovo ", "lowmid");
 		mapCountry2Category.put("Kyrgyz Republic", "lowmid");
 		mapCountry2Category.put("Lao PDR", "lowmid");
 		mapCountry2Category.put("Lesotho", "lowmid");
@@ -102,11 +102,11 @@ public class SeedPriceDAO {
 		mapCountry2Category.put("Morocco", "lowmid");
 		mapCountry2Category.put("Myanmar", "lowmid");
 		mapCountry2Category.put("Nicaragua", "lowmid");
-		mapCountry2Category.put("Nigeria �", "lowmid");
-		mapCountry2Category.put("Pakistan �", "lowmid");
-		mapCountry2Category.put("Papua New Guinea �", "lowmid");
+		mapCountry2Category.put("Nigeria ", "lowmid");
+		mapCountry2Category.put("Pakistan ", "lowmid");
+		mapCountry2Category.put("Papua New Guinea ", "lowmid");
 		mapCountry2Category.put("Philippines", "lowmid");
-		mapCountry2Category.put("S�o Tom� and Principe", "lowmid");
+		mapCountry2Category.put("So Tom and Principe", "lowmid");
 		mapCountry2Category.put("Solomon Islands", "lowmid");
 		mapCountry2Category.put("Sri Lanka", "lowmid");
 		mapCountry2Category.put("Sudan", "lowmid");
@@ -140,7 +140,7 @@ public class SeedPriceDAO {
 		mapCountry2Category.put("Croatia", "upmid");
 		mapCountry2Category.put("Cuba", "upmid");
 		mapCountry2Category.put("Dominica", "upmid");
-		mapCountry2Category.put("Dominican Republic �", "upmid");
+		mapCountry2Category.put("Dominican Republic ", "upmid");
 		mapCountry2Category.put("Equatorial Guinea", "upmid");
 		mapCountry2Category.put("", "upmid");
 		mapCountry2Category.put("Ecuador", "upmid");
@@ -154,7 +154,7 @@ public class SeedPriceDAO {
 		mapCountry2Category.put("Kazakhstan", "upmid");
 		mapCountry2Category.put("Lebanon", "upmid");
 		mapCountry2Category.put("Libya", "upmid");
-		mapCountry2Category.put("Macedonia, FYR �", "upmid");
+		mapCountry2Category.put("Macedonia, FYR ", "upmid");
 		mapCountry2Category.put("Malaysia", "upmid");
 		mapCountry2Category.put("Maldives", "upmid");
 		mapCountry2Category.put("Marshall Islands", "upmid");
@@ -165,7 +165,7 @@ public class SeedPriceDAO {
 		mapCountry2Category.put("Nauru", "upmid");
 		mapCountry2Category.put("Panama", "upmid");
 		mapCountry2Category.put("Paraguay", "upmid");
-		mapCountry2Category.put("Peru �", "upmid");
+		mapCountry2Category.put("Peru ", "upmid");
 		mapCountry2Category.put("Romania", "upmid");
 		mapCountry2Category.put("Russian Federation", "upmid");
 		mapCountry2Category.put("Samoa", "upmid");
@@ -197,7 +197,7 @@ public class SeedPriceDAO {
 		mapCountry2Category.put("Cayman Islands", "high");
 		mapCountry2Category.put("Channel Islands", "high");
 		mapCountry2Category.put("Chile", "high");
-		mapCountry2Category.put("Cura�ao", "high");
+		mapCountry2Category.put("Curaao", "high");
 		mapCountry2Category.put("Cyprus", "high");
 		mapCountry2Category.put("Czech Republic", "high");
 		mapCountry2Category.put("Denmark", "high");
